@@ -450,3 +450,18 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   guidance asks for shared valid-data helpers, isolated negative changes, reference
   headings/status checks, and compact scripts. Supplemental checks focus on uncovered
   server behavior. All **56 local checks pass** in 25.937 seconds.
+
+## E022 — Dev8 Ticket run and incremental-edit preparation
+
+- Source `5937ea8`, submission `3386eacdc9cb`, ZIP SHA-256
+  `6d3f9a83605dc2aea70c49552d21c4ab039b2b53ef5e0b64cbce910b964c456d`.
+  https://arc-bench.com/runs/02be3333a76c deploys successfully. Final outcome is pending.
+- Concurrent local preparation addresses the refreshed Smoke Evolution cost gap.
+  E008 Counter needed five calls: a source read, three separate edits and finish.
+  Dev9 includes up to 20 product-code files / 24,000 bytes for small existing projects,
+  supplies concise incremental instructions and asks for edits plus finish in one response.
+  Data files, credentials and protected harness files are excluded from that snapshot.
+- All **57 local checks pass** in 26.668 seconds. A real HTTP test edits and verifies an
+  existing app with one captured model response, preserves unrelated code, excludes state
+  and secrets, and falls back for oversized source. This validates orchestration only;
+  reduced model cost and restored Evolution rank require a new official result.

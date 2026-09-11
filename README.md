@@ -19,7 +19,8 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev8**, reduces repeated context after dev7
+The current development candidate, **0.7.0.dev9**, adds a compact incremental-edit path
+while dev8's Ticket run is being evaluated. Dev8 reduces repeated context after dev7
 exhausted its token budget before verification. Input-derived browser checks are generated
 before implementation and fixed throughout repair; their script is now read on demand.
 Dev6 successfully observes
@@ -30,7 +31,7 @@ Version dev4 already verifies browser checks and serves the same app on both obs
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
 documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-All 56 local checks pass, including real HTTP repair, fixed-check enforcement and recovery, reference routing and cache
+All 57 local checks pass, including real HTTP incremental edits and repair, fixed-check enforcement and recovery, reference routing and cache
 invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
@@ -81,6 +82,9 @@ are not an OS-level sandbox for subprocesses.
 - Batched file edits, bounded commands, build/start/behavioral-check verification, repair loop.
 - Small empty projects use one initial bundle-delivery call, then real verification;
   failed deliveries enter the full repair loop.
+- Small existing projects receive a bounded snapshot of product code and concise edit
+  instructions, allowing related edits and verification in one response. Runtime state,
+  credentials and protected files are excluded; larger source sets use normal file tools.
 - Small-app runtime scaffolding supplies only build, HTTP serving and browser-test lifecycle.
   Product markup, behavior, API logic and test assertions remain model-generated.
 - DeepSeek thinking/tool message continuity and explicit usage accounting.

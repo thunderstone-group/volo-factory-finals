@@ -88,6 +88,33 @@ class ContextTests(unittest.TestCase):
 
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "Node and npm required")
 class ContextRepairTests(TempCase):
+    def test_small_existing_source_supports_one_verified_edit_without_exposing_state(self):
+        self.workspace.write_files(GREETING_FILES + [
+            {'path': 'theme.css', 'content': '/* preserve this unrelated source */'},
+            {'path': 'accounts.json', 'content': '{"private":"not-for-initial-context"}'}])
+        (self.out / '.env').write_text('PRIVATE=never-inline-secret')
+        (self.trace.directory / 'internal.js').write_text('never-inline-harness')
+        answer = response([
+            ('edit', {'path': 'backend/server.cjs', 'old': "s.end('hello')", 'new': "s.end('welcome')"}),
+            ('edit', {'path': 'checks/greeting.cjs', 'old': "'hello'", 'new': "'welcome'"}),
+            ('finish', {'check_command': ['node', 'checks/greeting.cjs']})])
+        with FakeGateway([answer]) as gateway:
+            agent = Agent(RequirementSet.load(self.req),
+                Model(gateway.url, 'synthetic-test-key', 'synthetic-model', self.trace),
+                self.workspace, Runtime(self.trace))
+            result = agent.run()
+        self.assertEqual(result['status'], 'completed')
+        self.assertEqual(len(gateway.requests), 1)
+        sent = json.dumps(gateway.requests)
+        self.assertIn("s.end('hello')", sent)
+        self.assertNotIn('not-for-initial-context', sent)
+        self.assertNotIn('never-inline-secret', sent)
+        self.assertNotIn('never-inline-harness', sent)
+        self.assertEqual((self.out / 'theme.css').read_text(), '/* preserve this unrelated source */')
+        self.assertTrue(self.workspace.last_verification['passed'])
+        (self.out / 'large.js').write_text('x' * 24001)
+        self.assertIsNone(agent.source_snapshot())
+
     def test_real_failed_check_survives_context_pressure_and_repairs(self):
         self.workspace.write_files([{"path": "README.md", "content": "An existing application."}])
         files = copy.deepcopy(GREETING_FILES)
