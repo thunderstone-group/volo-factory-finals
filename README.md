@@ -6,12 +6,20 @@ development milestones, not evidence of a final result.
 
 ## Status
 
-**Version 0.6.0 reached first place on the public Smoke leaderboard on September 11, 2026.**
-Both official tasks passed: 100% average pass rate, CNY 0.016023 combined metered cost,
-and 5 seconds average runtime. This is a dated practice milestone; the formal preliminary
-and final are separate competitions. The design and competition facts are recorded in
+**Version 0.6.0 reached first place on both Smoke and Smoke Evolution on September 11, 2026.**
+Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average runtime.
+Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
+dated practice milestones; the formal preliminary and final are separate competitions.
+Ticket Booking is blocked before run creation by a platform archive error; its 10
+published tests have not been run by this agent. The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
+
+The current development candidate, **0.7.0.dev1**, adds bounded context projection and
+support for ancestor-container references in requirement scheduling. It passed 26 local
+checks and parsing/scheduling for all 22 supplied requirement documents (20 unique).
+It has not been evaluated on the competition gateway. The `v0.6.0` tag preserves the
+source that earned the recorded official results.
 
 The ArcBench entrypoint is:
 
@@ -57,6 +65,9 @@ are not an OS-level sandbox for subprocesses.
 - DeepSeek thinking is disabled for small requirement batches and retained for larger ones.
 - Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
 - Verified-checkpoint recovery with requirement and source fingerprints.
+- Context pressure first prunes old tool output, then uses a fresh workspace checkpoint
+  plus complete recent tool exchanges. Retained reasoning fields stay intact; raw trace
+  evidence is preserved. The 160,000-character limit is not a provider token estimate.
 - Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
 - Default caps: 32 attempted requests, 150,000 observed tokens, 1,200 seconds and
   8,192 output tokens per request. Environment overrides use `FACTORY_MAX_CALLS`,
@@ -72,6 +83,9 @@ are not an OS-level sandbox for subprocesses.
 - [Progress and evidence boundaries](docs/progress.md)
 - [Actual experiments and result links](docs/experiments.md)
 - [Next evidence gates toward the final](docs/next-stage.md)
+- [Harness source review and implemented policies](docs/harness-research.md)
+- [Supplied corpus, deduplication and scheduling audit](docs/corpus.md)
+- [Ticket Booking platform report](docs/ticket-booking-platform-report.md)
 - [Contributor instructions](AGENTS.md)
 
 Local checks use Python's standard `unittest` runner. Only actual runs against

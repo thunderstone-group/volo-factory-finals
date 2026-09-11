@@ -72,3 +72,24 @@ Commit source, plans, redacted experiment summaries, selected reproducible fixtu
 and official result links. Keep keys, sessions, private raw logs, generated working
 directories and large artifacts out of Git. The public rules may change; annotate
 each rule snapshot and experiment with date and source.
+
+## 2026-09-11 — Evolution first place and broader harness preparation
+
+- Ran unchanged v0.6.0 on Smoke Evolution from its own verified Smoke applications.
+  Counter and Dice each passed 2/2 official tests. VOLO AI ranked first with 100% pass
+  rate, CNY 0.056842 combined selected-run cost and 15 seconds average runtime.
+- Ticket Booking saves uploads but cannot create a run. Recorded download-200 versus
+  run-409 evidence and a separate archive-404 control. The user will contact the organizer;
+  no model or official tests ran on those failed starts.
+- Reviewed ARC, Octos, Codex, Claude Code documentation, Pi and DeepSeek Harness.
+  Pinned source references and distinguished implemented policies from future candidates.
+- Cataloged the supplied corpus: 22 YAML documents, 20 semantically unique. Added a
+  reproducible, hash-checked inspection command without redistributing official tests.
+- Corpus inspection exposed ancestor-container references that the scheduler expanded
+  into false self-dependencies. Fixed their scheduling interpretation while retaining
+  original model input. All 22 documents now parse and schedule.
+- Added context projection with preserved raw evidence, complete recent tool exchanges,
+  current workspace facts and latest actual failure. Unpressured prompts stay unchanged.
+- Version 0.7.0.dev1 passed 26 local checks, including real HTTP failure/repair under
+  context pressure. This development candidate has no official gateway evaluation yet;
+  both recorded leaderboard wins remain attributed to the preserved v0.6.0 source.

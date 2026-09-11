@@ -143,3 +143,49 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   development experiments. Earlier failures and their costs remain recorded above.
 - This result validates the small-task path. It does **not** establish performance on
   the upcoming GitHub/Spreadsheets preliminary or enterprise final.
+
+## E008 — First place on Smoke Evolution with the unchanged baseline
+
+- Source: `0abcf10`, version 0.6.0, submission `volo-factory-evolution-v0.6.0-0abcf10`.
+- Archive SHA-256: `f8683f93a2bf5668bda76a295e4e684790b24b6a5f601c451ef4311043f6ab27`.
+- Counter: https://arc-bench.com/runs/874eca048ca3 — **2/2 official tests**, 18 seconds.
+- Dice: https://arc-bench.com/runs/dfd21779b423 — **2/2 official tests**, 12 seconds.
+- Platform selected the existing matching Smoke apps. The downloaded Counter artifact
+  and its first request confirm the supplied project was VOLO v0.6's generated app.
+- Official leaderboard at **2026-09-11 06:38:45 UTC**: **rank 1**, VOLO AI, 100% average
+  pass rate, CNY 0.056842 combined selected-run cost, 15 seconds average runtime,
+  efficiency 1759.2625, displayed tokens 0.052M.
+- [Leaderboard snapshot](evidence/2026-09-11-evolution-leaderboard.json).
+  This demonstrates two small incremental changes, not general enterprise evolution.
+
+## E009 — Ticket Booking blocked before run creation
+
+- Baseline source and archive are identical to E008. Submission `32d6d2fe7737` downloaded
+  successfully with an exact SHA-256 match but `POST /api/runs` returned HTTP 409 saying
+  the submitted agent archive was unavailable.
+- A separate source-identical packaging control `b1b0dc34ca64` saved successfully but
+  its archive download returned 404. No model run or official score was produced.
+- [Reproduction details for the organizer](ticket-booking-platform-report.md).
+  The server-side root cause is unknown; failed starts are not coding-quality failures.
+
+## E010 — Local context and corpus compatibility candidate
+
+- Source: `b0e46b9`, version 0.7.0.dev1.
+- Candidate archive SHA-256: `835e2d7cf7fe84168fa8888480c1d6df8b8735d49e24edfc9043ecae14335475`.
+- Version 0.7.0.dev1 introduces deterministic context projection and separates failed
+  verification evidence from accepted verification. Raw events remain intact, retained
+  reasoning/tool fields remain exact, and context cuts never split a tool exchange.
+- A local synthetic gateway drives a real Node application: the first behavioral check
+  fails, a deliberately oversized history triggers a workspace checkpoint, and the
+  second tool response repairs the failure. Actual check outcomes are `[false, true]`.
+- All **26 local checks passed**. Real gateway response captures additionally validate
+  provider-field preservation; replay does not establish current gateway acceptance.
+- Inspected all supplied requirement YAMLs against pinned byte hashes. Initially Ctrip
+  and Stack Overflow were rejected due to ancestor references expanded into self-cycles.
+  After the fix, **22/22 documents schedule**, representing 20 unique requirement sets.
+- [Scheduling evidence](evidence/2026-09-11-corpus-scheduling.json) and [scope](corpus.md).
+- No official gateway run, score improvement or token/cost benefit is claimed for this
+  candidate. Next acceptance is a real platform run when archive availability recovers.
+- Before publishing this development work, refreshed both public leaderboard APIs:
+  VOLO AI remained rank 1 in [Smoke](evidence/2026-09-11-smoke-leaderboard-latest.json)
+  and [Smoke Evolution](evidence/2026-09-11-smoke-evolution-leaderboard-latest.json).
