@@ -27,7 +27,7 @@ class Usage:
 
 
 class Model:
-    def __init__(self, base_url, api_key, model, trace, *, timeout=180, max_output=8192):
+    def __init__(self, base_url, api_key, model, trace, *, timeout=600, max_output=8192):
         parsed = urllib.parse.urlparse(base_url)
         if parsed.scheme not in ("http", "https") or not parsed.netloc:
             raise ValueError("Invalid OPENAI_BASE_URL")
@@ -53,6 +53,7 @@ class Model:
                 raise ValueError("Forced tool must be advertised")
             body['tool_choice'] = {'type': 'function', 'function': {'name': forced_tool}}
         self.trace.event("model_request", model=self.model, gateway=self.url, messages=messages, tools=tools,
+                         timeout_seconds=min(self.timeout, remaining_seconds) if remaining_seconds else self.timeout,
                          parameters={k: v for k, v in body.items() if k not in ('messages', 'tools')})
         data = json.dumps(body, ensure_ascii=False).encode()
         for attempt in range(3):
