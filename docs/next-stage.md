@@ -15,12 +15,11 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    **Current evidence:** E020 reads all three image references successfully, passes
    5/10 official tests and 9/10 in a local public-test replay. Its code and self-checks
    still omit the same visual detail. Generated fixed scripts introduced runtime and
-   shared-data errors. Dev12 replaces them with literal UI contracts and deterministic
-   read-only checks, while stateful tests remain implementation-authored. Evaluate that
-   smaller training-check boundary next. Dev14 also preserves successful reads across
-   context projection and allows requirement-grounded correction of training metadata.
-   Dev17 bounds large source replies and exposes chunked reading, after E030 showed
-   that even a successful read disappears when the entire reply exceeds remaining context.
+   shared-data errors; their data-only replacement still misinterpreted alternatives as
+   extra controls. Dev20 removes that extra planning call and returns implementation and
+   checks to the complete original inputs. Dev19 executes authored test entrypoints as
+   soon as written and retains a larger source context; validate this smaller pipeline
+   with the real gateway and official tests before broadening the architecture.
    Official page crashes
    and timeouts did not reproduce locally; their exact cause remains unconfirmed.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.

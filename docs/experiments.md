@@ -755,3 +755,27 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - Keep the exact dev19 package for a Pro comparison. Test discovery and the larger
   context window are locally validated but have not yet reached a real verification
   step in this run; the gateway wait does not establish their application-quality effect.
+
+## E036 — Remove the planner that introduces contradictory UI constraints
+
+- Unchanged dev19 ZIP, Pro submission `8f63bff5375b`, verified hash as E035.
+  https://arc-bench.com/runs/4cbb7715dd75 deploys and writes all seven application files
+  in its first coding response at 134.046 seconds. Original implementation remains in
+  the larger context. The next model request has not returned when the run is stopped.
+- The written requirement specifies one required checkbox whose accessible name contains
+  either of two agreement phrases. The intermediate UI planner instead requires two
+  exact-name checkboxes. The generated application follows that mistaken plan.
+- Offline execution of the exact generated app starts successfully, but the unchanged
+  public suite fails 10/10 in 7.213 seconds because its agreement-checkbox interaction
+  matches both controls. This is a concrete conflict between the original input and
+  model-created constraints, not a deployment or dependency failure.
+- Cancelled the run after identifying the incorrect constraint; a fresh status confirms
+  CANCELLED after the POST returns HTTP 500. Known completed responses total **32,440
+  tokens**; the in-flight request and null official cost are not treated as zero.
+- Dev20 deletes the additional UI-planning model call, its tools, generated-check module
+  and five component-specific tests. The real fixed-check execution invariant remains.
+  The coding agent receives the original requirements and observed images directly,
+  writes executable browser/state checks, and must pass build/start/behavior verification.
+  No official tests or generated application are edited or included in the upload.
+- Remaining **61 local checks pass** in 27.892 seconds. Dev20 ZIP SHA-256:
+  `eebc913cb272ffa4940e2935e4ff51861315090758b1bb7ef6f3bd0172bceb07`.

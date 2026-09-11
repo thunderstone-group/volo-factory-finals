@@ -22,24 +22,18 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev19**, accepts strictly validated JSON UI
-metadata when a provider returns it as text despite a forced tool choice. It also bounds source
-reads so a large tool response cannot be repeatedly discarded by context projection. It runs authored Node test bundles as
-soon as the application and test files are present. It uses a data-only UI training contract and
-harness-owned checking code. Arbitrary generated acceptance scripts introduced runtime
-and shared-test-data errors in dev8/dev10, so that path and its parser dependencies were
-removed. Training checks now cover visible signed-out structure; authored browser tests cover
-stateful behavior. Version dev11 also combines small exact edits with verification in one call.
-Dev6 successfully observes
-all relevant images through the metered gateway, but its implementation and self-checks
-still omit a reference heading and choose the wrong strength-widget role. Dev19's
-completed verification and official score are the next evaluation gate.
-Version dev4 already verifies browser checks and serves the same app on both observed
-runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
-call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
-documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-Local checks cover real HTTP incremental edits and repair, training-contract revision and recovery, reference routing and cache
-invalidation, captured response accounting, launcher lifecycle and CLI contracts.
+The current development candidate, **0.7.0.dev20**, removes the extra UI-planning call.
+That layer repeatedly turned alternative names into additional required controls, and
+its outputs became incorrect constraints on implementation. The coding agent now derives
+its app and executable checks directly from the complete requirements and observed images.
+Build, startup and behavioral verification remain mandatory; official tests remain separate.
+Authored test entrypoints execute as soon as written, and bounded source tools plus a
+120,000-character context window support repair. Small incremental edits still use one
+verified patch call. Dev20's completed execution and official score are the next gate.
+
+All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
+real HTTP incremental edits and repair, source/context boundaries, reference routing and
+cache invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
 
@@ -118,19 +112,10 @@ are not an OS-level sandbox for subprocesses.
   `FACTORY_VISION_MODEL` (default `kimi-k3`) using the same gateway and key. Image calls
   share the generation budget and trace. Successful observations cache by image bytes,
   prompt and model. An empty variable disables observation and records that limitation.
-- Larger browser tasks first generate a separate acceptance script from requirements
-  and image observations, without application source. The model supplies only literal
-  routes, visible headings, labels and accessible roles; the harness generates all checking
-  code. Contracts cannot submit forms, create accounts or add arbitrary code. Every
-  verification runs them before implementation-authored behavioral checks. Training checks
-  are hashed, restored after interruption, and included in verification reuse decisions.
-  UI extraction can still omit or misinterpret requirements; official evaluation is separate.
-  This data-only planning step accepts either a real tool call or a complete JSON object,
-  optionally enclosed in one Markdown JSON fence. Both use identical validation; extra
-  prose, extra keys, truncation and executable fields are rejected. No tool call is fabricated.
-  Mistaken training metadata can be revised with a requirement-based explanation; original
-  data and revisions stay in the trace, and a revision invalidates prior verification.
-  This does not grant access to change external evaluator tests.
+- Browser checks are authored directly from requirements and image observations.
+  The separate generated UI-contract layer was removed after E036 demonstrated that
+  it converted one consent control with alternative names into two required controls.
+  Its earlier source and measured failures remain in Git and the experiment log.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Context pressure first prunes old tool output, then uses a fresh workspace checkpoint
   plus complete recent tool exchanges. The last completed tool result, including successful

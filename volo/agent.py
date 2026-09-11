@@ -6,7 +6,6 @@ import time
 from dataclasses import asdict
 
 from .context import excerpt, project
-from .acceptance import TOOL as UI_CONTRACT_TOOL
 from .trace import atomic_json
 from .web_runtime import scaffold, implement, SERVER, BUILD, BROWSER_CHECK
 from .workspace import normalize_check_command
@@ -33,6 +32,8 @@ published browser-test entrypoint. Keep product code separate from this managed 
 Use native labels, accessible names, routes and visible validation messages exactly as specified.
 When the requirements offer multiple language aliases, choose one exact accessible name;
 do not concatenate aliases into a different label that exact-name interactions cannot locate.
+Accessible-name alternatives joined by "or" describe valid names for the same control;
+do not expand them into additional controls unless separate controls are explicitly required.
 Render required dynamic values as separate elements, without merging them into greetings or
 surrounding prose. Levels, ratings and strength use a named meter; operation completion uses
 a progressbar. Provide changing value attributes. Preserve headings observed in reference images;
@@ -57,15 +58,9 @@ Do not install, update, uninstall or download browsers; do not modify shared /ms
 If no browser is available, write honest HTTP/logic checks and leave official GUI checking to
 the organizer. Do not waste model calls probing browser installations or npm connectivity.
 Never replace missing execution with a claimed pass. Keep earlier checks for regression coverage.
-Input-derived UI structure training checks run automatically. Their data is supplied below;
-call read_acceptance only if you need the exact script to understand a failure. Do not duplicate
-static structure checks. Write real browser tests for every stateful requirement scenario,
+Write real browser tests directly from the written requirements and reference observations,
+covering visible structure and every stateful requirement scenario,
 including isolated valid test data, negative cases, session changes and persistence.
-The training contract is a model-derived interpretation, not an official oracle. If it
-misreads the requirements (for example, treats translations as two controls or a phrase as
-an exact full label), use revise_ui_contract with the corrected data and the specific
-requirement-based reason. Never remove a true requirement merely to match incomplete code.
-Training checks may be corrected; the organizer's external evaluator remains read-only.
 The official evaluator remains separate and read-only. Do not inspect or modify private tests,
 spoof usage, or add meaningless model calls to improve leaderboard arithmetic.
 
@@ -155,9 +150,6 @@ TOOLS = [
                  "path": STR, "old": STR, "new": STR}, "required": ["path", "old", "new"],
                  "additionalProperties": False}}, "check_command": COMMAND}, ['edits', 'check_command']),
     function("list_files", "List application source files, excluding runtime/cache directories.", {}, []),
-    function("read_acceptance", "Read the current input-derived UI training checks without changing them.", {}, []),
-    function("revise_ui_contract", "Correct a mistaken training-only UI extraction with a requirement-grounded explanation.",
-             {'pages': UI_CONTRACT_TOOL['function']['parameters']['properties']['pages'], 'reason': STR}, ['pages', 'reason']),
     function("read_files", "Read up to 20 UTF-8 files, at most 12000 bytes total. Use read_file_chunk for larger input.",
              {"paths": STRINGS}, ["paths"]),
     function("read_file_chunk", "Read a bounded UTF-8 source chunk by character offset; follow next_offset only if needed.",
@@ -178,7 +170,7 @@ TOOLS = [
 
 class Agent:
     def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
-                 token_budget=300000, max_context_chars=120000, references=None, acceptance=None):
+                 token_budget=300000, max_context_chars=120000, references=None):
         self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
@@ -187,7 +179,6 @@ class Agent:
         self.completed = []
         self.check_command = None
         self.references, self.reference_context = references, None
-        self.acceptance, self.acceptance_context = acceptance, None
         self.inline_source = False
         self.last_tool_result = None
 
@@ -250,14 +241,6 @@ class Agent:
             raise ValueError("Tool arguments must be a JSON object")
         if name in ('finish', 'deliver', 'patch_and_verify'):
             args = {**args, 'check_command': normalize_check_command(args['check_command'])}
-        if name == 'read_acceptance':
-            return self.acceptance_context or {'coverage': [], 'script': ''}
-        if name == 'revise_ui_contract':
-            if not self.acceptance or not self.acceptance_context:
-                raise ValueError('No UI training contract exists for this batch')
-            self.acceptance_context = self.acceptance.revise(self.acceptance_context, **args)
-            return {'pages': self.acceptance_context['pages'], 'reason': args['reason'],
-                    'next': 'The corrected training contract supersedes its earlier version. Implement and verify the full requirements.'}
         if name == 'write_files':
             result = self.workspace.write_files(**args)
             command = self.workspace.discovered_check_command()
@@ -330,10 +313,6 @@ class Agent:
                                  "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nReference-image observations (written requirements remain authoritative):\n"
                    + json.dumps(self.reference_context, ensure_ascii=False)
-                   + '\nUI structure training checks extracted from inputs before implementation. '
-                     'Verification runs them; correct a mistaken interpretation only with revise_ui_contract:\n'
-                   + json.dumps({key: self.acceptance_context[key] for key in ('path', 'coverage', 'pages')}
-                                if self.acceptance_context else None, ensure_ascii=False)
                    + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
 
     def context_checkpoint(self, nodes, system, last_failure):
@@ -370,10 +349,6 @@ class Agent:
             {'unavailable': 'No reference observer configured; binary images have not been inspected'})
         small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
         bounded = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 16000
-        self.acceptance_context = None
-        if self.acceptance and not small and self.workspace.browser.get('available'):
-            self.acceptance_context = self.acceptance.prepare(nodes, self.reference_context,
-                                                             guard_budget=self.guard_budget)
         self.model.thinking = "disabled" if bounded else "enabled"
         self.trace.event("reasoning_policy", small_batch=small, bounded_batch=bounded, thinking=self.model.thinking)
         request = self.batch_request(nodes)
