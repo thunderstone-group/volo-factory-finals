@@ -97,10 +97,19 @@ class RequirementSet:
         return batches
 
     def batch_prompt(self, nodes):
+        ancestors = {p for node in nodes for p in node['parents']} - {str(self.document['id'])}
+        inherited = []
+        def collect(node):
+            if str(node['id']) in ancestors:
+                inherited.append({k: v for k, v in node.items() if k != 'children'})
+            for child in node.get('children', []) or []:
+                collect(child)
+        collect(self.document)
         return json.dumps({
             "application": {k: v for k, v in self.document.items() if k != "children"},
             "all_requirements": [{"id": n["id"], "name": n.get("name", ""),
                                   "dependencies": n.get("dependencies", [])} for n in self.nodes],
             "current_batch": nodes,
+            "inherited_constraints": inherited,
             "reference_assets": [a for a in self.assets if (self.root / a).stat().st_size > 0],
         }, ensure_ascii=False, indent=2)

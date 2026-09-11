@@ -41,12 +41,17 @@ class Model:
         self.thinking = None
         self.usage = Usage()
 
-    def complete(self, messages, tools, *, remaining_seconds=None):
+    def complete(self, messages, tools, *, remaining_seconds=None, forced_tool=None):
         body = {"model": self.model, "messages": messages, "tools": tools,
                 "stream": False, "max_tokens": self.max_output}
         if self.thinking in ("enabled", "disabled") and self.model.lower().startswith("deepseek"):
             body["thinking"] = {"type": self.thinking}
-        self.trace.event("model_request", model=self.model, messages=messages, tools=tools)
+        if forced_tool:
+            if forced_tool not in {t['function']['name'] for t in tools}:
+                raise ValueError("Forced tool must be advertised")
+            body['tool_choice'] = {'type': 'function', 'function': {'name': forced_tool}}
+        self.trace.event("model_request", model=self.model, gateway=self.url, messages=messages, tools=tools,
+                         parameters={k: v for k, v in body.items() if k not in ('messages', 'tools')})
         data = json.dumps(body, ensure_ascii=False).encode()
         for attempt in range(3):
             request = urllib.request.Request(self.url, data=data, headers={

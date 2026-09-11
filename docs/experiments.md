@@ -54,3 +54,23 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - Next experiment: disable DeepSeek thinking only for small batches, retain it for larger
   requirements, and expose only one completion/verification action to eliminate redundancy.
 - Raw generated artifacts remain local under ignored `runs/e002-counter/` and `runs/e002-dice/`.
+
+## E003 — Small-batch thinking disabled
+
+- Source: `4cca774`; effective submission `volo-factory-v0.3.0-4cca774-r2`.
+- Archive SHA-256: `533d4510869f327962b9d69e8d8a60d8d2ed967330d31eb775d47a325628f487`.
+- The first saved record could not start: browser Network diagnostics captured HTTP 409,
+  `The submitted agent archive is no longer available`. No model run was created by those
+  failed starts. Saving identical bytes under a unique filename succeeded; the underlying
+  platform storage failure has not been independently diagnosed.
+- Counter: https://arc-bench.com/runs/ad10919cab86 — **1/1**, 49 seconds, 21,800 gateway tokens.
+- Dice: https://arc-bench.com/runs/d3b6850824fb — **1/1**, 61 seconds, 47,752 gateway tokens.
+- Combined cost displayed by the platform: CNY 0.0986, down from CNY 0.1611. Still behind
+  the observed leading cost of CNY 0.044692. The elapsed time increased.
+- Actual Counter response usage confirms zero reasoning tokens. However it spent five
+  calls on listing files, splitting file writes, an unnecessary edit, and completion.
+  It also chose a frontend dependency/build stack for a tiny interaction.
+- Next experiment: a single forced bundle-delivery tool for a small empty project,
+  followed by automatic real verification. If that fails, use the normal repair tool loop.
+  Prefer built-in runtime libraries for small feature sets. This changes orchestration,
+  not the task solution; all application code still comes from the model and requirements.

@@ -47,6 +47,20 @@ class TempCase(unittest.TestCase):
 
 
 class RequirementsTests(TempCase):
+    def test_parent_folder_constraints_reach_the_model(self):
+        (self.req / 'requirements.yaml').write_text('''id: ROOT
+children:
+  - id: AUDITED
+    description: Every write must create an audit record.
+    children:
+      - id: R1
+        name: Update an organization
+''')
+        requirements = RequirementSet.load(self.req)
+        payload = json.loads(requirements.batch_prompt(requirements.nodes))
+        self.assertEqual(payload['inherited_constraints'][0]['description'],
+                         'Every write must create an audit record.')
+
     def test_dependency_order_not_yaml_order(self):
         (self.req / "requirements.yaml").write_text("""id: ROOT
 children:
@@ -212,8 +226,8 @@ class ExecutionTests(TempCase):
     def test_model_tool_loop_repairs_failure_then_resumes_without_model_call(self):
         broken = [dict(x) for x in GREETING_FILES]
         broken[3]["content"] = broken[3]["content"].replace("'hello'", "'wrong'")
-        initial = response([("write_files", {"files": broken}),
-                            ("finish", {"check_command": ["node", "checks/greeting.cjs"]})])
+        initial = response([("deliver", {"files": broken,
+                            "check_command": ["node", "checks/greeting.cjs"]})])
         repair = response([("edit", {"path": "backend/server.cjs", "old": "'wrong'", "new": "'hello'"}),
                            ("finish", {"check_command": ["node", "checks/greeting.cjs"]})])
         with FakeGateway([initial, repair]) as server:
@@ -225,7 +239,8 @@ class ExecutionTests(TempCase):
             self.assertEqual(len(server.requests), 2)
             prior = server.requests[1]["messages"]
             self.assertEqual(prior[2]["reasoning_content"], initial["choices"][0]["message"]["reasoning_content"])
-            self.assertEqual([m["role"] for m in prior], ["system", "user", "assistant", "tool", "tool"])
+            self.assertEqual([m["role"] for m in prior], ["system", "user", "assistant", "tool"])
+            self.assertEqual(server.requests[0]['tool_choice']['function']['name'], 'deliver')
             model2 = Model(server.url, "synthetic-test-key", "synthetic-model", self.trace)
             fresh_workspace = Workspace(self.out, self.req, self.trace, time.monotonic() + 40)
             result2 = Agent(RequirementSet.load(self.req), model2, fresh_workspace, Runtime(self.trace)).run()

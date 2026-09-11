@@ -6,7 +6,7 @@ development milestones, not evidence of a final result.
 
 ## Status
 
-Version 0.2 passed both official Smoke tasks; version 0.3 optimizes small-task execution. The design and competition facts are recorded in
+Versions 0.2 and 0.3 passed both official Smoke tasks. Version 0.4 reduces small-task round trips. The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
@@ -46,6 +46,8 @@ are not an OS-level sandbox for subprocesses.
 
 - Dependency-ordered requirement batches and existing-project preservation.
 - Batched file edits, bounded commands, build/start/behavioral-check verification, repair loop.
+- Small empty projects use one initial bundle-delivery call, then real verification;
+  failed deliveries enter the full repair loop.
 - DeepSeek thinking/tool message continuity and explicit usage accounting.
 - DeepSeek thinking is disabled for small requirement batches and retained for larger ones.
 - Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
