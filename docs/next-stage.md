@@ -43,7 +43,12 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    the final check. Its untouched final source still passes only 5/9 own checks and 3/10
    public checks locally. Dev28 supplies exact source paths, leaves more model repair
    budget and executes the existing final check even when the last edit exhausts that
-   budget. None of these changes replaces official acceptance.
+   budget. E047 reaches 13/13 self-checks and 6/10 officially; its final app passes all
+   ten public tests locally at the official ten-second timeout. E048 repeats the same
+   package but scores 4/10; local replay identifies username text combined with a child
+   sign-out link. Wrapping only the username in a leaf element produces local 10/10.
+   Dev29 clarifies exact leaf values and consistently permitted English navigation
+   aliases. None of these diagnostics replaces a fresh official result.
    Official page crashes
    and timeouts did not reproduce locally; their exact cause remains unconfirmed.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.

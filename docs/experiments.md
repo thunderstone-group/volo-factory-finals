@@ -1026,3 +1026,45 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   last repair and unchanged failed source, with exactly two synthetic gateway calls.
 - Dev28 ZIP SHA-256:
   `591a92bcea24b57d394d0504e559a01d529aeacad9a25efa3d889e6f705d9ce1`.
+
+## E047 — Faster repair reaches a new best, with timing failures still unresolved
+
+- Dev28 source `0c72376`, Pro submission `35075b67cb49`, verified ZIP as E046.
+  https://arc-bench.com/runs/5618708b9481 completes all **13 self-checks** at 199.012
+  seconds. Failed-bundle source paths support direct edits without the earlier path guessing.
+  Its final changes wait for asynchronous outcomes without removing assertions.
+- Official result: **6/10, 199 seconds, 836,379 tokens, CNY 1.228165**. Seven captured
+  responses total **130,064 tokens**. This improves this fresh agent's official best to 60%.
+- The official report confirms Playwright 1.57.0, four configured/two actual workers,
+  no retries, sequential tests within each file and a ten-second test timeout. Two failures
+  time out; two report aborted/interrupted page navigations. They are not reported as passes.
+- The unchanged final app passes the public suite locally with the same ten-second
+  timeout, **10/10 in 5.456 seconds**, then all **30 repeated test executions** in
+  16.579 seconds. This does not explain every official timeout.
+- A controlled browser probe delays logout by 400 ms. The public login-label expression
+  initially matches the Chinese sign-out label, so the following navigation can interrupt
+  the pending logout and leave the session active. Changing only the displayed action to
+  the permitted English alias in the diagnostic DOM prevents that early match and completes
+  logout before navigation. No business code, official test or uploaded application is edited.
+- Aggregate leaderboard reads fail, but the website's explicit task filter returns current
+  ordered rows. Added and live-verified `leaderboard --task`; 17 CLI contract tests pass in
+  7.779 seconds. The CLI change is outside the uploaded archive.
+
+## E048 — Repeat exposes an exact-text structure gap hidden by self-checks
+
+- Same dev28 package, submission and model as E047; independent run
+  https://arc-bench.com/runs/e74e97c5936e completes **8/8 self-checks** at 155.006 seconds.
+- Official result: **4/10, 155 seconds, 761,618 tokens, CNY 1.234665**. Five captured
+  responses total **85,689 tokens**. Six tests time out. Repetition did not improve the score.
+- The generated username and sign-out link share a parent element, whose complete text
+  is not the exact username. The unchanged app locally passes **5/10 in 26.520 seconds**
+  at the official ten-second timeout; all five local failures cannot find the exact username.
+- A separate diagnostic copy wraps only that username text in a leaf span, leaving the
+  rest of the UI, all business logic and public tests unchanged. It passes **10/10 in
+  10.046 seconds**. This isolates the structure gap without claiming an official pass.
+- Dev29 explicitly requires each exact dynamic value to occupy a leaf element with no
+  child controls or surrounding prose. Where English navigation aliases are explicitly
+  permitted, it selects them consistently to avoid the ambiguity demonstrated in E047.
+  No task-specific route, label, business logic or test data is added to the agent.
+- All **73 local checks pass** in 64.800 seconds. Dev29 ZIP SHA-256:
+  `c4fe352a3274048e5c77e514c9cdd0edbf423e70ec75acd1d2ae294f85374b14`.

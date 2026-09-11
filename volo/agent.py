@@ -32,10 +32,13 @@ published browser-test entrypoint. Keep product code separate from this managed 
 Use native labels, accessible names, routes and visible validation messages exactly as specified.
 When the requirements offer multiple language aliases, choose one exact accessible name;
 do not concatenate aliases into a different label that exact-name interactions cannot locate.
+When English and localized navigation names are both explicitly permitted, use the English
+navigation name consistently. Preserve specified names that have no permitted English alternative.
 Accessible-name alternatives joined by "or" describe valid names for the same control;
 do not expand them into additional controls unless separate controls are explicitly required.
-Render required dynamic values as separate elements, without merging them into greetings or
-surrounding prose. Levels, ratings and strength use a native <meter> or role="meter", with an
+Render each required exact dynamic value in a dedicated leaf element whose textContent is
+only that value. Keep greetings and controls outside it: <span>value</span><a>Action</a>.
+Levels, ratings and strength use a native <meter> or role="meter", with an
 accessible name, minimum, maximum and a numeric value that changes with input. Colored divs
 alone do not implement this semantic control. Operation completion uses a progressbar instead.
 Validation errors must be visible in a role="alert" region with meaningful text; announce
@@ -120,9 +123,11 @@ session behavior in api_js. Node standard libraries are available there. Use com
 fixtures for successful API calls and isolate the single invalid condition in negative checks.
 
 Use one accessible name from each set of permitted aliases and one control per action.
+Use permitted English navigation names consistently when multilingual alternatives are offered.
 Keep primary navigation links unique. The prepared browser checks reject repeated links to a non-home primary destination,
 including shortcuts with different language aliases. Use the primary navigation for those actions.
-Render exact dynamic values in separate elements; do not repeat account identities in welcome text. Preserve observed reference page and
+Render each exact dynamic value in its own leaf element with no child controls or extra prose:
+<span>value</span><a>Action</a>. Do not repeat account identities in welcome text. Preserve observed reference page and
 section titles verbatim as semantic headings. Every form control needs an associated label, including grouped inputs.
 Use a named native meter with a changing numeric value for a required strength/level display.
 Show invalid submissions in a visible, nonempty role=alert region; prevent browser-native

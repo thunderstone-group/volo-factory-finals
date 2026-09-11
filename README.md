@@ -22,7 +22,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev28**, generates bounded new applications
+The current development candidate, **0.7.0.dev29**, generates bounded new applications
 through a generic Node runtime. The model supplies the product UI, API logic and checks
 from the complete requirements and image observations; the runtime handles build,
 serving and browser lifecycle. Build and actual behavioral verification are mandatory.
@@ -38,9 +38,11 @@ Failed bundles return their exact source paths to avoid redundant discovery. The
 observed-response token budget is 450,000, configurable through `FACTORY_TOKEN_BUDGET` or
 `--token-budget`. If that budget ends immediately after an edit, the existing checks can
 still run within the wall-time limit without another model call; only a real pass completes.
-Small incremental edits retain their existing single-patch path. Official tests remain
-separate, and this candidate has no official Ticket score yet. The best Ticket result
-from this agent remains E020's 5/10; see [experiments](docs/experiments.md) for the evidence.
+Small incremental edits retain their existing single-patch path. Exact values use leaf
+elements, and explicitly permitted English navigation aliases are preferred consistently.
+Official tests remain separate, and this candidate has no official Ticket score yet.
+The best Ticket result from this agent is E047's 6/10; see
+[experiments](docs/experiments.md) for the evidence and remaining failures.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and

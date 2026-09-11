@@ -255,3 +255,17 @@ each rule snapshot and experiment with date and source.
   450,000. The previous two official run costs were CNY 1.507691 and 1.218660; the
   extra allowance aims to finish measured repair, not to consume a quota. All 72 checks
   pass, including correct/incorrect/unchanged final-edit cases with no extra model call.
+- Dev28 reaches actual delivery much faster: E047 completes 13/13 self-checks in 199
+  seconds and scores 6/10 officially; E048 completes 8/8 in 155 seconds but scores 4/10.
+  They use only 130,064 and 85,689 observed tokens respectively, below the old ceiling.
+- E047's unchanged app passes four local runs of all ten public tests at the official
+  ten-second timeout. A controlled delay reveals an exit-label ambiguity: a login regex
+  matches the Chinese sign-out label before logout completes. The permitted English
+  sign-out alias avoids that early match. E048 instead combines the exact username and
+  a link in one element; isolating the username alone makes its diagnostic copy pass 10/10.
+- Dev29 clarifies leaf text values and consistently permitted English navigation aliases.
+  All 73 local checks pass. No diagnostic application or evaluator is uploaded.
+- Task-filtered leaderboard requests work while aggregate requests fail with HTTP 500.
+  The CLI now supports the same task selector as the website. Current per-task cost sums
+  preserve Smoke's CNY 0.016023 and Evolution's CNY 0.017810, below their nearest rival's
+  CNY 0.017079 and 0.018816. This comparison is derived; aggregate ranks are unavailable.
