@@ -291,6 +291,28 @@ test('server serves generated page despite empty optional API',async()=>{
         self.assertEqual(self.workspace.last_verification_attempt, result)
         self.assertEqual(result["source_fingerprint"], self.workspace.fingerprint())
 
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                         'Provide an installed Playwright module and Chromium for real browser checks')
+    def test_prepared_browser_resolves_relative_navigation(self):
+        module = os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']
+        executable = os.environ['FACTORY_TEST_CHROMIUM_EXECUTABLE']
+        wrapper = self.base / 'real-browser.cjs'
+        wrapper.write_text('const pw=require(' + json.dumps(module) + ');'
+            'module.exports={chromium:{launch:()=>pw.chromium.launch({headless:true,executablePath:'
+            + json.dumps(executable) + '})}};')
+        self.workspace.runtime_env['FACTORY_PLAYWRIGHT_MODULE'] = str(wrapper)
+        scaffold(self.workspace)
+        check = """const {test,assert}=require('./browser.cjs');
+test('relative routes use the managed application origin',async page=>{
+await page.goto('/details');
+assert.equal(new URL(page.url()).pathname,'/details');
+assert.equal(await page.getByRole('heading',{name:'Greeting',exact:true}).textContent(),'Greeting');
+await page.goto('/');assert.equal(new URL(page.url()).pathname,'/');
+});"""
+        result = implement(self.workspace, '<h1>Greeting</h1>', '', check)
+        self.assertTrue(result['passed'], result)
+
     def test_model_tool_loop_repairs_failure_then_resumes_without_model_call(self):
         initial = response([("build_app", {"index_html": "wrong",
                             "checks_js": GREETING_FILES[-1]['content']})])

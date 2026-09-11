@@ -22,7 +22,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev23**, removes the extra UI-planning call.
+The current development candidate, **0.7.0.dev24**, removes the extra UI-planning call.
 That layer repeatedly turned alternative names into additional required controls, and
 its outputs became incorrect constraints on implementation. The coding agent now derives
 its app and executable checks directly from the complete requirements and observed images.
@@ -39,7 +39,9 @@ reaches execution but exhausts its budget after 11/28 self-checks, before offici
 evaluation. Pro also exhausts its budget after reaching browser checks. Dev23 reuses
 the existing generic runtime for bounded new apps, so the model writes product UI,
 API logic and assertions without regenerating build/server/test-lifecycle boilerplate.
-Its quality on Ticket still requires a fresh official run.
+The first bounded-runtime run generates all product code in one call but exposes a
+missing browser base URL. Dev24 sets that origin in the provided browser helper and
+verifies relative navigation with real Chrome. Its Ticket score still needs a fresh run.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and

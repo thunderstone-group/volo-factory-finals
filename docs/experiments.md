@@ -887,3 +887,23 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - All **63 local checks pass** in 30.387 seconds, including a bounded new app that
   serves extensionless routes and real API state transitions through the unchanged runtime.
   Dev23 ZIP SHA-256: `20a0b78badd5666df5a60247113fdf025f47cf99b4a0b3f85d4ef6f0e3f9ccc6`.
+
+## E042 — Bounded generation exposes a browser-helper routing omission
+
+- Dev23 source `4c0d756`, Pro submission `c09ec62d46d2`, verified ZIP as E041.
+  https://arc-bench.com/runs/5b816873c9e5 generates all product UI, API logic and
+  eight browser checks in one `build_app` response at 118.251 seconds. Real build,
+  startup and verification begin immediately. The page includes the observed heading
+  and a named native strength meter, but full product correctness is not yet established.
+- All checks fail at relative `page.goto('/...')` calls: the provided browser helper
+  creates its page without a base URL. Two complete bundle retries repeat that same
+  error. After three attempts the full tool path begins repairing helper/check files.
+- Cancelled the run while further verification was pending. Cancellation POST returns
+  HTTP 500, then fresh status confirms CANCELLED. Eight completed responses total
+  **222,777 tokens**; official cost/duration remain null and no official tests execute.
+- Dev24 sets `baseURL` to `FACTORY_BASE_URL` when creating the provided browser page.
+  A regression uses installed Playwright and real Chrome against the managed HTTP
+  application, navigating to `/details` and `/` and asserting the visible heading.
+  All **64 local checks pass** in 34.895 seconds, including that real browser check.
+- Dev24 ZIP SHA-256:
+  `0185eb2530fdf24780daf5a8fea81c5d6aa146afd9294e8818296e27ab776208`.
