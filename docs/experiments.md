@@ -119,3 +119,27 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - Next: generate a self-contained HTML/JavaScript document for small pages, use temperature
   zero for the small-task path, expose JavaScript startup errors clearly, and keep up to
   three repair attempts in the compact bundle protocol before falling back to general tools.
+
+## E007 — First place on the public Smoke leaderboard
+
+- Source: `0abcf10`, version 0.6.0.
+- Effective submission: `volo-factory-v0.6.0-0abcf10-r2`.
+- Archive SHA-256: `f8683f93a2bf5668bda76a295e4e684790b24b6a5f601c451ef4311043f6ab27`.
+- The first saved record returned HTTP 409 on run creation and HTTP 404 on archive
+  download. Re-uploaded identical bytes under a new filename. The new archive endpoint
+  returned HTTP 200, and its downloaded SHA-256 exactly matched the local upload.
+- Counter: https://arc-bench.com/runs/7fa25acde8dd — **1/1 official tests**, 5 seconds.
+- Dice: https://arc-bench.com/runs/d8dcc590abac — **1/1 official tests**, 5 seconds.
+- Official leaderboard at **2026-09-11 06:13:08 UTC**:
+  - rank **1**, team **VOLO AI**;
+  - average pass rate **100%**;
+  - combined metered model cost **CNY 0.016023**;
+  - efficiency **6241.0285 pass-rate points/CNY**;
+  - average runtime **5 seconds**;
+  - token field **0.003M** (rounded by the leaderboard API).
+- Also confirmed the first-place row visually through Chrome's page content.
+- Source snapshot: [final leaderboard JSON](evidence/2026-09-11-smoke-leaderboard-final.json).
+- This cost is the selected successful submission's two-task cost, not the sum of all
+  development experiments. Earlier failures and their costs remain recorded above.
+- This result validates the small-task path. It does **not** establish performance on
+  the upcoming GitHub/Spreadsheets preliminary or enterprise final.

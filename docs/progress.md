@@ -55,6 +55,17 @@ and iterate from observed failures. A generated app or mock transport test is no
 - Large requirements retain dependency-ordered batches and the full repair tool loop.
   Intermediate folder constraints are now included in batch context.
 
+## 2026-09-11 — Practice milestone achieved
+
+- Version 0.6.0 (`0abcf10`) passed both official Smoke tasks and reached **rank 1**.
+- The selected submission cost CNY 0.016023 in total and averaged 5 seconds per task.
+- Checked both the public leaderboard API and the Chrome leaderboard row.
+- Retained source commits, failure analyses, redacted real fixtures, result links and
+  a dated leaderboard snapshot. All 18 local checks passed before the winning upload.
+- Promote this verified source to `main` and preserve version `v0.6.0` as the practice baseline.
+- The final-championship objective remains ahead. Next gates are incremental behavior,
+  stateful application correctness, transfer to unseen requirements, and the formal task packs.
+
 ### Evidence and privacy
 
 Commit source, plans, redacted experiment summaries, selected reproducible fixtures

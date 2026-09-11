@@ -6,7 +6,10 @@ development milestones, not evidence of a final result.
 
 ## Status
 
-Versions 0.2, 0.3 and 0.5.1 passed both official Smoke tasks. Version 0.6 improves consistency and compact repairs. The design and competition facts are recorded in
+**Version 0.6.0 reached first place on the public Smoke leaderboard on September 11, 2026.**
+Both official tasks passed: 100% average pass rate, CNY 0.016023 combined metered cost,
+and 5 seconds average runtime. This is a dated practice milestone; the formal preliminary
+and final are separate competitions. The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
@@ -67,6 +70,8 @@ are not an OS-level sandbox for subprocesses.
 
 - [Strategy and verified rules](docs/strategy.md)
 - [Progress and evidence boundaries](docs/progress.md)
+- [Actual experiments and result links](docs/experiments.md)
+- [Next evidence gates toward the final](docs/next-stage.md)
 - [Contributor instructions](AGENTS.md)
 
 Local checks use Python's standard `unittest` runner. Only actual runs against
