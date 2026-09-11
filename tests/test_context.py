@@ -9,6 +9,7 @@ from volo.context import exchanges, project, size
 from volo.model import Model
 from volo.requirements import RequirementSet
 from volo.trace import Runtime
+from volo.web_runtime import scaffold, SERVER
 from test_core import FakeGateway, GREETING_FILES, ROOT, TempCase, response
 
 
@@ -88,6 +89,20 @@ class ContextTests(unittest.TestCase):
 
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "Node and npm required")
 class ContextRepairTests(TempCase):
+    def test_compact_context_omits_only_byte_identical_known_runtime(self):
+        scaffold(self.workspace)
+        self.workspace.write_files([{'path': 'frontend/public/index.html', 'content': '<h1>Product</h1>'}])
+        agent = Agent(RequirementSet.load(self.req), None, self.workspace, None)
+        agent.inline_source = True
+        payload = json.loads(agent.batch_request(agent.requirements.nodes))
+        self.assertNotIn('backend/server.cjs', payload['source'])
+        self.assertIn('backend/server.cjs', payload['verified_unchanged_runtime'])
+        self.assertEqual(payload['source']['frontend/public/index.html'], '<h1>Product</h1>')
+        self.assertEqual(payload['requirements'], json.loads(agent.requirements.batch_prompt(agent.requirements.nodes)))
+        self.workspace.write_files([{'path': 'backend/server.cjs', 'content': SERVER + '\n// product-specific change'}])
+        changed = json.loads(agent.batch_request(agent.requirements.nodes))
+        self.assertIn('product-specific change', changed['source']['backend/server.cjs'])
+
     def test_small_existing_source_supports_one_verified_edit_without_exposing_state(self):
         self.workspace.write_files(GREETING_FILES + [
             {'path': 'theme.css', 'content': '/* preserve this unrelated source */'},

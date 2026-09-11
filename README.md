@@ -19,7 +19,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev12**, uses a data-only UI contract and
+The current development candidate, **0.7.0.dev13**, uses a data-only UI contract and
 harness-owned checking code. Arbitrary generated acceptance scripts introduced runtime
 and shared-test-data errors in dev8/dev10, so that path and its parser dependencies were
 removed. Fixed checks now cover visible signed-out structure; authored browser tests cover
@@ -32,7 +32,7 @@ Version dev4 already verifies browser checks and serves the same app on both obs
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
 documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-All 58 local checks pass, including real HTTP incremental edits and repair, fixed-check enforcement and recovery, reference routing and cache
+All 59 local checks pass, including real HTTP incremental edits and repair, fixed-check enforcement and recovery, reference routing and cache
 invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
@@ -87,6 +87,8 @@ are not an OS-level sandbox for subprocesses.
   instructions, with a forced `patch_and_verify` call for the complete change. Edits
   are validated together before any write; failures can enter the normal repair loop. Runtime state,
   credentials and protected files are excluded; larger source sets use normal file tools.
+  Known runtime boilerplate is omitted only after an exact-byte comparison; custom runtime
+  edits remain visible. The full requirement data stays intact in compact serialization.
 - Small-app runtime scaffolding supplies only build, HTTP serving and browser-test lifecycle.
   Product markup, behavior, API logic and test assertions remain model-generated.
 - DeepSeek thinking/tool message continuity and explicit usage accounting.

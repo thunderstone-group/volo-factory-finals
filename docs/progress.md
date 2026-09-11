@@ -160,3 +160,16 @@ each rule snapshot and experiment with date and source.
 - Individual-source retrieval now avoids full artifacts for small diagnostic files.
   Read-only polling tolerates bounded transient transport failures. Platform archive
   deployment still intermittently fails, while successful starts reach model execution.
+
+## 2026-09-12 (Asia/Taipei) — Reduce the acceptance layer after real failures
+
+- Immutable model-generated test programs introduced undefined variables and shared
+  account fixtures. Removed that design and its temporary parser dependencies. Fixed
+  checks now use literal UI contracts and harness-owned code; stateful scenarios remain
+  real implementation-authored browser tests plus the separate official evaluator.
+- A real Chrome probe confirms that missing native label association fails and a
+  proper label repairs it. Dev12's Pro run is the next formal Ticket validation.
+- Dev11 passes both Evolution tasks again. One-call verified edits reduce selected
+  combined cost from CNY 0.056842 to CNY 0.030432 and average runtime from 15 to six
+  seconds. Rank remains second behind CNY 0.018816. Dev13 trims byte-identical runtime
+  source and repeated edit context; 59 local checks pass, with live cost verification pending.

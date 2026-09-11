@@ -536,3 +536,16 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   check kinds after adding the actual label. This checks the execution boundary, not
   model extraction quality. Stateful application tests and official evaluation remain
   separate requirements.
+
+## E026 — Data-only UI contract and further incremental cost reduction
+
+- Source `ef32e17`, dev12, submission `d3ecf23b5d36`, matching ZIP SHA-256
+  `8cb99941caadb1f93689d8e878afc0da6bd8a47308457ed9e1739757845a6909`.
+  https://arc-bench.com/runs/d07b379f9662 starts with DeepSeek V4 Pro. Outcome pending.
+- Dev13 removes unchanged runtime boilerplate from small incremental requests only
+  after exact-byte comparison with this agent's static server, build and browser helper.
+  Any custom edit remains in context. Full requirement data is retained using compact
+  JSON; the prompt asks for short unique edit anchors and reuse of existing assertions.
+- All **59 local checks pass** in 25.887 seconds. The added check proves that changing
+  a known runtime file makes its full source visible again and that requirement data is
+  unchanged. Actual incremental token cost is the next gate.
