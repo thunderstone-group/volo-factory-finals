@@ -193,3 +193,19 @@ each rule snapshot and experiment with date and source.
   retry deploys successfully but exhausts 302,864 observed tokens before writing tests.
   Chunk reads work; excessive source rereads remain. Keep the ZIP unchanged for a Qwen
   model comparison. Best official Ticket accuracy from this fresh agent is still 50%.
+
+## 2026-09-12 (Asia/Taipei) — Remove the misleading intermediate UI constraints
+
+- Qwen reveals a JSON/tool-call mismatch; a narrow parser fix works in a real run.
+  Its next run reaches app/test generation, but discovery excludes its chosen test
+  framework and the run exhausts its budget before execution.
+- Dev19 triggers authored test entrypoints by filename and retains a larger context.
+  Two missing-archive failures recover after saving the byte-identical package under a
+  fresh submission. Later Qwen and Pro requests stall; incomplete usage remains unknown.
+- Pro's generated app also exposes a deeper design failure: the extra UI planner turns
+  one required agreement checkbox with alternative names into two required controls.
+  Offline public tests fail on that exact duplicate interaction.
+- Dev20 removes the planning call, associated tools/module and five component-specific
+  tests. Original requirements, observed references, actual build/start/check execution,
+  incremental edits and trace integrity remain. All 61 remaining checks pass; an official
+  dev20 Pro run is underway. No improved Ticket score is claimed yet.

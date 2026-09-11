@@ -158,3 +158,20 @@ across forced context pressure, retained real-response protocol fields, raw-hist
 preservation and exact below-limit prompts. Corpus inspection also exposed and fixed
 ancestor-container dependency expansion (see `corpus.md`). Neither the new context
 policy nor its effect on model quality/cost has yet been evaluated on the official gateway.
+
+## Decisions from later real runs
+
+- Keep one execution core, exact raw traces and protocol-preserving context projection.
+  E025–E031 validate one-call incremental edits; dev16 returns Evolution to first.
+- Keep execution as a completion gate and trigger authored test entries immediately.
+  E034 shows that source-string framework detection can suppress the first verification;
+  filename-based entrypoint discovery avoids that silent omission.
+- Remove the additional model-created UI contract. Separate generation did not make
+  its interpretation independent of model errors: E036 changed an alternative name
+  requirement into two controls and caused the implementation to reproduce that mistake.
+  Dev20 passes original requirements and image observations directly to the coding agent.
+- Generated tests remain repair feedback. Before promoting another generated test layer
+  to a completion gate, establish its accuracy against an independent reference or known
+  correct implementation. A second model call alone does not establish that accuracy.
+- Keep the failed designs, exact source revisions and measured outcomes in Git and
+  `experiments.md`; do not preserve an unused layer merely because it has passing unit tests.
