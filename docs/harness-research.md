@@ -175,3 +175,10 @@ policy nor its effect on model quality/cost has yet been evaluated on the offici
   correct implementation. A second model call alone does not establish that accuracy.
 - Keep the failed designs, exact source revisions and measured outcomes in Git and
   `experiments.md`; do not preserve an unused layer merely because it has passing unit tests.
+- E038 tests source review without evaluator input. Two reviews truncate, and the one
+  completed structured response misses both reproduced semantic defects. Keep the
+  single implementation/check loop; reviewer independence must be measured, not assumed.
+- Provider controls need model-specific documentation and real request evidence.
+  Kimi K3 always reasons and defaults to maximum effort; dev22 uses its supported
+  low setting. E040 reaches execution but still fails before official evaluation, so
+  improved output completion does not establish implementation quality or lower winning cost.

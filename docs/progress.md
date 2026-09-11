@@ -209,3 +209,19 @@ each rule snapshot and experiment with date and source.
   tests. Original requirements, observed references, actual build/start/check execution,
   incremental edits and trace integrity remain. All 61 remaining checks pass; an official
   dev20 Pro run is underway. No improved Ticket score is claimed yet.
+
+## 2026-09-12 (Asia/Taipei) — Separate semantic quality from delivery overhead
+
+- E037 completes real verification and repair but scores 3/10 officially. Its local
+  public-test replay improves from 5/10 to 10/10 with diagnostic-only meter/alert
+  markup fixes. The manually repaired application is never uploaded.
+- Source-review probes do not reliably identify those omissions, so no reviewer is
+  added. Instructions become explicit about semantic controls and negative-form checks.
+- Kimi K3 requires documented low-effort control; it cannot disable reasoning. A real
+  low-effort run reaches checks but fails before evaluation at CNY 5.714784. Pro's
+  same-package run also reaches browser checks, then exhausts its budget at CNY 1.200237.
+  Both official token totals match the captured responses in these two runs.
+- Dev23 reuses the existing generic build/server/browser lifecycle for bounded new
+  applications. The model still generates all product logic, UI and assertions. This
+  addresses repeated boilerplate/serialization/build overhead with one existing path,
+  while preserving the frozen Smoke/Evolution winners and avoiding another planning layer.

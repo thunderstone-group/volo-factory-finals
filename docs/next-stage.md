@@ -9,7 +9,8 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    **Passed with v0.6.0:** both tasks passed 2/2 official tests. The refreshed September
    12 board returns to **rank 1 with dev16 / Qwen3.6 Flash**: 4/4, CNY 0.017810,
    seven seconds average. Source is frozen under `v0.7.0-dev16`.
-2. **Stateful application:** complete all currently published Ticket Booking tests.
+2. **Stateful application:** reach first place on the published Ticket Booking board,
+   reporting the actual pass rate and remaining failures even if rank 1 is below 10/10.
    Independently check server-side validation, persistence after restart, session
    invalidation and duplicate-account handling described by the requirements.
    **Current evidence:** E020 reads all three image references successfully, passes
@@ -17,9 +18,14 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    still omit the same visual detail. Generated fixed scripts introduced runtime and
    shared-data errors; their data-only replacement still misinterpreted alternatives as
    extra controls. Dev20 removes that extra planning call and returns implementation and
-   checks to the complete original inputs. Dev19 executes authored test entrypoints as
-   soon as written and retains a larger source context; validate this smaller pipeline
-   with the real gateway and official tests before broadening the architecture.
+   checks to the complete original inputs. E037 completes verification and repair but
+   scores 3/10 officially; its local 5/10 replay becomes 10/10 after diagnostic-only
+   meter/alert markup changes. Read-only reviewer probes miss those gaps, so no review
+   layer is added. Dev21 makes these semantics explicit; dev22 uses Kimi's documented
+   low effort. Kimi then reaches self-checks but exhausts its budget at 11/28, before
+   official evaluation. Pro also reaches browser checks but exhausts its budget before
+   completing repair. Dev23 applies the already-tested generic runtime to bounded new
+   apps, removing generated boilerplate; a real Ticket run is the next quality measurement.
    Official page crashes
    and timeouts did not reproduce locally; their exact cause remains unconfirmed.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.

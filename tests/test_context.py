@@ -90,6 +90,7 @@ class ContextTests(unittest.TestCase):
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "Node and npm required")
 class ContextRepairTests(TempCase):
     def test_authored_test_bundle_runs_before_another_model_call(self):
+        self.workspace.write_files([{'path': 'README.md', 'content': 'An existing application.'}])
         (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
             '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
         files = copy.deepcopy(GREETING_FILES)
@@ -126,6 +127,7 @@ class ContextRepairTests(TempCase):
         self.assertLessEqual(size(gateway.requests[1]['messages']), 16000)
 
     def test_bounded_feature_uses_full_tools_without_long_reasoning(self):
+        self.workspace.write_files([{'path': 'README.md', 'content': 'An existing application.'}])
         (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
             '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
         answer = response([('deliver', {'files': GREETING_FILES,
@@ -140,6 +142,34 @@ class ContextRepairTests(TempCase):
         self.assertNotIn('tool_choice', gateway.requests[0])
         self.assertIn('deliver', [t['function']['name'] for t in gateway.requests[0]['tools']])
         self.assertNotIn('build_app', [t['function']['name'] for t in gateway.requests[0]['tools']])
+
+    def test_bounded_new_app_uses_runtime_for_routes_and_stateful_api(self):
+        (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
+            '    description: Serve a routed greeting and incrementing API. ' + 'Additional context. ' * 250 + '\n')
+        api = """let count=0;module.exports=async(req,res)=>{
+if(req.url!='/api/count')return false;
+if(req.method==='POST')count++;
+res.setHeader('content-type','application/json');res.end(JSON.stringify({count}));return true;};"""
+        checks = """const {test}=require('node:test');const assert=require('node:assert/strict');
+test('routed document and real state transitions',async()=>{
+const base=process.env.FACTORY_BASE_URL;
+assert.equal(await(await fetch(base+'/details')).text(),'<h1>hello</h1>');
+const first=await(await fetch(base+'/api/count')).json();
+await fetch(base+'/api/count',{method:'POST'});
+const next=await(await fetch(base+'/api/count')).json();assert.equal(next.count,first.count+1);
+assert.equal((await fetch(base+'/api/missing')).status,404);
+});"""
+        with FakeGateway([response([('build_app', {'index_html': '<h1>hello</h1>',
+                'checks_js': checks, 'api_js': api})])]) as gateway:
+            agent = Agent(RequirementSet.load(self.req),
+                Model(gateway.url, 'synthetic-test-key', 'deepseek-v4-pro', self.trace),
+                self.workspace, Runtime(self.trace))
+            result = agent.run()
+        self.assertEqual(result['status'], 'completed')
+        self.assertEqual(len(gateway.requests), 1)
+        self.assertEqual(gateway.requests[0]['tool_choice']['function']['name'], 'build_app')
+        self.assertEqual((self.out / 'backend/server.cjs').read_text(), SERVER)
+        self.assertTrue(self.workspace.last_verification['passed'])
 
     def test_compact_context_omits_only_byte_identical_known_runtime(self):
         scaffold(self.workspace)

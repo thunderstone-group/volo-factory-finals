@@ -862,3 +862,28 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - Do not increase Kimi's budget for another expensive retry. Compare the same dev22
   package with Pro, whose earlier E037 app reached all self-checks and whose two
   locally reproduced semantic gaps are now explicitly covered by the instructions.
+
+## E041 — Boilerplate and repair consume the Pro budget
+
+- Same dev22 source and exact ZIP as E040; Pro submission `1206d072c6bc`.
+  https://arc-bench.com/runs/414be7cdfa56 completes in **289 seconds, 308,563 tokens,
+  CNY 1.200237**, failing before official evaluation. Captured response usage equals
+  the official token count. No official tests execute.
+- Two initial backend bundles contain invalid JSON backslash escapes in JavaScript
+  regular expressions. Both are rejected without writes; the model eventually recovers
+  with smaller files. Frontend build then exposes a CommonJS/ES-module mismatch,
+  which the agent repairs. These steps consume generation budget before UI verification.
+- All 11 HTTP checks pass. Three browser checks fail on duplicate registration links,
+  hidden error feedback and duplicate username text. An app edit follows, but the next
+  budget guard stops execution before another verification. The original source also
+  uses presentation-only strength markup despite explicit semantic instructions.
+- Dev23 reuses the existing task-independent runtime for new apps with at most three
+  features and 16,000 requirement characters. The model supplies only inline product
+  UI, optional API logic and executable assertions through `build_app`; actual build,
+  startup, checks and repair remain mandatory. Existing-project and small-task behavior
+  stay on their prior paths. No application, evaluator or learned test data is packaged.
+- The bounded builder receives concise routing, state, accessible-control and negative-case
+  instructions. Invalid JSON remains rejected; no heuristic argument-repair parser is added.
+- All **63 local checks pass** in 30.387 seconds, including a bounded new app that
+  serves extensionless routes and real API state transitions through the unchanged runtime.
+  Dev23 ZIP SHA-256: `20a0b78badd5666df5a60247113fdf025f47cf99b4a0b3f85d4ef6f0e3f9ccc6`.

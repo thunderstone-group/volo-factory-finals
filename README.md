@@ -22,7 +22,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev22**, removes the extra UI-planning call.
+The current development candidate, **0.7.0.dev23**, removes the extra UI-planning call.
 That layer repeatedly turned alternative names into additional required controls, and
 its outputs became incorrect constraints on implementation. The coding agent now derives
 its app and executable checks directly from the complete requirements and observed images.
@@ -34,6 +34,12 @@ officially. A diagnostic replay narrows its local failures to missing meter/aler
 Independent source-review probes do not reliably identify those known gaps, so no review
 phase is added. Dev21 makes semantic markup and the corresponding browser assertions
 explicit in the coding instructions; a fresh model run must establish its effect.
+Dev22 also applies Kimi K3's documented low-effort control. Its first full coding run
+reaches execution but exhausts its budget after 11/28 self-checks, before official
+evaluation. Pro also exhausts its budget after reaching browser checks. Dev23 reuses
+the existing generic runtime for bounded new apps, so the model writes product UI,
+API logic and assertions without regenerating build/server/test-lifecycle boilerplate.
+Its quality on Ticket still requires a fresh official run.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and
@@ -92,6 +98,9 @@ are not an OS-level sandbox for subprocesses.
   fail visibly instead of silently suppressing verification.
 - Small empty projects use one initial bundle-delivery call, then real verification;
   failed deliveries enter the full repair loop.
+- New applications up to three features and 16,000 requirement characters use that
+  same runtime with concise stateful/routing/semantic guidance. The model supplies the
+  complete product and tests; the runtime supplies no task-specific implementation.
 - Small existing projects receive a bounded snapshot of product code and concise edit
   instructions, with a forced `patch_and_verify` call for the complete change. Edits
   are validated together before any write; failures can enter the normal repair loop. Runtime state,
