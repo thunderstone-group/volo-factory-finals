@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+import http.client
 import http.cookiejar
 import http.server
 import json
@@ -173,7 +174,7 @@ class Client:
                 message = error.reason
             raise APIError(self.safe(str(message)), status=error.code, method=method, path=path,
                            uncertain=method not in ("GET", "HEAD") and (error.code >= 500 or error.code == 408)) from None
-        except (OSError, urllib.error.URLError) as error:
+        except (OSError, urllib.error.URLError, http.client.HTTPException) as error:
             raise APIError(self.safe(str(error)), method=method, path=path,
                            uncertain=method not in ("GET", "HEAD")) from None
         if binary:
@@ -452,9 +453,23 @@ def main(argv=None):
         elif args.command == "wait":
             if args.interval <= 0 or args.timeout <= 0:
                 raise ValueError("Wait timeout and interval must be positive")
-            deadline, previous = time.monotonic() + args.timeout, None
+            deadline, previous, failures = time.monotonic() + args.timeout, None, 0
             while True:
-                result = client.request("GET", "/runs/" + identifier(args.run))
+                try:
+                    result = client.request("GET", "/runs/" + identifier(args.run))
+                except APIError as error:
+                    failures += 1
+                    status = error.details['http_status']
+                    if failures >= 3 or status is not None and status < 500:
+                        raise
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        emit(client, {"run_id": args.run, "waiting_timed_out": True, "run_cancelled": False})
+                        return 2
+                    emit(client, {"run_id": args.run, "waiting_retry": failures, **error.details})
+                    time.sleep(min(args.interval, remaining))
+                    continue
+                failures = 0
                 summary = run_summary(result)
                 signature = json.dumps({k: v for k, v in summary.items() if k != "updated_at"}, sort_keys=True)
                 if signature != previous:

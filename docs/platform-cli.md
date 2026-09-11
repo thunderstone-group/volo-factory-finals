@@ -61,6 +61,13 @@ It exits 0 on PASSED, 1 on failure/cancellation/pause, and 2 when the local wait
 deadline expires. Timing out the wait does not cancel the remote run.
 Archive downloads refuse to overwrite an existing local file.
 
+During an observed status poll, the server closed after 993 bytes with 1,010 bytes
+still expected. The client now reports incomplete HTTP bodies as transport failures.
+`wait` tolerates up to two consecutive transport/5xx failures within its deadline,
+then performs a fresh read. It never treats a partial response as a run result or
+retries a mutation. Two actual local HTTP truncation regressions cover these boundaries;
+all 15 CLI checks pass after the change. The uploaded agent archive is unaffected.
+
 ## Authentication
 
 The existing authorized Chrome session was imported once. Future CLI requests use

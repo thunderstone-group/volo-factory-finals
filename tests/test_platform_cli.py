@@ -29,6 +29,7 @@ class Website:
         self.mismatch = False
         self.redirect = None
         self.run_states = ["PASSED"]
+        self.truncate_responses = 0
         owner = self
         class Handler(BaseHTTPRequestHandler):
             def serve(self):
@@ -79,10 +80,15 @@ class Website:
                 body = result if isinstance(result, bytes) else json.dumps(result).encode()
                 self.send_response(status)
                 self.send_header("Content-Type", mime)
-                self.send_header("Content-Length", str(len(body)))
+                truncated = owner.truncate_responses > 0
+                if truncated:
+                    owner.truncate_responses -= 1
+                self.send_header("Content-Length", str(len(body) + (100 if truncated else 0)))
                 self.send_header("Set-Cookie", "arc_api_sticky=synthetic-route; Path=/; HttpOnly")
                 self.end_headers()
                 self.wfile.write(body)
+                if truncated:
+                    self.close_connection = True
 
             do_GET = do_POST = serve
 
@@ -146,6 +152,30 @@ class PlatformTests(unittest.TestCase):
             self.assertIn("arc_api_sticky=synthetic-route", posts[0]["cookie"])
             self.assertIn("arcbench_session=synthetic-session-secret", posts[0]["cookie"])
         self.assertEqual(stat.S_IMODE(self.session.stat().st_mode), 0o600)
+
+    def test_wait_recovers_one_incomplete_read_without_mutating_the_run(self):
+        with Website() as server:
+            self.client(server)
+            server.truncate_responses = 1
+            output = io.StringIO()
+            with redirect_stdout(output):
+                code = main(['--origin', server.origin, '--session', str(self.session),
+                             'wait', 'run-1', '--interval', '0.01', '--timeout', '2'])
+            self.assertEqual(code, 0)
+            rows = [json.loads(line) for line in output.getvalue().splitlines()]
+            self.assertEqual(rows[0]['waiting_retry'], 1)
+            self.assertEqual(rows[-1]['status'], 'PASSED')
+            self.assertTrue(all(r['method'] == 'GET' for r in server.requests))
+            self.assertEqual(sum(r['path'] == '/api/runs/run-1' for r in server.requests), 2)
+
+    def test_incomplete_mutation_response_is_uncertain_and_never_retried(self):
+        with Website() as server:
+            client = self.client(server)
+            server.truncate_responses = 1
+            with self.assertRaises(APIError) as caught:
+                client.request('POST', '/runs/run-1/start')
+            self.assertTrue(caught.exception.details['outcome_uncertain'])
+            self.assertEqual(sum(r['method'] == 'POST' for r in server.requests), 1)
 
     def test_meter_uses_separate_auth_route_and_preserves_decimal_balance(self):
         # Endpoint/field shapes verified against the live meter; amounts are synthetic.
