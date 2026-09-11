@@ -19,7 +19,8 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev14**, uses a data-only UI training contract and
+The current development candidate, **0.7.0.dev15**, runs authored Node test bundles as
+soon as the application and test files are present. It uses a data-only UI training contract and
 harness-owned checking code. Arbitrary generated acceptance scripts introduced runtime
 and shared-test-data errors in dev8/dev10, so that path and its parser dependencies were
 removed. Training checks now cover visible signed-out structure; authored browser tests cover
@@ -32,7 +33,7 @@ Version dev4 already verifies browser checks and serves the same app on both obs
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
 documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-All 62 local checks pass, including real HTTP incremental edits and repair, training-contract revision and recovery, reference routing and cache
+All 63 local checks pass, including real HTTP incremental edits and repair, training-contract revision and recovery, reference routing and cache
 invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
@@ -81,6 +82,8 @@ are not an OS-level sandbox for subprocesses.
 
 - Dependency-ordered requirement batches and existing-project preservation.
 - Batched file edits, bounded commands, build/start/behavioral-check verification, repair loop.
+- Writing a complete authored Node test bundle triggers real verification immediately,
+  preventing source rereads from consuming the budget before the first execution.
 - Small empty projects use one initial bundle-delivery call, then real verification;
   failed deliveries enter the full repair loop.
 - Small existing projects receive a bounded snapshot of product code and concise edit
@@ -120,7 +123,7 @@ are not an OS-level sandbox for subprocesses.
   Retained reasoning fields stay intact; raw trace
   evidence is preserved. The 60,000-character limit is not a provider token estimate.
 - Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
-- Default caps: 32 attempted requests, 150,000 observed tokens, 1,200 seconds and
+- Default caps: 32 attempted requests, 300,000 observed tokens, 1,200 seconds and
   16,384 output tokens per coding request. Environment overrides use `FACTORY_MAX_CALLS`,
   `FACTORY_TOKEN_BUDGET`, `FACTORY_TIMEOUT`, `FACTORY_MAX_OUTPUT_TOKENS`.
 - The observed token cap is checked between responses; an in-flight response can

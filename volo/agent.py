@@ -69,6 +69,9 @@ The official evaluator remains separate and read-only. Do not inspect or modify 
 spoof usage, or add meaningless model calls to improve leaderboard arithmetic.
 
 Tools execute sequentially in listed order, so you may batch write_files and finish in one reply.
+When write_files includes authored Node behavioral tests and both app manifests exist, the
+harness immediately executes the discovered test bundle. A passing bundle can complete the
+batch; write those checks for the full current requirement set, and use failures for repair.
 finish performs dependency installation, frontend build, server startup and your behavioral
 check command. Only a successful real verification completes a batch. If it fails, read its
 error and make a narrow repair. Avoid repeated full rewrites. run uses argv, not shell syntax.
@@ -164,7 +167,7 @@ TOOLS = [
 
 class Agent:
     def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
-                 token_budget=150000, max_context_chars=60000, references=None, acceptance=None):
+                 token_budget=300000, max_context_chars=60000, references=None, acceptance=None):
         self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
@@ -242,6 +245,15 @@ class Agent:
             self.acceptance_context = self.acceptance.revise(self.acceptance_context, **args)
             return {'pages': self.acceptance_context['pages'], 'reason': args['reason'],
                     'next': 'The corrected training contract supersedes its earlier version. Implement and verify the full requirements.'}
+        if name == 'write_files':
+            result = self.workspace.write_files(**args)
+            command = self.workspace.discovered_check_command()
+            if command and any(path in command for path in result['written']):
+                self.trace.event('authored_test_bundle_ready', check_command=command)
+                result.update(self.workspace.verify(command))
+                if result['passed']:
+                    self.check_command = command
+            return result
         if name == 'patch_and_verify':
             edits = args['edits']
             if not isinstance(edits, list) or not 1 <= len(edits) <= 20:
@@ -408,7 +420,7 @@ class Agent:
                     args = json.loads(call.get("function", {}).get("arguments", "{}"))
                     self.trace.event("tool_start", tool=name, arguments=args)
                     result = self.dispatch(name, args)
-                    if name in ("finish", "deliver", "build_app", "patch_and_verify") and result.get("passed"):
+                    if name in ("finish", "deliver", "build_app", "patch_and_verify", "write_files") and result.get("passed"):
                         finished = True
                     elif name in ("write_files", "edit", "run"):
                         finished = False  # Changes after finish invalidate its acceptance.

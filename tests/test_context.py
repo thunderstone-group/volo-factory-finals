@@ -89,6 +89,23 @@ class ContextTests(unittest.TestCase):
 
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "Node and npm required")
 class ContextRepairTests(TempCase):
+    def test_authored_test_bundle_runs_before_another_model_call(self):
+        (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
+            '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
+        files = copy.deepcopy(GREETING_FILES)
+        files[-1] = {'path': 'checks/greeting.test.cjs', 'content':
+            "const {test}=require('node:test');const assert=require('node:assert/strict');"
+            "test('visible greeting',async()=>{assert.equal(await (await fetch(process.env.FACTORY_BASE_URL)).text(),'hello')});"}
+        with FakeGateway([response([('write_files', {'files': files})])]) as gateway:
+            agent = Agent(RequirementSet.load(self.req),
+                Model(gateway.url, 'synthetic-test-key', 'deepseek-v4-pro', self.trace),
+                self.workspace, Runtime(self.trace))
+            result = agent.run()
+        self.assertEqual(result['status'], 'completed')
+        self.assertEqual(len(gateway.requests), 1)
+        self.assertEqual(agent.check_command, ['node', '--test', 'checks/greeting.test.cjs'])
+        self.assertTrue(self.workspace.last_verification['passed'])
+
     def test_successful_read_survives_an_oversized_reasoning_exchange(self):
         self.workspace.write_files([{'path': 'context-only.txt', 'content': 'IMPORTANT_READ_MARKER'}])
         read = response([('read_files', {'paths': ['context-only.txt']})])

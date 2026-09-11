@@ -223,6 +223,26 @@ class Workspace:
                 checks.append(['node', relative])
         return checks
 
+    def discovered_check_command(self):
+        """Recognize authored Node test bundles once the application contract exists."""
+        for directory, script in [('frontend', 'build'), ('backend', 'start')]:
+            try:
+                package = json.loads((self.root / directory / 'package.json').read_text())
+                if not isinstance(package.get('scripts', {}).get(script), str):
+                    return None
+            except (OSError, ValueError, AttributeError):
+                return None
+        checks = []
+        for path in self.files():
+            name = str(path.relative_to(self.root))
+            if (not name.startswith('checks/') or path.suffix not in ('.js', '.cjs', '.mjs')
+                    or not any(marker in path.name for marker in ('.test.', '.spec.'))):
+                continue
+            source = path.read_text(errors='replace')
+            if 'node:test' in source and '@playwright/test' not in source:
+                checks.append(name)
+        return ['node', '--test', *checks] if checks else None
+
     def verify(self, check_command):
         """Verify the actual current tree, never a model's claimed test result."""
         if not isinstance(check_command, list) or len(check_command) < 2:

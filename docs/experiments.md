@@ -559,7 +559,7 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   a known runtime file makes its full source visible again and that requirement data is
   unchanged. Actual incremental token cost is the next gate.
 
-## E027 preparation — Preserve successful reads and correct training metadata
+## Dev14 preparation — Preserve successful reads and correct training metadata
 
 - Dev14 retains a bounded last-tool result in workspace checkpoints, including successful
   reads whose full reasoning/tool exchange cannot fit. A real HTTP repair test exercises
@@ -576,3 +576,46 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - All **62 local checks pass** in 27.639 seconds, including verified full-tool delivery
   under the bounded-batch policy, read retention, contract correction/history/cache
   invalidation, and all earlier protocol/runtime checks.
+
+## E027 — Less input, but replacement output still varies
+
+- Source `93b68dd`, dev13, submission `55d9bdbc12a0`, matching ZIP SHA-256
+  `9ea80fca20fa164069fed9ce14f75310a4ae42272285240c649b2c52a590b20d`.
+- Counter https://arc-bench.com/runs/b0728ec24122 passes **2/2**, five seconds,
+  2,369 tokens, CNY 0.010731. Dice https://arc-bench.com/runs/5ea2fa99d86c passes
+  **2/2**, eight seconds, 2,922 tokens, CNY 0.016560. Both use one model call.
+- The board selects this complete submission at **CNY 0.027291**, rank 2. It does not
+  combine this Counter with the lower-cost Dice from dev11. Repeated source input fell,
+  but Dice replacement output grew; input reduction alone does not guarantee lower cost.
+
+## E028 — Code generation progresses, but first verification still starts too late
+
+- Source `ba8b56e`, dev14, submission `7d0e5f1f2434`, matching ZIP SHA-256
+  `bf9962042a9758643796e265988791b5c5c4292da915284f968c88dde4e93ea1`.
+- https://arc-bench.com/runs/1e3ae0daa6fe generates all application and authored test
+  files, then rereads source until the 150,000-token cap. No tests are reached.
+  Official result: 226 seconds, **153,149 tokens, CNY 1.286309**.
+- Non-thinking Pro calls avoid the earlier reasoning loop. The main implementation
+  response takes 83.534 seconds / 17,315 tokens, followed by two edits and a 35.464-second
+  test-writing response. Tests exist at 217.58 seconds, but three further source reads
+  consume the remaining budget before a finish call.
+- Dev15 recognizes authored `node:test` files under `checks/` once frontend build and
+  backend start manifests exist. Writing that bundle immediately executes verification;
+  a passing current tree can complete the batch. The observed-token cap becomes 300,000
+  to leave room for actual repair. All **63 local checks pass** in 29.387 seconds,
+  including a real HTTP app accepted after one test-writing response and no extra model call.
+
+## E029 — Qwen is available, but default thinking and command shape increase cost
+
+- The authenticated platform price table reports Qwen3.6 Flash at CNY 1.2 input / 7.2
+  output per million tokens, versus DeepSeek Flash at 3 / 9. Saved a dated price snapshot.
+- Run https://arc-bench.com/runs/aa3708303f7f uses the unchanged dev14 ZIP with
+  `qwen3.6-flash`, submission `811cf91a1dfb`. Counter passes **2/2**, 63 seconds,
+  72,502 tokens and CNY 0.148940. No rank improvement is claimed.
+- The first response includes 3,844 reasoning tokens and sends `check_command` as one
+  string inside an array. Edits are already applied when command validation rejects it;
+  retries then reuse stale old text. This explains the extra repair calls.
+- Alibaba's [official thinking documentation](https://www.alibabacloud.com/help/en/model-studio/deep-thinking)
+  confirms Qwen3.6 defaults to thinking and uses the top-level `enable_thinking` parameter
+  in raw OpenAI-compatible JSON. Provider control and pre-write command validation need
+  a fresh real run before the lower price can be treated as an efficiency advantage.
