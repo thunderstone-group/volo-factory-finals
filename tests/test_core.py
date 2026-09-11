@@ -48,6 +48,27 @@ class TempCase(unittest.TestCase):
 
 
 class RequirementsTests(TempCase):
+    def test_ancestor_reference_keeps_context_without_creating_a_self_cycle(self):
+        # Synthetic minimal reproduction of two provided corpus tree patterns.
+        (self.req / 'requirements.yaml').write_text('''id: ROOT
+children:
+  - id: MODULE
+    dependencies: [FOUNDATION]
+    children:
+      - id: DETAIL
+        dependencies: [MODULE]
+        children:
+          - id: OPEN
+            dependencies: [LIST]
+      - id: LIST
+  - id: FOUNDATION
+''')
+        requirements = RequirementSet.load(self.req)
+        self.assertEqual([n['id'] for n in requirements.nodes], ['FOUNDATION', 'LIST', 'OPEN'])
+        payload = json.loads(requirements.batch_prompt([requirements.nodes[-1]]))
+        detail = next(n for n in payload['inherited_constraints'] if n['id'] == 'DETAIL')
+        self.assertEqual(detail['dependencies'], ['MODULE'])
+
     def test_parent_folder_constraints_reach_the_model(self):
         (self.req / 'requirements.yaml').write_text('''id: ROOT
 children:
@@ -73,6 +94,7 @@ children:
 
     def test_cycles_and_unknown_dependencies_fail_before_generation(self):
         for data in (
+            "id: ROOT\nchildren: [{id: R1, dependencies: [R1]}]",
             "id: ROOT\nchildren: [{id: R1, dependencies: [R2]}, {id: R2, dependencies: [R1]}]",
             "id: ROOT\nchildren: [{id: R1, dependencies: [missing]}]",
             "id: ROOT\nchildren: [{id: R1}, {id: R1}]",
@@ -236,6 +258,8 @@ test('server serves generated page despite empty optional API',async()=>{
         result = self.workspace.verify(["node", "checks/greeting.cjs"])
         self.assertFalse(result["passed"])
         self.assertIsNone(self.workspace.last_verification)
+        self.assertEqual(self.workspace.last_verification_attempt, result)
+        self.assertEqual(result["source_fingerprint"], self.workspace.fingerprint())
 
     def test_model_tool_loop_repairs_failure_then_resumes_without_model_call(self):
         initial = response([("build_app", {"index_html": "wrong",

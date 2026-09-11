@@ -56,6 +56,7 @@ class Workspace:
         self.trace, self.deadline = trace, deadline
         self.counter = 0
         self.last_verification = None
+        self.last_verification_attempt = None
         self.root.mkdir(parents=True, exist_ok=True)
         self.node_available = bool(shutil.which("node"))
         self.browser = discover_playwright(self.root)
@@ -216,9 +217,10 @@ class Workspace:
         self.last_verification = None
         steps = []
         def result(ok, **extra):
-            value = {"passed": ok, "steps": steps, "official_evaluation": "pending", **extra}
+            value = {"passed": ok, "steps": steps, "check_command": check_command,
+                     "source_fingerprint": self.fingerprint(), "official_evaluation": "pending", **extra}
+            self.last_verification_attempt = value
             if ok:
-                value["source_fingerprint"] = self.fingerprint()
                 self.last_verification = value
             atomic_json(self.trace.directory / "verification.json", value)
             self.trace.event("verification", **value)

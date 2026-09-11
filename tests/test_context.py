@@ -1,0 +1,122 @@
+"""Context invariants and repair under pressure; not model-quality evidence."""
+import copy
+import json
+import shutil
+import unittest
+
+from volo.agent import Agent
+from volo.context import exchanges, project, size
+from volo.model import Model
+from volo.requirements import RequirementSet
+from volo.trace import Runtime
+from test_core import FakeGateway, GREETING_FILES, ROOT, TempCase, response
+
+
+PREFIX = [{"role": "system", "content": "Follow the task."},
+          {"role": "user", "content": "Implement required behavior."}]
+
+
+def block(index, *, arguments="{}", output="ok"):
+    call_id = f"call-{index}"
+    return [{"role": "assistant", "content": None, "reasoning_content": f"reasoning-{index}",
+             "tool_calls": [{"id": call_id, "type": "function", "function": {
+                 "name": "run", "arguments": arguments}}]},
+            {"role": "tool", "tool_call_id": call_id, "content": output}]
+
+
+class ContextTests(unittest.TestCase):
+    def test_below_limit_keeps_exact_existing_prompt(self):
+        original = PREFIX + block(1)
+        def unexpected_checkpoint():
+            self.fail("Normal calls must not rebuild their context")
+        view, audit = project(original, 10000, unexpected_checkpoint)
+        self.assertIs(view, original)
+        self.assertIsNone(audit)
+
+    def test_only_old_tool_output_is_pruned_and_history_is_unchanged(self):
+        original = PREFIX + block(0, output="HEAD" + "x" * 25000 + "ERROR-TAIL") + block(1) + block(2)
+        before = copy.deepcopy(original)
+        view, audit = project(original, 6500, lambda: self.fail("Pruning should suffice"))
+        self.assertEqual(original, before)
+        self.assertLessEqual(size(view), 6500)
+        self.assertEqual(view[-4:], original[-4:])
+        self.assertEqual(view[2], original[2])
+        self.assertIn("HEAD", view[3]["content"])
+        self.assertTrue(view[3]["content"].endswith("ERROR-TAIL"))
+        self.assertIn(".factory/events.jsonl", view[3]["content"])
+        self.assertEqual(audit["pruned_tool_call_ids"], ["call-0"])
+
+    def test_checkpoint_retains_complete_real_protocol_exchanges_and_reasoning(self):
+        fixture = json.loads((ROOT / "tests/fixtures/real-deepseek-tool-responses.json").read_text())
+        captured = []
+        for entry in fixture["responses"]:
+            message = copy.deepcopy(entry["choices"][0]["message"])
+            captured.append(message)
+            # Outputs are synthetic; assistant protocol fields come from a real capture.
+            captured.extend({"role": "tool", "tool_call_id": call["id"], "content": "{}"}
+                            for call in message["tool_calls"])
+        anchor = [{"role": "system", "content": "Follow the task."},
+                  {"role": "user", "content": "Current files and failed verification."}]
+        original = PREFIX + block(0, arguments="x" * 25000) + captured
+        before = copy.deepcopy(original)
+        limit = size(anchor + captured)
+        view, audit = project(original, limit, lambda: anchor)
+        self.assertEqual(view, anchor + captured)
+        self.assertEqual(original, before)
+        self.assertEqual(audit["omitted_messages"], 2)
+        self.assertEqual(len(exchanges(view[2:])), 2)
+
+    def test_oversized_latest_exchange_is_omitted_whole(self):
+        original = PREFIX + block(1, arguments="x" * 20000)
+        anchor = PREFIX + [{"role": "user", "content": "Real failure retained in checkpoint"}]
+        view, audit = project(original, 1000, lambda: anchor)
+        self.assertEqual(view, anchor)
+        self.assertEqual(audit["omitted_messages"], 2)
+        self.assertLessEqual(size(view), 1000)
+
+    def test_invalid_pairs_are_rejected_without_fabricating_results(self):
+        pair = block(1)
+        for malformed in ([pair[1]], [pair[0]], [pair[0], {**pair[1], "tool_call_id": "different"}]):
+            with self.subTest(malformed=malformed), self.assertRaises(ValueError):
+                exchanges(malformed)
+
+    def test_oversized_checkpoint_fails_before_sending_an_over_limit_request(self):
+        with self.assertRaisesRegex(ValueError, "checkpoint exceed"):
+            project(PREFIX + block(1, arguments="x" * 10000), 100,
+                    lambda: [{"role": "user", "content": "x" * 101}])
+
+
+@unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "Node and npm required")
+class ContextRepairTests(TempCase):
+    def test_real_failed_check_survives_context_pressure_and_repairs(self):
+        self.workspace.write_files([{"path": "README.md", "content": "An existing application."}])
+        files = copy.deepcopy(GREETING_FILES)
+        files[-1]["content"] = files[-1]["content"].replace("'hello'", "'wrong'")
+        files.append({"path": "fresh.txt", "content": "full-history-marker" + "x" * 60000})
+        check = ["node", "checks/greeting.cjs"]
+        initial = response([("write_files", {"files": files}), ("finish", {"check_command": check})])
+        repair = response([("edit", {"path": "checks/greeting.cjs", "old": "'wrong'", "new": "'hello'"}),
+                           ("finish", {"check_command": check})])
+        for call in repair["choices"][0]["message"]["tool_calls"]:
+            call["id"] = "repair-" + call["id"]
+        with FakeGateway([initial, repair]) as gateway:
+            model = Model(gateway.url, "synthetic-test-key", "synthetic-model", self.trace)
+            agent = Agent(RequirementSet.load(self.req), model, self.workspace, Runtime(self.trace),
+                          max_context_chars=16000)
+            result = agent.run()
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(len(gateway.requests), 2)
+        context = gateway.requests[1]["messages"]
+        self.assertLessEqual(size(context), 16000)
+        self.assertIn('"passed": false', context[1]["content"])
+        self.assertIn("wrong", context[1]["content"])
+        self.assertIn("fresh.txt", context[1]["content"])
+        self.assertIn("REQ-1", context[1]["content"])
+        self.assertNotIn("full-history-marker", json.dumps(context))
+        events = [json.loads(line) for line in self.trace.path.read_text().splitlines()]
+        self.assertTrue(any(event["event"] == "context_projection" for event in events))
+        self.assertTrue(any(event["event"] == "tool_start" and
+                            "full-history-marker" in json.dumps(event) for event in events))
+        outcomes = [event["passed"] for event in events if event["event"] == "verification"]
+        self.assertEqual(outcomes, [False, True])
+        self.assertTrue(self.workspace.last_verification_attempt["passed"])

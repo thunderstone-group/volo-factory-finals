@@ -5,6 +5,7 @@ import json
 import time
 from dataclasses import asdict
 
+from .context import excerpt, project
 from .trace import atomic_json
 from .web_runtime import scaffold, implement
 
@@ -167,17 +168,45 @@ class Agent:
             return result
         return getattr(self.workspace, name)(**args)
 
-    def run_batch(self, nodes):
-        small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
-        self.model.thinking = "disabled" if small else "enabled"
-        self.trace.event("reasoning_policy", small_batch=small, thinking=self.model.thinking)
-        request = ("Implement this requirement batch and preserve existing functionality.\n"
+    def batch_request(self, nodes):
+        return ("Implement this requirement batch and preserve existing functionality.\n"
                    + self.requirements.batch_prompt(nodes)
                    + "\nCurrent application files:\n" + json.dumps(self.workspace.list_files())
                    + "\nRuntime facts (already checked by the harness):\n"
                    + json.dumps({"node_available": self.workspace.node_available, "playwright": self.workspace.browser,
                                  "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
+
+    def context_checkpoint(self, nodes, system, last_failure):
+        attempt = self.workspace.last_verification_attempt
+        verification = None
+        if attempt:
+            verification = {key: attempt[key] for key in
+                ("passed", "error", "check_command", "source_fingerprint", "official_evaluation") if key in attempt}
+            verification["last_step"] = (attempt.get("steps") or [None])[-1]
+            verification["server_output"] = attempt.get("server_output", "")
+        decisions = ""
+        try:
+            with self.workspace.path("DESIGN.md").open() as stream:
+                decisions = stream.read(4001)
+        except (OSError, ValueError):
+            pass
+        request = (self.batch_request(nodes)
+                   + "\nContext checkpoint: older exchanges may be omitted. Continue from current files; "
+                     "inspect relevant source before editing. A previous check is evidence for its "
+                     "recorded source fingerprint, not proof that later edits pass.\n"
+                   + "Latest actual verification attempt:\n" + excerpt(json.dumps(verification, ensure_ascii=False), 6000)
+                   + "\nLatest tool failure:\n" + excerpt(json.dumps(last_failure, ensure_ascii=False), 4000)
+                   + "\nProject decisions from DESIGN.md (bounded excerpt):\n" + decisions
+                   + "\nFull redacted execution evidence: .factory/events.jsonl; command output: .factory/command-*.log")
+        return [{"role": "system", "content": system},
+                {"role": "user", "content": self.trace.redact(request)}]
+
+    def run_batch(self, nodes):
+        small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
+        self.model.thinking = "disabled" if small else "enabled"
+        self.trace.event("reasoning_policy", small_batch=small, thinking=self.model.thinking)
+        request = self.batch_request(nodes)
         direct = small and not self.workspace.list_files()['files']
         compact_attempts = 0
         if direct:
@@ -185,18 +214,15 @@ class Agent:
         messages = [{"role": "system", "content": SMALL_SYSTEM if direct else SYSTEM},
                     {"role": "user", "content": request}]
         no_action = 0
+        last_failure = None
         for _ in range(self.max_calls):
             self.guard_budget()
-            if len(json.dumps(messages, ensure_ascii=False)) > self.max_context_chars:
-                # A new tool-consistent context, grounded in disk, rather than malformed
-                # truncation of reasoning/tool messages required by the provider protocol.
-                self.trace.event("context_reset", reason="context size limit", files=self.workspace.list_files())
-                last = self.workspace.last_verification
-                messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": request
-                            + "\nContinue from files on disk; inspect before editing. Last verification:\n"
-                            + json.dumps(last, ensure_ascii=False)}]
+            model_messages, projection = project(messages, self.max_context_chars,
+                lambda: self.context_checkpoint(nodes, messages[0]["content"], last_failure))
+            if projection:
+                self.trace.event("context_projection", **projection)
             active_tools = [tool for tool in TOOLS if tool['function']['name'] == 'build_app'] if direct else TOOLS
-            message, reason = self.model.complete(messages, active_tools,
+            message, reason = self.model.complete(model_messages, active_tools,
                 remaining_seconds=self.workspace.deadline - time.monotonic(),
                 forced_tool='build_app' if direct else None)
             was_direct = direct
@@ -237,6 +263,9 @@ class Agent:
                     result = {"error": str(exc)}
                     finished = False
                 self.trace.event("tool_result", tool=name, result=result)
+                if (result.get("error") or result.get("passed") is False
+                        or result.get("timed_out") or result.get("exit_code", 0) != 0):
+                    last_failure = {"tool": name, "tool_call_id": call["id"], "result": result}
                 if name in ("finish", "deliver", "build_app", "verify"):
                     print(f"[volo] {name} passed={result.get('passed', False)}", flush=True)
                     if not result.get("passed"):
