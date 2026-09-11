@@ -1068,3 +1068,20 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   No task-specific route, label, business logic or test data is added to the agent.
 - All **73 local checks pass** in 64.800 seconds. Dev29 ZIP SHA-256:
   `c4fe352a3274048e5c77e514c9cdd0edbf423e70ec75acd1d2ae294f85374b14`.
+
+## E049 — Explicit instructions are delivered, but Pro still violates them
+
+- Dev29 source `42391fb`, Pro submission `d302182b0f82`, verified ZIP as E048.
+  The first start response is truncated; fresh status for `a4863336d72f` confirms a
+  missing run-local archive before model execution. One same-submission retry,
+  https://arc-bench.com/runs/aee03e738263, deploys and completes actual generation.
+- The recorded first system message contains both the English-navigation and leaf-value
+  instructions. This rules out a stale uploaded prompt as the cause of their omission.
+- The run repeatedly repairs UI and assertions, eventually reaching **7/7 self-checks**
+  at 253.561 seconds. It still renders the username in both navigation and welcome
+  content, while scoped checks fail to detect the repeated exact value.
+- Official result: **5/10, 254 seconds, 1,843,646 tokens, CNY 1.371819**. Nineteen
+  captured responses total **449,586 tokens**. Four failures explicitly report two
+  matching username elements; the first registration scenario times out.
+- Keep the exact dev29 package for a MiniMax M3 comparison. Repeated Pro results do
+  not justify declaring these interface contracts reliably implemented.

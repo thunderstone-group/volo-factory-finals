@@ -269,3 +269,7 @@ each rule snapshot and experiment with date and source.
   The CLI now supports the same task selector as the website. Current per-task cost sums
   preserve Smoke's CNY 0.016023 and Evolution's CNY 0.017810, below their nearest rival's
   CNY 0.017079 and 0.018816. This comparison is derived; aggregate ranks are unavailable.
+- Dev29's Pro run receives the intended instructions but still duplicates the username,
+  reaching 7/7 scoped self-checks and only 5/10 officially. Its response usage nearly
+  consumes the larger allowance. The next comparison keeps the archive unchanged and
+  switches the coding model to MiniMax M3; no claim about its quality is made before execution.
