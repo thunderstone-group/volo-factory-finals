@@ -74,3 +74,16 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   followed by automatic real verification. If that fails, use the normal repair tool loop.
   Prefer built-in runtime libraries for small feature sets. This changes orchestration,
   not the task solution; all application code still comes from the model and requirements.
+
+## E004 — Complete file delivery
+
+- Source: `9cfb086`, submission `volo-factory-v0.4.0-9cfb086`.
+- Archive SHA-256: `6bf7963dcf86cae3ac1471cffe71307269fef0681cf06159fee4f3d2458276b2`.
+- Counter: https://arc-bench.com/runs/0956c2bdeb3f — **1/1**, 16 seconds, 7,173 gateway tokens,
+  approximately CNY 0.0375. The platform's code/log export was incomplete when inspected,
+  so this record does not assert an exact model-call count.
+- The Counter cost alone approached the observed leader's two-task total. The second
+  task was not run for this revision; the next experiment addresses duplicated runtime code.
+- Next: supply task-independent build, HTTP serving and browser-check lifecycle code.
+  The model still generates all product-specific HTML, JavaScript, optional API logic and assertions.
+  This removes repeated infrastructure generation without embedding a task solution.

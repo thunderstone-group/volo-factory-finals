@@ -224,12 +224,10 @@ class ExecutionTests(TempCase):
         self.assertIsNone(self.workspace.last_verification)
 
     def test_model_tool_loop_repairs_failure_then_resumes_without_model_call(self):
-        broken = [dict(x) for x in GREETING_FILES]
-        broken[3]["content"] = broken[3]["content"].replace("'hello'", "'wrong'")
-        initial = response([("deliver", {"files": broken,
-                            "check_command": ["node", "checks/greeting.cjs"]})])
-        repair = response([("edit", {"path": "backend/server.cjs", "old": "'wrong'", "new": "'hello'"}),
-                           ("finish", {"check_command": ["node", "checks/greeting.cjs"]})])
+        initial = response([("build_app", {"index_html": "wrong", "app_js": "",
+                            "checks_js": GREETING_FILES[-1]['content']})])
+        repair = response([("edit", {"path": "frontend/public/index.html", "old": "wrong", "new": "hello"}),
+                           ("finish", {"check_command": ["node", "--test", "checks/requirements.cjs"]})])
         with FakeGateway([initial, repair]) as server:
             model = Model(server.url, "synthetic-test-key", "synthetic-model", self.trace)
             agent = Agent(RequirementSet.load(self.req), model, self.workspace, Runtime(self.trace))
@@ -240,7 +238,7 @@ class ExecutionTests(TempCase):
             prior = server.requests[1]["messages"]
             self.assertEqual(prior[2]["reasoning_content"], initial["choices"][0]["message"]["reasoning_content"])
             self.assertEqual([m["role"] for m in prior], ["system", "user", "assistant", "tool"])
-            self.assertEqual(server.requests[0]['tool_choice']['function']['name'], 'deliver')
+            self.assertEqual(server.requests[0]['tool_choice']['function']['name'], 'build_app')
             model2 = Model(server.url, "synthetic-test-key", "synthetic-model", self.trace)
             fresh_workspace = Workspace(self.out, self.req, self.trace, time.monotonic() + 40)
             result2 = Agent(RequirementSet.load(self.req), model2, fresh_workspace, Runtime(self.trace)).run()
