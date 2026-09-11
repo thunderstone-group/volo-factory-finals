@@ -18,14 +18,15 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev5**, adds reference-image observations
+The current development candidate, **0.7.0.dev6**, adds reference-image observations
 through the same metered gateway. A real Kimi K3 image request successfully read the
-previously omitted heading. The full candidate still needs official evaluation.
+previously omitted heading. Dev5's full image request exceeded the gateway body limit;
+dev6 normalizes large rasters and bounds encoded request bytes. Evaluation is pending.
 Version dev4 already verifies browser checks and serves the same app on both observed
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
 documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-All 48 local checks pass, including real HTTP repair, reference routing and cache
+All 52 local checks pass, including real HTTP repair, reference routing and cache
 invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
@@ -99,7 +100,9 @@ are not an OS-level sandbox for subprocesses.
   `FACTORY_TOKEN_BUDGET`, `FACTORY_TIMEOUT`, `FACTORY_MAX_OUTPUT_TOKENS`.
 - The observed token cap is checked between responses; an in-flight response can
   exceed the remaining amount. Organizer gateway quotas are authoritative.
-- Local PNG/JPEG/WebP references up to 8 MiB each are supported, in groups of three.
+- Local PNG/JPEG/WebP references up to 8 MiB each are supported. Small screenshots
+  remain byte-exact; larger rasters use bounded JPEGs with a 1920-pixel maximum edge.
+  Groups contain at most three images and under 780,000 encoded content bytes.
   Remote/missing/unsupported references are explicitly listed as unavailable. Written
   requirements override conflicting screenshot defaults and out-of-scope functionality.
 - Agent-authored checks and build success do not substitute for official GUI evaluation.

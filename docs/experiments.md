@@ -366,3 +366,27 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - All **48 local checks pass** in 19.616 seconds, including cache invalidation, input
   boundary handling and captured multimodal-response accounting. Full dev5 platform
   evaluation is the next gate; no improved official result is claimed here.
+
+## E019 — Dev5 exposes the gateway's request-size boundary
+
+- Source `2dc48cc`, submission `e22044e619ac`. Saved archive download exactly matches
+  SHA-256 `858e6abdb133cdea555ad1ade39741d775bef3c53592f01d24f07c7564ad604b`.
+- Waited for the pre-existing shared-account run to finish, as the user requested.
+  https://arc-bench.com/runs/dd19e1660e38 then failed at deployment with a missing
+  run-local `agent.zip`. No model request occurred.
+- One same-submission retry, https://arc-bench.com/runs/6bdd4e55d7cb, deploys and starts
+  the agent. The first image request receives **HTTP 413 Request Entity Too Large**.
+  The runner records one second, zero tokens and CNY zero. No app is generated.
+- Actual referenced PNG sizes are 3,622,330 (homepage), 146,387 (registration) and
+  4,009,963 bytes (login), before base64 expansion. The earlier single-image probe
+  used only the small registration screenshot and therefore did not exercise this limit.
+- This is a payload-size failure after a successful deployment, distinct from the
+  first attempt's intermittent archive failure. The model itself has not evaluated
+  the rejected image request.
+- Dev6 uses Pillow 11.3.0 locally: preserve small images exactly, resize larger rasters
+  to a 1920-pixel maximum edge, encode bounded JPEGs, and split batches by actual
+  encoded bytes as well as image count. The real three-image input becomes **526,945
+  bytes** before base64; the text-heavy registration image stays byte-identical.
+- All **52 local checks pass** in 22.317 seconds, including a high-resolution raster
+  case and an encoded-size case that must split despite containing only three images.
+  Gateway acceptance of the normalized group remains the next live check.

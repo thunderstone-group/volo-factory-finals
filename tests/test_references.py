@@ -4,12 +4,13 @@ import json
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from test_core import FakeGateway, ROOT
 from volo.agent import Agent
 from volo.model import Model
-from volo.references import ReferenceObserver, referenced_images
+from volo.references import ReferenceObserver, referenced_images, prepare_image
 from volo.requirements import RequirementSet
 from volo.trace import Trace, Runtime
 from volo.workspace import Workspace
@@ -96,6 +97,29 @@ children:
                 observer.observe(self.requirements, self.nodes,
                                  deadline=time.monotonic() + 30, guard_budget=lambda: None)
             self.assertFalse(observer.path.exists())
+
+    def test_large_raster_is_resized_but_small_text_reference_stays_exact(self):
+        from PIL import Image
+        small = self.inputs / 'reference/active.png'
+        self.assertEqual(prepare_image(small)[0], PNG)
+        large = self.inputs / 'reference/large.png'
+        Image.new('RGB', (3840, 1908), 'white').save(large)
+        raw, mime, metadata = prepare_image(large)
+        self.assertEqual(mime, 'image/jpeg')
+        self.assertLessEqual(len(raw), 500000)
+        self.assertEqual(metadata['original_size'], [3840, 1908])
+        self.assertEqual(metadata['sent_size'], [1920, 954])
+
+    def test_encoded_payload_byte_budget_splits_even_three_images(self):
+        self.nodes[0]['description'] += ' ![extra](reference/future.png)'
+        # Synthetic encoded-size routing fixture, independent of image entropy.
+        prepared = (b'x' * 300000, 'image/jpeg', {'transformed': True})
+        with patch('volo.references.prepare_image', return_value=prepared), FakeGateway([self.fixture] * 3) as server:
+            model = Model(server.url, 'synthetic-test-key', 'kimi-k3', self.trace)
+            ReferenceObserver(model, self.trace).observe(self.requirements, self.nodes,
+                deadline=time.monotonic() + 30, guard_budget=lambda: None)
+            self.assertEqual(len(server.requests), 3)
+            self.assertTrue(all(len(json.dumps(r, ensure_ascii=False).encode()) < 800000 for r in server.requests))
 
 
 if __name__ == '__main__':

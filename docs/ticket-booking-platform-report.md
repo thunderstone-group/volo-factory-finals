@@ -1,6 +1,12 @@
 # Ticket Booking platform observations
 
-**Latest observation, 2026-09-11 around 17:07 UTC:** upload, deployment, generation and
+**New observation at 17:35 UTC:** submission `e22044e619ac` downloads with its exact
+hash, but run `dd19e1660e38` again lacks run-local `agent.zip`. One same-submission
+retry `6bdd4e55d7cb` deploys correctly, then fails on the agent's oversized image
+request (gateway HTTP 413). This confirms intermittent deployment behavior alongside
+a separate payload-size problem, rather than a persistently unavailable platform.
+
+**Earlier observation, 2026-09-11 around 17:07 UTC:** upload, deployment, generation and
 official tests all execute on run `df4bf94d459e`. It passes 2/10. Earlier run
 `b30f19283f5a` also reached evaluation but its app served port 3000 while the published
 tests defaulted to 3301. A managed launcher now serves the same app on both ports;
