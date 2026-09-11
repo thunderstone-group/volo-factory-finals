@@ -934,3 +934,32 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - The latest website bundle `index-zCY9AZyV.js` still requests the same leaderboard
   endpoint and parameters as the CLI. The repeated leaderboard HTTP 500 responses
   have no identified client-contract mismatch; current ranks cannot be asserted.
+
+## E044 — Narrow repair works, but timeout-only feedback obscures the cause
+
+- Dev25 source `aeec7d2`, Qwen3.8 Max submission `42a4dbfbbb48`, verified ZIP as E043.
+  https://arc-bench.com/runs/3002683500de generates a complete bundle at 108.559 seconds.
+  The first browser run finishes at 185.302 seconds with **1/8 passing**.
+- The next request correctly receives full tools. It reads relevant source and makes
+  two narrow navigation changes, then replaces nonexistent `assert.eventually` calls
+  with a real polling helper. The next self-check still finishes **1/8 passing**.
+- Both generated POST handlers await a Promise whose data callback never resolves it.
+  Requests hang before validation. The source also incorrectly rejects spaces in names
+  despite the provided successful examples. Later source reads and diagnostic test edits
+  do not produce a verified repair before the budget guard stops execution.
+- Official result: **FAILED before evaluation, 376 seconds, 1,919,823 tokens,
+  CNY 2.462617**. The 14 complete captured responses total **332,845 tokens**.
+  Preserve both totals; this discrepancy is not explained. No official tests execute.
+- The image observation correctly reports the reference title `账户信息`, but generation
+  replaces it with a different title. Dev26 clarifies that observed page/section titles
+  must be rendered verbatim as semantic headings.
+- Dev26 appends the actual page URL, visible text, pending request method/path and
+  JavaScript errors when a browser check fails. It preserves and rethrows the original
+  failure. An independent post-check assertion rejects visible meters without an
+  accessible name; a `name` attribute alone does not provide one.
+- All **67 local checks pass** in 42.001 seconds with installed Playwright and real
+  Chrome. A pending-request fixture retains both the original failure and live browser
+  context. A second fixture's authored meter-value assertion passes, but acceptance
+  correctly fails until an accessible name is added without weakening that assertion.
+- Dev26 ZIP SHA-256:
+  `61b2c2d75f3b926508bc9ecaa7db91f6157483a63565ec1de2761ee7ba493ef9`.

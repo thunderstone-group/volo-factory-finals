@@ -291,10 +291,7 @@ test('server serves generated page despite empty optional API',async()=>{
         self.assertEqual(self.workspace.last_verification_attempt, result)
         self.assertEqual(result["source_fingerprint"], self.workspace.fingerprint())
 
-    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
-                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
-                         'Provide an installed Playwright module and Chromium for real browser checks')
-    def test_prepared_browser_routes_and_reports_missing_controls(self):
+    def enable_installed_browser(self):
         module = os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']
         executable = os.environ['FACTORY_TEST_CHROMIUM_EXECUTABLE']
         wrapper = self.base / 'real-browser.cjs'
@@ -302,6 +299,12 @@ test('server serves generated page despite empty optional API',async()=>{
             'module.exports={chromium:{launch:()=>pw.chromium.launch({headless:true,executablePath:'
             + json.dumps(executable) + '})}};')
         self.workspace.runtime_env['FACTORY_PLAYWRIGHT_MODULE'] = str(wrapper)
+
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                         'Provide an installed Playwright module and Chromium for real browser checks')
+    def test_prepared_browser_routes_and_reports_missing_controls(self):
+        self.enable_installed_browser()
         scaffold(self.workspace)
         check = """const {test,assert}=require('./browser.cjs');
 test('relative routes use the managed application origin',async page=>{
@@ -313,6 +316,42 @@ await assert.rejects(page.getByRole('button',{name:'Missing action',exact:true})
 });"""
         result = implement(self.workspace, '<h1>Greeting</h1>', '', check)
         self.assertTrue(result['passed'], result)
+
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                         'Provide an installed Playwright module and Chromium for real browser checks')
+    def test_browser_failure_retains_visible_state_and_pending_request(self):
+        self.enable_installed_browser()
+        scaffold(self.workspace)
+        html = """<h1>Waiting for response</h1><button>Save</button>
+<script>document.querySelector('button').onclick=()=>fetch('/api/save',{method:'POST'});</script>"""
+        api = "module.exports=async(req,res)=>req.url==='/api/save'?await new Promise(()=>{}):false;"
+        check = """const {test}=require('./browser.cjs');test('pending request diagnostic',async page=>{
+const sent=page.waitForRequest('**/api/save');await page.getByRole('button',{name:'Save'}).click();
+await sent;throw new Error('Original assertion failure');});"""
+        result = implement(self.workspace, html, '', check, api)
+        self.assertFalse(result['passed'])
+        output = result['steps'][-1]['output']
+        self.assertIn('Original assertion failure', output)
+        self.assertIn('Waiting for response', output)
+        self.assertIn('POST /api/save', output)
+        self.assertIn('Browser state:', output)
+
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                         'Provide an installed Playwright module and Chromium for real browser checks')
+    def test_browser_rejects_unnamed_meter_even_when_authored_check_passes(self):
+        self.enable_installed_browser()
+        scaffold(self.workspace)
+        check = """const {test,assert}=require('./browser.cjs');test('meter changes',async page=>{
+const meter=page.locator('meter');await meter.evaluate(el=>el.value=2);
+assert.equal(await meter.evaluate(el=>el.value),2);});"""
+        html = '<meter min="0" max="3" value="0"></meter>'
+        first = implement(self.workspace, html, '', check)
+        self.assertFalse(first['passed'])
+        self.assertIn('Visible meters must have an accessible name', first['steps'][-1]['output'])
+        repaired = implement(self.workspace, html.replace('<meter ', '<meter aria-label="Quality" '), '', check)
+        self.assertTrue(repaired['passed'], repaired)
 
     def test_model_tool_loop_repairs_failure_then_resumes_without_model_call(self):
         initial = response([("build_app", {"index_html": "wrong",

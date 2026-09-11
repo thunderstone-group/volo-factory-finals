@@ -121,8 +121,8 @@ fixtures for successful API calls and isolate the single invalid condition in ne
 
 Use one accessible name from each set of permitted aliases and one control per action.
 Keep primary navigation links unique. Render exact dynamic values in separate elements;
-do not repeat account identities in welcome text. Preserve observed reference headings
-as semantic headings. Every form control needs an associated label, including grouped inputs.
+do not repeat account identities in welcome text. Preserve observed reference page and
+section titles verbatim as semantic headings. Every form control needs an associated label, including grouped inputs.
 Use a named native meter with a changing numeric value for a required strength/level display.
 Show invalid submissions in a visible, nonempty role=alert region; prevent browser-native
 validation from suppressing that feedback. Preserve the required session/state on failure.

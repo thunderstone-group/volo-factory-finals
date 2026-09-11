@@ -31,7 +31,10 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    budget on repeated missing-label timeouts; its full-bundle repair leaves that defect
    unchanged. Dev25 opens narrow source repairs after the first failed bounded build,
    preserves both ends of error logs and bounds missing-control waits to five seconds.
-   Official Ticket validation remains the next gate.
+   Qwen3.8 Max reaches that repair path but still exhausts its budget with 1/8 self-checks
+   passing. Its generated request-body reader never resolves, while errors show only UI
+   timeouts. Dev26 adds actual page/pending-request diagnostics and an independent check
+   for unnamed visible meters. Official Ticket validation remains the next gate.
    Official page crashes
    and timeouts did not reproduce locally; their exact cause remains unconfirmed.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.

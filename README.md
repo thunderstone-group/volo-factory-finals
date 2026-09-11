@@ -22,14 +22,16 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev25**, generates bounded new applications
+The current development candidate, **0.7.0.dev26**, generates bounded new applications
 through a generic Node runtime. The model supplies the product UI, API logic and checks
 from the complete requirements and image observations; the runtime handles build,
 serving and browser lifecycle. Build and actual behavioral verification are mandatory.
 After a failed first implementation, larger bounded apps immediately get source/edit
 tools for a narrow repair. Failure feedback preserves both log ends, and missing browser
-controls fail within five seconds. A real Chrome regression covers routing and timeout
-behavior; a real HTTP regression covers failure followed by a verified source-only repair.
+controls fail within five seconds. Browser failures include visible page text and pending
+requests; a separate accessibility check rejects unnamed visible meters even when the
+model's own assertion passes. Real Chrome regressions cover those diagnostics, semantic
+checks, routing and timeouts; a real HTTP regression covers verified source-only repair.
 Small incremental edits retain their existing single-patch path. Official tests remain
 separate, and this candidate has no official Ticket score yet. The best Ticket result
 from this agent remains E020's 5/10; see [experiments](docs/experiments.md) for the evidence.

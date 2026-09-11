@@ -231,3 +231,9 @@ each rule snapshot and experiment with date and source.
   Cancelled with no official evaluation. Dev25 opens narrow repairs immediately after a
   failed bounded build and provides clearer, faster failure feedback. All 65 local checks
   pass, including real HTTP repair and Chrome navigation/missing-control behavior.
+- Qwen3.8 Max uses the repair path in E044, but still fails before official evaluation
+  after 376 seconds at CNY 2.462617. Its body-reading Promise never resolves; repair
+  guesses at navigation without observing pending requests. Dev26 adds visible browser
+  state and pending-request diagnostics to failed checks, plus an independent unnamed-
+  meter check. All 67 local checks pass with real Chrome. These are harness results;
+  neither dev25 nor dev26 has an improved official Ticket score at this checkpoint.
