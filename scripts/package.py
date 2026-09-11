@@ -5,8 +5,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = [ROOT / "main.py", ROOT / "requirements.txt", *sorted((ROOT / "volo").glob("*.py")),
-         *sorted((ROOT / "volo/vendor").glob("*"))]
+FILES = [ROOT / "main.py", ROOT / "requirements.txt", *sorted((ROOT / "volo").glob("*.py"))]
 DEST = ROOT / "dist" / "volo-factory.zip"
 DEST.parent.mkdir(exist_ok=True)
 with zipfile.ZipFile(DEST, "w", compression=zipfile.ZIP_DEFLATED) as archive:

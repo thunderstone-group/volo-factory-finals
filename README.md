@@ -19,14 +19,14 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev11**, combines small exact edits with
-verification in one tool call. Version dev10 rejects undefined variables in
-acceptance scripts before application generation. Dev8 reached verification but a faulty
-generated check blocked repair until the token budget ran out. Input-derived browser checks are generated
-before implementation and fixed throughout repair; their script is now read on demand.
+The current development candidate, **0.7.0.dev12**, uses a data-only UI contract and
+harness-owned checking code. Arbitrary generated acceptance scripts introduced runtime
+and shared-test-data errors in dev8/dev10, so that path and its parser dependencies were
+removed. Fixed checks now cover visible signed-out structure; authored browser tests cover
+stateful behavior. Version dev11 also combines small exact edits with verification in one call.
 Dev6 successfully observes
 all relevant images through the metered gateway, but its implementation and self-checks
-still omit a reference heading and choose the wrong strength-widget role. Dev10's
+still omit a reference heading and choose the wrong strength-widget role. Dev12's
 completed verification and official score are the next evaluation gate.
 Version dev4 already verifies browser checks and serves the same app on both observed
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
@@ -101,12 +101,12 @@ are not an OS-level sandbox for subprocesses.
   share the generation budget and trace. Successful observations cache by image bytes,
   prompt and model. An empty variable disables observation and records that limitation.
 - Larger browser tasks first generate a separate acceptance script from requirements
-  and image observations, without application source. Every verification runs it before
-  implementation-authored checks. Fixed checks are hashed, restored after interruption,
-  and included in verification reuse decisions. They remain model-derived checks,
-  not an official accuracy oracle.
-- Acceptance scripts pass syntax and scope analysis before being installed. The parser
-  is bundled, versioned and licensed with the agent; no runtime npm installation is needed.
+  and image observations, without application source. The model supplies only literal
+  routes, visible headings, labels and accessible roles; the harness generates all checking
+  code. Contracts cannot submit forms, create accounts or add arbitrary code. Every
+  verification runs them before implementation-authored behavioral checks. Fixed checks
+  are hashed, restored after interruption, and included in verification reuse decisions.
+  UI extraction can still omit or misinterpret requirements; official evaluation is separate.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Context pressure first prunes old tool output, then uses a fresh workspace checkpoint
   plus complete recent tool exchanges. Retained reasoning fields stay intact; raw trace

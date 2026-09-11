@@ -55,9 +55,10 @@ Do not install, update, uninstall or download browsers; do not modify shared /ms
 If no browser is available, write honest HTTP/logic checks and leave official GUI checking to
 the organizer. Do not waste model calls probing browser installations or npm connectivity.
 Never replace missing execution with a claimed pass. Keep earlier checks for regression coverage.
-The fixed input-derived browser checks run automatically. Their coverage is supplied below;
+The fixed input-derived UI structure checks run automatically. Their data is supplied below;
 call read_acceptance only if you need the exact script to understand a failure. Do not duplicate
-all fixed browser flows in supplemental checks; focus those on server validation and persistence.
+static structure checks. Write real browser tests for every stateful requirement scenario,
+including isolated valid test data, negative cases, session changes and persistence.
 The official evaluator remains separate and read-only. Do not inspect or modify private tests,
 spoof usage, or add meaningless model calls to improve leaderboard arithmetic.
 
@@ -268,7 +269,7 @@ class Agent:
                    + json.dumps(self.reference_context, ensure_ascii=False)
                    + '\nFixed acceptance checks generated independently from inputs before implementation. '
                      'Verification always runs them; implement their product contract and do not modify them:\n'
-                   + json.dumps({key: self.acceptance_context[key] for key in ('path', 'coverage')}
+                   + json.dumps({key: self.acceptance_context[key] for key in ('path', 'coverage', 'pages')}
                                 if self.acceptance_context else None, ensure_ascii=False)
                    + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
 

@@ -500,7 +500,12 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   The first saved-archive download is incomplete. A second read matches all 78,494
   bytes and the exact hash; no duplicate submission is created.
 - https://arc-bench.com/runs/6d2bdfec5d0f deploys and starts with DeepSeek V4 Pro.
-  Its final outcome is pending. Static analysis is now part of acceptance planning.
+  The plan includes the reference heading and meter, but reuses one module-global
+  username across independent registration tests, conflicting with uniqueness rules.
+  The run is cancelled while the first coding request is pending. Cancel returns HTTP
+  500, then read-back confirms CANCELLED; no second cancellation is sent. Two completed
+  responses report 17,142 tokens; cancelled in-flight usage is unknown and official cost
+  remains null. No application or official score is claimed from this run.
 - Dev11 separately replaces prompt-only incremental batching with a forced
   `patch_and_verify` tool. It validates all exact edits before writing and runs the
   existing app's build/start/check lifecycle. Three unsuccessful compact attempts
@@ -509,3 +514,25 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   forced tool selection and all-or-nothing validation before editing. An unrelated
   ephemeral-port collision in the launcher test was removed by binding its reserved
   conflict socket before choosing and installing the test ports; launcher code is unchanged.
+
+## E025 — One-call incremental edits work; narrow the independent contract
+
+- Dev11, submission `0b88bc4db291`, matching ZIP SHA-256
+  `8eb5b112f9ea53d6d1144107b43f9e0d01f7a01652e91273edbe3c2277f47184`.
+- Counter https://arc-bench.com/runs/82dda8779d5a passes **2/2**, seven seconds,
+  3,874 tokens, CNY 0.017184. One real `patch_and_verify` response reports 2,947 prompt
+  and 927 completion tokens; all old and new checks pass. The supplied template matches
+  this project's earlier v0.6 runtime byte-for-byte.
+- Dice https://arc-bench.com/runs/343bcd73b739 passes **2/2**, five seconds,
+  3,330 tokens, CNY 0.013248. The board selects both results: **CNY 0.030432**, six
+  seconds average, rank 2. The leader remains CNY 0.018816 at 100%.
+- Repeated failures invalidate the assumption that input-derived generated JavaScript
+  can safely become an immutable acceptance oracle. Dev12 restricts the independent
+  output to data-only UI structure: same-origin routes, visible headings, labels and
+  roles. A deterministic harness script performs the checks without state-changing
+  actions. Arbitrary generated scripts and the now-unused parser bundle are removed.
+- All **58 local checks pass** in 25.132 seconds. A real Chrome probe rejects an input
+  with only `aria-label` where a native label is required, then passes all six supported
+  check kinds after adding the actual label. This checks the execution boundary, not
+  model extraction quality. Stateful application tests and official evaluation remain
+  separate requirements.
