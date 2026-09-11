@@ -45,7 +45,10 @@ function test(name,check){
     if(!process.env.FACTORY_PLAYWRIGHT_MODULE) throw new Error('Provided Playwright is unavailable');
     const {chromium}=require(process.env.FACTORY_PLAYWRIGHT_MODULE);
     const browser=await chromium.launch();
-    try{const page=await browser.newPage();await page.goto(process.env.FACTORY_BASE_URL);
+    try{const page=await browser.newPage();const errors=[];
+      page.on('pageerror',error=>errors.push(error.message));
+      await page.goto(process.env.FACTORY_BASE_URL);
+      if(errors.length) throw new Error('Browser JavaScript errors: '+errors.join('; '));
       await check(page,assert);
     }finally{await browser.close();}
   });

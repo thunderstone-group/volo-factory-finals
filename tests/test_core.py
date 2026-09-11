@@ -238,10 +238,9 @@ test('server serves generated page despite empty optional API',async()=>{
         self.assertIsNone(self.workspace.last_verification)
 
     def test_model_tool_loop_repairs_failure_then_resumes_without_model_call(self):
-        initial = response([("build_app", {"index_html": "wrong", "app_js": "",
+        initial = response([("build_app", {"index_html": "wrong",
                             "checks_js": GREETING_FILES[-1]['content']})])
-        repair = response([("edit", {"path": "frontend/public/index.html", "old": "wrong", "new": "hello"}),
-                           ("finish", {"check_command": ["node", "--test", "checks/requirements.cjs"]})])
+        repair = response([("build_app", {"index_html": "hello", "checks_js": GREETING_FILES[-1]['content']})])
         with FakeGateway([initial, repair]) as server:
             model = Model(server.url, "synthetic-test-key", "synthetic-model", self.trace)
             agent = Agent(RequirementSet.load(self.req), model, self.workspace, Runtime(self.trace))
@@ -253,6 +252,7 @@ test('server serves generated page despite empty optional API',async()=>{
             self.assertEqual(prior[2]["reasoning_content"], initial["choices"][0]["message"]["reasoning_content"])
             self.assertEqual([m["role"] for m in prior], ["system", "user", "assistant", "tool"])
             self.assertEqual(server.requests[0]['tool_choice']['function']['name'], 'build_app')
+            self.assertEqual(server.requests[1]['tool_choice']['function']['name'], 'build_app')
             model2 = Model(server.url, "synthetic-test-key", "synthetic-model", self.trace)
             fresh_workspace = Workspace(self.out, self.req, self.trace, time.monotonic() + 40)
             result2 = Agent(RequirementSet.load(self.req), model2, fresh_workspace, Runtime(self.trace)).run()
@@ -278,6 +278,7 @@ test('server serves generated page despite empty optional API',async()=>{
             model.complete(followup, [])
             self.assertEqual(server.requests[1]['messages'][0], message)
             self.assertEqual(server.requests[0]['thinking'], {'type': 'disabled'})
+            self.assertEqual(server.requests[0]['temperature'], 0)
             self.assertEqual(model.usage.total_tokens, 5768)
 
 

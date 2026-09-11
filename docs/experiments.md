@@ -103,3 +103,19 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   fail immediately. A regression fixture was captured from this real tool call and tested
   against an actual local HTTP server.
 - The Dice task was deferred until this concrete harness defect was fixed.
+
+## E006 — Empty API fix, then inspect remaining repair cost
+
+- Source: `b362e41`, submission `volo-factory-v0.5.1-b362e41`.
+- Initial Counter run `c26fa8c2c79e` failed before the model started because its platform
+  run copy could not find `agent.zip`. A new run of the same submission succeeded.
+- Counter: https://arc-bench.com/runs/2b15f59f6120 — **1/1**, 27 seconds.
+- Dice: https://arc-bench.com/runs/f781aa13b23a — **1/1**, 31 seconds.
+- Combined cost CNY 0.095639, average runtime 29 seconds, still second at observation.
+- The actual Counter trace showed a product-code consistency error: JavaScript looked
+  up an element by id, but the generated HTML had only the matching data-testid. Real
+  browser checks caught this. The full repair loop then wasted calls rediscovering files
+  already present in the conversation before fixing the markup and assertions.
+- Next: generate a self-contained HTML/JavaScript document for small pages, use temperature
+  zero for the small-task path, expose JavaScript startup errors clearly, and keep up to
+  three repair attempts in the compact bundle protocol before falling back to general tools.

@@ -46,6 +46,8 @@ class Model:
                 "stream": False, "max_tokens": self.max_output}
         if self.thinking in ("enabled", "disabled") and self.model.lower().startswith("deepseek"):
             body["thinking"] = {"type": self.thinking}
+            if self.thinking == 'disabled':
+                body['temperature'] = 0
         if forced_tool:
             if forced_tool not in {t['function']['name'] for t in tools}:
                 raise ValueError("Forced tool must be advertised")

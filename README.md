@@ -6,7 +6,7 @@ development milestones, not evidence of a final result.
 
 ## Status
 
-Versions 0.2 and 0.3 passed both official Smoke tasks. Version 0.5 separates reusable runtime code from generated product behavior. The design and competition facts are recorded in
+Versions 0.2, 0.3 and 0.5.1 passed both official Smoke tasks. Version 0.6 improves consistency and compact repairs. The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 

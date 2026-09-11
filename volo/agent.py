@@ -54,11 +54,13 @@ actually inspecting them. Current binary reference images are not sent to this m
 SMALL_SYSTEM = """Build a complete working web application from the supplied requirements.
 Call build_app ONCE. The harness already supplies a dependency-free Node static server,
 frontend build and browser-test lifecycle. Generate only product-specific content:
-index_html: full HTML, include <script src="/app.js" defer></script>;
-app_js: plain browser JavaScript implementing the requirements;
+index_html: a self-contained HTML document with its JavaScript inline. Keep markup and
+DOM behavior together; every literal getElementById lookup must have that exact id in the
+HTML. A data-testid attribute does not create an id. Do not reference /app.js or external scripts.
 checks_js: executable assertions for required behavior, using this supplied helper:
 const {test,assert}=require('./browser.cjs');
 test('requirement',async(page)=>{ /* page is already on the home page; use Playwright + assert */ });
+Always await asynchronous Playwright results BEFORE passing them to assert.
 If the provided browser is unavailable, use node:test and HTTP checks at FACTORY_BASE_URL instead.
 Optional api_js: CommonJS async(req,res)=>boolean exported with module.exports; handle an API
 request and return true, otherwise false. Only supply it when actual backend business logic is needed.
@@ -80,8 +82,8 @@ STR = {"type": "string"}
 STRINGS = {"type": "array", "items": STR}
 TOOLS = [
     function("build_app", "Supply product UI, behavior and assertions for the prepared web runtime, then verify it.",
-             {"index_html": STR, "app_js": STR, "checks_js": STR, "api_js": STR},
-             ["index_html", "app_js", "checks_js"]),
+             {"index_html": STR, "checks_js": STR, "api_js": STR},
+             ["index_html", "checks_js"]),
     function("deliver", "Write the complete file bundle and immediately verify the real app; completes only on success.",
              {"files": {"type": "array", "items": {"type": "object", "properties": {
                  "path": STR, "content": STR}, "required": ["path", "content"],
@@ -151,6 +153,7 @@ class Agent:
         if not isinstance(args, dict):
             raise ValueError("Tool arguments must be a JSON object")
         if name == 'build_app':
+            args.setdefault('app_js', '')
             result = implement(self.workspace, **args)
             if result['passed']:
                 self.check_command = ['node', '--test', 'checks/requirements.cjs']
@@ -176,6 +179,7 @@ class Agent:
                                  "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
         direct = small and not self.workspace.list_files()['files']
+        compact_attempts = 0
         if direct:
             scaffold(self.workspace)
         messages = [{"role": "system", "content": SMALL_SYSTEM if direct else SYSTEM},
@@ -195,7 +199,9 @@ class Agent:
             message, reason = self.model.complete(messages, active_tools,
                 remaining_seconds=self.workspace.deadline - time.monotonic(),
                 forced_tool='build_app' if direct else None)
-            direct = False
+            was_direct = direct
+            if direct:
+                compact_attempts += 1
             print(f"[volo] model calls={self.model.usage.calls} "
                   f"reported_tokens={self.model.usage.total_tokens} finish={reason}", flush=True)
             if reason == "length":
@@ -238,12 +244,19 @@ class Agent:
                         print("[volo] verification detail: " + self.trace.redact(str(detail))[-2500:], flush=True)
                 elif "error" in result:
                     print(f"[volo] {name} error: {self.trace.redact(str(result['error']))}", flush=True)
-                text = json.dumps(self.trace.redact(result), ensure_ascii=False)
+                model_result = result
+                if was_direct and not result.get('passed'):
+                    model_result = {"passed": False, "error": result.get('error'),
+                                    "check_output": (result.get('steps') or [{}])[-1].get('output', '')[-5000:],
+                                    "server_output": result.get('server_output', '')[-2000:],
+                                    "next": "Repair the previous HTML/check bundle directly from this error; return build_app again."}
+                text = json.dumps(self.trace.redact(model_result), ensure_ascii=False)
                 messages.append({"role": "tool", "tool_call_id": call["id"], "content": text})
             if finished and self.workspace.last_verification:
                 if self.workspace.fingerprint() == self.workspace.last_verification["source_fingerprint"]:
                     return
-            if messages[0]['content'] == SMALL_SYSTEM:
+            direct = was_direct and compact_attempts < 3
+            if not direct and messages[0]['content'] == SMALL_SYSTEM:
                 messages[0]['content'] = SYSTEM
         raise RuntimeError("Batch did not converge within the model call limit")
 
