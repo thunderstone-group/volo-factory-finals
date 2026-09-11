@@ -29,6 +29,8 @@ or service unless explicitly provided. Implement genuine state and persistence w
 Verification installs a managed backend/.volo launcher so the same app also serves the
 published browser-test entrypoint. Keep product code separate from this managed launcher.
 Use native labels, accessible names, routes and visible validation messages exactly as specified.
+When the requirements offer multiple language aliases, choose one exact accessible name;
+do not concatenate aliases into a different label that exact-name interactions cannot locate.
 Handle negative cases and recovery, not just a successful demo.
 
 Write executable behavioral checks under checks/ for the current requirements. Checks must
