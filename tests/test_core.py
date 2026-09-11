@@ -320,6 +320,17 @@ test('server serves generated page despite empty optional API',async()=>{
             self.assertGreater(model.usage.completion_tokens, model.max_output)
             self.assertEqual(model.usage.total_tokens, 70886)
 
+    def test_qwen_uses_provider_thinking_switch(self):
+        with FakeGateway([response([]), response([])]) as server:
+            model = Model(server.url, 'synthetic-test-key', 'qwen3.6-flash', self.trace)
+            model.thinking = 'disabled'
+            model.complete([], [])
+            model.thinking = 'enabled'
+            model.complete([], [])
+            self.assertIs(server.requests[0]['enable_thinking'], False)
+            self.assertIs(server.requests[1]['enable_thinking'], True)
+            self.assertNotIn('thinking', server.requests[0])
+
     def test_captured_real_gateway_response_preserves_reasoning_and_usage(self):
         fixture = json.loads((ROOT / 'tests/fixtures/real-deepseek-tool-responses.json').read_text())
         with FakeGateway(fixture['responses']) as server:

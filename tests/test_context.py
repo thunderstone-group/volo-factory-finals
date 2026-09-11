@@ -161,7 +161,7 @@ class ContextRepairTests(TempCase):
         answer = response([('patch_and_verify', {'edits': [
             {'path': 'backend/server.cjs', 'old': "s.end('hello')", 'new': "s.end('welcome')"},
             {'path': 'checks/greeting.cjs', 'old': "'hello'", 'new': "'welcome'"}],
-            'check_command': ['node', 'checks/greeting.cjs']})])
+            'check_command': ['node checks/greeting.cjs']})])
         with FakeGateway([answer]) as gateway:
             agent = Agent(RequirementSet.load(self.req),
                 Model(gateway.url, 'synthetic-test-key', 'synthetic-model', self.trace),
@@ -177,7 +177,13 @@ class ContextRepairTests(TempCase):
         self.assertNotIn('never-inline-harness', sent)
         self.assertEqual((self.out / 'theme.css').read_text(), '/* preserve this unrelated source */')
         self.assertTrue(self.workspace.last_verification['passed'])
+        self.assertEqual(agent.check_command, ['node', 'checks/greeting.cjs'])
         before = (self.out / 'backend/server.cjs').read_text()
+        with self.assertRaisesRegex(ValueError, 'Node/Python'):
+            agent.dispatch('patch_and_verify', {'edits': [
+                {'path': 'backend/server.cjs', 'old': "s.end('welcome')", 'new': "s.end('changed')"}],
+                'check_command': ['bash', '-c', 'true']})
+        self.assertEqual((self.out / 'backend/server.cjs').read_text(), before)
         with self.assertRaisesRegex(ValueError, 'exactly once'):
             agent.dispatch('patch_and_verify', {'edits': [
                 {'path': 'backend/server.cjs', 'old': "s.end('welcome')", 'new': "s.end('changed')"},

@@ -19,7 +19,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev15**, runs authored Node test bundles as
+The current development candidate, **0.7.0.dev16**, runs authored Node test bundles as
 soon as the application and test files are present. It uses a data-only UI training contract and
 harness-owned checking code. Arbitrary generated acceptance scripts introduced runtime
 and shared-test-data errors in dev8/dev10, so that path and its parser dependencies were
@@ -33,7 +33,7 @@ Version dev4 already verifies browser checks and serves the same app on both obs
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
 documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-All 63 local checks pass, including real HTTP incremental edits and repair, training-contract revision and recovery, reference routing and cache
+All 64 local checks pass, including real HTTP incremental edits and repair, training-contract revision and recovery, reference routing and cache
 invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
@@ -98,6 +98,10 @@ are not an OS-level sandbox for subprocesses.
 - DeepSeek thinking is disabled for batches of up to three features / 16,000 requirement
   characters and uses explicit low effort for larger batches. The smaller 3,500-character
   threshold still controls compact runtime/edit tools. Correctness requires verification.
+  Qwen3 hybrid models receive the equivalent `enable_thinking` control.
+- Check commands are validated before writing delivery/edit bundles. A quoted single-string
+  argv is split without a shell, preventing retries against already-edited source when
+  a model supplies a malformed command shape.
 - Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
 - A managed backend launcher serves one application on the observed 3000/3301 runner
   entrypoints; custom `PORT` values remain isolated. Authored standalone browser checks

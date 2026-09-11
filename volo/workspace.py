@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import signal
+import shlex
 import shutil
 import socket
 import subprocess
@@ -24,6 +25,19 @@ from .trace import Trace, atomic_json
 
 EXCLUDED = {".git", ".arc", ".factory", "node_modules", "dist", "build", "__pycache__", ".venv"}
 PROTECTED = {".git", ".arc", ".factory", ".volo", "requirements"}
+
+
+def normalize_check_command(command):
+    if isinstance(command, list) and len(command) == 1 and isinstance(command[0], str):
+        command = shlex.split(command[0])
+    if (not isinstance(command, list) or len(command) < 2
+            or not all(isinstance(part, str) and part for part in command)):
+        raise ValueError('Supply a concrete behavioral check as argv, e.g. ["node", "checks/test.cjs"]')
+    if command[0] not in ('node', 'npm', 'npx', 'python', 'python3'):
+        raise ValueError('Use a Node/Python test runner for behavioral checks')
+    if any(part in ('&&', '||', '|', ';', '>', '>>', '<') for part in command):
+        raise ValueError('Check commands use argv without shell operators')
+    return command
 
 
 def stop_process(process):
@@ -245,10 +259,7 @@ class Workspace:
 
     def verify(self, check_command):
         """Verify the actual current tree, never a model's claimed test result."""
-        if not isinstance(check_command, list) or len(check_command) < 2:
-            raise ValueError("Supply a concrete behavioral check command")
-        if check_command[0] not in ("node", "npm", "npx", "python", "python3"):
-            raise ValueError("Use a Node/Python test runner for behavioral checks")
+        check_command = normalize_check_command(check_command)
         for check in self.required_checks:
             for name, expected in check['files'].items():
                 path = self.root / name

@@ -9,6 +9,7 @@ from .context import excerpt, project
 from .acceptance import TOOL as UI_CONTRACT_TOOL
 from .trace import atomic_json
 from .web_runtime import scaffold, implement, SERVER, BUILD, BROWSER_CHECK
+from .workspace import normalize_check_command
 
 
 SYSTEM = """You are VOLO Factory, an autonomous software engineer inside a competition sandbox.
@@ -114,6 +115,7 @@ do not repeat full files, browser setup or already-covered flows in replacement 
 Include all exact old/new replacements and the check command in the same tool call. Each old
 string must occur exactly once in its current file. Edits are validated together before writing.
 The tool then runs dependency installation, frontend build, the managed server and checks.
+check_command is argv: ["node","--test","checks/requirements.cjs"], with separate arguments.
 Keep the existing backend start and frontend build contracts; the backend reads process.env.PORT.
 Use the existing checks and provided Playwright module. Await browser operations before asserting.
 Do not install browsers, start background servers, modify harness/evaluator files or credentials,
@@ -134,6 +136,8 @@ def function(name, description, properties, required):
 
 STR = {"type": "string"}
 STRINGS = {"type": "array", "items": STR}
+COMMAND = {"type": "array", "items": STR, "minItems": 2,
+           "description": 'Separate executable and arguments, e.g. ["node","--test","checks/test.cjs"]'}
 TOOLS = [
     function("build_app", "Supply product UI, behavior and assertions for the prepared web runtime, then verify it.",
              {"index_html": STR, "checks_js": STR, "api_js": STR},
@@ -141,11 +145,11 @@ TOOLS = [
     function("deliver", "Write the complete file bundle and immediately verify the real app; completes only on success.",
              {"files": {"type": "array", "items": {"type": "object", "properties": {
                  "path": STR, "content": STR}, "required": ["path", "content"],
-                 "additionalProperties": False}}, "check_command": STRINGS}, ["files", "check_command"]),
+                 "additionalProperties": False}}, "check_command": COMMAND}, ["files", "check_command"]),
     function("patch_and_verify", "Apply the complete set of exact edits and immediately verify the changed application.",
              {"edits": {"type": "array", "items": {"type": "object", "properties": {
                  "path": STR, "old": STR, "new": STR}, "required": ["path", "old", "new"],
-                 "additionalProperties": False}}, "check_command": STRINGS}, ['edits', 'check_command']),
+                 "additionalProperties": False}}, "check_command": COMMAND}, ['edits', 'check_command']),
     function("list_files", "List application source files, excluding runtime/cache directories.", {}, []),
     function("read_acceptance", "Read the current input-derived UI training checks without changing them.", {}, []),
     function("revise_ui_contract", "Correct a mistaken training-only UI extraction with a requirement-grounded explanation.",
@@ -161,7 +165,7 @@ TOOLS = [
     function("run", "Run a bounded command in the application, without model credentials.",
              {"argv": STRINGS, "cwd": STR, "timeout": {"type": "number"}}, ["argv"]),
     function("finish", "Verify and complete this batch only if build, startup and behavioral checks pass.",
-             {"check_command": STRINGS}, ["check_command"]),
+             {"check_command": COMMAND}, ["check_command"]),
 ]
 
 
@@ -237,6 +241,8 @@ class Agent:
             raise ValueError(f"Unknown tool: {name}")
         if not isinstance(args, dict):
             raise ValueError("Tool arguments must be a JSON object")
+        if name in ('finish', 'deliver', 'patch_and_verify'):
+            args = {**args, 'check_command': normalize_check_command(args['check_command'])}
         if name == 'read_acceptance':
             return self.acceptance_context or {'coverage': [], 'script': ''}
         if name == 'revise_ui_contract':

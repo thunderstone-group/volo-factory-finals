@@ -56,6 +56,8 @@ class Model:
             if forced_tool not in {t['function']['name'] for t in tools}:
                 raise ValueError("Forced tool must be advertised")
             body['tool_choice'] = {'type': 'function', 'function': {'name': forced_tool}}
+        if self.thinking in ('enabled', 'disabled') and self.model.lower().startswith('qwen3.'):
+            body['enable_thinking'] = self.thinking == 'enabled'
         self.trace.event("model_request", model=self.model, gateway=self.url, messages=messages, tools=tools,
                          timeout_seconds=min(self.timeout, remaining_seconds) if remaining_seconds else self.timeout,
                          parameters={k: v for k, v in body.items() if k not in ('messages', 'tools')})

@@ -619,3 +619,18 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   confirms Qwen3.6 defaults to thinking and uses the top-level `enable_thinking` parameter
   in raw OpenAI-compatible JSON. Provider control and pre-write command validation need
   a fresh real run before the lower price can be treated as an efficiency advantage.
+
+## E030 preparation — Early execution and provider-specific command controls
+
+- Source `d814120`, dev15, submission `9da01d82bcde`, matching ZIP SHA-256
+  `7e5337b53ec0bed9e29ee4187a6d466e4d1a6cf53f2d0c2cc48a62154a0ea9bd`.
+  https://arc-bench.com/runs/ae581e093699 starts with Pro, automatic authored-test
+  execution and the larger repair budget. Outcome pending.
+- Dev16 maps Qwen3 thinking policy to `enable_thinking`, preserving all returned
+  reasoning fields. Check commands now have an explicit argv schema and are validated
+  before bundle writes. The observed one-string array is split using `shlex`, never a
+  shell. Unsupported runners/operators are rejected before edits can become stale.
+- All **64 local checks pass** in 29.427 seconds. Real HTTP verification accepts the
+  captured command shape, an invalid command leaves source untouched, and synthetic
+  transport checks confirm Qwen's outbound true/false field. Real Qwen effectiveness
+  remains the next formal-run gate.
