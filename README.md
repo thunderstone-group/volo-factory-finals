@@ -22,7 +22,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev20**, removes the extra UI-planning call.
+The current development candidate, **0.7.0.dev21**, removes the extra UI-planning call.
 That layer repeatedly turned alternative names into additional required controls, and
 its outputs became incorrect constraints on implementation. The coding agent now derives
 its app and executable checks directly from the complete requirements and observed images.
@@ -30,8 +30,10 @@ Build, startup and behavioral verification remain mandatory; official tests rema
 Authored test entrypoints execute as soon as written, and bounded source tools plus a
 120,000-character context window support repair. Small incremental edits still use one
 verified patch call. Dev20 completes actual verification and repair but scores 3/10
-officially. A diagnostic replay narrows its local failures to semantic UI omissions;
-the next experiment tests independent source review before adopting another review phase.
+officially. A diagnostic replay narrows its local failures to missing meter/alert semantics.
+Independent source-review probes do not reliably identify those known gaps, so no review
+phase is added. Dev21 makes semantic markup and the corresponding browser assertions
+explicit in the coding instructions; a fresh model run must establish its effect.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and
@@ -115,6 +117,9 @@ are not an OS-level sandbox for subprocesses.
   share the generation budget and trace. Successful observations cache by image bytes,
   prompt and model. An empty variable disables observation and records that limitation.
 - Browser checks are authored directly from requirements and image observations.
+  Required dynamic levels use a named meter with a changing numeric value; invalid
+  submissions use visible, nonempty alerts and preserve the expected account/session state.
+  Generation instructions require browser assertions for those semantics.
   The separate generated UI-contract layer was removed after E036 demonstrated that
   it converted one consent control with alternative names into two required controls.
   Its earlier source and measured failures remain in Git and the experiment log.

@@ -800,3 +800,22 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - The next bounded experiment asks an independent model to review only the original
   inputs and original application source, without evaluator code or failure logs. Check
   whether it can identify these omissions before adding another automated review phase.
+
+## E038 — Independent review probes do not justify another review layer
+
+- Read-only probes send the original E037 requirement/reference input and original
+  application source to the organizer gateway. They receive no evaluator files, failure
+  logs, diagnostic fixes or known-gap list. No competition run or app edit is created.
+- Kimi K3 returns an incomplete review: 125.429 seconds, 21,048 tokens, finish `length`.
+  Qwen3.7 Plus with disabled thinking also truncates its free-form review: 51.207
+  seconds, 19,168 tokens, finish `length`. Neither is a completed review result.
+- Qwen3.6 Flash with a forced findings tool returns in 11.219 seconds / 16,614 tokens.
+  Its structured list includes multiple explicit "No discrepancy" entries, focuses on
+  language-alias interpretation, and fails to identify the two reproduced semantic gaps.
+  This experiment does not support promoting the reviewer to the completion pipeline.
+- Dev21 keeps the single implementation/verification loop. Its instructions explicitly
+  require native/ARIA meter semantics with a changing numeric value, visible alert
+  regions for validation errors, and browser assertions for both. This is a generic
+  semantic-UI contract, not copied evaluator code or a packaged task implementation.
+- All **61 local checks pass** in 28.357 seconds. Dev21 ZIP SHA-256:
+  `5d0f8e2d4de91c384fa5764353946822d29656fbc59e74e380b9b5b0c0272c27`.

@@ -35,8 +35,12 @@ do not concatenate aliases into a different label that exact-name interactions c
 Accessible-name alternatives joined by "or" describe valid names for the same control;
 do not expand them into additional controls unless separate controls are explicitly required.
 Render required dynamic values as separate elements, without merging them into greetings or
-surrounding prose. Levels, ratings and strength use a named meter; operation completion uses
-a progressbar. Provide changing value attributes. Preserve headings observed in reference images;
+surrounding prose. Levels, ratings and strength use a native <meter> or role="meter", with an
+accessible name, minimum, maximum and a numeric value that changes with input. Colored divs
+alone do not implement this semantic control. Operation completion uses a progressbar instead.
+Validation errors must be visible in a role="alert" region with meaningful text; announce
+new errors and do not rely only on color, browser-native popups or console messages.
+Preserve headings observed in reference images;
 written functional requirements override conflicting screenshot defaults or out-of-scope features.
 Handle negative cases and recovery, not just a successful demo.
 
@@ -54,6 +58,9 @@ or primary link across introductory content and navigation.
 Derive browser checks from every required scenario before implementing, including exact visible
 values and reference headings. Prefer exact text/role/label assertions from the specification;
 a substring anywhere in the page body is not sufficient evidence of the required UI contract.
+For every required dynamic indicator, assert its accessible role/name and numeric value changes.
+For each invalid form-submission scenario, assert a visible nonempty alert and the required
+unchanged account/session state. Test the required semantics, not only the fields you rendered.
 Do not install, update, uninstall or download browsers; do not modify shared /ms-playwright.
 If no browser is available, write honest HTTP/logic checks and leave official GUI checking to
 the organizer. Do not waste model calls probing browser installations or npm connectivity.
