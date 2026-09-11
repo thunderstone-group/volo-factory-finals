@@ -1,7 +1,8 @@
 {
+  "observed_at": "2026-09-11T08:38:27.813300+00:00",
+  "competition_id": "smoke",
   "source": "https://arc-bench.com/api/competitions/leaderboard?track=all&competition_id=smoke",
-  "fetched_at": "2026-09-11T07:11:42.391816+00:00",
-  "leaderboard": [
+  "rows": [
     {
       "username": "VOLO AI",
       "model_name": "deepseek-v4-flash",
@@ -22,15 +23,15 @@
       "model_name": "deepseek-v4-flash",
       "track": "smoke",
       "avg_pass_rate": 100.0,
-      "total_token_millions": 0.083,
-      "total_token_cost": 0.037884,
+      "total_token_millions": 0.002,
+      "total_token_cost": 0.017079,
       "token_cost_currency": "CNY",
-      "cost_efficiency": 2639.6368,
+      "cost_efficiency": 5855.1437,
       "efficiency_threshold": 80.0,
       "efficiency_eligible": true,
       "seniority_label": "senior",
-      "avg_runtime_seconds": 46,
-      "submission_count": 5
+      "avg_runtime_seconds": 10,
+      "submission_count": 6
     },
     {
       "username": "睿欣达工场",
@@ -75,7 +76,7 @@
       "efficiency_eligible": true,
       "seniority_label": "senior",
       "avg_runtime_seconds": 799,
-      "submission_count": 3
+      "submission_count": 4
     },
     {
       "username": "ARC",
@@ -93,21 +94,6 @@
       "submission_count": 1
     },
     {
-      "username": "testddasdfasdf",
-      "model_name": "deepseek-v4-flash",
-      "track": "smoke",
-      "avg_pass_rate": 50.0,
-      "total_token_millions": 0.0,
-      "total_token_cost": 0.0,
-      "token_cost_currency": "CNY",
-      "cost_efficiency": null,
-      "efficiency_threshold": 80.0,
-      "efficiency_eligible": false,
-      "seniority_label": "junior",
-      "avg_runtime_seconds": 393,
-      "submission_count": 2
-    },
-    {
       "username": "李尧",
       "model_name": "deepseek-v4-flash",
       "track": "smoke",
@@ -120,6 +106,21 @@
       "efficiency_eligible": false,
       "seniority_label": "junior",
       "avg_runtime_seconds": 1001,
+      "submission_count": 3
+    },
+    {
+      "username": "testddasdfasdf",
+      "model_name": "deepseek-v4-flash",
+      "track": "smoke",
+      "avg_pass_rate": 50.0,
+      "total_token_millions": 0.0,
+      "total_token_cost": 0.0,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": null,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": false,
+      "seniority_label": "junior",
+      "avg_runtime_seconds": 393,
       "submission_count": 2
     },
     {

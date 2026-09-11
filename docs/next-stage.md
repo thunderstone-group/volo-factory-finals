@@ -10,9 +10,13 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
 2. **Stateful application:** complete all currently published Ticket Booking tests.
    Independently check server-side validation, persistence after restart, session
    invalidation and duplicate-account handling described by the requirements.
-   **Upload/start unblocked:** a new CLI submission created run `0726df707e05` successfully.
-   Generation failed on its first model response read timeout at 180 seconds. Address
-   that transport deadline before judging application quality; 10 official tests remain unrun.
+   **Generation and deployment findings:** E011 reached a 180-second model read timeout.
+   E012 recovered a response after 500 seconds, then exhausted its observed token budget
+   after truncation and repeated malformed write calls. Version 0.7.0.dev3 lowers
+   DeepSeek reasoning effort and requests smaller file batches. Both E013 attempts
+   failed before generation because the executor could not find the run-local `agent.zip`;
+   the saved submission still downloads with an exact matching hash. Resume with a
+   single real run after that deployment path is available; 10 tests remain unrun.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.
    Freeze the agent version before the held-out variant; do not embed expected
    applications or change official tests. Track failures by parsing, generation,

@@ -354,7 +354,7 @@ def parser():
     run = commands.add_parser("run", help="Create a run from a saved submission, then start it")
     run.add_argument("submission")
     run.add_argument("--task", required=True)
-    for name in ("start", "status", "wait", "logs", "download"):
+    for name in ("start", "cancel", "status", "wait", "logs", "download"):
         command = commands.add_parser(name)
         command.add_argument("run")
         if name == "wait":
@@ -427,6 +427,9 @@ def main(argv=None):
             return 1 if "start_error" in result else 0
         elif args.command == "start":
             emit(client, run_summary(client.request("POST", "/runs/" + identifier(args.run) + "/start")))
+        elif args.command == "cancel":
+            client.request("POST", "/runs/" + identifier(args.run) + "/cancel")
+            emit(client, run_summary(client.request("GET", "/runs/" + identifier(args.run))))
         elif args.command == "status":
             result = client.request("GET", "/runs/" + identifier(args.run))
             emit(client, result if args.full else run_summary(result))

@@ -10,17 +10,24 @@ development milestones, not evidence of a final result.
 Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average runtime.
 Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
 dated practice milestones; the formal preliminary and final are separate competitions.
-Ticket Booking now uploads and starts successfully through the CLI. Its first generation
-attempt timed out waiting for a model response, before its 10 official tests could run.
+Ticket Booking uploads and run creation work through the CLI. The latest candidate's
+two runs failed during deployment because the executor could not find its run-local
+`agent.zip`, although the saved upload downloads with the correct hash. Earlier runs
+reached model generation; none has yet completed the 10 official tests.
 The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev1**, adds bounded context projection and
-support for ancestor-container references in requirement scheduling. It passed 26 local
-checks and parsing/scheduling for all 22 supplied requirement documents (20 unique).
-Its first Ticket Booking model request timed out at 180 seconds; no official application
-score was established. The `v0.6.0` tag preserves the source that earned the recorded wins.
+The current development candidate, **0.7.0.dev3**, adds bounded context projection,
+ancestor-container requirement scheduling, and explicit low-effort DeepSeek thinking
+for bounded coding turns. All 22 supplied requirement documents (20 unique) parse and
+schedule. A longer 600-second response wait recovered the first Ticket Booking response
+after 500 seconds, revealing excessive reasoning and truncated output; the run later
+exhausted its observed token budget. The dev3 adjustments are locally checked, but the
+new deployment error blocks their model-backed evaluation. The `v0.6.0` tag preserves
+the source that earned the recorded wins.
+All 39 local checks pass, including real HTTP repair, captured response accounting and
+the CLI's upload, polling, cancellation and failure-recovery contracts.
 
 The ArcBench entrypoint is:
 
@@ -73,7 +80,8 @@ are not an OS-level sandbox for subprocesses.
 - Small-app runtime scaffolding supplies only build, HTTP serving and browser-test lifecycle.
   Product markup, behavior, API logic and test assertions remain model-generated.
 - DeepSeek thinking/tool message continuity and explicit usage accounting.
-- DeepSeek thinking is disabled for small requirement batches and retained for larger ones.
+- DeepSeek thinking is disabled for small requirement batches and uses explicit low
+  effort for larger bounded coding turns. Product correctness still requires verification.
 - Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Context pressure first prunes old tool output, then uses a fresh workspace checkpoint

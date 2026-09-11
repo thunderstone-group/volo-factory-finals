@@ -25,6 +25,7 @@ Run from the repository root:
 ./arcbench logs RUN_ID --tail 30
 ./arcbench logs RUN_ID --offset NEXT_OFFSET --tail 30
 ./arcbench download RUN_ID --output runs/my-run/artifact.zip
+./arcbench cancel RUN_ID
 ./arcbench leaderboard --competition ticket-booking --team 'VOLO AI'
 ```
 
@@ -41,6 +42,9 @@ Saving, creating a run and starting it are distinct operations. `run` performs c
 then start. If start fails, the output retains the created run ID; inspect it before
 using `./arcbench start RUN_ID`. Mutating requests are never automatically retried.
 Network failures and server errors can have uncertain outcomes.
+`cancel` sends one cancellation request and then reads the run state. If its POST
+returns an error, inspect `status` before taking further action: E012 returned HTTP
+500 even though the state changed to CANCELLED. No automatic retry is made.
 
 The live server currently requires the latest saved submission for a competition.
 Do not create another upload while a run from the previous version is pending.
@@ -89,6 +93,7 @@ observed request shapes:
 | Download upload | `GET /api/submissions/{id}/archive` | None |
 | Create run | `POST /api/runs` | Multipart submission_id, requirement_id |
 | Start run | `POST /api/runs/{id}/start` | None |
+| Cancel run | `POST /api/runs/{id}/cancel` | None |
 | Status/logs | `GET /api/runs/{id}` and `/logs` | Logs accept log_offset |
 | Generated artifact | `GET /api/runs/{id}/workspace/template-bundle` | None |
 

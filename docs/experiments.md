@@ -184,8 +184,8 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   and Stack Overflow were rejected due to ancestor references expanded into self-cycles.
   After the fix, **22/22 documents schedule**, representing 20 unique requirement sets.
 - [Scheduling evidence](evidence/2026-09-11-corpus-scheduling.json) and [scope](corpus.md).
-- No official gateway run, score improvement or token/cost benefit is claimed for this
-  candidate. Next acceptance is a real platform run when archive availability recovers.
+- At this stage no official gateway run, score improvement or token/cost benefit was
+  claimed for this candidate. E011 records its subsequent real platform run.
 - Before publishing this development work, refreshed both public leaderboard APIs:
   VOLO AI remained rank 1 in [Smoke](evidence/2026-09-11-smoke-leaderboard-latest.json)
   and [Smoke Evolution](evidence/2026-09-11-smoke-evolution-leaderboard-latest.json).
@@ -214,3 +214,59 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - Ran the full 36-check suite, then 11 CLI checks after adding the final log-redaction
   case. Multipart encoding, cookies, archive hashes, recovery boundaries, queued-state
   waiting and actual status-field/currency mapping are covered.
+
+## E012 — Test a longer bounded model response wait
+
+- Source: `cde6cd4`, version 0.7.0.dev2. The only agent change from E011 is a default
+  individual response timeout of 600 seconds instead of 180, plus timeout trace metadata.
+  The overall 1,200-second execution deadline is unchanged. No uncertain request is retried.
+- Candidate archive SHA-256: `b666919d78db490c7007e04c7e7e31cb828e99d564b9e4c4c2208700b6d4106f`.
+- CLI saved submission `ce35147771f5`, verified the downloaded hash, and created/started
+  https://arc-bench.com/runs/2ee804a2030f. Generation started at 08:22:02 UTC.
+- A live artifact downloaded during generation showed the first response arriving
+  after **499.666 seconds**, with 4,659 prompt tokens and 66,227 completion tokens,
+  including **58,034 reasoning tokens**. Its finish reason was `length`; the incomplete
+  tool call was rejected without writing files, and the agent requested a smaller call.
+- The submitted `max_tokens: 8192` did not bound reported completion tokens in this
+  response. Do not infer a hard cost limit from it. The retained metadata fixture is
+  `tests/fixtures/real-deepseek-truncated-metadata.json`; reasoning and product code are
+  deliberately omitted from that fixture.
+- Extending the wait recovered an actual response, exposing excessive reasoning and
+  output truncation. It did not establish application correctness.
+- All 37 local checks passed after the timeout change. A passing local transport check
+  does not establish provider latency or generation quality.
+- The complete trace shows four requests totaling **190,383 reported tokens**. The
+  second response wrote configuration and DESIGN.md; the third and fourth supplied
+  malformed `write_files` arguments (`path` at the top level and a file missing its path).
+  Both were rejected. At **808.488 seconds** the agent failed its observed token-budget
+  guard, before behavioral checks or official evaluation. The budget is checked between
+  responses, so the last response can exceed the remaining amount.
+- A cancellation request during status inspection returned HTTP 500 while subsequent
+  status showed CANCELLED. The retrieved runner log independently records the budget
+  failure, process exit and container removal. Do not treat CANCELLED/null metering as
+  evidence that no model work or charges occurred; final official cost is unavailable.
+- Complete artifact SHA-256:
+  `26203ce7e9febeaecc5918e1ca8a4b6a19c549a7f0a421ffefab86d3bf659333`.
+
+## E013 — Low-effort candidate blocked during deployment
+
+- Source: `2793296`, version 0.7.0.dev3. Thinking-enabled DeepSeek requests now explicitly
+  request `reasoning_effort: low`, and the general coding prompt asks for smaller file
+  batches. Small-task thinking-disabled behavior is unchanged.
+- [DeepSeek's current official contract](https://api-docs.deepseek.com/guides/thinking_mode/)
+  documents high as the default effort and low as a supported V4 setting. Read on
+  2026-09-11; acceptance by the organizer gateway remains to be verified.
+- Candidate SHA-256: `82413746aba52bb0802dddb07ed18f19672e6a73209f2b8772882d7c1081297b`.
+  Submission `ac411627b87f` passed download/hash verification when saved and again after
+  both failed runs. The source upload is still available.
+- https://arc-bench.com/runs/fcc9a2ee4c3e and a single same-submission retry
+  https://arc-bench.com/runs/3ddae12e17ac both failed in `deploy_agent`, with missing
+  `/mnt/arcbench/bucket-15/users/<account>/runs/<run-id>/agent.zip`.
+  Neither started the model or official tests. No further identical runs were attempted.
+- This is an executor deployment-path observation, distinct from E009's create-409
+  and E011/E012's model execution problems. [Current report](ticket-booking-platform-report.md).
+- Refreshed all three public leaderboards after these attempts: VOLO AI remains first
+  on Smoke and Smoke Evolution, and third with no passing result on Ticket Booking.
+- The final development tree passed all **39 local checks** in 16.193 seconds, including
+  the real-response metadata and cancel-500/state-change regression. Local passing
+  checks do not replace the blocked model-backed evaluation.

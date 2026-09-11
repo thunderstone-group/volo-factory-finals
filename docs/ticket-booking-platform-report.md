@@ -1,9 +1,31 @@
-# Ticket Booking archive inconsistency
+# Ticket Booking storage observations
 
-**Update:** a fresh CLI upload on 2026-09-11 passed archive hash verification and started
-run `0726df707e05` successfully. The upload/start path is no longer blocking current work.
-That run failed later on a model response read timeout, a separate issue. The historical
-observations below do not establish that the platform is currently broken.
+**Latest observation, 2026-09-11 around 08:38 UTC:** saving, downloading, creating and
+queueing a run succeed, but two runs of submission `ac411627b87f` failed during deployment
+because the executor could not find its run-local `agent.zip`. The saved archive still
+downloads with the exact upload hash. Earlier CLI runs `0726df707e05` and `2ee804a2030f`
+did execute the agent. These are distinct dated observations, not one diagnosed outage.
+
+## Current deployment failure
+
+- Submission: `ac411627b87f`, `volo-factory-ticket-v0.7.0-dev3-2793296-cli`.
+- Upload and a second archive download after both failures match SHA-256
+  `82413746aba52bb0802dddb07ed18f19672e6a73209f2b8772882d7c1081297b`.
+- Run creation and start both succeeded, returning QUEUED. The runs then failed in
+  `deploy_agent`, before any model execution:
+  - https://arc-bench.com/runs/fcc9a2ee4c3e
+  - https://arc-bench.com/runs/3ddae12e17ac
+- Error: `[Errno 2] No such file or directory:
+  '/mnt/arcbench/bucket-15/users/<account>/runs/<run-id>/agent.zip'`.
+  Account-specific path text is omitted here; both run pages contain the complete error.
+- The CLI sent the official frontend's multipart `submission_id` and `requirement_id`
+  fields to `/api/runs`, followed by POST `/api/runs/{id}/start`. It did not re-upload
+  between the two attempts. No further identical run was attempted after the retry.
+
+Please inspect the saved-archive to run-directory copy and the executor's storage
+visibility for these IDs. Client evidence does not identify the server-side cause.
+
+## Earlier archive availability observations
 
 Observed 2026-09-11 on [Ticket Booking](https://arc-bench.com/competitions/ticket-booking/tasks/ticket-booking--ticket-booking).
 Prepared for the user to forward to the organizer; no external report was sent by the agent.
@@ -31,7 +53,7 @@ or backends for these IDs. Client evidence establishes the contradictory availab
 results, but does not identify the server-side root cause. Repeated re-uploads were
 stopped after the controls above.
 
-## Current recheck through the CLI
+## Earlier successful recheck through the CLI
 
 The organizer reported that the submission path was currently normal. We rechecked
 using the deployed official web client's request contract and the logged-in account:
@@ -45,5 +67,5 @@ using the deployed official web client's request contract and the logged-in acco
 - Creating and starting `0726df707e05` succeeded. CLI polling observed QUEUED, RUNNING,
   then FAILED in agent execution. Downloading its generated artifact also succeeded.
 
-These checks confirm the current path works with a new latest submission. They do
+Those checks confirmed the path worked with a new latest submission at that time. They do
 not retrospectively identify the server-side cause of the earlier archive errors.

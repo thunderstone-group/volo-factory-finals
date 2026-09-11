@@ -10,7 +10,7 @@ import tempfile
 import threading
 import unittest
 import zipfile
-from contextlib import redirect_stdout
+from contextlib import redirect_stdout, redirect_stderr
 from email.parser import BytesParser
 from email.policy import default
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -63,6 +63,9 @@ class Website:
                     status, result = (409, {"detail": "The submitted agent archive is no longer available"}) if owner.create_failure else (200, {"run": {"id": "run-1"}})
                 elif self.path == "/api/runs/run-1/start":
                     status, result = (503, {"detail": "upstream unavailable"}) if owner.start_failure else (200, {"id": "run-1", "status": "RUNNING"})
+                elif self.path == "/api/runs/run-1/cancel":
+                    owner.run_states = ["CANCELLED"]
+                    status, result = 500, {"detail": "Internal Server Error"}
                 elif self.path == "/api/runs/run-1":
                     result = {"id": "run-1", "status": owner.run_states[0]}
                     if len(owner.run_states) > 1:
@@ -178,6 +181,19 @@ class PlatformTests(unittest.TestCase):
             with self.assertRaises(APIError):
                 client.authenticate({"origin": server.origin, "cookies": []})
             self.assertEqual(self.session.read_bytes(), before)
+
+    def test_cancel_error_can_follow_state_change_without_retry(self):
+        # E012 returned HTTP 500 after its status changed to CANCELLED.
+        with Website() as server:
+            client = self.client(server)
+            output = io.StringIO()
+            with redirect_stderr(output):
+                code = main(['--origin', server.origin, '--session', str(self.session), 'cancel', 'run-1'])
+            self.assertEqual(code, 1)
+            self.assertTrue(json.loads(output.getvalue())['outcome_uncertain'])
+            self.assertEqual(client.request('GET', '/runs/run-1')['status'], 'CANCELLED')
+            self.assertEqual([r['path'] for r in server.requests if r['method'] == 'POST'],
+                             ['/api/runs/run-1/cancel'])
 
     def test_foreign_cookie_and_redirect_are_rejected(self):
         with Website() as server:

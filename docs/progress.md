@@ -106,3 +106,23 @@ each rule snapshot and experiment with date and source.
 - The run then failed waiting for the first model response after 180 seconds. The
   downloaded artifact confirms a read timeout before generation or official tests.
   This separates the CLI integration result from the agent's remaining execution issue.
+
+## 2026-09-11 — Reasoning evidence and a new deployment failure
+
+- E012's 600-second read timeout recovered the first response after 500 seconds. The
+  response reported 58,034 reasoning tokens and truncated its tool arguments. Later
+  requests wrote configuration but repeated malformed file-write arguments; the agent
+  exhausted its observed token budget at 190,383 reported tokens. Official tests did
+  not run. Source traces and redacted usage metadata preserve this result.
+- Version 0.7.0.dev3 explicitly requests low-effort DeepSeek thinking and asks for smaller
+  file batches. Its saved ZIP downloads with an exact hash match.
+- Both new runs failed before generation because the executor could not find run-local
+  `agent.zip`. Stopped after one same-submission retry and updated the concrete report.
+  The low-effort policy therefore has local validation only; no improved score is claimed.
+- CLI cancellation was also exercised. A returned HTTP 500 was followed by a CANCELLED
+  state, so the client preserves uncertain outcomes and never retries mutations silently.
+- Refreshed leaderboard snapshots: both v0.6 Smoke wins remain current at observation;
+  Ticket Booking has no passing application result. Ticket Evolution remains unpublished.
+- All 39 local checks passed on the final development tree. The candidate, CLI,
+  experiment outcomes, current deployment report and dated board snapshots are versioned
+  together on `feat/platform-cli`.
