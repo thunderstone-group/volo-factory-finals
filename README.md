@@ -6,7 +6,7 @@ development milestones, not evidence of a final result.
 
 ## Status
 
-Version 0.1 is implemented and undergoing platform validation. The design and competition facts are recorded in
+Version 0.2 is implemented and undergoing platform validation. The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
@@ -47,6 +47,7 @@ are not an OS-level sandbox for subprocesses.
 - Dependency-ordered requirement batches and existing-project preservation.
 - Batched file edits, bounded commands, build/start/behavioral-check verification, repair loop.
 - DeepSeek thinking/tool message continuity and explicit usage accounting.
+- Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
 - Default caps: 32 attempted requests, 150,000 observed tokens, 1,200 seconds and

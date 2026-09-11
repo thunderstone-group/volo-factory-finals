@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import signal
+import shutil
 import socket
 import subprocess
 import time
@@ -16,6 +17,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from .environment import discover_playwright
 from .trace import Trace, atomic_json
 
 
@@ -42,6 +44,9 @@ def tool_environment(extra=None):
     env.update({"CI": "1", "GIT_TERMINAL_PROMPT": "0"})
     if extra:
         env.update(extra)
+    # Installing an agent's browser library must never garbage-collect the
+    # organizer's pinned browser revision from a shared /ms-playwright cache.
+    env["PLAYWRIGHT_SKIP_BROWSER_GC"] = "1"
     return env
 
 
@@ -52,6 +57,14 @@ class Workspace:
         self.counter = 0
         self.last_verification = None
         self.root.mkdir(parents=True, exist_ok=True)
+        self.node_available = bool(shutil.which("node"))
+        self.browser = discover_playwright(self.root)
+        self.runtime_env = {}
+        if self.browser.get("available"):
+            self.runtime_env["FACTORY_PLAYWRIGHT_MODULE"] = self.browser["module"]
+        else:
+            self.runtime_env["PLAYWRIGHT_BROWSERS_PATH"] = str(self.trace.directory / "browsers")
+        self.trace.event("browser_environment", **self.browser)
 
     def path(self, name: str, *, write=False) -> Path:
         if not isinstance(name, str) or not name or Path(name).is_absolute():
@@ -157,7 +170,7 @@ class Workspace:
         timed_out = False
         with log.open("wb") as output:
             process = subprocess.Popen(argv, cwd=working, stdout=output, stderr=subprocess.STDOUT,
-                                       env=tool_environment(extra_env), start_new_session=True)
+                                       env=tool_environment({**self.runtime_env, **(extra_env or {})}), start_new_session=True)
             try:
                 process.wait(timeout=timeout)
             except subprocess.TimeoutExpired:
@@ -197,6 +210,9 @@ class Workspace:
             raise ValueError("Supply a concrete behavioral check command")
         if check_command[0] not in ("node", "npm", "npx", "python", "python3"):
             raise ValueError("Use a Node/Python test runner for behavioral checks")
+        if (self.last_verification and self.last_verification.get("check_command") == check_command
+                and self.last_verification.get("source_fingerprint") == self.fingerprint()):
+            return {**self.last_verification, "reused_unchanged_verification": True}
         self.last_verification = None
         steps = []
         def result(ok, **extra):
@@ -235,7 +251,7 @@ class Workspace:
             with server_log.open("wb") as output:
                 process = subprocess.Popen(["npm", "run", "start"], cwd=self.root / "backend",
                                            stdout=output, stderr=subprocess.STDOUT,
-                                           env=tool_environment({"PORT": str(port)}), start_new_session=True)
+                                           env=tool_environment({**self.runtime_env, "PORT": str(port)}), start_new_session=True)
                 try:
                     end = min(time.monotonic() + 30, self.deadline)
                     ready = False

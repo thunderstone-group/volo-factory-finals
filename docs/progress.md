@@ -31,6 +31,18 @@ and iterate from observed failures. A generated app or mock transport test is no
 - Fixed a macOS `/var` versus `/private/var` path normalization issue found by execution tests.
 - Current limitation: binary reference images are not yet analyzed.
 
+## 2026-09-11 — First platform failure and version 0.2
+
+- First real gateway run completed generation and self-checks, but official evaluation
+  failed before any app assertions: the required Chromium revision was missing.
+- Downloaded and inspected the actual run artifact. The generated checks installed a
+  newer Playwright, whose browser garbage collection removed the evaluator's pinned revision.
+- Added deterministic browser-module discovery, preserved the official cache, reduced
+  redundant environment probing, and reused verification only for an unchanged source tree.
+- Added a redacted fixture from the real gateway response and regression checks for
+  browser-cache protection and existing-tool discovery. All 16 local checks passed.
+- See `experiments.md` for official run link, source commit, measured cost and failure evidence.
+
 ### Evidence and privacy
 
 Commit source, plans, redacted experiment summaries, selected reproducible fixtures

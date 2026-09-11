@@ -1,4 +1,4 @@
-"""Deterministic engineering checks. Model responses here are synthetic protocol fixtures.
+"""Deterministic checks using labeled synthetic fixtures and redacted real gateway responses.
 
 They validate orchestration, not coding quality; official runs must validate the model.
 """
@@ -18,10 +18,11 @@ from pathlib import Path
 from unittest.mock import patch
 
 from volo.agent import Agent
+from volo.environment import discover_playwright
 from volo.model import Model, ModelError
 from volo.requirements import RequirementSet
 from volo.trace import Runtime, Trace
-from volo.workspace import Workspace
+from volo.workspace import Workspace, tool_environment
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -84,6 +85,23 @@ children:
 
 
 class WorkspaceTests(TempCase):
+    def test_browser_gc_cannot_be_enabled_by_inherited_or_extra_environment(self):
+        with patch.dict(os.environ, {"PLAYWRIGHT_SKIP_BROWSER_GC": "0"}):
+            self.assertEqual(tool_environment({"PLAYWRIGHT_SKIP_BROWSER_GC": "0"})["PLAYWRIGHT_SKIP_BROWSER_GC"], "1")
+
+    def test_browser_discovery_uses_existing_compatible_module(self):
+        if not shutil.which("node"):
+            self.skipTest("Node required")
+        module = self.out / "node_modules/playwright"
+        module.mkdir(parents=True)
+        executable = self.base / "fake-browser-binary"
+        executable.touch()
+        (module / "package.json").write_text('{"name":"playwright","main":"index.js"}')
+        (module / "index.js").write_text("exports.chromium={executablePath:()=>" + json.dumps(str(executable)) + "};")
+        result = discover_playwright(self.out)
+        self.assertTrue(result["available"])
+        self.assertEqual(Path(result["module"]).resolve(), (module / "index.js").resolve())
+
     def test_guarded_paths_and_symlink_escape(self):
         (self.out / "external").symlink_to(self.base)
         for path in ("../escape", "/tmp/escape", "external/escape", ".arc/runner-events.jsonl",
@@ -184,6 +202,8 @@ class ExecutionTests(TempCase):
         result = self.workspace.verify(["node", "checks/greeting.cjs"])
         self.assertTrue(result["passed"], result)
         self.assertEqual(result["official_evaluation"], "pending")
+        reused = self.workspace.verify(["node", "checks/greeting.cjs"])
+        self.assertTrue(reused["reused_unchanged_verification"])
         self.workspace.edit("checks/greeting.cjs", "'hello'", "'wrong'")
         result = self.workspace.verify(["node", "checks/greeting.cjs"])
         self.assertFalse(result["passed"])
@@ -220,6 +240,16 @@ class ExecutionTests(TempCase):
             model = Model(server.url, "synthetic-test-key", "test", self.trace)
             model.complete([], [])
             self.assertEqual(model.usage.missing_usage_calls, 1)
+
+    def test_captured_real_gateway_response_preserves_reasoning_and_usage(self):
+        fixture = json.loads((ROOT / 'tests/fixtures/real-deepseek-tool-responses.json').read_text())
+        with FakeGateway(fixture['responses']) as server:
+            model = Model(server.url, "synthetic-test-key", "deepseek-v4-flash", self.trace)
+            message, _ = model.complete([], [])
+            followup = [{**message}, {"role": "tool", "tool_call_id": message['tool_calls'][0]['id'], "content": '{}'}]
+            model.complete(followup, [])
+            self.assertEqual(server.requests[1]['messages'][0], message)
+            self.assertEqual(model.usage.total_tokens, 5768)
 
 
 class PackagingTests(unittest.TestCase):

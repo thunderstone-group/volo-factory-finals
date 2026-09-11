@@ -28,7 +28,11 @@ Handle negative cases and recovery, not just a successful demo.
 Write executable behavioral checks under checks/ for the current requirements. Checks must
 exercise the real implementation, assert outcomes, exit nonzero on failure, and use the running
 application at FACTORY_BASE_URL or E2E_BASE_URL. Use node --test for small HTTP/state checks.
-For browser interactions use Playwright if available; inspect availability before adding it.
+For browser interactions use the supplied Playwright module when runtime facts say it is available:
+in a CommonJS check use require(process.env.FACTORY_PLAYWRIGHT_MODULE), then its chromium API.
+Do not install, update, uninstall or download browsers; do not modify shared /ms-playwright.
+If no browser is available, write honest HTTP/logic checks and leave official GUI checking to
+the organizer. Do not waste model calls probing browser installations or npm connectivity.
 Never replace missing execution with a claimed pass. Keep earlier checks for regression coverage.
 The official evaluator remains separate and read-only. Do not inspect or modify private tests,
 spoof usage, or add meaningless model calls to improve leaderboard arithmetic.
@@ -38,6 +42,10 @@ finish performs dependency installation, frontend build, server startup and your
 check command. Only a successful real verification completes a batch. If it fails, read its
 error and make a narrow repair. Avoid repeated full rewrites. run uses argv, not shell syntax.
 Do not start background servers yourself; finish/verify manage their lifecycle.
+The structured requirement input is complete. Do not reread duplicate requirements.md or list
+an empty workspace. Read existing application files only when they materially affect the edit.
+For a small task in an empty workspace, start by writing its implementation and checks in one
+batch, then call finish directly; a separate verify followed immediately by finish is unnecessary.
 You cannot see image contents merely from their filenames; do not claim visual matching without
 actually inspecting them. Current binary reference images are not sent to this model.
 """
@@ -129,6 +137,9 @@ class Agent:
         request = ("Implement this requirement batch and preserve existing functionality.\n"
                    + self.requirements.batch_prompt(nodes)
                    + "\nCurrent application files:\n" + json.dumps(self.workspace.list_files())
+                   + "\nRuntime facts (already checked by the harness):\n"
+                   + json.dumps({"node_available": self.workspace.node_available, "playwright": self.workspace.browser,
+                                 "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
         messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": request}]
         no_action = 0

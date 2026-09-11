@@ -18,6 +18,7 @@ class Usage:
     calls: int = 0
     prompt_tokens: int = 0
     completion_tokens: int = 0
+    cached_prompt_tokens: int = 0
     missing_usage_calls: int = 0
 
     @property
@@ -73,6 +74,7 @@ class Model:
             if isinstance(usage, dict) and usage.get("prompt_tokens") is not None and usage.get("completion_tokens") is not None:
                 self.usage.prompt_tokens += int(usage["prompt_tokens"])
                 self.usage.completion_tokens += int(usage["completion_tokens"])
+                self.usage.cached_prompt_tokens += int((usage.get("prompt_tokens_details") or {}).get("cached_tokens", 0))
             else:
                 self.usage.missing_usage_calls += 1
             self.trace.event("model_response", response=result,
