@@ -33,6 +33,7 @@ Run from the repository root:
 ./arcbench logs RUN_ID --tail 30
 ./arcbench logs RUN_ID --offset NEXT_OFFSET --tail 30
 ./arcbench download RUN_ID --output runs/my-run/artifact.zip
+./arcbench source RUN_ID .factory/events.jsonl --output runs/my-run/events.jsonl
 ./arcbench cancel RUN_ID
 ./arcbench leaderboard --competition ticket-booking --team 'VOLO AI'
 ```
@@ -130,3 +131,9 @@ multipart bytes, cookie affinity, private persistence, redaction, redirect bound
 archive verification, create/start failure handling and waiting through QUEUED.
 A labeled real status fixture validates the actual pass-count and currency fields.
 Those tests complement the real platform run; they do not substitute for it.
+
+`source` uses the official file viewer's `GET /api/runs/{id}/source?file_path=...&kind=file`
+route, verified against E020's live observation cache, app source and event trace. It saves
+one redacted text file with mode 0600 and prints only metadata. This avoids downloading
+the entire template ZIP merely to inspect a small diagnostic file. The output path must
+not exist. All 16 CLI checks pass after adding its request/redaction contract.

@@ -376,6 +376,10 @@ def parser():
     archive = commands.add_parser("archive")
     archive.add_argument("submission")
     archive.add_argument("--output", required=True, type=Path)
+    source = commands.add_parser("source", help="Read one workspace text file without downloading the whole artifact")
+    source.add_argument("run")
+    source.add_argument("file")
+    source.add_argument("--output", required=True, type=Path)
     board = commands.add_parser("leaderboard")
     board.add_argument("--competition", required=True)
     board.add_argument("--team")
@@ -500,6 +504,23 @@ def main(argv=None):
                 stream.write(raw)
             emit(client, {"path": str(args.output.resolve()), "bytes": len(raw),
                           "sha256": hashlib.sha256(raw).hexdigest()})
+        elif args.command == "source":
+            if args.output.exists():
+                raise ValueError("Output already exists; choose a new path")
+            key = client.request("GET", "/auth/access-key").get("api_key")
+            if key:
+                client.known_secrets.append(key)
+            query = urllib.parse.urlencode({'file_path': args.file, 'kind': 'file'})
+            result = client.request("GET", "/runs/" + identifier(args.run) + "/source?" + query)
+            if not isinstance(result.get('content'), str):
+                raise ValueError('Source endpoint returned no text content')
+            content = client.safe(result['content']).encode()
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            fd = os.open(args.output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(fd, 'wb') as stream:
+                stream.write(content)
+            emit(client, {'path': str(args.output.resolve()), 'file_path': result.get('file_path'),
+                          'bytes': len(content), 'sha256': hashlib.sha256(content).hexdigest()})
         elif args.command == "leaderboard":
             query = urllib.parse.urlencode({"track": "all", "competition_id": args.competition})
             rows = client.request("GET", "/competitions/leaderboard?" + query)

@@ -77,6 +77,9 @@ class Website:
                     result = {"id": "run-1", "status": owner.run_states[0]}
                     if len(owner.run_states) > 1:
                         owner.run_states.pop(0)
+                elif self.path.startswith('/api/runs/run-1/source?'):
+                    result = {'file_path': '.factory/trace.jsonl', 'kind': 'file', 'language': 'json',
+                              'content': 'safe\nsynthetic-model-secret', 'first_line': 1}
                 body = result if isinstance(result, bytes) else json.dumps(result).encode()
                 self.send_response(status)
                 self.send_header("Content-Type", mime)
@@ -176,6 +179,20 @@ class PlatformTests(unittest.TestCase):
                 client.request('POST', '/runs/run-1/start')
             self.assertTrue(caught.exception.details['outcome_uncertain'])
             self.assertEqual(sum(r['method'] == 'POST' for r in server.requests), 1)
+
+    def test_source_reads_only_requested_file_and_saves_redacted_private_text(self):
+        with Website() as server:
+            self.client(server)
+            destination = self.root / 'trace.jsonl'
+            output = io.StringIO()
+            with redirect_stdout(output):
+                code = main(['--origin', server.origin, '--session', str(self.session),
+                             'source', 'run-1', '.factory/trace.jsonl', '--output', str(destination)])
+            self.assertEqual(code, 0)
+            self.assertEqual(destination.read_text(), 'safe\n[REDACTED]')
+            self.assertEqual(stat.S_IMODE(destination.stat().st_mode), 0o600)
+            self.assertIn('file_path=.factory%2Ftrace.jsonl&kind=file', server.requests[-1]['path'])
+            self.assertTrue(all(r['method'] == 'GET' for r in server.requests))
 
     def test_meter_uses_separate_auth_route_and_preserves_decimal_balance(self):
         # Endpoint/field shapes verified against the live meter; amounts are synthetic.
