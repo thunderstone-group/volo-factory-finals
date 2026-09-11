@@ -47,6 +47,11 @@ test('scenario',async(page)=>{ /* page starts on home; Playwright page and Node 
 Await Playwright operations before passing values to Node assertions. Use locator.waitFor()
 for eventual visibility and page.waitForURL()/waitForFunction() for asynchronous changes.
 Each test gets a fresh browser. Use process.env.FACTORY_BASE_URL for absolute navigations.
+Start with a compact test of the reference section headings and required changing status widgets.
+Use shared helpers for valid data, registration, login and logout instead of repeating workflows.
+Build all negative examples by changing ONLY the intended invalid field of otherwise valid data.
+Duplicate-account tests must keep every other field valid. Check the intended error, not a field
+label or static hint already present before submission. Keep the complete script below 120 lines.
 Do not import @playwright/test, install dependencies, launch browsers, read application source,
 write files, call process.exit, skip assertions or change tests/evaluation infrastructure.
 Keep shared form-filling helpers concise. Output only the requested tool call."""

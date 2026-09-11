@@ -10,6 +10,7 @@ development milestones, not evidence of a final result.
 Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average runtime.
 Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
 dated practice milestones; the formal preliminary and final are separate competitions.
+The September 12 refresh keeps Smoke first and places Smoke Evolution second.
 Ticket Booking uploads, generation and all 10 official tests now execute. The latest
 evaluated candidate passed 5/10; its original app passes 9/10 in a local replay of the
 unchanged public tests. Input-reference and UI-contract gaps remain. Historical upload
@@ -18,11 +19,13 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev7**, adds input-derived browser checks
-generated before implementation and fixed throughout repair. Dev6 successfully observes
+The current development candidate, **0.7.0.dev8**, reduces repeated context after dev7
+exhausted its token budget before verification. Input-derived browser checks are generated
+before implementation and fixed throughout repair; their script is now read on demand.
+Dev6 successfully observes
 all relevant images through the metered gateway, but its implementation and self-checks
-still omit a reference heading and choose the wrong strength-widget role. Dev7's
-independent checks are the next official evaluation gate.
+still omit a reference heading and choose the wrong strength-widget role. Dev8's
+completed verification and official score are the next evaluation gate.
 Version dev4 already verifies browser checks and serves the same app on both observed
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
@@ -99,7 +102,7 @@ are not an OS-level sandbox for subprocesses.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Context pressure first prunes old tool output, then uses a fresh workspace checkpoint
   plus complete recent tool exchanges. Retained reasoning fields stay intact; raw trace
-  evidence is preserved. The 160,000-character limit is not a provider token estimate.
+  evidence is preserved. The 60,000-character limit is not a provider token estimate.
 - Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
 - Default caps: 32 attempted requests, 150,000 observed tokens, 1,200 seconds and
   16,384 output tokens per coding request. Environment overrides use `FACTORY_MAX_CALLS`,

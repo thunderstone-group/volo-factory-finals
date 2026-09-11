@@ -417,3 +417,36 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   a later attempt to replace the check with an unconditional exit.
 - Added a live-verified CLI `source` command for reading individual run files, avoiding
   full ZIP downloads for small diagnostics. This CLI change is outside the agent upload.
+
+## E021 — Independent planning exposes a context-cost regression
+
+- Source `084bc76`, dev7 ZIP SHA-256
+  `786c9cc7a78fc4aa00d5e37dc6b133ab40fbee99425207b3b8a9ee145b9d8a8e`.
+  Run `cbe2fc6a6286` fails before generation because run-local `agent.zip` is missing.
+  Another account submission becomes latest before the retry; re-saving the identical
+  ZIP as `e302cde50c01` passes the download/hash check.
+- https://arc-bench.com/runs/8ca2006ca78d deploys successfully, then stops at the
+  **150,000 reported-token budget before verification**. Official results: 211 seconds,
+  537,677 tokens, CNY 1.240562, no tests reached. Another account run overlaps.
+- Actual seven-response usage is **154,583 tokens**: 121,475 prompt and 33,108 completion,
+  including 78,144 cached prompt tokens. Image observation takes 47.658 seconds;
+  the 11-test planning response takes 25.616 seconds and 10,969 tokens.
+- The first coding response has malformed JSON despite `finish_reason=tool_calls`.
+  The agent recovers with four smaller write calls and creates the application/check
+  files, but stops just before a verification call. Requests grow from 39,821 to
+  122,281 serialized message characters, below the old 160,000-character projection
+  threshold, so the failed response remains in every subsequent request.
+- The fixed script also omits a reference heading and uses invalid short document
+  numbers in some negative examples. Its independent origin does not make its content
+  an accuracy oracle; neither app acceptance nor a functional score is claimed.
+- Offline replay of the exact logged application writes: the unchanged public suite
+  fails all 10 tests at duplicate registration links. The original fixed script passes
+  8/11 and rejects duplicate registration/login navigation and the logout flow in
+  11.129 seconds. It would have blocked acceptance had execution reached verification.
+  The short-document negative examples do not fail in this replay because the generated
+  backend reports multiple validation errors; no such false-failure claim is made.
+- Dev8 projects above 60,000 characters, supplies only fixed-check coverage by default,
+  and exposes the exact fixed script through a read-only tool when needed. Planner
+  guidance asks for shared valid-data helpers, isolated negative changes, reference
+  headings/status checks, and compact scripts. Supplemental checks focus on uncovered
+  server behavior. All **56 local checks pass** in 25.937 seconds.

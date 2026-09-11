@@ -55,6 +55,9 @@ Do not install, update, uninstall or download browsers; do not modify shared /ms
 If no browser is available, write honest HTTP/logic checks and leave official GUI checking to
 the organizer. Do not waste model calls probing browser installations or npm connectivity.
 Never replace missing execution with a claimed pass. Keep earlier checks for regression coverage.
+The fixed input-derived browser checks run automatically. Their coverage is supplied below;
+call read_acceptance only if you need the exact script to understand a failure. Do not duplicate
+all fixed browser flows in supplemental checks; focus those on server validation and persistence.
 The official evaluator remains separate and read-only. Do not inspect or modify private tests,
 spoof usage, or add meaningless model calls to improve leaderboard arithmetic.
 
@@ -110,6 +113,7 @@ TOOLS = [
                  "path": STR, "content": STR}, "required": ["path", "content"],
                  "additionalProperties": False}}, "check_command": STRINGS}, ["files", "check_command"]),
     function("list_files", "List application source files, excluding runtime/cache directories.", {}, []),
+    function("read_acceptance", "Read the current fixed input-derived browser checks without changing them.", {}, []),
     function("read_files", "Read up to 20 UTF-8 files. Input assets use @requirements/<path>.",
              {"paths": STRINGS}, ["paths"]),
     function("write_files", "Atomically write a batch of complete UTF-8 files inside the application.",
@@ -127,7 +131,7 @@ TOOLS = [
 
 class Agent:
     def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
-                 token_budget=150000, max_context_chars=160000, references=None, acceptance=None):
+                 token_budget=150000, max_context_chars=60000, references=None, acceptance=None):
         self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
@@ -175,6 +179,8 @@ class Agent:
             raise ValueError(f"Unknown tool: {name}")
         if not isinstance(args, dict):
             raise ValueError("Tool arguments must be a JSON object")
+        if name == 'read_acceptance':
+            return self.acceptance_context or {'coverage': [], 'script': ''}
         if name == 'build_app':
             args.setdefault('app_js', '')
             result = implement(self.workspace, **args)
@@ -201,7 +207,8 @@ class Agent:
                    + json.dumps(self.reference_context, ensure_ascii=False)
                    + '\nFixed acceptance checks generated independently from inputs before implementation. '
                      'Verification always runs them; implement their product contract and do not modify them:\n'
-                   + json.dumps(self.acceptance_context, ensure_ascii=False)
+                   + json.dumps({key: self.acceptance_context[key] for key in ('path', 'coverage')}
+                                if self.acceptance_context else None, ensure_ascii=False)
                    + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
 
     def context_checkpoint(self, nodes, system, last_failure):

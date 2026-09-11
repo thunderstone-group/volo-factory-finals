@@ -145,3 +145,18 @@ each rule snapshot and experiment with date and source.
 - Used the user-supplied standalone ArcBench CLI for a successful real submission;
   the existing thin CLI handles hash/status/balance evidence. All credentials remain
   in private configuration outside Git. No other team's run or source was modified.
+
+## 2026-09-12 (Asia/Taipei) — Reference flow and independent checks
+
+- Dev5's full-resolution image group hits gateway HTTP 413. Dev6 bounds the encoded
+  payload; the real three-image flow succeeds and the app scores 5/10 officially,
+  compared with 9/10 when replaying the unchanged public tests locally.
+- Dev7 adds browser acceptance planning before implementation. It exposes a context
+  cost regression: seven responses consume 154,583 tokens and stop before verification.
+  Dev8 reduces repeated context and compacts planning guidance; 56 local checks pass.
+- Refreshed leaderboards: Smoke remains first; Smoke Evolution is now second behind
+  a lower-cost 100% entry. Ticket Booking's account entry is second at 70%, from a
+  separate submission; this new agent's best official Ticket result remains 50%.
+- Individual-source retrieval now avoids full artifacts for small diagnostic files.
+  Read-only polling tolerates bounded transient transport failures. Platform archive
+  deployment still intermittently fails, while successful starts reach model execution.

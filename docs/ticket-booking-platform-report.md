@@ -1,6 +1,20 @@
 # Ticket Booking platform observations
 
-**New observation at 17:35 UTC:** submission `e22044e619ac` downloads with its exact
+**Latest observations, 2026-09-11 at 18:08 UTC:** dev6 run `15daf231bb0e` completes
+generation and official evaluation at 5/10. Its original generated application replays
+the unchanged public suite locally at 9/10; official execution also reports page crashes
+and interaction timeouts whose environment cause remains unconfirmed. The normalized
+image payload is accepted by the gateway.
+
+Dev7 run `cbe2fc6a6286` again fails before generation with missing run-local `agent.zip`.
+A retry request is rejected with 409 because a separate shared-account submission has
+become latest. Re-saving the **identical** dev7 ZIP yields submission `e302cde50c01`;
+its downloaded hash matches `786c9cc7a78fc4aa00d5e37dc6b133ab40fbee99425207b3b8a9ee145b9d8a8e`.
+Run `8ca2006ca78d` deploys successfully and reaches model execution. These observations
+show intermittent archive deployment, not a continuous outage. They do not establish
+the server-side cause or link it to concurrent activity.
+
+**Observation at 17:35 UTC:** submission `e22044e619ac` downloads with its exact
 hash, but run `dd19e1660e38` again lacks run-local `agent.zip`. One same-submission
 retry `6bdd4e55d7cb` deploys correctly, then fails on the agent's oversized image
 request (gateway HTTP 413). This confirms intermittent deployment behavior alongside
