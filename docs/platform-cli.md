@@ -36,7 +36,14 @@ Run from the repository root:
 ./arcbench source RUN_ID .factory/events.jsonl --output runs/my-run/events.jsonl
 ./arcbench cancel RUN_ID
 ./arcbench leaderboard --competition ticket-booking --team 'VOLO AI'
+./arcbench leaderboard --competition ticket-booking --task ticket-booking
 ```
+
+The optional task filter matches the website's task selector, including its suffix
+normalization for full requirement IDs. On September 12, the aggregate leaderboard
+returned HTTP 500 while `--task ticket-booking` returned current rows successfully.
+The CLI preserves that server order and applies team filtering after assigning positions;
+it does not silently substitute a task board for an aggregate result.
 
 Output is compact JSON; `wait` emits JSON lines only when the summarized state changes.
 The summary includes official pass counts/rate, duration, model usage, explicit cost

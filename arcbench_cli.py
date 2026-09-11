@@ -382,6 +382,7 @@ def parser():
     source.add_argument("--output", required=True, type=Path)
     board = commands.add_parser("leaderboard")
     board.add_argument("--competition", required=True)
+    board.add_argument("--task", help="Filter by task slug or full requirement ID")
     board.add_argument("--team")
     board.add_argument("--limit", type=int, default=10)
     return root
@@ -522,7 +523,10 @@ def main(argv=None):
             emit(client, {'path': str(args.output.resolve()), 'file_path': result.get('file_path'),
                           'bytes': len(content), 'sha256': hashlib.sha256(content).hexdigest()})
         elif args.command == "leaderboard":
-            query = urllib.parse.urlencode({"track": "all", "competition_id": args.competition})
+            filters = {"track": "all", "competition_id": args.competition}
+            if args.task and args.task != 'all':
+                filters['task_id'] = args.task.split('--')[-1]
+            query = urllib.parse.urlencode(filters)
             rows = client.request("GET", "/competitions/leaderboard?" + query)
             ranked = [{"rank": index + 1, **row} for index, row in enumerate(rows)]
             if args.team:

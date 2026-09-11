@@ -58,6 +58,9 @@ class Website:
                     result = {"as_of": "2026-09-11T08:52:24Z", "pending_billing_events": 0}
                 elif self.path == "/api/auth/access-key":
                     result = {"api_key": "synthetic-model-secret"}
+                elif self.path.startswith('/api/competitions/leaderboard?'):
+                    result = [{'username': 'first-team', 'avg_pass_rate': 100},
+                              {'username': 'second-team', 'avg_pass_rate': 80}]
                 elif self.path == "/api/submissions":
                     owner.archive = parts["file"]
                     result = {"submission": {"id": "submission-1", "api_key": "synthetic-model-secret"}}
@@ -137,6 +140,21 @@ class PlatformTests(unittest.TestCase):
     def upload(self, client):
         return client.upload(self.archive, "ticket-booking", "合约测试", "deepseek-v4-flash",
                              "https://api.arc-bench.com/v1", "python")
+
+    def test_filtered_leaderboard_matches_task_suffix_and_keeps_server_order(self):
+        with Website() as server:
+            self.client(server)
+            output = io.StringIO()
+            with redirect_stdout(output):
+                code = main(['--origin', server.origin, '--session', str(self.session),
+                             'leaderboard', '--competition', 'sample', '--task', 'sample--a & b',
+                             '--team', 'second-team'])
+            self.assertEqual(code, 0)
+            rows = json.loads(output.getvalue())
+            self.assertEqual(rows[0]['rank'], 2)
+            self.assertEqual(rows[0]['username'], 'second-team')
+            self.assertEqual(server.requests[-1]['path'],
+                '/api/competitions/leaderboard?track=all&competition_id=sample&task_id=a+%26+b')
 
     def test_upload_hash_run_sequence_and_cookie_affinity(self):
         with Website() as server:
