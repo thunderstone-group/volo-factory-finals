@@ -189,3 +189,28 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - Before publishing this development work, refreshed both public leaderboard APIs:
   VOLO AI remained rank 1 in [Smoke](evidence/2026-09-11-smoke-leaderboard-latest.json)
   and [Smoke Evolution](evidence/2026-09-11-smoke-evolution-leaderboard-latest.json).
+
+## E011 — Real CLI integration and a model response timeout
+
+- User requested a CLI to replace repeated browser operations. Implemented `./arcbench`
+  using the deployed official frontend's API contract. Normal operations now use HTTP
+  with an origin-scoped cookie jar, including the route-affinity cookie.
+- Rechecking the older submission returned the server's latest-submission-only rule.
+  Fresh upload `c522484096e0` saved and passed download/SHA-256 verification. Agent
+  source remains `b0e46b9` / 0.7.0.dev1 with the E010 archive hash.
+- CLI created and started https://arc-bench.com/runs/0726df707e05, observed QUEUED and
+  RUNNING, waited until FAILED, read the actual logs and downloaded the artifact.
+  This verifies the CLI upload/run/status/wait/log/download integration independently
+  of whether the generated application succeeds.
+- The first model request used `deepseek-v4-flash`, thinking enabled, non-streaming,
+  max_tokens 8192. The trace reported `The read operation timed out` after 180.355
+  seconds. No completed response or tool action followed; official tests were not reached.
+- Platform recorded 180 seconds and 0 tokens / CNY 0. The transport result is uncertain;
+  the client cannot infer that the upstream provider consumed no computation.
+- Artifact SHA-256: `900deacb759d11c3027589e9bb6c76486ece8e3a049850b9664e5c7b40480022`;
+  retained privately under ignored `runs/e011-ticket-cli/` with the extracted trace.
+- Current upload/start availability is confirmed. The earlier archive error and the
+  present model timeout must not be conflated. [Historical report](ticket-booking-platform-report.md).
+- Ran the full 36-check suite, then 11 CLI checks after adding the final log-redaction
+  case. Multipart encoding, cookies, archive hashes, recovery boundaries, queued-state
+  waiting and actual status-field/currency mapping are covered.

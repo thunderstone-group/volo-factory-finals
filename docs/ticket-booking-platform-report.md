@@ -1,5 +1,10 @@
 # Ticket Booking archive inconsistency
 
+**Update:** a fresh CLI upload on 2026-09-11 passed archive hash verification and started
+run `0726df707e05` successfully. The upload/start path is no longer blocking current work.
+That run failed later on a model response read timeout, a separate issue. The historical
+observations below do not establish that the platform is currently broken.
+
 Observed 2026-09-11 on [Ticket Booking](https://arc-bench.com/competitions/ticket-booking/tasks/ticket-booking--ticket-booking).
 Prepared for the user to forward to the organizer; no external report was sent by the agent.
 
@@ -25,3 +30,20 @@ Please check consistency between archive save, download and run-creation storage
 or backends for these IDs. Client evidence establishes the contradictory availability
 results, but does not identify the server-side root cause. Repeated re-uploads were
 stopped after the controls above.
+
+## Current recheck through the CLI
+
+The organizer reported that the submission path was currently normal. We rechecked
+using the deployed official web client's request contract and the logged-in account:
+
+- `32d6d2fe7737` still downloaded with the original matching hash, but creating a run
+  now returned 409: `Runs must use the latest saved agent submission for this competition`.
+  That is a different response from the earlier archive-availability error.
+- `b1b0dc34ca64` still returned archive 404. It was not run.
+- Fresh submission `c522484096e0`, candidate 0.7.0.dev1, saved successfully. Its downloaded
+  SHA-256 matched `835e2d7cf7fe84168fa8888480c1d6df8b8735d49e24edfc9043ecae14335475`.
+- Creating and starting `0726df707e05` succeeded. CLI polling observed QUEUED, RUNNING,
+  then FAILED in agent execution. Downloading its generated artifact also succeeded.
+
+These checks confirm the current path works with a new latest submission. They do
+not retrospectively identify the server-side cause of the earlier archive errors.

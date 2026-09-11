@@ -10,6 +10,8 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
 - `tests/`: deterministic transport, recovery and execution tests. These are not evidence of model quality.
 - `docs/strategy.md`: verified competition facts, design choices and next experiments.
 - `scripts/package.py`: reproducible upload ZIP; excludes credentials, tests and development artifacts.
+- `arcbench` / `arcbench_cli.py`: local website API client for uploads, runs, logs and results;
+  separate from the uploaded agent. See `docs/platform-cli.md`.
 
 ## Rules
 

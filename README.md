@@ -10,16 +10,17 @@ development milestones, not evidence of a final result.
 Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average runtime.
 Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
 dated practice milestones; the formal preliminary and final are separate competitions.
-Ticket Booking is blocked before run creation by a platform archive error; its 10
-published tests have not been run by this agent. The design and competition facts are recorded in
+Ticket Booking now uploads and starts successfully through the CLI. Its first generation
+attempt timed out waiting for a model response, before its 10 official tests could run.
+The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
 The current development candidate, **0.7.0.dev1**, adds bounded context projection and
 support for ancestor-container references in requirement scheduling. It passed 26 local
 checks and parsing/scheduling for all 22 supplied requirement documents (20 unique).
-It has not been evaluated on the competition gateway. The `v0.6.0` tag preserves the
-source that earned the recorded official results.
+Its first Ticket Booking model request timed out at 180 seconds; no official application
+score was established. The `v0.6.0` tag preserves the source that earned the recorded wins.
 
 The ArcBench entrypoint is:
 
@@ -41,6 +42,16 @@ python3 -m venv .venv
 
 The upload is `dist/volo-factory.zip`. It contains only the entrypoint, dependency file,
 and `volo/` package. The archive is deterministic.
+
+Use the local [ArcBench CLI](docs/platform-cli.md) to upload, start runs, wait for results,
+inspect logs and download artifacts. Normal operations use the authenticated website API:
+
+```sh
+./arcbench upload dist/volo-factory.zip --competition ticket-booking --name my-agent-version
+./arcbench run SUBMISSION_ID --task ticket-booking--ticket-booking
+./arcbench wait RUN_ID
+./arcbench leaderboard --competition ticket-booking
+```
 
 For a local input inspection with no model calls:
 

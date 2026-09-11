@@ -93,3 +93,16 @@ each rule snapshot and experiment with date and source.
 - Version 0.7.0.dev1 passed 26 local checks, including real HTTP failure/repair under
   context pressure. This development candidate has no official gateway evaluation yet;
   both recorded leaderboard wins remain attributed to the preserved v0.6.0 source.
+
+## 2026-09-11 — CLI replaces repeated browser operations
+
+- The user requested a CLI for lower-overhead submission and result inspection.
+- Implemented authenticated upload, hash verification, run creation/start, status,
+  change-only waiting, bounded logs, artifact download and leaderboard queries.
+  Login is reused from a private local session; no credential is printed or committed.
+- The real CLI chain succeeded on submission `c522484096e0` / run `0726df707e05`.
+  Current platform upload/start behavior works. Older archive observations are kept
+  as dated evidence, not an assertion that a current platform outage persists.
+- The run then failed waiting for the first model response after 180 seconds. The
+  downloaded artifact confirms a read timeout before generation or official tests.
+  This separates the CLI integration result from the agent's remaining execution issue.

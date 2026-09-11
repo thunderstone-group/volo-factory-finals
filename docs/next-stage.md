@@ -10,9 +10,9 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
 2. **Stateful application:** complete all currently published Ticket Booking tests.
    Independently check server-side validation, persistence after restart, session
    invalidation and duplicate-account handling described by the requirements.
-   **Blocked before execution:** archive download returned 200 but run creation returned
-   409 for the same submission. See `ticket-booking-platform-report.md`. Resume after
-   organizer recovery; the published 10 tests remain unrun by VOLO.
+   **Upload/start unblocked:** a new CLI submission created run `0726df707e05` successfully.
+   Generation failed on its first model response read timeout at 180 seconds. Address
+   that transport deadline before judging application quality; 10 official tests remain unrun.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.
    Freeze the agent version before the held-out variant; do not embed expected
    applications or change official tests. Track failures by parsing, generation,

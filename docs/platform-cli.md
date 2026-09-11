@@ -1,0 +1,99 @@
+# ArcBench CLI
+
+`./arcbench` calls the same website API as the official web client. It is a local
+operations tool, separate from `main.py`, which is the agent entrypoint inside the
+competition runner. The CLI and its session are excluded from uploaded agent ZIPs.
+It uses Python 3.9+ and the standard library, with no browser needed for normal operations.
+
+## Commands
+
+Run from the repository root:
+
+```sh
+./arcbench whoami
+./arcbench competitions
+./arcbench tasks ticket-booking
+./arcbench submissions --competition ticket-booking
+
+./arcbench upload dist/volo-factory.zip \
+  --competition ticket-booking --name my-agent-version
+# Use the returned submission.id:
+./arcbench run SUBMISSION_ID --task ticket-booking--ticket-booking
+
+./arcbench status RUN_ID
+./arcbench wait RUN_ID --interval 10 --timeout 1200
+./arcbench logs RUN_ID --tail 30
+./arcbench logs RUN_ID --offset NEXT_OFFSET --tail 30
+./arcbench download RUN_ID --output runs/my-run/artifact.zip
+./arcbench leaderboard --competition ticket-booking --team 'VOLO AI'
+```
+
+Output is compact JSON; `wait` emits JSON lines only when the summarized state changes.
+The summary includes official pass counts/rate, duration, model usage, explicit cost
+currency, execution stages and failed tests. The API field `token_cost_usd` is not
+assumed to mean USD: actual observed responses use `token_cost_currency: CNY`.
+`status --full` returns the redacted full response when more detail is needed.
+`logs` returns a bounded console tail and cursor without duplicating stdout and console.
+
+`upload` saves a submission, downloads its archive and checks the SHA-256 against the
+local ZIP. A missing or mismatched download returns nonzero but retains the saved ID.
+Saving, creating a run and starting it are distinct operations. `run` performs create
+then start. If start fails, the output retains the created run ID; inspect it before
+using `./arcbench start RUN_ID`. Mutating requests are never automatically retried.
+Network failures and server errors can have uncertain outcomes.
+
+The live server currently requires the latest saved submission for a competition.
+Do not create another upload while a run from the previous version is pending.
+`wait` handles the observed QUEUED state and waits through unknown intermediate states.
+It exits 0 on PASSED, 1 on failure/cancellation/pause, and 2 when the local waiting
+deadline expires. Timing out the wait does not cancel the remote run.
+Archive downloads refuse to overwrite an existing local file.
+
+## Authentication
+
+The existing authorized Chrome session was imported once. Future CLI requests use
+`~/.config/volo-factory/arcbench-session.json`, with mode 0600. The file is outside the
+repository and contains only cookies for the configured origin, including the website's
+route-affinity cookie. Cookie updates from the server are preserved.
+
+If the session expires, use a fresh authorized browser export. For an agent-assisted
+handoff, `./arcbench auth-import --listen` opens a single-use localhost form for the
+origin-scoped cookie JSON. The form expires after three minutes, accepts only a matching
+same-origin POST, validates the session with `/auth/me`, and then closes. It does not
+put cookies in a URL or command arguments. An unsuccessful import does not replace an
+existing session file. No browser control is required after this one-time handoff.
+
+An existing private export can also be piped to `./arcbench auth-import` on stdin. The
+expected shape is `{"origin":"https://arc-bench.com","cookies":[...]}`, with Chrome/CDP
+cookie fields `name`, `value`, `domain`, `path`, `secure`, `httpOnly` and `expires`.
+Never paste a session export or model key into chat, a command argument, or Git.
+
+By default, upload retrieves the logged-in account's model access key directly from
+`/auth/access-key` and submits it to the official platform without printing or saving it.
+To use an explicitly configured key, pass its environment variable name with
+`--api-key-env VARIABLE_NAME`. The model gateway defaults to `https://api.arc-bench.com/v1`.
+CLI output redacts credential fields, known keys/session values and meter identifiers.
+Authenticated redirects to another origin are refused.
+
+## Contract source and verification
+
+The API contract was read from the official site's deployed
+[client bundle](https://arc-bench.com/assets/index-BoG82IpV.js) on 2026-09-11, SHA-256
+`33eb789dc513b1725ced0642cf4157e37c87b98a5b63a00253c1808c7643feb9`.
+This bundle is not vendored. The client uses `/api` and cookie credentials, with these
+observed request shapes:
+
+| Operation | Method and route | Body |
+|---|---|---|
+| Save upload | `POST /api/submissions` | Multipart competition_id, runtime, catalog, agent_source, display_name, base_url, api_key, model, file |
+| Download upload | `GET /api/submissions/{id}/archive` | None |
+| Create run | `POST /api/runs` | Multipart submission_id, requirement_id |
+| Start run | `POST /api/runs/{id}/start` | None |
+| Status/logs | `GET /api/runs/{id}` and `/logs` | Logs accept log_offset |
+| Generated artifact | `GET /api/runs/{id}/workspace/template-bundle` | None |
+
+Real integration evidence is recorded in `experiments.md`. Local HTTP tests validate
+multipart bytes, cookie affinity, private persistence, redaction, redirect boundaries,
+archive verification, create/start failure handling and waiting through QUEUED.
+A labeled real status fixture validates the actual pass-count and currency fields.
+Those tests complement the real platform run; they do not substitute for it.
