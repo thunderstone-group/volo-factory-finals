@@ -68,6 +68,29 @@ TOOL = {'type': 'function', 'function': {'name': 'define_ui_contract',
 POLICY = hashlib.sha256((PROMPT + BROWSER + CHECKER).encode()).hexdigest()
 
 
+def decode_contract(message, finish):
+    """Read literal metadata without inventing a tool call or executing model text."""
+    if finish not in ('stop', 'tool_calls'):
+        raise ValueError('Return one complete UI contract')
+    calls = message.get('tool_calls') or []
+    if calls:
+        if len(calls) != 1 or calls[0]['function']['name'] != 'define_ui_contract':
+            raise ValueError('Return one complete define_ui_contract call')
+        args = json.loads(calls[0]['function']['arguments'])
+        source = 'tool_call'
+    else:
+        content = message.get('content')
+        if not isinstance(content, str) or len(content) > 64000:
+            raise ValueError('Return the complete UI contract as a JSON object')
+        content = content.strip()
+        fenced = re.fullmatch(r'```(?:json)?\s*\n(.*?)\n```', content, re.DOTALL)
+        args = json.loads(fenced.group(1) if fenced else content)
+        source = 'content_json'
+    if not isinstance(args, dict) or set(args) != {'pages', 'coverage'}:
+        raise ValueError('A UI contract needs only pages and coverage')
+    return args, source
+
+
 def validate(pages):
     if not isinstance(pages, list) or not 1 <= len(pages) <= 16:
         raise ValueError('Provide 1-16 public pages')
@@ -163,10 +186,7 @@ class AcceptancePlan:
             message, finish = self.model.complete(messages, [TOOL], forced_tool='define_ui_contract',
                 remaining_seconds=self.workspace.deadline - time.monotonic())
             try:
-                calls = message.get('tool_calls') or []
-                if finish == 'length' or len(calls) != 1 or calls[0]['function']['name'] != 'define_ui_contract':
-                    raise ValueError('Return one complete define_ui_contract call')
-                args = json.loads(calls[0]['function']['arguments'])
+                args, source = decode_contract(message, finish)
                 pages, coverage = validate(args['pages']), args['coverage']
                 if not isinstance(coverage, list) or not coverage or not all(isinstance(x, str) for x in coverage):
                     raise ValueError('Provide concise coverage descriptions')
@@ -175,6 +195,7 @@ class AcceptancePlan:
                 messages.append({'role': 'user', 'content': 'Previous output was rejected: ' + str(error) +
                                  '. Return a complete valid data-only UI contract.'})
                 continue
+            self.trace.event('acceptance_contract_decoded', source=source)
             script = CHECKER.replace('__PAGES__', json.dumps(pages))
             path = self.trace.directory / ('acceptance-' + key + '.cjs')
             path.write_text(script)

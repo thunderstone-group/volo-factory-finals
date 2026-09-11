@@ -683,3 +683,27 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - A separate shared-account run is active after this run. The official/response usage
   discrepancy therefore does not establish isolated cost. The next comparison keeps
   the dev17 ZIP byte-identical and changes the main model to Qwen3.6 Flash.
+- Replaying its exact logged application writes against the unchanged public suite
+  fails 10/10 in 6.103 seconds: the first shared registration navigation matches two
+  `/register` links. This confirms an application gap as well as the execution-loop
+  failure. The diagnostic app is not repaired or uploaded; its container is removed.
+
+## E033 — Qwen exposes a data-response contract mismatch
+
+- The identical dev17 ZIP is uploaded as `a5a52c13a7e9` with Qwen3.6 Flash, with a
+  matching archive hash. Waited for the observed other active run to finish before
+  starting https://arc-bench.com/runs/684ec0e6a53f.
+- Image observation succeeds in 44.1 seconds. Qwen twice returns a complete JSON UI
+  contract in ordinary assistant content, first fenced and then bare, despite forced
+  `define_ui_contract` selection and `enable_thinking=false`. The planner only accepts
+  tool calls, so it rejects both before application generation. Official result:
+  **50 seconds, 76,676 tokens, CNY 0.487596**. Actual responses total 22,648 tokens.
+- Dev18 accepts a complete JSON object, optionally enclosed in one JSON fence, only
+  in this literal metadata step. It requires exactly pages/coverage and runs the same
+  UI-data validation. It rejects prose, executable/extra fields, extra objects and
+  truncated responses. It never invents a tool call or executes response text.
+- A new real-response fixture captures both observed Qwen outputs. Local regression
+  verifies first-response acceptance, unchanged raw protocol fields and attachment
+  of deterministic checks. The next formal run must still establish application quality.
+- All **66 local checks pass** in 31.595 seconds. Dev18 ZIP SHA-256:
+  `45d6b9f36ae637efca3fb0ef27d9c2e73db3c178eed094ea7389efe8ad7ffd8d`.

@@ -7,8 +7,8 @@ import subprocess
 import time
 import unittest
 
-from test_core import TempCase, FakeGateway, GREETING_FILES, response
-from volo.acceptance import AcceptancePlan, validate
+from test_core import TempCase, FakeGateway, GREETING_FILES, ROOT, response
+from volo.acceptance import AcceptancePlan, validate, decode_contract
 from volo.model import Model
 from volo.requirements import RequirementSet
 
@@ -18,6 +18,30 @@ PAGES = [{'route': '/', 'checks': [{'kind': 'heading', 'name': 'Greeting'}]}]
 
 @unittest.skipUnless(shutil.which('node'), 'Node required')
 class AcceptanceTests(TempCase):
+    def test_captured_qwen_json_metadata_is_validated_without_fabricating_tool_calls(self):
+        fixture = json.loads((ROOT / 'tests/fixtures/real-qwen-ui-contract.json').read_text())
+        for item in fixture['responses']:
+            choice = item['choices'][0]
+            args, source = decode_contract(choice['message'], choice['finish_reason'])
+            self.assertEqual(source, 'content_json')
+            self.assertTrue(validate(args['pages']))
+            self.assertNotIn('tool_calls', choice['message'])
+        with FakeGateway([fixture['responses'][0]]) as gateway:
+            requirements = RequirementSet.load(self.req)
+            model = Model(gateway.url, 'synthetic-test-key', 'qwen3.6-flash', self.trace)
+            planner = AcceptancePlan(requirements, model, self.workspace)
+            record = planner.prepare(requirements.nodes, None, guard_budget=lambda: None)
+            self.assertEqual(len(gateway.requests), 1)
+            self.assertEqual(record['pages'][1]['checks'][0]['name'], '账户信息')
+            self.assertEqual(len(self.workspace.required_checks), 1)
+        for content in ('Some explanation\n' + json.dumps(args),
+                        json.dumps({**args, 'script': 'process.exit(0)'}),
+                        json.dumps(args) + '\n{}'):
+            with self.subTest(content=content[:80]), self.assertRaises(ValueError):
+                decode_contract({'content': content}, 'stop')
+        with self.assertRaises(ValueError):
+            decode_contract(fixture['responses'][0]['choices'][0]['message'], 'length')
+
     def test_planning_does_not_receive_implementation_and_restores_without_model_call(self):
         self.workspace.write_files([{'path': 'private-implementation.js', 'content': 'do-not-send-this-source'}])
         requirements = RequirementSet.load(self.req)
