@@ -731,3 +731,27 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - All **66 local checks pass** in 30.866 seconds. The real HTTP bundle test now imports
   its framework through a helper and still completes immediately when written.
   Dev19 ZIP SHA-256: `fd69e93a7a6e052a2a2e5a7f5882d13f9c276b951a377be142e8f31d64a2382d`.
+- Offline reconstruction of the exact E034 writes and two edits cannot start:
+  `backend/server.cjs` imports `express`, but its manifest declares no dependencies.
+  The unchanged public suite therefore sees connection refusal; this is a startup
+  finding, not a measured functional score. No dependency or app fix is applied to
+  this diagnostic copy, and its container is removed.
+
+## E035 — Deployment recovers, but a Qwen request stops returning
+
+- Dev19 source `7e42efd`, ZIP SHA-256
+  `fd69e93a7a6e052a2a2e5a7f5882d13f9c276b951a377be142e8f31d64a2382d`.
+  Submission `ee4916f55af4` downloads correctly before and after two missing-run-ZIP
+  failures (`026c37ec93f1`, `ec1c4eae8595`). Re-saving identical bytes as `619f262a9a92`
+  again verifies, and https://arc-bench.com/runs/4342487db5a5 deploys successfully.
+- Reference observation and planning complete in 42.751 seconds. The agent performs
+  several inspection calls and writes the two app manifests at 49.813 seconds.
+  The next Qwen request, started at 20:39:09 UTC, has no complete response after more
+  than its configured 600-second waiting window. Only 62,201 tokens from eight
+  completed responses are known; pending-request usage is unknown.
+- Cancelled this stalled run. The cancellation POST returns HTTP 500, then a fresh
+  status confirms **CANCELLED**; no second cancellation is sent. Official duration,
+  token count and cost are null, not zero. No application or tests complete.
+- Keep the exact dev19 package for a Pro comparison. Test discovery and the larger
+  context window are locally validated but have not yet reached a real verification
+  step in this run; the gateway wait does not establish their application-quality effect.
