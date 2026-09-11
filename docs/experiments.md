@@ -665,3 +665,21 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - Offline replay of the exact E028 app also fails 10/10 at duplicate registration links.
   No copied application or diagnostic code was uploaded. This remains evidence that
   generation must reach real verification and repair, not a new official outcome.
+
+## E032 — Bounded reads work, but Pro still does not reach verification
+
+- Unchanged source `f596d8c`, dev17, submission `52879312973d`, ZIP SHA-256
+  `ce790c03b047734b770fbcce179c892095361e051efd95e4c4d4a2c9882e9c84`.
+  First run `3354c34bdb63` fails before startup with a missing run-local ZIP.
+- Same-submission retry https://arc-bench.com/runs/0c1c1a49d881 deploys successfully,
+  writes the application, and follows the new chunk tool after an oversized read is
+  rejected. It still spends its remaining calls reading source before writing tests.
+  No verification or official test runs. Result: **434 seconds, 788,931 official
+  tokens, CNY 2.423078**; completed model responses total **302,864 tokens**.
+- Requests use disabled thinking and reported reasoning tokens are zero. Two ordinary
+  assistant content fields nevertheless contain over 34,000 characters of analysis
+  before read calls, requiring context projection. Preserve those true outputs in the
+  trace; do not treat provider controls as proof of effective generation behavior.
+- A separate shared-account run is active after this run. The official/response usage
+  discrepancy therefore does not establish isolated cost. The next comparison keeps
+  the dev17 ZIP byte-identical and changes the main model to Qwen3.6 Flash.

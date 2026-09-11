@@ -13,10 +13,11 @@ dated practice milestones; the formal preliminary and final are separate competi
 The September 12 update restores Smoke Evolution to first with dev16 / Qwen3.6 Flash:
 4/4 official tests, CNY 0.017810 total, seven seconds average. Tag `v0.7.0-dev16`
 preserves that source and the matching upload is recorded in the experiment log.
-Ticket Booking uploads, generation and all 10 official tests now execute. The latest
-evaluated candidate passed 5/10; its original app passes 9/10 in a local replay of the
-unchanged public tests. Input-reference and UI-contract gaps remain. Historical upload
-failures are retained as dated observations, not a current blocker.
+Ticket Booking has reached generation and all 10 official tests. This agent's best
+official result remains 5/10; that run's original app passes 9/10 in a local replay of
+the unchanged public tests. Subsequent candidates exposed verification and context
+failures before official evaluation. Intermittent missing-archive deployment failures
+also remain distinct from application failures.
 The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
@@ -30,7 +31,7 @@ removed. Training checks now cover visible signed-out structure; authored browse
 stateful behavior. Version dev11 also combines small exact edits with verification in one call.
 Dev6 successfully observes
 all relevant images through the metered gateway, but its implementation and self-checks
-still omit a reference heading and choose the wrong strength-widget role. Dev12's
+still omit a reference heading and choose the wrong strength-widget role. Dev17's
 completed verification and official score are the next evaluation gate.
 Version dev4 already verifies browser checks and serves the same app on both observed
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding

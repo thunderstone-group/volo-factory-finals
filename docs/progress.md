@@ -173,3 +173,23 @@ each rule snapshot and experiment with date and source.
   combined cost from CNY 0.056842 to CNY 0.030432 and average runtime from 15 to six
   seconds. Rank remains second behind CNY 0.018816. Dev13 trims byte-identical runtime
   source and repeated edit context; 59 local checks pass, with live cost verification pending.
+
+## 2026-09-12 (Asia/Taipei) — Evolution first again; Ticket recovery remains unproven
+
+- Dev16 with Qwen3.6 Flash passes all four Evolution tests and returns to first:
+  CNY 0.017810 total, seven seconds average. Both tasks finish in one verified edit
+  call. The `v0.7.0-dev16` tag preserves the exact source, and the live board snapshot
+  is saved in `docs/evidence/2026-09-12-evolution-qwen-leaderboard.json`.
+- The first Qwen attempt exposed default thinking and malformed single-string argv;
+  provider-specific thinking control and pre-write command validation remove those
+  observed extra calls. Metering from a run overlapping another account user is kept
+  separate from the clean paired results used by the board.
+- Ticket candidates still fail to complete verification reliably. Dev14 permits
+  requirement-grounded corrections to training UI metadata, dev15 verifies authored
+  test bundles as soon as they are written, and dev17 bounds source reads and removes
+  the unprepared small-app tool from normal mode. These respond to recorded failures;
+  65 passing local checks do not establish a higher official Ticket score.
+- E032 first fails before startup because its run-local ZIP is absent. A same-package
+  retry deploys successfully but exhausts 302,864 observed tokens before writing tests.
+  Chunk reads work; excessive source rereads remain. Keep the ZIP unchanged for a Qwen
+  model comparison. Best official Ticket accuracy from this fresh agent is still 50%.
