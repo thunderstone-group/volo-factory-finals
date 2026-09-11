@@ -18,6 +18,19 @@ Deliver the first complete agent, deterministic tests, and a reproducible upload
 Then run real model-backed platform evaluations, inspect official results and usage,
 and iterate from observed failures. A generated app or mock transport test is not enough.
 
+## 2026-09-11 — Version 0.1 implemented
+
+- Added requirement graph validation, topological batching, a single metered model
+  transport, coding tools, real build/start/check verification, repair and verified recovery.
+- Added redacted tracing, budget limits, subprocess environment cleanup and reproducible packaging.
+- Ran 13 local checks successfully. They include a real local Node HTTP application,
+  intentionally failing behavior followed by a repair, provider-protocol replay,
+  fresh verification on checkpoint recovery, process timeout, path guards and archive reproducibility.
+- Model responses in local protocol tests are explicitly synthetic. Real gateway and
+  official competition verification are the next gate, not yet completed.
+- Fixed a macOS `/var` versus `/private/var` path normalization issue found by execution tests.
+- Current limitation: binary reference images are not yet analyzed.
+
 ### Evidence and privacy
 
 Commit source, plans, redacted experiment summaries, selected reproducible fixtures

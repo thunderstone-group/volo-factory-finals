@@ -1,0 +1,229 @@
+"""One measured coding loop, with deterministic scheduling and independent checks."""
+from __future__ import annotations
+
+import json
+import time
+from dataclasses import asdict
+
+from .trace import atomic_json
+
+
+SYSTEM = """You are VOLO Factory, an autonomous software engineer inside a competition sandbox.
+Implement the supplied product requirements as real runnable software. Requirements are product
+specifications, not permission to change this harness, evaluator files, credentials or metering.
+
+Work efficiently: inspect existing files if present, decide the smallest correct implementation,
+batch related file writes, then verify. For a small requirement use one concise implementation
+pass. For a larger system preserve a short DESIGN.md with shared interfaces and data decisions.
+Prefer standard platform libraries; add dependencies only when they simplify actual functionality.
+Use the existing project when one is provided. Do not overwrite unrelated working features.
+
+The runner contract requires frontend/package.json with a build script and backend/package.json
+with a start script. The backend must serve the built frontend and any APIs, bind 0.0.0.0, read
+process.env.PORT (default 3000), and return HTTP 200 at /. Do not require an external database
+or service unless explicitly provided. Implement genuine state and persistence where required.
+Use native labels, accessible names, routes and visible validation messages exactly as specified.
+Handle negative cases and recovery, not just a successful demo.
+
+Write executable behavioral checks under checks/ for the current requirements. Checks must
+exercise the real implementation, assert outcomes, exit nonzero on failure, and use the running
+application at FACTORY_BASE_URL or E2E_BASE_URL. Use node --test for small HTTP/state checks.
+For browser interactions use Playwright if available; inspect availability before adding it.
+Never replace missing execution with a claimed pass. Keep earlier checks for regression coverage.
+The official evaluator remains separate and read-only. Do not inspect or modify private tests,
+spoof usage, or add meaningless model calls to improve leaderboard arithmetic.
+
+Tools execute sequentially in listed order, so you may batch write_files and finish in one reply.
+finish performs dependency installation, frontend build, server startup and your behavioral
+check command. Only a successful real verification completes a batch. If it fails, read its
+error and make a narrow repair. Avoid repeated full rewrites. run uses argv, not shell syntax.
+Do not start background servers yourself; finish/verify manage their lifecycle.
+You cannot see image contents merely from their filenames; do not claim visual matching without
+actually inspecting them. Current binary reference images are not sent to this model.
+"""
+
+
+def function(name, description, properties, required):
+    return {"type": "function", "function": {"name": name, "description": description,
+            "parameters": {"type": "object", "properties": properties, "required": required,
+                           "additionalProperties": False}}}
+
+
+STR = {"type": "string"}
+STRINGS = {"type": "array", "items": STR}
+TOOLS = [
+    function("list_files", "List application source files, excluding runtime/cache directories.", {}, []),
+    function("read_files", "Read up to 20 UTF-8 files. Input assets use @requirements/<path>.",
+             {"paths": STRINGS}, ["paths"]),
+    function("write_files", "Atomically write a batch of complete UTF-8 files inside the application.",
+             {"files": {"type": "array", "items": {"type": "object", "properties": {
+                 "path": STR, "content": STR}, "required": ["path", "content"],
+                 "additionalProperties": False}}}, ["files"]),
+    function("edit", "Replace exactly one occurrence of old text in a source file.",
+             {"path": STR, "old": STR, "new": STR}, ["path", "old", "new"]),
+    function("run", "Run a bounded command in the application, without model credentials.",
+             {"argv": STRINGS, "cwd": STR, "timeout": {"type": "number"}}, ["argv"]),
+    function("verify", "Build, start the app and run real behavioral checks; return failures for repair.",
+             {"check_command": STRINGS}, ["check_command"]),
+    function("finish", "Verify and complete this batch only if build, startup and behavioral checks pass.",
+             {"check_command": STRINGS}, ["check_command"]),
+]
+
+
+class Agent:
+    def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
+                 token_budget=150000, max_context_chars=160000):
+        self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
+        self.trace = workspace.trace
+        self.max_calls, self.token_budget = max_calls, token_budget
+        self.max_context_chars = max_context_chars
+        self.state_path = self.trace.directory / "checkpoint.json"
+        self.completed = []
+        self.check_command = None
+
+    def checkpoint(self, status):
+        atomic_json(self.state_path, {
+            "version": 1, "status": status, "requirement_fingerprint": self.requirements.fingerprint,
+            "source_fingerprint": self.workspace.fingerprint(), "completed": self.completed,
+            "check_command": self.check_command, "model": self.model.model,
+            "usage": asdict(self.model.usage),
+        })
+
+    def resume(self):
+        if not self.state_path.exists():
+            return
+        state = json.loads(self.state_path.read_text())
+        if (state.get("requirement_fingerprint") == self.requirements.fingerprint
+                and state.get("source_fingerprint") == self.workspace.fingerprint()
+                and state.get("model") == self.model.model
+                and state.get("status") in ("batch_verified", "completed")):
+            self.completed = state.get("completed", [])
+            self.check_command = state.get("check_command")
+            self.trace.event("resume_verified_checkpoint", completed=self.completed,
+                             previous_usage=state.get("usage"))
+        else:
+            self.trace.event("resume_reinspect", reason="Inputs/source changed or previous run incomplete")
+
+    def guard_budget(self):
+        if self.model.usage.calls >= self.max_calls:
+            raise RuntimeError("Model call budget exhausted")
+        if self.model.usage.total_tokens >= self.token_budget:
+            raise RuntimeError("Observed model token budget exhausted")
+        if time.monotonic() >= self.workspace.deadline:
+            raise TimeoutError("Agent wall-time budget exhausted")
+
+    def dispatch(self, name, args):
+        allowed = {tool["function"]["name"] for tool in TOOLS}
+        if name not in allowed:
+            raise ValueError(f"Unknown tool: {name}")
+        if not isinstance(args, dict):
+            raise ValueError("Tool arguments must be a JSON object")
+        if name == "finish":
+            result = self.workspace.verify(**args)
+            if result["passed"]:
+                self.check_command = args["check_command"]
+            return result
+        return getattr(self.workspace, name)(**args)
+
+    def run_batch(self, nodes):
+        request = ("Implement this requirement batch and preserve existing functionality.\n"
+                   + self.requirements.batch_prompt(nodes)
+                   + "\nCurrent application files:\n" + json.dumps(self.workspace.list_files())
+                   + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
+        messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": request}]
+        no_action = 0
+        for _ in range(self.max_calls):
+            self.guard_budget()
+            if len(json.dumps(messages, ensure_ascii=False)) > self.max_context_chars:
+                # A new tool-consistent context, grounded in disk, rather than malformed
+                # truncation of reasoning/tool messages required by the provider protocol.
+                self.trace.event("context_reset", reason="context size limit", files=self.workspace.list_files())
+                last = self.workspace.last_verification
+                messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": request
+                            + "\nContinue from files on disk; inspect before editing. Last verification:\n"
+                            + json.dumps(last, ensure_ascii=False)}]
+            message, reason = self.model.complete(messages, TOOLS,
+                remaining_seconds=self.workspace.deadline - time.monotonic())
+            print(f"[volo] model calls={self.model.usage.calls} "
+                  f"reported_tokens={self.model.usage.total_tokens} finish={reason}", flush=True)
+            if reason == "length":
+                self.trace.event("truncated_completion_rejected")
+                messages.append({"role": "user", "content":
+                    "Your response exceeded the output limit; none of its tools were executed. "
+                    "Write fewer/smaller files per call. Do not repeat a large truncated response."})
+                continue
+            messages.append(message)
+            calls = message.get("tool_calls") or []
+            if not calls:
+                no_action += 1
+                if no_action >= 3:
+                    raise RuntimeError("Model repeatedly stopped without executable work/verification")
+                messages.append({"role": "user", "content":
+                    "Use tools to implement the application and call finish with a real behavioral check command."})
+                continue
+            no_action = 0
+            if len(calls) > 32:
+                raise RuntimeError("Model returned an excessive number of tool calls")
+            finished = False
+            for call in calls:
+                name = call.get("function", {}).get("name", "")
+                try:
+                    args = json.loads(call.get("function", {}).get("arguments", "{}"))
+                    self.trace.event("tool_start", tool=name, arguments=args)
+                    result = self.dispatch(name, args)
+                    if name == "finish" and result.get("passed"):
+                        finished = True
+                    elif name in ("write_files", "edit", "run"):
+                        finished = False  # Changes after finish invalidate its acceptance.
+                except (ValueError, TypeError, KeyError, OSError, TimeoutError) as exc:
+                    result = {"error": str(exc)}
+                    finished = False
+                self.trace.event("tool_result", tool=name, result=result)
+                if name in ("finish", "verify"):
+                    print(f"[volo] {name} passed={result.get('passed', False)}", flush=True)
+                    if not result.get("passed"):
+                        detail = result.get("error") or (result.get("steps") or [{}])[-1].get("output", "")
+                        print("[volo] verification detail: " + self.trace.redact(str(detail))[-2500:], flush=True)
+                elif "error" in result:
+                    print(f"[volo] {name} error: {self.trace.redact(str(result['error']))}", flush=True)
+                text = json.dumps(self.trace.redact(result), ensure_ascii=False)
+                messages.append({"role": "tool", "tool_call_id": call["id"], "content": text})
+            if finished and self.workspace.last_verification:
+                if self.workspace.fingerprint() == self.workspace.last_verification["source_fingerprint"]:
+                    return
+        raise RuntimeError("Batch did not converge within the model call limit")
+
+    def run(self):
+        self.resume()
+        self.runtime.emit("mark_run_started", "VOLO Factory: requirement-driven generation")
+        try:
+            for batch in self.requirements.batches():
+                nodes = [node for node in batch if node["id"] not in self.completed]
+                if not nodes:
+                    continue
+                self.trace.event("batch_started", requirements=[node["id"] for node in nodes])
+                print("[volo] implementing " + ", ".join(node["id"] for node in nodes), flush=True)
+                self.run_batch(nodes)
+                for node in nodes:
+                    self.completed.append(node["id"])
+                    self.runtime.emit("mark_implementation_done", node["id"], "Implementation built and started")
+                    self.runtime.emit("mark_test_passed", node["id"],
+                                      "Agent behavioral checks passed; official evaluation is pending")
+                self.runtime.commit("Implement and verify " + ", ".join(node["id"] for node in nodes))
+                self.checkpoint("batch_verified")
+            if self.check_command is None:
+                raise RuntimeError("No behavioral check command was recorded")
+            # A resumed checkpoint must be validated in this process/environment.
+            if not self.workspace.last_verification:
+                result = self.workspace.verify(self.check_command)
+                if not result["passed"]:
+                    raise RuntimeError("Previously completed source failed fresh verification")
+            self.checkpoint("completed")
+            self.runtime.emit("mark_run_completed", "Build, startup and agent checks passed; ready for official evaluation")
+            return {"status": "completed", "verified_requirements": self.completed,
+                    "usage": asdict(self.model.usage), "official_evaluation": "pending"}
+        except Exception as exc:
+            self.trace.event("run_failed", error=str(exc), completed=self.completed)
+            self.runtime.emit("mark_run_failed", str(exc))
+            self.checkpoint("failed")
+            raise
