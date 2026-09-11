@@ -245,10 +245,12 @@ class ExecutionTests(TempCase):
         fixture = json.loads((ROOT / 'tests/fixtures/real-deepseek-tool-responses.json').read_text())
         with FakeGateway(fixture['responses']) as server:
             model = Model(server.url, "synthetic-test-key", "deepseek-v4-flash", self.trace)
+            model.thinking = 'disabled'
             message, _ = model.complete([], [])
             followup = [{**message}, {"role": "tool", "tool_call_id": message['tool_calls'][0]['id'], "content": '{}'}]
             model.complete(followup, [])
             self.assertEqual(server.requests[1]['messages'][0], message)
+            self.assertEqual(server.requests[0]['thinking'], {'type': 'disabled'})
             self.assertEqual(model.usage.total_tokens, 5768)
 
 

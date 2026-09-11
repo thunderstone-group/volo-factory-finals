@@ -41,11 +41,11 @@ Tools execute sequentially in listed order, so you may batch write_files and fin
 finish performs dependency installation, frontend build, server startup and your behavioral
 check command. Only a successful real verification completes a batch. If it fails, read its
 error and make a narrow repair. Avoid repeated full rewrites. run uses argv, not shell syntax.
-Do not start background servers yourself; finish/verify manage their lifecycle.
+Do not start background servers yourself; finish manages their lifecycle.
 The structured requirement input is complete. Do not reread duplicate requirements.md or list
 an empty workspace. Read existing application files only when they materially affect the edit.
 For a small task in an empty workspace, start by writing its implementation and checks in one
-batch, then call finish directly; a separate verify followed immediately by finish is unnecessary.
+batch and call finish directly, in the same response if possible.
 You cannot see image contents merely from their filenames; do not claim visual matching without
 actually inspecting them. Current binary reference images are not sent to this model.
 """
@@ -71,8 +71,6 @@ TOOLS = [
              {"path": STR, "old": STR, "new": STR}, ["path", "old", "new"]),
     function("run", "Run a bounded command in the application, without model credentials.",
              {"argv": STRINGS, "cwd": STR, "timeout": {"type": "number"}}, ["argv"]),
-    function("verify", "Build, start the app and run real behavioral checks; return failures for repair.",
-             {"check_command": STRINGS}, ["check_command"]),
     function("finish", "Verify and complete this batch only if build, startup and behavioral checks pass.",
              {"check_command": STRINGS}, ["check_command"]),
 ]
@@ -134,6 +132,9 @@ class Agent:
         return getattr(self.workspace, name)(**args)
 
     def run_batch(self, nodes):
+        small = len(nodes) <= 3 and len(json.dumps(nodes, ensure_ascii=False)) <= 3500
+        self.model.thinking = "disabled" if small else "enabled"
+        self.trace.event("reasoning_policy", small_batch=small, thinking=self.model.thinking)
         request = ("Implement this requirement batch and preserve existing functionality.\n"
                    + self.requirements.batch_prompt(nodes)
                    + "\nCurrent application files:\n" + json.dumps(self.workspace.list_files())

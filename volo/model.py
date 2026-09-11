@@ -38,11 +38,14 @@ class Model:
         self.url = base_url.rstrip("/") + "/chat/completions"
         self.api_key, self.model, self.trace = api_key, model, trace
         self.timeout, self.max_output = timeout, max_output
+        self.thinking = None
         self.usage = Usage()
 
     def complete(self, messages, tools, *, remaining_seconds=None):
         body = {"model": self.model, "messages": messages, "tools": tools,
                 "stream": False, "max_tokens": self.max_output}
+        if self.thinking in ("enabled", "disabled") and self.model.lower().startswith("deepseek"):
+            body["thinking"] = {"type": self.thinking}
         self.trace.event("model_request", model=self.model, messages=messages, tools=tools)
         data = json.dumps(body, ensure_ascii=False).encode()
         for attempt in range(3):

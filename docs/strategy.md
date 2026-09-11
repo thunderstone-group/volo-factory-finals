@@ -53,7 +53,10 @@ Optimize tokens and time only after repeatable correctness; the formal scoring w
 | Ticket Booking | ARC | 100% | CNY 4.483621 | 3976 s |
 
 These are practice snapshots. They do not establish the final contest's scoring function.
-Public evidence snapshots are stored separately in `../arcbench-campaign/evidence/2026-09-11/`.
+Sources: [Smoke leaderboard API](https://arc-bench.com/api/competitions/leaderboard?track=all&competition_id=smoke),
+[Evolution leaderboard API](https://arc-bench.com/api/competitions/leaderboard?track=all&competition_id=smoke-evolution),
+[Ticket Booking leaderboard API](https://arc-bench.com/api/competitions/leaderboard?track=all&competition_id=ticket-booking).
+These links are live; the table above is the dated observation, not a promise of current standings.
 
 ## Open questions
 

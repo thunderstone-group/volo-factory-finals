@@ -109,7 +109,7 @@ class Workspace:
 
     def list_files(self):
         return {"files": [{"path": str(p.relative_to(self.root)), "bytes": p.stat().st_size}
-                          for p in self.files()][:800]}
+                          for p in self.files() if p.name != ".gitignore"][:800]}
 
     def read_files(self, paths):
         if not isinstance(paths, list) or not 1 <= len(paths) <= 20:

@@ -102,5 +102,5 @@ class RequirementSet:
             "all_requirements": [{"id": n["id"], "name": n.get("name", ""),
                                   "dependencies": n.get("dependencies", [])} for n in self.nodes],
             "current_batch": nodes,
-            "reference_assets": self.assets,
+            "reference_assets": [a for a in self.assets if (self.root / a).stat().st_size > 0],
         }, ensure_ascii=False, indent=2)

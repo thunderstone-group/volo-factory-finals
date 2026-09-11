@@ -6,7 +6,7 @@ development milestones, not evidence of a final result.
 
 ## Status
 
-Version 0.2 is implemented and undergoing platform validation. The design and competition facts are recorded in
+Version 0.2 passed both official Smoke tasks; version 0.3 optimizes small-task execution. The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
@@ -47,6 +47,7 @@ are not an OS-level sandbox for subprocesses.
 - Dependency-ordered requirement batches and existing-project preservation.
 - Batched file edits, bounded commands, build/start/behavioral-check verification, repair loop.
 - DeepSeek thinking/tool message continuity and explicit usage accounting.
+- DeepSeek thinking is disabled for small requirement batches and retained for larger ones.
 - Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
