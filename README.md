@@ -29,7 +29,9 @@ its app and executable checks directly from the complete requirements and observ
 Build, startup and behavioral verification remain mandatory; official tests remain separate.
 Authored test entrypoints execute as soon as written, and bounded source tools plus a
 120,000-character context window support repair. Small incremental edits still use one
-verified patch call. Dev20's completed execution and official score are the next gate.
+verified patch call. Dev20 completes actual verification and repair but scores 3/10
+officially. A diagnostic replay narrows its local failures to semantic UI omissions;
+the next experiment tests independent source review before adopting another review phase.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and

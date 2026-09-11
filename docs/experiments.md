@@ -779,3 +779,24 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   No official tests or generated application are edited or included in the upload.
 - Remaining **61 local checks pass** in 27.892 seconds. Dev20 ZIP SHA-256:
   `eebc913cb272ffa4940e2935e4ff51861315090758b1bb7ef6f3bd0172bceb07`.
+
+## E037 — Real verification and repair return; semantic UI omissions remain
+
+- Dev20 source `504a8c5`, Pro submission `8f9e01161e33`, verified ZIP as E036.
+  https://arc-bench.com/runs/612cef92d824 completes generation and reaches evaluation.
+  The test bundle is written at 165.962 seconds and immediately runs. Its initial
+  14/16 result exposes navigation failures; the agent fixes the application and then
+  corrects overly broad text queries. All 16 self-checks pass at 259.475 seconds.
+- Official outcome: **3/10, 260 seconds, 11,433,898 tokens, CNY 4.996943**. Ten actual
+  model responses total **208,558 tokens**. The accounting discrepancy is preserved;
+  neither the response sum nor a quiet run list establishes isolated official billing.
+- Exact generated source plus all successful logged edits replays the unchanged public
+  suite locally at **5/10 in 34.711 seconds**. Five failures concern the missing semantic
+  password-strength meter and alert semantics on visible validation feedback. Official
+  execution has additional flow timeouts that do not reproduce in this local replay.
+- A disposable diagnostic copy adds a named, dynamically valued meter and alert roles,
+  without changing business logic. The unchanged suite then passes **10/10 in 5.437
+  seconds**. This manually repaired copy is not uploaded; both replay containers are removed.
+- The next bounded experiment asks an independent model to review only the original
+  inputs and original application source, without evaluator code or failure logs. Check
+  whether it can identify these omissions before adding another automated review phase.
