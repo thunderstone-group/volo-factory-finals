@@ -225,3 +225,9 @@ each rule snapshot and experiment with date and source.
   applications. The model still generates all product logic, UI and assertions. This
   addresses repeated boilerplate/serialization/build overhead with one existing path,
   while preserving the frozen Smoke/Evolution winners and avoiding another planning layer.
+- Its first real run exposes a missing browser base URL, fixed and verified with Chrome
+  in dev24. The next Pro run reaches browser checks, but duplicate controls and a missing
+  phone label remain; its full-bundle retry changes assertions without fixing the label.
+  Cancelled with no official evaluation. Dev25 opens narrow repairs immediately after a
+  failed bounded build and provides clearer, faster failure feedback. All 65 local checks
+  pass, including real HTTP repair and Chrome navigation/missing-control behavior.

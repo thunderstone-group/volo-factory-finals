@@ -294,7 +294,7 @@ test('server serves generated page despite empty optional API',async()=>{
     @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
                          os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
                          'Provide an installed Playwright module and Chromium for real browser checks')
-    def test_prepared_browser_resolves_relative_navigation(self):
+    def test_prepared_browser_routes_and_reports_missing_controls(self):
         module = os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']
         executable = os.environ['FACTORY_TEST_CHROMIUM_EXECUTABLE']
         wrapper = self.base / 'real-browser.cjs'
@@ -309,6 +309,7 @@ await page.goto('/details');
 assert.equal(new URL(page.url()).pathname,'/details');
 assert.equal(await page.getByRole('heading',{name:'Greeting',exact:true}).textContent(),'Greeting');
 await page.goto('/');assert.equal(new URL(page.url()).pathname,'/');
+await assert.rejects(page.getByRole('button',{name:'Missing action',exact:true}).click(),/Timeout 5000ms/);
 });"""
         result = implement(self.workspace, '<h1>Greeting</h1>', '', check)
         self.assertTrue(result['passed'], result)

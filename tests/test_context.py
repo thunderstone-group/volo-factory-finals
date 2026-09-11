@@ -171,6 +171,35 @@ assert.equal((await fetch(base+'/api/missing')).status,404);
         self.assertEqual((self.out / 'backend/server.cjs').read_text(), SERVER)
         self.assertTrue(self.workspace.last_verification['passed'])
 
+    def test_bounded_failure_opens_narrow_repairs_and_keeps_both_log_ends(self):
+        (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
+            '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
+        checks = """const assert=require('node:assert/strict');
+fetch(process.env.FACTORY_BASE_URL).then(r=>r.text()).then(text=>{
+if(text!=='hello')console.error('EARLY_FAILURE\\n'+'.'.repeat(7000)+'\\nLATE_FAILURE');
+assert.equal(text,'hello');}).catch(error=>{console.error(error);process.exitCode=1;});"""
+        initial = response([('build_app', {'index_html': 'wrong', 'checks_js': checks})])
+        repair = response([('patch_and_verify', {'edits': [{
+            'path': 'frontend/public/index.html', 'old': 'wrong', 'new': 'hello'}],
+            'check_command': ['node', '--test', 'checks/requirements.cjs']})])
+        with FakeGateway([initial, repair]) as gateway:
+            agent = Agent(RequirementSet.load(self.req),
+                Model(gateway.url, 'synthetic-test-key', 'deepseek-v4-pro', self.trace),
+                self.workspace, Runtime(self.trace))
+            result = agent.run()
+        self.assertEqual(result['status'], 'completed')
+        self.assertEqual(len(gateway.requests), 2)
+        self.assertNotIn('tool_choice', gateway.requests[1])
+        tools = [tool['function']['name'] for tool in gateway.requests[1]['tools']]
+        self.assertIn('patch_and_verify', tools)
+        self.assertNotIn('build_app', tools)
+        failure = json.loads(gateway.requests[1]['messages'][-1]['content'])
+        self.assertIn('EARLY_FAILURE', failure['check_output'])
+        self.assertIn('LATE_FAILURE', failure['check_output'])
+        self.assertLessEqual(len(failure['check_output']), 5000)
+        self.assertEqual((self.out / 'checks/requirements.cjs').read_text(), checks)
+        self.assertTrue(self.workspace.last_verification['passed'])
+
     def test_compact_context_omits_only_byte_identical_known_runtime(self):
         scaffold(self.workspace)
         self.workspace.write_files([{'path': 'frontend/public/index.html', 'content': '<h1>Product</h1>'}])

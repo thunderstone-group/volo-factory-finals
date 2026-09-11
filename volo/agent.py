@@ -429,6 +429,7 @@ class Agent:
             if len(calls) > 32:
                 raise RuntimeError("Model returned an excessive number of tool calls")
             finished = False
+            open_repairs = False
             for call in calls:
                 name = call.get("function", {}).get("name", "")
                 try:
@@ -459,16 +460,22 @@ class Agent:
                     print(f"[volo] {name} error: {self.trace.redact(str(result['error']))}", flush=True)
                 model_result = result
                 if was_direct and not result.get('passed'):
+                    open_repairs = open_repairs or (not small and result.get('passed') is False)
                     model_result = {"passed": False, "error": result.get('error'),
-                                    "check_output": (result.get('steps') or [{}])[-1].get('output', '')[-5000:],
+                                    "check_output": excerpt((result.get('steps') or [{}])[-1].get('output', ''), 5000),
                                     "server_output": result.get('server_output', '')[-2000:],
-                                    "next": "Repair the previous HTML/check bundle directly from this error; return build_app again."}
+                                    "next": ("The bundle is written. Use the full tools to inspect relevant source and "
+                                             "make a narrow repair, then verify. Preserve required behavioral assertions; "
+                                             "fix interface ambiguity in the app rather than hiding it with scoped selectors. "
+                                             "Await asynchronous UI outcomes before asserting them."
+                                             if open_repairs else
+                                             "Repair the previous HTML/check bundle directly from this error; return build_app again.")}
                 text = json.dumps(self.trace.redact(model_result), ensure_ascii=False)
                 messages.append({"role": "tool", "tool_call_id": call["id"], "content": text})
             if finished and self.workspace.last_verification:
                 if self.workspace.fingerprint() == self.workspace.last_verification["source_fingerprint"]:
                     return
-            direct = was_direct and compact_attempts < 3
+            direct = was_direct and compact_attempts < 3 and not open_repairs
             compact = was_compact and compact_attempts < 3
             if not direct and not compact and messages[0]['content'] in (SMALL_SYSTEM, BOUNDED_SYSTEM, SMALL_EDIT_SYSTEM):
                 messages[0]['content'] = SYSTEM

@@ -22,26 +22,17 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev24**, removes the extra UI-planning call.
-That layer repeatedly turned alternative names into additional required controls, and
-its outputs became incorrect constraints on implementation. The coding agent now derives
-its app and executable checks directly from the complete requirements and observed images.
-Build, startup and behavioral verification remain mandatory; official tests remain separate.
-Authored test entrypoints execute as soon as written, and bounded source tools plus a
-120,000-character context window support repair. Small incremental edits still use one
-verified patch call. Dev20 completes actual verification and repair but scores 3/10
-officially. A diagnostic replay narrows its local failures to missing meter/alert semantics.
-Independent source-review probes do not reliably identify those known gaps, so no review
-phase is added. Dev21 makes semantic markup and the corresponding browser assertions
-explicit in the coding instructions; a fresh model run must establish its effect.
-Dev22 also applies Kimi K3's documented low-effort control. Its first full coding run
-reaches execution but exhausts its budget after 11/28 self-checks, before official
-evaluation. Pro also exhausts its budget after reaching browser checks. Dev23 reuses
-the existing generic runtime for bounded new apps, so the model writes product UI,
-API logic and assertions without regenerating build/server/test-lifecycle boilerplate.
-The first bounded-runtime run generates all product code in one call but exposes a
-missing browser base URL. Dev24 sets that origin in the provided browser helper and
-verifies relative navigation with real Chrome. Its Ticket score still needs a fresh run.
+The current development candidate, **0.7.0.dev25**, generates bounded new applications
+through a generic Node runtime. The model supplies the product UI, API logic and checks
+from the complete requirements and image observations; the runtime handles build,
+serving and browser lifecycle. Build and actual behavioral verification are mandatory.
+After a failed first implementation, larger bounded apps immediately get source/edit
+tools for a narrow repair. Failure feedback preserves both log ends, and missing browser
+controls fail within five seconds. A real Chrome regression covers routing and timeout
+behavior; a real HTTP regression covers failure followed by a verified source-only repair.
+Small incremental edits retain their existing single-patch path. Official tests remain
+separate, and this candidate has no official Ticket score yet. The best Ticket result
+from this agent remains E020's 5/10; see [experiments](docs/experiments.md) for the evidence.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and
@@ -67,6 +58,10 @@ python3 -m venv .venv
 
 The upload is `dist/volo-factory.zip`. It contains only the entrypoint, dependency file,
 and `volo/` package. The archive is deterministic.
+
+To include the real browser regression, set `FACTORY_TEST_PLAYWRIGHT_MODULE` to an
+installed Playwright package and `FACTORY_TEST_CHROMIUM_EXECUTABLE` to an installed
+Chromium/Chrome executable when running the test suite. Otherwise that check is skipped.
 
 Use the local [ArcBench CLI](docs/platform-cli.md) to upload, start runs, wait for results,
 inspect logs and download artifacts. Normal operations use the authenticated website API:

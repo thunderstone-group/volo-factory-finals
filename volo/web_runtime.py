@@ -46,6 +46,7 @@ function test(name,check){
     const {chromium}=require(process.env.FACTORY_PLAYWRIGHT_MODULE);
     const browser=await chromium.launch();
     try{const page=await browser.newPage({baseURL:process.env.FACTORY_BASE_URL});const errors=[];
+      page.setDefaultTimeout(5000);page.setDefaultNavigationTimeout(15000);
       page.on('pageerror',error=>errors.push(error.message));
       await page.goto(process.env.FACTORY_BASE_URL);
       if(errors.length) throw new Error('Browser JavaScript errors: '+errors.join('; '));

@@ -907,3 +907,30 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   All **64 local checks pass** in 34.895 seconds, including that real browser check.
 - Dev24 ZIP SHA-256:
   `0185eb2530fdf24780daf5a8fea81c5d6aa146afd9294e8818296e27ab776208`.
+
+## E043 — Whole-bundle retry leaves a reproduced UI failure unchanged
+
+- Dev24 source `6191c42`, Pro submission `455526e9919d`, verified ZIP as E042.
+  https://arc-bench.com/runs/1bd4bfc1fc1f generates UI, API logic and browser checks
+  at 139.948 seconds. Relative navigation now works and the meter check passes.
+- The phone input has no associated label. Several checks each wait 30 seconds for
+  that control, exhausting the 180-second command limit. Earlier checks also find
+  duplicate navigation and immediate assertions before asynchronous error feedback.
+- The second full bundle arrives at 406.842 seconds. It leaves the phone input and
+  UI unchanged while scoping two navigation assertions to `#nav`, hiding ambiguity.
+  Cancelled this run before another repeated timeout; fresh status confirms CANCELLED
+  after cancellation POST returns HTTP 500. Three complete responses report **56,768
+  tokens**. Official cost/duration are null and no official tests execute.
+- Dev25 opens ordinary source/edit/verify tools immediately after a real failed build
+  for larger bounded apps. Invalid arguments still use the existing bounded retries;
+  small-app and incremental behavior retain their established paths. Error feedback
+  uses a bounded head/tail excerpt instead of retaining only the tail. The provided
+  browser uses five-second control waits and fifteen-second navigation waits.
+- All **65 local checks pass** in 37.819 seconds. A real HTTP failure/repair regression
+  keeps original assertions unchanged and verifies both ends of a long failure log reach
+  the next model request. Real Chrome verifies relative routing and missing-control timeout.
+- Dev25 ZIP SHA-256:
+  `1dcc084a58e0c84d37b0d9606b8a7e1b3c4a0cfa31b96ff6c170f799379bcc39`.
+- The latest website bundle `index-zCY9AZyV.js` still requests the same leaderboard
+  endpoint and parameters as the CLI. The repeated leaderboard HTTP 500 responses
+  have no identified client-contract mismatch; current ranks cannot be asserted.
