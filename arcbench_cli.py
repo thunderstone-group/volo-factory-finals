@@ -21,6 +21,8 @@ from pathlib import Path
 
 DEFAULT_ORIGIN = "https://arc-bench.com"
 DEFAULT_SESSION = Path.home() / ".config/volo-factory/arcbench-session.json"
+METER_ORIGIN = "https://meter.arc-bench.com"
+METER_SESSION = DEFAULT_SESSION.with_name("meter-session.json")
 SENSITIVE = {"api_key", "access_token", "refresh_token", "password", "password_hash",
              "authorization", "cookie", "cookies", "session_token"}
 STOP_WAITING = {"PASSED", "FAILED", "CANCELLED", "PAUSED"}
@@ -78,13 +80,14 @@ class SameOriginRedirect(urllib.request.HTTPRedirectHandler):
 
 
 class Client:
-    def __init__(self, origin=DEFAULT_ORIGIN, session=DEFAULT_SESSION, *, timeout=30):
+    def __init__(self, origin=DEFAULT_ORIGIN, session=DEFAULT_SESSION, *, timeout=30, auth_path="/auth/me"):
         parsed = urllib.parse.urlparse(origin)
         if (not parsed.netloc or parsed.username or parsed.password or parsed.query or parsed.fragment
                 or parsed.path not in ("", "/") or parsed.scheme not in ("https", "http")
                 or parsed.scheme == "http" and parsed.hostname not in ("localhost", "127.0.0.1", "::1")):
             raise ValueError("Use an HTTPS origin, or HTTP on localhost for testing")
         self.origin, self.session, self.timeout = origin.rstrip("/"), Path(session), timeout
+        self.auth_path = auth_path
         self.cookies = http.cookiejar.CookieJar()
         self.known_secrets = []
         self.persist = True
@@ -127,7 +130,7 @@ class Client:
         try:
             self.cookies.clear()
             self.import_cookies(payload)
-            result = self.request("GET", "/auth/me")
+            result = self.request("GET", self.auth_path)
         finally:
             self.persist = True
         self.save_session()
@@ -328,12 +331,14 @@ def browser_import(client):
 
 def parser():
     root = argparse.ArgumentParser(description="Upload, run and inspect ArcBench through the website API.")
-    root.add_argument("--origin", default=DEFAULT_ORIGIN)
-    root.add_argument("--session", type=Path, default=DEFAULT_SESSION)
+    root.add_argument("--origin", help="Override the selected service origin")
+    root.add_argument("--session", type=Path, help="Override the selected service session file")
     root.add_argument("--http-timeout", type=float, default=30)
     commands = root.add_subparsers(dest="command", required=True)
     auth = commands.add_parser("auth-import", help="Import origin-scoped browser cookies; never echo them")
     auth.add_argument("--listen", action="store_true", help="Use a one-use localhost form instead of stdin")
+    auth.add_argument("--meter", action="store_true", help="Import the separate metering dashboard session")
+    commands.add_parser("balance", help="Read the metering dashboard balance and billing freshness")
     commands.add_parser("whoami", help="Check the saved login session")
     commands.add_parser("competitions")
     tasks = commands.add_parser("tasks")
@@ -381,7 +386,10 @@ def main(argv=None):
     args = parser().parse_args(argv)
     client = None
     try:
-        client = Client(args.origin, args.session, timeout=args.http_timeout)
+        meter = args.command == "balance" or (args.command == "auth-import" and args.meter)
+        client = Client(args.origin or (METER_ORIGIN if meter else DEFAULT_ORIGIN),
+                        args.session or (METER_SESSION if meter else DEFAULT_SESSION),
+                        timeout=args.http_timeout, auth_path="/user/me" if meter else "/auth/me")
         if args.command == "auth-import":
             if args.listen:
                 return browser_import(client)
@@ -390,6 +398,14 @@ def main(argv=None):
             emit(client, client.authenticate(json.load(sys.stdin)))
         elif args.command == "whoami":
             emit(client, {"user": user_summary(client.request("GET", "/auth/me")["user"])})
+        elif args.command == "balance":
+            balance = client.request("GET", "/user/balance")
+            snapshot = balance.get("balance") or {}
+            freshness = client.request("GET", "/user/freshness")
+            emit(client, {"available_balance": snapshot.get("available_balance", snapshot.get("balance")),
+                          "currency": balance.get("currency") or snapshot.get("currency"),
+                          "as_of": freshness.get("as_of"),
+                          "pending_billing_events": freshness.get("pending_billing_events")})
         elif args.command == "competitions":
             emit(client, [{key: item[key] for key in
                  ("id", "title", "status", "task_count", "total_tests", "template_required") if key in item}

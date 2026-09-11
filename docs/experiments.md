@@ -244,7 +244,11 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - A cancellation request during status inspection returned HTTP 500 while subsequent
   status showed CANCELLED. The retrieved runner log independently records the budget
   failure, process exit and container removal. Do not treat CANCELLED/null metering as
-  evidence that no model work or charges occurred; final official cost is unavailable.
+  evidence that no model work or charges occurred. The run API did not expose final cost.
+- The user subsequently supplied the logged-in [metering dashboard](https://meter.arc-bench.com/user).
+  At 08:43 UTC its four request timestamps matched this trace and showed CNY 0.598142,
+  0.286664, 0.128567 and 0.046444, totaling **CNY 1.059817**. This recovers actual billing
+  from the meter without interpreting a null run-API cost as zero.
 - Complete artifact SHA-256:
   `26203ce7e9febeaecc5918e1ca8a4b6a19c549a7f0a421ffefab86d3bf659333`.
 
@@ -270,3 +274,20 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - The final development tree passed all **39 local checks** in 16.193 seconds, including
   the real-response metadata and cancel-500/state-change regression. Local passing
   checks do not replace the blocked model-backed evaluation.
+
+## E014 — Same-agent GLM-5.3 comparison
+
+- The user confirmed available budget and requested trying another model. Keep the
+  agent source and task fixed at E013's `2793296` / 0.7.0.dev3; select `glm-5.3` through
+  the organizer gateway. DeepSeek-specific thinking parameters are not sent to GLM.
+- Submission `a6faad3043c4` passed upload/download hash verification, with the same
+  SHA-256 `82413746aba52bb0802dddb07ed18f19672e6a73209f2b8772882d7c1081297b`.
+- Run: https://arc-bench.com/runs/ba22ff04e471. Deployment succeeded. The first model
+  request received **HTTP 502 Bad Gateway** from an `openresty` page after **371.452
+  seconds**. No assistant response or tool call was produced, and official tests did
+  not start. This does not evaluate GLM's application quality.
+- The run API reports 372 seconds, zero tokens and CNY zero. The meter balance was
+  unchanged and reported no pending billing events at the subsequent check.
+- Artifact SHA-256: `2f701da2557f890463d925c1c7e76c8a00cf29df4911dae5d41bbee1833db922`.
+- Added and live-verified `./arcbench balance`, reusing the authorized meter login in
+  a separate private origin-scoped session. No balance cookie or model key is committed.

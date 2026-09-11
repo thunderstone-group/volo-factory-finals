@@ -49,6 +49,12 @@ class Website:
                     return
                 if self.path == "/api/auth/me":
                     status, result = (401, {"detail": "not authenticated"}) if owner.reject_auth else (200, {"user": {"username": "synthetic-user"}})
+                elif self.path == "/api/user/me":
+                    result = {"account": {"account_id": "synthetic-meter-account"}}
+                elif self.path == "/api/user/balance":
+                    result = {"balance": {"available_balance": "0.000000"}, "currency": "CNY"}
+                elif self.path == "/api/user/freshness":
+                    result = {"as_of": "2026-09-11T08:52:24Z", "pending_billing_events": 0}
                 elif self.path == "/api/auth/access-key":
                     result = {"api_key": "synthetic-model-secret"}
                 elif self.path == "/api/submissions":
@@ -140,6 +146,22 @@ class PlatformTests(unittest.TestCase):
             self.assertIn("arc_api_sticky=synthetic-route", posts[0]["cookie"])
             self.assertIn("arcbench_session=synthetic-session-secret", posts[0]["cookie"])
         self.assertEqual(stat.S_IMODE(self.session.stat().st_mode), 0o600)
+
+    def test_meter_uses_separate_auth_route_and_preserves_decimal_balance(self):
+        # Endpoint/field shapes verified against the live meter; amounts are synthetic.
+        with Website() as server:
+            client = Client(server.origin, self.session, auth_path='/user/me')
+            client.authenticate({'origin': server.origin, 'cookies': [{
+                'name': 'onr_user_session', 'value': 'synthetic-meter-session',
+                'domain': '127.0.0.1', 'path': '/', 'secure': False}]})
+            output = io.StringIO()
+            with redirect_stdout(output):
+                code = main(['--origin', server.origin, '--session', str(self.session), 'balance'])
+            self.assertEqual(code, 0)
+            self.assertEqual(json.loads(output.getvalue()), {'available_balance': '0.000000',
+                             'currency': 'CNY', 'as_of': '2026-09-11T08:52:24Z', 'pending_billing_events': 0})
+            self.assertEqual([r['path'] for r in server.requests],
+                             ['/api/user/me', '/api/user/balance', '/api/user/freshness'])
 
     def test_saved_submission_id_survives_missing_archive(self):
         with Website() as server:

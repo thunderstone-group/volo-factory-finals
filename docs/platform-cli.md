@@ -11,6 +11,7 @@ Run from the repository root:
 
 ```sh
 ./arcbench whoami
+./arcbench balance
 ./arcbench competitions
 ./arcbench tasks ticket-booking
 ./arcbench submissions --competition ticket-booking
@@ -78,6 +79,19 @@ To use an explicitly configured key, pass its environment variable name with
 `--api-key-env VARIABLE_NAME`. The model gateway defaults to `https://api.arc-bench.com/v1`.
 CLI output redacts credential fields, known keys/session values and meter identifiers.
 Authenticated redirects to another origin are refused.
+
+The metering site has a separate cookie session. `./arcbench auth-import --meter --listen`
+imports an existing authorized meter session with the same private one-use form, validates
+it against `/api/user/me`, and saves `~/.config/volo-factory/meter-session.json` with mode
+0600. This handoff has been completed using the user's logged-in meter tab. `balance`
+now reads its balance, currency, synchronization timestamp and pending billing-event
+count directly. Decimal balances remain strings; a zero balance is not treated as missing.
+Neither service's session cookies are sent to the other service.
+
+The balance contract comes from the meter's deployed
+[user client](https://meter.arc-bench.com/user.js), inspected on 2026-09-11:
+`GET /api/user/balance` and `GET /api/user/freshness`. It was verified against the live
+account and complemented by a local contract check with synthetic amounts.
 
 ## Contract source and verification
 
