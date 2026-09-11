@@ -963,3 +963,34 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   correctly fails until an accessible name is added without weakening that assertion.
 - Dev26 ZIP SHA-256:
   `61b2c2d75f3b926508bc9ecaa7db91f6157483a63565ec1de2761ee7ba493ef9`.
+
+## E045 — Successful self-repair still misses an aliased navigation duplicate
+
+- Dev26 source `82d2f96`, Pro submission `17580613af98`, verified ZIP as E044.
+  https://arc-bench.com/runs/a68d3118feaf generates its app at 142.801 seconds and
+  finishes the first self-check at 145.160 seconds with **2/8 passing**.
+- Real diagnostics identify duplicate username text and meter naming. Pro fixes the
+  app, but also makes generated fixture usernames too long. The next failure includes
+  the visible username-validation message; Pro shortens the fixture and reaches
+  **8/8 self-checks passing** at 282.143 seconds. The helper's diagnostics are now
+  exercised by a real model repair, not only controlled local fixtures.
+- Official evaluation executes all ten tests and reports **0/10, 282 seconds,
+  1,814,413 tokens, CNY 1.507691**. The 14 captured responses report **314,660 tokens**.
+  Every official test stops at two homepage links sharing the registration destination:
+  the primary English link and a Chinese shortcut in welcome content. The self-check's
+  exact English-name selector does not detect the second alias.
+- Downloaded the final UI/API files and ran the unchanged public suite against the
+  generated app in an isolated Docker process with real Chrome: **0/10 in 5.803 seconds**.
+  A separate diagnostic copy removes only the two welcome-content login/registration
+  shortcuts; all business logic is unchanged. That copy passes **10/10 in 10.748 seconds**.
+  Neither the diagnostic application nor public tests are included in an upload.
+- Dev27 adds a runtime navigation contract: non-home internal destinations found in
+  primary navigation (`nav`, a navigation role or `#nav`) must have one visible link.
+  The check derives routes/labels from the application; it contains no benchmark routes.
+  It ignores hidden links, external destinations, fragment-only links and home/logo links.
+  This is a minimal navigation policy for bounded new apps, not a universal web rule.
+- All **68 local checks pass** in 55.668 seconds. A real Chrome fixture proves that an
+  otherwise passing exact-name assertion cannot hide another alias to the same route,
+  and that removing the shortcut passes without removing allowed home/hidden links.
+- Dev27 ZIP SHA-256:
+  `3d1544b92b09959b862b91d1b9c4ef6c14254ec3c246af4396e406f29095b3f3`.

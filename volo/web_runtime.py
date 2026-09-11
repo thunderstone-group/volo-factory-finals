@@ -56,6 +56,21 @@ function test(name,check){
       if(errors.length) throw new Error('Browser JavaScript errors: '+errors.join('; '));
       await check(page,assert);
       if(errors.length) throw new Error('Browser JavaScript errors: '+errors.join('; '));
+      const repeated=await page.getByRole('link').evaluateAll(links=>{
+        const primary=new Set();const targets=new Map();
+        for(const link of links){
+          const raw=link.getAttribute('href');if(!raw||raw.startsWith('#'))continue;
+          const url=new URL(raw,location.href);
+          if(url.origin!==location.origin||(url.pathname==='/'&&!url.search))continue;
+          const target=url.pathname+url.search+url.hash;
+          if(link.closest('nav,[role="navigation"],#nav'))primary.add(target);
+          const labels=targets.get(target)||[];
+          labels.push(link.getAttribute('aria-label')||link.textContent.trim());targets.set(target,labels);
+        }
+        return [...primary].filter(target=>targets.get(target).length>1)
+          .map(target=>({target,labels:targets.get(target)}));
+      });
+      assert.equal(repeated.length,0,'Keep one visible link to each primary page; remove repeated shortcuts: '+JSON.stringify(repeated));
       assert.equal(await page.getByRole('meter',{name:/^\s*$/}).count(),0,
         'Visible meters must have an accessible name from a label or aria-label');
     }catch(error){

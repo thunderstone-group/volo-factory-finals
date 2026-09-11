@@ -237,3 +237,12 @@ each rule snapshot and experiment with date and source.
   state and pending-request diagnostics to failed checks, plus an independent unnamed-
   meter check. All 67 local checks pass with real Chrome. These are harness results;
   neither dev25 nor dev26 has an improved official Ticket score at this checkpoint.
+- E045 demonstrates actual repair: browser diagnostics expose an overlong generated
+  test username, and Pro fixes it and completes all 8 self-checks. Official evaluation
+  still scores 0/10 because homepage shortcuts duplicate primary navigation destinations
+  under different labels. The unchanged public tests also fail 0/10 locally, then pass
+  10/10 after deleting only those shortcuts from an offline diagnostic copy.
+- Dev27 checks that non-home primary destinations have one visible link in the prepared
+  small-app runtime. It derives destinations from the app, without benchmark route names
+  or business logic. Real Chrome covers aliases, hidden links and home-link exceptions;
+  all 68 local checks pass. Another official run must establish actual improvement.

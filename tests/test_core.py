@@ -353,6 +353,27 @@ assert.equal(await meter.evaluate(el=>el.value),2);});"""
         repaired = implement(self.workspace, html.replace('<meter ', '<meter aria-label="Quality" '), '', check)
         self.assertTrue(repaired['passed'], repaired)
 
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                         'Provide an installed Playwright module and Chromium for real browser checks')
+    def test_browser_rejects_primary_route_aliases_but_allows_home_and_hidden_links(self):
+        self.enable_installed_browser()
+        scaffold(self.workspace)
+        html = """<nav><a href="/">Home</a><a href="/details">Details</a></nav>
+<a href="/">Site logo</a><a href="/details">Open details</a>
+<a href="/details" hidden>Hidden details</a>"""
+        check = """const {test,assert}=require('./browser.cjs');test('primary link is available',async page=>{
+assert.ok(await page.getByRole('link',{name:'Details',exact:true}).isVisible());});"""
+        first = implement(self.workspace, html, '', check)
+        self.assertFalse(first['passed'])
+        output = first['steps'][-1]['output']
+        self.assertIn('Keep one visible link to each primary page', output)
+        self.assertIn('Open details', output)
+        repaired = implement(self.workspace,
+            html.replace('<a href="/details">Open details</a>', '<p>Details are in the primary navigation.</p>'),
+            '', check)
+        self.assertTrue(repaired['passed'], repaired)
+
     def test_model_tool_loop_repairs_failure_then_resumes_without_model_call(self):
         initial = response([("build_app", {"index_html": "wrong",
                             "checks_js": GREETING_FILES[-1]['content']})])

@@ -34,7 +34,11 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    Qwen3.8 Max reaches that repair path but still exhausts its budget with 1/8 self-checks
    passing. Its generated request-body reader never resolves, while errors show only UI
    timeouts. Dev26 adds actual page/pending-request diagnostics and an independent check
-   for unnamed visible meters. Official Ticket validation remains the next gate.
+   for unnamed visible meters. E045 uses those diagnostics to reach 8/8 self-checks,
+   but official tests score 0/10 because a second registration link uses another alias.
+   Removing only duplicate homepage shortcuts in an offline diagnostic copy produces
+   10/10. Dev27 adds a generic primary-destination uniqueness check; its official
+   Ticket validation remains the next gate. The diagnostic app is never uploaded.
    Official page crashes
    and timeouts did not reproduce locally; their exact cause remains unconfirmed.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.
