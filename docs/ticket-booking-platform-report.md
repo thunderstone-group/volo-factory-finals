@@ -1,6 +1,20 @@
 # Ticket Booking platform observations
 
-**Latest observations, 2026-09-11 at 18:08 UTC:** dev6 run `15daf231bb0e` completes
+**Latest observations, 2026-09-11 at 20:37 UTC:** dev19 submission `ee4916f55af4`
+saves and downloads successfully. Both run
+[026c37ec93f1](https://arc-bench.com/runs/026c37ec93f1) and its same-submission retry
+[ec1c4eae8595](https://arc-bench.com/runs/ec1c4eae8595) fail in `deploy_agent` with
+missing run-local `agent.zip`, before model execution. Downloading the saved archive
+again after both failures returns 36,533 bytes with the exact original SHA-256:
+`fd69e93a7a6e052a2a2e5a7f5882d13f9c276b951a377be142e8f31d64a2382d`.
+The immediately preceding dev18 run `9a7b3c951a6e` deployed and ran its agent; it failed
+later on its own token budget. These are separate failure stages. The client evidence
+still does not identify why the saved ZIP is absent from the new run directories.
+Re-saving the byte-identical archive as submission `619f262a9a92` passes download/hash
+verification again. Run [4342487db5a5](https://arc-bench.com/runs/4342487db5a5) deploys
+successfully and starts generation. This recovery does not establish the server-side cause.
+
+**Observation at 18:08 UTC:** dev6 run `15daf231bb0e` completes
 generation and official evaluation at 5/10. Its original generated application replays
 the unchanged public suite locally at 9/10; official execution also reports page crashes
 and interaction timeouts whose environment cause remains unconfirmed. The normalized
