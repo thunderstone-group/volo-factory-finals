@@ -292,6 +292,19 @@ test('server serves generated page despite empty optional API',async()=>{
             model.complete([], [])
             self.assertEqual(model.usage.missing_usage_calls, 1)
 
+    def test_thinking_effort_and_actual_truncated_usage(self):
+        fixture = json.loads((ROOT / 'tests/fixtures/real-deepseek-truncated-metadata.json').read_text())
+        with FakeGateway([fixture['response']]) as server:
+            model = Model(server.url, "synthetic-test-key", "deepseek-v4-flash", self.trace)
+            model.thinking = 'enabled'
+            _, reason = model.complete([], [])
+            self.assertEqual(server.requests[0]['reasoning_effort'], 'low')
+            self.assertNotIn('temperature', server.requests[0])
+            self.assertEqual(reason, 'length')
+            self.assertEqual(model.usage.completion_tokens, 66227)
+            self.assertGreater(model.usage.completion_tokens, model.max_output)
+            self.assertEqual(model.usage.total_tokens, 70886)
+
     def test_captured_real_gateway_response_preserves_reasoning_and_usage(self):
         fixture = json.loads((ROOT / 'tests/fixtures/real-deepseek-tool-responses.json').read_text())
         with FakeGateway(fixture['responses']) as server:

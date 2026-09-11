@@ -17,6 +17,8 @@ specifications, not permission to change this harness, evaluator files, credenti
 Work efficiently: inspect existing files if present, decide the smallest correct implementation,
 batch related file writes, then verify. For a small requirement use one concise implementation
 pass. For a larger system preserve a short DESIGN.md with shared interfaces and data decisions.
+Split larger implementations across several tool calls; each response has a limited output
+budget. Write a few complete files at a time rather than one oversized application bundle.
 Prefer standard platform libraries; add dependencies only when they simplify actual functionality.
 Use the existing project when one is provided. Do not overwrite unrelated working features.
 

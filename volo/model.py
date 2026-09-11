@@ -48,6 +48,10 @@ class Model:
             body["thinking"] = {"type": self.thinking}
             if self.thinking == 'disabled':
                 body['temperature'] = 0
+            else:
+                # V4 defaults to high; E012 spent 58,034 reasoning tokens before
+                # returning a truncated tool call. Keep bounded coding turns at low.
+                body['reasoning_effort'] = 'low'
         if forced_tool:
             if forced_tool not in {t['function']['name'] for t in tools}:
                 raise ValueError("Forced tool must be advertised")

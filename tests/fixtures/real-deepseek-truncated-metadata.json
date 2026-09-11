@@ -1,0 +1,36 @@
+{
+  "_source": {
+    "run_id": "2ee804a2030f",
+    "captured_at": "2026-09-11",
+    "kind": "redacted real response metadata",
+    "omitted_fields": [
+      "assistant reasoning_content",
+      "assistant content",
+      "assistant tool_calls",
+      "provider identifiers"
+    ],
+    "purpose": "usage and finish reason only; not a tool protocol replay"
+  },
+  "response": {
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant"
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 66227,
+      "completion_tokens_details": {
+        "reasoning_tokens": 58034
+      },
+      "prompt_tokens": 4659,
+      "prompt_tokens_details": {
+        "cached_tokens": 4096
+      },
+      "total_tokens": 70886
+    }
+  }
+}
