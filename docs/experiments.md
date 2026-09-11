@@ -87,3 +87,19 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - Next: supply task-independent build, HTTP serving and browser-check lifecycle code.
   The model still generates all product-specific HTML, JavaScript, optional API logic and assertions.
   This removes repeated infrastructure generation without embedding a task solution.
+
+## E005 — Task-independent web runtime
+
+- Source: `51bcf4b`, submission `volo-factory-v0.5.0-51bcf4b`.
+- Counter: https://arc-bench.com/runs/8ca47cd69670 — **1/1**, 46 seconds, 39,165 gateway tokens,
+  approximately CNY 0.0334.
+- The actual first response used only 1,658 reported tokens (1,152 input, 506 output,
+  zero reasoning), and generated the product UI and browser assertions correctly.
+- A harness bug caused the extra work: the optional `api_js` was an empty string, which
+  overwrote the default no-op handler. The server then raised `TypeError: api is not a function`.
+  The repair loop fixed it, so official tests passed, but the extra calls and readiness
+  wait consumed time and tokens.
+- Version 0.5.1 treats empty optional API code as absent and makes invalid handler exports
+  fail immediately. A regression fixture was captured from this real tool call and tested
+  against an actual local HTTP server.
+- The Dice task was deferred until this concrete harness defect was fixed.

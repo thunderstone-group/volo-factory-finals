@@ -11,6 +11,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const base = path.resolve(__dirname, '../frontend/dist');
 const api = require('./api.cjs');
+if(typeof api !== 'function') throw new Error('backend/api.cjs must export a request handler function');
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8',
   '.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml'};
 http.createServer(async (req,res) => {
@@ -70,7 +71,7 @@ def implement(workspace, index_html, app_js, checks_js, api_js=None):
         {"path": "frontend/public/app.js", "content": app_js},
         {"path": "checks/requirements.cjs", "content": checks_js},
     ]
-    if api_js is not None:
+    if api_js is not None and api_js.strip():
         files.append({"path": "backend/api.cjs", "content": api_js})
     workspace.write_files(files)
     return workspace.verify(["node", "--test", "checks/requirements.cjs"])

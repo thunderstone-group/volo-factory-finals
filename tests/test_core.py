@@ -23,6 +23,7 @@ from volo.model import Model, ModelError
 from volo.requirements import RequirementSet
 from volo.trace import Runtime, Trace
 from volo.workspace import Workspace, tool_environment
+from volo.web_runtime import scaffold, implement
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -211,6 +212,19 @@ GREETING_FILES = [
 
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "Node and npm required")
 class ExecutionTests(TempCase):
+    def test_real_empty_optional_api_does_not_break_the_application_server(self):
+        captured = json.loads((ROOT / 'tests/fixtures/real-empty-api-tool-call.json').read_text())['arguments']
+        self.assertEqual(captured['api_js'], '')
+        scaffold(self.workspace)
+        check = """const {test}=require('node:test');const assert=require('node:assert/strict');
+test('server serves generated page despite empty optional API',async()=>{
+ const response=await fetch(process.env.FACTORY_BASE_URL);
+ assert.equal(response.status,200);assert.match(await response.text(),/data-testid=\"count\"/);
+});"""
+        result = implement(self.workspace, captured['index_html'], captured['app_js'], check, captured['api_js'])
+        self.assertTrue(result['passed'], result)
+        self.assertIn('=>false', (self.out / 'backend/api.cjs').read_text())
+
     def test_real_build_http_check_and_process_cleanup(self):
         self.workspace.write_files(GREETING_FILES)
         result = self.workspace.verify(["node", "checks/greeting.cjs"])

@@ -1,0 +1,10 @@
+{
+  "source_run": "https://arc-bench.com/runs/8ca47cd69670",
+  "captured_at": "2026-09-11",
+  "arguments": {
+    "api_js": "",
+    "app_js": "const countEl = document.getElementById('count');\nlet count = 0;\n\nfunction render() {\n  countEl.textContent = count;\n}\n\ndocument.getElementById('increment').addEventListener('click', () => {\n  count += 1;\n  render();\n});\n\ndocument.getElementById('decrement').addEventListener('click', () => {\n  count -= 1;\n  render();\n});\n\nrender();\n",
+    "checks_js": "const {test, assert} = require('./browser.cjs');\n\ntest('Increment and decrement the count', async (page) => {\n  const countEl = page.getByTestId('count');\n  await assert.equal(await countEl.textContent(), '0', 'initial count is 0');\n\n  const incBtn = page.getByRole('button', {name: 'Increment'});\n  const decBtn = page.getByRole('button', {name: 'Decrement'});\n  await assert.ok(await incBtn.isVisible(), 'Increment button is visible');\n  await assert.ok(await decBtn.isVisible(), 'Decrement button is visible');\n\n  await incBtn.click();\n  await incBtn.click();\n  await assert.equal(await countEl.textContent(), '2', 'count is 2 after two increments');\n\n  await decBtn.click();\n  await decBtn.click();\n  await decBtn.click();\n  await assert.equal(await countEl.textContent(), '-1', 'count is -1 after three decrements');\n});\n",
+    "index_html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>ARC Counter Smoke Test</title>\n</head>\n<body>\n  <span id=\"count\" data-testid=\"count\">0</span>\n  <button id=\"increment\">Increment</button>\n  <button id=\"decrement\">Decrement</button>\n  <script src=\"/app.js\" defer></script>\n</body>\n</html>\n"
+  }
+}

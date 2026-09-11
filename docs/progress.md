@@ -43,6 +43,18 @@ and iterate from observed failures. A generated app or mock transport test is no
   browser-cache protection and existing-tool discovery. All 16 local checks passed.
 - See `experiments.md` for official run link, source commit, measured cost and failure evidence.
 
+## 2026-09-11 — Measured efficiency iterations
+
+- Versions 0.2 and 0.3 both passed all official Smoke tests. Both reached second place;
+  another team improved its result during the experiments.
+- Traces showed unnecessary reasoning, fragmented writes and repeated runtime-code generation.
+  Added a small-task path that keeps requirement-specific code and assertions model-generated,
+  while supplying reusable build, serving and browser-test lifecycle code.
+- Version 0.5 exposed a real empty-optional-field bug in this runtime. Version 0.5.1 fixes
+  it, with a captured real tool-call fixture and a real HTTP regression test.
+- Large requirements retain dependency-ordered batches and the full repair tool loop.
+  Intermediate folder constraints are now included in batch context.
+
 ### Evidence and privacy
 
 Commit source, plans, redacted experiment summaries, selected reproducible fixtures
