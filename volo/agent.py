@@ -79,6 +79,8 @@ error and make a narrow repair. Avoid repeated full rewrites. run uses argv, not
 Do not start background servers yourself; finish manages their lifecycle.
 The structured requirement input is complete. Do not reread duplicate requirements.md or list
 an empty workspace. Read existing application files only when they materially affect the edit.
+read_files is bounded to 12000 total bytes. For larger files use read_file_chunk and its
+next_offset; request only the relevant section instead of repeatedly requesting entire files.
 For a small task in an empty workspace, start by writing its implementation and checks in one
 batch and call finish directly, in the same response if possible.
 Image observations in the request come from a separate call through the configured gateway.
@@ -154,8 +156,11 @@ TOOLS = [
     function("read_acceptance", "Read the current input-derived UI training checks without changing them.", {}, []),
     function("revise_ui_contract", "Correct a mistaken training-only UI extraction with a requirement-grounded explanation.",
              {'pages': UI_CONTRACT_TOOL['function']['parameters']['properties']['pages'], 'reason': STR}, ['pages', 'reason']),
-    function("read_files", "Read up to 20 UTF-8 files. Input assets use @requirements/<path>.",
+    function("read_files", "Read up to 20 UTF-8 files, at most 12000 bytes total. Use read_file_chunk for larger input.",
              {"paths": STRINGS}, ["paths"]),
+    function("read_file_chunk", "Read a bounded UTF-8 source chunk by character offset; follow next_offset only if needed.",
+             {'path': STR, 'offset': {'type': 'integer', 'minimum': 0},
+              'limit': {'type': 'integer', 'minimum': 1, 'maximum': 8000}}, ['path']),
     function("write_files", "Atomically write a batch of complete UTF-8 files inside the application.",
              {"files": {"type": "array", "items": {"type": "object", "properties": {
                  "path": STR, "content": STR}, "required": ["path", "content"],
@@ -200,7 +205,7 @@ class Agent:
         if not candidates or len(candidates) > 20 or sum(item['bytes'] for item in candidates) > 24000:
             return None
         try:
-            return self.workspace.read_files([item['path'] for item in candidates])
+            return {item['path']: self.workspace.path(item['path']).read_text() for item in candidates}
         except (OSError, UnicodeError, ValueError):
             return None
 
@@ -269,8 +274,8 @@ class Agent:
                 path, old, new = item['path'], item['old'], item['new']
                 if not isinstance(old, str) or not old or not isinstance(new, str):
                     raise ValueError('Provide nonempty old text and replacement text')
-                self.workspace.path(path, write=True)
-                current = pending[path] if path in pending else self.workspace.read_files([path])[path]
+                target = self.workspace.path(path, write=True)
+                current = pending[path] if path in pending else target.read_text()
                 if current.count(old) != 1:
                     raise ValueError('Exact old text must occur exactly once: ' + path)
                 pending[path] = current.replace(old, new, 1)
@@ -389,7 +394,7 @@ class Agent:
                 lambda: self.context_checkpoint(nodes, messages[0]["content"], last_failure))
             if projection:
                 self.trace.event("context_projection", **projection)
-            active_tools = [tool for tool in TOOLS if tool['function']['name'] == 'build_app'] if direct else TOOLS
+            active_tools = [tool for tool in TOOLS if (tool['function']['name'] == 'build_app') == direct]
             if compact:
                 active_tools = [tool for tool in TOOLS if tool['function']['name'] == 'patch_and_verify']
             message, reason = self.model.complete(model_messages, active_tools,

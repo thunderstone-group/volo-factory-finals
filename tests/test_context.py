@@ -137,6 +137,7 @@ class ContextRepairTests(TempCase):
         self.assertEqual(gateway.requests[0]['thinking'], {'type': 'disabled'})
         self.assertNotIn('tool_choice', gateway.requests[0])
         self.assertIn('deliver', [t['function']['name'] for t in gateway.requests[0]['tools']])
+        self.assertNotIn('build_app', [t['function']['name'] for t in gateway.requests[0]['tools']])
 
     def test_compact_context_omits_only_byte_identical_known_runtime(self):
         scaffold(self.workspace)
@@ -153,7 +154,9 @@ class ContextRepairTests(TempCase):
         self.assertIn('product-specific change', changed['source']['backend/server.cjs'])
 
     def test_small_existing_source_supports_one_verified_edit_without_exposing_state(self):
-        self.workspace.write_files(GREETING_FILES + [
+        files = copy.deepcopy(GREETING_FILES)
+        files[3]['content'] += '\n/*' + 'preserved-large-source-' * 600 + '*/'
+        self.workspace.write_files(files + [
             {'path': 'theme.css', 'content': '/* preserve this unrelated source */'},
             {'path': 'accounts.json', 'content': '{"private":"not-for-initial-context"}'}])
         (self.out / '.env').write_text('PRIVATE=never-inline-secret')

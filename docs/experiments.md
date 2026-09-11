@@ -620,12 +620,19 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   in raw OpenAI-compatible JSON. Provider control and pre-write command validation need
   a fresh real run before the lower price can be treated as an efficiency advantage.
 
-## E030 preparation — Early execution and provider-specific command controls
+## E030 — Large source replies expose another context failure
 
 - Source `d814120`, dev15, submission `9da01d82bcde`, matching ZIP SHA-256
   `7e5337b53ec0bed9e29ee4187a6d466e4d1a6cf53f2d0c2cc48a62154a0ea9bd`.
   https://arc-bench.com/runs/ae581e093699 starts with Pro, automatic authored-test
-  execution and the larger repair budget. Outcome pending.
+  execution and the larger repair budget. It fails before official tests: **262 seconds,
+  611,799 official tokens, CNY 1.579687**. Actual 23-response usage is 300,496 tokens;
+  preserve the discrepancy rather than claiming isolated accounting.
+- The model selects the small-app builder outside its prepared mode, causing a missing
+  manifest failure. Its subsequent complete delivery reaches UI checks, which fail.
+  Nineteen source-read replies then repeat: each reply is 34,079 or 44,280 characters.
+  Combined with the requirement/recovery prefix, the latest read cannot fit 60,000
+  characters and is omitted. A bounded last-result summary cannot replace all that code.
 - Dev16 maps Qwen3 thinking policy to `enable_thinking`, preserving all returned
   reasoning fields. Check commands now have an explicit argv schema and are validated
   before bundle writes. The observed one-string array is split using `shlex`, never a
@@ -634,3 +641,27 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   captured command shape, an invalid command leaves source untouched, and synthetic
   transport checks confirm Qwen's outbound true/false field. Real Qwen effectiveness
   remains the next formal-run gate.
+
+## E031 — Smoke Evolution returns to first; bound source reads for Ticket
+
+- Source `418ba6f`, dev16, Qwen3.6 Flash submission `c57c371b9f3e`, matching ZIP
+  SHA-256 `f5cb0753ca5092125b701ac1a75ab86ae6279362ee9af61086e233e872c944db`.
+- First Counter run `0e6164e0c991` passes 2/2 in six seconds. Its one response uses
+  2,563 tokens with `enable_thinking=false`; official metering reports 135,093 tokens
+  and CNY 0.026841 while a separate shared-account Ticket run is active. This does not
+  establish isolated cost. Waited for that other run to finish before rechecking.
+- Counter https://arc-bench.com/runs/8c8a9e509ec6 passes **2/2**, eight seconds,
+  2,976 tokens, CNY 0.011275. Dice https://arc-bench.com/runs/97e608e5381c passes
+  **2/2**, six seconds, 2,226 tokens, CNY 0.006535. Both finish with one verified edit call.
+- Live board: **rank 1, 100%, CNY 0.017810, seven seconds average**, ahead of
+  CNY 0.018816. Saved the leaderboard snapshot and tagged `v0.7.0-dev16`; no further
+  Evolution optimization is needed for the current milestone.
+- Dev17 rejects oversized multi-file reads with a specific chunk-reading instruction.
+  A new character-offset source tool returns at most 8,000 characters; 12,000 bytes is
+  the aggregate full-read limit. Internal atomic edits and small snapshots still use
+  complete source. Unprepared `build_app` is no longer advertised in full-tool mode.
+- All **65 local checks pass** in 29.636 seconds, including Unicode chunk reconstruction,
+  preserved full edits of files larger than the read limit, and correct tool availability.
+- Offline replay of the exact E028 app also fails 10/10 at duplicate registration links.
+  No copied application or diagnostic code was uploaded. This remains evidence that
+  generation must reach real verification and repair, not a new official outcome.

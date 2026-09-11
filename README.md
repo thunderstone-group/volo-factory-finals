@@ -10,7 +10,9 @@ development milestones, not evidence of a final result.
 Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average runtime.
 Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
 dated practice milestones; the formal preliminary and final are separate competitions.
-The September 12 refresh keeps Smoke first and places Smoke Evolution second.
+The September 12 update restores Smoke Evolution to first with dev16 / Qwen3.6 Flash:
+4/4 official tests, CNY 0.017810 total, seven seconds average. Tag `v0.7.0-dev16`
+preserves that source and the matching upload is recorded in the experiment log.
 Ticket Booking uploads, generation and all 10 official tests now execute. The latest
 evaluated candidate passed 5/10; its original app passes 9/10 in a local replay of the
 unchanged public tests. Input-reference and UI-contract gaps remain. Historical upload
@@ -19,7 +21,8 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev16**, runs authored Node test bundles as
+The current development candidate, **0.7.0.dev17**, bounds source reads so a large tool
+response cannot be repeatedly discarded by context projection. It runs authored Node test bundles as
 soon as the application and test files are present. It uses a data-only UI training contract and
 harness-owned checking code. Arbitrary generated acceptance scripts introduced runtime
 and shared-test-data errors in dev8/dev10, so that path and its parser dependencies were
@@ -33,7 +36,7 @@ Version dev4 already verifies browser checks and serves the same app on both obs
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
 documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-All 64 local checks pass, including real HTTP incremental edits and repair, training-contract revision and recovery, reference routing and cache
+All 65 local checks pass, including real HTTP incremental edits and repair, training-contract revision and recovery, reference routing and cache
 invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
@@ -126,6 +129,10 @@ are not an OS-level sandbox for subprocesses.
   reads, is also preserved in a bounded checkpoint when its full exchange cannot fit.
   Retained reasoning fields stay intact; raw trace
   evidence is preserved. The 60,000-character limit is not a provider token estimate.
+- Source tools return at most 12,000 total bytes or an 8,000-character file chunk with
+  a continuation offset. Chunk boundaries preserve Unicode; full-file editing remains
+  separate from what is returned to the model. The prepared small-app builder is only
+  advertised when its runtime has actually been scaffolded.
 - Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
 - Default caps: 32 attempted requests, 300,000 observed tokens, 1,200 seconds and
   16,384 output tokens per coding request. Environment overrides use `FACTORY_MAX_CALLS`,

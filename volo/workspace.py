@@ -131,6 +131,10 @@ class Workspace:
     def read_files(self, paths):
         if not isinstance(paths, list) or not 1 <= len(paths) <= 20:
             raise ValueError("Read 1–20 paths per call")
+        sizes = {name: self.path(name).stat().st_size for name in paths}
+        if sum(sizes.values()) > 12000:
+            raise ValueError('Source read exceeds 12000 bytes. Use read_file_chunk with character offsets. '
+                             'Requested file sizes: ' + json.dumps(sizes))
         result = {}
         for name in paths:
             path = self.path(name)
@@ -138,6 +142,18 @@ class Workspace:
                 raise ValueError(f"File is too large; use run to inspect a bounded slice: {name}")
             result[name] = path.read_text()
         return result
+
+    def read_file_chunk(self, path, offset=0, limit=8000):
+        if (not isinstance(offset, int) or offset < 0 or not isinstance(limit, int)
+                or not 1 <= limit <= 8000):
+            raise ValueError('Use a nonnegative character offset and a limit of 1-8000 characters')
+        source = self.path(path)
+        if source.stat().st_size > 1000000:
+            raise ValueError('Source exceeds 1 MB; inspect a bounded slice with run')
+        content = source.read_text()
+        chunk = content[offset:offset + limit]
+        return {'path': path, 'offset': offset, 'content': chunk, 'total_chars': len(content),
+                'next_offset': offset + len(chunk) if offset + len(chunk) < len(content) else None}
 
     def write_files(self, files):
         if not isinstance(files, list) or not 1 <= len(files) <= 30:

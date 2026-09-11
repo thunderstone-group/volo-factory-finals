@@ -7,8 +7,8 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    Counter and Dice outputs. Pass both original behavior and added requirements.
    Inspect whether the agent preserves working code and regression assertions.
    **Passed with v0.6.0:** both tasks passed 2/2 official tests. The refreshed September
-   12 board is now rank 2. Dev11 again passes 4/4 and lowers selected cost to CNY
-   0.030432, but the leader remains CNY 0.018816. Remove remaining repeated prompt/output.
+   12 board returns to **rank 1 with dev16 / Qwen3.6 Flash**: 4/4, CNY 0.017810,
+   seven seconds average. Source is frozen under `v0.7.0-dev16`.
 2. **Stateful application:** complete all currently published Ticket Booking tests.
    Independently check server-side validation, persistence after restart, session
    invalidation and duplicate-account handling described by the requirements.
@@ -19,6 +19,8 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    read-only checks, while stateful tests remain implementation-authored. Evaluate that
    smaller training-check boundary next. Dev14 also preserves successful reads across
    context projection and allows requirement-grounded correction of training metadata.
+   Dev17 bounds large source replies and exposes chunked reading, after E030 showed
+   that even a successful read disappears when the entire reply exceeds remaining context.
    Official page crashes
    and timeouts did not reproduce locally; their exact cause remains unconfirmed.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.

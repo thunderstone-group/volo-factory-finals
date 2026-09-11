@@ -122,6 +122,21 @@ children:
 
 
 class WorkspaceTests(TempCase):
+    def test_large_source_is_read_in_complete_unicode_chunks(self):
+        source = ('const message="中文文本";\n' * 1500) + 'END'
+        self.workspace.write_files([{'path': 'large.js', 'content': source}])
+        with self.assertRaisesRegex(ValueError, 'read_file_chunk'):
+            self.workspace.read_files(['large.js'])
+        parts, offset = [], 0
+        while offset is not None:
+            result = self.workspace.read_file_chunk('large.js', offset=offset, limit=1500)
+            self.assertLessEqual(len(result['content']), 1500)
+            parts.append(result['content'])
+            offset = result['next_offset']
+        self.assertEqual(''.join(parts), source)
+        with self.assertRaises(ValueError):
+            self.workspace.read_file_chunk('../outside.js')
+
     def test_browser_gc_cannot_be_enabled_by_inherited_or_extra_environment(self):
         with patch.dict(os.environ, {"PLAYWRIGHT_SKIP_BROWSER_GC": "0"}):
             self.assertEqual(tool_environment({"PLAYWRIGHT_SKIP_BROWSER_GC": "0"})["PLAYWRIGHT_SKIP_BROWSER_GC"], "1")
