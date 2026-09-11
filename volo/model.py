@@ -27,7 +27,7 @@ class Usage:
 
 
 class Model:
-    def __init__(self, base_url, api_key, model, trace, *, timeout=600, max_output=8192):
+    def __init__(self, base_url, api_key, model, trace, *, timeout=600, max_output=16384):
         parsed = urllib.parse.urlparse(base_url)
         if parsed.scheme not in ("http", "https") or not parsed.netloc:
             raise ValueError("Invalid OPENAI_BASE_URL")

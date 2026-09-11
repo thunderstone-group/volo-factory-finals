@@ -57,7 +57,7 @@ def main():
             ignore.write_text(existing.rstrip() + "\n" + "\n".join(missing) + "\n")
         runtime = Runtime(trace)
         client = Model(base, key, model_name, trace,
-                       max_output=int(os.getenv("FACTORY_MAX_OUTPUT_TOKENS", "8192")))
+                       max_output=int(os.getenv("FACTORY_MAX_OUTPUT_TOKENS", "16384")))
         workspace = Workspace(output, requirements.root, trace, time.monotonic() + args.timeout)
         trace.event("run_started", requirement_fingerprint=requirements.fingerprint,
                     model=model_name, max_calls=args.max_calls, token_budget=args.token_budget,

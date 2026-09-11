@@ -18,11 +18,12 @@ import urllib.request
 from pathlib import Path
 
 from .environment import discover_playwright
+from .launcher import install as install_launcher
 from .trace import Trace, atomic_json
 
 
 EXCLUDED = {".git", ".arc", ".factory", "node_modules", "dist", "build", "__pycache__", ".venv"}
-PROTECTED = {".git", ".arc", ".factory", "requirements"}
+PROTECTED = {".git", ".arc", ".factory", ".volo", "requirements"}
 
 
 def stop_process(process):
@@ -205,6 +206,22 @@ class Workspace:
             atomic_json(marker, {"manifest": digest})
         return result
 
+    def browser_checks(self, check_command):
+        """Find standalone browser checks written by this agent, not evaluator files."""
+        if not self.browser.get("available"):
+            return []
+        checks = []
+        for path in self.files():
+            relative = str(path.relative_to(self.root))
+            if (not relative.startswith('checks/') or relative in check_command
+                    or path.suffix not in ('.js', '.cjs', '.mjs')
+                    or not any(marker in path.name for marker in ('.spec.', '.test.'))):
+                continue
+            source = path.read_text(errors='replace')
+            if 'FACTORY_PLAYWRIGHT_MODULE' in source and '@playwright/test' not in source:
+                checks.append(['node', relative])
+        return checks
+
     def verify(self, check_command):
         """Verify the actual current tree, never a model's claimed test result."""
         if not isinstance(check_command, list) or len(check_command) < 2:
@@ -234,6 +251,7 @@ class Workspace:
                 required = "build" if relative == "frontend" else "start"
                 if required not in scripts:
                     return result(False, error=f"Missing {relative} npm script: {required}")
+            self.trace.event("application_entrypoints", **install_launcher(self.root))
             for relative in (".", "frontend", "backend"):
                 if (self.root / relative / "package.json").exists():
                     step = self._install(relative)
@@ -270,11 +288,18 @@ class Workspace:
                     if not ready:
                         return result(False, error="Application did not serve HTTP 200 on PORT",
                                       server_output=self.trace.redact(server_log.read_text(errors="replace")[-6000:]))
-                    check = self.run(check_command, ".", 180, {
-                        "FACTORY_BASE_URL": url, "E2E_BASE_URL": url, "PLAYWRIGHT_BASE_URL": url})
-                    steps.append(check)
-                    return result(check["exit_code"] == 0 and not check["timed_out"],
-                                  check_command=check_command, application_url=url)
+                    commands = [check_command, *self.browser_checks(check_command)]
+                    executed = []
+                    for command in commands:
+                        check = self.run(command, ".", 180, {
+                            "FACTORY_BASE_URL": url, "E2E_BASE_URL": url, "PLAYWRIGHT_BASE_URL": url})
+                        steps.append(check)
+                        executed.append(command)
+                        if check["exit_code"] != 0 or check["timed_out"]:
+                            return result(False, check_command=check_command, executed_checks=executed,
+                                          application_url=url)
+                    return result(True, check_command=check_command, executed_checks=commands,
+                                  application_url=url)
                 finally:
                     stop_process(process)
                     text = self.trace.redact(server_log.read_text(errors="replace"))

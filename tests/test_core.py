@@ -234,6 +234,21 @@ GREETING_FILES = [
 
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "Node and npm required")
 class ExecutionTests(TempCase):
+    def test_unselected_browser_check_still_blocks_acceptance_and_can_be_repaired(self):
+        self.workspace.write_files(GREETING_FILES)
+        # Synthetic routing fixture; real browser execution is checked by E015 replay.
+        self.workspace.browser = {'available': True}
+        script = '// FACTORY_PLAYWRIGHT_MODULE: browser check routing fixture\n' + GREETING_FILES[-1]['content']
+        self.workspace.write_files([{'path': 'checks/visible.spec.cjs',
+                                     'content': script.replace("'hello'", "'wrong'")}])
+        first = self.workspace.verify(['node', 'checks/greeting.cjs'])
+        self.assertFalse(first['passed'])
+        self.assertEqual(first['executed_checks'], [['node', 'checks/greeting.cjs'],
+                                                    ['node', 'checks/visible.spec.cjs']])
+        self.assertIsNone(self.workspace.last_verification)
+        self.workspace.write_files([{'path': 'checks/visible.spec.cjs', 'content': script}])
+        self.assertTrue(self.workspace.verify(['node', 'checks/greeting.cjs'])['passed'])
+
     def test_real_empty_optional_api_does_not_break_the_application_server(self):
         captured = json.loads((ROOT / 'tests/fixtures/real-empty-api-tool-call.json').read_text())['arguments']
         self.assertEqual(captured['api_js'], '')

@@ -26,6 +26,8 @@ The runner contract requires frontend/package.json with a build script and backe
 with a start script. The backend must serve the built frontend and any APIs, bind 0.0.0.0, read
 process.env.PORT (default 3000), and return HTTP 200 at /. Do not require an external database
 or service unless explicitly provided. Implement genuine state and persistence where required.
+Verification installs a managed backend/.volo launcher so the same app also serves the
+published browser-test entrypoint. Keep product code separate from this managed launcher.
 Use native labels, accessible names, routes and visible validation messages exactly as specified.
 Handle negative cases and recovery, not just a successful demo.
 
@@ -34,6 +36,12 @@ exercise the real implementation, assert outcomes, exit nonzero on failure, and 
 application at FACTORY_BASE_URL or E2E_BASE_URL. Use node --test for small HTTP/state checks.
 For browser interactions use the supplied Playwright module when runtime facts say it is available:
 in a CommonJS check use require(process.env.FACTORY_PLAYWRIGHT_MODULE), then its chromium API.
+When browser tooling is available, include browser behavior in the final check command,
+even if you also wrote HTTP tests. Use one Node test entrypoint or an npm test script to run both.
+Name standalone browser checks checks/*.spec.cjs and use FACTORY_PLAYWRIGHT_MODULE;
+verification also executes these files so a successful HTTP-only check cannot hide UI failures.
+Keep primary navigation actions unambiguous and avoid duplicating the same account identity
+or primary link across introductory content and navigation.
 Do not install, update, uninstall or download browsers; do not modify shared /ms-playwright.
 If no browser is available, write honest HTTP/logic checks and leave official GUI checking to
 the organizer. Do not waste model calls probing browser installations or npm connectivity.
@@ -263,6 +271,9 @@ class Agent:
                         finished = False  # Changes after finish invalidate its acceptance.
                 except (ValueError, TypeError, KeyError, OSError, TimeoutError) as exc:
                     result = {"error": str(exc)}
+                    if isinstance(exc, json.JSONDecodeError):
+                        result["next"] = ("No tool was executed. The arguments are incomplete or invalid JSON. "
+                                          "Return fewer complete files in valid JSON; do not repeat the same oversized call.")
                     finished = False
                 self.trace.event("tool_result", tool=name, result=result)
                 if (result.get("error") or result.get("passed") is False
