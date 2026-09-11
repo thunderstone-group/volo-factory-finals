@@ -19,19 +19,19 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev9**, adds a compact incremental-edit path
-while dev8's Ticket run is being evaluated. Dev8 reduces repeated context after dev7
-exhausted its token budget before verification. Input-derived browser checks are generated
+The current development candidate, **0.7.0.dev10**, rejects undefined variables in
+acceptance scripts before application generation. Dev8 reached verification but a faulty
+generated check blocked repair until the token budget ran out. Input-derived browser checks are generated
 before implementation and fixed throughout repair; their script is now read on demand.
 Dev6 successfully observes
 all relevant images through the metered gateway, but its implementation and self-checks
-still omit a reference heading and choose the wrong strength-widget role. Dev8's
+still omit a reference heading and choose the wrong strength-widget role. Dev10's
 completed verification and official score are the next evaluation gate.
 Version dev4 already verifies browser checks and serves the same app on both observed
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
 documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-All 57 local checks pass, including real HTTP incremental edits and repair, fixed-check enforcement and recovery, reference routing and cache
+All 58 local checks pass, including real HTTP incremental edits and repair, fixed-check enforcement and recovery, reference routing and cache
 invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
@@ -103,6 +103,8 @@ are not an OS-level sandbox for subprocesses.
   implementation-authored checks. Fixed checks are hashed, restored after interruption,
   and included in verification reuse decisions. They remain model-derived checks,
   not an official accuracy oracle.
+- Acceptance scripts pass syntax and scope analysis before being installed. The parser
+  is bundled, versioned and licensed with the agent; no runtime npm installation is needed.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Context pressure first prunes old tool output, then uses a fresh workspace checkpoint
   plus complete recent tool exchanges. Retained reasoning fields stay intact; raw trace

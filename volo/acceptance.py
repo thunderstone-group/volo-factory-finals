@@ -7,6 +7,7 @@ import os
 import re
 import subprocess
 import time
+from pathlib import Path
 
 from .trace import atomic_json
 from .workspace import tool_environment
@@ -40,7 +41,7 @@ labels and defaults override conflicting screenshots. A measured level/rating/st
 is a named meter with a changing value, while operation completion is a progressbar.
 Required dynamic identifiers must be independently locatable as exact text.
 
-Call define_checks with executable CommonJS JavaScript and concise coverage descriptions.
+Call define_checks with executable CommonJS ES2022 JavaScript and concise coverage descriptions.
 The harness supplies ./acceptance-browser.cjs with {test,assert}. Use:
 const {test,assert}=require('./acceptance-browser.cjs');
 test('scenario',async(page)=>{ /* page starts on home; Playwright page and Node assert */ });
@@ -60,7 +61,8 @@ TOOL = {'type': 'function', 'function': {'name': 'define_checks',
     'parameters': {'type': 'object', 'properties': {
         'script': {'type': 'string'}, 'coverage': {'type': 'array', 'items': {'type': 'string'}}},
         'required': ['script', 'coverage'], 'additionalProperties': False}}}
-POLICY = hashlib.sha256((PROMPT + BROWSER).encode()).hexdigest()
+LINTER = Path(__file__).with_name('vendor') / 'acceptance-lint.cjs'
+POLICY = hashlib.sha256((PROMPT + BROWSER).encode() + LINTER.read_bytes()).hexdigest()
 
 
 class AcceptancePlan:
@@ -116,6 +118,10 @@ class AcceptancePlan:
                     capture_output=True, timeout=10, env=tool_environment())
                 if checked.returncode:
                     raise ValueError('JavaScript syntax check failed: ' + checked.stderr[-2000:])
+                checked = subprocess.run(['node', str(LINTER)], input=script, text=True,
+                    capture_output=True, timeout=10, env=tool_environment())
+                if checked.returncode:
+                    raise ValueError(checked.stderr[-2000:])
             except (ValueError, KeyError, TypeError) as error:
                 self.trace.event('acceptance_plan_rejected', attempt=attempt + 1, error=str(error))
                 messages.append({'role': 'user', 'content': 'Previous output was rejected: ' + str(error) +

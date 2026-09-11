@@ -455,7 +455,15 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 
 - Source `5937ea8`, submission `3386eacdc9cb`, ZIP SHA-256
   `6d3f9a83605dc2aea70c49552d21c4ab039b2b53ef5e0b64cbce910b964c456d`.
-  https://arc-bench.com/runs/02be3333a76c deploys successfully. Final outcome is pending.
+  https://arc-bench.com/runs/02be3333a76c deploys successfully and reaches verification,
+  but the fixed script references `t` outside its defining function. Nine checks fail;
+  the agent cannot change fixed checks and exhausts the budget while investigating.
+  Official result: no tests reached, 311 seconds, 2,492,519 tokens, CNY 1.340060.
+  Actual trace totals 157,487 tokens across 11 responses. Cancellation arrives after
+  failure and returns 409; it does not cancel another run or create an uncertain state.
+- Replaying the exact initial app against unchanged public tests fails all 10 at its
+  unlabeled phone input. It does preserve the reference heading and meter semantics.
+  This app defect is separate from the acceptance script's undefined variable.
 - Concurrent local preparation addresses the refreshed Smoke Evolution cost gap.
   E008 Counter needed five calls: a source read, three separate edits and finish.
   Dev9 includes up to 20 product-code files / 24,000 bytes for small existing projects,
@@ -465,3 +473,21 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   existing app with one captured model response, preserves unrelated code, excludes state
   and secrets, and falls back for oversized source. This validates orchestration only;
   reduced model cost and restored Evolution rank require a new official result.
+
+## E023 — Compact prompt alone does not reduce incremental calls
+
+- Source `7d985d5`, dev9, submission `48a6556d903e`, matching ZIP SHA-256
+  `d8dbabf52979a379c970959d9d692b23cb79338940e124163d654de3be4aae3a`.
+- First Counter start `9914e105f0e9` fails at deployment with missing `agent.zip`.
+  Retrying create loses its HTTP response; listing runs reveals pending `f30f29fdfd38`,
+  which is started once without creating a duplicate.
+- https://arc-bench.com/runs/f30f29fdfd38 **passes 2/2**, 17 seconds, 21,686 tokens,
+  CNY 0.032382. Actual response usage matches the official total in this run.
+  The source snapshot and compact prompt are present, but the model still rereads
+  supplied files and performs three separate edits plus finish: five calls again.
+  The old lower-cost Counter result remains selected; Evolution stays second.
+- Dev10 adds static scope checking for generated acceptance scripts, using bundled
+  Acorn 8.18.0 and ESLint Scope 9.1.2. The exact E022 script is rejected at line 7;
+  a diagnostic variable-scope repair passes static analysis. A minimized real fixture
+  proves the planner receives the error and regenerates before a check is installed.
+  All **58 local checks pass** in 27.151 seconds. This does not prove test semantics.

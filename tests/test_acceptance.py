@@ -4,7 +4,7 @@ import shutil
 import time
 import unittest
 
-from test_core import TempCase, FakeGateway, GREETING_FILES, response
+from test_core import TempCase, FakeGateway, GREETING_FILES, ROOT, response
 from volo.acceptance import AcceptancePlan
 from volo.model import Model
 from volo.requirements import RequirementSet
@@ -44,6 +44,20 @@ class AcceptanceTests(TempCase):
             self.assertEqual(len(guards), 2)
             self.assertEqual(len(self.workspace.required_checks), 1)
             self.assertIn('JavaScript syntax check failed', str(gateway.requests[1]['messages']))
+
+    def test_real_undefined_variable_is_repaired_before_app_generation(self):
+        broken = (ROOT / 'tests/fixtures/acceptance-undefined-variable.cjs').read_text()
+        responses = [response([('define_checks', {'script': broken, 'coverage': ['Valid data']})]),
+                     response([('define_checks', {'script': broken.replace('${t}`},opts)', '${Date.now()}`},opts)'),
+                                                 'coverage': ['Valid data']})])]
+        with FakeGateway(responses) as gateway:
+            model = Model(gateway.url, 'synthetic-test-key', 'test-model', self.trace)
+            planner = AcceptancePlan(RequirementSet.load(self.req), model, self.workspace)
+            record = planner.prepare(RequirementSet.load(self.req).nodes, None, guard_budget=lambda: None)
+            self.assertEqual(len(gateway.requests), 2)
+            self.assertIn('Undefined acceptance variables', str(gateway.requests[1]['messages']))
+            self.assertEqual(len(self.workspace.required_checks), 1)
+            self.assertIn('${Date.now()}', record['script'])
 
     @unittest.skipUnless(shutil.which('npm'), 'npm required')
     def test_new_fixed_contract_blocks_stale_success_repairs_app_and_rejects_tampering(self):

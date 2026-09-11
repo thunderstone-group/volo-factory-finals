@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "acorn": "8.18.0",
+    "esbuild": "0.28.2",
+    "eslint-scope": "9.1.2"
+  }
+}
