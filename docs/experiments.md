@@ -840,3 +840,25 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   and tool fields. A real run must still establish whether this reduces wasted output.
 - All **62 local checks pass** in 28.527 seconds. Dev22 ZIP SHA-256:
   `e1ee2c4ebedb1fff35ff7085d1e8cd39b4acb1290fe3ef844e07bc7b51bc4bff`.
+
+## E040 — Kimi low effort reaches execution, but not a verified delivery
+
+- Dev22 source `bd930b1`, Kimi submission `ef0a03d2b2ec`, verified ZIP as E039.
+  https://arc-bench.com/runs/71e0a28920b4 sends `reasoning_effort: low` on the
+  image and coding requests. Image observation completes at 36.291 seconds;
+  the first coding response at 51.339 seconds contains a valid tool call.
+- Generation recovers from reading a reference-image path as application source,
+  writes the app and tests, then fixes a missing frontend build manifest. One
+  delivery call lacks its required check command. Real verification finally runs
+  at 464.677 seconds and finishes **11/28 self-checks passing** at 505.793 seconds.
+- The generated server falls back to the homepage for the extensionless registration
+  and login routes. Tests also omit required confirmation data in otherwise valid
+  account fixtures and assert dynamic navigation in raw HTML. These are application
+  and check-authoring defects, not evidence that the official evaluator ran.
+- A final diagnostic response exhausts the observed token budget. Official result:
+  **FAILED before evaluation, 514 seconds, 320,116 tokens, CNY 5.714784**. All 16
+  captured response usages sum to exactly the official token count in this run.
+  No official test is reported as executed; the dashboard's zero score is not 0/10.
+- Do not increase Kimi's budget for another expensive retry. Compare the same dev22
+  package with Pro, whose earlier E037 app reached all self-checks and whose two
+  locally reproduced semantic gaps are now explicitly covered by the instructions.
