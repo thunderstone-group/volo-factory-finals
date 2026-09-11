@@ -50,6 +50,23 @@ class AcceptanceTests(TempCase):
             self.assertEqual(len(self.workspace.required_checks), 1)
             self.assertIn('same-origin public paths', str(gateway.requests[1]['messages']))
 
+    def test_training_revision_preserves_original_and_invalidates_old_verification(self):
+        with FakeGateway([response([('define_ui_contract', {'pages': PAGES, 'coverage': ['Greeting']})])]) as gateway:
+            model = Model(gateway.url, 'synthetic-test-key', 'test-model', self.trace)
+            requirements = RequirementSet.load(self.req)
+            planner = AcceptancePlan(requirements, model, self.workspace)
+            original = planner.prepare(requirements.nodes, None, guard_budget=lambda: None)
+            self.workspace.last_verification = {'passed': True}
+            pages = copy.deepcopy(PAGES)
+            pages[0]['checks'][0]['match'] = 'contains'
+            revised = planner.revise(original, pages, 'The requirement asks for a heading containing this word, not exact full text.')
+            self.assertIsNone(self.workspace.last_verification)
+            self.assertEqual(revised['revisions'][0]['previous_pages'], PAGES)
+            self.assertEqual(self.workspace.required_checks[0]['files'][revised['path']], revised['sha256'])
+            restored = AcceptancePlan(requirements, model, self.workspace)
+            self.assertEqual(restored.prepare(requirements.nodes, None, guard_budget=lambda: None), revised)
+            self.assertEqual(model.usage.calls, 1)
+
     def test_contract_cannot_add_actions_and_literal_names_cannot_become_code(self):
         for kind in ('fill', 'click', 'evaluate', 'register'):
             with self.subTest(kind=kind), self.assertRaises(ValueError):

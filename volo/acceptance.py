@@ -118,10 +118,38 @@ class AcceptancePlan:
                 or record['script'] != expected or hashlib.sha256(expected.encode()).hexdigest() != record['sha256']):
             raise ValueError('Invalid cached acceptance contract')
         command = ['node', '--test', record['path']]
-        if not any(item['argv'] == command for item in self.workspace.required_checks):
-            self.workspace.required_checks.append({'argv': command, 'files': {
-                record['path']: record['sha256'],
-                str(self.helper.relative_to(self.workspace.root)): hashlib.sha256(BROWSER.encode()).hexdigest()}})
+        check = {'argv': command, 'files': {record['path']: record['sha256'],
+            str(self.helper.relative_to(self.workspace.root)): hashlib.sha256(BROWSER.encode()).hexdigest()}}
+        existing = next((item for item in self.workspace.required_checks if item['argv'] == command), None)
+        if existing is None:
+            self.workspace.required_checks.append(check)
+        elif existing != check:
+            existing.update(check)
+            self.workspace.last_verification = None
+
+    def revise(self, record, pages, reason):
+        """Correct training metadata only; never expose an evaluator or program edit."""
+        if not isinstance(reason, str) or not 20 <= len(reason.strip()) <= 4000:
+            raise ValueError('Explain the specific requirement that the old UI contract misinterpreted')
+        if len(record.get('revisions', [])) >= 3:
+            raise ValueError('Training contract revision limit reached; continue implementing the requirements')
+        pages = validate(pages)
+        if pages == record['pages']:
+            raise ValueError('The proposed UI contract is unchanged')
+        script = CHECKER.replace('__PAGES__', json.dumps(pages))
+        revised = {**record, 'pages': pages, 'script': script,
+            'sha256': hashlib.sha256(script.encode()).hexdigest(),
+            'revisions': [*record.get('revisions', []), {'reason': reason,
+                'previous_pages': record['pages'], 'previous_sha256': record['sha256']} ]}
+        self.attach(revised)
+        path = self.workspace.root / revised['path']
+        if path.is_symlink():
+            raise ValueError('Training contract must not be a symlink')
+        path.write_text(script)
+        atomic_json(path.with_suffix('.json'), revised)
+        self.records[record['key']] = revised
+        self.trace.event('training_contract_revised', **revised)
+        return revised
 
     def prepare(self, nodes, observations, *, guard_budget):
         request = self.requirements.batch_prompt(nodes) + '\nReference observations:\n' + json.dumps(observations, ensure_ascii=False)

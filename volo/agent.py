@@ -6,6 +6,7 @@ import time
 from dataclasses import asdict
 
 from .context import excerpt, project
+from .acceptance import TOOL as UI_CONTRACT_TOOL
 from .trace import atomic_json
 from .web_runtime import scaffold, implement, SERVER, BUILD, BROWSER_CHECK
 
@@ -55,10 +56,15 @@ Do not install, update, uninstall or download browsers; do not modify shared /ms
 If no browser is available, write honest HTTP/logic checks and leave official GUI checking to
 the organizer. Do not waste model calls probing browser installations or npm connectivity.
 Never replace missing execution with a claimed pass. Keep earlier checks for regression coverage.
-The fixed input-derived UI structure checks run automatically. Their data is supplied below;
+Input-derived UI structure training checks run automatically. Their data is supplied below;
 call read_acceptance only if you need the exact script to understand a failure. Do not duplicate
 static structure checks. Write real browser tests for every stateful requirement scenario,
 including isolated valid test data, negative cases, session changes and persistence.
+The training contract is a model-derived interpretation, not an official oracle. If it
+misreads the requirements (for example, treats translations as two controls or a phrase as
+an exact full label), use revise_ui_contract with the corrected data and the specific
+requirement-based reason. Never remove a true requirement merely to match incomplete code.
+Training checks may be corrected; the organizer's external evaluator remains read-only.
 The official evaluator remains separate and read-only. Do not inspect or modify private tests,
 spoof usage, or add meaningless model calls to improve leaderboard arithmetic.
 
@@ -138,7 +144,9 @@ TOOLS = [
                  "path": STR, "old": STR, "new": STR}, "required": ["path", "old", "new"],
                  "additionalProperties": False}}, "check_command": STRINGS}, ['edits', 'check_command']),
     function("list_files", "List application source files, excluding runtime/cache directories.", {}, []),
-    function("read_acceptance", "Read the current fixed input-derived browser checks without changing them.", {}, []),
+    function("read_acceptance", "Read the current input-derived UI training checks without changing them.", {}, []),
+    function("revise_ui_contract", "Correct a mistaken training-only UI extraction with a requirement-grounded explanation.",
+             {'pages': UI_CONTRACT_TOOL['function']['parameters']['properties']['pages'], 'reason': STR}, ['pages', 'reason']),
     function("read_files", "Read up to 20 UTF-8 files. Input assets use @requirements/<path>.",
              {"paths": STRINGS}, ["paths"]),
     function("write_files", "Atomically write a batch of complete UTF-8 files inside the application.",
@@ -167,6 +175,7 @@ class Agent:
         self.references, self.reference_context = references, None
         self.acceptance, self.acceptance_context = acceptance, None
         self.inline_source = False
+        self.last_tool_result = None
 
     def source_snapshot(self):
         """Include only a bounded set of product code, never state or protected files."""
@@ -227,6 +236,12 @@ class Agent:
             raise ValueError("Tool arguments must be a JSON object")
         if name == 'read_acceptance':
             return self.acceptance_context or {'coverage': [], 'script': ''}
+        if name == 'revise_ui_contract':
+            if not self.acceptance or not self.acceptance_context:
+                raise ValueError('No UI training contract exists for this batch')
+            self.acceptance_context = self.acceptance.revise(self.acceptance_context, **args)
+            return {'pages': self.acceptance_context['pages'], 'reason': args['reason'],
+                    'next': 'The corrected training contract supersedes its earlier version. Implement and verify the full requirements.'}
         if name == 'patch_and_verify':
             edits = args['edits']
             if not isinstance(edits, list) or not 1 <= len(edits) <= 20:
@@ -290,8 +305,8 @@ class Agent:
                                  "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nReference-image observations (written requirements remain authoritative):\n"
                    + json.dumps(self.reference_context, ensure_ascii=False)
-                   + '\nFixed acceptance checks generated independently from inputs before implementation. '
-                     'Verification always runs them; implement their product contract and do not modify them:\n'
+                   + '\nUI structure training checks extracted from inputs before implementation. '
+                     'Verification runs them; correct a mistaken interpretation only with revise_ui_contract:\n'
                    + json.dumps({key: self.acceptance_context[key] for key in ('path', 'coverage', 'pages')}
                                 if self.acceptance_context else None, ensure_ascii=False)
                    + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
@@ -316,6 +331,8 @@ class Agent:
                      "recorded source fingerprint, not proof that later edits pass.\n"
                    + "Latest actual verification attempt:\n" + excerpt(json.dumps(verification, ensure_ascii=False), 6000)
                    + "\nLatest tool failure:\n" + excerpt(json.dumps(last_failure, ensure_ascii=False), 4000)
+                   + '\nLatest completed tool result, including successful reads whose exchange may be omitted:\n'
+                   + excerpt(json.dumps(self.last_tool_result, ensure_ascii=False), min(6000, self.max_context_chars // 8))
                    + "\nProject decisions from DESIGN.md (bounded excerpt):\n" + decisions
                    + "\nFull redacted execution evidence: .factory/events.jsonl; command output: .factory/command-*.log")
         return [{"role": "system", "content": system},
@@ -327,12 +344,13 @@ class Agent:
             deadline=self.workspace.deadline, guard_budget=self.guard_budget) if self.references else
             {'unavailable': 'No reference observer configured; binary images have not been inspected'})
         small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
+        bounded = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 16000
         self.acceptance_context = None
         if self.acceptance and not small and self.workspace.browser.get('available'):
             self.acceptance_context = self.acceptance.prepare(nodes, self.reference_context,
                                                              guard_budget=self.guard_budget)
-        self.model.thinking = "disabled" if small else "enabled"
-        self.trace.event("reasoning_policy", small_batch=small, thinking=self.model.thinking)
+        self.model.thinking = "disabled" if bounded else "enabled"
+        self.trace.event("reasoning_policy", small_batch=small, bounded_batch=bounded, thinking=self.model.thinking)
         request = self.batch_request(nodes)
         direct = small and not self.workspace.list_files()['files']
         self.inline_source = small and not direct and self.source_snapshot() is not None
@@ -401,6 +419,7 @@ class Agent:
                                           "Return fewer complete files in valid JSON; do not repeat the same oversized call.")
                     finished = False
                 self.trace.event("tool_result", tool=name, result=result)
+                self.last_tool_result = {'tool': name, 'result': result}
                 if (result.get("error") or result.get("passed") is False
                         or result.get("timed_out") or result.get("exit_code", 0) != 0):
                     last_failure = {"tool": name, "tool_call_id": call["id"], "result": result}

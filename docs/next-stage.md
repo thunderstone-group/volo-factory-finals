@@ -17,7 +17,9 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    still omit the same visual detail. Generated fixed scripts introduced runtime and
    shared-data errors. Dev12 replaces them with literal UI contracts and deterministic
    read-only checks, while stateful tests remain implementation-authored. Evaluate that
-   smaller acceptance boundary next. Official page crashes
+   smaller training-check boundary next. Dev14 also preserves successful reads across
+   context projection and allows requirement-grounded correction of training metadata.
+   Official page crashes
    and timeouts did not reproduce locally; their exact cause remains unconfirmed.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.
    Freeze the agent version before the held-out variant; do not embed expected

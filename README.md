@@ -19,10 +19,10 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev13**, uses a data-only UI contract and
+The current development candidate, **0.7.0.dev14**, uses a data-only UI training contract and
 harness-owned checking code. Arbitrary generated acceptance scripts introduced runtime
 and shared-test-data errors in dev8/dev10, so that path and its parser dependencies were
-removed. Fixed checks now cover visible signed-out structure; authored browser tests cover
+removed. Training checks now cover visible signed-out structure; authored browser tests cover
 stateful behavior. Version dev11 also combines small exact edits with verification in one call.
 Dev6 successfully observes
 all relevant images through the metered gateway, but its implementation and self-checks
@@ -32,7 +32,7 @@ Version dev4 already verifies browser checks and serves the same app on both obs
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
 documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-All 59 local checks pass, including real HTTP incremental edits and repair, fixed-check enforcement and recovery, reference routing and cache
+All 62 local checks pass, including real HTTP incremental edits and repair, training-contract revision and recovery, reference routing and cache
 invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
@@ -92,8 +92,9 @@ are not an OS-level sandbox for subprocesses.
 - Small-app runtime scaffolding supplies only build, HTTP serving and browser-test lifecycle.
   Product markup, behavior, API logic and test assertions remain model-generated.
 - DeepSeek thinking/tool message continuity and explicit usage accounting.
-- DeepSeek thinking is disabled for small requirement batches and uses explicit low
-  effort for larger bounded coding turns. Product correctness still requires verification.
+- DeepSeek thinking is disabled for batches of up to three features / 16,000 requirement
+  characters and uses explicit low effort for larger batches. The smaller 3,500-character
+  threshold still controls compact runtime/edit tools. Correctness requires verification.
 - Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
 - A managed backend launcher serves one application on the observed 3000/3301 runner
   entrypoints; custom `PORT` values remain isolated. Authored standalone browser checks
@@ -106,12 +107,17 @@ are not an OS-level sandbox for subprocesses.
   and image observations, without application source. The model supplies only literal
   routes, visible headings, labels and accessible roles; the harness generates all checking
   code. Contracts cannot submit forms, create accounts or add arbitrary code. Every
-  verification runs them before implementation-authored behavioral checks. Fixed checks
+  verification runs them before implementation-authored behavioral checks. Training checks
   are hashed, restored after interruption, and included in verification reuse decisions.
   UI extraction can still omit or misinterpret requirements; official evaluation is separate.
+  Mistaken training metadata can be revised with a requirement-based explanation; original
+  data and revisions stay in the trace, and a revision invalidates prior verification.
+  This does not grant access to change external evaluator tests.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Context pressure first prunes old tool output, then uses a fresh workspace checkpoint
-  plus complete recent tool exchanges. Retained reasoning fields stay intact; raw trace
+  plus complete recent tool exchanges. The last completed tool result, including successful
+  reads, is also preserved in a bounded checkpoint when its full exchange cannot fit.
+  Retained reasoning fields stay intact; raw trace
   evidence is preserved. The 60,000-character limit is not a provider token estimate.
 - Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
 - Default caps: 32 attempted requests, 150,000 observed tokens, 1,200 seconds and

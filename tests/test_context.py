@@ -89,6 +89,38 @@ class ContextTests(unittest.TestCase):
 
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "Node and npm required")
 class ContextRepairTests(TempCase):
+    def test_successful_read_survives_an_oversized_reasoning_exchange(self):
+        self.workspace.write_files([{'path': 'context-only.txt', 'content': 'IMPORTANT_READ_MARKER'}])
+        read = response([('read_files', {'paths': ['context-only.txt']})])
+        read['choices'][0]['message']['reasoning_content'] = 'omitted-pressure-marker' * 4000
+        deliver = response([('deliver', {'files': GREETING_FILES,
+                                        'check_command': ['node', 'checks/greeting.cjs']})])
+        with FakeGateway([read, deliver]) as gateway:
+            agent = Agent(RequirementSet.load(self.req),
+                Model(gateway.url, 'synthetic-test-key', 'synthetic-model', self.trace),
+                self.workspace, Runtime(self.trace), max_context_chars=16000)
+            result = agent.run()
+        self.assertEqual(result['status'], 'completed')
+        context = json.dumps(gateway.requests[1]['messages'])
+        self.assertIn('IMPORTANT_READ_MARKER', context)
+        self.assertNotIn('omitted-pressure-marker', context)
+        self.assertLessEqual(size(gateway.requests[1]['messages']), 16000)
+
+    def test_bounded_feature_uses_full_tools_without_long_reasoning(self):
+        (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
+            '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
+        answer = response([('deliver', {'files': GREETING_FILES,
+                                       'check_command': ['node', 'checks/greeting.cjs']})])
+        with FakeGateway([answer]) as gateway:
+            agent = Agent(RequirementSet.load(self.req),
+                Model(gateway.url, 'synthetic-test-key', 'deepseek-v4-pro', self.trace),
+                self.workspace, Runtime(self.trace))
+            result = agent.run()
+        self.assertEqual(result['status'], 'completed')
+        self.assertEqual(gateway.requests[0]['thinking'], {'type': 'disabled'})
+        self.assertNotIn('tool_choice', gateway.requests[0])
+        self.assertIn('deliver', [t['function']['name'] for t in gateway.requests[0]['tools']])
+
     def test_compact_context_omits_only_byte_identical_known_runtime(self):
         scaffold(self.workspace)
         self.workspace.write_files([{'path': 'frontend/public/index.html', 'content': '<h1>Product</h1>'}])

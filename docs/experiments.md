@@ -541,7 +541,16 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 
 - Source `ef32e17`, dev12, submission `d3ecf23b5d36`, matching ZIP SHA-256
   `8cb99941caadb1f93689d8e878afc0da6bd8a47308457ed9e1739757845a6909`.
-  https://arc-bench.com/runs/d07b379f9662 starts with DeepSeek V4 Pro. Outcome pending.
+  https://arc-bench.com/runs/d07b379f9662 starts with DeepSeek V4 Pro. Its generated
+  UI data treats translated navigation labels as separate required controls and treats
+  agreement phrases as exact checkbox names. Those are training-interpretation errors.
+- The coding model repeatedly calls `read_acceptance`: its three responses spend
+  66,938 reasoning tokens and return only 90 non-reasoning tokens. Each long assistant
+  exchange exceeds the context limit, so projection drops the entire completed read.
+  The checkpoint contains failures but not the successful result; the next call repeats
+  the same read. Five completed responses total 105,592 tokens, plus uncertain in-flight
+  usage. No application files are written. Cancel returns 500, then status confirms
+  CANCELLED; no repeated cancellation is sent and official cost remains null.
 - Dev13 removes unchanged runtime boilerplate from small incremental requests only
   after exact-byte comparison with this agent's static server, build and browser helper.
   Any custom edit remains in context. Full requirement data is retained using compact
@@ -549,3 +558,21 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - All **59 local checks pass** in 25.887 seconds. The added check proves that changing
   a known runtime file makes its full source visible again and that requirement data is
   unchanged. Actual incremental token cost is the next gate.
+
+## E027 preparation — Preserve successful reads and correct training metadata
+
+- Dev14 retains a bounded last-tool result in workspace checkpoints, including successful
+  reads whose full reasoning/tool exchange cannot fit. A real HTTP repair test exercises
+  an oversized synthetic reasoning exchange and proves the read content remains in the
+  next request while the original oversized exchange is omitted intact.
+- UI contracts are training metadata, not immutable external tests. `revise_ui_contract`
+  accepts validated data and a specific requirement-based reason, preserves the previous
+  pages/hash, and invalidates prior verification. It cannot change evaluator files or
+  introduce executable test code. This follows the organizer's [training versus validation
+  distinction](https://github.com/code-philia/agentic-software-engineering-hackathon/tree/main/Lab/Lab01).
+- Batches with at most three features and 16,000 requirement characters use non-thinking
+  DeepSeek calls; compact scaffold/edit routing still requires 3,500 characters. The real
+  gateway result, rather than this heuristic, must establish quality and cost.
+- All **62 local checks pass** in 27.639 seconds, including verified full-tool delivery
+  under the bounded-batch policy, read retention, contract correction/history/cache
+  invalidation, and all earlier protocol/runtime checks.
