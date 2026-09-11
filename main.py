@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 
 from volo.agent import Agent
+from volo.acceptance import AcceptancePlan
 from volo.model import Model
 from volo.requirements import RequirementSet
 from volo.references import ReferenceObserver
@@ -66,13 +67,17 @@ def main():
             vision.usage = client.usage
             references = ReferenceObserver(vision, trace)
         workspace = Workspace(output, requirements.root, trace, time.monotonic() + args.timeout)
+        check_model = Model(base, key, model_name, trace, max_output=6144)
+        check_model.usage = client.usage
+        check_model.thinking = 'disabled'
+        acceptance = AcceptancePlan(requirements, check_model, workspace)
         trace.event("run_started", requirement_fingerprint=requirements.fingerprint,
                     model=model_name, vision_model=vision_name, max_calls=args.max_calls, token_budget=args.token_budget,
                     timeout_seconds=args.timeout)
         try:
             result = Agent(requirements, client, workspace, runtime,
                            max_calls=args.max_calls, token_budget=args.token_budget,
-                           references=references).run()
+                           references=references, acceptance=acceptance).run()
             print(json.dumps(result, ensure_ascii=False), flush=True)
             return 0
         except Exception as exc:

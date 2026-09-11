@@ -58,6 +58,7 @@ class Workspace:
         self.counter = 0
         self.last_verification = None
         self.last_verification_attempt = None
+        self.required_checks = []
         self.root.mkdir(parents=True, exist_ok=True)
         self.node_available = bool(shutil.which("node"))
         self.browser = discover_playwright(self.root)
@@ -228,13 +229,23 @@ class Workspace:
             raise ValueError("Supply a concrete behavioral check command")
         if check_command[0] not in ("node", "npm", "npx", "python", "python3"):
             raise ValueError("Use a Node/Python test runner for behavioral checks")
+        for check in self.required_checks:
+            for name, expected in check['files'].items():
+                path = self.root / name
+                if (not path.is_file() or path.is_symlink()
+                        or hashlib.sha256(path.read_bytes()).hexdigest() != expected):
+                    self.last_verification = None
+                    raise ValueError('A fixed acceptance check was removed or changed: ' + name)
+        contract = hashlib.sha256(json.dumps(self.required_checks, sort_keys=True).encode()).hexdigest()
         if (self.last_verification and self.last_verification.get("check_command") == check_command
-                and self.last_verification.get("source_fingerprint") == self.fingerprint()):
+                and self.last_verification.get("source_fingerprint") == self.fingerprint()
+                and self.last_verification.get('acceptance_fingerprint') == contract):
             return {**self.last_verification, "reused_unchanged_verification": True}
         self.last_verification = None
         steps = []
         def result(ok, **extra):
             value = {"passed": ok, "steps": steps, "check_command": check_command,
+                     'acceptance_fingerprint': contract,
                      "source_fingerprint": self.fingerprint(), "official_evaluation": "pending", **extra}
             self.last_verification_attempt = value
             if ok:
@@ -288,7 +299,8 @@ class Workspace:
                     if not ready:
                         return result(False, error="Application did not serve HTTP 200 on PORT",
                                       server_output=self.trace.redact(server_log.read_text(errors="replace")[-6000:]))
-                    commands = [check_command, *self.browser_checks(check_command)]
+                    commands = [*[check['argv'] for check in self.required_checks],
+                                check_command, *self.browser_checks(check_command)]
                     executed = []
                     for command in commands:
                         check = self.run(command, ".", 180, {

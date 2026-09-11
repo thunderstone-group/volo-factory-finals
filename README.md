@@ -11,22 +11,23 @@ Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average run
 Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
 dated practice milestones; the formal preliminary and final are separate competitions.
 Ticket Booking uploads, generation and all 10 official tests now execute. The latest
-evaluated candidate passed 2/10; its original app passes 5/10 in a local replay of the
+evaluated candidate passed 5/10; its original app passes 9/10 in a local replay of the
 unchanged public tests. Input-reference and UI-contract gaps remain. Historical upload
 failures are retained as dated observations, not a current blocker.
 The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev6**, adds reference-image observations
-through the same metered gateway. A real Kimi K3 image request successfully read the
-previously omitted heading. Dev5's full image request exceeded the gateway body limit;
-dev6 normalizes large rasters and bounds encoded request bytes. Evaluation is pending.
+The current development candidate, **0.7.0.dev7**, adds input-derived browser checks
+generated before implementation and fixed throughout repair. Dev6 successfully observes
+all relevant images through the metered gateway, but its implementation and self-checks
+still omit a reference heading and choose the wrong strength-widget role. Dev7's
+independent checks are the next official evaluation gate.
 Version dev4 already verifies browser checks and serves the same app on both observed
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
 call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
 documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
-All 52 local checks pass, including real HTTP repair, reference routing and cache
+All 56 local checks pass, including real HTTP repair, fixed-check enforcement and recovery, reference routing and cache
 invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
@@ -90,6 +91,11 @@ are not an OS-level sandbox for subprocesses.
   `FACTORY_VISION_MODEL` (default `kimi-k3`) using the same gateway and key. Image calls
   share the generation budget and trace. Successful observations cache by image bytes,
   prompt and model. An empty variable disables observation and records that limitation.
+- Larger browser tasks first generate a separate acceptance script from requirements
+  and image observations, without application source. Every verification runs it before
+  implementation-authored checks. Fixed checks are hashed, restored after interruption,
+  and included in verification reuse decisions. They remain model-derived checks,
+  not an official accuracy oracle.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Context pressure first prunes old tool output, then uses a fresh workspace checkpoint
   plus complete recent tool exchanges. Retained reasoning fields stay intact; raw trace

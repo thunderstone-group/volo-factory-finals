@@ -32,8 +32,8 @@ Use native labels, accessible names, routes and visible validation messages exac
 When the requirements offer multiple language aliases, choose one exact accessible name;
 do not concatenate aliases into a different label that exact-name interactions cannot locate.
 Render required dynamic values as separate elements, without merging them into greetings or
-surrounding prose. Give informative strength/progress widgets semantic meter/progressbar roles,
-accessible names and changing value attributes. Preserve headings observed in reference images;
+surrounding prose. Levels, ratings and strength use a named meter; operation completion uses
+a progressbar. Provide changing value attributes. Preserve headings observed in reference images;
 written functional requirements override conflicting screenshot defaults or out-of-scope features.
 Handle negative cases and recovery, not just a successful demo.
 
@@ -127,7 +127,7 @@ TOOLS = [
 
 class Agent:
     def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
-                 token_budget=150000, max_context_chars=160000, references=None):
+                 token_budget=150000, max_context_chars=160000, references=None, acceptance=None):
         self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
@@ -136,6 +136,7 @@ class Agent:
         self.completed = []
         self.check_command = None
         self.references, self.reference_context = references, None
+        self.acceptance, self.acceptance_context = acceptance, None
 
     def checkpoint(self, status):
         atomic_json(self.state_path, {
@@ -198,6 +199,9 @@ class Agent:
                                  "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nReference-image observations (written requirements remain authoritative):\n"
                    + json.dumps(self.reference_context, ensure_ascii=False)
+                   + '\nFixed acceptance checks generated independently from inputs before implementation. '
+                     'Verification always runs them; implement their product contract and do not modify them:\n'
+                   + json.dumps(self.acceptance_context, ensure_ascii=False)
                    + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
 
     def context_checkpoint(self, nodes, system, last_failure):
@@ -230,6 +234,10 @@ class Agent:
             deadline=self.workspace.deadline, guard_budget=self.guard_budget) if self.references else
             {'unavailable': 'No reference observer configured; binary images have not been inspected'})
         small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
+        self.acceptance_context = None
+        if self.acceptance and not small and self.workspace.browser.get('available'):
+            self.acceptance_context = self.acceptance.prepare(nodes, self.reference_context,
+                                                             guard_budget=self.guard_budget)
         self.model.thinking = "disabled" if small else "enabled"
         self.trace.event("reasoning_policy", small_batch=small, thinking=self.model.thinking)
         request = self.batch_request(nodes)

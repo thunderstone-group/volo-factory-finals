@@ -390,3 +390,30 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - All **52 local checks pass** in 22.317 seconds, including a high-resolution raster
   case and an encoded-size case that must split despite containing only three images.
   Gateway acceptance of the normalized group remains the next live check.
+
+## E020 — Full image flow works; implementation still omits a reference detail
+
+- Source `c76f1dd`, dev6, submission `99754b183641`, matching saved ZIP hash
+  `52a40dbb268ae233a520af5be4e3f34390345b0a931e9d64381dbf60473b479b`.
+- https://arc-bench.com/runs/15daf231bb0e — **5/10 official tests**, 361 seconds,
+  CNY 1.337888 and 4,589,434 official tokens. Another account run overlapped; actual
+  trace usage is separately retained and no isolated-cost claim is made.
+- Kimi K3 accepts the normalized three-image request and returns accurate observations,
+  including the registration heading: **121.207 seconds, 8,398 reported tokens**.
+  DeepSeek generates the app in 225.955 seconds / 48,584 tokens, then makes three small
+  read/edit/finish calls. Combined five-response usage is **92,071 tokens**.
+- The first real self-check catches duplicate login links. The agent edits the app,
+  reruns, and passes 14 authored HTTP/browser checks. It still uses a generic registration
+  title and a progressbar for password strength, despite receiving the observed heading.
+- The original app reconstructed from exact logged writes plus the final source file
+  passes **9/10 local public tests**, with no page crash. Official failures also include
+  two page crashes and timeouts. Their exact infrastructure cause remains unconfirmed.
+- Version dev7 adds an independent browser-check planning call before implementation
+  for larger browser tasks. It receives only requirements and observations; fixed checks
+  run on every verification, cannot be silently altered, and invalidate previous acceptance
+  when added. The implementation still writes its own supplemental checks.
+- All **56 local checks pass** in 25.725 seconds, including a real HTTP case where a
+  newly added fixed check invalidates a previous pass, forces an app repair, and rejects
+  a later attempt to replace the check with an unconditional exit.
+- Added a live-verified CLI `source` command for reading individual run files, avoiding
+  full ZIP downloads for small diagnostics. This CLI change is outside the agent upload.

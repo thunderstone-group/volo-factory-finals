@@ -10,12 +10,11 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
 2. **Stateful application:** complete all currently published Ticket Booking tests.
    Independently check server-side validation, persistence after restart, session
    invalidation and duplicate-account handling described by the requirements.
-   **Current evidence:** E017 completes generation with one DeepSeek coding call and
-   passes 2/10 official tests. The same unedited app passes 5/10 local public tests on
-   both entrypoints. Missing reference headings, unidentifiable dynamic text and
-   non-semantic status widgets are concrete gaps. Dev5 reads linked images through
-   the metered gateway and strengthens requirement-derived browser assertions.
-   Evaluate that frozen candidate next; upload/deployment are currently working.
+   **Current evidence:** E020 reads all three image references successfully, passes
+   5/10 official tests and 9/10 in a local public-test replay. Its code and self-checks
+   still omit the same visual detail. Dev7 generates fixed browser acceptance checks
+   from inputs before implementation. Evaluate that candidate next. Official page crashes
+   and timeouts did not reproduce locally; their exact cause remains unconfirmed.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.
    Freeze the agent version before the held-out variant; do not embed expected
    applications or change official tests. Track failures by parsing, generation,
@@ -30,8 +29,8 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
 
 ## Current limitations to address before broad claims
 
-- The image transport worked in a real Kimi K3 probe; full image-to-application
-  improvement still needs official evidence. It uses the organizer's gateway and key.
+- Full image observation works through the organizer's gateway. Faithful implementation
+  of every observed detail is not established merely by a successful observation.
 - Requirement batching is deterministic, but large-project quality and stable
   long-run recovery still need real evaluations. Version 0.7.0.dev1 passed local context
   pressure/repair checks and schedules all supplied documents; gateway validation remains.
