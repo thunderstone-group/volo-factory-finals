@@ -31,6 +31,10 @@ published browser-test entrypoint. Keep product code separate from this managed 
 Use native labels, accessible names, routes and visible validation messages exactly as specified.
 When the requirements offer multiple language aliases, choose one exact accessible name;
 do not concatenate aliases into a different label that exact-name interactions cannot locate.
+Render required dynamic values as separate elements, without merging them into greetings or
+surrounding prose. Give informative strength/progress widgets semantic meter/progressbar roles,
+accessible names and changing value attributes. Preserve headings observed in reference images;
+written functional requirements override conflicting screenshot defaults or out-of-scope features.
 Handle negative cases and recovery, not just a successful demo.
 
 Write executable behavioral checks under checks/ for the current requirements. Checks must
@@ -44,6 +48,9 @@ Name standalone browser checks checks/*.spec.cjs and use FACTORY_PLAYWRIGHT_MODU
 verification also executes these files so a successful HTTP-only check cannot hide UI failures.
 Keep primary navigation actions unambiguous and avoid duplicating the same account identity
 or primary link across introductory content and navigation.
+Derive browser checks from every required scenario before implementing, including exact visible
+values and reference headings. Prefer exact text/role/label assertions from the specification;
+a substring anywhere in the page body is not sufficient evidence of the required UI contract.
 Do not install, update, uninstall or download browsers; do not modify shared /ms-playwright.
 If no browser is available, write honest HTTP/logic checks and leave official GUI checking to
 the organizer. Do not waste model calls probing browser installations or npm connectivity.
@@ -60,8 +67,9 @@ The structured requirement input is complete. Do not reread duplicate requiremen
 an empty workspace. Read existing application files only when they materially affect the edit.
 For a small task in an empty workspace, start by writing its implementation and checks in one
 batch and call finish directly, in the same response if possible.
-You cannot see image contents merely from their filenames; do not claim visual matching without
-actually inspecting them. Current binary reference images are not sent to this model.
+Image observations in the request come from a separate call through the configured gateway.
+Use only those observations as visual evidence; filenames alone do not reveal image contents.
+Any references listed as unavailable have not been inspected. Do not claim matching them.
 """
 
 SMALL_SYSTEM = """Build a complete working web application from the supplied requirements.
@@ -119,7 +127,7 @@ TOOLS = [
 
 class Agent:
     def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
-                 token_budget=150000, max_context_chars=160000):
+                 token_budget=150000, max_context_chars=160000, references=None):
         self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
@@ -127,6 +135,7 @@ class Agent:
         self.state_path = self.trace.directory / "checkpoint.json"
         self.completed = []
         self.check_command = None
+        self.references, self.reference_context = references, None
 
     def checkpoint(self, status):
         atomic_json(self.state_path, {
@@ -187,6 +196,8 @@ class Agent:
                    + "\nRuntime facts (already checked by the harness):\n"
                    + json.dumps({"node_available": self.workspace.node_available, "playwright": self.workspace.browser,
                                  "check_base_url_env": "FACTORY_BASE_URL"})
+                   + "\nReference-image observations (written requirements remain authoritative):\n"
+                   + json.dumps(self.reference_context, ensure_ascii=False)
                    + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
 
     def context_checkpoint(self, nodes, system, last_failure):
@@ -215,6 +226,9 @@ class Agent:
                 {"role": "user", "content": self.trace.redact(request)}]
 
     def run_batch(self, nodes):
+        self.reference_context = (self.references.observe(self.requirements, nodes,
+            deadline=self.workspace.deadline, guard_budget=self.guard_budget) if self.references else
+            {'unavailable': 'No reference observer configured; binary images have not been inspected'})
         small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
         self.model.thinking = "disabled" if small else "enabled"
         self.trace.event("reasoning_policy", small_batch=small, thinking=self.model.thinking)

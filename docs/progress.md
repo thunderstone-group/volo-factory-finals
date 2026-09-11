@@ -126,3 +126,22 @@ each rule snapshot and experiment with date and source.
 - All 39 local checks passed on the final development tree. The candidate, CLI,
   experiment outcomes, current deployment report and dated board snapshots are versioned
   together on `feat/platform-cli`.
+
+## 2026-09-12 (Asia/Taipei) — Runtime repaired; complete reference input next
+
+- User resumed after intermittent travel connectivity and confirmed another team had
+  a Ticket Booking score. Live runs now confirm deployment and all 10 tests execute.
+- Kimi K3 generates the app but exposes two gaps: authored UI checks were not selected,
+  and the published tests use a different port from the runner's readiness probe.
+- Dev4 adds a managed single-app launcher and automatic authored-browser-check coverage.
+  Its DeepSeek run completes implementation with one coding response, passes self-checks,
+  and scores 2/10 officially. Both ports replay identically at 5/10 locally.
+- Local diagnostics prove missing visual headings, combined dynamic text and absent
+  meter semantics account for the five local failures. Three disposable-copy edits
+  pass 10/10, without changing tests or uploading manually repaired application code.
+- A real metered Kimi image request reads the missing reference detail. Dev5 connects
+  linked-image observations to generation and improves generic UI assertions; 48 local
+  checks pass. Full official verification follows. Earlier practice wins remain dated.
+- Used the user-supplied standalone ArcBench CLI for a successful real submission;
+  the existing thin CLI handles hash/status/balance evidence. All credentials remain
+  in private configuration outside Git. No other team's run or source was modified.

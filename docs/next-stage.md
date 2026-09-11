@@ -10,13 +10,12 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
 2. **Stateful application:** complete all currently published Ticket Booking tests.
    Independently check server-side validation, persistence after restart, session
    invalidation and duplicate-account handling described by the requirements.
-   **Generation and deployment findings:** E011 reached a 180-second model read timeout.
-   E012 recovered a response after 500 seconds, then exhausted its observed token budget
-   after truncation and repeated malformed write calls. Version 0.7.0.dev3 lowers
-   DeepSeek reasoning effort and requests smaller file batches. Both E013 attempts
-   failed before generation because the executor could not find the run-local `agent.zip`;
-   the saved submission still downloads with an exact matching hash. Resume with a
-   single real run after that deployment path is available; 10 tests remain unrun.
+   **Current evidence:** E017 completes generation with one DeepSeek coding call and
+   passes 2/10 official tests. The same unedited app passes 5/10 local public tests on
+   both entrypoints. Missing reference headings, unidentifiable dynamic text and
+   non-semantic status widgets are concrete gaps. Dev5 reads linked images through
+   the metered gateway and strengthens requirement-derived browser assertions.
+   Evaluate that frozen candidate next; upload/deployment are currently working.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.
    Freeze the agent version before the held-out variant; do not embed expected
    applications or change official tests. Track failures by parsing, generation,
@@ -31,14 +30,15 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
 
 ## Current limitations to address before broad claims
 
-- Binary reference images are not analyzed. Any vision path must use a model and
-  gateway permitted by the organizer, not an unmetered external endpoint.
+- The image transport worked in a real Kimi K3 probe; full image-to-application
+  improvement still needs official evidence. It uses the organizer's gateway and key.
 - Requirement batching is deterministic, but large-project quality and stable
   long-run recovery still need real evaluations. Version 0.7.0.dev1 passed local context
   pressure/repair checks and schedules all supplied documents; gateway validation remains.
 - Agent-authored assertions are useful for repair, not an independent accuracy oracle.
-- Gateway token totals have differed from response totals by cached prompt tokens
-  in observed runs. Keep both figures and use official metering for leaderboard claims.
+- Gateway token totals sometimes differ from response totals; E017's discrepancy
+  is larger than cached prompt tokens and its cause is unconfirmed. Keep both figures
+  and use official metering for leaderboard claims. Other runs share the account.
 - Platform archive/log access has intermittently failed. Preserve available local
   artifacts and avoid claiming an exact trace when it could not be retrieved.
 

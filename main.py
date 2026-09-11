@@ -13,6 +13,7 @@ from pathlib import Path
 from volo.agent import Agent
 from volo.model import Model
 from volo.requirements import RequirementSet
+from volo.references import ReferenceObserver
 from volo.trace import Runtime, Trace
 from volo.workspace import Workspace
 
@@ -58,13 +59,20 @@ def main():
         runtime = Runtime(trace)
         client = Model(base, key, model_name, trace,
                        max_output=int(os.getenv("FACTORY_MAX_OUTPUT_TOKENS", "16384")))
+        vision_name = os.getenv('FACTORY_VISION_MODEL', 'kimi-k3')
+        references = None
+        if vision_name:
+            vision = Model(base, key, vision_name, trace, max_output=4096, timeout=240)
+            vision.usage = client.usage
+            references = ReferenceObserver(vision, trace)
         workspace = Workspace(output, requirements.root, trace, time.monotonic() + args.timeout)
         trace.event("run_started", requirement_fingerprint=requirements.fingerprint,
-                    model=model_name, max_calls=args.max_calls, token_budget=args.token_budget,
+                    model=model_name, vision_model=vision_name, max_calls=args.max_calls, token_budget=args.token_budget,
                     timeout_seconds=args.timeout)
         try:
             result = Agent(requirements, client, workspace, runtime,
-                           max_calls=args.max_calls, token_budget=args.token_budget).run()
+                           max_calls=args.max_calls, token_budget=args.token_budget,
+                           references=references).run()
             print(json.dumps(result, ensure_ascii=False), flush=True)
             return 0
         except Exception as exc:

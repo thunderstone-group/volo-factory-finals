@@ -5,6 +5,13 @@ operations tool, separate from `main.py`, which is the agent entrypoint inside t
 competition runner. The CLI and its session are excluded from uploaded agent ZIPs.
 It uses Python 3.9+ and the standard library, with no browser needed for normal operations.
 
+The user also supplied [thunderstone-group/arcbench-cli](https://github.com/thunderstone-group/arcbench-cli),
+checked at commit `6df264e05f52a8c2e4062e66c3f9bf89e6c0beb9`. Its task fetch and
+submit/create/start chain were exercised on E017. It uses a dedicated private
+`ARCBENCH_ENV_FILE`, leaving other users' CLI configuration untouched. Its package/replay
+paths that depend on another harness were not used. This repository's thin CLI remains
+useful for archive hashing, balance, logs and compact status; neither CLI is in the upload.
+
 ## Commands
 
 Run from the repository root:

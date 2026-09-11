@@ -10,24 +10,23 @@ development milestones, not evidence of a final result.
 Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average runtime.
 Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
 dated practice milestones; the formal preliminary and final are separate competitions.
-Ticket Booking uploads and run creation work through the CLI. The latest candidate's
-two runs failed during deployment because the executor could not find its run-local
-`agent.zip`, although the saved upload downloads with the correct hash. Earlier runs
-reached model generation; none has yet completed the 10 official tests.
+Ticket Booking uploads, generation and all 10 official tests now execute. The latest
+evaluated candidate passed 2/10; its original app passes 5/10 in a local replay of the
+unchanged public tests. Input-reference and UI-contract gaps remain. Historical upload
+failures are retained as dated observations, not a current blocker.
 The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev3**, adds bounded context projection,
-ancestor-container requirement scheduling, and explicit low-effort DeepSeek thinking
-for bounded coding turns. All 22 supplied requirement documents (20 unique) parse and
-schedule. A longer 600-second response wait recovered the first Ticket Booking response
-after 500 seconds, revealing excessive reasoning and truncated output; the run later
-exhausted its observed token budget. The dev3 adjustments are locally checked, but the
-new deployment error blocks their model-backed evaluation. The `v0.6.0` tag preserves
-the source that earned the recorded wins.
-All 39 local checks pass, including real HTTP repair, captured response accounting and
-the CLI's upload, polling, cancellation and failure-recovery contracts.
+The current development candidate, **0.7.0.dev5**, adds reference-image observations
+through the same metered gateway. A real Kimi K3 image request successfully read the
+previously omitted heading. The full candidate still needs official evaluation.
+Version dev4 already verifies browser checks and serves the same app on both observed
+runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
+call, but self-checks did not catch all UI-contract gaps. All 22 supplied requirement
+documents (20 unique) parse and schedule. The `v0.6.0` tag preserves the recorded wins.
+All 48 local checks pass, including real HTTP repair, reference routing and cache
+invalidation, captured response accounting, launcher lifecycle and CLI contracts.
 
 The ArcBench entrypoint is:
 
@@ -83,17 +82,26 @@ are not an OS-level sandbox for subprocesses.
 - DeepSeek thinking is disabled for small requirement batches and uses explicit low
   effort for larger bounded coding turns. Product correctness still requires verification.
 - Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
+- A managed backend launcher serves one application on the observed 3000/3301 runner
+  entrypoints; custom `PORT` values remain isolated. Authored standalone browser checks
+  using the supplied Playwright module also run when the selected command only runs API tests.
+- Linked images in active requirements and ancestor descriptions are observed by
+  `FACTORY_VISION_MODEL` (default `kimi-k3`) using the same gateway and key. Image calls
+  share the generation budget and trace. Successful observations cache by image bytes,
+  prompt and model. An empty variable disables observation and records that limitation.
 - Verified-checkpoint recovery with requirement and source fingerprints.
 - Context pressure first prunes old tool output, then uses a fresh workspace checkpoint
   plus complete recent tool exchanges. Retained reasoning fields stay intact; raw trace
   evidence is preserved. The 160,000-character limit is not a provider token estimate.
 - Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
 - Default caps: 32 attempted requests, 150,000 observed tokens, 1,200 seconds and
-  8,192 output tokens per request. Environment overrides use `FACTORY_MAX_CALLS`,
+  16,384 output tokens per coding request. Environment overrides use `FACTORY_MAX_CALLS`,
   `FACTORY_TOKEN_BUDGET`, `FACTORY_TIMEOUT`, `FACTORY_MAX_OUTPUT_TOKENS`.
 - The observed token cap is checked between responses; an in-flight response can
   exceed the remaining amount. Organizer gateway quotas are authoritative.
-- Binary image references are listed but not analyzed in this version.
+- Local PNG/JPEG/WebP references up to 8 MiB each are supported, in groups of three.
+  Remote/missing/unsupported references are explicitly listed as unavailable. Written
+  requirements override conflicting screenshot defaults and out-of-scope functionality.
 - Agent-authored checks and build success do not substitute for official GUI evaluation.
 
 ## Development record

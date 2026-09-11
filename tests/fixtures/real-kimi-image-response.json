@@ -1,0 +1,33 @@
+{
+  "source": "Real organizer gateway kimi-k3 image response, 2026-09-11; image prompt and reasoning omitted.",
+  "latency_seconds": 32.111,
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": {},
+        "message": {
+          "content": "账户信息\nWhite text on a blue background.",
+          "reasoning_content": "[REDACTED real model reasoning]",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1789147112,
+    "id": "chatcmpl-202609111718130815406558268d9d6IN6hgJ4W",
+    "model": "kimi-k3",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 192,
+      "completion_tokens_details": {
+        "reasoning_tokens": 178
+      },
+      "prompt_tokens": 1807,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1999
+    }
+  }
+}

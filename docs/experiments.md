@@ -291,3 +291,78 @@ No previous smoke code or prewritten task solution is packaged into this submiss
 - Artifact SHA-256: `2f701da2557f890463d925c1c7e76c8a00cf29df4911dae5d41bbee1833db922`.
 - Added and live-verified `./arcbench balance`, reusing the authorized meter login in
   a separate private origin-scoped session. No balance cookie or model key is committed.
+
+## E015 — Kimi K3 reaches evaluation and exposes the runtime contract
+
+- Same dev3 source `2793296`, model `kimi-k3`, submission `4acd5cdecf7f`.
+- https://arc-bench.com/runs/b30f19283f5a — generation completes, **0/10 official
+  tests**, 603 seconds, CNY 4.231912, 192,558 official tokens.
+- Seven actual responses report 141,422 tokens. The first two responses consume the
+  8,192-token output limit but claim `tool_calls` despite truncated argument strings;
+  JSON parsing rejects them. Later calls write the app and pass seven HTTP checks.
+- A browser check was written but omitted from the final command. It subsequently
+  fails in a local real-browser replay because two elements display the same username.
+- The runner starts the backend at 3000; the current public test helper defaults to
+  3301. All official tests receive `ERR_CONNECTION_REFUSED`. Input prerequisites are
+  empty and the supplied text does not specify this extra port.
+- Complete artifact SHA-256:
+  `4d446ce044aafacbe71fe999f0d94c42cefc9e5beb6f8c3b78efb1dd158269dc8`.
+
+## E016 — Reproduce before changing the harness
+
+- Replay the original E015 app in a disposable restricted Docker container, with
+  fresh-profile host Chrome and Playwright 1.57.0. Public test sources stay unchanged.
+- On the working primary port, initial result is **0/10**, with duplicate registration
+  navigation links. The authored browser script also fails on duplicate username text.
+- Two diagnostic edits to this disposable app copy remove duplicate introductory
+  links/identity text. Result becomes **5/10**; remaining failures include an omitted
+  reference heading and a concatenated bilingual password label.
+- Implement generic fixes in `e953f4c` / `fc3a4f3`, version dev4: managed single-service
+  launcher on both observed ports, mandatory execution of recognized authored browser
+  checks, 16,384 coding output cap, clearer malformed-JSON recovery and exact-name UI
+  guidance. Three real Node launcher tests check shared state, cleanup, port conflict
+  failure and symlink boundaries. All **44 local checks pass** in 19.763 seconds.
+- Diagnostic app edits and official test sources are not packaged or committed.
+
+## E017 — DeepSeek dev4 completes with one call; official score is 2/10
+
+- Source `fc3a4f3`, submission `a88b673b4cf3`, model `deepseek-v4-flash`.
+- Archive SHA-256: `6eecc8814c9f1e802f0230b2c04ad9d65f9817baedb89a4328491be0f3f5f45e`.
+  Saved archive download matches exactly. The user-supplied standalone CLI performs
+  submit/create/start successfully; the thin CLI verifies the archive and retrieves evidence.
+- https://arc-bench.com/runs/df4bf94d459e — **2/10 official tests**, 174 seconds,
+  CNY 0.481799, 2,161,039 official tokens. One actual model response reports 31,022
+  tokens (4,782 prompt; 26,240 completion, including 14,742 reasoning), in 149.526
+  seconds. The large official/response discrepancy has no established cause; preserve
+  both counts and do not ascribe other shared-account activity to this agent.
+- Generated React/Vite and Express app passes nine authored HTTP tests and its
+  real browser flow. The harness additionally runs the recognized standalone browser
+  script. Official tests reach the application, confirming the port fix.
+- Original app replay of the **unchanged public tests**: **5/10 on port 3000 and
+  5/10 on port 3301**, with identical failures. Username text is merged into a greeting;
+  the reference heading is absent, and the strength widget has presentation-only semantics.
+  Official results also include earlier field-interaction timeouts and one target crash;
+  their exact environment cause is not inferred from the local result.
+- Three diagnostic changes in the disposable app copy isolate the username, restore
+  the reference heading and add a named meter/value. Local public suite becomes
+  **10/10 in 7.192 seconds**. This establishes those concrete app gaps; it is not a
+  new official score or a model-generated result. No diagnostic app is uploaded.
+- Full artifact SHA-256:
+  `15d68381c60ed0a85f04990c9cbd572ce8ca61cab860484c7a896ba465e06336`.
+
+## E018 — Verify actual multimodal input, then prepare dev5
+
+- Send one supplied reference image to `kimi-k3` through the organizer gateway,
+  using the same authorized key. The model accurately reads its heading and color.
+  Actual response: 32.111 seconds, 1,807 prompt + 192 completion = 1,999 tokens.
+  This is a separate development probe, not a submitted benchmark run.
+- Preserve a redacted real response fixture. Version dev5 observes images linked by
+  active requirements and ancestor descriptions, groups at most three per request,
+  and shares generation's usage/budget and trace. Successful observations cache by
+  exact image bytes, prompt and model. Text requirements override conflicting visuals.
+- Strengthen generic instructions for exact dynamic text, semantic status controls,
+  reference headings and requirement-derived browser assertions. No task solutions,
+  official test code or manual diagnostic app patches enter the archive.
+- All **48 local checks pass** in 19.616 seconds, including cache invalidation, input
+  boundary handling and captured multimodal-response accounting. Full dev5 platform
+  evaluation is the next gate; no improved official result is claimed here.

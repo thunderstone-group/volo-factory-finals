@@ -1,12 +1,17 @@
-# Ticket Booking storage observations
+# Ticket Booking platform observations
 
-**Latest observation, 2026-09-11 around 08:38 UTC:** saving, downloading, creating and
-queueing a run succeed, but two runs of submission `ac411627b87f` failed during deployment
-because the executor could not find its run-local `agent.zip`. The saved archive still
-downloads with the exact upload hash. Earlier CLI runs `0726df707e05` and `2ee804a2030f`
-did execute the agent. These are distinct dated observations, not one diagnosed outage.
+**Latest observation, 2026-09-11 around 17:07 UTC:** upload, deployment, generation and
+official tests all execute on run `df4bf94d459e`. It passes 2/10. Earlier run
+`b30f19283f5a` also reached evaluation but its app served port 3000 while the published
+tests defaulted to 3301. A managed launcher now serves the same app on both ports;
+the current failures are UI assertions/timeouts, not missing deployment archives.
 
-## Current deployment failure
+Original dev4 app replay: unchanged public tests pass 5/10 on both ports locally,
+with the same assertion failures. The official run additionally reports earlier
+interaction timeouts and one target crash. Their exact environment cause is not
+established. The evidence below remains historical and does not imply a current outage.
+
+## Historical deployment failure at 08:38 UTC
 
 - Submission: `ac411627b87f`, `volo-factory-ticket-v0.7.0-dev3-2793296-cli`.
 - Upload and a second archive download after both failures match SHA-256
