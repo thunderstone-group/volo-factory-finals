@@ -491,3 +491,21 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   a diagnostic variable-scope repair passes static analysis. A minimized real fixture
   proves the planner receives the error and regenerates before a check is installed.
   All **58 local checks pass** in 27.151 seconds. This does not prove test semantics.
+
+## E024 — Pro with static acceptance analysis; verified edit batches prepared
+
+- The organizer's live model catalog confirms `deepseek-v4-pro` is available.
+  Source `41bcdec`, dev10, submission `ba7d446bdbf4`, ZIP SHA-256
+  `c243c22c74f8781e73b79f95bed1e4d54411ed697febcd5b5bc74cc790b4cd62`.
+  The first saved-archive download is incomplete. A second read matches all 78,494
+  bytes and the exact hash; no duplicate submission is created.
+- https://arc-bench.com/runs/6d2bdfec5d0f deploys and starts with DeepSeek V4 Pro.
+  Its final outcome is pending. Static analysis is now part of acceptance planning.
+- Dev11 separately replaces prompt-only incremental batching with a forced
+  `patch_and_verify` tool. It validates all exact edits before writing and runs the
+  existing app's build/start/check lifecycle. Three unsuccessful compact attempts
+  can fall back to regular tools; failed verification includes current product source.
+- All **58 local checks pass** in 25.504 seconds, including real one-call HTTP changes,
+  forced tool selection and all-or-nothing validation before editing. An unrelated
+  ephemeral-port collision in the launcher test was removed by binding its reserved
+  conflict socket before choosing and installing the test ports; launcher code is unchanged.

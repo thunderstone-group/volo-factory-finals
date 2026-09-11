@@ -94,10 +94,10 @@ class ContextRepairTests(TempCase):
             {'path': 'accounts.json', 'content': '{"private":"not-for-initial-context"}'}])
         (self.out / '.env').write_text('PRIVATE=never-inline-secret')
         (self.trace.directory / 'internal.js').write_text('never-inline-harness')
-        answer = response([
-            ('edit', {'path': 'backend/server.cjs', 'old': "s.end('hello')", 'new': "s.end('welcome')"}),
-            ('edit', {'path': 'checks/greeting.cjs', 'old': "'hello'", 'new': "'welcome'"}),
-            ('finish', {'check_command': ['node', 'checks/greeting.cjs']})])
+        answer = response([('patch_and_verify', {'edits': [
+            {'path': 'backend/server.cjs', 'old': "s.end('hello')", 'new': "s.end('welcome')"},
+            {'path': 'checks/greeting.cjs', 'old': "'hello'", 'new': "'welcome'"}],
+            'check_command': ['node', 'checks/greeting.cjs']})])
         with FakeGateway([answer]) as gateway:
             agent = Agent(RequirementSet.load(self.req),
                 Model(gateway.url, 'synthetic-test-key', 'synthetic-model', self.trace),
@@ -105,6 +105,7 @@ class ContextRepairTests(TempCase):
             result = agent.run()
         self.assertEqual(result['status'], 'completed')
         self.assertEqual(len(gateway.requests), 1)
+        self.assertEqual(gateway.requests[0]['tool_choice']['function']['name'], 'patch_and_verify')
         sent = json.dumps(gateway.requests)
         self.assertIn("s.end('hello')", sent)
         self.assertNotIn('not-for-initial-context', sent)
@@ -112,6 +113,13 @@ class ContextRepairTests(TempCase):
         self.assertNotIn('never-inline-harness', sent)
         self.assertEqual((self.out / 'theme.css').read_text(), '/* preserve this unrelated source */')
         self.assertTrue(self.workspace.last_verification['passed'])
+        before = (self.out / 'backend/server.cjs').read_text()
+        with self.assertRaisesRegex(ValueError, 'exactly once'):
+            agent.dispatch('patch_and_verify', {'edits': [
+                {'path': 'backend/server.cjs', 'old': "s.end('welcome')", 'new': "s.end('changed')"},
+                {'path': 'checks/greeting.cjs', 'old': 'missing-text', 'new': 'replacement'}],
+                'check_command': ['node', 'checks/greeting.cjs']})
+        self.assertEqual((self.out / 'backend/server.cjs').read_text(), before)
         (self.out / 'large.js').write_text('x' * 24001)
         self.assertIsNone(agent.source_snapshot())
 

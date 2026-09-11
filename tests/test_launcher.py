@@ -82,9 +82,10 @@ let state='initial'; http.createServer((req,res)=>{
                 self.assertNotEqual(sock.connect_ex(('127.0.0.1', port)), 0)
 
     def test_reserved_port_conflict_fails_and_does_not_leave_the_child_running(self):
-        install(self.root, self.ports)
         with socket.socket() as occupied:
-            occupied.bind(('0.0.0.0', self.ports[1]))
+            occupied.bind(('0.0.0.0', 0))
+            self.ports = (free_port(), occupied.getsockname()[1])
+            install(self.root, self.ports)
             occupied.listen()
             self.start()
             self.assertNotEqual(self.process.wait(timeout=5), 0)

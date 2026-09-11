@@ -19,7 +19,8 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev10**, rejects undefined variables in
+The current development candidate, **0.7.0.dev11**, combines small exact edits with
+verification in one tool call. Version dev10 rejects undefined variables in
 acceptance scripts before application generation. Dev8 reached verification but a faulty
 generated check blocked repair until the token budget ran out. Input-derived browser checks are generated
 before implementation and fixed throughout repair; their script is now read on demand.
@@ -83,7 +84,8 @@ are not an OS-level sandbox for subprocesses.
 - Small empty projects use one initial bundle-delivery call, then real verification;
   failed deliveries enter the full repair loop.
 - Small existing projects receive a bounded snapshot of product code and concise edit
-  instructions, allowing related edits and verification in one response. Runtime state,
+  instructions, with a forced `patch_and_verify` call for the complete change. Edits
+  are validated together before any write; failures can enter the normal repair loop. Runtime state,
   credentials and protected files are excluded; larger source sets use normal file tools.
 - Small-app runtime scaffolding supplies only build, HTTP serving and browser-test lifecycle.
   Product markup, behavior, API logic and test assertions remain model-generated.
