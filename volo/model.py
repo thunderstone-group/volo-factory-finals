@@ -58,6 +58,10 @@ class Model:
             body['tool_choice'] = {'type': 'function', 'function': {'name': forced_tool}}
         if self.thinking in ('enabled', 'disabled') and self.model.lower().startswith('qwen3.'):
             body['enable_thinking'] = self.thinking == 'enabled'
+        if self.model.lower() == 'kimi-k3':
+            # K3 always reasons; its documented default is max, not a binary
+            # thinking switch. Low is the supported bounded-generation policy.
+            body['reasoning_effort'] = 'low'
         self.trace.event("model_request", model=self.model, gateway=self.url, messages=messages, tools=tools,
                          timeout_seconds=min(self.timeout, remaining_seconds) if remaining_seconds else self.timeout,
                          parameters={k: v for k, v in body.items() if k not in ('messages', 'tools')})

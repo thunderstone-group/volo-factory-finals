@@ -17,7 +17,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import patch
 
-from volo.agent import Agent
+from volo.agent import Agent, TOOLS
 from volo.environment import discover_playwright
 from volo.model import Model, ModelError
 from volo.requirements import RequirementSet
@@ -345,6 +345,23 @@ test('server serves generated page despite empty optional API',async()=>{
             self.assertIs(server.requests[0]['enable_thinking'], False)
             self.assertIs(server.requests[1]['enable_thinking'], True)
             self.assertNotIn('thinking', server.requests[0])
+
+    def test_kimi_uses_low_effort_without_claiming_thinking_can_be_disabled(self):
+        answer = response([('list_files', {})])
+        answer['choices'][0]['message']['reasoning_content'] = 'Synthetic retained reasoning'
+        with FakeGateway([answer, answer]) as server:
+            model = Model(server.url, 'synthetic-test-key', 'kimi-k3', self.trace)
+            model.thinking = 'disabled'
+            first, _ = model.complete([{'role': 'user', 'content': 'Inspect the project'}], TOOLS)
+            messages = [{'role': 'user', 'content': 'Inspect the project'}, first,
+                        {'role': 'tool', 'tool_call_id': first['tool_calls'][0]['id'], 'content': '{}'}]
+            model.thinking = 'enabled'
+            model.complete(messages, TOOLS)
+            for request in server.requests:
+                self.assertEqual(request['reasoning_effort'], 'low')
+                self.assertNotIn('thinking', request)
+                self.assertNotIn('temperature', request)
+            self.assertEqual(server.requests[1]['messages'][1], first)
 
     def test_captured_real_gateway_response_preserves_reasoning_and_usage(self):
         fixture = json.loads((ROOT / 'tests/fixtures/real-deepseek-tool-responses.json').read_text())

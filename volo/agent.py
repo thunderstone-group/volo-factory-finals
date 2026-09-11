@@ -357,7 +357,8 @@ class Agent:
         small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
         bounded = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 16000
         self.model.thinking = "disabled" if bounded else "enabled"
-        self.trace.event("reasoning_policy", small_batch=small, bounded_batch=bounded, thinking=self.model.thinking)
+        self.trace.event("reasoning_policy", small_batch=small, bounded_batch=bounded,
+                         requested_thinking=self.model.thinking)
         request = self.batch_request(nodes)
         direct = small and not self.workspace.list_files()['files']
         self.inline_source = small and not direct and self.source_snapshot() is not None

@@ -819,3 +819,24 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   semantic-UI contract, not copied evaluator code or a packaged task implementation.
 - All **61 local checks pass** in 28.357 seconds. Dev21 ZIP SHA-256:
   `5d0f8e2d4de91c384fa5764353946822d29656fbc59e74e380b9b5b0c0272c27`.
+
+## E039 — Kimi K3 needs effort control, not a binary thinking switch
+
+- Dev21 source `e894c02`, Kimi submission `d19113f4a2bc`, verified ZIP as E038.
+  https://arc-bench.com/runs/618ed6962a92 deploys; image observation succeeds at
+  47.535 seconds. Its first generation response at 210.062 seconds consumes the entire
+  16,384-token output cap as reasoning, with no content or tool calls, finish `length`.
+- Later calls write four backend files and one validation edit, but no frontend or
+  complete application is reached before cancellation. Five completed responses total
+  74,650 tokens; the final pending request is unknown. Cancellation POST returns HTTP
+  500, followed by confirmed CANCELLED. Null official metrics are not zero usage.
+- Moonshot's [official K3 model usage](https://github.com/MoonshotAI/Kimi-K3#6-model-usage)
+  states that K3 always reasons, defaults to maximum effort and accepts top-level
+  `reasoning_effort` values low/high/max. The earlier assumption that its thinking could
+  be disabled was incorrect. Dev22 sends `low` without binary-thinking or sampling
+  overrides and preserves complete returned assistant fields.
+- A local HTTP regression verifies both requested on/off intents map to the supported
+  low-effort request and that the next request retains the exact preceding reasoning
+  and tool fields. A real run must still establish whether this reduces wasted output.
+- All **62 local checks pass** in 28.527 seconds. Dev22 ZIP SHA-256:
+  `e1ee2c4ebedb1fff35ff7085d1e8cd39b4acb1290fe3ef844e07bc7b51bc4bff`.

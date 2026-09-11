@@ -22,7 +22,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev21**, removes the extra UI-planning call.
+The current development candidate, **0.7.0.dev22**, removes the extra UI-planning call.
 That layer repeatedly turned alternative names into additional required controls, and
 its outputs became incorrect constraints on implementation. The coding agent now derives
 its app and executable checks directly from the complete requirements and observed images.
@@ -105,6 +105,10 @@ are not an OS-level sandbox for subprocesses.
   characters and uses explicit low effort for larger batches. The smaller 3,500-character
   threshold still controls compact runtime/edit tools. Correctness requires verification.
   Qwen3 hybrid models receive the equivalent `enable_thinking` control.
+  Kimi K3 always reasons: requests use its documented `reasoning_effort: low`, including
+  image observation, instead of silently accepting its default maximum effort. Returned
+  reasoning fields remain intact. The batch policy is logged as requested intent; the
+  actual request parameters establish the provider controls sent.
 - Check commands are validated before writing delivery/edit bundles. A quoted single-string
   argv is split without a shell, preventing retries against already-edited source when
   a model supplies a malformed command shape.
