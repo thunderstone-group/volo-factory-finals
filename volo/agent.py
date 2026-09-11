@@ -73,6 +73,8 @@ Tools execute sequentially in listed order, so you may batch write_files and fin
 When write_files includes authored Node behavioral tests and both app manifests exist, the
 harness immediately executes the discovered test bundle. A passing bundle can complete the
 batch; write those checks for the full current requirement set, and use failures for repair.
+Files named checks/*.test.* or checks/*.spec.* run with node --test, including helpers they
+import. Use node:test, not the @playwright/test runner API, in these standalone checks.
 finish performs dependency installation, frontend build, server startup and your behavioral
 check command. Only a successful real verification completes a batch. If it fails, read its
 error and make a narrow repair. Avoid repeated full rewrites. run uses argv, not shell syntax.
@@ -176,7 +178,7 @@ TOOLS = [
 
 class Agent:
     def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
-                 token_budget=300000, max_context_chars=60000, references=None, acceptance=None):
+                 token_budget=300000, max_context_chars=120000, references=None, acceptance=None):
         self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget

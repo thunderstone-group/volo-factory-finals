@@ -268,9 +268,7 @@ class Workspace:
             if (not name.startswith('checks/') or path.suffix not in ('.js', '.cjs', '.mjs')
                     or not any(marker in path.name for marker in ('.test.', '.spec.'))):
                 continue
-            source = path.read_text(errors='replace')
-            if 'node:test' in source and '@playwright/test' not in source:
-                checks.append(name)
+            checks.append(name)
         return ['node', '--test', *checks] if checks else None
 
     def verify(self, check_command):

@@ -707,3 +707,27 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   of deterministic checks. The next formal run must still establish application quality.
 - All **66 local checks pass** in 31.595 seconds. Dev18 ZIP SHA-256:
   `45d6b9f36ae637efca3fb0ef27d9c2e73db3c178eed094ea7389efe8ad7ffd8d`.
+
+## E034 — Planning repaired; source retention and test discovery still delay execution
+
+- Dev18 source `2191407`, submission `c062a2f26d7d`, verified ZIP SHA-256
+  `45d6b9f36ae637efca3fb0ef27d9c2e73db3c178eed094ea7389efe8ad7ffd8d`.
+  An uncertain upload disconnect is reconciled against the full submission list before
+  a retry. https://arc-bench.com/runs/9a7b3c951a6e then deploys successfully.
+- Qwen's first JSON plan is accepted at 55.541 seconds, including the reference heading
+  and one registration-link language. It writes the application by 133.077 seconds and
+  behavioral tests at 159.721 seconds. The discovered tests import `@playwright/test`,
+  which the automatic discovery filter excludes, so verification never starts.
+- The 60,000-character window begins dropping original implementation at 133 seconds;
+  source rereads consume many later calls. Two narrow backend edits occur, but the run
+  exhausts **313,454 actual response tokens** before its first check. Official result:
+  **172 seconds, 1,331,064 tokens, CNY 1.188089**, no official tests. Accounting remains
+  discrepant; do not claim the official count is the isolated sum of this trace.
+- Dev19 discovers authored test entrypoints by filename without guessing their framework
+  from source strings. `node --test` executes them; incompatible test-runner code produces
+  an actual error for repair rather than being silently ignored. The default context
+  window becomes 120,000 characters so this application's initial implementation and
+  checks can coexist. Token/call/time budgets remain unchanged.
+- All **66 local checks pass** in 30.866 seconds. The real HTTP bundle test now imports
+  its framework through a helper and still completes immediately when written.
+  Dev19 ZIP SHA-256: `fd69e93a7a6e052a2a2e5a7f5882d13f9c276b951a377be142e8f31d64a2382d`.

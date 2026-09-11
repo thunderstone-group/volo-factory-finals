@@ -94,8 +94,10 @@ class ContextRepairTests(TempCase):
             '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
         files = copy.deepcopy(GREETING_FILES)
         files[-1] = {'path': 'checks/greeting.test.cjs', 'content':
-            "const {test}=require('node:test');const assert=require('node:assert/strict');"
+            "const {test,assert}=require('./helpers.cjs');"
             "test('visible greeting',async()=>{assert.equal(await (await fetch(process.env.FACTORY_BASE_URL)).text(),'hello')});"}
+        files.append({'path': 'checks/helpers.cjs', 'content':
+            "exports.test=require('node:test').test;exports.assert=require('node:assert/strict');"})
         with FakeGateway([response([('write_files', {'files': files})])]) as gateway:
             agent = Agent(RequirementSet.load(self.req),
                 Model(gateway.url, 'synthetic-test-key', 'deepseek-v4-pro', self.trace),

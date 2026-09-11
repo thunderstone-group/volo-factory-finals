@@ -22,7 +22,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev18**, accepts strictly validated JSON UI
+The current development candidate, **0.7.0.dev19**, accepts strictly validated JSON UI
 metadata when a provider returns it as text despite a forced tool choice. It also bounds source
 reads so a large tool response cannot be repeatedly discarded by context projection. It runs authored Node test bundles as
 soon as the application and test files are present. It uses a data-only UI training contract and
@@ -32,7 +32,7 @@ removed. Training checks now cover visible signed-out structure; authored browse
 stateful behavior. Version dev11 also combines small exact edits with verification in one call.
 Dev6 successfully observes
 all relevant images through the metered gateway, but its implementation and self-checks
-still omit a reference heading and choose the wrong strength-widget role. Dev18's
+still omit a reference heading and choose the wrong strength-widget role. Dev19's
 completed verification and official score are the next evaluation gate.
 Version dev4 already verifies browser checks and serves the same app on both observed
 runner entrypoints. DeepSeek completed its implementation and self-checks in one coding
@@ -89,6 +89,9 @@ are not an OS-level sandbox for subprocesses.
 - Batched file edits, bounded commands, build/start/behavioral-check verification, repair loop.
 - Writing a complete authored Node test bundle triggers real verification immediately,
   preventing source rereads from consuming the budget before the first execution.
+  Discovery uses `checks/*.test.*` / `checks/*.spec.*` filenames, including tests whose
+  framework is imported through a helper. All use `node --test`; incompatible imports
+  fail visibly instead of silently suppressing verification.
 - Small empty projects use one initial bundle-delivery call, then real verification;
   failed deliveries enter the full repair loop.
 - Small existing projects receive a bounded snapshot of product code and concise edit
@@ -133,7 +136,10 @@ are not an OS-level sandbox for subprocesses.
   plus complete recent tool exchanges. The last completed tool result, including successful
   reads, is also preserved in a bounded checkpoint when its full exchange cannot fit.
   Retained reasoning fields stay intact; raw trace
-  evidence is preserved. The 60,000-character limit is not a provider token estimate.
+  evidence is preserved. The 120,000-character limit is not a provider token estimate.
+  E034's 60,000-character window discarded earlier implementation before the first
+  tests were written, causing substantial source rereads; the larger default retains
+  that observed application-sized history for the next real comparison.
 - Source tools return at most 12,000 total bytes or an 8,000-character file chunk with
   a continuation offset. Chunk boundaries preserve Unicode; full-file editing remains
   separate from what is returned to the model. The prepared small-app builder is only
