@@ -994,3 +994,35 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   and that removing the shortcut passes without removing allowed home/hidden links.
 - Dev27 ZIP SHA-256:
   `3d1544b92b09959b862b91d1b9c4ef6c14254ec3c246af4396e406f29095b3f3`.
+
+## E046 — A final edit consumes the last model budget before verification
+
+- Dev27 source `2951151`, Pro submission `fdd3c69b6ef2`, verified ZIP as E045.
+  https://arc-bench.com/runs/e2d2a3d746c0 generates its app at 84.716 seconds.
+  Self-checks finish **2/9 passing** at 116.657 seconds, primarily missing a phone label.
+- Pro first guesses the wrong generated path, then lists/reads files, fixes the label,
+  replaces a presentation-only strength display with a named meter and extends its check.
+  The next verification finishes **4/9 passing** at 231.681 seconds, exposing the name
+  validator rejecting valid examples with spaces. Pro edits that validator at 239.616
+  seconds, then the observed token budget stops the loop before it can verify again.
+- Official result: **FAILED before evaluation, 240 seconds, 1,360,736 tokens,
+  CNY 1.218660**. Fourteen captured responses total **300,495 tokens**. No official
+  tests execute; the zero headline is not an official 0/10 run.
+- Downloaded the untouched final app and authored checks. In an isolated app process
+  with real Chrome, those checks pass **5/9 in 10.611 seconds**; the unchanged public
+  suite passes **3/10 in 7.180 seconds**. Duplicate username display and an asynchronous
+  logout assertion remain. This does not establish that a final verification would pass.
+- Dev28 returns the exact generated source-path mapping with a failed bundle, so the
+  prior model response can support direct edits without guessing paths or rereading all
+  source. The normal repair prompt asks for related edits and finish in one response.
+- If a call/token budget ends after a mutation, the harness can execute the latest
+  already-authored check command within the remaining wall time, without another model
+  request. It completes only on a real pass. Unchanged failed source is not rerun.
+- The configurable default observed-token allowance increases from 300,000 to 450,000.
+  Recent Pro runs cost CNY 1.2–1.5 each; a larger allowance may increase cost and still
+  needs official quality validation. This is not a hard currency cap, and verification
+  stops a successful batch immediately without consuming the remaining allowance.
+- All **72 local checks pass** in 58.554 seconds, including both budget types, a failed
+  last repair and unchanged failed source, with exactly two synthetic gateway calls.
+- Dev28 ZIP SHA-256:
+  `591a92bcea24b57d394d0504e559a01d529aeacad9a25efa3d889e6f705d9ce1`.

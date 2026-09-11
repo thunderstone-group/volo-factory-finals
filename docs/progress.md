@@ -246,3 +246,12 @@ each rule snapshot and experiment with date and source.
   small-app runtime. It derives destinations from the app, without benchmark route names
   or business logic. Real Chrome covers aliases, hidden links and home-link exceptions;
   all 68 local checks pass. Another official run must establish actual improvement.
+- E046 improves from 2/9 to 4/9 self-checks, then fixes the reported name-validation
+  defect just as its observed token count reaches 300,495. It stops before another
+  verification. Its untouched final source passes 5/9 own checks and 3/10 public checks
+  locally, so a final verification alone would not make this run correct.
+- Dev28 returns concrete paths for generated source, allows the existing check to run
+  after a budget-ending edit, and increases the default observed token allowance to
+  450,000. The previous two official run costs were CNY 1.507691 and 1.218660; the
+  extra allowance aims to finish measured repair, not to consume a quota. All 72 checks
+  pass, including correct/incorrect/unchanged final-edit cases with no extra model call.

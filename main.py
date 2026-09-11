@@ -24,7 +24,7 @@ def main():
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--inspect", action="store_true", help="Validate inputs and print the schedule without model calls")
     parser.add_argument("--max-calls", type=int, default=int(os.getenv("FACTORY_MAX_CALLS", "32")))
-    parser.add_argument("--token-budget", type=int, default=int(os.getenv("FACTORY_TOKEN_BUDGET", "300000")))
+    parser.add_argument("--token-budget", type=int, default=int(os.getenv("FACTORY_TOKEN_BUDGET", "450000")))
     parser.add_argument("--timeout", type=int, default=int(os.getenv("FACTORY_TIMEOUT", "1200")))
     args = parser.parse_args()
     if min(args.max_calls, args.token_budget, args.timeout) <= 0:

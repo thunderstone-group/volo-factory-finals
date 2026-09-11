@@ -39,6 +39,11 @@ can handle changing and larger requirements, rather than repeating a fixed demo.
    Removing only duplicate homepage shortcuts in an offline diagnostic copy produces
    10/10. Dev27 adds a generic primary-destination uniqueness check; its official
    Ticket validation remains the next gate. The diagnostic app is never uploaded.
+   E046 repairs labels, meter semantics and name validation but exhausts its budget before
+   the final check. Its untouched final source still passes only 5/9 own checks and 3/10
+   public checks locally. Dev28 supplies exact source paths, leaves more model repair
+   budget and executes the existing final check even when the last edit exhausts that
+   budget. None of these changes replaces official acceptance.
    Official page crashes
    and timeouts did not reproduce locally; their exact cause remains unconfirmed.
 3. **Transfer:** run unseen variants of small requirements, then a larger public task.

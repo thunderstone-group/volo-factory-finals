@@ -374,6 +374,48 @@ assert.ok(await page.getByRole('link',{name:'Details',exact:true}).isVisible());
             '', check)
         self.assertTrue(repaired['passed'], repaired)
 
+    def assert_final_budget_verification(self, replacement, *, max_calls=8, token_budget=300):
+        (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
+            '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
+        check = GREETING_FILES[-1]['content']
+        initial = response([('build_app', {'index_html': 'wrong', 'checks_js': check})])
+        final = response([('read_files', {'paths': ['frontend/public/index.html']})] if replacement is None else
+                         [('edit', {'path': 'frontend/public/index.html', 'old': 'wrong', 'new': replacement})])
+        with FakeGateway([initial, final]) as gateway:
+            model = Model(gateway.url, 'synthetic-test-key', 'synthetic-model', self.trace)
+            agent = Agent(RequirementSet.load(self.req), model, self.workspace, Runtime(self.trace),
+                          max_calls=max_calls, token_budget=token_budget)
+            if replacement == 'hello':
+                self.assertEqual(agent.run()['status'], 'completed')
+                self.assertTrue(self.workspace.last_verification['passed'])
+            else:
+                with self.assertRaisesRegex(RuntimeError, 'budget exhausted'):
+                    agent.run()
+                self.assertIsNone(self.workspace.last_verification)
+            self.assertEqual(len(gateway.requests), 2)
+            self.assertEqual(model.usage.total_tokens, 300)
+            receipt = json.loads(gateway.requests[1]['messages'][-1]['content'])
+            self.assertEqual(receipt['source_paths']['index_html'], 'frontend/public/index.html')
+            self.assertEqual(receipt['source_paths']['checks_js'], 'checks/requirements.cjs')
+        events = [json.loads(line) for line in (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+        verified = [event for event in events if event['event'] == 'budget_final_verification']
+        self.assertEqual(len(verified), int(replacement is not None))
+        if verified:
+            self.assertEqual(verified[0]['passed'], replacement == 'hello')
+        self.assertEqual((self.out / 'checks/requirements.cjs').read_text(), check)
+
+    def test_final_token_budget_edit_is_verified_without_another_model_call(self):
+        self.assert_final_budget_verification('hello')
+
+    def test_final_call_budget_edit_is_verified_without_another_model_call(self):
+        self.assert_final_budget_verification('hello', max_calls=2, token_budget=10000)
+
+    def test_final_budget_verification_does_not_accept_a_bad_repair(self):
+        self.assert_final_budget_verification('still wrong')
+
+    def test_final_budget_does_not_rerun_unchanged_failed_source(self):
+        self.assert_final_budget_verification(None)
+
     def test_model_tool_loop_repairs_failure_then_resumes_without_model_call(self):
         initial = response([("build_app", {"index_html": "wrong",
                             "checks_js": GREETING_FILES[-1]['content']})])

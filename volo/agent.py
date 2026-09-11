@@ -197,7 +197,7 @@ TOOLS = [
 
 class Agent:
     def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
-                 token_budget=300000, max_context_chars=120000, references=None):
+                 token_budget=450000, max_context_chars=120000, references=None):
         self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
@@ -259,6 +259,20 @@ class Agent:
             raise RuntimeError("Observed model token budget exhausted")
         if time.monotonic() >= self.workspace.deadline:
             raise TimeoutError("Agent wall-time budget exhausted")
+
+    def verify_final_edit(self):
+        """Execute an already authored check after the final model-funded mutation."""
+        attempt = self.workspace.last_verification_attempt
+        if (not attempt or not attempt.get('check_command')
+                or time.monotonic() >= self.workspace.deadline
+                or attempt.get('source_fingerprint') == self.workspace.fingerprint()):
+            return False
+        result = self.workspace.verify(attempt['check_command'])
+        self.trace.event('budget_final_verification', passed=result['passed'],
+                         check_command=result['check_command'], source_fingerprint=result['source_fingerprint'])
+        if result['passed']:
+            self.check_command = result['check_command']
+        return result['passed']
 
     def dispatch(self, name, args):
         allowed = {tool["function"]["name"] for tool in TOOLS}
@@ -394,7 +408,12 @@ class Agent:
         no_action = 0
         last_failure = None
         for _ in range(self.max_calls):
-            self.guard_budget()
+            try:
+                self.guard_budget()
+            except RuntimeError:
+                if self.verify_final_edit():
+                    return
+                raise
             model_messages, projection = project(messages, self.max_context_chars,
                 lambda: self.context_checkpoint(nodes, messages[0]["content"], last_failure))
             if projection:
@@ -465,8 +484,13 @@ class Agent:
                     model_result = {"passed": False, "error": result.get('error'),
                                     "check_output": excerpt((result.get('steps') or [{}])[-1].get('output', ''), 5000),
                                     "server_output": result.get('server_output', '')[-2000:],
-                                    "next": ("The bundle is written. Use the full tools to inspect relevant source and "
-                                             "make a narrow repair, then verify. Preserve required behavioral assertions; "
+                                    "source_paths": {'index_html': 'frontend/public/index.html',
+                                                     'api_js': 'backend/api.cjs',
+                                                     'checks_js': 'checks/requirements.cjs'},
+                                    "next": ("The supplied bundle fields are written at source_paths; their exact content "
+                                             "is in your previous build_app call. Edit that known source directly; read only "
+                                             "when the needed content is unknown. Batch related repairs and finish together. "
+                                             "Preserve required behavioral assertions; "
                                              "fix interface ambiguity in the app rather than hiding it with scoped selectors. "
                                              "Await asynchronous UI outcomes before asserting them."
                                              if open_repairs else
@@ -480,6 +504,8 @@ class Agent:
             compact = was_compact and compact_attempts < 3
             if not direct and not compact and messages[0]['content'] in (SMALL_SYSTEM, BOUNDED_SYSTEM, SMALL_EDIT_SYSTEM):
                 messages[0]['content'] = SYSTEM
+        if self.verify_final_edit():
+            return
         raise RuntimeError("Batch did not converge within the model call limit")
 
     def run(self):
