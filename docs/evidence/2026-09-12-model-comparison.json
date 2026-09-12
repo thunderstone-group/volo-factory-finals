@@ -1,0 +1,284 @@
+{
+  "observed_at": "2026-09-12T11:20:36.124613+00:00",
+  "scope": "Fixed dev35 with Qwen vs preceding dev35 Flash; Ticket deferred",
+  "agent_source": "70e9236",
+  "checkout_before_docs": "2305ef4",
+  "package_sha256": "081a5e66334114a86648a8f12017214a983b1a95b690476658a421ef48529f8c",
+  "runs": [
+    {
+      "task": "smoke-evolution--counter",
+      "run_id": "f6082b65cf6e",
+      "status": "PASSED",
+      "passed": 2,
+      "failed": 0,
+      "official_cny": 0.010787,
+      "official_tokens": 2899,
+      "official_seconds": 9,
+      "captured_usage": [
+        {
+          "completion_tokens": 1218,
+          "completion_tokens_details": {
+            "text_tokens": 1218
+          },
+          "prompt_tokens": 1681,
+          "prompt_tokens_details": {
+            "text_tokens": 1681
+          },
+          "total_tokens": 2899
+        }
+      ],
+      "input_control": {
+        "requirements_equal": true,
+        "messages_equal": true,
+        "tool_schemas_equal": true
+      },
+      "request_parameters": {
+        "model": "qwen3.6-flash",
+        "stream": false,
+        "max_tokens": 16384,
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "patch_and_verify"
+          }
+        },
+        "enable_thinking": false
+      },
+      "flash_control": {
+        "run_id": "576813a77e3d",
+        "passed": 2,
+        "failed": 0,
+        "official_cny": 0.009366,
+        "captured_usage": [
+          {
+            "completion_tokens": 439,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 1805,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 2244
+          }
+        ]
+      }
+    },
+    {
+      "task": "smoke-evolution--dice",
+      "run_id": "afd068451ab7",
+      "status": "PASSED",
+      "passed": 2,
+      "failed": 0,
+      "official_cny": 0.005837,
+      "official_tokens": 2099,
+      "official_seconds": 5,
+      "captured_usage": [
+        {
+          "completion_tokens": 553,
+          "completion_tokens_details": {
+            "text_tokens": 553
+          },
+          "prompt_tokens": 1546,
+          "prompt_tokens_details": {
+            "text_tokens": 1546
+          },
+          "total_tokens": 2099
+        }
+      ],
+      "input_control": {
+        "requirements_equal": true,
+        "messages_equal": true,
+        "tool_schemas_equal": true
+      },
+      "request_parameters": {
+        "model": "qwen3.6-flash",
+        "stream": false,
+        "max_tokens": 16384,
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "patch_and_verify"
+          }
+        },
+        "enable_thinking": false
+      },
+      "flash_control": {
+        "run_id": "9523ff0e9580",
+        "passed": 2,
+        "failed": 0,
+        "official_cny": 0.013152,
+        "captured_usage": [
+          {
+            "completion_tokens": 914,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 1642,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 2556
+          }
+        ]
+      }
+    },
+    {
+      "task": "smoke--counter",
+      "run_id": "224d26e14467",
+      "status": "FAILED",
+      "passed": 0,
+      "failed": 1,
+      "official_cny": 0.052143,
+      "official_tokens": 268975,
+      "official_seconds": 7,
+      "captured_usage": [
+        {
+          "completion_tokens": 673,
+          "completion_tokens_details": {
+            "text_tokens": 673
+          },
+          "prompt_tokens": 1242,
+          "prompt_tokens_details": {
+            "text_tokens": 1242
+          },
+          "total_tokens": 1915
+        }
+      ],
+      "input_control": {
+        "requirements_equal": true,
+        "messages_equal": true,
+        "tool_schemas_equal": true
+      },
+      "request_parameters": {
+        "model": "qwen3.6-flash",
+        "stream": false,
+        "max_tokens": 16384,
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "build_app"
+          }
+        },
+        "enable_thinking": false
+      },
+      "flash_control": {
+        "run_id": "97bb0befad0a",
+        "passed": 1,
+        "failed": 0,
+        "official_cny": 0.008145,
+        "captured_usage": [
+          {
+            "completion_tokens": 504,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 1203,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1707
+          }
+        ]
+      }
+    }
+  ],
+  "unstarted": [
+    "smoke--dice"
+  ],
+  "stop_reason": "Predeclared stop after a failed candidate; no model retries",
+  "total_official_cny": 0.068767,
+  "evolution": {
+    "passed": 4,
+    "failed": 0,
+    "qwen_cny": 0.016624,
+    "flash_cny": 0.022518,
+    "saving_vs_flash_percent": 26.17461586286526,
+    "previous_best_qwen_cny": 0.01781,
+    "saving_vs_previous_best_percent": 6.6591802358225705,
+    "new_rank": 2
+  },
+  "smoke_failure": {
+    "spec": "REQ-1.spec.ts",
+    "line": 10,
+    "locator": "getByTestId('count')",
+    "expectation": "toHaveText('0')",
+    "error": "element(s) not found",
+    "actual_final_html": "smoke-counter-index.html",
+    "observed_html_has_id_count": true,
+    "observed_html_has_data_testid": false,
+    "self_checks_passed": true,
+    "cause": "Generated product omitted the required test id; self-check used #count"
+  },
+  "billing_limit": {
+    "run": "224d26e14467",
+    "official_tokens": 268975,
+    "captured_tokens": 1915,
+    "cause": "Unresolved; do not attribute billed difference to model behavior"
+  },
+  "active_runs_after": [],
+  "local_evidence_base": "runs/20260912-model-comparison",
+  "papers": [
+    {
+      "url": "https://arxiv.org/html/2604.22750v2",
+      "fetched_at": "2026-09-12T11:17:48.263819Z",
+      "backend": "http",
+      "local_file": "paper-token-consumption.json",
+      "sha256": "a1607d4d5be52d101702301eb49cdcfb77e0ccb19aa960e8fbabfb77739be016"
+    },
+    {
+      "url": "https://arxiv.org/html/2608.01347v6",
+      "fetched_at": "2026-09-12T11:18:25.102430Z",
+      "backend": "http",
+      "local_file": "paper-trajectory-cost.json",
+      "sha256": "f33e65bddf1e225378f5f5c1b3b232d249ad553d833607167387d85d031473e0"
+    },
+    {
+      "url": "https://arxiv.org/abs/2407.01502",
+      "fetched_at": "2026-09-12T11:18:24.714059Z",
+      "backend": "http",
+      "local_file": "paper-agents-that-matter.json",
+      "sha256": "603d53d47d1c71f24f3eaadb7db86bcbb07ad8c691c9113852826fa7ad294e22"
+    }
+  ],
+  "evidence_sha256": {
+    "batch-progress.jsonl": "90a5238de6bb9af21f11ba2ec84d1c8974f99a9b4ad4e572a640147d0c1cce53",
+    "smoke-counter-final.json": "e164ffe686b0cdf9f14cb0c87457960e673b5684d82ef69268dcb1af3a380ace",
+    "batch.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "batch-interrupted.json": "f726eb346fe5c170f44dec0d97e01b60b083d7cf309508c6e6449df0ebcd2b8f",
+    "run-batch.py": "e6d180f1efc022055483d0163d97c97092d06cd91d4973016e93012a4634622c",
+    "smoke-competition-before.json": "d36c5cf7217ba31cfa161fcf740d1cee9aeff6789377421d746d9dcdb5ab1620",
+    "smoke-counter-start.json": "7bc4bddf3936ff2da792464023b3345ae8bfccebc6d1c6f3d791e2ce633386c3",
+    "smoke-counter-events.jsonl": "f6772501b3232cff7676315e3a2f374fd048f1a9bd8d77aed6992285cc939b8b",
+    "smoke-counter-log.json": "f212c4b28e97a20a1fa9d78c932c6c894ff880a964d9565cc3ae454511abaacd",
+    "flash-controls.json": "4e3800b288c10124ff567248651654ffa5f473317d0fc15a63113b5a35d03bc6",
+    "evolution-upload.json": "d3f4a70079a8cea58c43042a56bdbda1c77852cb547429a39b7aa2e4b35eb1bc",
+    "smoke-counter-official-report.json": "4c7cbad5879eed75e6a2e77ddd05005b5e9bf78d6000817004b9a95a524321b4",
+    "evolution-counter-final.json": "c93e1571682f5e067dd9845a4f87dc2b6cdc16a0d83239f14572de3f5cf95915",
+    "evolution-dice-events.jsonl": "5740a236252887ba6a2e5bd2a1eb4f08143817a8d9d60b8d7a44da2c63391c2c",
+    "smoke-upload.json": "308c56620c023a23a87d36e59eebec488e78cc4b48aee368868ba9149712c41f",
+    "evolution-dice-start.json": "d321a83b6b85bc70bb7a85951b2844fd47be19c2eaa86286945a36d27961d610",
+    "smoke-evolution-competition-before.json": "45a3f715103440e419ecacf6e58daceb0b060ef65179877b0d613d8666e250f8",
+    "paper-token-consumption.json": "a1607d4d5be52d101702301eb49cdcfb77e0ccb19aa960e8fbabfb77739be016",
+    "runs-after.json": "d0f63bd05f886e15194b1030f2c8ba8d7ce08ab579d4c47176080bad95cd9270",
+    "evolution-dice-latest.json": "048d915afe66872c3059596db1633888975b876bf6669b27d31317dbcbd1c2df",
+    "paper-trajectory-cost.json": "f33e65bddf1e225378f5f5c1b3b232d249ad553d833607167387d85d031473e0",
+    "evolution-counter-start.json": "4938388ca26240f14fcd8d35ba25a83de8887675f96482731accf1590273557d",
+    "smoke-board-after.json": "3c91458ef876da08badfdbcad8f77ad10fd1cf7a0a51b6a54b2e22bc7e6947a6",
+    "evolution-counter-latest.json": "c93e1571682f5e067dd9845a4f87dc2b6cdc16a0d83239f14572de3f5cf95915",
+    "smoke-counter-latest.json": "e164ffe686b0cdf9f14cb0c87457960e673b5684d82ef69268dcb1af3a380ace",
+    "evolution-counter-events.jsonl": "ed4f3650e925560ed076f99f164e5f3f8eeb89c706cc0a8fa8e92da5102b065e",
+    "preflight.json": "b8c7f7bb5307bc68041945d26e5b3549eb5734f83562a0341f8bd9b801228617",
+    "evolution-dice-final.json": "048d915afe66872c3059596db1633888975b876bf6669b27d31317dbcbd1c2df",
+    "evolution-board-after.json": "e2c94bfcffe9d551ac835e5002f1f3d1103b5ca6d61d69dbb1af0fcd48b315b3",
+    "paper-agents-that-matter.json": "603d53d47d1c71f24f3eaadb7db86bcbb07ad8c691c9113852826fa7ad294e22",
+    "smoke-counter-index.html": "8a7c7d0ca6043aa9271aadcdf096420d6e7223d99107f2dfe11524c19a90adb9"
+  },
+  "limits": [
+    "One sample per model and task, not a probability or stable model ranking.",
+    "Configured-model comparison: DeepSeek temperature 0, Qwen provider default; both disable thinking.",
+    "Same messages and tools verified for all three new runs.",
+    "All three generations used one model call, so these tasks do not test fewer-iteration savings.",
+    "No new Ticket run or automatic additional model sweep."
+  ]
+}

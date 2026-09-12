@@ -2,6 +2,20 @@
 
 ## Latest continuation
 
+The [model comparison and research](model-comparison-2026-09-12.md) now extends this
+handoff. With the same dev35 package and identical first-request messages/tools, Qwen
+passes Evolution 4/4 at CNY 0.016624, rank 2, improving the previous team best by 6.7%.
+Its Smoke counter fails because the generated HTML omits `data-testid="count"` while
+self-checks use `#count`. The fourth planned task was not started after this failure.
+Three new runs cost CNY 0.068767; the failed Smoke run has an unresolved official-versus-
+captured usage discrepancy. No run is active; Ticket remains deferred.
+
+The user highlighted that a higher-price model may use fewer steps/tokens and cost less
+per completed task. Primary research and the cost-per-success metric are now recorded.
+The current one-call small-task comparisons do not test that multi-step mechanism.
+Preserve the Flash Smoke best and the new Qwen Evolution best while testing future
+changes; no production model-routing change or premium-model batch was made.
+
 The [three-board optimization review](competition-optimization-2026-09-12.md) is the
 newest continuation record. The user temporarily deferred Ticket after obtaining the
 available official failure details and requested unchanged dev35 + Flash on Smoke and
