@@ -1,0 +1,289 @@
+{
+  "source_run": "5618708b9481",
+  "model_calls": 0,
+  "official_evaluation": "not_run",
+  "probe_sha256": "3ef2fab3400dcdb0cf37887e4af8f613a4d3db00bc85b39a56ca7023a7a0c82f",
+  "image_id": "sha256:bf13c87ae67cbd1280dea22c4bd1c1fd1a1c530711110820e8655237aa0e06f7",
+  "node_version": "v20.19.2",
+  "playwright_version": "1.57.0",
+  "scope": "One delayed sign-out interaction, not the full public suite",
+  "seconds": 13.393,
+  "calibrated": true,
+  "cleanup_errors": [],
+  "retained_source_unchanged": true,
+  "observed_on": "2026-09-12",
+  "controller_sha256": "6dbeec1273a190f9cd9578528d7a5067c493422425f9ec7809c231c29e8586c8",
+  "full_public_suite_executed": false,
+  "unchanged_public_test_sha256": {
+    "REQ-1.2-user-login.spec.ts": "701eb9af146a1cf6d650ff3df7de48e4e6da978f244dc8963708dadf72b2daab",
+    "REQ-1.1-user-registration.spec.ts": "effc7a98a0da5f18f95aa3c188bafb7264ccc089e6e9fc319f529b410f83d2b3",
+    "support/e2e.ts": "ca5eaacd8bc4477d93ed45b0f46fe86cdb26b5ed7cc4e9816fd324f592c40795"
+  },
+  "controls": {
+    "weakened_variant_changes_only_self_check": true,
+    "corrected_variant_changes_only_signout_text": true
+  },
+  "rows": [
+    {
+      "variant": "original",
+      "delay_ms": 0,
+      "observation": {
+        "delay_ms": 0,
+        "status": "passed",
+        "browser_version": "152.0.7977.84",
+        "initial_logout_label": "退出登录",
+        "login_pattern_matches_logout_label": true,
+        "session_still_active": false,
+        "visible_links": [
+          "登录",
+          "Register"
+        ],
+        "logout_requests": [
+          {
+            "event": "intercepted"
+          },
+          {
+            "event": "failed",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "assertion": "After the public sign-out interaction and next navigation, the session is absent"
+      }
+    },
+    {
+      "variant": "original",
+      "delay_ms": 400,
+      "observation": {
+        "delay_ms": 400,
+        "status": "failed",
+        "browser_version": "152.0.7977.84",
+        "initial_logout_label": "退出登录",
+        "login_pattern_matches_logout_label": true,
+        "session_still_active": true,
+        "visible_links": [
+          "退出登录"
+        ],
+        "logout_requests": [
+          {
+            "event": "intercepted"
+          },
+          {
+            "event": "failed",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "assertion": "After the public sign-out interaction and next navigation, the session is absent"
+      }
+    },
+    {
+      "variant": "self_check_weakened",
+      "delay_ms": 0,
+      "weakened_self_check_exit_code": 0,
+      "observation": {
+        "delay_ms": 0,
+        "status": "passed",
+        "browser_version": "152.0.7977.84",
+        "initial_logout_label": "退出登录",
+        "login_pattern_matches_logout_label": true,
+        "session_still_active": false,
+        "visible_links": [
+          "登录",
+          "Register"
+        ],
+        "logout_requests": [
+          {
+            "event": "intercepted"
+          },
+          {
+            "event": "failed",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "assertion": "After the public sign-out interaction and next navigation, the session is absent"
+      }
+    },
+    {
+      "variant": "self_check_weakened",
+      "delay_ms": 400,
+      "weakened_self_check_exit_code": 0,
+      "observation": {
+        "delay_ms": 400,
+        "status": "failed",
+        "browser_version": "152.0.7977.84",
+        "initial_logout_label": "退出登录",
+        "login_pattern_matches_logout_label": true,
+        "session_still_active": true,
+        "visible_links": [
+          "退出登录"
+        ],
+        "logout_requests": [
+          {
+            "event": "intercepted"
+          },
+          {
+            "event": "failed",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "assertion": "After the public sign-out interaction and next navigation, the session is absent"
+      }
+    },
+    {
+      "variant": "label_corrected",
+      "delay_ms": 0,
+      "observation": {
+        "delay_ms": 0,
+        "status": "passed",
+        "browser_version": "152.0.7977.84",
+        "initial_logout_label": "Sign out",
+        "login_pattern_matches_logout_label": false,
+        "session_still_active": false,
+        "visible_links": [
+          "登录",
+          "Register"
+        ],
+        "logout_requests": [
+          {
+            "event": "intercepted"
+          },
+          {
+            "event": "failed",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "assertion": "After the public sign-out interaction and next navigation, the session is absent"
+      }
+    },
+    {
+      "variant": "label_corrected",
+      "delay_ms": 400,
+      "observation": {
+        "delay_ms": 400,
+        "status": "passed",
+        "browser_version": "152.0.7977.84",
+        "initial_logout_label": "Sign out",
+        "login_pattern_matches_logout_label": false,
+        "session_still_active": false,
+        "visible_links": [
+          "登录",
+          "Register"
+        ],
+        "logout_requests": [
+          {
+            "event": "intercepted"
+          },
+          {
+            "event": "failed",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "assertion": "After the public sign-out interaction and next navigation, the session is absent"
+      }
+    }
+  ],
+  "prior_attempts": [
+    {
+      "stage": "container exposure",
+      "outcome": "No browser case executed; internal Docker bridge did not expose a host port"
+    },
+    {
+      "stage": "diagnostic observation",
+      "outcome": "Delayed controls distinguished products, but two zero-delay observations raced navigation; not a complete calibration pass"
+    }
+  ],
+  "regression": {
+    "tests": 156,
+    "passed": 156,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 91.425,
+    "log_sha256": "6c4284b2c58d1d0e564f275427886d3805c8aed014e21f6e8eae784f46155149"
+  },
+  "source_files": [
+    {
+      "path": "index.html",
+      "sha256": "f42f362512028d2fd32003ad12a3285920041aec9722a99489e1469702c8c994"
+    },
+    {
+      "path": "api.cjs",
+      "sha256": "e3cca9378491b24917807f1e8e75896c3d3e2e9da921b7fa31be097f05442268"
+    },
+    {
+      "path": "server.cjs",
+      "sha256": "357472a03c0d33fd693677d4ec26753738d41bff22f67398c8dbd83463d823fd"
+    },
+    {
+      "path": "requirements.cjs",
+      "sha256": "3f0b3d31c4b48ffe75b4786fa2a1e679e6120438657779c6e15320ac6f64ecb7"
+    }
+  ],
+  "candidate_files": {
+    "original": [
+      {
+        "path": "frontend/dist/index.html",
+        "sha256": "f42f362512028d2fd32003ad12a3285920041aec9722a99489e1469702c8c994"
+      },
+      {
+        "path": "frontend/public/index.html",
+        "sha256": "f42f362512028d2fd32003ad12a3285920041aec9722a99489e1469702c8c994"
+      },
+      {
+        "path": "checks/requirements.cjs",
+        "sha256": "3f0b3d31c4b48ffe75b4786fa2a1e679e6120438657779c6e15320ac6f64ecb7"
+      },
+      {
+        "path": "backend/api.cjs",
+        "sha256": "e3cca9378491b24917807f1e8e75896c3d3e2e9da921b7fa31be097f05442268"
+      },
+      {
+        "path": "backend/server.cjs",
+        "sha256": "357472a03c0d33fd693677d4ec26753738d41bff22f67398c8dbd83463d823fd"
+      }
+    ],
+    "self_check_weakened": [
+      {
+        "path": "frontend/dist/index.html",
+        "sha256": "f42f362512028d2fd32003ad12a3285920041aec9722a99489e1469702c8c994"
+      },
+      {
+        "path": "frontend/public/index.html",
+        "sha256": "f42f362512028d2fd32003ad12a3285920041aec9722a99489e1469702c8c994"
+      },
+      {
+        "path": "checks/requirements.cjs",
+        "sha256": "8bd84068849db1cf74863fdff2bc74704c33efb8fafe33347274fc758a63b302"
+      },
+      {
+        "path": "backend/api.cjs",
+        "sha256": "e3cca9378491b24917807f1e8e75896c3d3e2e9da921b7fa31be097f05442268"
+      },
+      {
+        "path": "backend/server.cjs",
+        "sha256": "357472a03c0d33fd693677d4ec26753738d41bff22f67398c8dbd83463d823fd"
+      }
+    ],
+    "label_corrected": [
+      {
+        "path": "frontend/dist/index.html",
+        "sha256": "69bedf91c93da435fb0335689de8a080033bac217c116a2dc6885554d305bdc4"
+      },
+      {
+        "path": "frontend/public/index.html",
+        "sha256": "69bedf91c93da435fb0335689de8a080033bac217c116a2dc6885554d305bdc4"
+      },
+      {
+        "path": "checks/requirements.cjs",
+        "sha256": "3f0b3d31c4b48ffe75b4786fa2a1e679e6120438657779c6e15320ac6f64ecb7"
+      },
+      {
+        "path": "backend/api.cjs",
+        "sha256": "e3cca9378491b24917807f1e8e75896c3d3e2e9da921b7fa31be097f05442268"
+      },
+      {
+        "path": "backend/server.cjs",
+        "sha256": "357472a03c0d33fd693677d4ec26753738d41bff22f67398c8dbd83463d823fd"
+      }
+    ]
+  }
+}

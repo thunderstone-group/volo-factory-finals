@@ -25,3 +25,10 @@ our ability to judge a product.
 Do not promote a model's proposed checks to authoritative tests automatically. A test
 suite that accepts a known-bad app or rejects a known-good app needs correction before
 it is used to rank executors. Report coverage, failures and unverified requirements.
+
+## Completed artifact calibration
+
+`python -m harness_lab.calibrate_logout` runs the E047-specific 0/400 ms logout
+controls with original, self-check-weakened and one-label-corrected copies. See
+[the measured result](../docs/logout-calibration-2026-09-12.md). It is a narrow
+laboratory case, not a general product rule or an official score.
