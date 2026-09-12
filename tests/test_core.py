@@ -382,7 +382,11 @@ assert.ok(await page.getByRole('link',{name:'Details',exact:true}).isVisible());
         (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
             '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
         check = GREETING_FILES[-1]['content']
-        initial = response([('build_app', {'index_html': 'wrong', 'checks_js': check})])
+        # Exercise the existing open repair path, where a final plain edit needs
+        # verification after the budget expires. Smaller complete snapshots now
+        # use patch_and_verify instead and are covered in test_context.
+        api = 'module.exports=async()=>false;\n/*' + 'padding' * 7000 + '*/\n'
+        initial = response([('build_app', {'index_html': 'wrong', 'checks_js': check, 'api_js': api})])
         final = response([('read_files', {'paths': ['frontend/public/index.html']})] if replacement is None else
                          [('edit', {'path': 'frontend/public/index.html', 'old': 'wrong', 'new': replacement})])
         with FakeGateway([initial, final]) as gateway:

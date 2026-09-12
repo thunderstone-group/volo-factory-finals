@@ -1223,3 +1223,43 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   match the current public API byte for byte. Two package builds are identical and
   all 19 archive entries match source; SHA-256
   `b62131dab693ab38192ceb58578f8eb837c310f8f91fcb950908722784afcafa`.
+
+## E056 — Public input works, but repair reads exhaust the generation budget
+
+- Dev34 source `6ad3d05`, submission `7c54f9b49e93`,
+  [run 5e1ccc11d1c7](https://arc-bench.com/runs/5e1ccc11d1c7). The official result is
+  **FAILED during generation**, 371 seconds, **CNY 1.788756**; official tests were
+  **not reached**. The displayed zero score is not ten executed failing tests.
+- The real request contains the fingerprint-matched public files and heading assertion.
+  The initial product now includes the heading, but rejects valid names with internal
+  spaces. Its self-checks report the real registration error. The model mistakes that
+  dynamic feedback for a stale frontend and repeatedly reads source before correcting
+  the name validation. There are 16 source-read tool calls, one initial build and one
+  product edit. A last verification runs but still fails asynchronous self-check assertions.
+- The local 450,000-token guard stops generation. The 17 captured response usage records
+  total 458,226 tokens; the official report records 803,559. These are separate records
+  whose accounting difference is unresolved; the official reported cost is preserved.
+- This is a model/harness recovery failure, not evidence about the two unresolved
+  official login tests. No extra model call or synthetic completion is used to force
+  an eligible result.
+
+## Dev35 — Reuse bounded patching after a prepared application fails
+
+- After a larger prepared application actually fails, supply its complete current
+  source and failure in the existing `patch_and_verify` mode. The snapshot can contain
+  up to 48 KB, but the actual complete repair request must also fit the configured
+  context limit. Larger requests retain the existing open repair path.
+- This reuses the existing maximum three bounded repair attempts and ordinary build,
+  startup and verification. It does not add another model, relax assertions or convert
+  self-checks into independent acceptance. Public input, reasoning and port policy remain.
+- An actual HTTP control with a source bundle above the old 24 KB limit first fails,
+  then receives all current source plus both ends of its failure log and succeeds with
+  one exact product patch. The model transport is synthetic; real official convergence
+  remains the next comparison.
+- Regression validation: 159 other cases pass unchanged. Four budget-exhaustion
+  controls were updated to exercise the still-supported open repair path with a
+  source bundle above 48 KB; all four then pass in 5.961 seconds. The bounded snapshot
+  repair control also passes with real HTTP. No assertions are removed. These 163
+  checks establish local behavior, not official score or model convergence.
+- Two dev35 package builds match source and each other, SHA-256
+  `081a5e66334114a86648a8f12017214a983b1a95b690476658a421ef48529f8c`.

@@ -5,7 +5,7 @@ import json
 import time
 from dataclasses import asdict
 
-from .context import excerpt, project
+from .context import excerpt, project, size
 from .trace import atomic_json
 from .web_runtime import scaffold, implement, SERVER, BUILD, BROWSER_CHECK
 from .workspace import normalize_check_command
@@ -212,6 +212,7 @@ class Agent:
         self.check_command = None
         self.references, self.reference_context = references, None
         self.inline_source = False
+        self.source_snapshot_limit = 24000
         self.last_tool_result = None
         from .public_specs import load_public_specs
         self.public_specs = load_public_specs(requirements.fingerprint)
@@ -232,7 +233,7 @@ class Agent:
             except ValueError:
                 continue
             candidates.append(item)
-        if not candidates or len(candidates) > 20 or sum(item['bytes'] for item in candidates) > 24000:
+        if not candidates or len(candidates) > 20 or sum(item['bytes'] for item in candidates) > self.source_snapshot_limit:
             return None
         try:
             return {item['path']: self.workspace.path(item['path']).read_text() for item in candidates}
@@ -402,6 +403,7 @@ class Agent:
     def run_batch(self, nodes):
         self.workspace.clear_prepared_check_guards()
         self.inline_source = False
+        self.source_snapshot_limit = 24000
         self.reference_context = (self.references.observe(self.requirements, nodes,
             deadline=self.workspace.deadline, guard_budget=self.guard_budget) if self.references else
             {'unavailable': 'No reference observer configured; binary images have not been inspected'})
@@ -540,6 +542,25 @@ class Agent:
                     return
             direct = was_direct and compact_attempts < 3 and not open_repairs
             compact = was_compact and compact_attempts < 3
+            if was_direct and open_repairs:
+                # The failed bundle already created all source. E056 spent its
+                # budget repeatedly reading a 28 KB product/check bundle that
+                # exceeded the old 24 KB snapshot bound. Reuse bounded patching
+                # when the complete current snapshot fits the actual context.
+                self.source_snapshot_limit = 48000
+                self.inline_source = self.source_snapshot() is not None
+                if self.inline_source:
+                    repair_messages = self.context_checkpoint(nodes, SMALL_EDIT_SYSTEM, last_failure)
+                    if size(repair_messages) <= self.max_context_chars:
+                        messages = repair_messages
+                        compact, compact_attempts = True, 0
+                        self.trace.event('prepared_repair_snapshot',
+                                         source_fingerprint=self.workspace.fingerprint(),
+                                         context_chars=size(repair_messages))
+                    else:
+                        self.inline_source = False
+                if not self.inline_source:
+                    self.source_snapshot_limit = 24000
             if not direct and not compact and messages[0]['content'] in (SMALL_SYSTEM, BOUNDED_SYSTEM, SMALL_EDIT_SYSTEM):
                 messages[0]['content'] = SYSTEM
         if self.verify_final_edit():

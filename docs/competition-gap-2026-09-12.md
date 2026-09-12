@@ -80,3 +80,9 @@ experiment is retained only as an ignored diagnostic patch.
 
 The next official Flash result must establish the effect. Even a local 10/10 result would
 not establish an official pass or first place.
+
+Update after E056: the public input reached the real model request, but generation
+exhausted its token guard after repeated source reads, before official testing. The
+new product included the heading and had a separately observed name-validation error.
+This establishes a further recovery weakness in VOLO. Dev35 reuses bounded patching
+with a complete current snapshot rather than extending the verification architecture.

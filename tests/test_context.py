@@ -180,6 +180,9 @@ assert.equal((await fetch(base+'/api/missing')).status,404);
 fetch(process.env.FACTORY_BASE_URL).then(r=>r.text()).then(text=>{
 if(text!=='hello')console.error('EARLY_FAILURE\\n'+'.'.repeat(7000)+'\\nLATE_FAILURE');
 assert.equal(text,'hello');}).catch(error=>{console.error(error);process.exitCode=1;});"""
+        # A complete source bundle above 24 KB reproduced E056's snapshot gap.
+        # It is still small enough to supply in one bounded repair context.
+        checks += '\n/*' + 'padding' * 4000 + '*/\n'
         initial = response([('build_app', {'index_html': 'wrong', 'checks_js': checks})])
         repair = response([('patch_and_verify', {'edits': [{
             'path': 'frontend/public/index.html', 'old': 'wrong', 'new': 'hello'}],
@@ -193,12 +196,12 @@ assert.equal(text,'hello');}).catch(error=>{console.error(error);process.exitCod
         self.assertEqual(len(gateway.requests), 2)
         self.assertNotIn('tool_choice', gateway.requests[1])
         tools = [tool['function']['name'] for tool in gateway.requests[1]['tools']]
-        self.assertIn('patch_and_verify', tools)
-        self.assertNotIn('build_app', tools)
-        failure = json.loads(gateway.requests[1]['messages'][-1]['content'])
-        self.assertIn('EARLY_FAILURE', failure['check_output'])
-        self.assertIn('LATE_FAILURE', failure['check_output'])
-        self.assertLessEqual(len(failure['check_output']), 5000)
+        self.assertEqual(tools, ['patch_and_verify'])
+        repair_context = gateway.requests[1]['messages'][-1]['content']
+        self.assertIn('EARLY_FAILURE', repair_context)
+        self.assertIn('LATE_FAILURE', repair_context)
+        self.assertIn(json.dumps(checks, ensure_ascii=False), repair_context)
+        self.assertLessEqual(size(gateway.requests[1]['messages']), agent.max_context_chars)
         self.assertEqual((self.out / 'checks/requirements.cjs').read_text(), checks)
         self.assertTrue(self.workspace.last_verification['passed'])
 
