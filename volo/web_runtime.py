@@ -106,4 +106,8 @@ def implement(workspace, index_html, app_js, checks_js, api_js=None):
     if api_js is not None and api_js.strip():
         files.append({"path": "backend/api.cjs", "content": api_js})
     workspace.write_files(files)
-    return workspace.verify(["node", "--test", "checks/requirements.cjs"])
+    result = workspace.verify(["node", "--test", "--test-reporter=tap", "checks/requirements.cjs"])
+    retained = workspace.capture_failed_prepared_check(result)
+    if retained:
+        result['retained_self_check'] = retained
+    return result

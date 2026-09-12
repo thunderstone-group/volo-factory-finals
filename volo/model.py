@@ -45,6 +45,11 @@ class Model:
         self.usage = Usage()
 
     def complete(self, messages, tools, *, remaining_seconds=None, forced_tool=None):
+        deepseek_thinking = self.model.lower().startswith('deepseek') and self.thinking == 'enabled'
+        if deepseek_thinking:
+            messages = [{**message, 'content': ''} if message.get('role') == 'assistant'
+                        and message.get('tool_calls') and message.get('content') is None else message
+                        for message in messages]
         body = {"model": self.model, "messages": messages, "tools": tools,
                 "stream": False, "max_tokens": self.max_output}
         if self.thinking in ("enabled", "disabled") and self.model.lower().startswith("deepseek"):
@@ -58,7 +63,10 @@ class Model:
         if forced_tool:
             if forced_tool not in {t['function']['name'] for t in tools}:
                 raise ValueError("Forced tool must be advertised")
-            body['tool_choice'] = {'type': 'function', 'function': {'name': forced_tool}}
+            # DeepSeek thinking-mode integrations reject tool_choice. Keep the
+            # advertised tool menu, but let that model select a tool itself.
+            if not deepseek_thinking:
+                body['tool_choice'] = {'type': 'function', 'function': {'name': forced_tool}}
         if self.thinking in ('enabled', 'disabled') and self.model.lower().startswith('qwen3.'):
             body['enable_thinking'] = self.thinking == 'enabled'
         if self.model.lower() == 'kimi-k3':

@@ -1,5 +1,10 @@
 # Harness design review: independent evidence without a second full agent
 
+The [Fable consultation and evidence review](fable-harness-review-2026-09-12.md) refines
+the next slice to a fixed-artifact positive/negative GUI control. It corrects
+confusion between repeated generation and repeated evaluation, and does not authorize
+a grid of paid runs.
+
 Reviewed: 2026-09-12. This is a proposal grounded in source inspection and our own
 recorded failures. It does not claim new official scores or comparative model results.
 

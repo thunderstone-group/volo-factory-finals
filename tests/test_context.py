@@ -126,7 +126,7 @@ class ContextRepairTests(TempCase):
         self.assertNotIn('omitted-pressure-marker', context)
         self.assertLessEqual(size(gateway.requests[1]['messages']), 16000)
 
-    def test_bounded_feature_uses_full_tools_without_long_reasoning(self):
+    def test_bounded_feature_uses_full_tools_with_low_reasoning(self):
         self.workspace.write_files([{'path': 'README.md', 'content': 'An existing application.'}])
         (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
             '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
@@ -138,7 +138,8 @@ class ContextRepairTests(TempCase):
                 self.workspace, Runtime(self.trace))
             result = agent.run()
         self.assertEqual(result['status'], 'completed')
-        self.assertEqual(gateway.requests[0]['thinking'], {'type': 'disabled'})
+        self.assertEqual(gateway.requests[0]['thinking'], {'type': 'enabled'})
+        self.assertEqual(gateway.requests[0]['reasoning_effort'], 'low')
         self.assertNotIn('tool_choice', gateway.requests[0])
         self.assertIn('deliver', [t['function']['name'] for t in gateway.requests[0]['tools']])
         self.assertNotIn('build_app', [t['function']['name'] for t in gateway.requests[0]['tools']])
@@ -167,7 +168,8 @@ assert.equal((await fetch(base+'/api/missing')).status,404);
             result = agent.run()
         self.assertEqual(result['status'], 'completed')
         self.assertEqual(len(gateway.requests), 1)
-        self.assertEqual(gateway.requests[0]['tool_choice']['function']['name'], 'build_app')
+        self.assertNotIn('tool_choice', gateway.requests[0])
+        self.assertEqual([tool['function']['name'] for tool in gateway.requests[0]['tools']], ['build_app'])
         self.assertEqual((self.out / 'backend/server.cjs').read_text(), SERVER)
         self.assertTrue(self.workspace.last_verification['passed'])
 
@@ -178,6 +180,9 @@ assert.equal((await fetch(base+'/api/missing')).status,404);
 fetch(process.env.FACTORY_BASE_URL).then(r=>r.text()).then(text=>{
 if(text!=='hello')console.error('EARLY_FAILURE\\n'+'.'.repeat(7000)+'\\nLATE_FAILURE');
 assert.equal(text,'hello');}).catch(error=>{console.error(error);process.exitCode=1;});"""
+        # A complete source bundle above 24 KB reproduced E056's snapshot gap.
+        # It is still small enough to supply in one bounded repair context.
+        checks += '\n/*' + 'padding' * 4000 + '*/\n'
         initial = response([('build_app', {'index_html': 'wrong', 'checks_js': checks})])
         repair = response([('patch_and_verify', {'edits': [{
             'path': 'frontend/public/index.html', 'old': 'wrong', 'new': 'hello'}],
@@ -191,12 +196,12 @@ assert.equal(text,'hello');}).catch(error=>{console.error(error);process.exitCod
         self.assertEqual(len(gateway.requests), 2)
         self.assertNotIn('tool_choice', gateway.requests[1])
         tools = [tool['function']['name'] for tool in gateway.requests[1]['tools']]
-        self.assertIn('patch_and_verify', tools)
-        self.assertNotIn('build_app', tools)
-        failure = json.loads(gateway.requests[1]['messages'][-1]['content'])
-        self.assertIn('EARLY_FAILURE', failure['check_output'])
-        self.assertIn('LATE_FAILURE', failure['check_output'])
-        self.assertLessEqual(len(failure['check_output']), 5000)
+        self.assertEqual(tools, ['patch_and_verify'])
+        repair_context = gateway.requests[1]['messages'][-1]['content']
+        self.assertIn('EARLY_FAILURE', repair_context)
+        self.assertIn('LATE_FAILURE', repair_context)
+        self.assertIn(json.dumps(checks, ensure_ascii=False), repair_context)
+        self.assertLessEqual(size(gateway.requests[1]['messages']), agent.max_context_chars)
         self.assertEqual((self.out / 'checks/requirements.cjs').read_text(), checks)
         self.assertTrue(self.workspace.last_verification['passed'])
 

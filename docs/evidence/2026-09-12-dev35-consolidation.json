@@ -1,0 +1,54 @@
+{
+  "observed_at": "2026-09-12T10:30:08.174819+00:00",
+  "agent_version": "0.7.0.dev35",
+  "champion_source": "70e9236",
+  "integration_head_before_documentation": "648462f",
+  "tests": {
+    "passed": 163,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 101.759,
+    "log": "runs/consolidation-dev35-20260912/tests.log",
+    "sha256": "97ffbe9c7dd8d5f3bb21912f12592efc3f1ef7098fccce3c45088bab376b030c"
+  },
+  "package": {
+    "sha256": "081a5e66334114a86648a8f12017214a983b1a95b690476658a421ef48529f8c",
+    "entries": 19,
+    "reproducible": true,
+    "matches_e057": true
+  },
+  "source_files": {
+    "main.py": "cab6c614620995526a7a6a20b24ebf474655337ef2573c6702606c05547d6b1a",
+    "requirements.txt": "c570a18944da5ea67653bf9b1d6265373451d91406f6f1dc23fea1e5173a7031",
+    "volo/__init__.py": "20f6da0481c8a0bf83200fb3a4662167cdcbbd4acdb1dc221433131388e8fe6e",
+    "volo/acceptance.py": "91d2908e7a7ed7c9d38a6ef0caf4c4741d37024cdb0629d41564ebb6920913df",
+    "volo/agent.py": "4a7739e567d8ae383caa50991529f6de5fdfcf2d341808a0bc1e626dd06abe86",
+    "volo/context.py": "4c59c7271d134da3fd373d75904ae5209b82ee22e5e3023823f832973b91cdfa",
+    "volo/environment.py": "f24d1b282994302bc1b6210afce04d0ea93adc897376d4cb3acd497a1e5feb1a",
+    "volo/launcher.py": "49255e5569dc5a547cfce894413e17db4cd42d274aad4d6faaee67de7c928fb8",
+    "volo/model.py": "51d4ad9788eb25286550827a0abe807771c8904d5ef449c7da8952e2682f87b7",
+    "volo/public_specs/manifest.json": "d09e32b1e4a1fb2307d2f60f6877414a64828d57e523b79ad0f4dface1372c02",
+    "volo/public_specs/ticket-booking--ticket-booking/REQ-1.1-user-registration.spec.ts": "effc7a98a0da5f18f95aa3c188bafb7264ccc089e6e9fc319f529b410f83d2b3",
+    "volo/public_specs/ticket-booking--ticket-booking/REQ-1.2-user-login.spec.ts": "701eb9af146a1cf6d650ff3df7de48e4e6da978f244dc8963708dadf72b2daab",
+    "volo/public_specs/ticket-booking--ticket-booking/support/e2e.ts": "ca5eaacd8bc4477d93ed45b0f46fe86cdb26b5ed7cc4e9816fd324f592c40795",
+    "volo/public_specs.py": "0faf47895e2abfe174c4c2610dbb48b2dc85cf282b2c309e650b1fcfeaf65c61",
+    "volo/references.py": "c0ed97c3971fcdcd71fd2e2756257ec217cebb98911d4428aefa500b95beeeb5",
+    "volo/requirements.py": "48af66ece622727955fa6ea2a6db7e4dea31e73f18868ffb6299b2957084984d",
+    "volo/trace.py": "cf2bf7fd832a6db2844720e6cdc04abe74cd15daeb03c7e4a244c32814e7e9bd",
+    "volo/web_runtime.py": "228e34bf109772386617f830565e1fa5bb9ed9597165debb4a90d44539d92775",
+    "volo/workspace.py": "aaf7a98e06f0bc5df0cd31154255b8aeaa37c5f8ec517b090aa9d320559a9c2b"
+  },
+  "local_archive": {
+    "path": "runs/worktree-archive-20260912/lean-acceptance",
+    "files": 237,
+    "bytes": 16117675,
+    "manifest_sha256": "18f241282a4049795667465c582d90550e45e9ed3a7ec0a27ba50817e709bad4"
+  },
+  "new_model_calls": 0,
+  "new_official_runs": 0,
+  "limitations": [
+    "E057 retains one official registration timeout.",
+    "The bounded repair branch was not exercised by E057.",
+    "Official and captured token accounting differ."
+  ]
+}

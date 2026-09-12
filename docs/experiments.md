@@ -1,5 +1,11 @@
 # Experiments
 
+Local evidence from the retired `lean-acceptance` worktree is archived in the main
+checkout at `runs/worktree-archive-20260912/lean-acceptance/`. Its `runs/` subdirectory
+contains the historical `runs/...` paths recorded below for E052–E057 and related
+controls. `archive-manifest.json` records the verified files. Current continuation
+instructions are in [SESSION_HANDOFF](SESSION_HANDOFF.md).
+
 ## E001 — First fresh Agent run
 
 - Date: 2026-09-11.
@@ -1107,3 +1113,198 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   and inadequate resource stop rules prevent a defensible claim of harness quality.
   The fresh agent's best official Ticket result remains E047's **6/10**. The requested
   Ticket first place was not achieved.
+
+## E051 — Official dev31 exposes self-check weakening again
+
+- User explicitly resumed official submission, then set Ticket Booking first place as
+  the immediate goal. Uploaded the merged dev31 source `0a03d5e`, package SHA-256
+  `c1d4aff067df034a9e15a61732d62014892229a80f6f8bacfb15895f1cfb4166`.
+  Submission `311c43631206`; run https://arc-bench.com/runs/234571af19bd .
+- Official result: **3/10, 291 seconds, 99,044 tokens, CNY 0.708924**. Six captured
+  responses total exactly 99,044 tokens. The Kimi image observation alone takes
+  183.365 seconds; coding completes with Pro and no reasoning tokens.
+- First self-check execution is 4/8. Three failures correctly identify duplicate
+  username text; the model then scopes those checks to `#app`, retaining the duplicate
+  product display. It also removes redundant navigation links. Final self-checks are
+  8/8, but seven official tests fail. No independent contract was configured.
+- A disposable-container replay of the unchanged public tests gives the original
+  final product **5/10**. Changing only the welcome paragraph to remove the second
+  username display produces **9/10**. The remaining failure is missing `账户信息`,
+  which was present in the actual image observation. No diagnostic product is uploaded.
+- Before this run, Smoke and Evolution remain rank 2; Ticket's account entry falls
+  to rank 3 at 70%. The new leading Ticket entry is 80% at CNY 2.407166, ahead of ARC's
+  100% at CNY 4.483621 under the current efficiency ordering. Meter dashboard auth has
+  expired; per-run platform cost remains available.
+
+## Dev32 — Preserve failed executable checks during bounded repair
+
+- After a larger prepared application actually executes and fails its initial checks,
+  preserve the check program and supplied browser helper in the protected trace area.
+  Later verification executes that same captured program before current self-checks.
+  Replacing or weakening the latter cannot erase the observed failure.
+- Syntax-invalid programs are not captured. Guards last for the current requirement
+  batch; a later batch may intentionally evolve old behavior. Operator-owned checks
+  remain in place. Small Smoke and incremental paths retain their previous policy.
+- This is repair evidence from model-authored checks, not independent requirements
+  coverage. `verified_requirements` remains empty without a supplied calibrated suite.
+  A syntactically valid but semantically wrong initial test can still block repair;
+  that limitation must be observed in the official comparison rather than hidden.
+- Three real HTTP controls reject a wrong product after its current self-test becomes
+  exit 0, accept the actual product correction, and preserve operator checks across
+  batch changes. A trace-keyword collision found by the first run was fixed.
+  The final **159 tests pass with zero skips**, including real browser/container checks.
+
+## E052 — Full self-check freezing enforces incorrect timing assumptions
+
+- Dev32 source `39e80d7`, package SHA-256
+  `5f2bc90e835e7d63575351986ff0b083e47a1abb7d45abdf9f2e6d5f033c5b75`.
+  Submission `f8478241ac89`; run https://arc-bench.com/runs/df908f8ae72e .
+- Official result: **5/10, 313 seconds, 428,387 tokens, CNY 1.413183**.
+  The captured response token sum matches the official total. The run had already
+  finished when the stop check ran; no cancellation was issued or claimed.
+- The captured seven-case initial suite contains four immediate count assertions
+  before registration/login/logout requests finish. The model legitimately adds waits
+  to current tests, but the frozen whole suite rejects those corrected timings.
+- Subsequent product changes add synchronous client validation and a browser-local
+  `knownAccounts` list used to reject login identifiers. That is a bad consequence of
+  enforcing an incorrect test assumption, and does not establish server-authoritative
+  cross-browser login. Final official failures still include repeated username text.
+- Dev32's whole-suite freeze is rejected as a general repair policy. It did not improve
+  the fresh agent's official best or win the board. The captured suites remain evidence.
+
+## Dev33 — Target ambiguity evidence and enable bounded reasoning
+
+- Retain only flat named test cases that actually failed with a strict-locator ambiguity;
+  unrelated failed cases remain editable, including legitimate synchronization changes.
+  The captured program is unchanged, selected by exact escaped case names, and rerun
+  with the existing structured Node event reporter. Empty/skipped/missing cases cannot
+  pass through a zero exit code or a file-level success event.
+- An actual Chrome control contains one duplicate-identity case and one bad immediate
+  feedback assertion. Scoping the identity check does not repair the original failure;
+  fixing the product and adding a wait to the unrelated check does pass. Node 20 reporter
+  controls also establish that named passes count while skipped cases do not; that
+  version omits the newer optional test-kind field.
+- Tasks above the small 3,500-character path now request low thinking effort. Small
+  Smoke/incremental inputs keep thinking disabled. DeepSeek thinking requests omit
+  forced `tool_choice`, retain all returned reasoning, and normalize null assistant
+  tool-call content to an empty string only on the wire.
+- The provider controls follow the official [thinking-mode contract](https://api-docs.deepseek.com/guides/thinking_mode/)
+  and [agent-integration compatibility guidance](https://api-docs.deepseek.com/quick_start/agent_integrations/oh_my_pi/).
+  Local transport tests are synthetic; the next official run must establish real gateway
+  compatibility, quality and cost. This candidate changes both the corrected repair
+  policy and reasoning policy; a score change cannot identify each factor's contribution.
+- Final dev33 validation: **160 checks pass, zero failures or skips**, including the
+  actual browser ambiguity/wait contrast and Node 20 named-pass/skip reporter controls.
+  Incoming DeepSeek reasoning is preserved in a synthetic two-response HTTP exchange;
+  tool forcing is absent and null assistant tool-call content becomes an empty string
+  on the outgoing wire. These checks precede, and do not replace, the real gateway run.
+
+## E053 / E054 — Low reasoning reaches 70%; Flash is cheaper
+
+- Same dev33 agent ZIP, separately generated products. Pro submission `e9b5aeedbda6`,
+  [run b9ec4b551834](https://arc-bench.com/runs/b9ec4b551834): **7/10**, 698 seconds,
+  314,741 tokens, **CNY 3.155824**. Flash submission `f8068d7c7484`,
+  [run 3aa60bd411dd](https://arc-bench.com/runs/3aa60bd411dd): **7/10**, 207 seconds,
+  962,241 tokens, **CNY 0.787531**. These are official values; different products do not
+  constitute a fixed-product variance experiment.
+- Both official runs time out on successful registration and the two successful login
+  cases. Each unchanged product passes 9/10 in the writable local replay. E054 gains
+  10/10 when only the reference's `账户信息` heading is restored in a disposable copy.
+  The two remaining official login failures are unresolved.
+
+## E055 — Four-worker hypothesis control and public-specification inputs
+
+- Fixed original E054 product, unchanged public specs, 10-second tests, four workers:
+  both `fullyParallel=false` and `fullyParallel=true` produce **9/10**, with only the
+  heading failure. No model calls. This does not reproduce the official login failures.
+- The newly supplied Octos ARC sources explicitly give the executor the public tests,
+  whereas VOLO previously supplied requirements and image observations without those
+  specs. Dev34 adds the exact public files as read-only model input, bound to source
+  hashes and the observed requirements fingerprint. Reading them is not acceptance.
+- A partially written reference-heading guard was discarded before submission. See
+  [the evidence review](competition-gap-2026-09-12.md) for the fresh Fable consultation,
+  source pins, board comparison and limits of the local grader.
+- Validation: **163 tests pass, zero failures or skips** in 103.250 seconds with
+  installed Chrome/Playwright and the existing container image. Three bundled specs
+  match the current public API byte for byte. Two package builds are identical and
+  all 19 archive entries match source; SHA-256
+  `b62131dab693ab38192ceb58578f8eb837c310f8f91fcb950908722784afcafa`.
+
+## E056 — Public input works, but repair reads exhaust the generation budget
+
+- Dev34 source `6ad3d05`, submission `7c54f9b49e93`,
+  [run 5e1ccc11d1c7](https://arc-bench.com/runs/5e1ccc11d1c7). The official result is
+  **FAILED during generation**, 371 seconds, **CNY 1.788756**; official tests were
+  **not reached**. The displayed zero score is not ten executed failing tests.
+- The real request contains the fingerprint-matched public files and heading assertion.
+  The initial product now includes the heading, but rejects valid names with internal
+  spaces. Its self-checks report the real registration error. The model mistakes that
+  dynamic feedback for a stale frontend and repeatedly reads source before correcting
+  the name validation. There are 16 source-read tool calls, one initial build and one
+  product edit. A last verification runs but still fails asynchronous self-check assertions.
+- The local 450,000-token guard stops generation. The 17 captured response usage records
+  total 458,226 tokens; the official report records 803,559. These are separate records
+  whose accounting difference is unresolved; the official reported cost is preserved.
+- This is a model/harness recovery failure, not evidence about the two unresolved
+  official login tests. No extra model call or synthetic completion is used to force
+  an eligible result.
+
+## Dev35 — Reuse bounded patching after a prepared application fails
+
+- After a larger prepared application actually fails, supply its complete current
+  source and failure in the existing `patch_and_verify` mode. The snapshot can contain
+  up to 48 KB, but the actual complete repair request must also fit the configured
+  context limit. Larger requests retain the existing open repair path.
+- This reuses the existing maximum three bounded repair attempts and ordinary build,
+  startup and verification. It does not add another model, relax assertions or convert
+  self-checks into independent acceptance. Public input, reasoning and port policy remain.
+- An actual HTTP control with a source bundle above the old 24 KB limit first fails,
+  then receives all current source plus both ends of its failure log and succeeds with
+  one exact product patch. The model transport is synthetic; real official convergence
+  remains the next comparison.
+- Regression validation: 159 other cases pass unchanged. Four budget-exhaustion
+  controls were updated to exercise the still-supported open repair path with a
+  source bundle above 48 KB; all four then pass in 5.961 seconds. The bounded snapshot
+  repair control also passes with real HTTP. No assertions are removed. These 163
+  checks establish local behavior, not official score or model convergence.
+- Two dev35 package builds match source and each other, SHA-256
+  `081a5e66334114a86648a8f12017214a983b1a95b690476658a421ef48529f8c`.
+
+## E057 — Ticket Booking rank 1 at 90%
+
+- Dev35 source `70e9236`, submission `6c4b229f5a93`,
+  [run a129e387e562](https://arc-bench.com/runs/a129e387e562). Official result:
+  **9/10**, **212 seconds**, **CNY 0.668715**, reported **555,255 tokens**. The only
+  failing case is successful registration, with a 10-second timeout. Both login
+  success cases pass. Runner status is FAILED because one case remains; the score
+  nonetheless exceeds the leaderboard's 80% eligibility threshold.
+- The refreshed task board confirms **VOLO AI rank 1**, efficiency **134.5865**,
+  ahead of Li Yao's 80% / CNY 2.407166. Receipt captured at 18:08 Taipei on September 12.
+  Smoke is still rank 3 and Evolution rank 2, both 100%. This is a current snapshot,
+  not a promise that the ranking will remain first.
+- The run contains two model responses: Kimi image observation, then one Flash
+  `build_app`. All 11 generated self-checks pass on the first attempt. The new bounded
+  repair branch **does not execute**, so its model convergence is not established by
+  this run. The score gain cannot be causally separated from generation variance.
+- Captured response usage totals **50,957 tokens**, differing from the official token
+  count. Both values are preserved; the accounting discrepancy is unresolved. Rankings
+  and the cost above use the platform's actual reported result, not a substituted estimate.
+- The initial create-run POST disconnected without a response. Two subsequent reads
+  showed no run for this submission, then one explicit retry created the run above.
+  No duplicate run was started. The verified agent ZIP, final events, source, official
+  status, board snapshot and receipt are retained under `runs/e057-dev35-repair-flash/`.
+
+## Dev35 main consolidation
+
+- User requested both local and remote main contain the latest agent and extra
+  branches/worktrees be removed. Integration retains the full feature ancestry.
+- A fresh complete regression run passes **163 tests, zero failures or skips**, in
+  **101.759 seconds**, using installed Chrome/Playwright and the existing Docker image.
+- Two rebuilt packages are identical, match every source entry and reproduce the
+  official E057 ZIP SHA-256 exactly. No agent behavior was changed during consolidation.
+- All 237 experiment files from the retired worktree were copied to the archive above
+  and verified by size/hash before removal. Source and documentation stay in Git;
+  raw artifacts stay local. Deletion is restricted to branch tips already contained
+  in the merged main, with their inspected remote object IDs checked before deletion.
+- See [the consolidation evidence](evidence/2026-09-12-dev35-consolidation.json).
+  No paid model request or new official competition run belongs to this consolidation.

@@ -7,15 +7,17 @@ what they actually exercise.
 
 ## Development baseline
 
-Version **0.7.0.dev31** consolidates the prior competition agent, bounded recovery,
-pinned acceptance, isolated evaluation, Pi protocol probes and the optional model-based
-browser acceptance experiment. The [consolidation review](docs/harness-consolidation-2026-09-12.md)
-records what was combined and how overlapping behavior was resolved.
+Version **0.7.0.dev35** is the latest consolidated agent. Its E057 official Ticket Booking
+run scored **9/10**, **CNY 0.668715**, **212 seconds**, and reached **rank 1** in the
+September 12, 18:08 Taipei snapshot. One registration test still times out. The new
+bounded repair branch did not execute in that run, so its model convergence remains
+unverified. The [competition review](docs/competition-gap-2026-09-12.md) separates
+the observed result, comparisons and remaining limitations.
 
-This version has no official score. The fresh VOLO agent's best official Ticket Booking
-result is E047's **6/10**; its later dev29 result is 5/10. Historical Smoke/Evolution wins,
-local replays and platform failures are recorded separately in
-[experiments](docs/experiments.md). Current standings come from the platform CLI.
+Start a continuation from [SESSION_HANDOFF](docs/SESSION_HANDOFF.md). Current standings
+come from the platform CLI; [experiments](docs/experiments.md) preserves dated results.
+The earlier [consolidation review](docs/harness-consolidation-2026-09-12.md) records how
+the prior runtime, explicit acceptance and optional lab tools were integrated.
 
 ## Repository map
 
@@ -48,7 +50,11 @@ The agent schedules dependency-ordered requirements, observes supported image re
 builds and starts the application, executes behavioral checks and repairs from actual
 failures. Small applications reuse a generic Node runtime; product logic and assertions
 are model-generated. A truncated response executes no tools and releases forced-bundle
-mode; three consecutive truncations stop the batch.
+mode; three consecutive truncations stop the batch. Larger prepared apps retain named self-check cases that failed with locator ambiguity
+as repair comparisons. Changing later selectors cannot remove those captured failures;
+unrelated assertions can receive legitimate waits. These checks remain model-authored
+and do not certify independent coverage. Small tasks disable thinking; larger DeepSeek
+batches explicitly use low effort with the provider-compatible tool-call format.
 
 Self-check success is reported in `self_checked_requirements`. Independent acceptance
 requires an explicitly supplied, reviewed manifest:
@@ -78,8 +84,9 @@ tooling is reported as skipped. No test downloads a browser or calls a paid mode
 The separate `python -m harness_lab.pi_probe` command exercises an installed Pi with
 scripted loopback responses; see the [lab map](harness_lab/README.md).
 
-`dist/volo-factory.zip` contains only `main.py`, `requirements.txt` and `volo/` modules.
-The lab, platform sessions, source applications, development tests and evidence are excluded.
+`dist/volo-factory.zip` contains `main.py`, `requirements.txt`, `volo/` modules and
+hash-pinned public specifications used as model input. The lab, platform sessions,
+generated applications, development regression tests and raw evidence are excluded.
 Run model-generated code in a suitable disposable sandbox; path guards and evaluator
 hashes are not an operating-system sandbox.
 

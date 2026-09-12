@@ -1,0 +1,11 @@
+{
+  "source_commit": "39e80d7501fdb46a7fd5d70f8e84a5d2e7a3692d",
+  "tests": 159,
+  "failures": 0,
+  "skips": 0,
+  "seconds": 93.698,
+  "archive_sha256": "5f2bc90e835e7d63575351986ff0b083e47a1abb7d45abdf9f2e6d5f033c5b75",
+  "reproducible": true,
+  "real_model_calls_in_local_validation": 0,
+  "known_limit": "Captured checks are model-authored repair evidence, not independent coverage"
+}

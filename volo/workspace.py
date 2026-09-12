@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import signal
 import shlex
 import shutil
@@ -18,7 +19,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from .acceptance import AcceptanceUnavailable
+from .acceptance import AcceptanceUnavailable, REPORTER
 from .environment import discover_playwright
 from .launcher import install as install_launcher
 from .trace import Trace, atomic_json
@@ -74,6 +75,7 @@ class Workspace:
         self.last_verification = None
         self.last_verification_attempt = None
         self.required_checks = []
+        self.retain_failed_prepared_checks = False
         self.acceptance_suite = None
         self.acceptance_requirement_ids = None
         self.root.mkdir(parents=True, exist_ok=True)
@@ -274,6 +276,66 @@ class Workspace:
             checks.append(name)
         return ['node', '--test', *checks] if checks else None
 
+    def clear_prepared_check_guards(self):
+        """A new requirement batch may intentionally change previous behavior."""
+        self.required_checks = [check for check in self.required_checks
+                                if check.get('kind') != 'captured_self_check']
+        self.retain_failed_prepared_checks = False
+
+    def capture_failed_prepared_check(self, result):
+        """Retain ambiguous-locator cases as repair evidence, not authority.
+
+        The model may add diagnostic tests, but changing them cannot erase this
+        observed ambiguity. Unrelated timing assertions are not frozen: E052 showed
+        that those may legitimately need waits. Existing-project tests are unaffected.
+        """
+        command = ['node', '--test', '--test-reporter=tap', 'checks/requirements.cjs']
+        if (not self.retain_failed_prepared_checks or result.get('passed')
+                or command not in result.get('executed_checks', [])
+                or any(check.get('kind') == 'captured_self_check' for check in self.required_checks)):
+            return None
+        step = result['steps'][-1]
+        log = self.root / step['log']
+        if log.stat().st_size > 1000000:
+            return None
+        names = []
+        for section in log.read_text().split('\n# Subtest: ')[1:]:
+            name = section.split('\n', 1)[0]
+            if ('strict mode violation' in section and re.search(r'\nnot ok \d+ - ', section)
+                    and not re.search(r'\n\s+# Subtest:', section)
+                    and name.strip() and len(name) <= 500):
+                names.append(name)
+        if not names or len(set(names)) != len(names):
+            return None
+        syntax = self.run(['node', '--check', 'checks/requirements.cjs'], '.', 10)
+        if syntax['exit_code'] != 0 or syntax['timed_out']:
+            return None
+        sources = {name: (self.root / 'checks' / name).read_bytes()
+                   for name in ('requirements.cjs', 'browser.cjs')}
+        sources['reporter.cjs'] = REPORTER.encode()
+        digest = hashlib.sha256(b''.join(sources.values())).hexdigest()
+        directory = self.trace.directory / 'repair-checks' / digest
+        directory.mkdir(parents=True, exist_ok=True)
+        files = {}
+        for name, raw in sources.items():
+            path = directory / name
+            path.write_bytes(raw)
+            files[str(path.relative_to(self.root))] = hashlib.sha256(raw).hexdigest()
+        check = {'kind': 'captured_self_check', 'files': files,
+                 'expected_cases': names,
+                 'argv': ['node', '--test', '--test-reporter=' + str(directory / 'reporter.cjs'),
+                          '--test-name-pattern=^(?:' + '|'.join(re.escape(name) for name in names) + ')$',
+                          str((directory / 'requirements.cjs').relative_to(self.root))]}
+        self.required_checks.append(check)
+        self.trace.event('self_check_failure_preserved', check=check,
+                         independently_verified=False)
+        return {'argv': check['argv'], 'cases': names, 'independently_verified': False,
+                'instruction': 'These captured locator-ambiguity cases must also pass after repair. '
+                               'Scoping or replacing current assertions cannot remove the captured failure; '
+                               'repair the ambiguous product interface. Other checks may receive legitimate waits. '
+                               'A genuinely incorrect captured check remains a reported limitation, not permission '
+                               'to weaken required product behavior or claim independent acceptance.'}
+
     def verify(self, check_command):
         """Verify the actual current tree, never a model's claimed test result."""
         check_command = normalize_check_command(check_command)
@@ -360,6 +422,25 @@ class Workspace:
                             "FACTORY_BASE_URL": url, "E2E_BASE_URL": url, "PLAYWRIGHT_BASE_URL": url})
                         steps.append(check)
                         executed.append(command)
+                        captured = next((fixed for fixed in self.required_checks
+                                         if fixed['argv'] == command and 'expected_cases' in fixed), None)
+                        if captured and check['exit_code'] == 0 and not check['timed_out']:
+                            raw = self.root / check['log']
+                            try:
+                                if raw.stat().st_size > 1000000:
+                                    raise ValueError('Captured result is too large')
+                                events = [json.loads(line) for line in raw.read_text().splitlines() if line.strip()]
+                                passed_names = [event['name'] for event in events
+                                                if event.get('type') == 'test:pass' and event.get('kind') in (None, 'test')
+                                                and event.get('nesting') == 0 and not event.get('skip')
+                                                and not event.get('todo')]
+                                complete = sorted(passed_names) == sorted(captured['expected_cases'])
+                            except (OSError, ValueError, KeyError, TypeError, AttributeError):
+                                complete = False
+                            if not complete:
+                                return result(False, error='Captured ambiguity cases did not all execute',
+                                              check_command=check_command, executed_checks=executed,
+                                              application_url=url)
                         if check["exit_code"] != 0 or check["timed_out"]:
                             return result(False, check_command=check_command, executed_checks=executed,
                                           application_url=url)

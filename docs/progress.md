@@ -300,3 +300,16 @@ each rule snapshot and experiment with date and source.
 - No real model calls or official evaluations ran. Ticket's fresh-agent best remains
   6/10. GUI acceptance calibration and a matched alternative-executor comparison
   remain future work, described in `docs/harness-design-2026-09-12.md`.
+
+## 2026-09-12 — Run the first fixed-artifact acceptance controls
+
+- User asked why the proposed experiment had not run; resumed with retained artifacts,
+  without new generation or paid model calls. Retrieved E047 source read-only and
+  confirmed that the retained replay files match it.
+- A fixed external logout-state assertion passes all three variants without injected
+  delay. At 400 ms, it rejects the original product and the identical product with an
+  exit-0 self-check, while accepting only the single-label product correction.
+- Final six observations complete in 13.393 seconds with unchanged retained sources and
+  no cleanup errors. The earlier zero-delay instrumentation race was corrected without
+  changing the measured public-helper sequence. This is one scenario, not a full
+  public-suite replay or official score. See `docs/logout-calibration-2026-09-12.md`.

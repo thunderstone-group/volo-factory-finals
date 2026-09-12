@@ -1,0 +1,11 @@
+[
+  {
+    "requirement_fingerprint": "a22b340306d19d379acd689eb6abae5b5b99dbbef7c872874486fba818468dfe",
+    "source": "https://arc-bench.com/api/requirements/ticket-booking--ticket-booking/tests?catalog=competition",
+    "files": {
+      "ticket-booking--ticket-booking/REQ-1.1-user-registration.spec.ts": "effc7a98a0da5f18f95aa3c188bafb7264ccc089e6e9fc319f529b410f83d2b3",
+      "ticket-booking--ticket-booking/REQ-1.2-user-login.spec.ts": "701eb9af146a1cf6d650ff3df7de48e4e6da978f244dc8963708dadf72b2daab",
+      "ticket-booking--ticket-booking/support/e2e.ts": "ca5eaacd8bc4477d93ed45b0f46fe86cdb26b5ed7cc4e9816fd324f592c40795"
+    }
+  }
+]

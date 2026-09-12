@@ -5,7 +5,7 @@ import json
 import time
 from dataclasses import asdict
 
-from .context import excerpt, project
+from .context import excerpt, project, size
 from .trace import atomic_json
 from .web_runtime import scaffold, implement, SERVER, BUILD, BROWSER_CHECK
 from .workspace import normalize_check_command
@@ -212,7 +212,13 @@ class Agent:
         self.check_command = None
         self.references, self.reference_context = references, None
         self.inline_source = False
+        self.source_snapshot_limit = 24000
         self.last_tool_result = None
+        from .public_specs import load_public_specs
+        self.public_specs = load_public_specs(requirements.fingerprint)
+        if self.public_specs:
+            self.trace.event('public_specs_supplied', source=self.public_specs['source'],
+                             files=list(self.public_specs['files']), executed=False)
 
     def source_snapshot(self):
         """Include only a bounded set of product code, never state or protected files."""
@@ -227,7 +233,7 @@ class Agent:
             except ValueError:
                 continue
             candidates.append(item)
-        if not candidates or len(candidates) > 20 or sum(item['bytes'] for item in candidates) > 24000:
+        if not candidates or len(candidates) > 20 or sum(item['bytes'] for item in candidates) > self.source_snapshot_limit:
             return None
         try:
             return {item['path']: self.workspace.path(item['path']).read_text() for item in candidates}
@@ -348,6 +354,8 @@ class Agent:
                     'checks/browser.cjs exports test(name,async(page,assert)=>{}), with a fresh browser at the app.')
             if self.completed:
                 payload['previously_self_checked'] = self.completed
+            if self.public_specs:
+                payload['public_acceptance_specifications'] = self.public_specs
             if self.reference_context and (self.reference_context.get('observations') or self.reference_context.get('unavailable')):
                 payload['reference_observations'] = self.reference_context
             return json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
@@ -361,7 +369,9 @@ class Agent:
                                  "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nReference-image observations (written requirements remain authoritative):\n"
                    + json.dumps(self.reference_context, ensure_ascii=False)
-                   + "\nPreviously self-checked requirement ids (not independent acceptance):\n" + json.dumps(self.completed))
+                   + "\nPreviously self-checked requirement ids (not independent acceptance):\n" + json.dumps(self.completed)
+                   + ('\nRead-only public acceptance specifications:\n' + json.dumps(self.public_specs, ensure_ascii=False)
+                      if self.public_specs else ''))
 
     def context_checkpoint(self, nodes, system, last_failure):
         attempt = self.workspace.last_verification_attempt
@@ -391,17 +401,20 @@ class Agent:
                 {"role": "user", "content": self.trace.redact(request)}]
 
     def run_batch(self, nodes):
+        self.workspace.clear_prepared_check_guards()
         self.inline_source = False
+        self.source_snapshot_limit = 24000
         self.reference_context = (self.references.observe(self.requirements, nodes,
             deadline=self.workspace.deadline, guard_budget=self.guard_budget) if self.references else
             {'unavailable': 'No reference observer configured; binary images have not been inspected'})
         small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
         bounded = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 16000
-        self.model.thinking = "disabled" if bounded else "enabled"
+        self.model.thinking = "disabled" if small else "enabled"
         self.trace.event("reasoning_policy", small_batch=small, bounded_batch=bounded,
                          requested_thinking=self.model.thinking)
         request = self.batch_request(nodes)
         direct = bounded and not self.workspace.list_files()['files']
+        self.workspace.retain_failed_prepared_checks = direct and not small
         self.inline_source = small and not direct and self.source_snapshot() is not None
         compact = self.inline_source
         compact_attempts = 0
@@ -508,6 +521,7 @@ class Agent:
                 if was_direct and not result.get('passed'):
                     open_repairs = open_repairs or (not small and result.get('passed') is False)
                     model_result = {"passed": False, "error": result.get('error'),
+                                    "retained_self_check": result.get('retained_self_check'),
                                     "check_output": excerpt((result.get('steps') or [{}])[-1].get('output', ''), 5000),
                                     "server_output": result.get('server_output', '')[-2000:],
                                     "source_paths": {'index_html': 'frontend/public/index.html',
@@ -528,6 +542,25 @@ class Agent:
                     return
             direct = was_direct and compact_attempts < 3 and not open_repairs
             compact = was_compact and compact_attempts < 3
+            if was_direct and open_repairs:
+                # The failed bundle already created all source. E056 spent its
+                # budget repeatedly reading a 28 KB product/check bundle that
+                # exceeded the old 24 KB snapshot bound. Reuse bounded patching
+                # when the complete current snapshot fits the actual context.
+                self.source_snapshot_limit = 48000
+                self.inline_source = self.source_snapshot() is not None
+                if self.inline_source:
+                    repair_messages = self.context_checkpoint(nodes, SMALL_EDIT_SYSTEM, last_failure)
+                    if size(repair_messages) <= self.max_context_chars:
+                        messages = repair_messages
+                        compact, compact_attempts = True, 0
+                        self.trace.event('prepared_repair_snapshot',
+                                         source_fingerprint=self.workspace.fingerprint(),
+                                         context_chars=size(repair_messages))
+                    else:
+                        self.inline_source = False
+                if not self.inline_source:
+                    self.source_snapshot_limit = 24000
             if not direct and not compact and messages[0]['content'] in (SMALL_SYSTEM, BOUNDED_SYSTEM, SMALL_EDIT_SYSTEM):
                 messages[0]['content'] = SYSTEM
         if self.verify_final_edit():
