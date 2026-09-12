@@ -44,13 +44,16 @@ installs an unpinned Playwright version. Its fresh-install branch references `en
 assigning it. Its local result must not be treated as an exact official simulation.
 
 Octos records a default-spec-port versus application-port mismatch and requests two
-listeners. Complete disconnection does not explain our seven passing cases, so VOLO's
-port contract is not changed on that evidence alone.
+listeners. Reviewing VOLO's complete launch path confirms that its existing launcher
+already proxies between 3000 and 3301. The application server alone reads `PORT`, but
+that is not the complete startup path. No new port compatibility change is needed.
 
 E055 replays E054's fixed original product with 10-second tests and four workers, once
 with `fullyParallel=false` and once with `fullyParallel=true`. Both results are 9/10,
 with only the heading failure. The latter setting is a hypothesis control, not a known
 official setting. This does not reproduce the two official login failures.
+An additional fixed-product replay uses VOLO's actual launcher, starts the server on
+3000 and reaches it through the 3301 proxy. It also gives 9/10, only the heading failure.
 
 The repository's runtime lock records an unreleased implementation and no linked
 submission. We have not established that its current source and runtime are the exact
