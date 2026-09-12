@@ -1,5 +1,11 @@
 # Experiments
 
+Local evidence from the retired `lean-acceptance` worktree is archived in the main
+checkout at `runs/worktree-archive-20260912/lean-acceptance/`. Its `runs/` subdirectory
+contains the historical `runs/...` paths recorded below for E052–E057 and related
+controls. `archive-manifest.json` records the verified files. Current continuation
+instructions are in [SESSION_HANDOFF](SESSION_HANDOFF.md).
+
 ## E001 — First fresh Agent run
 
 - Date: 2026-09-11.
@@ -1287,3 +1293,18 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   showed no run for this submission, then one explicit retry created the run above.
   No duplicate run was started. The verified agent ZIP, final events, source, official
   status, board snapshot and receipt are retained under `runs/e057-dev35-repair-flash/`.
+
+## Dev35 main consolidation
+
+- User requested both local and remote main contain the latest agent and extra
+  branches/worktrees be removed. Integration retains the full feature ancestry.
+- A fresh complete regression run passes **163 tests, zero failures or skips**, in
+  **101.759 seconds**, using installed Chrome/Playwright and the existing Docker image.
+- Two rebuilt packages are identical, match every source entry and reproduce the
+  official E057 ZIP SHA-256 exactly. No agent behavior was changed during consolidation.
+- All 237 experiment files from the retired worktree were copied to the archive above
+  and verified by size/hash before removal. Source and documentation stay in Git;
+  raw artifacts stay local. Deletion is restricted to branch tips already contained
+  in the merged main, with their inspected remote object IDs checked before deletion.
+- See [the consolidation evidence](evidence/2026-09-12-dev35-consolidation.json).
+  No paid model request or new official competition run belongs to this consolidation.

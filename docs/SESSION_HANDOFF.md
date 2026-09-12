@@ -6,14 +6,17 @@ work, not a request to restart the harness or repeat completed experiments.
 
 ## Checkouts and saved state
 
-- Main: `~/projects/volo-factory`, branch `main`, last inspected at `0a03d5e`.
-- Current development: `~/projects/volo-factory-worktrees/lean-acceptance`,
-  branch `feat/lean-acceptance-harness`. Implementation `70e9236`; first-place evidence
-  commit `b71a7e5`. Both were pushed. This handoff is a subsequent documentation commit.
-- The development branch has **not** been merged into main. Inspect current Git state
-  before editing; preserve this worktree's ignored run evidence.
-- Code and documentation are in Git. Raw run records, generated apps and the verified
-  agent ZIP are retained **locally** under `runs/`, which is Git-ignored.
+- Canonical checkout: `~/projects/volo-factory`, branch `main`. The user
+  requested local and remote main contain the latest agent and extra branches/worktrees
+  be retired. This handoff is included in that PR; inspect Git for its merge commit.
+- Agent implementation: `70e9236` (dev35); first-place evidence: `b71a7e5`.
+  Preserve this ancestry. The former `feat/lean-acceptance-harness` branch/worktree is
+  retired after merging; start new work from current main in a fresh worktree.
+- Code and documentation are in Git. Raw run records, generated apps and verified
+  packages remain **local**, Git-ignored, at
+  `runs/worktree-archive-20260912/lean-acceptance/` in the canonical checkout.
+  Its `archive-manifest.json` records every retained file's size and hash. Historical
+  `runs/...` paths below refer to the `runs/` subdirectory inside that archive.
 
 ## Last verified competition result
 
@@ -24,9 +27,10 @@ Smoke was rank 3 and Smoke Evolution rank 2, both 100%.
 - Official run: https://arc-bench.com/runs/a129e387e562
 - Submission: `6c4b229f5a93`; agent source: `70e9236` (dev35).
 - Archive SHA-256: `081a5e66334114a86648a8f12017214a983b1a95b690476658a421ef48529f8c`.
-- Evidence directory: `runs/e057-dev35-repair-flash/` in the development checkout.
+- Evidence directory in the canonical checkout:
+  `runs/worktree-archive-20260912/lean-acceptance/runs/e057-dev35-repair-flash/`.
   `agent.zip`, `receipt.json`, `board-after.json`, `full-status.json`, `events-final.jsonl`,
-  `index.html`, `api.cjs` and `checks.cjs` are saved. The ZIP hash was rechecked for handoff.
+  `index.html`, `api.cjs` and `checks.cjs` are saved. The ZIP hash was rechecked during archival.
 - Official tests: 9 passed; successful registration timed out at 10 seconds. Both login
   success cases passed. The runner's FAILED label reflects the remaining case; it does
   not contradict first place under the 80% efficiency eligibility rule.
@@ -47,10 +51,10 @@ Smoke was rank 3 and Smoke Evolution rank 2, both 100%.
 - Dev35 reuses `patch_and_verify` after a larger prepared application fails: supply the
   complete current source up to 48 KB only when the full checkpoint fits the context.
   It retains three bounded attempts and the existing open repair path for larger inputs.
-- Dev35 validation: 159 other regression cases passed unchanged; four budget controls
-  were adjusted to exercise the larger open repair path and all four passed separately.
-  A real HTTP control verifies the bounded repair path. Do not describe this as one
-  fresh, entirely green full-suite invocation. Details are in `docs/experiments.md`.
+- Main-consolidation validation: a fresh full run passed **163 tests, zero failures
+  or skips**, in **101.759 seconds**, with installed Chrome/Playwright and the existing
+  Docker image. The earlier 159-plus-4 development validation remains historical.
+  See `docs/evidence/2026-09-12-dev35-consolidation.json` for source/package identity.
 - Full failed-self-test freezing (dev32) was rejected: bad timing assertions distorted
   product behavior. A dedicated reference-heading guard was also discarded. Do not
   revive either by assuming more verification architecture is automatically better.
@@ -81,6 +85,6 @@ PENDING entries were left untouched; do not treat them as current runs or cancel
 without checking.
 
 CLI reference: `docs/platform-cli.md`. The existing Python environment is
-`~/projects/volo-factory/.venv/bin/python`; the development checkout has no venv.
+`~/projects/volo-factory/.venv/bin/python`.
 The last task's local processes and actual official runs finished. No continuation run
 or scheduled automation was started as part of this handoff.

@@ -7,15 +7,17 @@ what they actually exercise.
 
 ## Development baseline
 
-Version **0.7.0.dev31** consolidates the prior competition agent, bounded recovery,
-pinned acceptance, isolated evaluation, Pi protocol probes and the optional model-based
-browser acceptance experiment. The [consolidation review](docs/harness-consolidation-2026-09-12.md)
-records what was combined and how overlapping behavior was resolved.
+Version **0.7.0.dev35** is the latest consolidated agent. Its E057 official Ticket Booking
+run scored **9/10**, **CNY 0.668715**, **212 seconds**, and reached **rank 1** in the
+September 12, 18:08 Taipei snapshot. One registration test still times out. The new
+bounded repair branch did not execute in that run, so its model convergence remains
+unverified. The [competition review](docs/competition-gap-2026-09-12.md) separates
+the observed result, comparisons and remaining limitations.
 
-This version has no official score. The fresh VOLO agent's best official Ticket Booking
-result is E047's **6/10**; its later dev29 result is 5/10. Historical Smoke/Evolution wins,
-local replays and platform failures are recorded separately in
-[experiments](docs/experiments.md). Current standings come from the platform CLI.
+Start a continuation from [SESSION_HANDOFF](docs/SESSION_HANDOFF.md). Current standings
+come from the platform CLI; [experiments](docs/experiments.md) preserves dated results.
+The earlier [consolidation review](docs/harness-consolidation-2026-09-12.md) records how
+the prior runtime, explicit acceptance and optional lab tools were integrated.
 
 ## Repository map
 
@@ -82,8 +84,9 @@ tooling is reported as skipped. No test downloads a browser or calls a paid mode
 The separate `python -m harness_lab.pi_probe` command exercises an installed Pi with
 scripted loopback responses; see the [lab map](harness_lab/README.md).
 
-`dist/volo-factory.zip` contains only `main.py`, `requirements.txt` and `volo/` modules.
-The lab, platform sessions, source applications, development tests and evidence are excluded.
+`dist/volo-factory.zip` contains `main.py`, `requirements.txt`, `volo/` modules and
+hash-pinned public specifications used as model input. The lab, platform sessions,
+generated applications, development regression tests and raw evidence are excluded.
 Run model-generated code in a suitable disposable sandbox; path guards and evaluator
 hashes are not an operating-system sandbox.
 
