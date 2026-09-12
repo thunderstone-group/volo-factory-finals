@@ -1,3 +1,14 @@
+# Latest: authorized runner-rules investigation (2026-09-12)
+
+The user narrowed the request to obtaining actual evaluation rules and explicitly
+confirmed the lab authorization. See [the result](runner-rules-2026-09-12.md).
+A separate opt-in diagnostic ZIP captured the generated Playwright configuration
+from Smoke run `199816b1dd39`: PASSED, one real model call, 224 tokens, CNY 0.001013.
+The normal practice4 package is byte-identical; main remains unchanged. Latest saved
+Smoke upload is diagnostic submission `6b9ede02a261`. No Ticket generation or retry
+was performed. Do not infer Ticket's browser options or a timeout root cause from
+this one Smoke observation. Raw evidence is retained at canonical `runs/rules-20260912/`.
+
 # ARC continuation handoff — 2026-09-12
 
 ## Latest continuation

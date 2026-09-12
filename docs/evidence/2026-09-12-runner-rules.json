@@ -1,0 +1,113 @@
+{
+  "observed_at": "2026-09-12T15:29:33.810Z",
+  "scope": "One authorized Smoke counter run; no Ticket rerun",
+  "probe_code_commit": "ce107b8",
+  "base_source_commit": "69972fb",
+  "base_sha256": "dc071c4d398a25c0d4e325d5d163c392e2b8d925010922e604d260ac17f0ae95",
+  "probe_sha256": "37a848aa5495f958dad9ea7ba56878063261bcbc74fa6355cc1bb3857d3ec4d3",
+  "probe_archive": "~/projects/volo-factory-worktrees/small-public-acceptance/runs/rules-20260912/agent-rules-probe.zip",
+  "modified_members": [
+    "main.py",
+    "volo/web_runtime.py"
+  ],
+  "added_members": [
+    "volo/runner_rules_probe.py"
+  ],
+  "run_id": "199816b1dd39",
+  "run_url": "https://arc-bench.com/runs/199816b1dd39",
+  "status": "PASSED",
+  "official_passed": 1,
+  "official_failed": 0,
+  "official_cny": 0.001013,
+  "official_model": "qwen3.6-flash",
+  "model_calls": 1,
+  "usage": {
+    "completion_tokens": 124,
+    "completion_tokens_details": {
+      "text_tokens": 124
+    },
+    "prompt_tokens": 100,
+    "prompt_tokens_details": {
+      "text_tokens": 100
+    },
+    "total_tokens": 224
+  },
+  "official_duration_seconds": 2,
+  "api_started_to_finished_seconds": 15.123508,
+  "agent_phase_status": "config_unavailable",
+  "server_phase_status": "config_captured",
+  "node_version": "20.19.3",
+  "os": "linux",
+  "architecture": "x64",
+  "playwright_version": "1.57.0",
+  "config": {
+    "timeout": 10000,
+    "expect_timeout": 10000,
+    "fullyParallel": false,
+    "workers": 4,
+    "baseURL": "http://127.0.0.1:3000",
+    "channel": "chromium",
+    "trace": "off",
+    "screenshot": "off",
+    "retries_from_effective_report": 0
+  },
+  "captured_files": [
+    {
+      "path": "playwright.config.ts",
+      "status": "read",
+      "bytes": 395,
+      "sha256": "d4f1f1363b30cafc2dc2bf6053b35346983b357cf4b9e620e0b528a2040ee564",
+      "redacted": false
+    },
+    {
+      "path": "package.json",
+      "status": "read",
+      "bytes": 131,
+      "sha256": "b6c05dfa3b6052c1c8dd412160ab6e05edf792280d85091630393bd60b1d9338",
+      "redacted": false
+    },
+    {
+      "path": "support/e2e.ts",
+      "status": "ENOENT"
+    }
+  ],
+  "actual_test_fingerprints": [
+    {
+      "path": "REQ-1.spec.ts",
+      "status": "read",
+      "bytes": 671,
+      "sha256": "de5d8c9124640d6c2ab7ceef7201b34cf8bbe6c70a6345769c24c3b2e3ee45d6"
+    }
+  ],
+  "public_test_fingerprints": {
+    "ticket-booking--ticket-booking-public-tests": {
+      "REQ-1.1-user-registration.spec.ts": "effc7a98a0da5f18f95aa3c188bafb7264ccc089e6e9fc319f529b410f83d2b3",
+      "REQ-1.2-user-login.spec.ts": "701eb9af146a1cf6d650ff3df7de48e4e6da978f244dc8963708dadf72b2daab",
+      "support/e2e.ts": "ca5eaacd8bc4477d93ed45b0f46fe86cdb26b5ed7cc4e9816fd324f592c40795"
+    },
+    "smoke--counter-public-tests": {
+      "REQ-1.spec.ts": "de5d8c9124640d6c2ab7ceef7201b34cf8bbe6c70a6345769c24c3b2e3ee45d6"
+    }
+  },
+  "validation": {
+    "unittest_total": 183,
+    "passed": 178,
+    "skipped": 5,
+    "skipped_reason": "No existing container image configured",
+    "real_packaged_local_browser": "passed using synthetic model HTTP and installed Chrome",
+    "normal_agent_package_unchanged": true
+  },
+  "not_observed": [
+    "Ticket runtime browser options",
+    "container CPU and memory limits",
+    "private backend scoring implementation"
+  ],
+  "evidence_sha256": {
+    "runner-rules-agent.json": "67a6d8c3a82dd0531b579313bd8d161a4683db5f016c31f2bf7cb16028dd8acd",
+    "runner-rules-server.json": "ce9e52c567663c10deca0bc5bf6ecc1f22a30698b457feb8afdf204b5f0653d8",
+    "official-playwright-report.json": "7a7ec21d5bcfae6626caae72d12b61a224ee2c64bcacf076214a34f1b56c5068",
+    "official-run-full.json": "7ed765bee108d374e8d41c7cc4324ae61c5025b3b38a870ceb67e7a7e4b2c06d",
+    "official-log.json": "66daab671a02a7f3cc062480781c66203ce633c84a0038ce7932232d719120d4",
+    "regression-tests.log": "aedd9c718be621ee52c4cdccdcea12cfc4a0666f374720da196d910fd6843543"
+  }
+}

@@ -61,6 +61,7 @@ existing Node container image for optional real integration checks. Tests do not
 paid models or install browsers. Read the result record for actual checks and limitations.
 
 - [Small-task acceptance and cost experiments](docs/small-task-optimization-2026-09-12.md)
+- [Observed hosted runner configuration](docs/runner-rules-2026-09-12.md)
 - [Model comparison and cost-per-success research](docs/model-comparison-2026-09-12.md)
 - [Three-board objective](docs/competition-optimization-2026-09-12.md)
 - [Experiment ledger](docs/experiments.md)

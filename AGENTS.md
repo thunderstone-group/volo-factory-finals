@@ -5,6 +5,8 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
 
 ## Map
 
+- `docs/runner-rules-2026-09-12.md`: actual hosted Playwright config, bounded opt-in probe and remaining unknowns.
+- `harness_lab/runner_rules_probe.py` / `scripts/package_rule_probe.py`: explicitly selected lab capture; excluded from normal uploads.
 - `docs/practice-qualification-2026-09-12.md`: current practice branch, top-two results and frozen packages.
 - `volo/practice.py`: branch-only raw HTML execution for the four bound small tasks.
 
