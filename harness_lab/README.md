@@ -1,5 +1,9 @@
 # Harness experiments
 
+User-authorized controls and official evidence: [fixed public answers and tiny router](../docs/security-reproduction-2026-09-13.md).
+`public_answer_baseline.py` is a disclosed audit fixture; `runner_rules_probe.py` captures the bounded current-run configuration.
+Both require their explicit package builders and remain excluded from ordinary uploads.
+
 Reviewed 2026-09-12. This directory contains optional developer tools and is excluded
 from the competition upload. It does not select the production agent or start model
 requests implicitly. The uploaded optional acceptance runner is `volo/acceptance.py`.

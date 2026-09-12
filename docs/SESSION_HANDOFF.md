@@ -1,3 +1,19 @@
+# Latest: authorized fixed-answer security reproduction (2026-09-13 local)
+
+The user explicitly selected the existing VOLO AI practice account for organizer-facing
+adversarial controls. See [the Chinese report](security-reproduction-2026-09-13.md).
+Zero-call Counter run `5328c93e9838` passed at 0 tokens/CNY0 but produced null efficiency.
+The disclosed tiny-router control (`691a6c8`, submission `8f6c053c90cc`) passed both Smoke
+tasks in runs `6076600e642d` and `03d81f1d24ed`: 2 real classifier calls, 50 tokens,
+CNY0.000072 total, current Smoke aggregate rank1 and efficiency1388888.8889.
+These pages are fixed public answers. Do not claim this ranking as general-agent or
+model application-generation ability, or infer another team's implementation.
+The Counter task row temporarily fell after the zero-call control and returned to rank1
+after the router control. Only these observations are known; aggregation internals are not.
+Normal practice4 packaging remains byte-identical and main remains1717ef4. Latest saved
+Smoke submission is the disclosed router audit. No new Ticket run or automatic follow-up
+was started. Raw evidence is retained under canonical runs/security-reproduction-20260912/.
+
 # Latest: authorized runner-rules investigation (2026-09-12)
 
 The user narrowed the request to obtaining actual evaluation rules and explicitly

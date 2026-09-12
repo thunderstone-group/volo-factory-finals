@@ -1,0 +1,213 @@
+{
+  "observed_at": "2026-09-12T16:49:45.737062+00:00",
+  "purpose": "user-authorized organizer-facing evaluation audit",
+  "authorized_account": "VOLO AI",
+  "scope": "Smoke counter/dice; one zero-call run and two tiny-router runs",
+  "zero_control": {
+    "run_id": "5328c93e9838",
+    "submission_id": "4dc548c49e40",
+    "source_commit": "fd64f2b",
+    "archive_sha256": "a4fb48fad3aaba12244eddaf412f8dca2433010cdf8dd2a10641a74281bc7172",
+    "status": "PASSED",
+    "pass_rate": 100.0,
+    "tokens": 0,
+    "cny": "0",
+    "duration_seconds": 0,
+    "model_calls": 0,
+    "task_board_observation": {
+      "rank": 16,
+      "username": "VOLO AI",
+      "model_name": "qwen3.6-flash",
+      "track": "smoke",
+      "avg_pass_rate": 100.0,
+      "avg_feature_implementation_rate": 100.0,
+      "total_token_millions": 0.0,
+      "total_token_cost": 0.0,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": null,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 0,
+      "submission_count": 20,
+      "task_id": "counter",
+      "task_title": "ARC Counter Smoke Test",
+      "is_complete": true
+    }
+  },
+  "router_control": {
+    "source_commit": "691a6c8",
+    "archive_sha256": "b6331161c3d8c70474a985b3d6a68f07b35d43bcfc2a5bfa223661504f52b415",
+    "runs": [
+      {
+        "task": "counter",
+        "run_id": "6076600e642d",
+        "url": "https://arc-bench.com/runs/6076600e642d",
+        "submission_id": "8f6c053c90cc",
+        "official_status": "PASSED",
+        "passed": 1,
+        "failed": 0,
+        "cny": "3.6e-05",
+        "tokens": 25,
+        "model_calls": 1,
+        "model_role": "task_classifier",
+        "response": "Counter",
+        "request_messages": [
+          {
+            "role": "user",
+            "content": "counter or dice? One word.\nARC Counter Smoke Test"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1,
+          "completion_tokens_details": {
+            "text_tokens": 1
+          },
+          "prompt_tokens": 24,
+          "prompt_tokens_details": {
+            "text_tokens": 24
+          },
+          "total_tokens": 25
+        },
+        "official_duration_seconds": 1,
+        "product_html_sha256": "ff84111946e6ffabed088a03993d5bf3563d6f14d55419d953feb4c68bf0453a"
+      },
+      {
+        "task": "dice",
+        "run_id": "03d81f1d24ed",
+        "url": "https://arc-bench.com/runs/03d81f1d24ed",
+        "submission_id": "8f6c053c90cc",
+        "official_status": "PASSED",
+        "passed": 1,
+        "failed": 0,
+        "cny": "3.6e-05",
+        "tokens": 25,
+        "model_calls": 1,
+        "model_role": "task_classifier",
+        "response": "dice",
+        "request_messages": [
+          {
+            "role": "user",
+            "content": "counter or dice? One word.\nARC Dice Smoke Test"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1,
+          "completion_tokens_details": {
+            "text_tokens": 1
+          },
+          "prompt_tokens": 24,
+          "prompt_tokens_details": {
+            "text_tokens": 24
+          },
+          "total_tokens": 25
+        },
+        "official_duration_seconds": 1,
+        "product_html_sha256": "701151aa0b86a2c0e01f36a7101f7ce42d097a12dce6c970e214b6a6cc7e5b47"
+      }
+    ],
+    "total_cny": "0.000072",
+    "total_tokens": 50,
+    "total_model_calls": 2,
+    "aggregate_board": {
+      "rank": 1,
+      "username": "VOLO AI",
+      "model_name": "qwen3.6-flash",
+      "track": "smoke",
+      "avg_pass_rate": 100.0,
+      "avg_feature_implementation_rate": 100.0,
+      "total_token_millions": 0.0,
+      "total_token_cost": 7.2e-05,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": 1388888.8889,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 1,
+      "submission_count": 1,
+      "task_id": null,
+      "task_title": null,
+      "is_complete": true
+    },
+    "counter_product_identical_to_zero_control": true
+  },
+  "normal_generation_reference": {
+    "rank": 1,
+    "username": "VOLO AI",
+    "model_name": "qwen3.6-flash",
+    "track": "smoke",
+    "avg_pass_rate": 100.0,
+    "avg_feature_implementation_rate": 100.0,
+    "total_token_millions": 0.0,
+    "total_token_cost": 0.002114,
+    "token_cost_currency": "CNY",
+    "cost_efficiency": 47303.6897,
+    "efficiency_threshold": 80.0,
+    "efficiency_eligible": true,
+    "seniority_label": "senior",
+    "avg_runtime_seconds": 2,
+    "submission_count": 1,
+    "task_id": null,
+    "task_title": null,
+    "is_complete": true
+  },
+  "apparent_cost_ratio": "29.36111111111111111111111111",
+  "interpretation": "Fixed public solutions with a real classifier, not application generation or a claim about another team.",
+  "validation": {
+    "public_cases": 6,
+    "public_cases_passed": 6,
+    "final_unittest_total": 186,
+    "final_unittest_passed": 181,
+    "skipped_container_checks": 5
+  },
+  "evidence_sha256": {
+    "tiny-router-public-answers.zip": "3980ff1e016b5012c1f27faf7dc9826f847dba309980acd28d04d9c891ecb540",
+    "counter-board-after-zero.json": "4ff04ace34ccbd990c9eb9d060ab779b4dbf306a0f7c233e672b263372cdd467",
+    "router-regression-tests.log": "73dc0b49d3372d327f830ca8a3e7b236a90221fe844273343af7104395721cc3",
+    "router-targeted-tests.log": "ffb83791f5900a8bd77098b259ee9be8815a4983ad2f755b6011ad15102cb380",
+    "router-dice-events.jsonl": "2b9e4a3bb7172df479322614bbf64b426607e62cd61c9043ee42cbaad4f3d042",
+    "router-dice-playwright-report.json": "36481c12825ed532de85d9a988165dddfc61bc03574de773e7baa2701c2771ff",
+    "counter-board-before.json": "16d1c82e6194da1b4f01c6e0bbd5170ec5c1af4841ad52e9cf8b7b3a4e05ab1e",
+    "tiny-router-public-answers-final.zip": "b6331161c3d8c70474a985b3d6a68f07b35d43bcfc2a5bfa223661504f52b415",
+    "zero-upload.json": "7a40d41bf6b4785173ae2d76e4bffb70f30e984b5544b7a8d9e8cbfc85037a3a",
+    "local-generation.log": "7cefdc87a88374ada86de8d2353f22699dcd8ed1955879f4136f69cfcd26ac31",
+    "router-dice-status.jsonl": "0e6f006a972eb4d3ca88e933413471a171d98217eb82b1090eeb34ddf67e63f3",
+    "smoke-board-before.json": "dd3f692c6f22549aef9f2561359fa1eb1f6b36d858d11be749df325d82e9954c",
+    "router-upload.json": "fc3f68552e80f5c54368b137bec75aed7717f230070e479cd9f43f527395e3aa",
+    "dice-board-after-router.json": "45fce6734557f77a9d02aa01f66e74f9338c478d50f49011aed16766e036b3d5",
+    "targeted-tests.log": "14385edb2aaf1ec114d802e62128f76beef20bd93455b531048523890859336f",
+    "router-counter-run-full.json": "802f18c36d578179767b30b513b3f15b704ac1fc3935f32e2ddb951e3c680d65",
+    "zero-official-product.html": "ff84111946e6ffabed088a03993d5bf3563d6f14d55419d953feb4c68bf0453a",
+    "counter-board-after-router.json": "e5c7e5e4bb01984d166b2764d472de18bdf9fcd5326799c7d983a2f34bcf93ce",
+    "zero-run-start.json": "58d902baf500e67513e319ae2306240410eb879652e9cfacca579a6141c2225d",
+    "runs-before.json": "3cb3f6353688b583f404f374d8525269fc202c68976acf8233f272b7810cad09",
+    "router-package-receipt.json": "4e5d7588a848edc03cfd286dc27b7cb991e0307c43d517ceb0f1f3f87584b88c",
+    "router-counter-declaration.json": "d66a8a75c2ee3335438abdb29e2baab2e78b1382d3482a754a9fc5117fe2f2de",
+    "zero-runtime-declaration.json": "5892cdeeede86f6c8878cfce983442c449c15b1172cf7af91e519a0353dbe79f",
+    "zero-run-full.json": "b87618ad14396817095867f1d89fcc3aa802c262c0bea438d2c688375b6b08d3",
+    "smoke-board-after-router.json": "2dee351f9d01b0c0cf20b21257434df2feacd3a3c2f14b56477071bacbd83c93",
+    "router-dice-official-log.json": "8bb4e168fba659e2ef3e7d4b3a8b054e21d2981e365295d555df060225ed1453",
+    "smoke-board-after-zero.json": "217b6b875c73dd77abcf74cc587fd41600a250dda8c6ee840cdc61ca1cf97eef",
+    "zero-events.jsonl": "dc4814f31890870ba3e24e0c6a67c474bed337dda28dddf19cd02126bb6c8205",
+    "router-dice-declaration.json": "5adad3719227e6d6e584db47dda2cca8948efdd05e4befd8ba58a908aeabdd6c",
+    "package-receipt.json": "3b1e8a798ae82c16fafd26d60e7761214edbc346773c340e9ec78de43b2944ef",
+    "router-counter-status.jsonl": "74c9eaf45dd41f335f7451b374f6c28b8d5164e99c3ebf9df1bee8da5a713b3c",
+    "current-dice-requirement.json": "02712d54c4b4a33a53c16f22f4d0898ecbc38db3aa25455e3e0f6dd30fc61856",
+    "zero-model-public-answers.zip": "a4fb48fad3aaba12244eddaf412f8dca2433010cdf8dd2a10641a74281bc7172",
+    "router-counter-playwright-report.json": "edc20343354afc60e0275fd39d6b264bb6d51b516faae99992da4e2815acecf6",
+    "router-counter-official-product.html": "ff84111946e6ffabed088a03993d5bf3563d6f14d55419d953feb4c68bf0453a",
+    "local-packaged-acceptance.json": "30e823e359c3fb63a2f16d2b8e113bee11591ae0cf31e7e93535c0ab0153fdc2",
+    "router-dice-start.json": "18d0f6beba96aae0c767e2a8f866b3ae7cb5ba617bee32ac0d314e87439d94f6",
+    "local-backend.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "zero-official-log.json": "7199edc04a3cb8f55c30f2c1bea78ed51096751c061e5d898999b684be2108b7",
+    "router-counter-start.json": "748872adc82aa5751d29b0d5b34c995a9d9fe189f7fca58ecc4f1f7edd0dc4ed",
+    "regression-tests.log": "e601de6ca291e721cfc6f3181b6c0269a29645f0ab29c5d456b4076ecd5f8edc",
+    "zero-official-playwright-report.json": "bea0e0595bb38d3381546cf83526d059162cb6777df84e9d933983eb4a6053ae",
+    "router-dice-run-full.json": "78d50a4e3f2697803972650013273120e56e58257e4d8d896601a59dffa71549",
+    "router-dice-official-product.html": "701151aa0b86a2c0e01f36a7101f7ce42d097a12dce6c970e214b6a6cc7e5b47",
+    "router-counter-events.jsonl": "0786eed7b2db034b241d0d0fcb4514c6b82218533c8203944334ef340577a4f9",
+    "router-counter-official-log.json": "daac8e8ae53e65fb098f4214c3b895787093924daacb451f8e546defc7d69924",
+    "router-final-package-receipt.json": "ca3629535d12cf6e424a7b6449a4d3225b67b61c5aad3e3654852f9633a11665",
+    "zero-status.jsonl": "484c226669247a1df9c2822d18c089ed0588ff153f1582a31745aea06907455c"
+  }
+}

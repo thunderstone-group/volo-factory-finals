@@ -5,6 +5,8 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
 
 ## Map
 
+- `docs/security-reproduction-2026-09-13.md`: user-authorized VOLO AI practice-account controls, official results and organizer-facing evidence.
+- `harness_lab/public_answer_baseline.py` / `scripts/package_public_answer.py`: disclosed fixed public answers with zero calls or a real tiny classifier; excluded from normal uploads.
 - `docs/runner-rules-2026-09-12.md`: actual hosted Playwright config, bounded opt-in probe and remaining unknowns.
 - `harness_lab/runner_rules_probe.py` / `scripts/package_rule_probe.py`: explicitly selected lab capture; excluded from normal uploads.
 - `docs/practice-qualification-2026-09-12.md`: current practice branch, top-two results and frozen packages.
@@ -56,3 +58,9 @@ Keep this line on `perf/arc-practice`; do not merge it into main without a later
 request. The immediate engineering target is top two on the relevant small boards.
 Do not claim offline qualification without checking the applicable official rule.
 Preserve real model work, original public tests, exact package identity and usage traces.
+
+The user separately authorized explicitly labeled security reproduction controls in the
+existing VOLO AI practice account. These fixed-answer controls disclose their real model
+role and usage and make no application-generation or general-agent capability claim.
+Keep them opt-in and outside the normal package; never silently promote their rank as
+the general agent's performance. The current evidence records the scope and exact runs.
