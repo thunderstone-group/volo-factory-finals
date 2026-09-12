@@ -1,0 +1,42 @@
+{
+  "source_commit": "eaf622a52724978df3f38c96949228ca3d97db98",
+  "tests": 160,
+  "failures": 0,
+  "skips": 0,
+  "seconds": 101.053,
+  "archive_sha256": "1a1697a1d4644696bf6dd7def6cc2160328ca1e63777a1aa2a2a104d3af5b405",
+  "reproducible": true,
+  "node20_reporter_controls": [
+    {
+      "selection": "named control",
+      "events": [
+        {
+          "type": "test:pass",
+          "name": "named control",
+          "file": "/checks/check.cjs",
+          "nesting": 0,
+          "skip": false,
+          "todo": false,
+          "error": ""
+        }
+      ],
+      "accepted": true
+    },
+    {
+      "selection": "absent",
+      "events": [
+        {
+          "type": "test:pass",
+          "name": "named control",
+          "file": "/checks/check.cjs",
+          "nesting": 0,
+          "skip": true,
+          "todo": false,
+          "error": ""
+        }
+      ],
+      "accepted": false
+    }
+  ],
+  "real_model_calls_in_local_validation": 0
+}
