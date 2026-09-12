@@ -1085,3 +1085,25 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   matching username elements; the first registration scenario times out.
 - Keep the exact dev29 package for a MiniMax M3 comparison. Repeated Pro results do
   not justify declaring these interface contracts reliably implemented.
+
+## E050 — Stop after repeated truncation; no further experiments authorized
+
+- Same dev29 ZIP, MiniMax M3 submission `f78dd4064bde`. The first run `bec00d6ea756`
+  fails during deployment with a missing run-local archive. One same-submission retry,
+  https://arc-bench.com/runs/19c6ab8df8f2, deploys and reaches the model.
+- After image observation, four complete coding responses are rejected for output
+  truncation. No product-generation tool executes. The harness keeps forcing the same
+  whole-application tool instead of switching to incremental file writes. Its truncation
+  branch continues before the normal compact-mode fallback: this is a concrete harness
+  recovery defect, not evidence that the competition cannot be completed.
+- Captured response usage totals 95,850 tokens including the image call; a fifth coding
+  request is pending when stopped. Official cost/duration remain unavailable, not zero.
+- The user explicitly requests an end to further attempts because of time and Codex
+  weekly-quota consumption. Cancelled the current run; the POST returns HTTP 500 but a
+  fresh status confirms **CANCELLED**. No official tests execute. No further runs, model
+  switches or code changes follow this stop decision.
+- A mature Pi harness under the same model/task conditions has not been tested. That
+  missing baseline, weak protection against self-test weakening, repeated local fixes,
+  and inadequate resource stop rules prevent a defensible claim of harness quality.
+  The fresh agent's best official Ticket result remains E047's **6/10**. The requested
+  Ticket first place was not achieved.

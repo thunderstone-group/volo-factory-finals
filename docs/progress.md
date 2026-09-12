@@ -273,3 +273,8 @@ each rule snapshot and experiment with date and source.
   reaching 7/7 scoped self-checks and only 5/10 officially. Its response usage nearly
   consumes the larger allowance. The next comparison keeps the archive unchanged and
   switches the coding model to MiniMax M3; no claim about its quality is made before execution.
+- MiniMax repeatedly truncates whole-app output, and the harness fails to leave that
+  generation mode. The user requests a stop because the elapsed work and Codex quota
+  usage are disproportionate to the result. The active run is cancelled and its status
+  confirmed. Further experiments and code changes stop. Ticket first place is unachieved;
+  a mature Pi baseline has not been run, and no conclusion about its performance is justified.

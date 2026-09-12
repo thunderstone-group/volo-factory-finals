@@ -40,8 +40,9 @@ observed-response token budget is 450,000, configurable through `FACTORY_TOKEN_B
 still run within the wall-time limit without another model call; only a real pass completes.
 Small incremental edits retain their existing single-patch path. Exact values use leaf
 elements, and explicitly permitted English navigation aliases are preferred consistently.
-Official tests remain separate, and this candidate has no official Ticket score yet.
-The best Ticket result from this agent is E047's 6/10; see
+Official tests remain separate. This candidate scores 5/10 with Pro; the MiniMax
+comparison was cancelled after repeated truncation, before evaluation. Further attempts
+are stopped at the user's request. The best Ticket result is E047's 6/10; see
 [experiments](docs/experiments.md) for the evidence and remaining failures.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover

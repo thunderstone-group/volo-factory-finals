@@ -1,5 +1,9 @@
 # Next evidence gates toward the final
 
+Further execution is stopped at the user's request after E050. These are uncompleted
+gates, not authorization to resume. Before any renewed custom-harness tuning, establish
+a mature-harness baseline under matched conditions if the user authorizes more work.
+
 The practice leaderboard is one milestone. These gates test whether the same agent
 can handle changing and larger requirements, rather than repeating a fixed demo.
 
