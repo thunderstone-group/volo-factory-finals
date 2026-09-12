@@ -47,26 +47,38 @@ class PracticeTests(TempCase):
             self.assertIn(requirements.nodes[0]['description'], gateway.requests[0]['messages'][1]['content'])
             self.assertFalse((self.out / 'checks/requirements.cjs').exists())
 
-    def test_short_edits_preserve_old_behavior_and_reject_unknown_file_keys(self):
+    def test_updated_html_preserves_old_behavior_and_adds_the_new_requirement(self):
         requirements = self.configure('real-evolution-counter-input.json')
         scaffold(self.workspace)
         self.workspace.write_files([{'path': 'frontend/public/index.html', 'content': COUNTER}])
         new = '<button onclick="count=0;updateDisplay()">Reset</button></body>'
-        malformed = json.loads((FIXTURES / 'real-practice-nested-edits.json').read_text())['content']
-        answers = [completion(malformed), *[completion(json.dumps([
-            {'file': key, 'old': '</body>', 'new': new}])) for key in ('outside', 'h')]]
+        answers = [completion(COUNTER.replace('</body>', new))]
         with FakeGateway(answers) as gateway:
             model = Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace)
             result = PracticeAgent(requirements, model, self.workspace, Runtime(self.trace)).run()
             self.assertEqual(result['verified_requirements'], ['REQ-1', 'REQ-2'])
-            self.assertEqual(len(gateway.requests), 3)
+            self.assertEqual(len(gateway.requests), 1)
             prompt = gateway.requests[0]['messages'][1]['content']
             self.assertIn(requirements.nodes[1]['description'], prompt)
             self.assertNotIn(requirements.nodes[0]['description'], prompt)
-            self.assertIn('no nested arrays', gateway.requests[1]['messages'][-1]['content'])
-            self.assertIn('existing file key', gateway.requests[2]['messages'][-1]['content'])
+            self.assertIn(COUNTER, prompt)
         events = [json.loads(line) for line in (self.trace.directory / 'events.jsonl').read_text().splitlines()]
         self.assertTrue(next(e for e in events if e['event'] == 'practice_existing_behavior')['passed'])
+
+    def test_nontrivial_backend_uses_the_general_edit_path(self):
+        requirements = self.configure('real-evolution-counter-input.json')
+        scaffold(self.workspace)
+        self.workspace.write_files([
+            {'path': 'frontend/public/index.html', 'content': COUNTER},
+            {'path': 'backend/api.cjs', 'content': 'module.exports=async(req,res)=>{return false;};'}])
+        answer = response([('patch_and_verify', {'edits': [{
+            'path': 'frontend/public/index.html', 'old': '</body>',
+            'new': '<button onclick="count=0;updateDisplay()">Reset</button></body>'}]})])
+        with FakeGateway([answer]) as gateway:
+            model = Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace)
+            result = PracticeAgent(requirements, model, self.workspace, Runtime(self.trace)).run()
+            self.assertEqual(result['verified_requirements'], ['REQ-1', 'REQ-2'])
+            self.assertTrue(gateway.requests[0]['tools'])
 
     def test_unbound_requirements_use_the_general_agent(self):
         requirements = RequirementSet.load(self.req)
