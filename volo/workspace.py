@@ -291,7 +291,8 @@ class Workspace:
         def result(ok, **extra):
             value = {"passed": ok, "steps": steps, "check_command": check_command,
                      'acceptance_fingerprint': contract,
-                     "source_fingerprint": self.fingerprint(), "official_evaluation": "pending", **extra}
+                     "source_fingerprint": self.fingerprint(), "official_evaluation": "pending",
+                     "verification_scope": "local_checks_only", "requirements_verified": False, **extra}
             self.last_verification_attempt = value
             if ok:
                 self.last_verification = value

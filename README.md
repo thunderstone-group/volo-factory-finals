@@ -6,6 +6,20 @@ development milestones, not evidence of a final result.
 
 ## Status
 
+**Current offline candidate: 0.7.0.dev30.** A truncated coding response immediately
+releases full-bundle/compact tool forcing; three consecutive truncations stop the
+batch without executing incomplete calls. Self-check completion no longer issues
+per-requirement `mark_test_passed` events or populates `verified_requirements`.
+Use `self_checked_requirements` for scheduling progress; independent acceptance is
+separate. This SDK-event change has not yet been verified on an official run.
+
+The new [external acceptance gate](evaluation/README.md) pins a developer-owned
+suite outside the candidate and binds results to input/check/source fingerprints.
+It rejects empty, missing, duplicate, skipped, contradicted and modified evidence.
+The gate does not supply task answers, prove a check suite is semantically correct,
+or provide an OS sandbox. It is excluded from competition upload archives.
+These changes have offline regression evidence, not a new competition score.
+
 **Version 0.6.0 reached first place on both Smoke and Smoke Evolution on September 11, 2026.**
 Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average runtime.
 Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
@@ -22,7 +36,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev29**, generates bounded new applications
+The previous officially tested candidate, **0.7.0.dev29**, generates bounded new applications
 through a generic Node runtime. The model supplies the product UI, API logic and checks
 from the complete requirements and image observations; the runtime handles build,
 serving and browser lifecycle. Build and actual behavioral verification are mandatory.
@@ -45,11 +59,12 @@ comparison was cancelled after repeated truncation, before evaluation. Further a
 are stopped at the user's request. The best Ticket result is E047's 6/10; see
 [experiments](docs/experiments.md) for the evidence and remaining failures.
 
-The September 12 [architecture audit](docs/harness-architecture-2026-09-12.md) resumes
-research only. Offline diagnostics reproduce zero-assertion acceptance, self-check
+The initial September 12 [architecture audit](docs/harness-architecture-2026-09-12.md)
+was research-only. Offline diagnostics reproduce zero-assertion acceptance, self-check
 weakening, and a truncation path that never releases full-bundle tool forcing. These
-are limitations of the unchanged runtime, not new model results. Model-backed runs
-and official submissions remain paused during this review.
+were limitations of the audited dev29 runtime, not model results. Dev30 implements
+the first recovery/evidence-boundary changes above. Model-backed runs and official
+submissions remain paused during this offline implementation.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and

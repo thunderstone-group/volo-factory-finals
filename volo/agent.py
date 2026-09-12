@@ -239,6 +239,7 @@ class Agent:
             "version": 1, "status": status, "requirement_fingerprint": self.requirements.fingerprint,
             "source_fingerprint": self.workspace.fingerprint(), "completed": self.completed,
             "check_command": self.check_command, "model": self.model.model,
+            "verification_scope": "local_checks_only",
             "usage": asdict(self.model.usage),
         })
 
@@ -345,7 +346,7 @@ class Agent:
                 payload['runtime']['contract'] = ('Known static server/build/browser helper omitted after byte comparison. '
                     'checks/browser.cjs exports test(name,async(page,assert)=>{}), with a fresh browser at the app.')
             if self.completed:
-                payload['previously_verified'] = self.completed
+                payload['previously_self_checked'] = self.completed
             if self.reference_context and (self.reference_context.get('observations') or self.reference_context.get('unavailable')):
                 payload['reference_observations'] = self.reference_context
             return json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
@@ -359,7 +360,7 @@ class Agent:
                                  "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nReference-image observations (written requirements remain authoritative):\n"
                    + json.dumps(self.reference_context, ensure_ascii=False)
-                   + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
+                   + "\nPreviously self-checked requirement ids (not independent acceptance):\n" + json.dumps(self.completed))
 
     def context_checkpoint(self, nodes, system, last_failure):
         attempt = self.workspace.last_verification_attempt
@@ -412,6 +413,7 @@ class Agent:
                     {"role": "user", "content": request}]
         no_action = 0
         last_failure = None
+        consecutive_truncations = 0
         for _ in range(self.max_calls):
             try:
                 self.guard_budget()
@@ -436,11 +438,26 @@ class Agent:
             print(f"[volo] model calls={self.model.usage.calls} "
                   f"reported_tokens={self.model.usage.total_tokens} finish={reason}", flush=True)
             if reason == "length":
-                self.trace.event("truncated_completion_rejected")
+                consecutive_truncations += 1
+                self.trace.event('truncated_completion_rejected', consecutive=consecutive_truncations)
+                # Release the forced action before continuing, not just its prompt.
+                if direct or compact:
+                    self.trace.event('execution_mode_changed',
+                                     previous='build_app' if direct else 'patch_and_verify',
+                                     current='incremental_tools', reason='output_truncated')
+                direct = compact = False
+                messages[0]['content'] = SYSTEM
+                last_failure = {'kind': 'output_truncated', 'executed_tools': 0,
+                                'consecutive': consecutive_truncations}
+                if consecutive_truncations >= 3:
+                    raise RuntimeError('Repeated output truncation after opening incremental tools; stopping this batch')
                 messages.append({"role": "user", "content":
                     "Your response exceeded the output limit; none of its tools were executed. "
-                    "Write fewer/smaller files per call. Do not repeat a large truncated response."})
+                    "Full file/edit tools are available without a forced bundle. Use write_files for a few "
+                    "complete files, or edit existing source, then finish. Keep existing runtime files. "
+                    "Do not repeat a large truncated response."})
                 continue
+            consecutive_truncations = 0
             messages.append(message)
             calls = message.get("tool_calls") or []
             if not calls:
@@ -527,8 +544,10 @@ class Agent:
                 for node in nodes:
                     self.completed.append(node["id"])
                     self.runtime.emit("mark_implementation_done", node["id"], "Implementation built and started")
-                    self.runtime.emit("mark_test_passed", node["id"],
-                                      "Agent behavioral checks passed; official evaluation is pending")
+                # Self-authored checks do not establish per-requirement coverage.
+                self.trace.event('self_checks_completed', requirements=[node['id'] for node in nodes],
+                                 source_fingerprint=self.workspace.fingerprint(),
+                                 verification_scope='local_checks_only')
                 self.runtime.commit("Implement and verify " + ", ".join(node["id"] for node in nodes))
                 self.checkpoint("batch_verified")
             if self.check_command is None:
@@ -540,7 +559,8 @@ class Agent:
                     raise RuntimeError("Previously completed source failed fresh verification")
             self.checkpoint("completed")
             self.runtime.emit("mark_run_completed", "Build, startup and agent checks passed; ready for official evaluation")
-            return {"status": "completed", "verified_requirements": self.completed,
+            return {"status": "completed", "verified_requirements": [],
+                    "self_checked_requirements": self.completed, "verification_scope": "local_checks_only",
                     "usage": asdict(self.model.usage), "official_evaluation": "pending"}
         except Exception as exc:
             self.trace.event("run_failed", error=str(exc), completed=self.completed)
