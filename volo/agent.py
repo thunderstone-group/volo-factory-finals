@@ -398,7 +398,7 @@ class Agent:
             {'unavailable': 'No reference observer configured; binary images have not been inspected'})
         small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
         bounded = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 16000
-        self.model.thinking = "disabled" if bounded else "enabled"
+        self.model.thinking = "disabled" if small else "enabled"
         self.trace.event("reasoning_policy", small_batch=small, bounded_batch=bounded,
                          requested_thinking=self.model.thinking)
         request = self.batch_request(nodes)

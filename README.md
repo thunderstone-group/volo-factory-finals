@@ -48,9 +48,11 @@ The agent schedules dependency-ordered requirements, observes supported image re
 builds and starts the application, executes behavioral checks and repairs from actual
 failures. Small applications reuse a generic Node runtime; product logic and assertions
 are model-generated. A truncated response executes no tools and releases forced-bundle
-mode; three consecutive truncations stop the batch. Larger prepared apps also retain their first executable failed
-self-check as a repair comparison. Changing later self-checks cannot remove that failure;
-this does not promote authored tests to independently verified requirements.
+mode; three consecutive truncations stop the batch. Larger prepared apps retain named self-check cases that failed with locator ambiguity
+as repair comparisons. Changing later selectors cannot remove those captured failures;
+unrelated assertions can receive legitimate waits. These checks remain model-authored
+and do not certify independent coverage. Small tasks disable thinking; larger DeepSeek
+batches explicitly use low effort with the provider-compatible tool-call format.
 
 Self-check success is reported in `self_checked_requirements`. Independent acceptance
 requires an explicitly supplied, reviewed manifest:

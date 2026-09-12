@@ -1147,3 +1147,48 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   exit 0, accept the actual product correction, and preserve operator checks across
   batch changes. A trace-keyword collision found by the first run was fixed.
   The final **159 tests pass with zero skips**, including real browser/container checks.
+
+## E052 — Full self-check freezing enforces incorrect timing assumptions
+
+- Dev32 source `39e80d7`, package SHA-256
+  `5f2bc90e835e7d63575351986ff0b083e47a1abb7d45abdf9f2e6d5f033c5b75`.
+  Submission `f8478241ac89`; run https://arc-bench.com/runs/df908f8ae72e .
+- Official result: **5/10, 313 seconds, 428,387 tokens, CNY 1.413183**.
+  The captured response token sum matches the official total. The run had already
+  finished when the stop check ran; no cancellation was issued or claimed.
+- The captured seven-case initial suite contains four immediate count assertions
+  before registration/login/logout requests finish. The model legitimately adds waits
+  to current tests, but the frozen whole suite rejects those corrected timings.
+- Subsequent product changes add synchronous client validation and a browser-local
+  `knownAccounts` list used to reject login identifiers. That is a bad consequence of
+  enforcing an incorrect test assumption, and does not establish server-authoritative
+  cross-browser login. Final official failures still include repeated username text.
+- Dev32's whole-suite freeze is rejected as a general repair policy. It did not improve
+  the fresh agent's official best or win the board. The captured suites remain evidence.
+
+## Dev33 — Target ambiguity evidence and enable bounded reasoning
+
+- Retain only flat named test cases that actually failed with a strict-locator ambiguity;
+  unrelated failed cases remain editable, including legitimate synchronization changes.
+  The captured program is unchanged, selected by exact escaped case names, and rerun
+  with the existing structured Node event reporter. Empty/skipped/missing cases cannot
+  pass through a zero exit code or a file-level success event.
+- An actual Chrome control contains one duplicate-identity case and one bad immediate
+  feedback assertion. Scoping the identity check does not repair the original failure;
+  fixing the product and adding a wait to the unrelated check does pass. Node 20 reporter
+  controls also establish that named passes count while skipped cases do not; that
+  version omits the newer optional test-kind field.
+- Tasks above the small 3,500-character path now request low thinking effort. Small
+  Smoke/incremental inputs keep thinking disabled. DeepSeek thinking requests omit
+  forced `tool_choice`, retain all returned reasoning, and normalize null assistant
+  tool-call content to an empty string only on the wire.
+- The provider controls follow the official [thinking-mode contract](https://api-docs.deepseek.com/guides/thinking_mode/)
+  and [agent-integration compatibility guidance](https://api-docs.deepseek.com/quick_start/agent_integrations/oh_my_pi/).
+  Local transport tests are synthetic; the next official run must establish real gateway
+  compatibility, quality and cost. This candidate changes both the corrected repair
+  policy and reasoning policy; a score change cannot identify each factor's contribution.
+- Final dev33 validation: **160 checks pass, zero failures or skips**, including the
+  actual browser ambiguity/wait contrast and Node 20 named-pass/skip reporter controls.
+  Incoming DeepSeek reasoning is preserved in a synthetic two-response HTTP exchange;
+  tool forcing is absent and null assistant tool-call content becomes an empty string
+  on the outgoing wire. These checks precede, and do not replace, the real gateway run.

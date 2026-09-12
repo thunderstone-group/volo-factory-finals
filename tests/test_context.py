@@ -126,7 +126,7 @@ class ContextRepairTests(TempCase):
         self.assertNotIn('omitted-pressure-marker', context)
         self.assertLessEqual(size(gateway.requests[1]['messages']), 16000)
 
-    def test_bounded_feature_uses_full_tools_without_long_reasoning(self):
+    def test_bounded_feature_uses_full_tools_with_low_reasoning(self):
         self.workspace.write_files([{'path': 'README.md', 'content': 'An existing application.'}])
         (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
             '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
@@ -138,7 +138,8 @@ class ContextRepairTests(TempCase):
                 self.workspace, Runtime(self.trace))
             result = agent.run()
         self.assertEqual(result['status'], 'completed')
-        self.assertEqual(gateway.requests[0]['thinking'], {'type': 'disabled'})
+        self.assertEqual(gateway.requests[0]['thinking'], {'type': 'enabled'})
+        self.assertEqual(gateway.requests[0]['reasoning_effort'], 'low')
         self.assertNotIn('tool_choice', gateway.requests[0])
         self.assertIn('deliver', [t['function']['name'] for t in gateway.requests[0]['tools']])
         self.assertNotIn('build_app', [t['function']['name'] for t in gateway.requests[0]['tools']])
@@ -167,7 +168,8 @@ assert.equal((await fetch(base+'/api/missing')).status,404);
             result = agent.run()
         self.assertEqual(result['status'], 'completed')
         self.assertEqual(len(gateway.requests), 1)
-        self.assertEqual(gateway.requests[0]['tool_choice']['function']['name'], 'build_app')
+        self.assertNotIn('tool_choice', gateway.requests[0])
+        self.assertEqual([tool['function']['name'] for tool in gateway.requests[0]['tools']], ['build_app'])
         self.assertEqual((self.out / 'backend/server.cjs').read_text(), SERVER)
         self.assertTrue(self.workspace.last_verification['passed'])
 

@@ -1,46 +1,74 @@
-"""Real HTTP controls for preserving a failed check across attempted test weakening."""
+"""Real browser/HTTP controls for targeted repair evidence; model transport is synthetic."""
+import json
+import os
 import shutil
 import unittest
 
-from test_core import TempCase
+from test_core import TempCase, FakeGateway, response
+from volo.agent import TOOLS
+from volo.model import Model
 from volo.web_runtime import scaffold, implement
 
 HTTP_CHECK = """const assert=require('node:assert/strict');
 fetch(process.env.FACTORY_BASE_URL).then(r=>r.text()).then(text=>assert.equal(text,'hello'));
 """
+HTML = """<span>Unique User</span><span>Unique User</span>
+<script>setTimeout(()=>{const a=document.createElement('div');a.setAttribute('role','alert');
+a.textContent='Ready';document.body.appendChild(a);},500);</script>"""
+CHECKS = """const {test,assert}=require('./browser.cjs');
+test('identity (primary)',async(page)=>{await page.getByText('Unique User',{exact:true}).waitFor();});
+test('feedback',async(page)=>{assert.equal(await page.getByRole('alert').count(),1);});
+"""
 
 
 @unittest.skipUnless(shutil.which('node') and shutil.which('npm'), 'Node/npm required')
 class CapturedSelfCheckTests(TempCase):
-    def test_weakening_current_check_cannot_repair_product_but_source_correction_can(self):
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'), 'Installed Chrome/Playwright required')
+    def test_ambiguity_cannot_be_scoped_away_but_unrelated_waits_can_be_fixed(self):
+        wrapper = self.base / 'real-browser.cjs'
+        wrapper.write_text('const pw=require(' + json.dumps(os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']) + ');'
+            'module.exports={chromium:{launch:()=>pw.chromium.launch({headless:true,executablePath:'
+            + json.dumps(os.environ['FACTORY_TEST_CHROMIUM_EXECUTABLE']) + '})}};')
+        self.workspace.runtime_env['FACTORY_PLAYWRIGHT_MODULE'] = str(wrapper)
         scaffold(self.workspace)
         self.workspace.retain_failed_prepared_checks = True
-        initial = implement(self.workspace, 'wrong', '', HTTP_CHECK)
+        initial = implement(self.workspace, HTML, '', CHECKS)
         self.assertFalse(initial['passed'])
-        self.assertFalse(initial['retained_self_check']['independently_verified'])
+        self.assertIn('retained_self_check', initial, initial)
+        self.assertEqual(initial['retained_self_check']['cases'], ['identity (primary)'])
         captured = self.workspace.required_checks[0]
-        self.workspace.write_files([{'path': 'checks/requirements.cjs', 'content': 'process.exit(0);'}])
+        revised = CHECKS.replace("{exact:true}).waitFor()", "{exact:true}).first().waitFor()")
+        revised = revised.replace("assert.equal(await page.getByRole('alert').count(),1)",
+                                  "await page.getByRole('alert').waitFor()")
+        self.workspace.write_files([{'path': 'checks/requirements.cjs', 'content': revised}])
         command = ['node', '--test', 'checks/requirements.cjs']
         rejected = self.workspace.verify(command)
         self.assertFalse(rejected['passed'])
         self.assertEqual(rejected['executed_checks'], [captured['argv']])
-        self.workspace.edit('frontend/public/index.html', 'wrong', 'hello')
+        self.workspace.edit('frontend/public/index.html', '<span>Unique User</span><span>Unique User</span>',
+                            '<span>Unique User</span>')
         accepted = self.workspace.verify(command)
-        self.assertTrue(accepted['passed'])
+        self.assertTrue(accepted['passed'], accepted)
         self.assertEqual(accepted['acceptance']['verified_requirements'], [])
         self.assertEqual(accepted['verification_scope'], 'local_checks_only')
-
-    def test_new_batch_releases_captured_checks_but_preserves_operator_checks(self):
-        scaffold(self.workspace)
-        self.workspace.retain_failed_prepared_checks = True
-        implement(self.workspace, 'wrong', '', HTTP_CHECK)
-        captured = self.workspace.required_checks[0]
+        captured['argv'][3] = '--test-name-pattern=^absent$'
+        missing = self.workspace.verify(command)
+        self.assertFalse(missing['passed'])
+        self.assertIn('did not all execute', missing['error'])
         operator = {'argv': ['node', 'external.cjs'], 'files': {}}
         self.workspace.required_checks.append(operator)
         self.workspace.clear_prepared_check_guards()
         self.assertEqual(self.workspace.required_checks, [operator])
-        self.assertFalse(self.workspace.retain_failed_prepared_checks)
         self.assertTrue((self.out / captured['argv'][-1]).is_file())
+
+    def test_non_ambiguity_failure_is_not_frozen(self):
+        scaffold(self.workspace)
+        self.workspace.retain_failed_prepared_checks = True
+        result = implement(self.workspace, 'wrong', '', HTTP_CHECK)
+        self.assertFalse(result['passed'])
+        self.assertNotIn('retained_self_check', result)
+        self.assertEqual(self.workspace.required_checks, [])
 
     def test_syntax_error_is_not_frozen_as_a_product_contract(self):
         scaffold(self.workspace)
@@ -49,3 +77,21 @@ class CapturedSelfCheckTests(TempCase):
         self.assertFalse(result['passed'])
         self.assertNotIn('retained_self_check', result)
         self.assertEqual(self.workspace.required_checks, [])
+
+    def test_deepseek_thinking_omits_forcing_and_preserves_reasoning_with_empty_content(self):
+        reply = response([('write_files', {'files': [{'path': 'note.txt', 'content': 'fixture'}]})])
+        message = reply['choices'][0]['message']
+        message['content'] = None
+        message['reasoning_content'] = 'Synthetic reasoning fixture, not a real model trace.'
+        with FakeGateway([reply, response([])]) as gateway:
+            model = Model(gateway.url, 'synthetic-key', 'deepseek-v4-pro', self.trace)
+            model.thinking = 'enabled'
+            history = [{'role': 'user', 'content': 'Synthetic transport check'}]
+            observed, _ = model.complete(history, TOOLS, forced_tool='write_files')
+            history.extend([observed, {'role': 'tool', 'tool_call_id': observed['tool_calls'][0]['id'], 'content': '{}'}])
+            model.complete(history, TOOLS, forced_tool='write_files')
+        self.assertEqual(gateway.requests[0]['reasoning_effort'], 'low')
+        self.assertNotIn('tool_choice', gateway.requests[0])
+        self.assertEqual(gateway.requests[1]['messages'][1]['content'], '')
+        self.assertEqual(gateway.requests[1]['messages'][1]['reasoning_content'], message['reasoning_content'])
+        self.assertIsNone(observed['content'])
