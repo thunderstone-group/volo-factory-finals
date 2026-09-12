@@ -65,6 +65,21 @@ class SmallAcceptanceAgent(TempCase):
             'FACTORY_PLAYWRIGHT_MODULE': os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE'],
             'FACTORY_CHROMIUM_EXECUTABLE': os.environ['FACTORY_TEST_CHROMIUM_EXECUTABLE']}
 
+    def test_compact_request_preserves_all_requirements_and_product_source(self):
+        scaffold(self.workspace)
+        self.workspace.write_files([
+            {'path': 'frontend/public/index.html', 'content': GOOD_COUNTER},
+            {'path': 'checks/requirements.cjs', 'content': 'throw Error("diagnostic only");'}])
+        agent = Agent(self.requirements, None, self.workspace, Runtime(self.trace))
+        agent.inline_source = True
+        data = json.loads(agent.batch_request(self.requirements.nodes))
+        self.assertEqual(data['requirements'], self.requirements.document)
+        self.assertEqual(data['current_requirements'], ['REQ-1'])
+        self.assertEqual(data['source']['frontend/public/index.html'], GOOD_COUNTER)
+        self.assertIn('backend/api.cjs', data['source'])
+        self.assertNotIn('checks/requirements.cjs', data['source'])
+        self.assertNotIn('checks/browser.cjs', data['source'])
+
     def test_product_only_generation_repairs_the_real_omission_from_public_evidence(self):
         answers = [response([('build_app', {'index_html': html})]) for html in (BAD_COUNTER, GOOD_COUNTER)]
         with FakeGateway(answers) as gateway:
