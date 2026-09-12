@@ -14,10 +14,10 @@ The September 12 update restores Smoke Evolution to first with dev16 / Qwen3.6 F
 4/4 official tests, CNY 0.017810 total, seven seconds average. Tag `v0.7.0-dev16`
 preserves that source and the matching upload is recorded in the experiment log.
 Ticket Booking has reached generation and all 10 official tests. This agent's best
-official result remains 5/10; that run's original app passes 9/10 in a local replay of
-the unchanged public tests. Subsequent candidates exposed verification and context
-failures before official evaluation. Intermittent missing-archive deployment failures
-also remain distinct from application failures.
+official result is E047's 6/10; its unmodified artifact passed 10/10 in local public-test
+replays. That local result does not replace the official result or resolve all timing
+differences. Intermittent missing-archive deployment failures remain distinct from
+application failures.
 The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
@@ -44,6 +44,12 @@ Official tests remain separate. This candidate scores 5/10 with Pro; the MiniMax
 comparison was cancelled after repeated truncation, before evaluation. Further attempts
 are stopped at the user's request. The best Ticket result is E047's 6/10; see
 [experiments](docs/experiments.md) for the evidence and remaining failures.
+
+The September 12 [architecture audit](docs/harness-architecture-2026-09-12.md) resumes
+research only. Offline diagnostics reproduce zero-assertion acceptance, self-check
+weakening, and a truncation path that never releases full-bundle tool forcing. These
+are limitations of the unchanged runtime, not new model results. Model-backed runs
+and official submissions remain paused during this review.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and
@@ -158,7 +164,7 @@ are not an OS-level sandbox for subprocesses.
   separate from what is returned to the model. The prepared small-app builder is only
   advertised when its runtime has actually been scaffolded.
 - Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
-- Default caps: 32 attempted requests, 300,000 observed tokens, 1,200 seconds and
+- Default caps: 32 attempted requests, 450,000 observed tokens, 1,200 seconds and
   16,384 output tokens per coding request. Environment overrides use `FACTORY_MAX_CALLS`,
   `FACTORY_TOKEN_BUDGET`, `FACTORY_TIMEOUT`, `FACTORY_MAX_OUTPUT_TOKENS`.
 - The observed token cap is checked between responses; an in-flight response can
@@ -171,6 +177,8 @@ are not an OS-level sandbox for subprocesses.
 - Agent-authored checks and build success do not substitute for official GUI evaluation.
 
 ## Development record
+
+- [Architecture audit, offline evidence and baseline plan](docs/harness-architecture-2026-09-12.md)
 
 - [Strategy and verified rules](docs/strategy.md)
 - [Progress and evidence boundaries](docs/progress.md)

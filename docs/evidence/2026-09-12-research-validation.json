@@ -1,0 +1,32 @@
+{
+  "observed_on": "2026-09-12",
+  "audited_runtime_revision": "80955003090c2f50f7a666bfb6f355ebbefbbfbc",
+  "existing_suite": {
+    "command": "python -m unittest discover -s tests -v",
+    "exit_code": 0,
+    "reported_tests": 73,
+    "passed": 69,
+    "skipped": 4,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 96.872,
+    "source": "Terminal unittest stderr summary and individual test statuses from WebCodex job 466bb030-d7af-4a48-af77-359926ec70d9",
+    "skip_reason": "Four real-browser tests did not discover the required installed Playwright module and Chromium combination in this worktree",
+    "qualification": "Not all browser regressions were exercised; existing suite success is not evidence of model quality"
+  },
+  "boundary_diagnostic": {
+    "command": "python scripts/audit_harness_boundaries.py --expect-baseline",
+    "exit_code": 0,
+    "known_defects_reproduced": 3,
+    "model_api_calls": 0,
+    "official_evaluations": 0,
+    "qualification": "Successful reproduction of defects, not a fixed harness or competition score"
+  },
+  "static_validation": {
+    "new_document_relative_links_valid": true,
+    "diagnostic_script_ast_valid": true,
+    "evidence_json_valid": true,
+    "whitespace_checks_passed": true,
+    "runtime_and_existing_tests_unchanged": true
+  }
+}

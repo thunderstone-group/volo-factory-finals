@@ -1,5 +1,10 @@
 # Harness mechanisms to adopt
 
+**Follow-up, 2026-09-12:** see the [architecture audit](harness-architecture-2026-09-12.md)
+for newly reproduced acceptance/recovery gaps and a gated mature-harness comparison.
+The source review below is historical; local mechanisms do not establish end-to-end
+performance or an independent acceptance oracle.
+
 Reviewed 2026-09-11. Goal: strengthen VOLO for larger and changing requirements while
 keeping all competition model calls on the organizer gateway. This is a source review;
 it is not a performance ranking of the reviewed projects.

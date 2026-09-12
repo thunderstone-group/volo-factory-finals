@@ -1,5 +1,11 @@
 # Next evidence gates toward the final
 
+**September 12 research update:** the user has resumed architecture research. The
+[architecture audit](harness-architecture-2026-09-12.md) and
+[baseline plan](harness-baseline-plan.md) define the next evidence gates. This review
+uses offline diagnostics only; model-backed runs and official submissions remain
+paused. The historical gates below are not a command to restart runs.
+
 Further execution is stopped at the user's request after E050. These are uncompleted
 gates, not authorization to resume. Before any renewed custom-harness tuning, establish
 a mature-harness baseline under matched conditions if the user authorizes more work.

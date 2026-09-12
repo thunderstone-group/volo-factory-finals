@@ -1,0 +1,29 @@
+{
+  "observed_on": "2026-09-12",
+  "method": "Unauthenticated bounded HTTPS GET via authorized runner; no model calls or platform mutation requests",
+  "observations": [
+    {
+      "url": "https://arc-bench.com/api/competitions/ticket-booking",
+      "http_status": 200,
+      "selected_fields": {"id": "ticket-booking", "task_count": 1, "total_tests": 10, "status": "open", "template_required": false},
+      "rules_summary": "Requirements are authoritative; changes should be small enough to verify; artifacts should explain changes.",
+      "limitation": "Selected metadata and paraphrase, not a full snapshot or formal final rules"
+    },
+    {
+      "url": "https://create.gosim.org/factory26/",
+      "http_status": 200,
+      "observation": "Dynamic page shell; ordinary stripped HTML did not yield substantive rules"
+    },
+    {
+      "url": "https://create.gosim.org/factory26/rules",
+      "http_status": 404,
+      "observation": "Previous rules URL did not resolve; formal dates, weights, model list and test permissions not revalidated"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/earendil-works/pi/d12cd92e45e308d4af000554292165ef1984253b/packages/coding-agent/package.json",
+      "http_status": 200,
+      "selected_fields": {"name": "@earendil-works/pi-coding-agent", "version": "0.85.1", "engines": {"node": ">=22.19.0"}},
+      "limitation": "Pinned source only; no installation, gateway compatibility or coding-quality test"
+    }
+  ]
+}
