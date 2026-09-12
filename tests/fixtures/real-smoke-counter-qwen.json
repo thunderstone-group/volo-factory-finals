@@ -1,0 +1,6 @@
+{
+  "source_run": "https://arc-bench.com/runs/224d26e14467",
+  "source_path": "frontend/public/index.html",
+  "sha256": "8a7c7d0ca6043aa9271aadcdf096420d6e7223d99107f2dfe11524c19a90adb9",
+  "index_html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>ARC Counter Smoke Test</title>\n</head>\n<body>\n  <h1>Counter</h1>\n  <div id=\"count\">0</div>\n  <button onclick=\"increment()\">Increment</button>\n  <button onclick=\"decrement()\">Decrement</button>\n  \n  <script>\n    let count = 0;\n    \n    function updateDisplay() {\n      document.getElementById('count').textContent = count.toString();\n    }\n    \n    function increment() {\n      count += 1;\n      updateDisplay();\n    }\n    \n    function decrement() {\n      count -= 1;\n      updateDisplay();\n    }\n  </script>\n</body>\n</html>"
+}

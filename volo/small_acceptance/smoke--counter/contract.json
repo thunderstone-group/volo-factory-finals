@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "requirement_fingerprint": "c6eb72847632e02d92029f4f8123d4270e7d8baa8a5b1e897986bfb4acf27bb0",
+  "files": {
+    "REQ-1.spec.ts": "de5d8c9124640d6c2ab7ceef7201b34cf8bbe6c70a6345769c24c3b2e3ee45d6",
+    "accept.cjs": "f5fd83988b40ade85ba021b62e9c9e6468335981b5a72836dbf39dd3eb0207e3"
+  },
+  "cases": [
+    {
+      "id": "smoke--counter/REQ-1",
+      "file": "accept.cjs",
+      "name": "REQ-1: increment and decrement the counter",
+      "requirements": [
+        "REQ-1"
+      ],
+      "source": "https://arc-bench.com/api/requirements/smoke--counter/tests?catalog=competition#REQ-1.spec.ts"
+    }
+  ]
+}

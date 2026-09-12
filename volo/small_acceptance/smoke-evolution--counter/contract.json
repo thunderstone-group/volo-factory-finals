@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "requirement_fingerprint": "c511fa6ba5f1696912ecac90e615b9dfffdffd697dba6de1d898bfe15c0ed26b",
+  "files": {
+    "REQ-1.spec.ts": "d8eaba8c2bebe37ba63343289fdfe2dc0b492d016bb2f8ea559e1d9c4c214a91",
+    "REQ-2.spec.ts": "72c9cbe0d0eeec63b2da2f7e5946238a7928bde441da19eb12f482a536b597e0",
+    "accept.cjs": "f5fd83988b40ade85ba021b62e9c9e6468335981b5a72836dbf39dd3eb0207e3"
+  },
+  "cases": [
+    {
+      "id": "smoke-evolution--counter/REQ-1",
+      "file": "accept.cjs",
+      "name": "REQ-1: preserve increment and decrement behavior",
+      "requirements": [
+        "REQ-1"
+      ],
+      "source": "https://arc-bench.com/api/requirements/smoke-evolution--counter/tests?catalog=competition#REQ-1.spec.ts"
+    },
+    {
+      "id": "smoke-evolution--counter/REQ-2",
+      "file": "accept.cjs",
+      "name": "REQ-2: reset a changed count to zero",
+      "requirements": [
+        "REQ-2"
+      ],
+      "source": "https://arc-bench.com/api/requirements/smoke-evolution--counter/tests?catalog=competition#REQ-2.spec.ts"
+    }
+  ]
+}

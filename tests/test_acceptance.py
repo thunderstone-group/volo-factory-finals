@@ -3,12 +3,14 @@ import hashlib
 import json
 import os
 import shutil
+import shlex
 import subprocess
 import sys
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from test_core import TempCase, FakeGateway, GREETING_FILES, response
 from volo.acceptance import AcceptanceSuite, AcceptanceUnavailable
@@ -23,6 +25,33 @@ HTTP_CHECK = PREFIX + "test('exact greeting',async()=>{assert.equal(await(await 
 
 @unittest.skipUnless(shutil.which('node') and shutil.which('npm'), 'Installed Node/npm required')
 class AcceptanceTests(TempCase):
+    @unittest.skipUnless(os.getenv('HARNESS_TEST_IMAGE') and shutil.which('docker'),
+                         'Existing Node container image required')
+    def test_container_node_accepts_named_tests_but_not_suite_or_file_events(self):
+        # A real older Node reporter omits kind on tests, but marks describe as suite.
+        directory = self.base / 'node-wrapper'
+        directory.mkdir()
+        executable = directory / 'node'
+        docker = shlex.quote(shutil.which('docker'))
+        image = shlex.quote(os.environ['HARNESS_TEST_IMAGE'])
+        executable.write_text('#!/bin/sh\n'
+            f'if [ "$1" = "--version" ]; then exec {docker} run --rm --pull=never --network none '
+            f'--entrypoint node {image} --version; fi\n'
+            f'exec {docker} run --rm --pull=never --network none --read-only '
+            '--cap-drop=ALL --security-opt no-new-privileges '
+            '--mount "type=bind,src=$PWD,dst=$PWD,readonly" --workdir "$PWD" '
+            f'--entrypoint node {image} "$@"\n')
+        executable.chmod(0o700)
+        with patch.dict(os.environ, {'PATH': str(directory) + os.pathsep + os.environ['PATH']}):
+            good = self.evaluate(self.suite(PREFIX + "test('exact greeting',()=>assert.equal(1,1));"))
+            self.assertTrue(good['passed'], good)
+            for body in ("test('exact greeting',{skip:true},()=>{});",
+                         "require('node:test').describe('exact greeting',()=>{});",
+                         "process.exit(0);"):
+                bad = self.evaluate(self.suite(PREFIX + body))
+                self.assertFalse(bad['passed'], bad)
+                self.assertEqual(bad['verified_requirements'], [])
+
     def suite(self, script=HTTP_CHECK, *, cases=None, requirement_ids=None):
         root = (self.base / 'external-acceptance').resolve()
         root.mkdir(exist_ok=True)

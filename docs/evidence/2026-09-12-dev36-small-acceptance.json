@@ -1,0 +1,57 @@
+{
+  "observed_at": "2026-09-12T12:39:04.398695+00:00",
+  "candidate": "dev36",
+  "change": "Calibrated public small-task acceptance through the existing pinned Node runner; generated self-checks unchanged",
+  "tests": {
+    "passed": 170,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": 130.521
+  },
+  "public_binding": [
+    {
+      "task": "smoke--counter",
+      "fingerprint": "c6eb72847632e02d92029f4f8123d4270e7d8baa8a5b1e897986bfb4acf27bb0",
+      "cases": 1,
+      "asset_files": [
+        "prerequisites.md",
+        "requirements.md"
+      ]
+    },
+    {
+      "task": "smoke--dice",
+      "fingerprint": "b5eca1f932497474b15821fe323c7d38fba69cf6dae7fceb68255249b4c568ec",
+      "cases": 1,
+      "asset_files": [
+        "prerequisites.md",
+        "requirements.md"
+      ]
+    },
+    {
+      "task": "smoke-evolution--counter",
+      "fingerprint": "c511fa6ba5f1696912ecac90e615b9dfffdffd697dba6de1d898bfe15c0ed26b",
+      "cases": 2,
+      "asset_files": [
+        "prerequisites.md",
+        "requirements.md"
+      ]
+    },
+    {
+      "task": "smoke-evolution--dice",
+      "fingerprint": "2a160a8f0e4647ac3b8c18d4cdc6a15f08fc0a656fd48a33d38e502d995703ca",
+      "cases": 2,
+      "asset_files": [
+        "prerequisites.md",
+        "requirements.md"
+      ]
+    }
+  ],
+  "package_sha256": "1cbdb87e96a3685553ca8ae80c68d7a48834e53a9d5ac6eeefc5c99e27b411df",
+  "official_runs": [],
+  "limits": [
+    "Only four exact small-task input versions are enabled.",
+    "Original test bytes and assertion bodies are preserved; the Node fixture adapter is not the official Playwright runner.",
+    "Fixed E064 negative/corrected controls calibrate the declared test-id behavior.",
+    "Official validation is pending."
+  ]
+}

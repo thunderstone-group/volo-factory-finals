@@ -15,6 +15,7 @@ from volo.acceptance import AcceptanceSuite
 from volo.model import Model
 from volo.requirements import RequirementSet
 from volo.references import ReferenceObserver
+from volo.small_acceptance import load_small_acceptance
 from volo.trace import Runtime, Trace
 from volo.workspace import Workspace
 
@@ -56,6 +57,11 @@ def main():
                 raise ValueError('Contract does not cover every input requirement')
         except (OSError, ValueError) as exc:
             parser.error('Invalid acceptance contract: ' + str(exc))
+    else:
+        try:
+            acceptance = load_small_acceptance(requirements, output)
+        except (OSError, ValueError) as exc:
+            parser.error('Invalid bundled acceptance: ' + str(exc))
     trace = Trace(output / ".factory")
     with (trace.directory / "lock").open("w") as lock:
         try:
@@ -80,6 +86,10 @@ def main():
             references = ReferenceObserver(vision, trace)
         workspace = Workspace(output, requirements.root, trace, time.monotonic() + args.timeout)
         workspace.acceptance_suite = acceptance
+        if acceptance is not None:
+            trace.event('acceptance_configured', contract_fingerprint=acceptance.fingerprint,
+                        bundled_task=getattr(acceptance, 'bundled_task', None),
+                        source_files=list(acceptance.files))
         trace.event("run_started", requirement_fingerprint=requirements.fingerprint,
                     model=model_name, vision_model=vision_name, max_calls=args.max_calls, token_budget=args.token_budget,
                     timeout_seconds=args.timeout)

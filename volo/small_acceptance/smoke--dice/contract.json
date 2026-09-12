@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "requirement_fingerprint": "b5eca1f932497474b15821fe323c7d38fba69cf6dae7fceb68255249b4c568ec",
+  "files": {
+    "REQ-1.spec.ts": "446cc5d2b9634fd168fde498fcf73e740605a787b36a5693a1dd33a50effb3b8",
+    "accept.cjs": "f5fd83988b40ade85ba021b62e9c9e6468335981b5a72836dbf39dd3eb0207e3"
+  },
+  "cases": [
+    {
+      "id": "smoke--dice/REQ-1",
+      "file": "accept.cjs",
+      "name": "REQ-1: roll and display a six-sided dice value",
+      "requirements": [
+        "REQ-1"
+      ],
+      "source": "https://arc-bench.com/api/requirements/smoke--dice/tests?catalog=competition#REQ-1.spec.ts"
+    }
+  ]
+}

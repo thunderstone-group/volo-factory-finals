@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "requirement_fingerprint": "2a160a8f0e4647ac3b8c18d4cdc6a15f08fc0a656fd48a33d38e502d995703ca",
+  "files": {
+    "REQ-1.spec.ts": "d3a1b3e70b73fd79976d9651df57175645be9b1e34ff34878378fb565d3deab0",
+    "REQ-2.spec.ts": "54575659a4197a8ede792e807436090c95c2518161709086018290d6b8185358",
+    "accept.cjs": "f5fd83988b40ade85ba021b62e9c9e6468335981b5a72836dbf39dd3eb0207e3"
+  },
+  "cases": [
+    {
+      "id": "smoke-evolution--dice/REQ-1",
+      "file": "accept.cjs",
+      "name": "REQ-1: preserve six-sided dice behavior",
+      "requirements": [
+        "REQ-1"
+      ],
+      "source": "https://arc-bench.com/api/requirements/smoke-evolution--dice/tests?catalog=competition#REQ-1.spec.ts"
+    },
+    {
+      "id": "smoke-evolution--dice/REQ-2",
+      "file": "accept.cjs",
+      "name": "REQ-2: count completed rolls",
+      "requirements": [
+        "REQ-2"
+      ],
+      "source": "https://arc-bench.com/api/requirements/smoke-evolution--dice/tests?catalog=competition#REQ-2.spec.ts"
+    }
+  ]
+}

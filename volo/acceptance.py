@@ -213,7 +213,10 @@ class AcceptanceSuite:
                     status, error = 'unverified', 'Expected named test did not execute exactly once'
                     if len(matches) == 1:
                         event = matches[0]
-                        if event.get('kind') == 'test' and event.get('nesting') == 0:
+                        # Node 20 omits details.type for ordinary named tests, while
+                        # describe() still reports type=suite. File-level events
+                        # cannot match a declared named case in the pinned suite.
+                        if event.get('kind') in (None, 'test') and event.get('nesting') == 0:
                             status = ('skipped' if event.get('skip') or event.get('todo') else
                                       'passed' if event['type'] == 'test:pass' else 'failed')
                             error = event.get('error', '')

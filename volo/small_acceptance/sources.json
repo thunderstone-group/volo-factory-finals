@@ -1,0 +1,36 @@
+[
+  {
+    "task": "smoke--counter",
+    "requirement_fingerprint": "c6eb72847632e02d92029f4f8123d4270e7d8baa8a5b1e897986bfb4acf27bb0",
+    "source": "https://arc-bench.com/api/requirements/smoke--counter/tests?catalog=competition",
+    "files": {
+      "REQ-1.spec.ts": "de5d8c9124640d6c2ab7ceef7201b34cf8bbe6c70a6345769c24c3b2e3ee45d6"
+    }
+  },
+  {
+    "task": "smoke--dice",
+    "requirement_fingerprint": "b5eca1f932497474b15821fe323c7d38fba69cf6dae7fceb68255249b4c568ec",
+    "source": "https://arc-bench.com/api/requirements/smoke--dice/tests?catalog=competition",
+    "files": {
+      "REQ-1.spec.ts": "446cc5d2b9634fd168fde498fcf73e740605a787b36a5693a1dd33a50effb3b8"
+    }
+  },
+  {
+    "task": "smoke-evolution--counter",
+    "requirement_fingerprint": "c511fa6ba5f1696912ecac90e615b9dfffdffd697dba6de1d898bfe15c0ed26b",
+    "source": "https://arc-bench.com/api/requirements/smoke-evolution--counter/tests?catalog=competition",
+    "files": {
+      "REQ-1.spec.ts": "d8eaba8c2bebe37ba63343289fdfe2dc0b492d016bb2f8ea559e1d9c4c214a91",
+      "REQ-2.spec.ts": "72c9cbe0d0eeec63b2da2f7e5946238a7928bde441da19eb12f482a536b597e0"
+    }
+  },
+  {
+    "task": "smoke-evolution--dice",
+    "requirement_fingerprint": "2a160a8f0e4647ac3b8c18d4cdc6a15f08fc0a656fd48a33d38e502d995703ca",
+    "source": "https://arc-bench.com/api/requirements/smoke-evolution--dice/tests?catalog=competition",
+    "files": {
+      "REQ-1.spec.ts": "d3a1b3e70b73fd79976d9651df57175645be9b1e34ff34878378fb565d3deab0",
+      "REQ-2.spec.ts": "54575659a4197a8ede792e807436090c95c2518161709086018290d6b8185358"
+    }
+  }
+]
