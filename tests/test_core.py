@@ -41,7 +41,11 @@ class TempCase(unittest.TestCase):
             "    description: Serve a visible greeting over HTTP.\n")
         self.out = self.base / "application"
         self.trace = Trace(self.out / ".factory")
-        self.workspace = Workspace(self.out, self.req, self.trace, time.monotonic() + 60)
+        # Most tests exercise workspace/agent behavior, not a host-wide tool scan.
+        # Discovery has its own real-process tests; browser tests explicitly attach
+        # installed Playwright/Chrome via enable_installed_browser().
+        with patch('volo.workspace.discover_playwright', return_value={'available': False}):
+            self.workspace = Workspace(self.out, self.req, self.trace, time.monotonic() + 60)
 
     def tearDown(self):
         self.temp.cleanup()

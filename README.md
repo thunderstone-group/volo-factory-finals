@@ -6,6 +6,12 @@ development milestones, not evidence of a final result.
 
 ## Status
 
+**Implementation update:** [evidence-gated harness](docs/evidence-gated-harness.md)
+adds bounded truncation recovery and an explicitly configured external acceptance
+suite. It separates self-checked requirements from independently verified ones and
+provides a worker-neutral scoring CLI. This branch is not an official submission;
+no new competition score or Pi performance claim is made.
+
 **Version 0.6.0 reached first place on both Smoke and Smoke Evolution on September 11, 2026.**
 Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average runtime.
 Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
@@ -22,7 +28,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev29**, generates bounded new applications
+The frozen previously submitted candidate, **0.7.0.dev29**, generates bounded new applications
 through a generic Node runtime. The model supplies the product UI, API logic and checks
 from the complete requirements and image observations; the runtime handles build,
 serving and browser lifecycle. Build and actual behavioral verification are mandatory.
@@ -45,11 +51,12 @@ comparison was cancelled after repeated truncation, before evaluation. Further a
 are stopped at the user's request. The best Ticket result is E047's 6/10; see
 [experiments](docs/experiments.md) for the evidence and remaining failures.
 
-The September 12 [architecture audit](docs/harness-architecture-2026-09-12.md) resumes
-research only. Offline diagnostics reproduce zero-assertion acceptance, self-check
-weakening, and a truncation path that never releases full-bundle tool forcing. These
-are limitations of the unchanged runtime, not new model results. Model-backed runs
-and official submissions remain paused during this review.
+The September 12 [architecture audit](docs/harness-architecture-2026-09-12.md) first
+reproduced zero-assertion acceptance, self-check weakening and stuck bundle forcing.
+The implementation update above addresses recovery and adds calibrated acceptance
+boundaries. An absent external contract is reported as unverified, not silently
+replaced with generated assertions. Model-backed experiments and submissions have
+not been restarted by this implementation.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and

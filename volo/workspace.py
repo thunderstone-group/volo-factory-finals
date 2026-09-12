@@ -18,6 +18,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from .acceptance import AcceptanceUnavailable
 from .environment import discover_playwright
 from .launcher import install as install_launcher
 from .trace import Trace, atomic_json
@@ -73,6 +74,8 @@ class Workspace:
         self.last_verification = None
         self.last_verification_attempt = None
         self.required_checks = []
+        self.acceptance_suite = None
+        self.acceptance_requirement_ids = None
         self.root.mkdir(parents=True, exist_ok=True)
         self.node_available = bool(shutil.which("node"))
         self.browser = discover_playwright(self.root)
@@ -282,16 +285,19 @@ class Workspace:
                     self.last_verification = None
                     raise ValueError('A fixed acceptance check was removed or changed: ' + name)
         contract = hashlib.sha256(json.dumps(self.required_checks, sort_keys=True).encode()).hexdigest()
-        if (self.last_verification and self.last_verification.get("check_command") == check_command
+        if (self.acceptance_suite is None and self.last_verification and self.last_verification.get("check_command") == check_command
                 and self.last_verification.get("source_fingerprint") == self.fingerprint()
                 and self.last_verification.get('acceptance_fingerprint') == contract):
             return {**self.last_verification, "reused_unchanged_verification": True}
         self.last_verification = None
         steps = []
         def result(ok, **extra):
+            acceptance = extra.pop('acceptance', {'status': 'not_run' if self.acceptance_suite else 'not_configured',
+                                                  'passed': False, 'verified_requirements': []})
             value = {"passed": ok, "steps": steps, "check_command": check_command,
                      'acceptance_fingerprint': contract,
-                     "source_fingerprint": self.fingerprint(), "official_evaluation": "pending", **extra}
+                     "source_fingerprint": self.fingerprint(), "official_evaluation": "pending",
+                     'acceptance': acceptance, **extra}
             self.last_verification_attempt = value
             if ok:
                 self.last_verification = value
@@ -355,6 +361,23 @@ class Workspace:
                         if check["exit_code"] != 0 or check["timed_out"]:
                             return result(False, check_command=check_command, executed_checks=executed,
                                           application_url=url)
+                    if self.acceptance_suite is not None:
+                        scope = (self.acceptance_requirement_ids if self.acceptance_requirement_ids is not None
+                                 else self.acceptance_suite.requirement_ids)
+                        acceptance = self.acceptance_suite.run(url, scope,
+                            timeout=min(180, self.deadline - time.monotonic()), extra_env=self.runtime_env)
+                        acceptance['source_fingerprint'] = self.fingerprint()
+                        self.trace.event('independent_acceptance', **acceptance)
+                        if not acceptance['passed']:
+                            steps.append({'output': json.dumps(acceptance, ensure_ascii=False),
+                                          'exit_code': 1, 'timed_out': acceptance.get('timed_out', False)})
+                        verified = result(acceptance['passed'], check_command=check_command,
+                                          executed_checks=commands, application_url=url, acceptance=acceptance,
+                                          **({'error': 'Independent acceptance did not pass'} if not acceptance['passed'] else {}))
+                        if acceptance['status'] in ('error', 'unverified'):
+                            raise AcceptanceUnavailable('Independent acceptance is unavailable or incomplete; '
+                                                        'stopping instead of asking the model to repair its evaluator')
+                        return verified
                     return result(True, check_command=check_command, executed_checks=commands,
                                   application_url=url)
                 finally:

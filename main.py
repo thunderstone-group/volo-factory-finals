@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 
 from volo.agent import Agent
+from volo.acceptance import AcceptanceSuite
 from volo.model import Model
 from volo.requirements import RequirementSet
 from volo.references import ReferenceObserver
@@ -26,6 +27,8 @@ def main():
     parser.add_argument("--max-calls", type=int, default=int(os.getenv("FACTORY_MAX_CALLS", "32")))
     parser.add_argument("--token-budget", type=int, default=int(os.getenv("FACTORY_TOKEN_BUDGET", "450000")))
     parser.add_argument("--timeout", type=int, default=int(os.getenv("FACTORY_TIMEOUT", "1200")))
+    parser.add_argument('--acceptance-contract', type=Path,
+                        help='Reviewed external acceptance manifest; never discovered from generated files')
     args = parser.parse_args()
     if min(args.max_calls, args.token_budget, args.timeout) <= 0:
         parser.error("Budgets must be positive")
@@ -43,6 +46,16 @@ def main():
     output = args.output_dir.resolve()
     if output == requirements.root or output.is_relative_to(requirements.root):
         parser.error("Output directory must not overwrite requirement inputs")
+    acceptance = None
+    if args.acceptance_contract:
+        try:
+            acceptance = AcceptanceSuite(args.acceptance_contract, output, requirements.fingerprint,
+                                         [node['id'] for node in requirements.nodes])
+            covered = {req for case in acceptance.cases for req in case['requirements']}
+            if covered != set(acceptance.requirement_ids):
+                raise ValueError('Contract does not cover every input requirement')
+        except (OSError, ValueError) as exc:
+            parser.error('Invalid acceptance contract: ' + str(exc))
     trace = Trace(output / ".factory")
     with (trace.directory / "lock").open("w") as lock:
         try:
@@ -66,6 +79,7 @@ def main():
             vision.usage = client.usage
             references = ReferenceObserver(vision, trace)
         workspace = Workspace(output, requirements.root, trace, time.monotonic() + args.timeout)
+        workspace.acceptance_suite = acceptance
         trace.event("run_started", requirement_fingerprint=requirements.fingerprint,
                     model=model_name, vision_model=vision_name, max_calls=args.max_calls, token_budget=args.token_budget,
                     timeout_seconds=args.timeout)

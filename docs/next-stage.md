@@ -1,5 +1,10 @@
 # Next evidence gates toward the final
 
+**Implementation update:** the user has authorized optimization. Bounded recovery,
+external acceptance and a worker-neutral scoring CLI are now implemented; see
+[evidence-gated harness](evidence-gated-harness.md). This does not start model-backed
+experiments or official submissions. The research/stop records below are historical.
+
 **September 12 research update:** the user has resumed architecture research. The
 [architecture audit](harness-architecture-2026-09-12.md) and
 [baseline plan](harness-baseline-plan.md) define the next evidence gates. This review

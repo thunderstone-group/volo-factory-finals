@@ -411,6 +411,7 @@ class Agent:
                      SMALL_EDIT_SYSTEM if self.inline_source else SYSTEM},
                     {"role": "user", "content": request}]
         no_action = 0
+        consecutive_truncations = 0
         last_failure = None
         for _ in range(self.max_calls):
             try:
@@ -436,11 +437,25 @@ class Agent:
             print(f"[volo] model calls={self.model.usage.calls} "
                   f"reported_tokens={self.model.usage.total_tokens} finish={reason}", flush=True)
             if reason == "length":
-                self.trace.event("truncated_completion_rejected")
+                consecutive_truncations += 1
+                previous_mode = 'bundle' if direct else 'compact_edit' if compact else 'incremental'
+                # Change the available actions, not just the reminder. Incomplete
+                # tool calls never enter protocol history or execute side effects.
+                direct = compact = False
+                messages[0]['content'] = SYSTEM
+                self.trace.event('truncated_completion_rejected', consecutive=consecutive_truncations)
+                self.trace.event('recovery_transition', reason='output_limit',
+                                 previous_mode=previous_mode, next_mode='incremental',
+                                 source_fingerprint=self.workspace.fingerprint())
+                if consecutive_truncations >= 3:
+                    raise RuntimeError('Stopped after three consecutive truncated responses without executable output')
                 messages.append({"role": "user", "content":
                     "Your response exceeded the output limit; none of its tools were executed. "
-                    "Write fewer/smaller files per call. Do not repeat a large truncated response."})
+                    "Full file/edit tools are now available and no tool is forced. "
+                    "Write one small complete file or exact edit at a time, preserving existing work. "
+                    "Then run finish with a real behavioral check."})
                 continue
+            consecutive_truncations = 0
             messages.append(message)
             calls = message.get("tool_calls") or []
             if not calls:
@@ -458,6 +473,8 @@ class Agent:
             for call in calls:
                 name = call.get("function", {}).get("name", "")
                 try:
+                    if name not in {tool['function']['name'] for tool in active_tools}:
+                        raise ValueError('Tool was not offered in this execution mode: ' + name)
                     args = json.loads(call.get("function", {}).get("arguments", "{}"))
                     self.trace.event("tool_start", tool=name, arguments=args)
                     result = self.dispatch(name, args)
@@ -515,6 +532,7 @@ class Agent:
 
     def run(self):
         self.resume()
+        self.workspace.acceptance_requirement_ids = list(self.completed)
         self.runtime.emit("mark_run_started", "VOLO Factory: requirement-driven generation")
         try:
             for batch in self.requirements.batches():
@@ -523,24 +541,39 @@ class Agent:
                     continue
                 self.trace.event("batch_started", requirements=[node["id"] for node in nodes])
                 print("[volo] implementing " + ", ".join(node["id"] for node in nodes), flush=True)
+                self.workspace.acceptance_requirement_ids = [*self.completed, *[node['id'] for node in nodes]]
                 self.run_batch(nodes)
                 for node in nodes:
                     self.completed.append(node["id"])
                     self.runtime.emit("mark_implementation_done", node["id"], "Implementation built and started")
-                    self.runtime.emit("mark_test_passed", node["id"],
-                                      "Agent behavioral checks passed; official evaluation is pending")
+                    verified = (self.workspace.last_verification or {}).get('acceptance', {}).get('verified_requirements', [])
+                    if node['id'] in verified:
+                        self.runtime.emit('mark_test_passed', node['id'],
+                                          'Pinned external acceptance passed; official evaluation is pending')
                 self.runtime.commit("Implement and verify " + ", ".join(node["id"] for node in nodes))
                 self.checkpoint("batch_verified")
             if self.check_command is None:
                 raise RuntimeError("No behavioral check command was recorded")
-            # A resumed checkpoint must be validated in this process/environment.
-            if not self.workspace.last_verification:
+            # A new/changed acceptance contract cannot inherit a previous self-check
+            # or a proof for fewer requirements, even when reusing a Workspace object.
+            latest = self.workspace.last_verification
+            needs_verification = (not latest or latest['source_fingerprint'] != self.workspace.fingerprint())
+            if self.workspace.acceptance_suite is not None:
+                self.workspace.acceptance_suite.assert_integrity()
+                proof = (latest or {}).get('acceptance', {})
+                needs_verification = (needs_verification or
+                    proof.get('contract_fingerprint') != self.workspace.acceptance_suite.fingerprint or
+                    set(proof.get('verified_requirements', [])) != set(self.completed))
+            if needs_verification:
                 result = self.workspace.verify(self.check_command)
                 if not result["passed"]:
                     raise RuntimeError("Previously completed source failed fresh verification")
             self.checkpoint("completed")
             self.runtime.emit("mark_run_completed", "Build, startup and agent checks passed; ready for official evaluation")
-            return {"status": "completed", "verified_requirements": self.completed,
+            acceptance = self.workspace.last_verification.get('acceptance', {})
+            return {"status": "completed", "self_checked_requirements": self.completed,
+                    "verified_requirements": acceptance.get('verified_requirements', []),
+                    "independent_acceptance": acceptance.get('status', 'not_configured'),
                     "usage": asdict(self.model.usage), "official_evaluation": "pending"}
         except Exception as exc:
             self.trace.event("run_failed", error=str(exc), completed=self.completed)
