@@ -5,6 +5,9 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
 
 ## Map
 
+- `docs/practice-qualification-2026-09-12.md`: current practice branch, top-two results and frozen packages.
+- `volo/practice.py`: branch-only raw HTML execution for the four bound small tasks.
+
 - `docs/SESSION_HANDOFF.md`: current continuation entrypoint, retained run evidence and unresolved work.
 - `docs/small-task-optimization-2026-09-12.md`: dev38 public acceptance, product-only generation and official cost comparison.
 - `docs/competition-optimization-2026-09-12.md`: three-board objective, fresh Fable review, exact E057 failure step and current-main small-board comparison.

@@ -2,6 +2,13 @@
 
 ## Latest continuation
 
+The [practice top-two checkpoint](practice-qualification-2026-09-12.md) is the newest
+record. `perf/arc-practice` now holds Smoke rank 1 / 100% / CNY 0.002114 and Evolution
+rank 2 / 100% / CNY 0.003011. A read-only refresh puts the unchanged Ticket result at
+rank 2 / 90%. Main remains `1717ef4`; do not merge the practice branch automatically.
+The top-two ranking target is met in this snapshot, but offline admission is unconfirmed.
+Read the checkpoint for exact successful packages, experiments and remaining limits.
+
 The user's latest direction is a **separate practice specialization branch**, prioritizing
 rank 1 or 2 for the stated offline-qualification goal. Work continues on `perf/arc-practice`;
 main is intentionally left at the prior general baseline. The qualification criterion

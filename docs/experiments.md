@@ -1359,3 +1359,32 @@ The subsequent research question adds cost per successful task, including failur
 to the objective. These one-call trials do not test whether a premium model can save
 money by using fewer repair iterations. See [the study and primary papers](model-comparison-2026-09-12.md)
 and [evidence](evidence/2026-09-12-model-comparison.json).
+
+
+## E065–E082 — Public acceptance, compact requests and separate practice branch
+
+See [dev36–dev38](small-task-optimization-2026-09-12.md) and the
+[practice top-two checkpoint](practice-qualification-2026-09-12.md). All costs below
+are actual reported CNY. Zero passed/failed cases on a failed run means official tests
+were not reached, not executed failures.
+
+| Experiment | Version | Task | Run | Status | Cases passed/failed | CNY |
+|---|---|---|---|---|---|---:|
+| E065 | dev36 | smoke-counter | `e812e84ffa14` | PASSED | 1/0 | 0.337050 |
+| E066 | dev36 | smoke-dice | `da2379f7ee0c` | PASSED | 1/0 | 0.005184 |
+| E067 | dev37 | evolution-counter | `0948ac44f462` | PASSED | 2/0 | 0.004991 |
+| E068 | dev37 | evolution-dice | `2f9bb7749b69` | PASSED | 2/0 | 0.011548 |
+| E069 | dev37 | smoke-counter | `f449bb3fd455` | PASSED | 1/0 | 0.008718 |
+| E070 | dev37 | smoke-dice | `2a7260facf74` | PASSED | 1/0 | 0.007661 |
+| E071 | dev38 | evolution-counter | `2f2b0e844c9d` | PASSED | 2/0 | 0.003877 |
+| E072 | dev38 | evolution-dice | `af0ce6fdcd6f` | PASSED | 2/0 | 0.004130 |
+| E073 | dev38 | smoke-counter | `1a507b6e8674` | PASSED | 1/0 | 0.002591 |
+| E074 | dev38 | smoke-dice | `39749dce7a7b` | PASSED | 1/0 | 0.002021 |
+| E075 | practice1 | smoke-counter | `d222d1133ef7` | PASSED | 1/0 | 0.001430 |
+| E076 | practice1 | smoke-dice | `a498a01b5c0f` | PASSED | 1/0 | 0.000684 |
+| E077 | practice1 | evolution-counter | `636de364c586` | FAILED | 0/0 | 0.006977 |
+| E078 | practice2 | evolution-counter | `05215c3e1f45` | FAILED | 0/0 | 0.006063 |
+| E079 | practice3 | evolution-counter | `eadea0991fa0` | PASSED | 2/0 | 0.003204 |
+| E080 | practice3 | evolution-dice | `6d7f49a7a947` | PASSED | 2/0 | 0.001115 |
+| E081 | practice4 | evolution-counter | `a912f4545088` | PASSED | 2/0 | 0.001891 |
+| E082 | practice4 | evolution-dice | `2ef485a91200` | PASSED | 2/0 | 0.001120 |

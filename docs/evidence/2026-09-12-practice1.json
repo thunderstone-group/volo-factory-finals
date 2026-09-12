@@ -23,5 +23,27 @@
     "prompt_change": "HTML-only wording clarified to request a fragment; real gateway validation pending."
   },
   "package_sha256": "941874953fe1cf7cc2b0bfde46432e5058eb8c29518ad39ba451c72df22fb350",
-  "official_runs": []
+  "official_runs": [
+    {
+      "run_id": "636de364c586",
+      "task": "smoke-evolution--counter",
+      "status": "FAILED",
+      "cny": 0.006977
+    },
+    {
+      "run_id": "d222d1133ef7",
+      "task": "smoke--counter",
+      "status": "PASSED",
+      "cny": 0.00143
+    },
+    {
+      "run_id": "a498a01b5c0f",
+      "task": "smoke--dice",
+      "status": "PASSED",
+      "cny": 0.000684
+    }
+  ],
+  "limits": [
+    "Smoke reaches rank 1. First Evolution attempt failed during generation on the edit protocol, before official tests."
+  ]
 }

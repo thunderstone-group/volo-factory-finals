@@ -1,0 +1,268 @@
+{
+  "observed_at": "2026-09-12T14:52:01.243814+00:00",
+  "branch": "perf/arc-practice",
+  "main_code_unchanged_at": "1717ef4f11bae8f330a794bea78a6d0d541a3a72",
+  "ranking_goal": "Current practice-board top two; not an offline admission guarantee",
+  "winning_runs": [
+    {
+      "task": "smoke--counter",
+      "run_id": "d222d1133ef7",
+      "url": "https://arc-bench.com/runs/d222d1133ef7",
+      "submission_id": "b55cd36c2329",
+      "source_commit": "50c1bef",
+      "package_sha256": "941874953fe1cf7cc2b0bfde46432e5058eb8c29518ad39ba451c72df22fb350",
+      "official_passed": 1,
+      "official_failed": 0,
+      "official_cny": 0.00143,
+      "seconds": 3,
+      "model": "qwen3.6-flash",
+      "model_calls": 1,
+      "captured_usage": {
+        "completion_tokens": 182,
+        "completion_tokens_details": {
+          "text_tokens": 182
+        },
+        "prompt_tokens": 100,
+        "prompt_tokens_details": {
+          "text_tokens": 100
+        },
+        "total_tokens": 282
+      },
+      "product_response_chars": 689,
+      "independent_acceptance": "passed",
+      "verified_requirements": [
+        "REQ-1"
+      ]
+    },
+    {
+      "task": "smoke--dice",
+      "run_id": "a498a01b5c0f",
+      "url": "https://arc-bench.com/runs/a498a01b5c0f",
+      "submission_id": "b55cd36c2329",
+      "source_commit": "50c1bef",
+      "package_sha256": "941874953fe1cf7cc2b0bfde46432e5058eb8c29518ad39ba451c72df22fb350",
+      "official_passed": 1,
+      "official_failed": 0,
+      "official_cny": 0.000684,
+      "seconds": 2,
+      "model": "qwen3.6-flash",
+      "model_calls": 1,
+      "captured_usage": {
+        "completion_tokens": 80,
+        "completion_tokens_details": {
+          "text_tokens": 80
+        },
+        "prompt_tokens": 90,
+        "prompt_tokens_details": {
+          "text_tokens": 90
+        },
+        "total_tokens": 170
+      },
+      "product_response_chars": 307,
+      "independent_acceptance": "passed",
+      "verified_requirements": [
+        "REQ-1"
+      ]
+    },
+    {
+      "task": "smoke-evolution--counter",
+      "run_id": "a912f4545088",
+      "url": "https://arc-bench.com/runs/a912f4545088",
+      "submission_id": "44ca8ca4bed4",
+      "source_commit": "69972fb",
+      "package_sha256": "dc071c4d398a25c0d4e325d5d163c392e2b8d925010922e604d260ac17f0ae95",
+      "official_passed": 2,
+      "official_failed": 0,
+      "official_cny": 0.001891,
+      "seconds": 4,
+      "model": "qwen3.6-flash",
+      "model_calls": 1,
+      "captured_usage": {
+        "completion_tokens": 218,
+        "completion_tokens_details": {
+          "text_tokens": 218
+        },
+        "prompt_tokens": 268,
+        "prompt_tokens_details": {
+          "text_tokens": 268
+        },
+        "total_tokens": 486
+      },
+      "product_response_chars": 841,
+      "independent_acceptance": "passed",
+      "verified_requirements": [
+        "REQ-1",
+        "REQ-2"
+      ]
+    },
+    {
+      "task": "smoke-evolution--dice",
+      "run_id": "2ef485a91200",
+      "url": "https://arc-bench.com/runs/2ef485a91200",
+      "submission_id": "44ca8ca4bed4",
+      "source_commit": "69972fb",
+      "package_sha256": "dc071c4d398a25c0d4e325d5d163c392e2b8d925010922e604d260ac17f0ae95",
+      "official_passed": 2,
+      "official_failed": 0,
+      "official_cny": 0.00112,
+      "seconds": 3,
+      "model": "qwen3.6-flash",
+      "model_calls": 1,
+      "captured_usage": {
+        "completion_tokens": 127,
+        "completion_tokens_details": {
+          "text_tokens": 127
+        },
+        "prompt_tokens": 171,
+        "prompt_tokens_details": {
+          "text_tokens": 171
+        },
+        "total_tokens": 298
+      },
+      "product_response_chars": 477,
+      "independent_acceptance": "passed",
+      "verified_requirements": [
+        "REQ-1",
+        "REQ-2"
+      ]
+    }
+  ],
+  "current_team_rows": {
+    "smoke": {
+      "rank": 1,
+      "username": "VOLO AI",
+      "model_name": "qwen3.6-flash",
+      "track": "smoke",
+      "avg_pass_rate": 100.0,
+      "avg_feature_implementation_rate": 100.0,
+      "total_token_millions": 0.0,
+      "total_token_cost": 0.002114,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": 47303.6897,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 2,
+      "submission_count": 1,
+      "task_id": null,
+      "task_title": null,
+      "is_complete": true
+    },
+    "evolution": {
+      "rank": 2,
+      "username": "VOLO AI",
+      "model_name": "qwen3.6-flash",
+      "track": "smoke-evolution",
+      "avg_pass_rate": 100.0,
+      "avg_feature_implementation_rate": 100.0,
+      "total_token_millions": 0.001,
+      "total_token_cost": 0.003011,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": 33211.5576,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 4,
+      "submission_count": 1,
+      "task_id": null,
+      "task_title": null,
+      "is_complete": true
+    },
+    "ticket": {
+      "rank": 2,
+      "username": "VOLO AI",
+      "model_name": "deepseek-v4-flash",
+      "track": "ticket-booking",
+      "avg_pass_rate": 90.0,
+      "avg_feature_implementation_rate": 50.0,
+      "total_token_millions": 0.555,
+      "total_token_cost": 0.668715,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": 134.5865,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 212,
+      "submission_count": 64,
+      "task_id": "ticket-booking",
+      "task_title": "火车票预订演示系统",
+      "is_complete": true
+    }
+  },
+  "practice_attempts": [
+    {
+      "run_id": "636de364c586",
+      "task": "smoke-evolution--counter",
+      "status": "FAILED",
+      "cny": 0.006977
+    },
+    {
+      "run_id": "d222d1133ef7",
+      "task": "smoke--counter",
+      "status": "PASSED",
+      "cny": 0.00143
+    },
+    {
+      "run_id": "a498a01b5c0f",
+      "task": "smoke--dice",
+      "status": "PASSED",
+      "cny": 0.000684
+    },
+    {
+      "run_id": "05215c3e1f45",
+      "task": "smoke-evolution--counter",
+      "status": "FAILED",
+      "cny": 0.006063
+    },
+    {
+      "run_id": "eadea0991fa0",
+      "task": "smoke-evolution--counter",
+      "status": "PASSED",
+      "cny": 0.003204
+    },
+    {
+      "run_id": "6d7f49a7a947",
+      "task": "smoke-evolution--dice",
+      "status": "PASSED",
+      "cny": 0.001115
+    },
+    {
+      "run_id": "a912f4545088",
+      "task": "smoke-evolution--counter",
+      "status": "PASSED",
+      "cny": 0.001891
+    },
+    {
+      "run_id": "2ef485a91200",
+      "task": "smoke-evolution--dice",
+      "status": "PASSED",
+      "cny": 0.00112
+    }
+  ],
+  "practice_branch_official_cny": 0.022484,
+  "earlier_small_candidate_official_cny": 0.387771,
+  "this_continuation_official_cny": 0.410255,
+  "ticket_action": "Read-only leaderboard refresh; no new Ticket run",
+  "active_runs_after": [],
+  "qualification_verified": false,
+  "qualification_note": "User said both practice and formal boards may require top two; current public rule pages were unavailable, so that interpretation remains unconfirmed.",
+  "validation": {
+    "unchanged_base_regressions_passed": 175,
+    "practice1_full_run_new_errors": 2,
+    "cause": "Missing time import, corrected before submission; focused checks then passed",
+    "latest_practice_checks_passed": 4,
+    "latest_practice_checks_seconds": 9.912
+  },
+  "local_evidence_roots": [
+    "runs/practice1-raw",
+    "runs/practice2-edits",
+    "runs/practice3-html",
+    "runs/practice4-complete-page"
+  ],
+  "board_evidence_sha256": {
+    "final-smoke-board.json": "97c52dfba36093ebb88e9ab423e078935ead22943bc9d1ea5cb27089a33a9f10",
+    "final-evolution-board.json": "bcc8ef88fb280ecad31426f1f52d81ed3c5098a49eb8d54df4cf4a70a2379c0c",
+    "ticket-board-readonly.json": "3a10a5f42dc60af4a2a7edb5b9789dce12711846bf8df0b6c095148874416f6c",
+    "final-runs.json": "9e082462279e113761ca0b73e7cf028a003dc4cabea77ca30b35e490b646e6e9"
+  }
+}
