@@ -6,6 +6,7 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
 ## Map
 
 - `docs/SESSION_HANDOFF.md`: current continuation entrypoint, retained run evidence and unresolved work.
+- `docs/competition-optimization-2026-09-12.md`: three-board objective, fresh Fable review, exact E057 failure step and current-main small-board comparison.
 - `main.py`: ArcBench upload entrypoint.
 - `volo/`: requirement scheduling, model transport, workspace tools, verification and agent loop.
 - `harness_lab/`: opt-in developer evaluation and Pi/model-browser probes; see its README.

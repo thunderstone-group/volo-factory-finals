@@ -1,5 +1,28 @@
 # ARC continuation handoff — 2026-09-12
 
+## Latest continuation
+
+The [three-board optimization review](competition-optimization-2026-09-12.md) is the
+newest continuation record. The user temporarily deferred Ticket after obtaining the
+available official failure details and requested unchanged dev35 + Flash on Smoke and
+Evolution. Read that comparison before choosing another experiment. The long-term target
+remains 100% and rank 1 on all three boards, followed by a measurable lead and transfer
+to the supplied corpus. The older first-place-only Ticket milestone below is narrower.
+
+Fresh E057 evidence locates the official failure at registration spec line 67,
+`passwordStrength.evaluate(element => element.outerHTML)`, before registration is
+submitted. A fixed E057 replay passes 10/10 with Playwright 1.57.0 and matching configured
+workers/timeouts, but a different browser/host environment. The failure cause is unresolved;
+do not describe it as a proven backend timeout or continue Ticket work while it is deferred.
+
+The completed current-main comparison passes all six official tests across four tasks.
+Smoke improves to CNY 0.015135, rank 3; Evolution's new Flash row costs CNY 0.022518,
+rank 4, while the older Qwen row retains team rank 2 at CNY 0.017810. The four runs cost
+CNY 0.037653 in total. See the linked comparison for run IDs, source identity and Fable's
+two-round review. Ticket was not resubmitted. Raw evidence is retained under
+`runs/20260912-objective-review/` and `runs/20260912-dev35-small-boards/` in the canonical
+checkout. No follow-up batch or automation is running.
+
 Read this checkout's `AGENTS.md`, then this file, `docs/competition-gap-2026-09-12.md`
 and the latest entries in `docs/experiments.md`. This is a continuation of the same
 work, not a request to restart the harness or repeat completed experiments.

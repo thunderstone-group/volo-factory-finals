@@ -1308,3 +1308,29 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   in the merged main, with their inspected remote object IDs checked before deletion.
 - See [the consolidation evidence](evidence/2026-09-12-dev35-consolidation.json).
   No paid model request or new official competition run belongs to this consolidation.
+
+
+## E058–E061 — Current dev35 on both small boards
+
+The user paused Ticket investigation after the official line-67 failure was obtained,
+then requested unchanged current main on Smoke and Evolution. Both uploads match the
+E057 ZIP SHA-256 `081a5e66334114a86648a8f12017214a983b1a95b690476658a421ef48529f8c`.
+All four runs use DeepSeek V4 Flash and pass their official tests.
+
+| Experiment | Task | Run | Passed | Official CNY | Reported seconds |
+|---|---|---|---:|---:|---:|
+| E058 | Smoke Counter | `97bb0befad0a` | 1/1 | 0.008145 | 5 |
+| E059 | Smoke Dice | `096d97ac9729` | 1/1 | 0.006990 | 4 |
+| E060 | Evolution Counter | `576813a77e3d` | 2/2 | 0.009366 | 4 |
+| E061 | Evolution Dice | `9523ff0e9580` | 2/2 | 0.013152 | 6 |
+
+Smoke's new row is rank 3 at CNY 0.015135, 5.5% cheaper than the older best. Evolution's
+new row is rank 4 at CNY 0.022518, 26.4% more expensive than the retained rank-2 Qwen row.
+The combined batch costs CNY 0.037653. This is one sample per task, not a stable-performance
+or causal attribution result. No code change, automatic retry, Ticket run or follow-up
+batch belongs to this comparison. New paid calls are only these four official task runs;
+the separate two-round Fable consultation is recorded in its own USD account.
+
+See [the objective and next decisions](competition-optimization-2026-09-12.md) and
+[hash-bound evidence](evidence/2026-09-12-dev35-small-boards.json). Raw logs and traces are
+in canonical-checkout `runs/20260912-dev35-small-boards/`.
