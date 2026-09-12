@@ -22,7 +22,7 @@ The design and competition facts are recorded in
 [docs/strategy.md](docs/strategy.md). This project does not reuse the previous
 smoke submission.
 
-The current development candidate, **0.7.0.dev29**, generates bounded new applications
+The frozen pre-audit candidate, **0.7.0.dev29**, generates bounded new applications
 through a generic Node runtime. The model supplies the product UI, API logic and checks
 from the complete requirements and image observations; the runtime handles build,
 serving and browser lifecycle. Build and actual behavioral verification are mandatory.
@@ -45,11 +45,14 @@ comparison was cancelled after repeated truncation, before evaluation. Further a
 are stopped at the user's request. The best Ticket result is E047's 6/10; see
 [experiments](docs/experiments.md) for the evidence and remaining failures.
 
-The September 12 [architecture audit](docs/harness-architecture-2026-09-12.md) resumes
-research only. Offline diagnostics reproduce zero-assertion acceptance, self-check
-weakening, and a truncation path that never releases full-bundle tool forcing. These
-are limitations of the unchanged runtime, not new model results. Model-backed runs
-and official submissions remain paused during this review.
+The September 12 [architecture audit](docs/harness-architecture-2026-09-12.md) reproduced
+zero-assertion acceptance, self-check weakening and stuck full-bundle recovery.
+The subsequent **0.7.0.dev30** implementation fixes truncation recovery and adds a
+[development-only independent verifier and Pi probe](docs/verified-harness-core.md).
+The new verifier evaluates snapshots in separate containers, not the generator's own
+reported pass. It is not yet wired into the uploaded `main.py` entrypoint; the old
+internal self-check limitations remain. Pi 0.83.0 is exercised with synthetic local
+responses, not real models. There is no new official score or quality claim.
 
 All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
 real HTTP incremental edits and repair, source/context boundaries, reference routing and

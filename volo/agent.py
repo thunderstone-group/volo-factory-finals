@@ -411,6 +411,7 @@ class Agent:
                      SMALL_EDIT_SYSTEM if self.inline_source else SYSTEM},
                     {"role": "user", "content": request}]
         no_action = 0
+        consecutive_truncations = 0
         last_failure = None
         for _ in range(self.max_calls):
             try:
@@ -436,11 +437,22 @@ class Agent:
             print(f"[volo] model calls={self.model.usage.calls} "
                   f"reported_tokens={self.model.usage.total_tokens} finish={reason}", flush=True)
             if reason == "length":
-                self.trace.event("truncated_completion_rejected")
+                consecutive_truncations += 1
+                self.trace.event("truncated_completion_rejected", consecutive=consecutive_truncations)
+                # A smaller action must actually be available, not just requested in prose.
+                # Reject the entire incomplete response before dispatching any of its tools.
+                if direct or compact:
+                    direct = compact = False
+                    messages[0]['content'] = SYSTEM
+                    self.trace.event('generation_mode_changed', mode='incremental', reason='output_truncated')
+                if consecutive_truncations >= 3:
+                    raise RuntimeError('Repeated output truncation without a complete response; stopping')
                 messages.append({"role": "user", "content":
                     "Your response exceeded the output limit; none of its tools were executed. "
-                    "Write fewer/smaller files per call. Do not repeat a large truncated response."})
+                    "Full file/edit tools are now available. Write one small complete file or edit per call; "
+                    "do not repeat a whole-application bundle."})
                 continue
+            consecutive_truncations = 0
             messages.append(message)
             calls = message.get("tool_calls") or []
             if not calls:
