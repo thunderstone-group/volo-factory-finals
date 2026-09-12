@@ -1,6 +1,17 @@
 # Competition gap after E054
 
-Observed September 12, 2026. The current bottleneck is reaching Ticket's 80% eligibility
+**Update at 18:08 Taipei, September 12: VOLO AI is Ticket Booking rank 1.**
+[E057](https://arc-bench.com/runs/a129e387e562) scores **90% at CNY 0.668715** in 212 seconds.
+The board confirms rank 1 and efficiency 134.5865. Li Yao is rank 2 at 80% / CNY 2.407166.
+Smoke remains rank 3 and Evolution rank 2, both at 100%. One registration test still
+times out; this is first place under the current ranking, not full functional acceptance.
+
+The winning run passes its 11 self-checks after its first generated application. The
+new bounded repair branch does not execute. Consequently, the official result validates
+this submitted candidate, but does not establish a score improvement caused by that branch
+or distinguish the public-input effect from generation variance.
+
+The following comparison records the state before E057. The bottleneck was Ticket's 80% eligibility
 threshold. Our latest 70% result costs CNY 0.787531, below the leading eligible entry's
 CNY 2.407166. Lower cost alone cannot move an ineligible entry ahead of that entry.
 

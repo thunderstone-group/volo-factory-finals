@@ -1263,3 +1263,27 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   checks establish local behavior, not official score or model convergence.
 - Two dev35 package builds match source and each other, SHA-256
   `081a5e66334114a86648a8f12017214a983b1a95b690476658a421ef48529f8c`.
+
+## E057 — Ticket Booking rank 1 at 90%
+
+- Dev35 source `70e9236`, submission `6c4b229f5a93`,
+  [run a129e387e562](https://arc-bench.com/runs/a129e387e562). Official result:
+  **9/10**, **212 seconds**, **CNY 0.668715**, reported **555,255 tokens**. The only
+  failing case is successful registration, with a 10-second timeout. Both login
+  success cases pass. Runner status is FAILED because one case remains; the score
+  nonetheless exceeds the leaderboard's 80% eligibility threshold.
+- The refreshed task board confirms **VOLO AI rank 1**, efficiency **134.5865**,
+  ahead of Li Yao's 80% / CNY 2.407166. Receipt captured at 18:08 Taipei on September 12.
+  Smoke is still rank 3 and Evolution rank 2, both 100%. This is a current snapshot,
+  not a promise that the ranking will remain first.
+- The run contains two model responses: Kimi image observation, then one Flash
+  `build_app`. All 11 generated self-checks pass on the first attempt. The new bounded
+  repair branch **does not execute**, so its model convergence is not established by
+  this run. The score gain cannot be causally separated from generation variance.
+- Captured response usage totals **50,957 tokens**, differing from the official token
+  count. Both values are preserved; the accounting discrepancy is unresolved. Rankings
+  and the cost above use the platform's actual reported result, not a substituted estimate.
+- The initial create-run POST disconnected without a response. Two subsequent reads
+  showed no run for this submission, then one explicit retry created the run above.
+  No duplicate run was started. The verified agent ZIP, final events, source, official
+  status, board snapshot and receipt are retained under `runs/e057-dev35-repair-flash/`.
