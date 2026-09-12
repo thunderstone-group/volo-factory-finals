@@ -1,0 +1,51 @@
+{
+  "observed_on": "2026-09-12",
+  "baseline_revision": "4d8f619d56bccb9fc330d1acb87116f1b8d1d5a4",
+  "candidate_version": "0.7.0.dev30",
+  "real_model_api_calls": 0,
+  "official_evaluations": 0,
+  "delegated_codex_runs": 0,
+  "validation_strategy": "Full suite with real browser, followed by targeted validation of the only subsequently changed source component (external gate). Not a claim of one fresh 95-test full-suite run.",
+  "before_fix_recovery_suite": {
+    "tests": 5, "failures": 4, "errors": 0, "seconds": 17.077,
+    "job_id": "7ec7130a-7757-4e1b-a375-c9a440b1b21a",
+    "classification": "Intentional red regression run on the unchanged baseline"
+  },
+  "full_suite": {
+    "command": "python -m unittest discover -s tests -v",
+    "real_browser_environment_explicitly_configured": true,
+    "tests": 94, "passed": 94, "failed": 0, "errors": 0, "skipped": 0,
+    "seconds": 235.855,
+    "job_id": "cec68348-f5b2-42b6-97ad-c9287459f36f",
+    "gate_sha256_at_import": "713c2989e4cca7b39a54c81b6ee22ea1fce83d97e861850d0b988d8073df0d33",
+    "qualification": "Runtime source is final. During this run the external gate's interpreter invocation path was corrected; the final gate and one added regression were tested separately below."
+  },
+  "final_gate_suite": {
+    "command": "python -m unittest discover -s tests -p test_external_gate.py -v",
+    "tests": 17, "passed": 17, "failed": 0, "errors": 0, "skipped": 0,
+    "seconds": 22.350,
+    "job_id": "1d0b78d9-c81d-4457-8f81-56a7a214a4cc"
+  },
+  "distinct_test_cases_covered": 95,
+  "new_test_cases": 22,
+  "source_sha256": {
+    "volo/agent.py": "9190c2c81d004cc8580aa09da7193ef25cc4b2990ca5ea761130af1c1946fddf",
+    "volo/workspace.py": "23cc407c8396b581efe66a7eed6d15628d669b94661369f731c9042c67d524bd",
+    "volo/__init__.py": "019932ae6cd9063dbab2a619143eaff24f78d3c34c81d3f75d6ec3a85f00de67",
+    "evaluation/gate.py": "b9563235dfd14991e11730ccccbb1187959fcee644487744acebc9d6634df5e7",
+    "tests/test_recovery.py": "044bf2d6d4a475fe8eebf238450e6caf128a46c6a553e770201f84895e6c5085",
+    "tests/test_external_gate.py": "ffe576ab15cb3648d604999cb29a6b53633a76cd36e87184d2d7becc167f4572"
+  },
+  "archive": {
+    "sha256": "9de7ccdbf2c402c8d9fd0d0a0fb684e09cb02edfd502731912565c5b89874cbe",
+    "files": 13, "two_builds_byte_identical": true,
+    "external_evaluator_and_tests_excluded": true, "uploaded": false
+  },
+  "limits": [
+    "No new competition score or measured model-quality/cost improvement.",
+    "External gate is a developer-contract/protocol boundary, not an OS sandbox or automatically correct semantic judge.",
+    "Application-to-snapshot binding is supplied by the operator; sandbox and suite-specific official reporter integration remain.",
+    "Pi adapter and matched real-model comparison are not implemented or run.",
+    "Changed SDK per-requirement progress event behavior has not been verified with an official run."
+  ]
+}
