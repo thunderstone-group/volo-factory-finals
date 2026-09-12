@@ -5,7 +5,19 @@ The objective is repeatable correctness on new requirements and subsequent chang
 Official evaluation establishes competition performance; local checks establish only
 what they actually exercise.
 
-## Development baseline
+## Practice qualification branch
+
+This branch is reserved for the user's practice-board top-two objective. It starts
+from the measured dev38 small-task improvements and may deliberately specialize the
+published small-task execution path. Keep these changes on `perf/arc-practice`; do
+not merge them into `main` automatically. Main remains the prior general baseline.
+The offline qualification rule is user-reported and is being checked separately.
+
+[Dev38 results and acceptance boundary](docs/small-task-optimization-2026-09-12.md)
+record 100% on both small boards with lower cost, but rank 3. Models still generate
+product code; public tests and truthful provider usage remain the evaluation boundary.
+
+## General baseline
 
 Version **0.7.0.dev35** is the latest consolidated agent. Its E057 official Ticket Booking
 run scored **9/10**, **CNY 0.668715**, **212 seconds**, and reached **rank 1** in the

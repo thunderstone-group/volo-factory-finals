@@ -14,9 +14,168 @@
     "added_incremental_seconds": 2.528
   },
   "package_sha256": "644d5b5ea815a0412bc377cd0c626fd5f5ca9e7b84409c5f5cc270ad854d4b26",
-  "official_runs": [],
+  "official_runs": [
+    {
+      "id": "0948ac44f462",
+      "submission_id": "398d3ba87497",
+      "requirement_id": "smoke-evolution--counter",
+      "display_name": "volo-factory-evolution-dev37-product-only",
+      "model_name": "qwen3.6-flash",
+      "status": "PASSED",
+      "score": 100.0,
+      "test_pass_rate": 100.0,
+      "passed_count": 2,
+      "failed_count": 0,
+      "run_duration_seconds": 5,
+      "token_count": 1889,
+      "feature_implemented_count": 2,
+      "feature_total_count": 2,
+      "failure_reason": null,
+      "cost": {
+        "amount": 0.004991,
+        "currency": "CNY"
+      },
+      "steps": [
+        {
+          "key": "deploy_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "start_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "run_tests",
+          "status": "completed",
+          "description": "Done"
+        }
+      ],
+      "failed_tests": []
+    },
+    {
+      "id": "2f9bb7749b69",
+      "submission_id": "398d3ba87497",
+      "requirement_id": "smoke-evolution--dice",
+      "display_name": "volo-factory-evolution-dev37-product-only",
+      "model_name": "qwen3.6-flash",
+      "status": "PASSED",
+      "score": 100.0,
+      "test_pass_rate": 100.0,
+      "passed_count": 2,
+      "failed_count": 0,
+      "run_duration_seconds": 17,
+      "token_count": 7403,
+      "feature_implemented_count": 2,
+      "feature_total_count": 2,
+      "failure_reason": null,
+      "cost": {
+        "amount": 0.011548,
+        "currency": "CNY"
+      },
+      "steps": [
+        {
+          "key": "deploy_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "start_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "run_tests",
+          "status": "completed",
+          "description": "Done"
+        }
+      ],
+      "failed_tests": []
+    },
+    {
+      "id": "f449bb3fd455",
+      "submission_id": "88216f0e90c6",
+      "requirement_id": "smoke--counter",
+      "display_name": "volo-factory-smoke-dev37-product-only",
+      "model_name": "qwen3.6-flash",
+      "status": "PASSED",
+      "score": 100.0,
+      "test_pass_rate": 100.0,
+      "passed_count": 1,
+      "failed_count": 0,
+      "run_duration_seconds": 17,
+      "token_count": 4005,
+      "feature_implemented_count": 1,
+      "feature_total_count": 1,
+      "failure_reason": null,
+      "cost": {
+        "amount": 0.008718,
+        "currency": "CNY"
+      },
+      "steps": [
+        {
+          "key": "deploy_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "start_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "run_tests",
+          "status": "completed",
+          "description": "Done"
+        }
+      ],
+      "failed_tests": []
+    },
+    {
+      "id": "2a7260facf74",
+      "submission_id": "88216f0e90c6",
+      "requirement_id": "smoke--dice",
+      "display_name": "volo-factory-smoke-dev37-product-only",
+      "model_name": "qwen3.6-flash",
+      "status": "PASSED",
+      "score": 100.0,
+      "test_pass_rate": 100.0,
+      "passed_count": 1,
+      "failed_count": 0,
+      "run_duration_seconds": 17,
+      "token_count": 3609,
+      "feature_implemented_count": 1,
+      "feature_total_count": 1,
+      "failure_reason": null,
+      "cost": {
+        "amount": 0.007661,
+        "currency": "CNY"
+      },
+      "steps": [
+        {
+          "key": "deploy_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "start_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "run_tests",
+          "status": "completed",
+          "description": "Done"
+        }
+      ],
+      "failed_tests": []
+    }
+  ],
   "limits": [
     "A first-pass result cannot measure the effect of the new failure feedback or stop guard.",
     "Official results remain separate from local public acceptance."
-  ]
+  ],
+  "official_total_cny": 0.032918,
+  "create_run_recovery": "Lost create response recovered as existing PENDING run 0948ac44f462; started that same run without creating another."
 }

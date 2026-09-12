@@ -1,0 +1,249 @@
+{
+  "observed_at": "2026-09-12T13:25:37.519418+00:00",
+  "candidate": "dev38",
+  "source_commit": "08046a8",
+  "package_sha256": "e5dfc8a33ec30d1c9e327458725584d7df3878907bc8cfae866d0957e72e705d",
+  "runs": [
+    {
+      "run_id": "1a507b6e8674",
+      "task": "smoke--counter",
+      "passed": 1,
+      "failed": 0,
+      "official_cny": 0.002591,
+      "official_tokens": 884,
+      "seconds": 3,
+      "model_calls": 1,
+      "captured_usage": {
+        "completion_tokens": 255,
+        "completion_tokens_details": {
+          "text_tokens": 255
+        },
+        "prompt_tokens": 629,
+        "prompt_tokens_details": {
+          "text_tokens": 629
+        },
+        "total_tokens": 884
+      },
+      "independent_acceptance": {
+        "status": "passed",
+        "verified_requirements": [
+          "REQ-1"
+        ],
+        "contract_fingerprint": "4fd1efb2bce7c3c439471b2b7cf61f65319d5c099d2392bcc3879a7d4933a065"
+      }
+    },
+    {
+      "run_id": "39749dce7a7b",
+      "task": "smoke--dice",
+      "passed": 1,
+      "failed": 0,
+      "official_cny": 0.002021,
+      "official_tokens": 769,
+      "seconds": 2,
+      "model_calls": 1,
+      "captured_usage": {
+        "completion_tokens": 183,
+        "completion_tokens_details": {
+          "text_tokens": 183
+        },
+        "prompt_tokens": 586,
+        "prompt_tokens_details": {
+          "text_tokens": 586
+        },
+        "total_tokens": 769
+      },
+      "independent_acceptance": {
+        "status": "passed",
+        "verified_requirements": [
+          "REQ-1"
+        ],
+        "contract_fingerprint": "021c962a1a75f70f6cae63a18c715f521c3df41664910030b759fd431099bce1"
+      }
+    },
+    {
+      "run_id": "2f2b0e844c9d",
+      "task": "smoke-evolution--counter",
+      "passed": 2,
+      "failed": 0,
+      "official_cny": 0.003877,
+      "official_tokens": 1476,
+      "seconds": 3,
+      "model_calls": 1,
+      "captured_usage": {
+        "completion_tokens": 351,
+        "completion_tokens_details": {
+          "text_tokens": 351
+        },
+        "prompt_tokens": 1125,
+        "prompt_tokens_details": {
+          "text_tokens": 1125
+        },
+        "total_tokens": 1476
+      },
+      "independent_acceptance": {
+        "status": "passed",
+        "verified_requirements": [
+          "REQ-1",
+          "REQ-2"
+        ],
+        "contract_fingerprint": "f31d1db3848b2393d3376ea1bfcb095b0494cbb3b58614f7caa92289cacaa9aa"
+      }
+    },
+    {
+      "run_id": "af0ce6fdcd6f",
+      "task": "smoke-evolution--dice",
+      "passed": 2,
+      "failed": 0,
+      "official_cny": 0.00413,
+      "official_tokens": 1417,
+      "seconds": 4,
+      "model_calls": 1,
+      "captured_usage": {
+        "completion_tokens": 405,
+        "completion_tokens_details": {
+          "text_tokens": 405
+        },
+        "prompt_tokens": 1012,
+        "prompt_tokens_details": {
+          "text_tokens": 1012
+        },
+        "total_tokens": 1417
+      },
+      "independent_acceptance": {
+        "status": "passed",
+        "verified_requirements": [
+          "REQ-1",
+          "REQ-2"
+        ],
+        "contract_fingerprint": "6f55e0bd4cf9dd317c9c12428a667974bef8515c76432bfe8e76e407216c0275"
+      }
+    }
+  ],
+  "comparison": {
+    "smoke": {
+      "old_best_cny": 0.015135,
+      "new_cny": 0.004612,
+      "reduction_percent": 69.52758506772382,
+      "rank": 3
+    },
+    "evolution": {
+      "old_best_cny": 0.016624,
+      "new_cny": 0.008007,
+      "reduction_percent": 51.834696823869095,
+      "rank": 3
+    }
+  },
+  "official_batch_cny": 0.012619,
+  "total_candidate_campaign_cny": 0.387771,
+  "validation": {
+    "initial_full_run": {
+      "tests": 175,
+      "errors": 1,
+      "seconds": 167.671,
+      "failed_case": "test_final_call_budget_edit_is_verified_without_another_model_call"
+    },
+    "focused_replay": {
+      "passed": 1,
+      "seconds": 1.688,
+      "code_changes": false
+    },
+    "full_repeat": {
+      "passed": 175,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 164.129
+    },
+    "failure_cause": "Not reproduced; scoped evidence retained for future diagnosis."
+  },
+  "active_runs_after": [],
+  "leaderboard_observation": {
+    "evolution_leader": {
+      "rank": 1,
+      "username": "你也秃对不队",
+      "model_name": "deepseek-v4-flash",
+      "track": "smoke-evolution",
+      "avg_pass_rate": 100.0,
+      "avg_feature_implementation_rate": 100.0,
+      "total_token_millions": 0.0,
+      "total_token_cost": 4.8e-05,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": 2083333.3333,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 2,
+      "submission_count": 1,
+      "task_id": null,
+      "task_title": null,
+      "is_complete": true
+    },
+    "other_reference": {
+      "rank": 2,
+      "username": "Orchestra",
+      "model_name": "deepseek-v4-flash",
+      "track": "smoke-evolution",
+      "avg_pass_rate": 100.0,
+      "avg_feature_implementation_rate": 100.0,
+      "total_token_millions": 0.001,
+      "total_token_cost": 0.004617,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": 21659.086,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 4,
+      "submission_count": 1,
+      "task_id": null,
+      "task_title": null,
+      "is_complete": true
+    },
+    "display": "API efficiency is displayed as pass/CNY; numerical value matches percentage pass rate divided by cost.",
+    "not_claimed": "Competitor source, actual model usage and the cause of the tiny charge are not established."
+  },
+  "local_evidence_base": "runs/dev38-compact-request",
+  "evidence_sha256": {
+    "smoke-counter-final.json": "cc7b30d9bafc2c794ae6368335ae8a7469128adbcb85a5bb3798b38e8cd0f205",
+    "runs-final.json": "0216e7e673a847ef812224704743cd8c88e06b173dc79d1dbdc01bb5ef4ce410",
+    "batch.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "live-evolution-board.json": "9b2cabd2ad9d0bc8adc1a40444230ca1cd621cc0eec551e6c54e204a6d3b0b15",
+    "live-smoke-board.json": "da21ae0791f9e373545350ce58cb162df2ea92699211ca7eff7a757e1663b6b8",
+    "batch-interrupted.json": "63f8002fc533c33dd480d7db8a32199ae7480ff006673ab717a5cf6e492601bc",
+    "run-batch.py": "885b1be209e7e307109596db489c081199930b4911c051d4d5a86e5800d3ec0b",
+    "smoke-dice-final.json": "85e9988b0227dd30a103d4f27be91e999e545d47bcef33341dd800474ac6de5f",
+    "full-tests-repeat.log": "dc950f813e99b0b2189cae9b7f38e2b4d1e7ac7d67efd73c5a71e08d4ba296c2",
+    "progress.jsonl": "2ed4a2f495f995572da0f6e241b595d6bf11dbcae1540d0520dd8ca8e6da0c58",
+    "smoke.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "smoke-counter-start.json": "46f00dcd78af3968aa6b4aee81c2ba5bf20d56655b5d7c6abf6735061c77e8ea",
+    "evolution-board-final.json": "b09e9813026c0e4d39cc68bb40a8918b7e139df51733f3bed6165a3be09122ad",
+    "smoke-counter-events.jsonl": "aebe7cac5600db14430cd362f466b01d8fff2b1756237b494c6199927314c0fd",
+    "smoke-board-final.json": "1f56637d279c30b1ae5be2170af2e03cae300b783e1884fb69d56206d630e8d1",
+    "smoke-dice-start.json": "830dc4e1eb699ba55699799cdc366c4c419a0f1fb64acb4b63135df0358a5b56",
+    "evolution-upload.json": "8540bb8ec16a5653a3c3074447149be9133e734428811160e32565d2d94bfbfd",
+    "evolution-counter-final.json": "a1e4fc39b9c561e8d486ad34cc56aef707c190ecad4ed34db31acec7639ed902",
+    "run-smoke.py": "460304bac2395b656454e2fb5a2f4b1e2be8175bd13b73342afefdf4dbe360f3",
+    "evolution-dice-events.jsonl": "8e1d2e49eee38d0a588e32b0c79141da2116423f948935d66c79c98b8e4882cc",
+    "full-tests.log": "763bf72802956ceccf030baf45db0f671a5594f7750f5b62915442ee4dfeff80",
+    "smoke-dice-latest.json": "85e9988b0227dd30a103d4f27be91e999e545d47bcef33341dd800474ac6de5f",
+    "smoke-upload.json": "0cfe5eaebbb021c84c15fc92371e15262be59e0ae3ce60cafc8668042273837f",
+    "evolution-dice-start.json": "e18c4dc586437379a34b425511873a075b6af75618e214287a215419afe158fe",
+    "site-index.js": "2a83e55700a52fd32e1f20ec7111e958e42ef276b42d9009290df4a0146e70df",
+    "batch-summary.json": "0c7c1a4d317471cfb1a473f06377dae71522b458837e0d604a8665e21056bbe2",
+    "runs-after.json": "f83d8b956f7ade86c99c2f77a2696bfe6e5020240c1a0c6ff5fa86c3a7f40991",
+    "evolution-dice-latest.json": "99f12e17587a8061668a6d660dfbd9c50284b80d3b77bc2710e815216f3ab636",
+    "evolution-counter-start.json": "edb401fe7becb19c7d524f55dbd17b600c3cb5cfce1bb8f676ec76bc55495829",
+    "smoke-dice-events.jsonl": "f8bc80cd9ee97118f985292989a843c23ed358055bf8a88e4610fccefefe200c",
+    "smoke-board-after.json": "c64fe775a490477071112ff54d75d95f59de3d2e9b4c03791ef2a7da084d6fb1",
+    "evolution-counter-latest.json": "a1e4fc39b9c561e8d486ad34cc56aef707c190ecad4ed34db31acec7639ed902",
+    "smoke-counter-latest.json": "cc7b30d9bafc2c794ae6368335ae8a7469128adbcb85a5bb3798b38e8cd0f205",
+    "evolution-counter-events.jsonl": "d3334337e777adf00947f50e9ba09f28077df48530548cf342a8644c0535b77b",
+    "agent.zip": "e5dfc8a33ec30d1c9e327458725584d7df3878907bc8cfae866d0957e72e705d",
+    "evolution-dice-final.json": "99f12e17587a8061668a6d660dfbd9c50284b80d3b77bc2710e815216f3ab636",
+    "evolution-board-after.json": "01936d007341ddbf3f2dc619e430494398067d3dc5e3a4aa1a38e9a26b58cf28",
+    "smoke-progress.jsonl": "615452913b1e5a7d0d8b51ef37741f7ebecaca9e1568cf5c58dd1de96bc1d377"
+  },
+  "limits": [
+    "One fresh generation per task; no stable rank or generalization claim.",
+    "The public-body Node adapter is not the official runner, and official outcomes are recorded separately.",
+    "Ticket remains deferred and was not submitted."
+  ]
+}

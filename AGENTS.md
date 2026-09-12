@@ -6,9 +6,11 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
 ## Map
 
 - `docs/SESSION_HANDOFF.md`: current continuation entrypoint, retained run evidence and unresolved work.
+- `docs/small-task-optimization-2026-09-12.md`: dev38 public acceptance, product-only generation and official cost comparison.
 - `docs/competition-optimization-2026-09-12.md`: three-board objective, fresh Fable review, exact E057 failure step and current-main small-board comparison.
 - `main.py`: ArcBench upload entrypoint.
 - `volo/`: requirement scheduling, model transport, workspace tools, verification and agent loop.
+- `volo/small_acceptance.py` and `volo/small_acceptance/`: calibrated public assertion bodies bound to four exact small-task inputs; loaded through the existing acceptance runner.
 - `harness_lab/`: opt-in developer evaluation and Pi/model-browser probes; see its README.
 - `tests/`: deterministic transport, recovery and execution tests. These are not evidence of model quality.
 - `docs/harness-consolidation-2026-09-12.md`: integration decisions and validation boundaries.
@@ -40,3 +42,12 @@ Make no claim of winning or generalization without official results on the relev
 
 Run `python -m unittest discover -s tests -v` in the project virtual environment.
 Any transport fixture must be labeled synthetic until replaced by a redacted real response.
+
+
+## Practice branch scope
+
+The user explicitly requested a separate specialization branch for the practice boards.
+Keep this line on `perf/arc-practice`; do not merge it into main without a later explicit
+request. The immediate engineering target is top two on the relevant small boards.
+Do not claim offline qualification without checking the applicable official rule.
+Preserve real model work, original public tests, exact package identity and usage traces.

@@ -2,6 +2,27 @@
 
 ## Latest continuation
 
+The user's latest direction is a **separate practice specialization branch**, prioritizing
+rank 1 or 2 for the stated offline-qualification goal. Work continues on `perf/arc-practice`;
+main is intentionally left at the prior general baseline. The qualification criterion
+is user-reported; confirmation of which leaderboard/notice it refers to is pending.
+
+The [dev38 small-task optimization](small-task-optimization-2026-09-12.md) is now the
+current implementation and continuation record. Qwen3.6 Flash passes both small boards
+at 100%, one model call per task: Smoke CNY 0.004612 and Evolution CNY 0.008007. Both
+are rank 3 in the latest captured snapshot; all-three-first-place remains unachieved.
+The exact package is `e5dfc8a33ec30d1c9e327458725584d7df3878907bc8cfae866d0957e72e705d`.
+
+Fixed public acceptance now covers only four fingerprint-matched inputs. Model-authored
+self-checks are omitted on that path; public assertions still execute and failures block
+completion. The final cohort passes 6/6 official tests. A complete repeat passes 175
+regression tests after an earlier un-reproduced legacy budget-control error. Read the
+linked evidence before stating what was verified. No run or scheduled batch is active.
+
+The user noticed a new Evolution leader at CNY 0.000048. Its displayed 2,083,333 pass/CNY
+is a percentage-based ratio, not millions of completed tasks. Implementation/usage
+details are unavailable; do not infer cheating from the score. Ticket remains deferred.
+
 The [model comparison and research](model-comparison-2026-09-12.md) now extends this
 handoff. With the same dev35 package and identical first-request messages/tools, Qwen
 passes Evolution 4/4 at CNY 0.016624, rank 2, improving the previous team best by 6.7%.
