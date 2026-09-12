@@ -1,5 +1,8 @@
 # Dev30：第一批通用执行与验收优化
 
+> Historical branch record for `fbd0a2a`. For the combined implementation and current paths,
+> see [the consolidation review](harness-consolidation-2026-09-12.md) and [lab map](../harness_lab/README.md).
+
 基线：`4d8f619`；版本：`0.7.0.dev30`。这是用户批准研究后继续实施的独立开发分支，不覆盖原研究工作区，不自动恢复付费打榜。
 
 ## 已实现
@@ -8,9 +11,9 @@
 
 **自测与可信验证不再混名。** 本地构建/启动/检查仍可驱动修复与调度，但结果声明 `local_checks_only`、`requirements_verified=false`，任务结果改用 `self_checked_requirements`。`verified_requirements` 不再因为整批自测通过而自动填满，也不再给 SDK 发送逐需求 `mark_test_passed`。保留 `status=completed` 表示本地执行流程结束，不表示官方验收通过。该 SDK 事件变化尚未经过官方运行验证。
 
-**新增执行器外评分入口。** `evaluation/gate.py` 运行开发者提供、版本固定的外部检查，而不是候选工程自己的自测。检查目录、冻结候选和原始需求目录必须分离。需求、源码、验收脚本和解释器绑定哈希；空结果、缺项、重复项、跳过、空证据、退出码与报告矛盾、运行中修改输入均不能得到完整通过。执行有超时和输出上限，并清理子进程组。检查环境不继承模型密钥、会话 Cookie 或运行时注入变量。Python 虚拟环境调用路径保持不变，避免改变依赖解析。
+**新增执行器外评分入口。** `harness_lab/external_gate.py` 运行开发者提供、版本固定的外部检查，而不是候选工程自己的自测。检查目录、冻结候选和原始需求目录必须分离。需求、源码、验收脚本和解释器绑定哈希；空结果、缺项、重复项、跳过、空证据、退出码与报告矛盾、运行中修改输入均不能得到完整通过。执行有超时和输出上限，并清理子进程组。检查环境不继承模型密钥、会话 Cookie 或运行时注入变量。Python 虚拟环境调用路径保持不变，避免改变依赖解析。
 
-完整操作方法与协议在 [evaluation/README.md](../evaluation/README.md)。入口不依赖具体编码器；后续 Pi/VOLO 可以共用，未接入 Pi 不伪装为已完成对照。
+完整操作方法与协议在 [evaluation/README.md](external-gate.md)。入口不依赖具体编码器；后续 Pi/VOLO 可以共用，未接入 Pi 不伪装为已完成对照。
 
 ## 验证证据
 

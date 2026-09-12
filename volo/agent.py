@@ -239,6 +239,8 @@ class Agent:
             "version": 1, "status": status, "requirement_fingerprint": self.requirements.fingerprint,
             "source_fingerprint": self.workspace.fingerprint(), "completed": self.completed,
             "check_command": self.check_command, "model": self.model.model,
+            "verification_scope": (self.workspace.last_verification or {}).get(
+                "verification_scope", "local_checks_only"),
             "usage": asdict(self.model.usage),
         })
 
@@ -345,7 +347,7 @@ class Agent:
                 payload['runtime']['contract'] = ('Known static server/build/browser helper omitted after byte comparison. '
                     'checks/browser.cjs exports test(name,async(page,assert)=>{}), with a fresh browser at the app.')
             if self.completed:
-                payload['previously_verified'] = self.completed
+                payload['previously_self_checked'] = self.completed
             if self.reference_context and (self.reference_context.get('observations') or self.reference_context.get('unavailable')):
                 payload['reference_observations'] = self.reference_context
             return json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
@@ -359,7 +361,7 @@ class Agent:
                                  "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nReference-image observations (written requirements remain authoritative):\n"
                    + json.dumps(self.reference_context, ensure_ascii=False)
-                   + "\nPreviously verified requirement ids:\n" + json.dumps(self.completed))
+                   + "\nPreviously self-checked requirement ids (not independent acceptance):\n" + json.dumps(self.completed))
 
     def context_checkpoint(self, nodes, system, last_failure):
         attempt = self.workspace.last_verification_attempt
@@ -447,6 +449,8 @@ class Agent:
                 self.trace.event('recovery_transition', reason='output_limit',
                                  previous_mode=previous_mode, next_mode='incremental',
                                  source_fingerprint=self.workspace.fingerprint())
+                last_failure = {'kind': 'output_truncated', 'executed_tools': 0,
+                                'consecutive': consecutive_truncations}
                 if consecutive_truncations >= 3:
                     raise RuntimeError('Stopped after three consecutive truncated responses without executable output')
                 messages.append({"role": "user", "content":
@@ -550,6 +554,9 @@ class Agent:
                     if node['id'] in verified:
                         self.runtime.emit('mark_test_passed', node['id'],
                                           'Pinned external acceptance passed; official evaluation is pending')
+                self.trace.event('self_checks_completed', requirements=[node['id'] for node in nodes],
+                                 source_fingerprint=self.workspace.fingerprint(),
+                                 verification_scope=self.workspace.last_verification['verification_scope'])
                 self.runtime.commit("Implement and verify " + ", ".join(node["id"] for node in nodes))
                 self.checkpoint("batch_verified")
             if self.check_command is None:
@@ -574,6 +581,7 @@ class Agent:
             return {"status": "completed", "self_checked_requirements": self.completed,
                     "verified_requirements": acceptance.get('verified_requirements', []),
                     "independent_acceptance": acceptance.get('status', 'not_configured'),
+                    "verification_scope": self.workspace.last_verification['verification_scope'],
                     "usage": asdict(self.model.usage), "official_evaluation": "pending"}
         except Exception as exc:
             self.trace.event("run_failed", error=str(exc), completed=self.completed)

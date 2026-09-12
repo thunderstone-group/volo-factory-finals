@@ -1,5 +1,8 @@
 # Verified harness core — 实际实现与使用边界
 
+> Historical branch record for `8f0f25d`. For the combined implementation and current paths,
+> see [the consolidation review](harness-consolidation-2026-09-12.md) and [lab map](../harness_lab/README.md).
+
 2026-09-12，开发分支 `feat/verified-harness-core`，基于研究提交 `4d8f619`。
 
 ## 本次实现范围

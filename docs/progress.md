@@ -278,3 +278,25 @@ each rule snapshot and experiment with date and source.
   usage are disproportionate to the result. The active run is cancelled and its status
   confirmed. Further experiments and code changes stop. Ticket first place is unachieved;
   a mature Pi baseline has not been run, and no conclusion about its performance is justified.
+
+## 2026-09-12 — Consolidate evolution before the next architecture experiment
+
+- User requested a unified review and merge of all existing evolution into `main`,
+  followed by a fresh development branch. Saved the uncommitted browser-acceptance
+  experiment as `8881122` before changing the original checkout.
+- Integrated the three independent candidates with merge ancestry preserved. Fixed
+  acceptance remains optional in the uploaded runtime; model probes, generic external
+  evaluation and Pi/container experiments now have a single `harness_lab/` map.
+- Resolved recovery/status overlap and an incompatible synthetic fixture without
+  relaxing active-tool enforcement. Final suite: 156 passed, zero failures/skips,
+  including actual Chrome and Docker checks. Installed Pi 0.83.0 passes the separate
+  positive and malformed-argument probes against scripted loopback responses.
+- Two upload builds are byte-identical and contain no lab experiments. Source and
+  incoming-history secret scans pass. Source-bound results are in
+  `docs/evidence/2026-09-12-consolidation.json`.
+- Inspected pinned GitHub sources for Octos/Octoscode/ARC adapter, Pi, mini-SWE-agent,
+  OpenHands and Harbor. The proposal keeps a small executor, external calibrated
+  evidence, and optional bounded diagnosis; it does not default to a second LLM.
+- No real model calls or official evaluations ran. Ticket's fresh-agent best remains
+  6/10. GUI acceptance calibration and a matched alternative-executor comparison
+  remain future work, described in `docs/harness-design-2026-09-12.md`.

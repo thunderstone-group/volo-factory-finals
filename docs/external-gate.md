@@ -6,7 +6,7 @@ output; it has no worker-specific or Ticket Booking rules.
 
 ## Current boundary
 
-`python -m evaluation.gate` evaluates an **already running application** against a
+`python -m harness_lab.external_gate` evaluates an **already running application** against a
 pinned developer-owned check script. It does not run a model, build/start candidate
 code, install dependencies, fetch tests, or submit an official evaluation.
 
@@ -40,8 +40,8 @@ the candidate. No model-generated contract is automatically trusted. A manifest 
 ```
 
 The angle-bracket strings above are placeholders, not valid hashes. Compute input
-hashes with `evaluation.gate.tree_digest(Path(...))` and file hashes with
-`evaluation.gate.digest_file(Path(...))`. Include every local helper/input used by the
+hashes with `harness_lab.external_gate.tree_digest(Path(...))` and file hashes with
+`harness_lab.external_gate.digest_file(Path(...))`. Include every local helper/input used by the
 check script in `files`; pin external library/runtime dependencies separately.
 `argv` starts with an installed absolute interpreter and a pinned script path; use
 a trusted wrapper to integrate Playwright or another runner.
@@ -75,7 +75,7 @@ hashes. Official evaluation is always separately labeled `not_run`.
 ## Invocation
 
 ```sh
-python -m evaluation.gate \
+python -m harness_lab.external_gate \
   --contract /path/to/trusted-suite/manifest.json \
   --candidate /path/to/frozen-candidate \
   --requirements /path/to/original-requirements \

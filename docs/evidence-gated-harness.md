@@ -1,5 +1,8 @@
 # Implemented: bounded recovery and independent acceptance
 
+> Historical branch record for `596fe7b`. For the combined implementation and current paths,
+> see [the consolidation review](harness-consolidation-2026-09-12.md) and [lab map](../harness_lab/README.md).
+
 This implementation follows the architecture audit, without adding another planning
 model or task-specific layout rule. The frozen official candidate remains in Git;
 this branch is an unsubmitted implementation candidate, identified by its Git revision.

@@ -46,10 +46,11 @@ class OutputRecoveryTests(TempCase):
 
     def test_three_consecutive_truncations_stop_without_spending_remaining_calls(self):
         with FakeGateway([truncated()] * 6) as gateway:
-            with self.assertRaisesRegex(RuntimeError, 'Repeated output truncation'):
+            with self.assertRaisesRegex(RuntimeError, 'three consecutive truncated'):
                 self.agent(gateway).run()
             self.assertEqual(len(gateway.requests), 3)
             self.assertFalse((self.out / 'must-not-exist').exists())
             events = [json.loads(line) for line in self.trace.path.read_text().splitlines()]
-            self.assertEqual(sum(e['event'] == 'generation_mode_changed' for e in events), 1)
+            self.assertEqual(sum(e['event'] == 'recovery_transition' and
+                                 e['previous_mode'] != 'incremental' for e in events), 1)
             self.assertFalse(any(e['event'] == 'tool_start' for e in events))

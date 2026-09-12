@@ -10,7 +10,7 @@ import unittest
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from unittest.mock import patch
 
-from evaluation.gate import Gate, digest_file, tree_digest
+from harness_lab.external_gate import Gate, digest_file, tree_digest
 
 HTTP_CHECK = """import json, os, urllib.request
 opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
@@ -212,7 +212,7 @@ print(json.dumps({'cases':[{'id':'greeting','status':'passed','evidence':'clean 
     def test_cli_writes_evidence_outside_inputs(self):
         manifest = self.contract()
         output = self.base / 'report.json'
-        result = subprocess.run([sys.executable, '-m', 'evaluation.gate', '--contract', str(manifest),
+        result = subprocess.run([sys.executable, '-m', 'harness_lab.external_gate', '--contract', str(manifest),
                                  '--candidate', str(self.candidate), '--requirements', str(self.requirements),
                                  '--base-url', self.url, '--output', str(output)],
                                 capture_output=True, text=True, timeout=10)

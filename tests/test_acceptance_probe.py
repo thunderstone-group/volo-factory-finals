@@ -13,8 +13,8 @@ import unittest
 from unittest.mock import patch
 from urllib.error import HTTPError
 
-from volo.acceptance_probe import MAX_INPUT_CHARS, main, run_acceptance, validate_plan
-from volo.acceptance_browser import Browser, local_url
+from harness_lab.acceptance_probe import MAX_INPUT_CHARS, main, run_acceptance, validate_plan
+from harness_lab.acceptance_browser import Browser, local_url
 from volo.model import Model, ModelError, Usage
 from volo.requirements import RequirementSet
 from volo.trace import Trace
@@ -154,7 +154,7 @@ class AcceptanceTests(unittest.TestCase):
                 self.run_experiment(browser=browser)
 
     def test_late_browser_result_is_not_success(self):
-        with patch("volo.acceptance_probe.time.monotonic", return_value=10) as clock:
+        with patch("harness_lab.acceptance_probe.time.monotonic", return_value=10) as clock:
             browser = AlteredBrowser(lambda result: setattr(clock, "return_value", 101))
             with self.assertRaisesRegex(TimeoutError, "wall-time"):
                 run_acceptance(self.requirements, SyntheticModel(), browser, self.trace, deadline=100)
@@ -166,9 +166,9 @@ class AcceptanceTests(unittest.TestCase):
         browser = AlteredBrowser(lambda result: result["checks"][0]["steps"].pop())
         config = {"OPENAI_BASE_URL": "https://gateway.example/v1", "OPENAI_API_KEY": model.api_key,
                   "MODEL": "synthetic", "FACTORY_PLAYWRIGHT_MODULE": "synthetic-module"}
-        with patch("volo.acceptance_probe.RequirementSet.load", return_value=self.requirements), \
-             patch.dict(os.environ, config, clear=True), patch("volo.acceptance_probe.Model", return_value=model), \
-             patch("volo.acceptance_probe.Browser", return_value=browser), \
+        with patch("harness_lab.acceptance_probe.RequirementSet.load", return_value=self.requirements), \
+             patch.dict(os.environ, config, clear=True), patch("harness_lab.acceptance_probe.Model", return_value=model), \
+             patch("harness_lab.acceptance_probe.Browser", return_value=browser), \
              patch("urllib.request.urlopen", side_effect=AssertionError("Unexpected network call")) as network, \
              contextlib.redirect_stdout(io.StringIO()):
             result = main(["requirements", "--base-url", browser.base_url,
@@ -234,8 +234,8 @@ class AcceptanceTests(unittest.TestCase):
                 local_url(url)
 
     def test_default_cli_inspection_never_starts_browser_or_model(self):
-        with patch("volo.acceptance_probe.RequirementSet.load", return_value=self.requirements), \
-             patch("volo.acceptance_probe.discover_playwright", return_value={"available": False}), \
+        with patch("harness_lab.acceptance_probe.RequirementSet.load", return_value=self.requirements), \
+             patch("harness_lab.acceptance_probe.discover_playwright", return_value={"available": False}), \
              patch.dict(os.environ, {}, clear=True), patch.object(Model, "complete") as model, \
              patch.object(Browser, "execute") as browser, contextlib.redirect_stdout(io.StringIO()) as out:
             self.assertEqual(main(["requirements", "--base-url", "http://127.0.0.1:3000"]), 0)

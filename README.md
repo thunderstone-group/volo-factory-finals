@@ -1,206 +1,98 @@
 # VOLO Factory
 
-A new requirement-driven software agent for the **GOSIM Software Factory 2026**
-hackathon. The goal is a final-winning system; current public leaderboards are
-development milestones, not evidence of a final result.
+A requirement-driven software agent for the GOSIM Software Factory 2026 hackathon.
+The objective is repeatable correctness on new requirements and subsequent changes.
+Official evaluation establishes competition performance; local checks establish only
+what they actually exercise.
 
-## Status
+## Development baseline
 
-**Implementation update:** [evidence-gated harness](docs/evidence-gated-harness.md)
-adds bounded truncation recovery and an explicitly configured external acceptance
-suite. It separates self-checked requirements from independently verified ones and
-provides a worker-neutral scoring CLI. This branch is not an official submission;
-no new competition score or Pi performance claim is made.
+Version **0.7.0.dev31** consolidates the prior competition agent, bounded recovery,
+pinned acceptance, isolated evaluation, Pi protocol probes and the optional model-based
+browser acceptance experiment. The [consolidation review](docs/harness-consolidation-2026-09-12.md)
+records what was combined and how overlapping behavior was resolved.
 
-**Version 0.6.0 reached first place on both Smoke and Smoke Evolution on September 11, 2026.**
-Smoke passed 2/2 official tests, costing CNY 0.016023 with 5 seconds average runtime.
-Evolution passed 4/4, costing CNY 0.056842 with 15 seconds average runtime. These are
-dated practice milestones; the formal preliminary and final are separate competitions.
-The September 12 update restores Smoke Evolution to first with dev16 / Qwen3.6 Flash:
-4/4 official tests, CNY 0.017810 total, seven seconds average. Tag `v0.7.0-dev16`
-preserves that source and the matching upload is recorded in the experiment log.
-Ticket Booking has reached generation and all 10 official tests. This agent's best
-official result is E047's 6/10; its unmodified artifact passed 10/10 in local public-test
-replays. That local result does not replace the official result or resolve all timing
-differences. Intermittent missing-archive deployment failures remain distinct from
-application failures.
-The design and competition facts are recorded in
-[docs/strategy.md](docs/strategy.md). This project does not reuse the previous
-smoke submission.
+This version has no official score. The fresh VOLO agent's best official Ticket Booking
+result is E047's **6/10**; its later dev29 result is 5/10. Historical Smoke/Evolution wins,
+local replays and platform failures are recorded separately in
+[experiments](docs/experiments.md). Current standings come from the platform CLI.
 
-The frozen previously submitted candidate, **0.7.0.dev29**, generates bounded new applications
-through a generic Node runtime. The model supplies the product UI, API logic and checks
-from the complete requirements and image observations; the runtime handles build,
-serving and browser lifecycle. Build and actual behavioral verification are mandatory.
-After a failed first implementation, larger bounded apps immediately get source/edit
-tools for a narrow repair. Failure feedback preserves both log ends, and missing browser
-controls fail within five seconds. Browser failures include visible page text and pending
-requests; separate checks reject unnamed visible meters and repeated links to non-home
-primary destinations even when the model's own assertions pass. The latter is a minimal
-navigation rule for the prepared small-app runtime, not a universal accessibility rule.
-Real Chrome regressions cover those diagnostics, semantics, navigation and timeouts;
-a real HTTP regression covers verified source-only repair.
-Failed bundles return their exact source paths to avoid redundant discovery. The default
-observed-response token budget is 450,000, configurable through `FACTORY_TOKEN_BUDGET` or
-`--token-budget`. If that budget ends immediately after an edit, the existing checks can
-still run within the wall-time limit without another model call; only a real pass completes.
-Small incremental edits retain their existing single-patch path. Exact values use leaf
-elements, and explicitly permitted English navigation aliases are preferred consistently.
-Official tests remain separate. This candidate scores 5/10 with Pro; the MiniMax
-comparison was cancelled after repeated truncation, before evaluation. Further attempts
-are stopped at the user's request. The best Ticket result is E047's 6/10; see
-[experiments](docs/experiments.md) for the evidence and remaining failures.
+## Repository map
 
-The September 12 [architecture audit](docs/harness-architecture-2026-09-12.md) first
-reproduced zero-assertion acceptance, self-check weakening and stuck bundle forcing.
-The implementation update above addresses recovery and adds calibrated acceptance
-boundaries. An absent external contract is reported as unverified, not silently
-replaced with generated assertions. Model-backed experiments and submissions have
-not been restarted by this implementation.
+| Location | Responsibility |
+|---|---|
+| `main.py`, `volo/` | Uploaded agent: requirements, model transport, execution, recovery and optional pinned acceptance |
+| `harness_lab/` | Development experiments: isolated verifier, generic external runner, Pi adapter and model-generated browser probes; excluded from uploads |
+| `arcbench`, `arcbench_cli.py` | Authenticated platform operations; excluded from uploads |
+| `scripts/package.py` | Deterministic upload archive |
+| `scripts/evaluate_candidate.py` | Run a supplied pinned Node acceptance suite against an existing local application, without model calls |
+| `tests/` | Transport, recovery, HTTP, browser and evaluator regressions |
+| `docs/experiments.md`, `docs/evidence/` | Dated results and source-bound evidence, not live state |
 
-All 22 supplied requirement documents (20 unique) parse and schedule. Local checks cover
-real HTTP incremental edits and repair, source/context boundaries, reference routing and
-cache invalidation, captured response accounting, launcher lifecycle and CLI contracts.
+`AGENTS.md` maps development work. Keep the main checkout on `main`; create each new
+branch in `../volo-factory-worktrees/` from current `main`, and merge through a PR.
 
-The ArcBench entrypoint is:
-
-```sh
-python main.py /path/to/requirements --output-dir /path/to/application
-```
-
-Model credentials will come from environment variables supplied by the competition
-runner. Never add a key, private credential, or unredacted run capture to this repository.
-
-## Develop and package
+## Run the competition agent
 
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python main.py /path/to/requirements --output-dir /path/to/application
+```
+
+Real generation requires the organizer-provided `OPENAI_API_KEY`, `OPENAI_BASE_URL`
+and `MODEL`. Credentials never belong in source or command arguments. Use `--inspect`
+to inspect requirements without model calls. See `main.py --help` for execution limits.
+
+The agent schedules dependency-ordered requirements, observes supported image references,
+builds and starts the application, executes behavioral checks and repairs from actual
+failures. Small applications reuse a generic Node runtime; product logic and assertions
+are model-generated. A truncated response executes no tools and releases forced-bundle
+mode; three consecutive truncations stop the batch.
+
+Self-check success is reported in `self_checked_requirements`. Independent acceptance
+requires an explicitly supplied, reviewed manifest:
+
+```sh
+.venv/bin/python main.py /path/to/requirements --output-dir /path/to/application \
+  --acceptance-contract /absolute/separate-suite/contract.json
+```
+
+The [pinned acceptance contract](docs/evidence-gated-harness.md) uses executable tests,
+not a second model. Missing coverage, altered tests and broken evaluators cannot certify
+completion. Without a manifest, `verified_requirements` stays empty and
+`independent_acceptance` is `not_configured`. Even a supplied suite proves only its
+calibrated cases; official evaluation remains separate.
+
+## Validate and package
+
+```sh
 .venv/bin/python -m unittest discover -s tests -v
 .venv/bin/python scripts/package.py
 ```
 
-The upload is `dist/volo-factory.zip`. It contains only the entrypoint, dependency file,
-and `volo/` package. The archive is deterministic.
+To exercise optional integration checks, set `FACTORY_TEST_PLAYWRIGHT_MODULE` to an
+installed Playwright package, `FACTORY_TEST_CHROMIUM_EXECUTABLE` to installed Chrome,
+and `HARNESS_TEST_IMAGE` to an existing local Node/Python Docker image. Missing optional
+tooling is reported as skipped. No test downloads a browser or calls a paid model.
+The separate `python -m harness_lab.pi_probe` command exercises an installed Pi with
+scripted loopback responses; see the [lab map](harness_lab/README.md).
 
-To include the real browser regression, set `FACTORY_TEST_PLAYWRIGHT_MODULE` to an
-installed Playwright package and `FACTORY_TEST_CHROMIUM_EXECUTABLE` to an installed
-Chromium/Chrome executable when running the test suite. Otherwise that check is skipped.
+`dist/volo-factory.zip` contains only `main.py`, `requirements.txt` and `volo/` modules.
+The lab, platform sessions, source applications, development tests and evidence are excluded.
+Run model-generated code in a suitable disposable sandbox; path guards and evaluator
+hashes are not an operating-system sandbox.
 
-Use the local [ArcBench CLI](docs/platform-cli.md) to upload, start runs, wait for results,
-inspect logs and download artifacts. Normal operations use the authenticated website API:
+## Platform and research
 
-```sh
-./arcbench upload dist/volo-factory.zip --competition ticket-booking --name my-agent-version
-./arcbench run SUBMISSION_ID --task ticket-booking--ticket-booking
-./arcbench wait RUN_ID
-./arcbench leaderboard --competition ticket-booking
-```
-
-For a local input inspection with no model calls:
+Use [the platform CLI](docs/platform-cli.md) for uploads, statuses, logs and standings:
 
 ```sh
-.venv/bin/python main.py /path/to/requirements --output-dir runs/inspection --inspect
+./arcbench leaderboard --competition ticket-booking --task ticket-booking
+./arcbench status RUN_ID
 ```
 
-Actual generation needs `OPENAI_API_KEY`, `OPENAI_BASE_URL`, and `MODEL`. Use the
-competition gateway and an allowed model. The agent has no alternative model endpoint.
-Run model-generated code only in a suitable disposable sandbox; workspace path guards
-are not an OS-level sandbox for subprocesses.
-
-## Behavior and limits
-
-An opt-in [independent browser acceptance experiment](docs/acceptance.md) is available
-via `python -m volo.acceptance_probe`. It uses at most one organizer-gateway request to propose
-bounded declarative checks, then executes them in a real browser. It does not change
-the default competition flow or repair the application. Inspection is the default;
-model calls require `--allow-model-calls`. Its results are not official benchmark scores.
-
-- Dependency-ordered requirement batches and existing-project preservation.
-- Batched file edits, bounded commands, build/start/behavioral-check verification, repair loop.
-- Writing a complete authored Node test bundle triggers real verification immediately,
-  preventing source rereads from consuming the budget before the first execution.
-  Discovery uses `checks/*.test.*` / `checks/*.spec.*` filenames, including tests whose
-  framework is imported through a helper. All use `node --test`; incompatible imports
-  fail visibly instead of silently suppressing verification.
-- Small empty projects use one initial bundle-delivery call, then real verification;
-  failed deliveries enter the full repair loop.
-- New applications up to three features and 16,000 requirement characters use that
-  same runtime with concise stateful/routing/semantic guidance. The model supplies the
-  complete product and tests; the runtime supplies no task-specific implementation.
-- Small existing projects receive a bounded snapshot of product code and concise edit
-  instructions, with a forced `patch_and_verify` call for the complete change. Edits
-  are validated together before any write; failures can enter the normal repair loop. Runtime state,
-  credentials and protected files are excluded; larger source sets use normal file tools.
-  Known runtime boilerplate is omitted only after an exact-byte comparison; custom runtime
-  edits remain visible. The full requirement data stays intact in compact serialization.
-- Small-app runtime scaffolding supplies only build, HTTP serving and browser-test lifecycle.
-  Product markup, behavior, API logic and test assertions remain model-generated.
-- DeepSeek thinking/tool message continuity and explicit usage accounting.
-- DeepSeek thinking is disabled for batches of up to three features / 16,000 requirement
-  characters and uses explicit low effort for larger batches. The smaller 3,500-character
-  threshold still controls compact runtime/edit tools. Correctness requires verification.
-  Qwen3 hybrid models receive the equivalent `enable_thinking` control.
-  Kimi K3 always reasons: requests use its documented `reasoning_effort: low`, including
-  image observation, instead of silently accepting its default maximum effort. Returned
-  reasoning fields remain intact. The batch policy is logged as requested intent; the
-  actual request parameters establish the provider controls sent.
-- Check commands are validated before writing delivery/edit bundles. A quoted single-string
-  argv is split without a shell, preventing retries against already-edited source when
-  a model supplies a malformed command shape.
-- Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
-- A managed backend launcher serves one application on the observed 3000/3301 runner
-  entrypoints; custom `PORT` values remain isolated. Authored standalone browser checks
-  using the supplied Playwright module also run when the selected command only runs API tests.
-- Linked images in active requirements and ancestor descriptions are observed by
-  `FACTORY_VISION_MODEL` (default `kimi-k3`) using the same gateway and key. Image calls
-  share the generation budget and trace. Successful observations cache by image bytes,
-  prompt and model. An empty variable disables observation and records that limitation.
-- Browser checks are authored directly from requirements and image observations.
-  Required dynamic levels use a named meter with a changing numeric value; invalid
-  submissions use visible, nonempty alerts and preserve the expected account/session state.
-  Generation instructions require browser assertions for those semantics.
-  The separate generated UI-contract layer was removed after E036 demonstrated that
-  it converted one consent control with alternative names into two required controls.
-  Its earlier source and measured failures remain in Git and the experiment log.
-- Verified-checkpoint recovery with requirement and source fingerprints.
-- Context pressure first prunes old tool output, then uses a fresh workspace checkpoint
-  plus complete recent tool exchanges. The last completed tool result, including successful
-  reads, is also preserved in a bounded checkpoint when its full exchange cannot fit.
-  Retained reasoning fields stay intact; raw trace
-  evidence is preserved. The 120,000-character limit is not a provider token estimate.
-  E034's 60,000-character window discarded earlier implementation before the first
-  tests were written, causing substantial source rereads; the larger default retains
-  that observed application-sized history for the next real comparison.
-- Source tools return at most 12,000 total bytes or an 8,000-character file chunk with
-  a continuation offset. Chunk boundaries preserve Unicode; full-file editing remains
-  separate from what is returned to the model. The prepared small-app builder is only
-  advertised when its runtime has actually been scaffolded.
-- Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
-- Default caps: 32 attempted requests, 450,000 observed tokens, 1,200 seconds and
-  16,384 output tokens per coding request. Environment overrides use `FACTORY_MAX_CALLS`,
-  `FACTORY_TOKEN_BUDGET`, `FACTORY_TIMEOUT`, `FACTORY_MAX_OUTPUT_TOKENS`.
-- The observed token cap is checked between responses; an in-flight response can
-  exceed the remaining amount. Organizer gateway quotas are authoritative.
-- Local PNG/JPEG/WebP references up to 8 MiB each are supported. Small screenshots
-  remain byte-exact; larger rasters use bounded JPEGs with a 1920-pixel maximum edge.
-  Groups contain at most three images and under 780,000 encoded content bytes.
-  Remote/missing/unsupported references are explicitly listed as unavailable. Written
-  requirements override conflicting screenshot defaults and out-of-scope functionality.
-- Agent-authored checks and build success do not substitute for official GUI evaluation.
-
-## Development record
-
-- [Architecture audit, offline evidence and baseline plan](docs/harness-architecture-2026-09-12.md)
-
-- [Strategy and verified rules](docs/strategy.md)
-- [Progress and evidence boundaries](docs/progress.md)
-- [Actual experiments and result links](docs/experiments.md)
-- [Next evidence gates toward the final](docs/next-stage.md)
-- [Harness source review and implemented policies](docs/harness-research.md)
-- [Supplied corpus, deduplication and scheduling audit](docs/corpus.md)
-- [Ticket Booking platform report](docs/ticket-booking-platform-report.md)
-- [Contributor instructions](AGENTS.md)
-
-Local checks use Python's standard `unittest` runner. Only actual runs against
-the organizer's model gateway and official GUI tests will establish competition performance.
+Model calls and official submissions are separate experiment decisions; merging this
+baseline does not start them. The [current architecture proposal](docs/harness-design-2026-09-12.md)
+compares Octos/ARC adapter, Pi, mini-SWE-agent, OpenHands and Harbor at pinned revisions.
+It distinguishes proven local behavior, research findings and untested proposals.

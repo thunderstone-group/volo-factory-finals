@@ -67,14 +67,15 @@ class RecoveryTests(TempCase):
             agent = Agent(RequirementSet.load(self.req),
                           Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace),
                           self.workspace, Runtime(self.trace), max_calls=10)
-            with self.assertRaisesRegex(RuntimeError, 'Repeated output truncation'):
+            with self.assertRaisesRegex(RuntimeError, 'three consecutive truncated'):
                 agent.run()
             self.assertEqual(len(gateway.requests), 3)
             self.assertTrue(all('tool_choice' not in r for r in gateway.requests[1:]))
         self.assertFalse((self.out / 'must-not-exist.txt').exists())
         self.assertFalse((self.out / 'frontend/public/index.html').exists())
         events = [json.loads(line) for line in self.trace.path.read_text().splitlines()]
-        self.assertEqual(sum(e['event'] == 'execution_mode_changed' for e in events), 1)
+        self.assertEqual(sum(e['event'] == 'recovery_transition' and
+                             e['previous_mode'] != 'incremental' for e in events), 1)
         self.assertEqual(events[-1]['event'], 'run_failed')
 
     def test_completed_response_resets_consecutive_truncation_counter(self):
@@ -90,7 +91,12 @@ class RecoveryTests(TempCase):
     def test_noop_self_check_is_never_authoritative_requirement_evidence(self):
         self.workspace.write_files(GREETING_FILES)
         self.workspace.edit('backend/server.cjs', "s.end('hello')", "s.end('wrong')")
-        result, _, _ = self.execute([response([('finish', {'check_command': ['node', '-e', 'process.exit(0)']})])])
+        result, _, _ = self.execute([response([('patch_and_verify', {
+            'edits': [{'path': 'checks/greeting.cjs', 'old': GREETING_FILES[-1]['content'],
+                       'new': 'process.exit(0)'}],
+            'check_command': ['node', 'checks/greeting.cjs'],
+        })])])
         self.assertEqual(result['verified_requirements'], [])
         self.assertEqual(result['verification_scope'], 'local_checks_only')
         self.assertFalse(self.workspace.last_verification['requirements_verified'])
+        self.assertIn("s.end('wrong')", (self.out / 'backend/server.cjs').read_text())

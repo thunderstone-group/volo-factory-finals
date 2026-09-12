@@ -1,5 +1,8 @@
 # Next evidence gates toward the final
 
+> 2026-09-12: the user resumed repository consolidation and architecture review.
+> See [the current design](harness-design-2026-09-12.md); new paid runs remain separate.
+
 **Implementation update:** the user has authorized optimization. Bounded recovery,
 external acceptance and a worker-neutral scoring CLI are now implemented; see
 [evidence-gated harness](evidence-gated-harness.md). This does not start model-backed

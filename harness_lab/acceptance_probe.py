@@ -14,10 +14,10 @@ import time
 import uuid
 
 from .acceptance_browser import Browser, local_url
-from .environment import discover_playwright
-from .model import Model, ModelError
-from .requirements import RequirementSet
-from .trace import Trace, atomic_json
+from volo.environment import discover_playwright
+from volo.model import Model, ModelError
+from volo.requirements import RequirementSet
+from volo.trace import Trace, atomic_json
 
 MAX_CHECKS, MAX_STEPS, MAX_INPUT_CHARS = 8, 40, 40000
 OPERATIONS = ("goto", "reload", "click", "fill", "press", "check", "uncheck", "select",
