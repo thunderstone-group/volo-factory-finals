@@ -38,18 +38,47 @@ fs.rmSync('dist',{recursive:true,force:true});
 fs.cpSync('public','dist',{recursive:true});
 """
 
-BROWSER_CHECK = """const nodeTest=require('node:test');
+BROWSER_CHECK = r"""const nodeTest=require('node:test');
 const assert=require('node:assert/strict');
 function test(name,check){
   nodeTest.test(name,async()=>{
     if(!process.env.FACTORY_PLAYWRIGHT_MODULE) throw new Error('Provided Playwright is unavailable');
     const {chromium}=require(process.env.FACTORY_PLAYWRIGHT_MODULE);
     const browser=await chromium.launch();
-    try{const page=await browser.newPage();const errors=[];
+    let page;const errors=[];const pending=new Map();
+    try{page=await browser.newPage({baseURL:process.env.FACTORY_BASE_URL});
+      page.setDefaultTimeout(5000);page.setDefaultNavigationTimeout(15000);
       page.on('pageerror',error=>errors.push(error.message));
+      page.on('request',request=>pending.set(request,request.method()+' '+new URL(request.url()).pathname));
+      page.on('requestfinished',request=>pending.delete(request));
+      page.on('requestfailed',request=>pending.delete(request));
       await page.goto(process.env.FACTORY_BASE_URL);
       if(errors.length) throw new Error('Browser JavaScript errors: '+errors.join('; '));
       await check(page,assert);
+      if(errors.length) throw new Error('Browser JavaScript errors: '+errors.join('; '));
+      const repeated=await page.getByRole('link').evaluateAll(links=>{
+        const primary=new Set();const targets=new Map();
+        for(const link of links){
+          const raw=link.getAttribute('href');if(!raw||raw.startsWith('#'))continue;
+          const url=new URL(raw,location.href);
+          if(url.origin!==location.origin||(url.pathname==='/'&&!url.search))continue;
+          const target=url.pathname+url.search+url.hash;
+          if(link.closest('nav,[role="navigation"],#nav'))primary.add(target);
+          const labels=targets.get(target)||[];
+          labels.push(link.getAttribute('aria-label')||link.textContent.trim());targets.set(target,labels);
+        }
+        return [...primary].filter(target=>targets.get(target).length>1)
+          .map(target=>({target,labels:targets.get(target)}));
+      });
+      assert.equal(repeated.length,0,'Keep one visible link to each primary page; remove repeated shortcuts: '+JSON.stringify(repeated));
+      assert.equal(await page.getByRole('meter',{name:/^\s*$/}).count(),0,
+        'Visible meters must have an accessible name from a label or aria-label');
+    }catch(error){
+      try{error.message+='\nBrowser state: '+JSON.stringify({
+        url:page.url(),visible_text:(await page.locator('body').innerText({timeout:1000})).slice(0,6000),
+        pending_requests:[...pending.values()].slice(0,10),page_errors:errors.slice(0,10)});
+      }catch{}
+      throw error;
     }finally{await browser.close();}
   });
 }

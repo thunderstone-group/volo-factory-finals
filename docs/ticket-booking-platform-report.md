@@ -1,0 +1,110 @@
+# Ticket Booking platform observations
+
+**Latest observations, 2026-09-11 at 20:37 UTC:** dev19 submission `ee4916f55af4`
+saves and downloads successfully. Both run
+[026c37ec93f1](https://arc-bench.com/runs/026c37ec93f1) and its same-submission retry
+[ec1c4eae8595](https://arc-bench.com/runs/ec1c4eae8595) fail in `deploy_agent` with
+missing run-local `agent.zip`, before model execution. Downloading the saved archive
+again after both failures returns 36,533 bytes with the exact original SHA-256:
+`fd69e93a7a6e052a2a2e5a7f5882d13f9c276b951a377be142e8f31d64a2382d`.
+The immediately preceding dev18 run `9a7b3c951a6e` deployed and ran its agent; it failed
+later on its own token budget. These are separate failure stages. The client evidence
+still does not identify why the saved ZIP is absent from the new run directories.
+Re-saving the byte-identical archive as submission `619f262a9a92` passes download/hash
+verification again. Run [4342487db5a5](https://arc-bench.com/runs/4342487db5a5) deploys
+successfully and starts generation. This recovery does not establish the server-side cause.
+
+**Observation at 18:08 UTC:** dev6 run `15daf231bb0e` completes
+generation and official evaluation at 5/10. Its original generated application replays
+the unchanged public suite locally at 9/10; official execution also reports page crashes
+and interaction timeouts whose environment cause remains unconfirmed. The normalized
+image payload is accepted by the gateway.
+
+Dev7 run `cbe2fc6a6286` again fails before generation with missing run-local `agent.zip`.
+A retry request is rejected with 409 because a separate shared-account submission has
+become latest. Re-saving the **identical** dev7 ZIP yields submission `e302cde50c01`;
+its downloaded hash matches `786c9cc7a78fc4aa00d5e37dc6b133ab40fbee99425207b3b8a9ee145b9d8a8e`.
+Run `8ca2006ca78d` deploys successfully and reaches model execution. These observations
+show intermittent archive deployment, not a continuous outage. They do not establish
+the server-side cause or link it to concurrent activity.
+
+**Observation at 17:35 UTC:** submission `e22044e619ac` downloads with its exact
+hash, but run `dd19e1660e38` again lacks run-local `agent.zip`. One same-submission
+retry `6bdd4e55d7cb` deploys correctly, then fails on the agent's oversized image
+request (gateway HTTP 413). This confirms intermittent deployment behavior alongside
+a separate payload-size problem, rather than a persistently unavailable platform.
+
+**Earlier observation, 2026-09-11 around 17:07 UTC:** upload, deployment, generation and
+official tests all execute on run `df4bf94d459e`. It passes 2/10. Earlier run
+`b30f19283f5a` also reached evaluation but its app served port 3000 while the published
+tests defaulted to 3301. A managed launcher now serves the same app on both ports;
+the current failures are UI assertions/timeouts, not missing deployment archives.
+
+Original dev4 app replay: unchanged public tests pass 5/10 on both ports locally,
+with the same assertion failures. The official run additionally reports earlier
+interaction timeouts and one target crash. Their exact environment cause is not
+established. The evidence below remains historical and does not imply a current outage.
+
+## Historical deployment failure at 08:38 UTC
+
+- Submission: `ac411627b87f`, `volo-factory-ticket-v0.7.0-dev3-2793296-cli`.
+- Upload and a second archive download after both failures match SHA-256
+  `82413746aba52bb0802dddb07ed18f19672e6a73209f2b8772882d7c1081297b`.
+- Run creation and start both succeeded, returning QUEUED. The runs then failed in
+  `deploy_agent`, before any model execution:
+  - https://arc-bench.com/runs/fcc9a2ee4c3e
+  - https://arc-bench.com/runs/3ddae12e17ac
+- Error: `[Errno 2] No such file or directory:
+  '/mnt/arcbench/bucket-15/users/<account>/runs/<run-id>/agent.zip'`.
+  Account-specific path text is omitted here; both run pages contain the complete error.
+- The CLI sent the official frontend's multipart `submission_id` and `requirement_id`
+  fields to `/api/runs`, followed by POST `/api/runs/{id}/start`. It did not re-upload
+  between the two attempts. No further identical run was attempted after the retry.
+
+Please inspect the saved-archive to run-directory copy and the executor's storage
+visibility for these IDs. Client evidence does not identify the server-side cause.
+
+## Earlier archive availability observations
+
+Observed 2026-09-11 on [Ticket Booking](https://arc-bench.com/competitions/ticket-booking/tasks/ticket-booking--ticket-booking).
+Prepared for the user to forward to the organizer; no external report was sent by the agent.
+
+Account/team: `VOLO-AI` / `VOLO AI`.
+
+1. Saving `volo-factory-ticket-v0.6.0-0abcf10-r2` succeeded, producing submission
+   `32d6d2fe7737`.
+2. `GET /api/submissions/32d6d2fe7737/archive` returned HTTP 200. The downloaded ZIP
+   matched the uploaded archive exactly: SHA-256
+   `f8683f93a2bf5668bda76a295e4e684790b24b6a5f601c451ef4311043f6ab27`.
+3. The task page then sent `POST /api/runs` with multipart fields
+   `submission_id=32d6d2fe7737` and `requirement_id=ticket-booking--ticket-booking`.
+   Response: HTTP 409, `{"detail":"The submitted agent archive is no longer available"}`.
+4. A packaging control containing the identical agent source plus `build-info.json`
+   saved as `volo-factory-ticket-v0.6.0-buildinfo`, submission `b1b0dc34ca64`.
+   Its archive download returned HTTP 404. No run was attempted for this missing archive.
+
+The same agent source already executed successfully in Smoke and Smoke Evolution.
+The Ticket Booking failures happened before model generation or official evaluation;
+there is no Ticket Booking model run or score to assess from these attempts.
+
+Please check consistency between archive save, download and run-creation storage paths
+or backends for these IDs. Client evidence establishes the contradictory availability
+results, but does not identify the server-side root cause. Repeated re-uploads were
+stopped after the controls above.
+
+## Earlier successful recheck through the CLI
+
+The organizer reported that the submission path was currently normal. We rechecked
+using the deployed official web client's request contract and the logged-in account:
+
+- `32d6d2fe7737` still downloaded with the original matching hash, but creating a run
+  now returned 409: `Runs must use the latest saved agent submission for this competition`.
+  That is a different response from the earlier archive-availability error.
+- `b1b0dc34ca64` still returned archive 404. It was not run.
+- Fresh submission `c522484096e0`, candidate 0.7.0.dev1, saved successfully. Its downloaded
+  SHA-256 matched `835e2d7cf7fe84168fa8888480c1d6df8b8735d49e24edfc9043ecae14335475`.
+- Creating and starting `0726df707e05` succeeded. CLI polling observed QUEUED, RUNNING,
+  then FAILED in agent execution. Downloading its generated artifact also succeeded.
+
+Those checks confirmed the path worked with a new latest submission at that time. They do
+not retrospectively identify the server-side cause of the earlier archive errors.

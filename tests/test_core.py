@@ -17,7 +17,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import patch
 
-from volo.agent import Agent
+from volo.agent import Agent, TOOLS
 from volo.environment import discover_playwright
 from volo.model import Model, ModelError
 from volo.requirements import RequirementSet
@@ -41,13 +41,38 @@ class TempCase(unittest.TestCase):
             "    description: Serve a visible greeting over HTTP.\n")
         self.out = self.base / "application"
         self.trace = Trace(self.out / ".factory")
-        self.workspace = Workspace(self.out, self.req, self.trace, time.monotonic() + 60)
+        # Most tests exercise workspace/agent behavior, not a host-wide tool scan.
+        # Discovery has its own real-process tests; browser tests explicitly attach
+        # installed Playwright/Chrome via enable_installed_browser().
+        with patch('volo.workspace.discover_playwright', return_value={'available': False}):
+            self.workspace = Workspace(self.out, self.req, self.trace, time.monotonic() + 60)
 
     def tearDown(self):
         self.temp.cleanup()
 
 
 class RequirementsTests(TempCase):
+    def test_ancestor_reference_keeps_context_without_creating_a_self_cycle(self):
+        # Synthetic minimal reproduction of two provided corpus tree patterns.
+        (self.req / 'requirements.yaml').write_text('''id: ROOT
+children:
+  - id: MODULE
+    dependencies: [FOUNDATION]
+    children:
+      - id: DETAIL
+        dependencies: [MODULE]
+        children:
+          - id: OPEN
+            dependencies: [LIST]
+      - id: LIST
+  - id: FOUNDATION
+''')
+        requirements = RequirementSet.load(self.req)
+        self.assertEqual([n['id'] for n in requirements.nodes], ['FOUNDATION', 'LIST', 'OPEN'])
+        payload = json.loads(requirements.batch_prompt([requirements.nodes[-1]]))
+        detail = next(n for n in payload['inherited_constraints'] if n['id'] == 'DETAIL')
+        self.assertEqual(detail['dependencies'], ['MODULE'])
+
     def test_parent_folder_constraints_reach_the_model(self):
         (self.req / 'requirements.yaml').write_text('''id: ROOT
 children:
@@ -73,6 +98,7 @@ children:
 
     def test_cycles_and_unknown_dependencies_fail_before_generation(self):
         for data in (
+            "id: ROOT\nchildren: [{id: R1, dependencies: [R1]}]",
             "id: ROOT\nchildren: [{id: R1, dependencies: [R2]}, {id: R2, dependencies: [R1]}]",
             "id: ROOT\nchildren: [{id: R1, dependencies: [missing]}]",
             "id: ROOT\nchildren: [{id: R1}, {id: R1}]",
@@ -100,6 +126,21 @@ children:
 
 
 class WorkspaceTests(TempCase):
+    def test_large_source_is_read_in_complete_unicode_chunks(self):
+        source = ('const message="中文文本";\n' * 1500) + 'END'
+        self.workspace.write_files([{'path': 'large.js', 'content': source}])
+        with self.assertRaisesRegex(ValueError, 'read_file_chunk'):
+            self.workspace.read_files(['large.js'])
+        parts, offset = [], 0
+        while offset is not None:
+            result = self.workspace.read_file_chunk('large.js', offset=offset, limit=1500)
+            self.assertLessEqual(len(result['content']), 1500)
+            parts.append(result['content'])
+            offset = result['next_offset']
+        self.assertEqual(''.join(parts), source)
+        with self.assertRaises(ValueError):
+            self.workspace.read_file_chunk('../outside.js')
+
     def test_browser_gc_cannot_be_enabled_by_inherited_or_extra_environment(self):
         with patch.dict(os.environ, {"PLAYWRIGHT_SKIP_BROWSER_GC": "0"}):
             self.assertEqual(tool_environment({"PLAYWRIGHT_SKIP_BROWSER_GC": "0"})["PLAYWRIGHT_SKIP_BROWSER_GC"], "1")
@@ -212,6 +253,21 @@ GREETING_FILES = [
 
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "Node and npm required")
 class ExecutionTests(TempCase):
+    def test_unselected_browser_check_still_blocks_acceptance_and_can_be_repaired(self):
+        self.workspace.write_files(GREETING_FILES)
+        # Synthetic routing fixture; real browser execution is checked by E015 replay.
+        self.workspace.browser = {'available': True}
+        script = '// FACTORY_PLAYWRIGHT_MODULE: browser check routing fixture\n' + GREETING_FILES[-1]['content']
+        self.workspace.write_files([{'path': 'checks/visible.spec.cjs',
+                                     'content': script.replace("'hello'", "'wrong'")}])
+        first = self.workspace.verify(['node', 'checks/greeting.cjs'])
+        self.assertFalse(first['passed'])
+        self.assertEqual(first['executed_checks'], [['node', 'checks/greeting.cjs'],
+                                                    ['node', 'checks/visible.spec.cjs']])
+        self.assertIsNone(self.workspace.last_verification)
+        self.workspace.write_files([{'path': 'checks/visible.spec.cjs', 'content': script}])
+        self.assertTrue(self.workspace.verify(['node', 'checks/greeting.cjs'])['passed'])
+
     def test_real_empty_optional_api_does_not_break_the_application_server(self):
         captured = json.loads((ROOT / 'tests/fixtures/real-empty-api-tool-call.json').read_text())['arguments']
         self.assertEqual(captured['api_js'], '')
@@ -236,6 +292,133 @@ test('server serves generated page despite empty optional API',async()=>{
         result = self.workspace.verify(["node", "checks/greeting.cjs"])
         self.assertFalse(result["passed"])
         self.assertIsNone(self.workspace.last_verification)
+        self.assertEqual(self.workspace.last_verification_attempt, result)
+        self.assertEqual(result["source_fingerprint"], self.workspace.fingerprint())
+
+    def enable_installed_browser(self):
+        module = os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']
+        executable = os.environ['FACTORY_TEST_CHROMIUM_EXECUTABLE']
+        wrapper = self.base / 'real-browser.cjs'
+        wrapper.write_text('const pw=require(' + json.dumps(module) + ');'
+            'module.exports={chromium:{launch:()=>pw.chromium.launch({headless:true,executablePath:'
+            + json.dumps(executable) + '})}};')
+        self.workspace.runtime_env['FACTORY_PLAYWRIGHT_MODULE'] = str(wrapper)
+
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                         'Provide an installed Playwright module and Chromium for real browser checks')
+    def test_prepared_browser_routes_and_reports_missing_controls(self):
+        self.enable_installed_browser()
+        scaffold(self.workspace)
+        check = """const {test,assert}=require('./browser.cjs');
+test('relative routes use the managed application origin',async page=>{
+await page.goto('/details');
+assert.equal(new URL(page.url()).pathname,'/details');
+assert.equal(await page.getByRole('heading',{name:'Greeting',exact:true}).textContent(),'Greeting');
+await page.goto('/');assert.equal(new URL(page.url()).pathname,'/');
+await assert.rejects(page.getByRole('button',{name:'Missing action',exact:true}).click(),/Timeout 5000ms/);
+});"""
+        result = implement(self.workspace, '<h1>Greeting</h1>', '', check)
+        self.assertTrue(result['passed'], result)
+
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                         'Provide an installed Playwright module and Chromium for real browser checks')
+    def test_browser_failure_retains_visible_state_and_pending_request(self):
+        self.enable_installed_browser()
+        scaffold(self.workspace)
+        html = """<h1>Waiting for response</h1><button>Save</button>
+<script>document.querySelector('button').onclick=()=>fetch('/api/save',{method:'POST'});</script>"""
+        api = "module.exports=async(req,res)=>req.url==='/api/save'?await new Promise(()=>{}):false;"
+        check = """const {test}=require('./browser.cjs');test('pending request diagnostic',async page=>{
+const sent=page.waitForRequest('**/api/save');await page.getByRole('button',{name:'Save'}).click();
+await sent;throw new Error('Original assertion failure');});"""
+        result = implement(self.workspace, html, '', check, api)
+        self.assertFalse(result['passed'])
+        output = result['steps'][-1]['output']
+        self.assertIn('Original assertion failure', output)
+        self.assertIn('Waiting for response', output)
+        self.assertIn('POST /api/save', output)
+        self.assertIn('Browser state:', output)
+
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                         'Provide an installed Playwright module and Chromium for real browser checks')
+    def test_browser_rejects_unnamed_meter_even_when_authored_check_passes(self):
+        self.enable_installed_browser()
+        scaffold(self.workspace)
+        check = """const {test,assert}=require('./browser.cjs');test('meter changes',async page=>{
+const meter=page.locator('meter');await meter.evaluate(el=>el.value=2);
+assert.equal(await meter.evaluate(el=>el.value),2);});"""
+        html = '<meter min="0" max="3" value="0"></meter>'
+        first = implement(self.workspace, html, '', check)
+        self.assertFalse(first['passed'])
+        self.assertIn('Visible meters must have an accessible name', first['steps'][-1]['output'])
+        repaired = implement(self.workspace, html.replace('<meter ', '<meter aria-label="Quality" '), '', check)
+        self.assertTrue(repaired['passed'], repaired)
+
+    @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
+                         os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                         'Provide an installed Playwright module and Chromium for real browser checks')
+    def test_browser_rejects_primary_route_aliases_but_allows_home_and_hidden_links(self):
+        self.enable_installed_browser()
+        scaffold(self.workspace)
+        html = """<nav><a href="/">Home</a><a href="/details">Details</a></nav>
+<a href="/">Site logo</a><a href="/details">Open details</a>
+<a href="/details" hidden>Hidden details</a>"""
+        check = """const {test,assert}=require('./browser.cjs');test('primary link is available',async page=>{
+assert.ok(await page.getByRole('link',{name:'Details',exact:true}).isVisible());});"""
+        first = implement(self.workspace, html, '', check)
+        self.assertFalse(first['passed'])
+        output = first['steps'][-1]['output']
+        self.assertIn('Keep one visible link to each primary page', output)
+        self.assertIn('Open details', output)
+        repaired = implement(self.workspace,
+            html.replace('<a href="/details">Open details</a>', '<p>Details are in the primary navigation.</p>'),
+            '', check)
+        self.assertTrue(repaired['passed'], repaired)
+
+    def assert_final_budget_verification(self, replacement, *, max_calls=8, token_budget=300):
+        (self.req / 'requirements.yaml').write_text('id: ROOT\nchildren:\n  - id: REQ-1\n'
+            '    description: Serve hello over HTTP. ' + 'Additional context. ' * 250 + '\n')
+        check = GREETING_FILES[-1]['content']
+        initial = response([('build_app', {'index_html': 'wrong', 'checks_js': check})])
+        final = response([('read_files', {'paths': ['frontend/public/index.html']})] if replacement is None else
+                         [('edit', {'path': 'frontend/public/index.html', 'old': 'wrong', 'new': replacement})])
+        with FakeGateway([initial, final]) as gateway:
+            model = Model(gateway.url, 'synthetic-test-key', 'synthetic-model', self.trace)
+            agent = Agent(RequirementSet.load(self.req), model, self.workspace, Runtime(self.trace),
+                          max_calls=max_calls, token_budget=token_budget)
+            if replacement == 'hello':
+                self.assertEqual(agent.run()['status'], 'completed')
+                self.assertTrue(self.workspace.last_verification['passed'])
+            else:
+                with self.assertRaisesRegex(RuntimeError, 'budget exhausted'):
+                    agent.run()
+                self.assertIsNone(self.workspace.last_verification)
+            self.assertEqual(len(gateway.requests), 2)
+            self.assertEqual(model.usage.total_tokens, 300)
+            receipt = json.loads(gateway.requests[1]['messages'][-1]['content'])
+            self.assertEqual(receipt['source_paths']['index_html'], 'frontend/public/index.html')
+            self.assertEqual(receipt['source_paths']['checks_js'], 'checks/requirements.cjs')
+        events = [json.loads(line) for line in (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+        verified = [event for event in events if event['event'] == 'budget_final_verification']
+        self.assertEqual(len(verified), int(replacement is not None))
+        if verified:
+            self.assertEqual(verified[0]['passed'], replacement == 'hello')
+        self.assertEqual((self.out / 'checks/requirements.cjs').read_text(), check)
+
+    def test_final_token_budget_edit_is_verified_without_another_model_call(self):
+        self.assert_final_budget_verification('hello')
+
+    def test_final_call_budget_edit_is_verified_without_another_model_call(self):
+        self.assert_final_budget_verification('hello', max_calls=2, token_budget=10000)
+
+    def test_final_budget_verification_does_not_accept_a_bad_repair(self):
+        self.assert_final_budget_verification('still wrong')
+
+    def test_final_budget_does_not_rerun_unchanged_failed_source(self):
+        self.assert_final_budget_verification(None)
 
     def test_model_tool_loop_repairs_failure_then_resumes_without_model_call(self):
         initial = response([("build_app", {"index_html": "wrong",
@@ -267,6 +450,47 @@ test('server serves generated page despite empty optional API',async()=>{
             model = Model(server.url, "synthetic-test-key", "test", self.trace)
             model.complete([], [])
             self.assertEqual(model.usage.missing_usage_calls, 1)
+
+    def test_thinking_effort_and_actual_truncated_usage(self):
+        fixture = json.loads((ROOT / 'tests/fixtures/real-deepseek-truncated-metadata.json').read_text())
+        with FakeGateway([fixture['response']]) as server:
+            model = Model(server.url, "synthetic-test-key", "deepseek-v4-flash", self.trace)
+            model.thinking = 'enabled'
+            _, reason = model.complete([], [])
+            self.assertEqual(server.requests[0]['reasoning_effort'], 'low')
+            self.assertNotIn('temperature', server.requests[0])
+            self.assertEqual(reason, 'length')
+            self.assertEqual(model.usage.completion_tokens, 66227)
+            self.assertGreater(model.usage.completion_tokens, model.max_output)
+            self.assertEqual(model.usage.total_tokens, 70886)
+
+    def test_qwen_uses_provider_thinking_switch(self):
+        with FakeGateway([response([]), response([])]) as server:
+            model = Model(server.url, 'synthetic-test-key', 'qwen3.6-flash', self.trace)
+            model.thinking = 'disabled'
+            model.complete([], [])
+            model.thinking = 'enabled'
+            model.complete([], [])
+            self.assertIs(server.requests[0]['enable_thinking'], False)
+            self.assertIs(server.requests[1]['enable_thinking'], True)
+            self.assertNotIn('thinking', server.requests[0])
+
+    def test_kimi_uses_low_effort_without_claiming_thinking_can_be_disabled(self):
+        answer = response([('list_files', {})])
+        answer['choices'][0]['message']['reasoning_content'] = 'Synthetic retained reasoning'
+        with FakeGateway([answer, answer]) as server:
+            model = Model(server.url, 'synthetic-test-key', 'kimi-k3', self.trace)
+            model.thinking = 'disabled'
+            first, _ = model.complete([{'role': 'user', 'content': 'Inspect the project'}], TOOLS)
+            messages = [{'role': 'user', 'content': 'Inspect the project'}, first,
+                        {'role': 'tool', 'tool_call_id': first['tool_calls'][0]['id'], 'content': '{}'}]
+            model.thinking = 'enabled'
+            model.complete(messages, TOOLS)
+            for request in server.requests:
+                self.assertEqual(request['reasoning_effort'], 'low')
+                self.assertNotIn('thinking', request)
+                self.assertNotIn('temperature', request)
+            self.assertEqual(server.requests[1]['messages'][1], first)
 
     def test_captured_real_gateway_response_preserves_reasoning_and_usage(self):
         fixture = json.loads((ROOT / 'tests/fixtures/real-deepseek-tool-responses.json').read_text())

@@ -1,0 +1,3 @@
+Calibration fixture, not an official competition task.
+GET / returns exactly hello. The candidate has no access to the external
+verifier suite or the Docker socket. Product self-tests do not determine this grade.

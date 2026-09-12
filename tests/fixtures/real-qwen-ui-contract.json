@@ -1,0 +1,68 @@
+{
+  "provenance": {
+    "run": "684ec0e6a53f",
+    "source": "Official gateway responses, retrieved from the redacted run trace",
+    "captured_at": "2026-09-11",
+    "model": "qwen3.6-flash"
+  },
+  "responses": [
+    {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "```json\n{\n  \"pages\": [\n    {\n      \"route\": \"/\",\n      \"checks\": [\n        {\n          \"kind\": \"link\",\n          \"name\": \"注册\"\n        },\n        {\n          \"kind\": \"link\",\n          \"name\": \"登录\"\n        }\n      ]\n    },\n    {\n      \"route\": \"/register\",\n      \"checks\": [\n        {\n          \"kind\": \"heading\",\n          \"name\": \"账户信息\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"用户名\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"登录密码\"\n        },\n        {\n          \"kind\": \"meter\",\n          \"name\": \"\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"确认密码\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"证件类型\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"姓名\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"证件号码\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"优惠（待）类型\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"邮箱\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"国家/地区代码\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"手机号\"\n        },\n        {\n          \"kind\": \"checkbox\",\n          \"name\": \"服务条款\"\n        },\n        {\n          \"kind\": \"button\",\n          \"name\": \"下一步\"\n        }\n      ]\n    },\n    {\n      \"route\": \"/login\",\n      \"checks\": [\n        {\n          \"kind\": \"label\",\n          \"name\": \"用户名或邮箱\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"密码\"\n        },\n        {\n          \"kind\": \"button\",\n          \"name\": \"立即登录\"\n        }\n      ]\n    }\n  ],\n  \"coverage\": [\n    \"REQ-1\",\n    \"REQ-2\"\n  ]\n}\n```",
+            "role": "assistant"
+          }
+        }
+      ],
+      "created": 1789158132,
+      "id": "chatcmpl-d3c1ac3a-d17f-9380-9e33-5eaf26b79588",
+      "model": "qwen3.6-flash",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 538,
+        "completion_tokens_details": {
+          "text_tokens": 538
+        },
+        "prompt_tokens": 5805,
+        "prompt_tokens_details": {
+          "text_tokens": 5805
+        },
+        "total_tokens": 6343
+      }
+    },
+    {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "{\n  \"pages\": [\n    {\n      \"route\": \"/\",\n      \"checks\": [\n        {\n          \"kind\": \"link\",\n          \"name\": \"Register\"\n        },\n        {\n          \"kind\": \"link\",\n          \"name\": \"登录\"\n        }\n      ]\n    },\n    {\n      \"route\": \"/register\",\n      \"checks\": [\n        {\n          \"kind\": \"label\",\n          \"name\": \"用户名\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"登录密码\"\n        },\n        {\n          \"kind\": \"meter\",\n          \"name\": \"\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"确认密码\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"证件类型\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"姓名\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"证件号码\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"优惠（待）类型\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"邮箱\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"国家/地区代码\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"手机号\"\n        },\n        {\n          \"kind\": \"checkbox\",\n          \"name\": \"服务条款\"\n        },\n        {\n          \"kind\": \"button\",\n          \"name\": \"下一步\"\n        }\n      ]\n    },\n    {\n      \"route\": \"/login\",\n      \"checks\": [\n        {\n          \"kind\": \"label\",\n          \"name\": \"用户名或邮箱\"\n        },\n        {\n          \"kind\": \"label\",\n          \"name\": \"密码\"\n        },\n        {\n          \"kind\": \"button\",\n          \"name\": \"立即登录\"\n        }\n      ]\n    }\n  ],\n  \"coverage\": [\"zh-CN\"]\n}",
+            "role": "assistant"
+          }
+        }
+      ],
+      "created": 1789158134,
+      "id": "chatcmpl-427ddb68-beee-96d5-b45d-d0b9f1b48759",
+      "model": "qwen3.6-flash",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 496,
+        "completion_tokens_details": {
+          "text_tokens": 496
+        },
+        "prompt_tokens": 5828,
+        "prompt_tokens_details": {
+          "text_tokens": 5828
+        },
+        "total_tokens": 6324
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "audited_head": "80955003090c2f50f7a666bfb6f355ebbefbbfbc",
+  "executed_head": "80955003090c2f50f7a666bfb6f355ebbefbbfbc",
+  "kind": "offline diagnostic with synthetic model responses and real local HTTP execution",
+  "model_api_calls": 0,
+  "official_evaluations": 0,
+  "node_version": "v22.22.0",
+  "acceptance": {
+    "fixture_requirement": "HTTP body must equal hello",
+    "fixture_actual_body": "wrong",
+    "registered_fixed_checks": 0,
+    "zero_assertion_command_accepted": true,
+    "honest_behavioral_check_passed": false,
+    "weakened_check_accepted": true,
+    "product_source_unchanged": true,
+    "scope": "production Workspace.verify path; tiny authored fixture, not an official task"
+  },
+  "truncation": {
+    "synthetic_responses": 4,
+    "requests": [
+      {
+        "forced_tool": "build_app",
+        "tools": [
+          "build_app"
+        ]
+      },
+      {
+        "forced_tool": "build_app",
+        "tools": [
+          "build_app"
+        ]
+      },
+      {
+        "forced_tool": "build_app",
+        "tools": [
+          "build_app"
+        ]
+      },
+      {
+        "forced_tool": "build_app",
+        "tools": [
+          "build_app"
+        ]
+      }
+    ],
+    "all_requests_forced_full_bundle": true,
+    "product_generated": false,
+    "terminal_error": "Batch did not converge within the model call limit",
+    "scope": "run_batch control-flow probe; does not measure any real model"
+  },
+  "baseline_defects_reproduced": {
+    "zero_assertion_acceptance": true,
+    "acceptance_weakening": true,
+    "truncation_never_changes_action_space": true
+  }
+}

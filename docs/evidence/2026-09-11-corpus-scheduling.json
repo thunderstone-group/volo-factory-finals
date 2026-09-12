@@ -1,0 +1,208 @@
+{
+  "source_url": "https://g.ktvsky.com/ai-native/arcbench-harness-lab/-/tree/main/upstream/data",
+  "repository_commit": "14a0035b5bfa9c8ce214117b8c2345f51b631a62",
+  "scope": "Requirements parsing and scheduling only; no model calls, assets or official tests.",
+  "documents": 22,
+  "scheduled": 22,
+  "unique_semantic_documents": 20,
+  "tasks": [
+    {
+      "path": "upstream/data/arc-bench/mobile/audiorecorder/requirements/requirements.yaml",
+      "sha256": "0d33fe20e76aa68409ab683c96a8abb85ea0439cf5b879a022d5bed758917577",
+      "status": "scheduled",
+      "scheduled_nodes": 7,
+      "explicitly_atomic_nodes": 7,
+      "batches": 2,
+      "largest_batch_prompt_chars": 7922
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/createpdf/requirements/requirements.yaml",
+      "sha256": "cb4f1584397dc8264309b11a9c1f219470a5a0197a51355a8d51db34ae86f714",
+      "status": "scheduled",
+      "scheduled_nodes": 13,
+      "explicitly_atomic_nodes": 13,
+      "batches": 3,
+      "largest_batch_prompt_chars": 9149
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/currency/requirements/requirements.yaml",
+      "sha256": "ee191931491fcf9ebf6f483c6dbfd049a900632fb591ec17fe7050519a86d288",
+      "status": "scheduled",
+      "scheduled_nodes": 15,
+      "explicitly_atomic_nodes": 15,
+      "batches": 3,
+      "largest_batch_prompt_chars": 9313
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/fakestandby/requirements/requirements.yaml",
+      "sha256": "fad14c78e4b64ca987c1d4b8183d04e3ea4d5bfd6f2bb414b03003eeef84a264",
+      "status": "scheduled",
+      "scheduled_nodes": 8,
+      "explicitly_atomic_nodes": 8,
+      "batches": 2,
+      "largest_batch_prompt_chars": 7557
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/forecastie/requirements/requirements.yaml",
+      "sha256": "6b1764be745959a17634e236af94ca172318206767cf8ac6757545a4de507011",
+      "status": "scheduled",
+      "scheduled_nodes": 9,
+      "explicitly_atomic_nodes": 9,
+      "batches": 2,
+      "largest_batch_prompt_chars": 7126
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/location_share/requirements/requirements.yaml",
+      "sha256": "566184b79598711a7f804b897d6cb270754cbb6b0f0b62ea47763713bcfa7be6",
+      "status": "scheduled",
+      "scheduled_nodes": 5,
+      "explicitly_atomic_nodes": 5,
+      "batches": 1,
+      "largest_batch_prompt_chars": 7272
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/mint_calculator/requirements/requirements.yaml",
+      "sha256": "2e50011f81cf1a083976086300dff6be0c17cc1004ecce8211dce4c70c86b28d",
+      "status": "scheduled",
+      "scheduled_nodes": 4,
+      "explicitly_atomic_nodes": 4,
+      "batches": 1,
+      "largest_batch_prompt_chars": 4422
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/notes/requirements/requirements.yaml",
+      "sha256": "8e0b9a5d63f0f0305042f5c24fbc88db10f526269b0222c2205863f4c673ca15",
+      "status": "scheduled",
+      "scheduled_nodes": 12,
+      "explicitly_atomic_nodes": 12,
+      "batches": 2,
+      "largest_batch_prompt_chars": 9970
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/open_money_tracker/requirements/requirements.yaml",
+      "sha256": "95a468903fe03f95131658a2791494e80c602144987af412bbb8022cbd0b785a",
+      "status": "scheduled",
+      "scheduled_nodes": 5,
+      "explicitly_atomic_nodes": 5,
+      "batches": 1,
+      "largest_batch_prompt_chars": 6777
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/secscanqr/requirements/requirements.yaml",
+      "sha256": "281651d6d799e2d09b95124f90421f80f3eaabdff8a58e2d6e67b742bc0a3848",
+      "status": "scheduled",
+      "scheduled_nodes": 9,
+      "explicitly_atomic_nodes": 9,
+      "batches": 2,
+      "largest_batch_prompt_chars": 7699
+    },
+    {
+      "path": "upstream/data/arc-bench/web/12306/requirements/requirements.yaml",
+      "sha256": "8d5d5b45153a9e57f4e5b23079cb332aff398cd0b569c3e0f94d4c8d805d4da4",
+      "status": "scheduled",
+      "scheduled_nodes": 117,
+      "explicitly_atomic_nodes": 117,
+      "batches": 20,
+      "largest_batch_prompt_chars": 30953
+    },
+    {
+      "path": "upstream/data/arc-bench/web/bookstack/requirements/requirements.yaml",
+      "sha256": "9f6a42d08216e6f444a38338cee856a74475fdb7429e426910a60c04da86fd1e",
+      "status": "scheduled",
+      "scheduled_nodes": 34,
+      "explicitly_atomic_nodes": 34,
+      "batches": 6,
+      "largest_batch_prompt_chars": 12728
+    },
+    {
+      "path": "upstream/data/arc-bench/web/ctrip/requirements/requirements.yaml",
+      "sha256": "b5e987597317a57234d6b1fed4576870e5ec74816d2ab10b5262cd2d80dda039",
+      "status": "scheduled",
+      "scheduled_nodes": 133,
+      "explicitly_atomic_nodes": 125,
+      "batches": 23,
+      "largest_batch_prompt_chars": 27030
+    },
+    {
+      "path": "upstream/data/arc-bench/web/keep/requirements/requirements.yaml",
+      "sha256": "d07188db5ef9ac4fff49cc15bab057931ed2090ce86fc9e22f93446cfc131a53",
+      "status": "scheduled",
+      "scheduled_nodes": 32,
+      "explicitly_atomic_nodes": 32,
+      "batches": 6,
+      "largest_batch_prompt_chars": 10953
+    },
+    {
+      "path": "upstream/data/arc-bench/web/prestashop/requirements/requirements.yaml",
+      "sha256": "54732636953cbff3f2228d60fa7bba9204f529cc9bf67bd7127fd6d53b388a65",
+      "status": "scheduled",
+      "scheduled_nodes": 86,
+      "explicitly_atomic_nodes": 86,
+      "batches": 15,
+      "largest_batch_prompt_chars": 20494
+    },
+    {
+      "path": "upstream/data/arc-bench/web/stackoverflow/requirements/requirements.yaml",
+      "sha256": "496aca2836f6edc3f344ae55b9559c1c22918dbcee97771c54fc2094ad7f538f",
+      "status": "scheduled",
+      "scheduled_nodes": 66,
+      "explicitly_atomic_nodes": 66,
+      "batches": 11,
+      "largest_batch_prompt_chars": 19134
+    },
+    {
+      "path": "upstream/data/competition/hackathon/github/requirements.yaml",
+      "sha256": "a4ba2c2e1bd62091a46384e89a823819a485ab609780ce00ead1490edd881959",
+      "status": "scheduled",
+      "scheduled_nodes": 47,
+      "explicitly_atomic_nodes": 47,
+      "batches": 8,
+      "largest_batch_prompt_chars": 46061
+    },
+    {
+      "path": "upstream/data/competition/hackathon/sheet/requirements.yaml",
+      "sha256": "9f2bfd7a9242474ac8e5b3ab9bc0e77e7b659b0ac72b5110bddf53a313c2b494",
+      "status": "scheduled",
+      "scheduled_nodes": 24,
+      "explicitly_atomic_nodes": 24,
+      "batches": 4,
+      "largest_batch_prompt_chars": 38889
+    },
+    {
+      "path": "upstream/data/playground/web/__demo__/requirements/requirements.yaml",
+      "sha256": "c0679dcf99e3a942edaab1c8ed0a4e97ed63ca2474090fa469a8f5df7788aa6f",
+      "status": "scheduled",
+      "scheduled_nodes": 1,
+      "explicitly_atomic_nodes": 1,
+      "batches": 1,
+      "largest_batch_prompt_chars": 2969
+    },
+    {
+      "path": "upstream/data/playground/web/github/requirements.yaml",
+      "sha256": "a4ba2c2e1bd62091a46384e89a823819a485ab609780ce00ead1490edd881959",
+      "status": "scheduled",
+      "scheduled_nodes": 47,
+      "explicitly_atomic_nodes": 47,
+      "batches": 8,
+      "largest_batch_prompt_chars": 46061
+    },
+    {
+      "path": "upstream/data/playground/web/sheet/requirements.yaml",
+      "sha256": "9f2bfd7a9242474ac8e5b3ab9bc0e77e7b659b0ac72b5110bddf53a313c2b494",
+      "status": "scheduled",
+      "scheduled_nodes": 24,
+      "explicitly_atomic_nodes": 24,
+      "batches": 4,
+      "largest_batch_prompt_chars": 38889
+    },
+    {
+      "path": "upstream/data/playground/web/ticketbooking/requirements.yaml",
+      "sha256": "030ec7ebcb8b2d37192b5c42569e1532756f69cd5d8231d35f648cbbf4505fc4",
+      "status": "scheduled",
+      "scheduled_nodes": 8,
+      "explicitly_atomic_nodes": 8,
+      "batches": 2,
+      "largest_batch_prompt_chars": 24237
+    }
+  ]
+}

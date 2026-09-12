@@ -1,0 +1,175 @@
+{
+  "source_url": "https://g.ktvsky.com/ai-native/arcbench-harness-lab/-/tree/main/upstream/data",
+  "repository_commit": "14a0035b5bfa9c8ce214117b8c2345f51b631a62",
+  "declared_upstream_commit": "bb0ef32f9f7eb570d71a5dec29e4d34d1c137390",
+  "observed_at": "2026-09-11T06:47:59.944500+00:00",
+  "note": "Metadata only. Spec-file counts are not executable test-case counts. Do not treat this snapshot as the current live competition catalog.",
+  "requirement_documents": 22,
+  "unique_semantic_documents": 20,
+  "duplicates": [
+    [
+      "upstream/data/competition/hackathon/github/requirements.yaml",
+      "upstream/data/playground/web/github/requirements.yaml"
+    ],
+    [
+      "upstream/data/competition/hackathon/sheet/requirements.yaml",
+      "upstream/data/playground/web/sheet/requirements.yaml"
+    ]
+  ],
+  "tasks": [
+    {
+      "path": "upstream/data/arc-bench/mobile/audiorecorder/requirements/requirements.yaml",
+      "atomic_requirements": 7,
+      "test_spec_files": 0,
+      "sha256": "0d33fe20e76aa68409ab683c96a8abb85ea0439cf5b879a022d5bed758917577",
+      "semantic_sha256": "05d6e434eab802c20ade1101c24db2c09ad58e832b311797584cb62057cdf306"
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/createpdf/requirements/requirements.yaml",
+      "atomic_requirements": 13,
+      "test_spec_files": 0,
+      "sha256": "cb4f1584397dc8264309b11a9c1f219470a5a0197a51355a8d51db34ae86f714",
+      "semantic_sha256": "015bc31ee41db383aef7f2dd92eec4907f1def1cf49ad88564aa5c6de66d204c"
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/currency/requirements/requirements.yaml",
+      "atomic_requirements": 15,
+      "test_spec_files": 0,
+      "sha256": "ee191931491fcf9ebf6f483c6dbfd049a900632fb591ec17fe7050519a86d288",
+      "semantic_sha256": "9f98f9dd4a79bbb2167ece93924363ccbe58a4d11e9bf07c569bbddc6a457455"
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/fakestandby/requirements/requirements.yaml",
+      "atomic_requirements": 8,
+      "test_spec_files": 0,
+      "sha256": "fad14c78e4b64ca987c1d4b8183d04e3ea4d5bfd6f2bb414b03003eeef84a264",
+      "semantic_sha256": "1a86029a3859b731e191cf778f1c78a75956938ae3f7e66e0d454caeedf7c0d3"
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/forecastie/requirements/requirements.yaml",
+      "atomic_requirements": 9,
+      "test_spec_files": 0,
+      "sha256": "6b1764be745959a17634e236af94ca172318206767cf8ac6757545a4de507011",
+      "semantic_sha256": "d129124898e2ee26e70532551be789b9d7ae73cc9b1dfe6e899469d21dda95f4"
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/location_share/requirements/requirements.yaml",
+      "atomic_requirements": 5,
+      "test_spec_files": 0,
+      "sha256": "566184b79598711a7f804b897d6cb270754cbb6b0f0b62ea47763713bcfa7be6",
+      "semantic_sha256": "39173f66dc0506286c0dd893cfbe1995315cc73a9b60fded672220d19080a529"
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/mint_calculator/requirements/requirements.yaml",
+      "atomic_requirements": 4,
+      "test_spec_files": 0,
+      "sha256": "2e50011f81cf1a083976086300dff6be0c17cc1004ecce8211dce4c70c86b28d",
+      "semantic_sha256": "0408f39d7353490dc7e2469464dcaa3d0de2a5e0fdf657b39faa81a375d71cf6"
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/notes/requirements/requirements.yaml",
+      "atomic_requirements": 12,
+      "test_spec_files": 0,
+      "sha256": "8e0b9a5d63f0f0305042f5c24fbc88db10f526269b0222c2205863f4c673ca15",
+      "semantic_sha256": "00178ea89b5351dbe0cbf61bd883948d77da19a2758fa2434d7d889de69f465e"
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/open_money_tracker/requirements/requirements.yaml",
+      "atomic_requirements": 5,
+      "test_spec_files": 0,
+      "sha256": "95a468903fe03f95131658a2791494e80c602144987af412bbb8022cbd0b785a",
+      "semantic_sha256": "9e37dea386784af23517f94ad394c770a5dc2bf70183d3691b4c304472d44145"
+    },
+    {
+      "path": "upstream/data/arc-bench/mobile/secscanqr/requirements/requirements.yaml",
+      "atomic_requirements": 9,
+      "test_spec_files": 0,
+      "sha256": "281651d6d799e2d09b95124f90421f80f3eaabdff8a58e2d6e67b742bc0a3848",
+      "semantic_sha256": "dcd864d57b7c1a9b3a8ff6e283e8d417e19cac67d30b3079df81b232bd52ccca"
+    },
+    {
+      "path": "upstream/data/arc-bench/web/12306/requirements/requirements.yaml",
+      "atomic_requirements": 117,
+      "test_spec_files": 117,
+      "sha256": "8d5d5b45153a9e57f4e5b23079cb332aff398cd0b569c3e0f94d4c8d805d4da4",
+      "semantic_sha256": "70f406dd519169e5d5ca68508838d310c88e5e25e0198ffb55626ec16c68be50"
+    },
+    {
+      "path": "upstream/data/arc-bench/web/bookstack/requirements/requirements.yaml",
+      "atomic_requirements": 34,
+      "test_spec_files": 34,
+      "sha256": "9f6a42d08216e6f444a38338cee856a74475fdb7429e426910a60c04da86fd1e",
+      "semantic_sha256": "55b7dcdee2a62377e06fa4a5b25bb57d9542796166af8c7885d72ab225e8629e"
+    },
+    {
+      "path": "upstream/data/arc-bench/web/ctrip/requirements/requirements.yaml",
+      "atomic_requirements": 125,
+      "test_spec_files": 125,
+      "sha256": "b5e987597317a57234d6b1fed4576870e5ec74816d2ab10b5262cd2d80dda039",
+      "semantic_sha256": "02b6be79abeb44fef62af30a55be42479e25202b7d175cd63388168a88a7f063"
+    },
+    {
+      "path": "upstream/data/arc-bench/web/keep/requirements/requirements.yaml",
+      "atomic_requirements": 32,
+      "test_spec_files": 32,
+      "sha256": "d07188db5ef9ac4fff49cc15bab057931ed2090ce86fc9e22f93446cfc131a53",
+      "semantic_sha256": "ae0b207bb0c5c928009e498c83b14d99347dc113081c72858d58020995019006"
+    },
+    {
+      "path": "upstream/data/arc-bench/web/prestashop/requirements/requirements.yaml",
+      "atomic_requirements": 86,
+      "test_spec_files": 86,
+      "sha256": "54732636953cbff3f2228d60fa7bba9204f529cc9bf67bd7127fd6d53b388a65",
+      "semantic_sha256": "fd04be2736ec7c56a7fab01b5c1b18eab2c7fb2ff60df42e99376ac154c742b8"
+    },
+    {
+      "path": "upstream/data/arc-bench/web/stackoverflow/requirements/requirements.yaml",
+      "atomic_requirements": 66,
+      "test_spec_files": 66,
+      "sha256": "496aca2836f6edc3f344ae55b9559c1c22918dbcee97771c54fc2094ad7f538f",
+      "semantic_sha256": "1efa4f6597578d2966c832fc9691572144e255593c7122ad197326d07d554403"
+    },
+    {
+      "path": "upstream/data/competition/hackathon/github/requirements.yaml",
+      "atomic_requirements": 47,
+      "test_spec_files": 0,
+      "sha256": "a4ba2c2e1bd62091a46384e89a823819a485ab609780ce00ead1490edd881959",
+      "semantic_sha256": "4c12fc17b055830460bf3176cbf9e5cac15bf1460a46f086d8e402d85530b34e"
+    },
+    {
+      "path": "upstream/data/competition/hackathon/sheet/requirements.yaml",
+      "atomic_requirements": 24,
+      "test_spec_files": 0,
+      "sha256": "9f2bfd7a9242474ac8e5b3ab9bc0e77e7b659b0ac72b5110bddf53a313c2b494",
+      "semantic_sha256": "b5b58b2bffde2730b570876304927685a6e7a8acb31c183a9318547e138c0c2f"
+    },
+    {
+      "path": "upstream/data/playground/web/__demo__/requirements/requirements.yaml",
+      "atomic_requirements": 1,
+      "test_spec_files": 1,
+      "sha256": "c0679dcf99e3a942edaab1c8ed0a4e97ed63ca2474090fa469a8f5df7788aa6f",
+      "semantic_sha256": "e9ae0fd44e3db70ecea9550f32cab85cadb4fd5dbb3076af08860de0a598d155"
+    },
+    {
+      "path": "upstream/data/playground/web/github/requirements.yaml",
+      "atomic_requirements": 47,
+      "test_spec_files": 0,
+      "sha256": "a4ba2c2e1bd62091a46384e89a823819a485ab609780ce00ead1490edd881959",
+      "semantic_sha256": "4c12fc17b055830460bf3176cbf9e5cac15bf1460a46f086d8e402d85530b34e"
+    },
+    {
+      "path": "upstream/data/playground/web/sheet/requirements.yaml",
+      "atomic_requirements": 24,
+      "test_spec_files": 0,
+      "sha256": "9f2bfd7a9242474ac8e5b3ab9bc0e77e7b659b0ac72b5110bddf53a313c2b494",
+      "semantic_sha256": "b5b58b2bffde2730b570876304927685a6e7a8acb31c183a9318547e138c0c2f"
+    },
+    {
+      "path": "upstream/data/playground/web/ticketbooking/requirements.yaml",
+      "atomic_requirements": 8,
+      "test_spec_files": 8,
+      "sha256": "030ec7ebcb8b2d37192b5c42569e1532756f69cd5d8231d35f648cbbf4505fc4",
+      "semantic_sha256": "3c404d612140ac1be655f98fbf8002cd04e5afd410a64a8a5c73e8988f54a1dc"
+    }
+  ]
+}

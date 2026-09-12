@@ -1,78 +1,98 @@
 # VOLO Factory
 
-A new requirement-driven software agent for the **GOSIM Software Factory 2026**
-hackathon. The goal is a final-winning system; current public leaderboards are
-development milestones, not evidence of a final result.
+A requirement-driven software agent for the GOSIM Software Factory 2026 hackathon.
+The objective is repeatable correctness on new requirements and subsequent changes.
+Official evaluation establishes competition performance; local checks establish only
+what they actually exercise.
 
-## Status
+## Development baseline
 
-**Version 0.6.0 reached first place on the public Smoke leaderboard on September 11, 2026.**
-Both official tasks passed: 100% average pass rate, CNY 0.016023 combined metered cost,
-and 5 seconds average runtime. This is a dated practice milestone; the formal preliminary
-and final are separate competitions. The design and competition facts are recorded in
-[docs/strategy.md](docs/strategy.md). This project does not reuse the previous
-smoke submission.
+Version **0.7.0.dev31** consolidates the prior competition agent, bounded recovery,
+pinned acceptance, isolated evaluation, Pi protocol probes and the optional model-based
+browser acceptance experiment. The [consolidation review](docs/harness-consolidation-2026-09-12.md)
+records what was combined and how overlapping behavior was resolved.
 
-The ArcBench entrypoint is:
+This version has no official score. The fresh VOLO agent's best official Ticket Booking
+result is E047's **6/10**; its later dev29 result is 5/10. Historical Smoke/Evolution wins,
+local replays and platform failures are recorded separately in
+[experiments](docs/experiments.md). Current standings come from the platform CLI.
 
-```sh
-python main.py /path/to/requirements --output-dir /path/to/application
-```
+## Repository map
 
-Model credentials will come from environment variables supplied by the competition
-runner. Never add a key, private credential, or unredacted run capture to this repository.
+| Location | Responsibility |
+|---|---|
+| `main.py`, `volo/` | Uploaded agent: requirements, model transport, execution, recovery and optional pinned acceptance |
+| `harness_lab/` | Development experiments: isolated verifier, generic external runner, Pi adapter and model-generated browser probes; excluded from uploads |
+| `arcbench`, `arcbench_cli.py` | Authenticated platform operations; excluded from uploads |
+| `scripts/package.py` | Deterministic upload archive |
+| `scripts/evaluate_candidate.py` | Run a supplied pinned Node acceptance suite against an existing local application, without model calls |
+| `tests/` | Transport, recovery, HTTP, browser and evaluator regressions |
+| `docs/experiments.md`, `docs/evidence/` | Dated results and source-bound evidence, not live state |
 
-## Develop and package
+`AGENTS.md` maps development work. Keep the main checkout on `main`; create each new
+branch in `../volo-factory-worktrees/` from current `main`, and merge through a PR.
+
+## Run the competition agent
 
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python main.py /path/to/requirements --output-dir /path/to/application
+```
+
+Real generation requires the organizer-provided `OPENAI_API_KEY`, `OPENAI_BASE_URL`
+and `MODEL`. Credentials never belong in source or command arguments. Use `--inspect`
+to inspect requirements without model calls. See `main.py --help` for execution limits.
+
+The agent schedules dependency-ordered requirements, observes supported image references,
+builds and starts the application, executes behavioral checks and repairs from actual
+failures. Small applications reuse a generic Node runtime; product logic and assertions
+are model-generated. A truncated response executes no tools and releases forced-bundle
+mode; three consecutive truncations stop the batch.
+
+Self-check success is reported in `self_checked_requirements`. Independent acceptance
+requires an explicitly supplied, reviewed manifest:
+
+```sh
+.venv/bin/python main.py /path/to/requirements --output-dir /path/to/application \
+  --acceptance-contract /absolute/separate-suite/contract.json
+```
+
+The [pinned acceptance contract](docs/evidence-gated-harness.md) uses executable tests,
+not a second model. Missing coverage, altered tests and broken evaluators cannot certify
+completion. Without a manifest, `verified_requirements` stays empty and
+`independent_acceptance` is `not_configured`. Even a supplied suite proves only its
+calibrated cases; official evaluation remains separate.
+
+## Validate and package
+
+```sh
 .venv/bin/python -m unittest discover -s tests -v
 .venv/bin/python scripts/package.py
 ```
 
-The upload is `dist/volo-factory.zip`. It contains only the entrypoint, dependency file,
-and `volo/` package. The archive is deterministic.
+To exercise optional integration checks, set `FACTORY_TEST_PLAYWRIGHT_MODULE` to an
+installed Playwright package, `FACTORY_TEST_CHROMIUM_EXECUTABLE` to installed Chrome,
+and `HARNESS_TEST_IMAGE` to an existing local Node/Python Docker image. Missing optional
+tooling is reported as skipped. No test downloads a browser or calls a paid model.
+The separate `python -m harness_lab.pi_probe` command exercises an installed Pi with
+scripted loopback responses; see the [lab map](harness_lab/README.md).
 
-For a local input inspection with no model calls:
+`dist/volo-factory.zip` contains only `main.py`, `requirements.txt` and `volo/` modules.
+The lab, platform sessions, source applications, development tests and evidence are excluded.
+Run model-generated code in a suitable disposable sandbox; path guards and evaluator
+hashes are not an operating-system sandbox.
+
+## Platform and research
+
+Use [the platform CLI](docs/platform-cli.md) for uploads, statuses, logs and standings:
 
 ```sh
-.venv/bin/python main.py /path/to/requirements --output-dir runs/inspection --inspect
+./arcbench leaderboard --competition ticket-booking --task ticket-booking
+./arcbench status RUN_ID
 ```
 
-Actual generation needs `OPENAI_API_KEY`, `OPENAI_BASE_URL`, and `MODEL`. Use the
-competition gateway and an allowed model. The agent has no alternative model endpoint.
-Run model-generated code only in a suitable disposable sandbox; workspace path guards
-are not an OS-level sandbox for subprocesses.
-
-## Behavior and limits
-
-- Dependency-ordered requirement batches and existing-project preservation.
-- Batched file edits, bounded commands, build/start/behavioral-check verification, repair loop.
-- Small empty projects use one initial bundle-delivery call, then real verification;
-  failed deliveries enter the full repair loop.
-- Small-app runtime scaffolding supplies only build, HTTP serving and browser-test lifecycle.
-  Product markup, behavior, API logic and test assertions remain model-generated.
-- DeepSeek thinking/tool message continuity and explicit usage accounting.
-- DeepSeek thinking is disabled for small requirement batches and retained for larger ones.
-- Deterministic discovery of provided Playwright tooling and protection of shared browser caches.
-- Verified-checkpoint recovery with requirement and source fingerprints.
-- Redacted `.factory/` trace, commands, verification record and checkpoint; optional official SDK events.
-- Default caps: 32 attempted requests, 150,000 observed tokens, 1,200 seconds and
-  8,192 output tokens per request. Environment overrides use `FACTORY_MAX_CALLS`,
-  `FACTORY_TOKEN_BUDGET`, `FACTORY_TIMEOUT`, `FACTORY_MAX_OUTPUT_TOKENS`.
-- The observed token cap is checked between responses; an in-flight response can
-  exceed the remaining amount. Organizer gateway quotas are authoritative.
-- Binary image references are listed but not analyzed in this version.
-- Agent-authored checks and build success do not substitute for official GUI evaluation.
-
-## Development record
-
-- [Strategy and verified rules](docs/strategy.md)
-- [Progress and evidence boundaries](docs/progress.md)
-- [Actual experiments and result links](docs/experiments.md)
-- [Next evidence gates toward the final](docs/next-stage.md)
-- [Contributor instructions](AGENTS.md)
-
-Local checks use Python's standard `unittest` runner. Only actual runs against
-the organizer's model gateway and official GUI tests will establish competition performance.
+Model calls and official submissions are separate experiment decisions; merging this
+baseline does not start them. The [current architecture proposal](docs/harness-design-2026-09-12.md)
+compares Octos/ARC adapter, Pi, mini-SWE-agent, OpenHands and Harbor at pinned revisions.
+It distinguishes proven local behavior, research findings and untested proposals.

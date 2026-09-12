@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import signal
+import shlex
 import shutil
 import socket
 import subprocess
@@ -17,12 +18,27 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from .acceptance import AcceptanceUnavailable
 from .environment import discover_playwright
+from .launcher import install as install_launcher
 from .trace import Trace, atomic_json
 
 
 EXCLUDED = {".git", ".arc", ".factory", "node_modules", "dist", "build", "__pycache__", ".venv"}
-PROTECTED = {".git", ".arc", ".factory", "requirements"}
+PROTECTED = {".git", ".arc", ".factory", ".volo", "requirements"}
+
+
+def normalize_check_command(command):
+    if isinstance(command, list) and len(command) == 1 and isinstance(command[0], str):
+        command = shlex.split(command[0])
+    if (not isinstance(command, list) or len(command) < 2
+            or not all(isinstance(part, str) and part for part in command)):
+        raise ValueError('Supply a concrete behavioral check as argv, e.g. ["node", "checks/test.cjs"]')
+    if command[0] not in ('node', 'npm', 'npx', 'python', 'python3'):
+        raise ValueError('Use a Node/Python test runner for behavioral checks')
+    if any(part in ('&&', '||', '|', ';', '>', '>>', '<') for part in command):
+        raise ValueError('Check commands use argv without shell operators')
+    return command
 
 
 def stop_process(process):
@@ -56,6 +72,10 @@ class Workspace:
         self.trace, self.deadline = trace, deadline
         self.counter = 0
         self.last_verification = None
+        self.last_verification_attempt = None
+        self.required_checks = []
+        self.acceptance_suite = None
+        self.acceptance_requirement_ids = None
         self.root.mkdir(parents=True, exist_ok=True)
         self.node_available = bool(shutil.which("node"))
         self.browser = discover_playwright(self.root)
@@ -114,6 +134,10 @@ class Workspace:
     def read_files(self, paths):
         if not isinstance(paths, list) or not 1 <= len(paths) <= 20:
             raise ValueError("Read 1–20 paths per call")
+        sizes = {name: self.path(name).stat().st_size for name in paths}
+        if sum(sizes.values()) > 12000:
+            raise ValueError('Source read exceeds 12000 bytes. Use read_file_chunk with character offsets. '
+                             'Requested file sizes: ' + json.dumps(sizes))
         result = {}
         for name in paths:
             path = self.path(name)
@@ -121,6 +145,18 @@ class Workspace:
                 raise ValueError(f"File is too large; use run to inspect a bounded slice: {name}")
             result[name] = path.read_text()
         return result
+
+    def read_file_chunk(self, path, offset=0, limit=8000):
+        if (not isinstance(offset, int) or offset < 0 or not isinstance(limit, int)
+                or not 1 <= limit <= 8000):
+            raise ValueError('Use a nonnegative character offset and a limit of 1-8000 characters')
+        source = self.path(path)
+        if source.stat().st_size > 1000000:
+            raise ValueError('Source exceeds 1 MB; inspect a bounded slice with run')
+        content = source.read_text()
+        chunk = content[offset:offset + limit]
+        return {'path': path, 'offset': offset, 'content': chunk, 'total_chars': len(content),
+                'next_offset': offset + len(chunk) if offset + len(chunk) < len(content) else None}
 
     def write_files(self, files):
         if not isinstance(files, list) or not 1 <= len(files) <= 30:
@@ -204,21 +240,68 @@ class Workspace:
             atomic_json(marker, {"manifest": digest})
         return result
 
+    def browser_checks(self, check_command):
+        """Find standalone browser checks written by this agent, not evaluator files."""
+        if not self.browser.get("available"):
+            return []
+        checks = []
+        for path in self.files():
+            relative = str(path.relative_to(self.root))
+            if (not relative.startswith('checks/') or relative in check_command
+                    or path.suffix not in ('.js', '.cjs', '.mjs')
+                    or not any(marker in path.name for marker in ('.spec.', '.test.'))):
+                continue
+            source = path.read_text(errors='replace')
+            if 'FACTORY_PLAYWRIGHT_MODULE' in source and '@playwright/test' not in source:
+                checks.append(['node', relative])
+        return checks
+
+    def discovered_check_command(self):
+        """Recognize authored Node test bundles once the application contract exists."""
+        for directory, script in [('frontend', 'build'), ('backend', 'start')]:
+            try:
+                package = json.loads((self.root / directory / 'package.json').read_text())
+                if not isinstance(package.get('scripts', {}).get(script), str):
+                    return None
+            except (OSError, ValueError, AttributeError):
+                return None
+        checks = []
+        for path in self.files():
+            name = str(path.relative_to(self.root))
+            if (not name.startswith('checks/') or path.suffix not in ('.js', '.cjs', '.mjs')
+                    or not any(marker in path.name for marker in ('.test.', '.spec.'))):
+                continue
+            checks.append(name)
+        return ['node', '--test', *checks] if checks else None
+
     def verify(self, check_command):
         """Verify the actual current tree, never a model's claimed test result."""
-        if not isinstance(check_command, list) or len(check_command) < 2:
-            raise ValueError("Supply a concrete behavioral check command")
-        if check_command[0] not in ("node", "npm", "npx", "python", "python3"):
-            raise ValueError("Use a Node/Python test runner for behavioral checks")
-        if (self.last_verification and self.last_verification.get("check_command") == check_command
-                and self.last_verification.get("source_fingerprint") == self.fingerprint()):
+        check_command = normalize_check_command(check_command)
+        for check in self.required_checks:
+            for name, expected in check['files'].items():
+                path = self.root / name
+                if (not path.is_file() or path.is_symlink()
+                        or hashlib.sha256(path.read_bytes()).hexdigest() != expected):
+                    self.last_verification = None
+                    raise ValueError('A fixed acceptance check was removed or changed: ' + name)
+        contract = hashlib.sha256(json.dumps(self.required_checks, sort_keys=True).encode()).hexdigest()
+        if (self.acceptance_suite is None and self.last_verification and self.last_verification.get("check_command") == check_command
+                and self.last_verification.get("source_fingerprint") == self.fingerprint()
+                and self.last_verification.get('acceptance_fingerprint') == contract):
             return {**self.last_verification, "reused_unchanged_verification": True}
         self.last_verification = None
         steps = []
         def result(ok, **extra):
-            value = {"passed": ok, "steps": steps, "official_evaluation": "pending", **extra}
+            acceptance = extra.pop('acceptance', {'status': 'not_run' if self.acceptance_suite else 'not_configured',
+                                                  'passed': False, 'verified_requirements': []})
+            value = {"passed": ok, "steps": steps, "check_command": check_command,
+                     'acceptance_fingerprint': contract,
+                     "source_fingerprint": self.fingerprint(), "official_evaluation": "pending",
+                     "verification_scope": "independent_acceptance" if acceptance['passed'] else "local_checks_only",
+                     "requirements_verified": bool(acceptance['passed']),
+                     'acceptance': acceptance, **extra}
+            self.last_verification_attempt = value
             if ok:
-                value["source_fingerprint"] = self.fingerprint()
                 self.last_verification = value
             atomic_json(self.trace.directory / "verification.json", value)
             self.trace.event("verification", **value)
@@ -232,6 +315,7 @@ class Workspace:
                 required = "build" if relative == "frontend" else "start"
                 if required not in scripts:
                     return result(False, error=f"Missing {relative} npm script: {required}")
+            self.trace.event("application_entrypoints", **install_launcher(self.root))
             for relative in (".", "frontend", "backend"):
                 if (self.root / relative / "package.json").exists():
                     step = self._install(relative)
@@ -268,11 +352,36 @@ class Workspace:
                     if not ready:
                         return result(False, error="Application did not serve HTTP 200 on PORT",
                                       server_output=self.trace.redact(server_log.read_text(errors="replace")[-6000:]))
-                    check = self.run(check_command, ".", 180, {
-                        "FACTORY_BASE_URL": url, "E2E_BASE_URL": url, "PLAYWRIGHT_BASE_URL": url})
-                    steps.append(check)
-                    return result(check["exit_code"] == 0 and not check["timed_out"],
-                                  check_command=check_command, application_url=url)
+                    commands = [*[check['argv'] for check in self.required_checks],
+                                check_command, *self.browser_checks(check_command)]
+                    executed = []
+                    for command in commands:
+                        check = self.run(command, ".", 180, {
+                            "FACTORY_BASE_URL": url, "E2E_BASE_URL": url, "PLAYWRIGHT_BASE_URL": url})
+                        steps.append(check)
+                        executed.append(command)
+                        if check["exit_code"] != 0 or check["timed_out"]:
+                            return result(False, check_command=check_command, executed_checks=executed,
+                                          application_url=url)
+                    if self.acceptance_suite is not None:
+                        scope = (self.acceptance_requirement_ids if self.acceptance_requirement_ids is not None
+                                 else self.acceptance_suite.requirement_ids)
+                        acceptance = self.acceptance_suite.run(url, scope,
+                            timeout=min(180, self.deadline - time.monotonic()), extra_env=self.runtime_env)
+                        acceptance['source_fingerprint'] = self.fingerprint()
+                        self.trace.event('independent_acceptance', **acceptance)
+                        if not acceptance['passed']:
+                            steps.append({'output': json.dumps(acceptance, ensure_ascii=False),
+                                          'exit_code': 1, 'timed_out': acceptance.get('timed_out', False)})
+                        verified = result(acceptance['passed'], check_command=check_command,
+                                          executed_checks=commands, application_url=url, acceptance=acceptance,
+                                          **({'error': 'Independent acceptance did not pass'} if not acceptance['passed'] else {}))
+                        if acceptance['status'] in ('error', 'unverified'):
+                            raise AcceptanceUnavailable('Independent acceptance is unavailable or incomplete; '
+                                                        'stopping instead of asking the model to repair its evaluator')
+                        return verified
+                    return result(True, check_command=check_command, executed_checks=commands,
+                                  application_url=url)
                 finally:
                     stop_process(process)
                     text = self.trace.redact(server_log.read_text(errors="replace"))

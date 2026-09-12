@@ -25,7 +25,7 @@ class RequirementSet:
         document = yaml.safe_load(raw)
         if not isinstance(document, dict):
             raise ValueError("requirements.yaml must contain a mapping")
-        nodes, all_nodes = [], {}
+        nodes, all_nodes, ancestry = [], {}, {}
 
         def walk(node, parents):
             if not isinstance(node, dict) or not node.get("id"):
@@ -34,6 +34,7 @@ class RequirementSet:
             if key in all_nodes:
                 raise ValueError(f"Duplicate requirement id: {key}")
             all_nodes[key] = node
+            ancestry[key] = parents
             children = node.get("children") or []
             if node.get("type") == "ATOMIC" or not children:
                 nodes.append({**node, "id": key, "parents": parents})
@@ -49,7 +50,10 @@ class RequirementSet:
                 if str(dependency) not in all_nodes:
                     raise ValueError(f"Unknown dependency {dependency} for {node['id']}")
 
-        # Expand dependencies on folders into their descendant atomic nodes.
+        # Expand external folder dependencies into their descendant work. A node
+        # referencing its own ancestor means that container's context, not waiting
+        # for all of its siblings (and itself) to finish. Keep the original link in
+        # model input and inherit the container's external dependencies normally.
         atomic = {node["id"]: node for node in nodes}
         def descendants(key):
             return [n["id"] for n in nodes if n["id"] == key or key in n["parents"]]
@@ -57,6 +61,7 @@ class RequirementSet:
         for node in nodes:
             keys = [node["id"], *node["parents"]]
             deps = {d for key in keys for dep in all_nodes[key].get("dependencies", []) or []
+                    if str(dep) not in ancestry[key]
                     for d in descendants(str(dep))}
             if node["id"] in deps:
                 raise ValueError(f"Self dependency: {node['id']}")

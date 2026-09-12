@@ -1,0 +1,213 @@
+{
+  "observed_on": "2026-09-12",
+  "development_version": "0.7.0.dev30",
+  "base_commit": "4d8f619d56bccb9fc330d1acb87116f1b8d1d5a4",
+  "scope": "Offline engineering validation, not model quality or official benchmark performance",
+  "real_model_calls": 0,
+  "official_submissions": 0,
+  "full_suite": {
+    "tests_run": 89,
+    "passed": 89,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 195.834,
+    "success": true,
+    "skipped_cases": [],
+    "python": "3.9.6",
+    "real_browser_tests_enabled": true,
+    "docker_calibration_enabled": true,
+    "source_hashes": {
+      "volo/__init__.py": "019932ae6cd9063dbab2a619143eaff24f78d3c34c81d3f75d6ec3a85f00de67",
+      "volo/agent.py": "3a976574cff2428bd532a0dc2c1608615d3b333fadfc79385a8cf9bd122d83e8",
+      "volo/context.py": "4c59c7271d134da3fd373d75904ae5209b82ee22e5e3023823f832973b91cdfa",
+      "volo/environment.py": "f6d53c3e514b3301ab9ac0f502d1c535095ea0a0f7c6f8b43c861ba14d4b0d29",
+      "volo/launcher.py": "49255e5569dc5a547cfce894413e17db4cd42d274aad4d6faaee67de7c928fb8",
+      "volo/model.py": "6aaa1a661ef31b3ece5d5f28c3c7abce5e9f78e5944a6c6dc9420025e2d51ce9",
+      "volo/references.py": "c0ed97c3971fcdcd71fd2e2756257ec217cebb98911d4428aefa500b95beeeb5",
+      "volo/requirements.py": "48af66ece622727955fa6ea2a6db7e4dea31e73f18868ffb6299b2957084984d",
+      "volo/trace.py": "cf2bf7fd832a6db2844720e6cdc04abe74cd15daeb03c7e4a244c32814e7e9bd",
+      "volo/web_runtime.py": "4e678c4e338b7a76b47584db247b6990e59b26c055ad1e847bc4922dde343c23",
+      "volo/workspace.py": "24c6f631af5c32b74c6cd21c6623452f036ff0c243bd0dc8ad2e0f71f4546303",
+      "harness_lab/__init__.py": "8caa7fca78ad53b2c18883e6631256b59d6f348f10113a5d31632203f7b3a663",
+      "harness_lab/evaluate.py": "c75a7a794ead68a4471d00988e82da05e30420d83412d15fdb065300b7592430",
+      "harness_lab/pi_adapter.py": "e76fdfffbed453a505c1b3821acab6748b63ffb4ba4909fe454cc92aa233d12f",
+      "harness_lab/pi_probe.py": "6c6f4f9777971fdf6d8616f7218ae23e50351f6e84d1b8a14049a2158525d1de",
+      "tests/test_context.py": "b12a752c3c28c4a8da826a1d38b881c40b86da2b024d6ab21d8c375ce74d7ccd",
+      "tests/test_core.py": "649ca694ec49a4e72eebd4858b7617376f69455e9994368b6fb48231e9f45a44",
+      "tests/test_external_verifier.py": "ca2d9c2be120dbefa884c132175d54541df6ac14c0b19a0c3f7cc1e8cda30c8b",
+      "tests/test_fixed_checks.py": "21c65a6d118b96d52f2dea7479ca4621725bbc55723361b1716b3a2ccf38880a",
+      "tests/test_launcher.py": "7aee18d67d20cc9991e3fb86c99f3e4ae906bdd78921c956ef43b2c93e688e28",
+      "tests/test_output_recovery.py": "7c50e1880dea4f57a01de5d875786b0e5fa55645be61cfda69a41dc90d8db69c",
+      "tests/test_pi_adapter.py": "19dd71be713f8e5aa4425d5a3141b293bc1ca016a78d887775160d8120cf86af",
+      "tests/test_platform_cli.py": "b6c1e85df694249d23867ff01e6c2a2713d9c540f830d5aaed892043a9c1c7e1",
+      "tests/test_references.py": "fd740a13c7f255de0daf2e8bcc358051a40170f59022335da378bda6612d6953"
+    }
+  },
+  "pi_protocol_probes": {
+    "positive": {
+      "kind": "real_pi_with_synthetic_loopback_gateway",
+      "pi_version": "0.83.0",
+      "real_model_calls": 0,
+      "synthetic_gateway_requests": 2,
+      "worker_exit_code": 0,
+      "invalid_arguments_probe": false,
+      "artifact_matches_fixture": true,
+      "artifact_created": true,
+      "implicit_context_leaked": false,
+      "provider_and_model_match": true,
+      "tool_result_roundtrip": true,
+      "assistant_responses": 2,
+      "reported_total_tokens": 240,
+      "billed_cost": null,
+      "tool_events": [
+        {
+          "tool": "write",
+          "error": false
+        }
+      ],
+      "agent_ended": true,
+      "official_evaluation": "not_run",
+      "external_verification": {
+        "schema_version": 1,
+        "kind": "local_external_verification",
+        "official_evaluation": "not_run",
+        "status": "passed",
+        "model_api_calls": 0,
+        "isolation": "separate filesystem/PID containers; shared network namespace with network=none",
+        "source_exclusions": [
+          ".DS_Store",
+          ".arc",
+          ".factory",
+          ".git",
+          ".venv",
+          "__pycache__",
+          "node_modules",
+          ".env* except .env.example"
+        ],
+        "orchestrator_sha256": "c75a7a794ead68a4471d00988e82da05e30420d83412d15fdb065300b7592430",
+        "limits": {
+          "cpu_per_container": 1,
+          "memory_bytes_per_container": 536870912,
+          "execution_seconds": 90,
+          "cleanup_seconds_per_container": 10
+        },
+        "candidate": {
+          "sha256": "11838a49571eba3bc08fafb3a0224ac2f7a574fc8bb7b77a29eb308a3c445a72",
+          "files": [
+            {
+              "path": "AGENTS.md",
+              "sha256": "4ab0971d711558536a17bc36b89cdbbc754c059748bb00d8d8395823be9b2e2d",
+              "executable": false
+            },
+            {
+              "path": "server.cjs",
+              "sha256": "8f1ac901fda4e5a9c57462fb8f79ba7bbb9285ef21d3c0ccb0dab491d8298b35",
+              "executable": false
+            }
+          ],
+          "bytes": 543
+        },
+        "suite": {
+          "sha256": "1145837e2678853dca13fcb02b225744e3f7a9c1e766a2188e9e19cce1ffc7e9",
+          "files": [
+            {
+              "path": "check.py",
+              "sha256": "ff075a03c9745a06dc2e9ab3d68d04c2c7b6a40129378c17b4f356e55e7191ae",
+              "executable": false
+            },
+            {
+              "path": "contract.json",
+              "sha256": "f96e81f8dcb654cdc411964e045466bc0e8c6b9cd606d2a0690d427640bc6287",
+              "executable": false
+            },
+            {
+              "path": "requirements.txt",
+              "sha256": "261b66b14c87e03aa135ca2cc463956949d6bb0b41741c8d87a6a28627f64964",
+              "executable": false
+            }
+          ],
+          "bytes": 2236
+        },
+        "contract_sha256": "dccccdd910ae9378488992c4ebfe98c22b7009564cd6c99d1541e85889bdf3cc",
+        "requirements_sha256": "261b66b14c87e03aa135ca2cc463956949d6bb0b41741c8d87a6a28627f64964",
+        "provenance": "Hand-authored calibration fixture; requirements.txt; not an official competition task",
+        "image_id": "sha256:bf13c87ae67cbd1280dea22c4bd1c1fd1a1c530711110820e8655237aa0e06f7",
+        "isolation_attestation": [
+          {
+            "network": "none",
+            "readonly_root": true,
+            "privileged": false,
+            "pid_mode": "",
+            "user": "65534:65534",
+            "bind_mounts": [
+              {
+                "destination": "/candidate",
+                "writable": false
+              }
+            ]
+          },
+          {
+            "network": "candidate-network-namespace",
+            "readonly_root": true,
+            "privileged": false,
+            "pid_mode": "",
+            "user": "65534:65534",
+            "bind_mounts": [
+              {
+                "destination": "/suite",
+                "writable": false
+              }
+            ]
+          }
+        ],
+        "cases": [
+          {
+            "id": "greeting",
+            "status": "passed"
+          },
+          {
+            "id": "grader-isolation",
+            "status": "passed"
+          }
+        ],
+        "passed": 2,
+        "expected": 2,
+        "verifier_exit_code": 0,
+        "cleanup_errors": [],
+        "seconds": 1.109
+      },
+      "probe_passed": true
+    },
+    "invalid": {
+      "kind": "real_pi_with_synthetic_loopback_gateway",
+      "pi_version": "0.83.0",
+      "real_model_calls": 0,
+      "synthetic_gateway_requests": 2,
+      "worker_exit_code": 0,
+      "invalid_arguments_probe": true,
+      "artifact_matches_fixture": false,
+      "artifact_created": false,
+      "implicit_context_leaked": false,
+      "provider_and_model_match": true,
+      "tool_result_roundtrip": true,
+      "assistant_responses": 2,
+      "reported_total_tokens": 240,
+      "billed_cost": null,
+      "tool_events": [
+        {
+          "tool": "write",
+          "error": true
+        }
+      ],
+      "agent_ended": true,
+      "official_evaluation": "not_run",
+      "probe_passed": true
+    }
+  },
+  "remaining_gates": [
+    "Official-equivalent GUI environment and calibrated scenarios",
+    "Pi real-model sandbox, multimodal input and resource budget integration",
+    "Matched real-model VOLO/Pi evaluation"
+  ]
+}

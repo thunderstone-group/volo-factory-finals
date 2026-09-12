@@ -1,0 +1,151 @@
+{
+  "observed_on": "2026-09-12",
+  "method": "GitHub REST metadata and source read at pinned commits; no upstream code executed or copied into the agent",
+  "sources": [
+    {
+      "repo": "octos-org/octoscode",
+      "revision": "12feed7b50162450a216255d63ea2068f79c7756",
+      "commit_date": "2026-09-11T12:07:00Z",
+      "inspected_files": [
+        {
+          "path": "docs/ARCHITECTURE.md",
+          "sha256": "329e08d36308516a0cc129f34f8123bfefb35f518162e18f1ae2f0846661c7e4"
+        },
+        {
+          "path": "specs/task-ab-atomcode-octoscode-harness.spec.md",
+          "sha256": "77a7e860a50e7ad379909d8fcbe82c12901c1eae14876dd582ffdfae8d6b9894"
+        }
+      ]
+    },
+    {
+      "repo": "octos-org/octos",
+      "revision": "f4e44b192e39fc634ca0c9e0ae2e31704ccf1d73",
+      "commit_date": "2026-09-11T12:06:42Z",
+      "inspected_files": [
+        {
+          "path": "crates/octos-agent/src/agent/budget.rs",
+          "sha256": "148f26b633de86b41412f26d0fd54d0dca890d1610d3e7ebacc225d7beef0d5e"
+        },
+        {
+          "path": "crates/octos-agent/src/agent/execution.rs",
+          "sha256": "d42cf06c5186dc2c10745223da6cf28f4d1640090b4221002ea87e5d8a7a2be6"
+        },
+        {
+          "path": "crates/octos-agent/src/agent/verifier.rs",
+          "sha256": "6db33ed6d8794f60324a71b241970c38e1f4b6ada52d98301fe92516a6fe7741"
+        },
+        {
+          "path": "docs/harness-context-efficiency.md",
+          "sha256": "9de9949e4ef3619c421134d66cf6e9a122f14564eabe1f306cc2a4263dd607f1"
+        }
+      ]
+    },
+    {
+      "repo": "octos-org/arc-adapter",
+      "revision": "b0999c95f7875c8d4ff3e58e733fb2c5abc8caf7",
+      "commit_date": "2026-08-29T03:31:18Z",
+      "inspected_files": [
+        {
+          "path": "README.md",
+          "sha256": "0d4a1a8f560a40e7d326c9a0f9ea74769f821328b99b45c501849512962a77be"
+        },
+        {
+          "path": "arcbench_agent_runtime/runtime.py",
+          "sha256": "cefa97de838973ac592c9a9ad25077f90b74dde9dbb14c548f2e45ac02b9960c"
+        },
+        {
+          "path": "main.py",
+          "sha256": "3fa5b327bdfb9b6d9fe6d9604e29cc7d7fe9885e6619dde51f31e840bf423adc"
+        },
+        {
+          "path": "octos_stdio.py",
+          "sha256": "76a988fca9999f305a9dcc526387f425ad88210af8a23b9f4686fab5dfde9837"
+        }
+      ]
+    },
+    {
+      "repo": "earendil-works/pi",
+      "revision": "71dca871bc80b6bc97be37f0ca3189399d651fff",
+      "commit_date": "2026-09-11T17:42:45Z",
+      "inspected_files": [
+        {
+          "path": "packages/agent/src/agent-loop.ts",
+          "sha256": "1e16404a231912fbd7643d8317b15ec4cc6245ed8cedc37582a31d430a1cc6ac"
+        },
+        {
+          "path": "packages/coding-agent/README.md",
+          "sha256": "b5daa09877da34d122818e03436b51755bc1b5044ae8ab810df63f02888f1ebe"
+        },
+        {
+          "path": "packages/coding-agent/docs/sdk.md",
+          "sha256": "5552225acbc4da1a2d40c00407b2d7d523d006e7fa531d9ee2d4e8021f8e1de3"
+        }
+      ]
+    },
+    {
+      "repo": "SWE-agent/mini-swe-agent",
+      "revision": "04d809ceab9df28f9adaed044884180159172930",
+      "commit_date": "2026-09-03T05:05:59Z",
+      "inspected_files": [
+        {
+          "path": "README.md",
+          "sha256": "9982d90b7566f2f3fa5e9811b475d5e8e2a84e2df80cf3f1e4be6e820b129835"
+        },
+        {
+          "path": "src/minisweagent/agents/default.py",
+          "sha256": "e8ef8aa365942d739c2ec5cb0879f60f377d2dc2de8ec670aaedf3bafb45a4c2"
+        }
+      ]
+    },
+    {
+      "repo": "OpenHands/software-agent-sdk",
+      "revision": "9c3571a694547734002518bd94b3cb41a187f9b6",
+      "commit_date": "2026-09-12T03:46:10Z",
+      "inspected_files": [
+        {
+          "path": "openhands-sdk/openhands/sdk/context/condenser/README.md",
+          "sha256": "66d1f0f6002f82ac610d478880b2c3f49215a062955aff4a2777f2698a4c21ff"
+        },
+        {
+          "path": "openhands-sdk/openhands/sdk/critic/base.py",
+          "sha256": "73e1dd5c5435fd03227cbf7c84e7e46a506ee8c6654b29097647ffb7813f089b"
+        },
+        {
+          "path": "openhands-sdk/openhands/sdk/critic/impl/agent_finished.py",
+          "sha256": "aa73459e6560ef5ac591c616702b7e21b37fd597a95ab186826445ac326814d2"
+        },
+        {
+          "path": "openhands-sdk/openhands/sdk/critic/impl/api/critic.py",
+          "sha256": "2b5317127b8d0f6844f65e5453ae965731bce483967b5c86df7d07aa7ca23930"
+        },
+        {
+          "path": "openhands-sdk/openhands/sdk/critic/impl/empty_patch.py",
+          "sha256": "fdfbd5abbec31727bd852e6f0287546b5e0b302cc6f15ae136aa36da32c9efb6"
+        }
+      ]
+    },
+    {
+      "repo": "harbor-framework/harbor",
+      "revision": "d6ea0ae1fd19b4c66598d0bc1a992a9d8b9dc53d",
+      "commit_date": "2026-09-12T02:53:05Z",
+      "inspected_files": [
+        {
+          "path": "README.md",
+          "sha256": "687e4f416b43e1ab28afb3cd48f556d7a9f4d664ac78ac1a2a07a7ab9b95b1b7"
+        },
+        {
+          "path": "src/harbor/models/task/config.py",
+          "sha256": "d8c62a49acefb8cd6a0be4c4d48dc0f4f52f31f8a8a6728439aad04e1c62e9fb"
+        },
+        {
+          "path": "src/harbor/trial/trial.py",
+          "sha256": "757f34424e35ea6e924484bff9ae75464e94acd5dec3d769bc65a9518ada79a8"
+        },
+        {
+          "path": "src/harbor/verifier/verifier.py",
+          "sha256": "6d3d9ed8882c5e07bae4aa6449732b096166fb9bbabc685b39c0e25f57b20aa9"
+        }
+      ]
+    }
+  ]
+}

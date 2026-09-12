@@ -27,7 +27,7 @@ class Usage:
 
 
 class Model:
-    def __init__(self, base_url, api_key, model, trace, *, timeout=180, max_output=8192):
+    def __init__(self, base_url, api_key, model, trace, *, timeout=600, max_output=16384, max_attempts=3):
         parsed = urllib.parse.urlparse(base_url)
         if parsed.scheme not in ("http", "https") or not parsed.netloc:
             raise ValueError("Invalid OPENAI_BASE_URL")
@@ -37,7 +37,10 @@ class Model:
             raise ValueError("Model base URL must not contain credentials or query parameters")
         self.url = base_url.rstrip("/") + "/chat/completions"
         self.api_key, self.model, self.trace = api_key, model, trace
+        if type(max_attempts) is not int or not 1 <= max_attempts <= 3:
+            raise ValueError("max_attempts must be between 1 and 3")
         self.timeout, self.max_output = timeout, max_output
+        self.max_attempts = max_attempts
         self.thinking = None
         self.usage = Usage()
 
@@ -48,14 +51,25 @@ class Model:
             body["thinking"] = {"type": self.thinking}
             if self.thinking == 'disabled':
                 body['temperature'] = 0
+            else:
+                # V4 defaults to high; E012 spent 58,034 reasoning tokens before
+                # returning a truncated tool call. Keep bounded coding turns at low.
+                body['reasoning_effort'] = 'low'
         if forced_tool:
             if forced_tool not in {t['function']['name'] for t in tools}:
                 raise ValueError("Forced tool must be advertised")
             body['tool_choice'] = {'type': 'function', 'function': {'name': forced_tool}}
+        if self.thinking in ('enabled', 'disabled') and self.model.lower().startswith('qwen3.'):
+            body['enable_thinking'] = self.thinking == 'enabled'
+        if self.model.lower() == 'kimi-k3':
+            # K3 always reasons; its documented default is max, not a binary
+            # thinking switch. Low is the supported bounded-generation policy.
+            body['reasoning_effort'] = 'low'
         self.trace.event("model_request", model=self.model, gateway=self.url, messages=messages, tools=tools,
+                         timeout_seconds=min(self.timeout, remaining_seconds) if remaining_seconds else self.timeout,
                          parameters={k: v for k, v in body.items() if k not in ('messages', 'tools')})
         data = json.dumps(body, ensure_ascii=False).encode()
-        for attempt in range(3):
+        for attempt in range(self.max_attempts):
             request = urllib.request.Request(self.url, data=data, headers={
                 "Content-Type": "application/json", "Authorization": f"Bearer {self.api_key}"})
             self.usage.calls += 1
@@ -67,7 +81,7 @@ class Model:
             except urllib.error.HTTPError as exc:
                 detail = exc.read(4096).decode(errors="replace")
                 self.trace.event("model_http_error", status=exc.code, detail=detail)
-                if exc.code == 429 and attempt < 2:
+                if exc.code == 429 and attempt < self.max_attempts - 1:
                     delay = min(10, 2 ** (attempt + 1))
                     if remaining_seconds is not None and remaining_seconds < delay + 5:
                         raise ModelError("Model rate-limited with no retry time remaining") from exc

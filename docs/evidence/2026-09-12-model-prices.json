@@ -1,0 +1,134 @@
+[
+  {
+    "id": "deepseek-v4-flash",
+    "available": true,
+    "pricing": {
+      "input": "3",
+      "output": "9",
+      "cache_hit": "0.1",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "deepseek-v4-pro",
+    "available": true,
+    "pricing": {
+      "input": "9",
+      "output": "27",
+      "cache_hit": "0.3",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "glm-5.2",
+    "available": true,
+    "pricing": {
+      "input": "8",
+      "output": "28",
+      "cache_hit": "2",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "glm-5.3",
+    "available": true,
+    "pricing": {
+      "input": "8",
+      "output": "28",
+      "cache_hit": "2",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "kimi-k3",
+    "available": true,
+    "pricing": {
+      "input": "20",
+      "output": "100",
+      "cache_hit": "2",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "minimax-m3",
+    "available": true,
+    "pricing": {
+      "input": "2.1",
+      "output": "8.4",
+      "cache_hit": "0.42",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "qwen3.6-flash",
+    "available": true,
+    "pricing": {
+      "input": "1.2",
+      "output": "7.2",
+      "cache_hit": "",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "qwen3.6-plus",
+    "available": true,
+    "pricing": {
+      "input": "2",
+      "output": "12",
+      "cache_hit": "",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "qwen3.7-max",
+    "available": true,
+    "pricing": {
+      "input": "12",
+      "output": "36",
+      "cache_hit": "2.4",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "qwen3.7-plus",
+    "available": true,
+    "pricing": {
+      "input": "2",
+      "output": "8",
+      "cache_hit": "0.4",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  },
+  {
+    "id": "qwen3.8-max",
+    "available": true,
+    "pricing": {
+      "input": "12",
+      "output": "36",
+      "cache_hit": "1.5",
+      "billing": "TOKENS",
+      "unit": "CNY / 1M tokens",
+      "source": "public"
+    }
+  }
+]
