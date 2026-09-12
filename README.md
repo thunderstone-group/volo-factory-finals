@@ -98,7 +98,7 @@ are not an OS-level sandbox for subprocesses.
 ## Behavior and limits
 
 An opt-in [independent browser acceptance experiment](docs/acceptance.md) is available
-via `python -m volo.acceptance`. It uses at most one organizer-gateway request to propose
+via `python -m volo.acceptance_probe`. It uses at most one organizer-gateway request to propose
 bounded declarative checks, then executes them in a real browser. It does not change
 the default competition flow or repair the application. Inspection is the default;
 model calls require `--allow-model-calls`. Its results are not official benchmark scores.

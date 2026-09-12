@@ -23,11 +23,11 @@ or package is automatically installed. Existing user browser profiles are not us
 
 ```sh
 # Inspection only: no model request, browser session, or application mutation.
-.venv/bin/python -m volo.acceptance /path/to/requirements \
+.venv/bin/python -m volo.acceptance_probe /path/to/requirements \
   --base-url http://127.0.0.1:3000
 
 # Explicit paid/gateway opt-in. Use a NEW report directory each time.
-.venv/bin/python -m volo.acceptance /path/to/requirements \
+.venv/bin/python -m volo.acceptance_probe /path/to/requirements \
   --base-url http://127.0.0.1:3000 \
   --report-dir runs/acceptance-example --allow-model-calls
 ```
