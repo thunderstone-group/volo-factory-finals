@@ -10,7 +10,7 @@ import sys
 import time
 from pathlib import Path
 
-from volo.agent import Agent
+from volo.practice import PracticeAgent
 from volo.acceptance import AcceptanceSuite
 from volo.model import Model
 from volo.requirements import RequirementSet
@@ -94,7 +94,7 @@ def main():
                     model=model_name, vision_model=vision_name, max_calls=args.max_calls, token_budget=args.token_budget,
                     timeout_seconds=args.timeout)
         try:
-            result = Agent(requirements, client, workspace, runtime,
+            result = PracticeAgent(requirements, client, workspace, runtime,
                            max_calls=args.max_calls, token_budget=args.token_budget,
                            references=references).run()
             print(json.dumps(result, ensure_ascii=False), flush=True)

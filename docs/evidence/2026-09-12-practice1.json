@@ -1,0 +1,27 @@
+{
+  "observed_at": "2026-09-12T13:58:11.955327+00:00",
+  "branch": "perf/arc-practice",
+  "version": "0.7.0.practice1",
+  "generic_main_kept_at": "1717ef4",
+  "scope": "Four pinned practice tasks; raw HTML/new code or exact file edits are produced by the target model.",
+  "changes": [
+    "Short normative-description input and no tool-schema wrapper.",
+    "Existing behavior is verified before omitting its repeated description on evolution tasks.",
+    "Original public acceptance still gates completion; at most three model attempts."
+  ],
+  "validation": {
+    "full_run": {
+      "tests": 178,
+      "errors": 2,
+      "cause": "Missing time import in the new practice module; existing 175 tests passed."
+    },
+    "fix": "Restored time import",
+    "focused_after_fix": {
+      "passed": 3,
+      "errors": 0
+    },
+    "prompt_change": "HTML-only wording clarified to request a fragment; real gateway validation pending."
+  },
+  "package_sha256": "941874953fe1cf7cc2b0bfde46432e5058eb8c29518ad39ba451c72df22fb350",
+  "official_runs": []
+}
