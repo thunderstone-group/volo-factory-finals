@@ -1,0 +1,311 @@
+{
+  "observed_at": "2026-09-12T10:54:58.411110+00:00",
+  "source_main": "48fc9a6",
+  "agent_source": "70e9236",
+  "package_sha256": "081a5e66334114a86648a8f12017214a983b1a95b690476658a421ef48529f8c",
+  "live_boards": [
+    {
+      "board": "smoke",
+      "observed_at": "2026-09-12T10:40:18.443895+00:00",
+      "own": {
+        "rank": 3,
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "track": "smoke",
+        "avg_pass_rate": 100.0,
+        "avg_feature_implementation_rate": 100.0,
+        "total_token_millions": 0.003,
+        "total_token_cost": 0.016023,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 6241.0285,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 5,
+        "submission_count": 1,
+        "task_id": null,
+        "task_title": null,
+        "is_complete": true
+      },
+      "strongest_other": {
+        "rank": 1,
+        "username": "你也秃对不队",
+        "model_name": "deepseek-v4-flash",
+        "track": "smoke",
+        "avg_pass_rate": 100.0,
+        "avg_feature_implementation_rate": 100.0,
+        "total_token_millions": 0.001,
+        "total_token_cost": 0.003099,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 32268.4737,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 2,
+        "submission_count": 1,
+        "task_id": null,
+        "task_title": null,
+        "is_complete": true
+      },
+      "relative_efficiency": 0.19340947322215618
+    },
+    {
+      "board": "evolution",
+      "observed_at": "2026-09-12T10:40:25.949567+00:00",
+      "own": {
+        "rank": 2,
+        "username": "VOLO AI",
+        "model_name": "qwen3.6-flash",
+        "track": "smoke-evolution",
+        "avg_pass_rate": 100.0,
+        "avg_feature_implementation_rate": 100.0,
+        "total_token_millions": 0.005,
+        "total_token_cost": 0.01781,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 5614.8231,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 7,
+        "submission_count": 1,
+        "task_id": null,
+        "task_title": null,
+        "is_complete": true
+      },
+      "strongest_other": {
+        "rank": 1,
+        "username": "Orchestra",
+        "model_name": "deepseek-v4-flash",
+        "track": "smoke-evolution",
+        "avg_pass_rate": 100.0,
+        "avg_feature_implementation_rate": 100.0,
+        "total_token_millions": 0.001,
+        "total_token_cost": 0.004617,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 21659.086,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 4,
+        "submission_count": 1,
+        "task_id": null,
+        "task_title": null,
+        "is_complete": true
+      },
+      "relative_efficiency": 0.25923638236627344
+    },
+    {
+      "board": "ticket",
+      "observed_at": "2026-09-12T10:40:34.209234+00:00",
+      "own": {
+        "rank": 1,
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "track": "ticket-booking",
+        "avg_pass_rate": 90.0,
+        "avg_feature_implementation_rate": 50.0,
+        "total_token_millions": 0.555,
+        "total_token_cost": 0.668715,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 134.5865,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 212,
+        "submission_count": 64,
+        "task_id": "ticket-booking",
+        "task_title": "火车票预订演示系统",
+        "is_complete": true
+      },
+      "strongest_other": {
+        "rank": 2,
+        "username": "李尧",
+        "model_name": "deepseek-v4-flash",
+        "track": "ticket-booking",
+        "avg_pass_rate": 80.0,
+        "avg_feature_implementation_rate": 0.0,
+        "total_token_millions": 4.9,
+        "total_token_cost": 2.407166,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 33.2341,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 1259,
+        "submission_count": 3,
+        "task_id": "ticket-booking",
+        "task_title": "火车票预订演示系统",
+        "is_complete": true
+      },
+      "relative_efficiency": 4.049650810462748
+    }
+  ],
+  "meter_balance": {
+    "status": "unavailable",
+    "http_status": 401
+  },
+  "small_winner_profiles": [
+    {
+      "run_id": "7fa25acde8dd",
+      "inherited_trace_events_excluded": 2,
+      "requests": [
+        {
+          "model": "deepseek-v4-flash",
+          "message_chars": 4218
+        }
+      ],
+      "response_usage": [
+        {
+          "completion_tokens": 554,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 1177,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 1731
+        }
+      ]
+    },
+    {
+      "run_id": "d8dcc590abac",
+      "inherited_trace_events_excluded": 2,
+      "requests": [
+        {
+          "model": "deepseek-v4-flash",
+          "message_chars": 3832
+        }
+      ],
+      "response_usage": [
+        {
+          "completion_tokens": 463,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 1113,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 1576
+        }
+      ]
+    },
+    {
+      "run_id": "8c8a9e509ec6",
+      "inherited_trace_events_excluded": 14,
+      "requests": [
+        {
+          "model": "qwen3.6-flash",
+          "message_chars": 6076
+        }
+      ],
+      "response_usage": [
+        {
+          "completion_tokens": 1284,
+          "completion_tokens_details": {
+            "text_tokens": 1284
+          },
+          "prompt_tokens": 1692,
+          "prompt_tokens_details": {
+            "text_tokens": 1692
+          },
+          "total_tokens": 2976
+        }
+      ]
+    },
+    {
+      "run_id": "97e608e5381c",
+      "inherited_trace_events_excluded": 14,
+      "requests": [
+        {
+          "model": "qwen3.6-flash",
+          "message_chars": 5526
+        }
+      ],
+      "response_usage": [
+        {
+          "completion_tokens": 644,
+          "completion_tokens_details": {
+            "text_tokens": 644
+          },
+          "prompt_tokens": 1582,
+          "prompt_tokens_details": {
+            "text_tokens": 1582
+          },
+          "total_tokens": 2226
+        }
+      ]
+    }
+  ],
+  "e057": {
+    "official_run": "a129e387e562",
+    "official_passed": 9,
+    "official_failed": 1,
+    "failing_spec": "REQ-1.1-user-registration.spec.ts",
+    "failing_line": 67,
+    "failing_operation": "passwordStrength.evaluate(element => element.outerHTML)",
+    "official_playwright_version": "1.57.0",
+    "official_workers": 4,
+    "official_actual_workers": 2,
+    "official_fully_parallel": false,
+    "local_replay": {
+      "stats": {
+        "startTime": "2026-09-12T10:42:44.351Z",
+        "duration": 9976.714,
+        "expected": 10,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "playwright_version": "1.57.0",
+      "workers": 4,
+      "actual_workers": 2,
+      "browser": "installed macOS Chrome",
+      "application_environment": "existing Docker image, one CPU, 256 MB; existing VOLO launcher",
+      "new_generations": 0,
+      "official_environment_equivalence": false
+    },
+    "official_tokens": 555255,
+    "captured_tokens": 50957,
+    "token_discrepancy_cause": "unresolved"
+  },
+  "consultations": [
+    {
+      "model": "claude-fable-5-1",
+      "session_id": "ae71b638-714c-493e-9b75-6b69d5bfcdcf",
+      "duration_ms": 150558,
+      "cli_estimated_usd": 0.637564,
+      "tools_enabled": false,
+      "success": true
+    },
+    {
+      "model": "claude-fable-5-1",
+      "session_id": "df40976c-09d9-4361-9f08-3ceb52d3ddaa",
+      "duration_ms": 122173,
+      "cli_estimated_usd": 0.46453375,
+      "tools_enabled": false,
+      "success": true
+    }
+  ],
+  "consultation_total_estimated_usd": 1.10209775,
+  "review_new_official_runs": 0,
+  "following_user_authorized_batch": "20260912-dev35-small-boards",
+  "local_evidence_base": "runs/20260912-objective-review",
+  "evidence_sha256": {
+    "smoke.json": "45fb881e06c87a872b763eb22af519b5c99a09ae797d892dd3ea5018e13d8891",
+    "evolution.json": "fea2689edb4fdadc45c95b4ebbe9178affeba343c0179163f981f3c13c3178e7",
+    "ticket.json": "b61f8483cc287f00e4a92ea47ab205d7878e936dcf78e4ae7f15b81c5c05f415",
+    "e057-official-playwright-report.json": "1a6fc692ae8c6f8ef6f319d39930dcf4d664b14caaba46643b8ddc720017df20",
+    "e057-replay/original/public-report.json": "21074ef038071472f22973e0d568db91745ee7b287c04af21d2ea4526e116b6c",
+    "public-test-hashes.json": "2c9d0251757df190b9a188b4afaa8201342c750e13f7c350c1caa3f5d3662d66",
+    "fable-round1-packet.md": "056af01ae9e6759aa3885fd2191116da2da603c827595a144298884136db50ac",
+    "fable-round1.json": "8af4478f41b6cc001296483c0e2b45e85762aa622a71158dae15b7b813a0d91f",
+    "fable-round2-packet.md": "ed9b4c8fefbb4eecb49cfaf58d0f20ad3f69d310db4b35d84919fe4e37952cfa",
+    "fable-round2.json": "6eecf0765396d8807ddb96358933ce7fed1e1d740950b861f7cbca0e7e5538be",
+    "smoke-win-counter-events.jsonl": "fb9c522af49f163338550b3f595109f2a295fe494d7b4ce60f662afc6773c848",
+    "smoke-win-dice-events.jsonl": "0043f59028fa18b6d7f5823a0e3eae03ad4849779bb970a043012dfb9b56873d",
+    "evolution-best-counter-events.jsonl": "8c0224f94f479279d59d30ddfece9b4aaf447d2db7b4be7495154661c35c6038",
+    "evolution-win-dice-events.jsonl": "992fab06c164a738fe57030ad23908d3cff91f849d3518cad369916bbc010544"
+  }
+}

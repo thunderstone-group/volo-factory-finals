@@ -1,0 +1,209 @@
+{
+  "observed_at": "2026-09-12T11:02:05.508304+00:00",
+  "scope": "User-directed unchanged dev35 + Flash comparison on both small boards; Ticket deferred",
+  "agent_source": "70e9236",
+  "main_source": "48fc9a6",
+  "package_sha256": "081a5e66334114a86648a8f12017214a983b1a95b690476658a421ef48529f8c",
+  "official_runs": [
+    {
+      "run_id": "97bb0befad0a",
+      "url": "https://arc-bench.com/runs/97bb0befad0a",
+      "requirement_id": "smoke--counter",
+      "submission_id": "f77d3ed481ba",
+      "model": "deepseek-v4-flash",
+      "status": "PASSED",
+      "passed": 1,
+      "failed": 0,
+      "official_cny": 0.008145,
+      "official_tokens": 1707,
+      "official_duration_seconds": 5,
+      "captured_response_usage": [
+        {
+          "completion_tokens": 504,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 1203,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 1707
+        }
+      ],
+      "inherited_events_excluded": 2
+    },
+    {
+      "run_id": "096d97ac9729",
+      "url": "https://arc-bench.com/runs/096d97ac9729",
+      "requirement_id": "smoke--dice",
+      "submission_id": "f77d3ed481ba",
+      "model": "deepseek-v4-flash",
+      "status": "PASSED",
+      "passed": 1,
+      "failed": 0,
+      "official_cny": 0.00699,
+      "official_tokens": 1536,
+      "official_duration_seconds": 4,
+      "captured_response_usage": [
+        {
+          "completion_tokens": 397,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 1139,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 1536
+        }
+      ],
+      "inherited_events_excluded": 2
+    },
+    {
+      "run_id": "576813a77e3d",
+      "url": "https://arc-bench.com/runs/576813a77e3d",
+      "requirement_id": "smoke-evolution--counter",
+      "submission_id": "706ec96e0cd8",
+      "model": "deepseek-v4-flash",
+      "status": "PASSED",
+      "passed": 2,
+      "failed": 0,
+      "official_cny": 0.009366,
+      "official_tokens": 2244,
+      "official_duration_seconds": 4,
+      "captured_response_usage": [
+        {
+          "completion_tokens": 439,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 1805,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 2244
+        }
+      ],
+      "inherited_events_excluded": 16
+    },
+    {
+      "run_id": "9523ff0e9580",
+      "url": "https://arc-bench.com/runs/9523ff0e9580",
+      "requirement_id": "smoke-evolution--dice",
+      "submission_id": "706ec96e0cd8",
+      "model": "deepseek-v4-flash",
+      "status": "PASSED",
+      "passed": 2,
+      "failed": 0,
+      "official_cny": 0.013152,
+      "official_tokens": 2556,
+      "official_duration_seconds": 6,
+      "captured_response_usage": [
+        {
+          "completion_tokens": 914,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 1642,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 2556
+        }
+      ],
+      "inherited_events_excluded": 16
+    }
+  ],
+  "board_comparison": {
+    "smoke": {
+      "new_total_cny": 0.015135,
+      "old_best_cny": 0.016023,
+      "change_percent": -5.5420333270923,
+      "new_candidate_rank": 3,
+      "team_best_rank": 3,
+      "leader_cost_cny": 0.003099,
+      "candidate_cost_multiple_of_leader": 4.883833494675701,
+      "new_row": {
+        "rank": 3,
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "track": "smoke",
+        "avg_pass_rate": 100.0,
+        "avg_feature_implementation_rate": 100.0,
+        "total_token_millions": 0.003,
+        "total_token_cost": 0.015135,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 6607.2019,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 4,
+        "submission_count": 1,
+        "task_id": null,
+        "task_title": null,
+        "is_complete": true
+      }
+    },
+    "evolution": {
+      "new_total_cny": 0.022518,
+      "old_best_cny": 0.01781,
+      "change_percent": 26.434587310499722,
+      "new_candidate_rank": 4,
+      "team_best_rank": 2,
+      "leader_cost_cny": 0.004617,
+      "candidate_cost_multiple_of_leader": 4.87719298245614,
+      "new_row": {
+        "rank": 4,
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "track": "smoke-evolution",
+        "avg_pass_rate": 100.0,
+        "avg_feature_implementation_rate": 100.0,
+        "total_token_millions": 0.005,
+        "total_token_cost": 0.022518,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 4440.8917,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 5,
+        "submission_count": 1,
+        "task_id": null,
+        "task_title": null,
+        "is_complete": true
+      }
+    }
+  },
+  "batch_official_cny": 0.037653,
+  "ticket_new_runs": 0,
+  "automatic_retries": 0,
+  "active_runs_after": [],
+  "local_evidence_base": "runs/20260912-dev35-small-boards",
+  "evidence_sha256": {
+    "smoke-counter-status.jsonl": "8f889aef929c78d1d3ee542b138bb7fd17a763a8727a90ba0576ad448d713744",
+    "runs-final.json": "bec393e75ad42bd876e0d142dbc8943d0b156bb47a8165d60dd10089aec3110a",
+    "smoke-counter-start.json": "bf46af7e89577e4d22e841d28cd7248fcec5d60a0ecc0f1c266179fb57d87245",
+    "smoke-counter-events.jsonl": "a7816393e38657155be72416d00fbb7f0413b01d44033695333c447d12125abd",
+    "smoke-board-final.json": "3c91458ef876da08badfdbcad8f77ad10fd1cf7a0a51b6a54b2e22bc7e6947a6",
+    "smoke-dice-start.json": "bc6a5dc1ad3e594425a89e3e1743439b5e5d22f3b87d29041b3a957c70055c84",
+    "evolution-upload.json": "bc0dfe0817f89e13f4f962148a3a32cb8bbb8dda5bdf13a12c2dc10001f924e7",
+    "evolution-counter-status.jsonl": "45d33eb8f70523c9079f9239f45a149136f993b3e7ed495e66b7aa1c1620f4f5",
+    "evolution-dice-events.jsonl": "b3859cc4cd6250c02dcf78b17df6bf4251d632a12c6e47e4aeff3763353ceee0",
+    "smoke-dice-status.jsonl": "2382d3782f303ab8c09e1a5ba77f8c1ef4a917e26ffaedb00b3a58225a4a3f44",
+    "smoke-upload.json": "cdb1f31878b8cb430ea222d74fad69d4e3fb394efdb3bfab4b7f73b5e2b0a773",
+    "evolution-dice-start.json": "f650d95ca683dd3b9edbc26e6537d7a7754ec4d14bbaf4f6157cd8d217bc5a37",
+    "preflight-runs.json": "0a945ca30fd49b8cf339adf5a173d7ac2e179b2cda3de24de906ef57bb82eafc",
+    "evolution-dice-status.jsonl": "47e0695605497343d00f00a230c567be916deef0c04803f090fa5d5f82012d68",
+    "evolution-counter-start.json": "ef8e6aee8d83faecd98603ea7cf0226b9fd8908f106caf0d95253461d8ea1ed0",
+    "smoke-dice-events.jsonl": "9632b6bbe4971a67e0c2684c8aafa0e75e7d9c38a308ea2c764376c63d097994",
+    "smoke-board-after.json": "88a5f60411cfbace28a45026093edac4c6a8b83aeeb43bd55192d90e2c625eba",
+    "evolution-counter-events.jsonl": "b17632b2ea638ec9e3a3c2318885900bea4066645a8c623499fcd24d4a813373",
+    "evolution-board-after.json": "c5910ee7e5967cd901ef18408d2469896d19cfd6e944e8b0787895a1879400d4"
+  },
+  "limits": [
+    "One new generation per task; no repeatability claim.",
+    "Evolution compares current dev35/Flash with older dev16/Qwen; factors are not causally isolated.",
+    "Runtime is the platform-reported metric, not full upload-to-result time.",
+    "Meter balance unavailable; costs are actual official run reports."
+  ]
+}
