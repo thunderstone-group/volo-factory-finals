@@ -391,6 +391,7 @@ class Agent:
                 {"role": "user", "content": self.trace.redact(request)}]
 
     def run_batch(self, nodes):
+        self.workspace.clear_prepared_check_guards()
         self.inline_source = False
         self.reference_context = (self.references.observe(self.requirements, nodes,
             deadline=self.workspace.deadline, guard_budget=self.guard_budget) if self.references else
@@ -402,6 +403,7 @@ class Agent:
                          requested_thinking=self.model.thinking)
         request = self.batch_request(nodes)
         direct = bounded and not self.workspace.list_files()['files']
+        self.workspace.retain_failed_prepared_checks = direct and not small
         self.inline_source = small and not direct and self.source_snapshot() is not None
         compact = self.inline_source
         compact_attempts = 0
@@ -508,6 +510,7 @@ class Agent:
                 if was_direct and not result.get('passed'):
                     open_repairs = open_repairs or (not small and result.get('passed') is False)
                     model_result = {"passed": False, "error": result.get('error'),
+                                    "retained_self_check": result.get('retained_self_check'),
                                     "check_output": excerpt((result.get('steps') or [{}])[-1].get('output', ''), 5000),
                                     "server_output": result.get('server_output', '')[-2000:],
                                     "source_paths": {'index_html': 'frontend/public/index.html',

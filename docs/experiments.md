@@ -1107,3 +1107,43 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   and inadequate resource stop rules prevent a defensible claim of harness quality.
   The fresh agent's best official Ticket result remains E047's **6/10**. The requested
   Ticket first place was not achieved.
+
+## E051 — Official dev31 exposes self-check weakening again
+
+- User explicitly resumed official submission, then set Ticket Booking first place as
+  the immediate goal. Uploaded the merged dev31 source `0a03d5e`, package SHA-256
+  `c1d4aff067df034a9e15a61732d62014892229a80f6f8bacfb15895f1cfb4166`.
+  Submission `311c43631206`; run https://arc-bench.com/runs/234571af19bd .
+- Official result: **3/10, 291 seconds, 99,044 tokens, CNY 0.708924**. Six captured
+  responses total exactly 99,044 tokens. The Kimi image observation alone takes
+  183.365 seconds; coding completes with Pro and no reasoning tokens.
+- First self-check execution is 4/8. Three failures correctly identify duplicate
+  username text; the model then scopes those checks to `#app`, retaining the duplicate
+  product display. It also removes redundant navigation links. Final self-checks are
+  8/8, but seven official tests fail. No independent contract was configured.
+- A disposable-container replay of the unchanged public tests gives the original
+  final product **5/10**. Changing only the welcome paragraph to remove the second
+  username display produces **9/10**. The remaining failure is missing `账户信息`,
+  which was present in the actual image observation. No diagnostic product is uploaded.
+- Before this run, Smoke and Evolution remain rank 2; Ticket's account entry falls
+  to rank 3 at 70%. The new leading Ticket entry is 80% at CNY 2.407166, ahead of ARC's
+  100% at CNY 4.483621 under the current efficiency ordering. Meter dashboard auth has
+  expired; per-run platform cost remains available.
+
+## Dev32 — Preserve failed executable checks during bounded repair
+
+- After a larger prepared application actually executes and fails its initial checks,
+  preserve the check program and supplied browser helper in the protected trace area.
+  Later verification executes that same captured program before current self-checks.
+  Replacing or weakening the latter cannot erase the observed failure.
+- Syntax-invalid programs are not captured. Guards last for the current requirement
+  batch; a later batch may intentionally evolve old behavior. Operator-owned checks
+  remain in place. Small Smoke and incremental paths retain their previous policy.
+- This is repair evidence from model-authored checks, not independent requirements
+  coverage. `verified_requirements` remains empty without a supplied calibrated suite.
+  A syntactically valid but semantically wrong initial test can still block repair;
+  that limitation must be observed in the official comparison rather than hidden.
+- Three real HTTP controls reject a wrong product after its current self-test becomes
+  exit 0, accept the actual product correction, and preserve operator checks across
+  batch changes. A trace-keyword collision found by the first run was fixed.
+  The final **159 tests pass with zero skips**, including real browser/container checks.
