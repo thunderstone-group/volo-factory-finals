@@ -52,16 +52,19 @@ class PracticeTests(TempCase):
         scaffold(self.workspace)
         self.workspace.write_files([{'path': 'frontend/public/index.html', 'content': COUNTER}])
         new = '<button onclick="count=0;updateDisplay()">Reset</button></body>'
-        answers = [completion(json.dumps([[key, '</body>', new]])) for key in ('outside', 'h')]
+        malformed = json.loads((FIXTURES / 'real-practice-nested-edits.json').read_text())['content']
+        answers = [completion(malformed), *[completion(json.dumps([
+            {'file': key, 'old': '</body>', 'new': new}])) for key in ('outside', 'h')]]
         with FakeGateway(answers) as gateway:
             model = Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace)
             result = PracticeAgent(requirements, model, self.workspace, Runtime(self.trace)).run()
             self.assertEqual(result['verified_requirements'], ['REQ-1', 'REQ-2'])
-            self.assertEqual(len(gateway.requests), 2)
+            self.assertEqual(len(gateway.requests), 3)
             prompt = gateway.requests[0]['messages'][1]['content']
             self.assertIn(requirements.nodes[1]['description'], prompt)
             self.assertNotIn(requirements.nodes[0]['description'], prompt)
-            self.assertIn('existing file key', gateway.requests[1]['messages'][-1]['content'])
+            self.assertIn('no nested arrays', gateway.requests[1]['messages'][-1]['content'])
+            self.assertIn('existing file key', gateway.requests[2]['messages'][-1]['content'])
         events = [json.loads(line) for line in (self.trace.directory / 'events.jsonl').read_text().splitlines()]
         self.assertTrue(next(e for e in events if e['event'] == 'practice_existing_behavior')['passed'])
 

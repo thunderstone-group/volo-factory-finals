@@ -1,0 +1,4 @@
+{
+  "source_run": "https://arc-bench.com/runs/636de364c586",
+  "content": "[[\n  {\n    \"file\": \"h\",\n    \"old\": \"    <button onclick=\\\"increment()\\\">Increment</button>\\n    <button onclick=\\\"decrement()\\\">Decrement</button>\",\n    \"new\": \"    <button onclick=\\\"increment()\\\">Increment</button>\\n    <button onclick=\\\"decrement()\\\">Decrement</button>\\n    <button onclick=\\\"resetCount()\\\">Reset</button>\"\n  },\n  {\n    \"file\": \"h\",\n    \"old\": \"        function decrement() {\\n            count--;\\n            countDisplay.textContent = count;\\n        }\\n    </script>\",\n    \"new\": \"        function decrement() {\\n            count--;\\n            countDisplay.textContent = count;\\n        }\\n\\n        function resetCount() {\\n            count = 0;\\n            countDisplay.textContent = count;\\n        }\\n    </script>\"\n  }\n]]"
+}

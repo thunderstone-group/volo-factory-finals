@@ -14,8 +14,8 @@ from .web_runtime import scaffold
 FILES = {'h': 'frontend/public/index.html', 'j': 'frontend/public/app.js', 'a': 'backend/api.cjs'}
 HTML_SYSTEM = ('Return only a minimal working HTML fragment with inline JavaScript. '
                'Match labels and data-testid exactly. No document wrappers, CSS, comments or tests.')
-EDIT_SYSTEM = ('Return only JSON edits [[file,old,new],...], using short unique old snippets. '
-               'Preserve existing behavior. No tests. File keys are h=HTML, j=JS, a=API.')
+EDIT_SYSTEM = ('Return one JSON array of objects, e.g. [{"file":"h","old":"unique text","new":"replacement"}]. '
+               'No nested arrays. Use short unique old text. Preserve behavior. No tests. Keys: h HTML, j JS, a API.')
 
 
 def unfence(content):
@@ -24,6 +24,10 @@ def unfence(content):
     text = content.strip()
     match = re.fullmatch(r'```(?:html|json|javascript|js)?\s*\n(.*?)\n```', text, re.S)
     return match.group(1).strip() if match else text
+
+
+def source_text(sources):
+    return '\n'.join(f'FILE {key}:\n{content}' for key, content in sources.items())
 
 
 class PracticeAgent(Agent):
@@ -59,7 +63,7 @@ class PracticeAgent(Agent):
             scaffold(self.workspace)
         prompt = '\n'.join(descriptions)
         if sources:
-            prompt += '\n' + json.dumps(sources, ensure_ascii=False, separators=(',', ':'))
+            prompt += '\n' + source_text(sources)
         messages = [{'role': 'system', 'content': EDIT_SYSTEM if incremental else HTML_SYSTEM},
                     {'role': 'user', 'content': prompt}]
         self.model.thinking = 'disabled'
@@ -80,13 +84,15 @@ class PracticeAgent(Agent):
                     if incremental:
                         edits = json.loads(content)
                         if not isinstance(edits, list) or len(edits) > 20:
-                            raise ValueError('Return at most 20 exact product edits')
+                            raise ValueError('Return one JSON array of at most 20 {"file","old","new"} objects')
                         changes = []
                         for edit in edits:
-                            if (not isinstance(edit, list) or len(edit) != 3
-                                    or not isinstance(edit[0], str) or edit[0] not in sources):
-                                raise ValueError('Each edit needs an existing file key, old text and new text')
-                            changes.append({'path': FILES[edit[0]], 'old': edit[1], 'new': edit[2]})
+                            if (not isinstance(edit, dict) or set(edit) != {'file', 'old', 'new'}
+                                    or not all(isinstance(value, str) for value in edit.values())
+                                    or edit['file'] not in sources):
+                                raise ValueError('Return [{"file":"h","old":"unique text","new":"replacement"}]; '
+                                                 'use an existing file key and no nested arrays')
+                            changes.append({'path': FILES[edit['file']], 'old': edit['old'], 'new': edit['new']})
                         result = (self.dispatch('patch_and_verify', {'edits': changes}) if changes else
                                   self.workspace.verify([]))
                     else:
@@ -102,9 +108,10 @@ class PracticeAgent(Agent):
                             'public_cases': result.get('acceptance', {}).get('cases', [])}
                 if incremental:
                     sources = self.product_sources()
-                    feedback['current_source'] = sources
-                messages.append({'role': 'user', 'content': json.dumps(feedback, ensure_ascii=False,
-                                                                      separators=(',', ':'))})
+                followup = json.dumps(feedback, ensure_ascii=False, separators=(',', ':'))
+                if incremental:
+                    followup += '\n' + source_text(sources)
+                messages.append({'role': 'user', 'content': followup})
         finally:
             self.model.max_output = maximum
         raise RuntimeError('Practice product did not pass fixed acceptance within three attempts')
