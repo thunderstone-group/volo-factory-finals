@@ -14,8 +14,9 @@ from .web_runtime import scaffold
 FILES = {'h': 'frontend/public/index.html', 'j': 'frontend/public/app.js', 'a': 'backend/api.cjs'}
 HTML_SYSTEM = ('Return only a minimal working HTML fragment with inline JavaScript. '
                'Match labels and data-testid exactly. No document wrappers, CSS, comments or tests.')
-EVOLUTION_SYSTEM = ('Update the supplied page. Return only a minimal HTML fragment with all JavaScript inline. '
-                    'Preserve existing behavior; test IDs use data-testid. No document wrappers, CSS or tests.')
+EVOLUTION_SYSTEM = ('Return the ENTIRE updated page content: all existing controls plus the requested change, '
+                    'as one HTML fragment with inline JavaScript. Preserve behavior; test IDs use data-testid. '
+                    'No CSS or tests.')
 DEFAULT_API = 'module.exports=async(req,res)=>false;'
 
 
