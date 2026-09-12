@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "requirements_file": "requirements.txt",
+  "requirements_sha256": "261b66b14c87e03aa135ca2cc463956949d6bb0b41741c8d87a6a28627f64964",
+  "provenance": "Hand-authored calibration fixture; requirements.txt; not an official competition task",
+  "cases": ["greeting", "grader-isolation"],
+  "candidate_argv": ["node", "server.cjs"],
+  "verifier_argv": ["python3", "/suite/check.py"],
+  "port": 3000
+}
