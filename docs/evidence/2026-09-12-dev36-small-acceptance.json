@@ -47,11 +47,93 @@
     }
   ],
   "package_sha256": "1cbdb87e96a3685553ca8ae80c68d7a48834e53a9d5ac6eeefc5c99e27b411df",
-  "official_runs": [],
+  "official_runs": [
+    {
+      "id": "e812e84ffa14",
+      "submission_id": "1e3214f69ad9",
+      "requirement_id": "smoke--counter",
+      "display_name": "volo-factory-smoke-dev36-public-acceptance",
+      "model_name": "qwen3.6-flash",
+      "status": "PASSED",
+      "score": 100.0,
+      "test_pass_rate": 100.0,
+      "passed_count": 1,
+      "failed_count": 0,
+      "run_duration_seconds": 100,
+      "token_count": 256955,
+      "feature_implemented_count": 1,
+      "feature_total_count": 1,
+      "failure_reason": null,
+      "cost": {
+        "amount": 0.33705,
+        "currency": "CNY"
+      },
+      "steps": [
+        {
+          "key": "deploy_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "start_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "run_tests",
+          "status": "completed",
+          "description": "Done"
+        }
+      ],
+      "failed_tests": []
+    },
+    {
+      "id": "da2379f7ee0c",
+      "submission_id": "1e3214f69ad9",
+      "requirement_id": "smoke--dice",
+      "display_name": "volo-factory-smoke-dev36-public-acceptance",
+      "model_name": "qwen3.6-flash",
+      "status": "PASSED",
+      "score": 100.0,
+      "test_pass_rate": 100.0,
+      "passed_count": 1,
+      "failed_count": 0,
+      "run_duration_seconds": 5,
+      "token_count": 1700,
+      "feature_implemented_count": 1,
+      "feature_total_count": 1,
+      "failure_reason": null,
+      "cost": {
+        "amount": 0.005184,
+        "currency": "CNY"
+      },
+      "steps": [
+        {
+          "key": "deploy_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "start_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "run_tests",
+          "status": "completed",
+          "description": "Done"
+        }
+      ],
+      "failed_tests": []
+    }
+  ],
   "limits": [
     "Only four exact small-task input versions are enabled.",
     "Original test bytes and assertion bodies are preserved; the Node fixture adapter is not the official Playwright runner.",
     "Fixed E064 negative/corrected controls calibrate the declared test-id behavior.",
-    "Official validation is pending."
-  ]
+    "Both Smoke cases passed officially; counter required 25 model calls after initially uninformative timeout feedback."
+  ],
+  "official_total_cny": 0.34223400000000004,
+  "followup": "Return the failed unchanged public specification with the error; then evaluate product-only generation.",
+  "counter_captured_tokens": 256955
 }

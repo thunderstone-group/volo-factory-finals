@@ -97,16 +97,20 @@ def scaffold(workspace):
     ])
 
 
-def implement(workspace, index_html, app_js, checks_js, api_js=None):
+def implement(workspace, index_html, app_js, checks_js=None, api_js=None):
+    if checks_js is None and workspace.acceptance_suite is None:
+        raise ValueError('Behavioral checks are required without independent acceptance')
     files = [
         {"path": "frontend/public/index.html", "content": index_html},
         {"path": "frontend/public/app.js", "content": app_js},
-        {"path": "checks/requirements.cjs", "content": checks_js},
     ]
+    if checks_js is not None:
+        files.append({"path": "checks/requirements.cjs", "content": checks_js})
     if api_js is not None and api_js.strip():
         files.append({"path": "backend/api.cjs", "content": api_js})
     workspace.write_files(files)
-    result = workspace.verify(["node", "--test", "--test-reporter=tap", "checks/requirements.cjs"])
+    result = workspace.verify([] if checks_js is None else
+                              ["node", "--test", "--test-reporter=tap", "checks/requirements.cjs"])
     retained = workspace.capture_failed_prepared_check(result)
     if retained:
         result['retained_self_check'] = retained

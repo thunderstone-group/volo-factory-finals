@@ -9,6 +9,12 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from types import SimpleNamespace
 import unittest
 
+from test_core import TempCase, FakeGateway, response
+from volo.agent import Agent
+from volo.model import Model
+from volo.requirements import RequirementSet
+from volo.trace import Runtime
+from volo.web_runtime import scaffold
 from volo.small_acceptance import ROOT, load_small_acceptance
 
 
@@ -43,6 +49,63 @@ class SmallAcceptanceBindings(unittest.TestCase):
                 self.assertEqual({r for case in suite.cases for r in case['requirements']},
                                  set(suite.requirement_ids))
                 suite.assert_integrity()
+
+
+@unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                     'Installed Playwright and Chrome required')
+class SmallAcceptanceAgent(TempCase):
+    def setUp(self):
+        super().setUp()
+        data = json.loads((Path(__file__).parent / 'fixtures/real-smoke-counter-input.json').read_text())
+        for name, content in data['files'].items():
+            (self.req / name).write_text(content)
+        self.requirements = RequirementSet.load(self.req)
+        self.workspace.acceptance_suite = load_small_acceptance(self.requirements, self.out)
+        self.workspace.runtime_env = {
+            'FACTORY_PLAYWRIGHT_MODULE': os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE'],
+            'FACTORY_CHROMIUM_EXECUTABLE': os.environ['FACTORY_TEST_CHROMIUM_EXECUTABLE']}
+
+    def test_product_only_generation_repairs_the_real_omission_from_public_evidence(self):
+        answers = [response([('build_app', {'index_html': html})]) for html in (BAD_COUNTER, GOOD_COUNTER)]
+        with FakeGateway(answers) as gateway:
+            agent = Agent(self.requirements, Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace),
+                          self.workspace, Runtime(self.trace))
+            result = agent.run()
+            self.assertEqual(len(gateway.requests), 2)
+            self.assertNotIn('checks_js', gateway.requests[0]['tools'][0]['function']['parameters']['properties'])
+            self.assertIn("getByTestId('count')", json.dumps(gateway.requests[1]['messages']))
+            self.assertEqual(result['verified_requirements'], ['REQ-1'])
+            self.assertEqual(agent.check_command, [])
+            self.assertEqual(self.workspace.last_verification['executed_checks'], [])
+            self.assertFalse((self.out / 'checks/requirements.cjs').exists())
+
+    def test_small_public_mode_stops_after_three_invalid_bundles(self):
+        answer = response([('build_app', {'index_html': 1})])
+        with FakeGateway([answer, answer, answer]) as gateway:
+            agent = Agent(self.requirements, Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace),
+                          self.workspace, Runtime(self.trace))
+            with self.assertRaisesRegex(RuntimeError, 'three bounded attempts'):
+                agent.run()
+            self.assertEqual(len(gateway.requests), 3)
+
+    def test_incremental_product_edits_use_public_checks_without_a_test_command(self):
+        data = json.loads((Path(__file__).parent / 'fixtures/real-evolution-counter-input.json').read_text())
+        for name, content in data['files'].items():
+            (self.req / name).write_text(content)
+        self.requirements = RequirementSet.load(self.req)
+        self.workspace.acceptance_suite = load_small_acceptance(self.requirements, self.out)
+        scaffold(self.workspace)
+        self.workspace.write_files([{'path': 'frontend/public/index.html', 'content': GOOD_COUNTER}])
+        answer = response([('patch_and_verify', {'edits': [{
+            'path': 'frontend/public/index.html', 'old': '</body>',
+            'new': '<button onclick="count=0;updateDisplay()">Reset</button></body>'}]})])
+        with FakeGateway([answer]) as gateway:
+            agent = Agent(self.requirements, Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace),
+                          self.workspace, Runtime(self.trace))
+            result = agent.run()
+            self.assertEqual(result['verified_requirements'], ['REQ-1', 'REQ-2'])
+            self.assertNotIn('check_command', gateway.requests[0]['tools'][0]['function']['parameters']['properties'])
+            self.assertEqual(self.workspace.last_verification['executed_checks'], [])
 
 
 @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
@@ -92,6 +155,7 @@ class SmallAcceptanceBrowser(unittest.TestCase):
         failed = self.evaluate('smoke--counter')
         self.assertEqual(failed['status'], 'failed', failed)
         self.assertEqual(failed['verified_requirements'], [])
+        self.assertIn("getByTestId('count')", failed['cases'][0]['public_specification'])
         self.html = GOOD_COUNTER
         passed = self.evaluate('smoke--counter')
         self.assertTrue(passed['passed'], passed)

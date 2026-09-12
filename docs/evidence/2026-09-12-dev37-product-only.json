@@ -1,0 +1,22 @@
+{
+  "candidate": "dev37",
+  "observed_at": "2026-09-12T12:55:07.540810+00:00",
+  "base_candidate": "dev36",
+  "changes": [
+    "Use calibrated public acceptance without generating or running self-check code on the four bound small tasks.",
+    "Return failed public assertions with errors.",
+    "Stop the small-task bounded path after three failed attempts."
+  ],
+  "validation": {
+    "full_suite_passed": 173,
+    "full_suite_seconds": 147.421,
+    "added_incremental_control_passed": 1,
+    "added_incremental_seconds": 2.528
+  },
+  "package_sha256": "644d5b5ea815a0412bc377cd0c626fd5f5ca9e7b84409c5f5cc270ad854d4b26",
+  "official_runs": [],
+  "limits": [
+    "A first-pass result cannot measure the effect of the new failure feedback or stop guard.",
+    "Official results remain separate from local public acceptance."
+  ]
+}

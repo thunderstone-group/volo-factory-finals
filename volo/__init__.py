@@ -1,3 +1,3 @@
 """VOLO Factory: requirement-driven software construction."""
 
-__version__ = "0.7.0.dev36"
+__version__ = "0.7.0.dev37"

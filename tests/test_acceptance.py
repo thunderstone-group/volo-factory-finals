@@ -203,6 +203,23 @@ class AcceptanceTests(TempCase):
         self.assertEqual(third['acceptance']['verified_requirements'], ['REQ-1'])
         self.assertEqual(third['source_fingerprint'], third['acceptance']['source_fingerprint'])
 
+    def test_external_only_checks_need_a_suite_and_support_final_edit_verification(self):
+        self.workspace.write_files(GREETING_FILES)
+        with self.assertRaisesRegex(ValueError, 'behavioral check'):
+            self.workspace.verify([])
+        self.workspace.acceptance_suite = self.suite()
+        self.workspace.write_files([{'path': 'checks/greeting.cjs', 'content': 'throw Error("must not run");'}])
+        passed = self.workspace.verify([])
+        self.assertTrue(passed['passed'], passed)
+        self.assertEqual(passed['executed_checks'], [])
+        self.workspace.edit('backend/server.cjs', "s.end('hello')", "s.end('wrong')")
+        failed = self.workspace.verify([])
+        self.assertFalse(failed['passed'], failed)
+        self.workspace.edit('backend/server.cjs', "s.end('wrong')", "s.end('hello')")
+        agent = Agent(RequirementSet.load(self.req), None, self.workspace, Runtime(self.trace))
+        self.assertTrue(agent.verify_final_edit())
+        self.assertEqual(agent.check_command, [])
+
     def test_real_agent_repairs_product_without_changing_pinned_suite(self):
         self.workspace.acceptance_suite = self.suite()
         bad = response([('build_app', {'index_html': 'wrong', 'checks_js': 'process.exit(0);'})])

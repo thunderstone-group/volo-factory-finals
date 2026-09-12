@@ -29,7 +29,9 @@ EXCLUDED = {".git", ".arc", ".factory", "node_modules", "dist", "build", "__pyca
 PROTECTED = {".git", ".arc", ".factory", ".volo", "requirements"}
 
 
-def normalize_check_command(command):
+def normalize_check_command(command, *, acceptance=False):
+    if command == [] and acceptance:
+        return []
     if isinstance(command, list) and len(command) == 1 and isinstance(command[0], str):
         command = shlex.split(command[0])
     if (not isinstance(command, list) or len(command) < 2
@@ -338,7 +340,7 @@ class Workspace:
 
     def verify(self, check_command):
         """Verify the actual current tree, never a model's claimed test result."""
-        check_command = normalize_check_command(check_command)
+        check_command = normalize_check_command(check_command, acceptance=self.acceptance_suite is not None)
         for check in self.required_checks:
             for name, expected in check['files'].items():
                 path = self.root / name
@@ -415,7 +417,7 @@ class Workspace:
                         return result(False, error="Application did not serve HTTP 200 on PORT",
                                       server_output=self.trace.redact(server_log.read_text(errors="replace")[-6000:]))
                     commands = [*[check['argv'] for check in self.required_checks],
-                                check_command, *self.browser_checks(check_command)]
+                                *([check_command, *self.browser_checks(check_command)] if check_command else [])]
                     executed = []
                     for command in commands:
                         check = self.run(command, ".", 180, {
