@@ -213,6 +213,11 @@ class Agent:
         self.references, self.reference_context = references, None
         self.inline_source = False
         self.last_tool_result = None
+        from .public_specs import load_public_specs
+        self.public_specs = load_public_specs(requirements.fingerprint)
+        if self.public_specs:
+            self.trace.event('public_specs_supplied', source=self.public_specs['source'],
+                             files=list(self.public_specs['files']), executed=False)
 
     def source_snapshot(self):
         """Include only a bounded set of product code, never state or protected files."""
@@ -348,6 +353,8 @@ class Agent:
                     'checks/browser.cjs exports test(name,async(page,assert)=>{}), with a fresh browser at the app.')
             if self.completed:
                 payload['previously_self_checked'] = self.completed
+            if self.public_specs:
+                payload['public_acceptance_specifications'] = self.public_specs
             if self.reference_context and (self.reference_context.get('observations') or self.reference_context.get('unavailable')):
                 payload['reference_observations'] = self.reference_context
             return json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
@@ -361,7 +368,9 @@ class Agent:
                                  "check_base_url_env": "FACTORY_BASE_URL"})
                    + "\nReference-image observations (written requirements remain authoritative):\n"
                    + json.dumps(self.reference_context, ensure_ascii=False)
-                   + "\nPreviously self-checked requirement ids (not independent acceptance):\n" + json.dumps(self.completed))
+                   + "\nPreviously self-checked requirement ids (not independent acceptance):\n" + json.dumps(self.completed)
+                   + ('\nRead-only public acceptance specifications:\n' + json.dumps(self.public_specs, ensure_ascii=False)
+                      if self.public_specs else ''))
 
     def context_checkpoint(self, nodes, system, last_failure):
         attempt = self.workspace.last_verification_attempt

@@ -6,6 +6,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = [ROOT / "main.py", ROOT / "requirements.txt", *sorted((ROOT / "volo").glob("*.py"))]
+FILES += sorted(path for path in (ROOT / 'volo/public_specs').rglob('*')
+                if path.is_file() and path.suffix in ('.json', '.ts'))
 DEST = ROOT / "dist" / "volo-factory.zip"
 DEST.parent.mkdir(exist_ok=True)
 with zipfile.ZipFile(DEST, "w", compression=zipfile.ZIP_DEFLATED) as archive:

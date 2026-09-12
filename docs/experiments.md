@@ -1192,3 +1192,34 @@ No previous smoke code or prewritten task solution is packaged into this submiss
   Incoming DeepSeek reasoning is preserved in a synthetic two-response HTTP exchange;
   tool forcing is absent and null assistant tool-call content becomes an empty string
   on the outgoing wire. These checks precede, and do not replace, the real gateway run.
+
+## E053 / E054 — Low reasoning reaches 70%; Flash is cheaper
+
+- Same dev33 agent ZIP, separately generated products. Pro submission `e9b5aeedbda6`,
+  [run b9ec4b551834](https://arc-bench.com/runs/b9ec4b551834): **7/10**, 698 seconds,
+  314,741 tokens, **CNY 3.155824**. Flash submission `f8068d7c7484`,
+  [run 3aa60bd411dd](https://arc-bench.com/runs/3aa60bd411dd): **7/10**, 207 seconds,
+  962,241 tokens, **CNY 0.787531**. These are official values; different products do not
+  constitute a fixed-product variance experiment.
+- Both official runs time out on successful registration and the two successful login
+  cases. Each unchanged product passes 9/10 in the writable local replay. E054 gains
+  10/10 when only the reference's `账户信息` heading is restored in a disposable copy.
+  The two remaining official login failures are unresolved.
+
+## E055 — Four-worker hypothesis control and public-specification inputs
+
+- Fixed original E054 product, unchanged public specs, 10-second tests, four workers:
+  both `fullyParallel=false` and `fullyParallel=true` produce **9/10**, with only the
+  heading failure. No model calls. This does not reproduce the official login failures.
+- The newly supplied Octos ARC sources explicitly give the executor the public tests,
+  whereas VOLO previously supplied requirements and image observations without those
+  specs. Dev34 adds the exact public files as read-only model input, bound to source
+  hashes and the observed requirements fingerprint. Reading them is not acceptance.
+- A partially written reference-heading guard was discarded before submission. See
+  [the evidence review](competition-gap-2026-09-12.md) for the fresh Fable consultation,
+  source pins, board comparison and limits of the local grader.
+- Validation: **163 tests pass, zero failures or skips** in 103.250 seconds with
+  installed Chrome/Playwright and the existing container image. Three bundled specs
+  match the current public API byte for byte. Two package builds are identical and
+  all 19 archive entries match source; SHA-256
+  `b62131dab693ab38192ceb58578f8eb837c310f8f91fcb950908722784afcafa`.
