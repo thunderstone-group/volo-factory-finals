@@ -1,5 +1,10 @@
 # Three-board optimization model
 
+The [fixed-agent model comparison and research](model-comparison-2026-09-12.md) is the
+latest continuation. It adds success-adjusted total cost to the objective, records a
+new Evolution best with Qwen, and distinguishes a verified Smoke contract omission
+from the deferred Ticket failure.
+
 The target is **100% and rank 1 on Smoke, Smoke Evolution and Ticket Booking**,
 then a measurable lead, then the supplied broader task corpus. Ticket rank 1 at
 90% does not meet that target. This review advances diagnosis and experiment design;

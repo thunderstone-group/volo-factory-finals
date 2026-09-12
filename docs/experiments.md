@@ -1334,3 +1334,28 @@ the separate two-round Fable consultation is recorded in its own USD account.
 See [the objective and next decisions](competition-optimization-2026-09-12.md) and
 [hash-bound evidence](evidence/2026-09-12-dev35-small-boards.json). Raw logs and traces are
 in canonical-checkout `runs/20260912-dev35-small-boards/`.
+
+
+## E062–E064 — Fixed dev35 model comparison
+
+User proposed model characteristics as a source of efficiency differences. The same
+E057 ZIP runs with Qwen3.6 Flash against the immediately preceding Flash controls.
+All three first-request message and tool-schema hashes match their controls exactly;
+requirements and source are fixed. Existing provider-specific sampling settings remain.
+
+- E062, Evolution Counter, `f6082b65cf6e`: 2/2, CNY 0.010787, 9 seconds.
+- E063, Evolution Dice, `afd068451ab7`: 2/2, CNY 0.005837, 5 seconds.
+- E064, Smoke Counter, `224d26e14467`: 0/1, CNY 0.052143, 7 seconds. The official
+  test cannot find the required test id `count`; the actual final HTML provides only
+  an ordinary ID. Self-checks pass using that ordinary ID. This is a product omission.
+- Smoke Dice was not started after the predeclared failed-candidate stop. No retry.
+
+Evolution refreshes team rank 2 at CNY 0.016624, 26.2% cheaper than current Flash and
+6.7% below the historical Qwen best. Three runs total CNY 0.068767. Smoke's reported
+268,975 tokens differ from captured 1,915; do not attribute that discrepancy to model
+behavior. No Ticket run or follow-up batch was started.
+
+The subsequent research question adds cost per successful task, including failures,
+to the objective. These one-call trials do not test whether a premium model can save
+money by using fewer repair iterations. See [the study and primary papers](model-comparison-2026-09-12.md)
+and [evidence](evidence/2026-09-12-model-comparison.json).
