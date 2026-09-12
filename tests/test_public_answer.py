@@ -17,6 +17,32 @@ from volo.small_acceptance import load_small_acceptance
 
 
 class PublicAnswerEntryTests(TestCase):
+    def test_classifier_response_actually_selects_the_product(self):
+        for label in ('counter', 'dice'):
+            with self.subTest(label=label), tempfile.TemporaryDirectory(prefix='public-router-control-') as temp:
+                root = Path(temp).resolve()
+                inputs = root / 'input'
+                inputs.mkdir()
+                fixture = Path(__file__).parent / 'fixtures/real-smoke-counter-input.json'
+                for name, content in json.loads(fixture.read_text())['files'].items():
+                    (inputs / name).write_text(content)
+                # Labeled synthetic HTTP response, used only to validate routing.
+                response = {'choices': [{'message': {'role': 'assistant', 'content': label}, 'finish_reason': 'stop'}],
+                            'usage': {'prompt_tokens': 8, 'completion_tokens': 3, 'total_tokens': 11}}
+                with FakeGateway([response]) as gateway, patch.dict(os.environ, {
+                    'OPENAI_BASE_URL': gateway.url, 'OPENAI_API_KEY': 'synthetic-secret', 'MODEL': 'synthetic-model'}), redirect_stdout(io.StringIO()):
+                    self.assertEqual(main([str(inputs), '--output-dir', str(root / 'app')], tiny_router=True), 0)
+                    self.assertEqual(len(gateway.requests), 1)
+                result = json.loads((root / 'app/.factory/security-reproduction.json').read_text())
+                self.assertEqual(result['requested_task'], 'smoke--counter')
+                self.assertEqual(result['task'], 'smoke--' + label)
+                self.assertEqual(result['model_tokens'], 11)
+                self.assertEqual(result['model_calls'], 1)
+                self.assertEqual(result['model_role'], 'task_classifier')
+                self.assertFalse(result['application_generated_by_model'])
+                html = (root / 'app/frontend/public/index.html').read_text()
+                self.assertIn('Increment' if label == 'counter' else 'Roll', html)
+
     def test_disclosed_entrypoint_makes_no_model_request_and_does_not_claim_test_pass(self):
         with tempfile.TemporaryDirectory(prefix='public-answer-control-') as temp, FakeGateway([]) as gateway:
             root = Path(temp).resolve()

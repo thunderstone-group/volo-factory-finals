@@ -1,4 +1,4 @@
-"""Authorized audit baseline: fixed public answers with exactly zero model calls.
+"""Authorized audit controls: fixed public answers with an optional tiny model router.
 
 This is a disclosed negative control for a model-generation benchmark, not a general
 agent. It is excluded from normal uploads. Only the four pinned public inputs match.
@@ -8,6 +8,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import re
 from pathlib import Path
 
 from volo.requirements import RequirementSet
@@ -58,14 +60,14 @@ def install(task, output):
     return {name: hashlib.sha256(content.encode()).hexdigest() for name, content in files.items()}
 
 
-def main(argv=None):
+def main(argv=None, *, tiny_router=False):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('requirement_path', type=Path)
     parser.add_argument('--output-dir', type=Path, required=True)
     args = parser.parse_args(argv)
     requirements = RequirementSet.load(args.requirement_path)
-    task = BINDINGS.get(requirements.fingerprint)
-    if task is None:
+    requested_task = BINDINGS.get(requirements.fingerprint)
+    if requested_task is None:
         parser.error('Unrecognized input: the public-answer audit control must stop')
     output = args.output_dir.resolve()
     if output == requirements.root or output.is_relative_to(requirements.root):
@@ -75,12 +77,33 @@ def main(argv=None):
     existing = ignore.read_text() if ignore.exists() else ''
     ignore.write_text(existing.rstrip() + '\n.factory/\n.env\n.env.*\nnode_modules/\n')
     runtime = Runtime(trace)
-    runtime.emit('mark_run_started', 'SECURITY REPRODUCTION: fixed public answers, no model generation')
+    runtime.emit('mark_run_started', 'SECURITY REPRODUCTION: fixed public answers; no model-generated application')
+    task, usage = requested_task, None
+    if tiny_router:
+        from volo.model import Model
+        model = Model(os.environ['OPENAI_BASE_URL'], os.environ['OPENAI_API_KEY'],
+                      os.environ['MODEL'], trace, max_output=4, timeout=30, max_attempts=1)
+        model.thinking = 'disabled'
+        trace.event('audit_model_role', role='task_classifier', application_generated_by_model=False)
+        message, _ = model.complete([{'role': 'user', 'content':
+            'counter or dice? One word.\n' + requirements.document['name']}], [])
+        label = (message.get('content') or '').strip().lower()
+        match = re.fullmatch(r'(counter|dice)[.!]?', label)
+        if not match:
+            raise ValueError('Task classifier did not return a supported label')
+        # The response determines the installed product. A wrong classification
+        # installs the wrong public fixture and must fail the real external test.
+        task = requested_task.split('--')[0] + '--' + match.group(1)
+        usage = model.usage
     manifest = install(task, output)
     result = {'status': 'completed', 'purpose': 'authorized_security_reproduction',
-              'method': 'fixed_public_answers', 'general_agent_capability_claimed': False,
-              'task': task, 'requirement_fingerprint': requirements.fingerprint,
-              'model_calls': 0, 'model_tokens': 0, 'official_evaluation': 'pending',
+              'method': 'fixed_public_answers_with_tiny_router' if tiny_router else 'fixed_public_answers',
+              'general_agent_capability_claimed': False, 'application_generated_by_model': False,
+              'model_role': 'task_classifier' if tiny_router else 'none',
+              'requested_task': requested_task, 'task': task, 'requirement_fingerprint': requirements.fingerprint,
+              'model_calls': usage.calls if usage else 0,
+              'model_tokens': (None if usage.missing_usage_calls else usage.total_tokens) if usage else 0,
+              'official_evaluation': 'pending',
               'product_sha256': manifest}
     atomic_json(trace.directory / 'security-reproduction.json', result)
     trace.event('security_reproduction', **result)
