@@ -1,39 +1,46 @@
-# ARC continuation handoff — 2026-09-14 (supersedes the 09-12 sections below)
+# ARC continuation handoff — 2026-09-14 evening (supersedes the sections below)
 
 Read `docs/campaign-plan-2026-09-14.md` first: organizer rules (two-tier ranking at an
 80% threshold, preliminary on 2026-09-21), the arc-bench-web board state, the strategy
-and the order of work. `docs/progress.md` is the dated development log.
+and the order of work. `docs/progress.md` is the dated development log. The next session
+starts step 3 of the plan, the big board (`feat/state-contract`, Keep then Bookstack).
 
 ## State at handoff
 
-- `main` = 7e4a053. Today's merged PRs: #5 registration timing, #6 official corpus
-  catalogue, #7 token accounting, #8 nav-race fix (Ticket 10/10 officially), #9/#14/#15/#16
-  docs corrections, #10 image ablation (negative), #11 qwen3.6-flash observer default,
-  #13 self-check guard, #17 small-board token cuts (Smoke -16%, Evolution -54%,
-  officially), #19 repair-loop defects (error formatter, anchor diagnostics, read-only
-  diagnosis bound, captured checks demoted to diagnostic), #20 campaign plan, #22 one
-  browser per self-check run. Suite 238 green.
-- Boards: Smoke and Evolution rows are real-agent rows now (audit rows replaced);
-  Ticket row is rank 7 at 100% / CNY 0.899558 (run e34e78400983). The board takes the
-  latest passing run.
-- Open PRs, deliberately held: #18 (remove the vendored CLI; merge once no agent still
-  shells `./arcbench` from the main checkout) and #21 (state contract for the big board;
-  Keep 17/32, Bookstack up to 18/34, both far above the board's 3.1% / 14.7% but below
-  the 80% tier). Agents `bigtask-keep` (next Keep iteration with the two naming rules)
-  and `early-stall` (hosted early-window stall) were running at handoff.
-- The platform CLI is now the public repo thunderstone-group/arcbench-cli (MIT, 0.2.0,
-  installed via `uv tool`, env via `ARCBENCH_ENV_FILE=~/.config/arcbench/volo.env`,
-  `leaderboard` needs `--competition`). It ships `skills/arcbench/` for external agents.
+- `main` = 40e5d32. Merged this afternoon on top of 7e4a053: #23 handoff, #24 early-stall
+  attribution, #25 Ticket board closed + organizer report, #26 launcher probe, #27 probed
+  container facts, #28 gist link. Suite 243 green (12 skipped) with
+  `.venv/bin/python -m unittest discover -s tests`; the system `python3` reports errors, use the venv.
+- Ticket board: closed by the team lead. Row is run `07cd84033853` (100%, CNY 0.821109,
+  rank 7); rank 2 needs 100% at about CNY 0.42, only the cost line moves it. No more
+  Ticket trials for position. Every official run now brings back `.factory/probe.jsonl`
+  (container cgroup samples from the launcher) in its bundle; read it with
+  `.venv/bin/python -m harness_lab.probe_summary <file>`.
+- Hosted container, measured: cgroup v2, `cpu.max` 1.0 CPU, `memory.max` 2 GiB,
+  `/dev/shm` 64 MB, app env `PORT=3000` and no `E2E_BASE_URL` (keep the 3301 relay).
+- Organizer report sent as a secret gist
+  (<secret gist，已发主办方>); text in
+  `docs/organizer-report-2026-09-14.md`. Any organizer reply lands in the WeChat group.
+- Open PRs, deliberately held: #18 (remove the vendored CLI) and #21 (state contract for the
+  big board; Keep 17/32, Bookstack up to 18/34). Worktrees still present:
+  `bigtask-keep` (feat/state-contract), `cli-sync`, `small-public-acceptance`.
+- A codex job may still be running the local single-cgroup sweep
+  (`~/.codex-jobs/volo-factory/2026-09-14-early-stall-repro/`, docker only, no key use);
+  partial results copied to `runs/2026-09-14-early-stall/local-sweep/summary.md`. It
+  reproduced the hosted first-test-then-replacement structure at 0.5 CPU with 512m/768m
+  (c399 app 6/10, 7/10, 6/10 at 512m/0.5 CPU), never at 1 CPU on an idle host. Nothing
+  depends on it finishing; harvest it if convenient, otherwise ignore.
+- The platform CLI is the public repo thunderstone-group/arcbench-cli (0.2.0, `uv tool`,
+  `ARCBENCH_ENV_FILE=~/.config/arcbench/volo.env`, `leaderboard` needs `--competition`).
 
 ## Unresolved, in priority order
 
-1. **Hosted early-window stall: resolved as the runner's, not ours** (`docs/early-stall-2026-09-14.md`).
-   Ten runs aligned by Playwright worker: every lost test is the first test of an initial
-   worker, replacement workers pass everything; the 09-12 security-reproduction runs (canned
-   app, no browser, no launcher) show the same signature, so teardown, self-check pressure and
-   the relay are excluded; hashing is not a discriminator. The 09-14 trial after PR #22
-   (`c399145c5eb1`) lost both initial workers, 8/10 at CNY 0.529, row unchanged. Open: a
-   single-cgroup local reproduction (memory vs CPU) and whether to report it to the organizer.
+1. **Hosted early-window stall: closed.** Measured, not inferred: the runner gives the whole
+   test phase a 1-CPU quota and a clean run is already throttled in 86% of its scheduling
+   periods while two browsers launch; memory peaks at 714 MB of 2 GiB with no OOM. Six of the
+   last eleven Ticket runs lost the first test of an initial worker to it. Nothing on our side
+   causes it (`docs/early-stall-2026-09-14.md`); reported to the organizer. On the big board it
+   costs under 2% and does not matter.
 2. **Objective function.** GPT-6 review at
    `~/.codex-jobs/volo-factory/2026-09-14-objective-review/last-message.md`: optimise
    pass rate / cost under a 95% probability of clearing the threshold; the one change
