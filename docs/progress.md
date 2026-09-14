@@ -380,6 +380,38 @@ each rule snapshot and experiment with date and source.
   without a discoverable Playwright produced HTTP-only self-checks and an application with two
   `/register` links that failed all ten public tests in 20 of 20 replays; it was discarded.
 
+## 2026-09-14 — `deepseek-v4.1-flash` does not exist here; the cheap observer does
+
+- Checked a directive to move the reference-image observation to `deepseek-v4.1-flash`. The
+  organizer gateway does not serve it. `GET /v1/models` returns 11 ids and none is a 4.1; four
+  spellings each return HTTP 400 `provider_not_selected`; an invented model name returns the
+  identical error and `deepseek-v4-flash` succeeds, so that code means unknown model. No 4.1
+  appears in 143 account runs or in 31 leaderboard rows across five competitions.
+- Confirmed the inferred `qwen3.6-flash` price against official charges rather than assuming it.
+  1.2 CNY per million cache-miss input and 7.2 output reconstruct `8abb7f040604` exactly, and the
+  same method reproduces `01b06fb30564` and `d855ead6df43`, all three with a zero token gap and a
+  residual under one micro-yuan. It is cheaper than `deepseek-v4-flash`, not the same price. The
+  cache-hit rate stays unobserved because one observation call per run never gets a cache hit.
+- Reading the three references costs CNY 0.037054 on `qwen3.6-flash` against 0.284180 on
+  `kimi-k3`: a measured CNY 0.247126 per Ticket Booking run, with the screenshots still read.
+- Recorded the dangerous failure mode: the gateway accepts an image payload for
+  `deepseek-v4-flash` and the model never receives it, answering that the image data is truncated
+  at 209 prompt tokens. Any observer change must transcribe a known screenshot before it ships,
+  not merely return HTTP 200.
+- Headline, from four official runs that all reconstruct exactly: `01b06fb30564` and
+  `b6b89caa3f8c` are the same agent, default, model and task, both 10 of 10, and they cost CNY
+  0.629725 and 0.870779. That spread, 0.241054, is the size of the whole `kimi-k3` observation,
+  0.266640 to 0.284180. No single official trial can decide this lever in either direction, and
+  the earlier reading that removing the observation cost more is equally unsafe. Generation cost
+  across the four runs is 0.345545, 0.604138, 0.779833 and 1.035597 over 2, 3, 6 and 14 calls.
+- `DEFAULT_VISION_MODEL` is flipped to `qwen3.6-flash` on this branch. It has a 20 of 20 local
+  gate and confirmed rates; it has no passing official run, and its one trial died on the
+  unfixed frozen-self-check budget trap rather than on anything to do with the observer.
+  See `docs/vision-model-availability-2026-09-14.md`.
+- Confirmation condition, agreed with the team lead: no official trial was spent on this. The
+  flip must be confirmed by the first official trial taken after the frozen-self-check fix on
+  `fix/selfcheck-deadend` lands, so that the observer result is not confounded by the trap that
+  ended `8abb7f040604`. Until then this default carries a local gate and price arithmetic only.
 ## 2026-09-14 — A self-check that cannot pass no longer consumes the repair budget
 
 - Two runs the same day spent their whole budget repairing a check instead of a product. The
