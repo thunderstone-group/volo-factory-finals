@@ -33,7 +33,9 @@
   "errors": 0,
   "skipped": 11,
   "baseline_on_main": 169,
-  "note": "The 11 skips are the same machine-local browser and Docker-image cases as on main."
+  "note": "The 11 skips are the same machine-local browser and Docker-image cases as on main.",
+  "unexplained_observation": "One run in this session reported a single failure whose name was not captured; seven consecutive runs afterwards were green. Not reproduced and not attributed to this change.",
+  "consecutive_green_runs_after": 7
  },
  "image_support_probe": {
   "method": "One chat/completions request per model with the run's own 1,746x1,021 registration screenshot, asking for the visible section heading and first three field labels.",

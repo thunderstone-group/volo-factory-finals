@@ -117,6 +117,11 @@ tokens, the process environment, the disabled agent path and the enabled one.
 `python -m unittest discover -s tests -v` reports **176 tests, 0 failures, 11 skipped**,
 against 169 on main. The 11 skips are the same machine-local browser and Docker-image cases.
 
+One caveat, recorded rather than explained away. One suite run in this session reported a
+single failure whose name was not captured, and seven consecutive runs afterwards were green.
+It is not reproduced and it is not attributed, so it is not established as either a pre-existing
+flake or a fault in this change. Treat the suite as green with one unexplained observation.
+
 ## 7. Board consequence, and what it costs to undo
 
 The Ticket Booking board reflects the team's most recent passing run, not its best. Before this

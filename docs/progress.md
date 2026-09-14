@@ -360,6 +360,8 @@ each rule snapshot and experiment with date and source.
 - Consequence to undo: the Ticket Booking board reflects the most recent passing run, so
   variant A's run replaced the retained one and VOLO AI moved from rank 2 at efficiency 158.80
   to rank 4 at 128.23. Restoring it needs one official run on the unchanged default.
+- Test suite caveat: one run reported a single unnamed failure and seven consecutive runs
+  afterwards were green. Not reproduced, not attributed.
 - Local gates must assert `browser_environment.available` first. A variant A generation run
   without a discoverable Playwright produced HTTP-only self-checks and an application with two
   `/register` links that failed all ten public tests in 20 of 20 replays; it was discarded.
