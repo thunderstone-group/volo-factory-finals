@@ -20,8 +20,15 @@ class AnchoredEditTests(unittest.TestCase):
                          SOURCE.replace('let count = 0;', 'let count = 1;'))
 
     def test_missing_anchor_is_rejected_without_changing_text(self):
-        with self.assertRaisesRegex(ValueError, 'exactly once but was not found'):
+        # The rejection says where the anchor stops matching and what the file holds there,
+        # so the next call does not have to guess. See docs/repair-loop-autopsy-2026-09-14.md.
+        with self.assertRaises(ValueError) as rejected:
             apply_edit(SOURCE, {'path': 'x', 'old': 'let total = 0;', 'new': 'let total = 1;'})
+        message = str(rejected.exception)
+        self.assertIn('old text did not apply', message)
+        self.assertIn('is not present', message)
+        self.assertIn('characters match', message)
+        self.assertIn('<<<HERE>>>', message)
 
     def test_repeated_anchor_is_rejected_and_names_its_count(self):
         text = 'a\nvalue\nb\nvalue\n'
@@ -36,8 +43,16 @@ class AnchoredEditTests(unittest.TestCase):
         self.assertEqual(result.count('Increment'), 1)
 
     def test_insert_after_rejects_a_missing_or_repeated_anchor(self):
-        with self.assertRaisesRegex(ValueError, 'insert_after text must occur exactly once'):
+        # The rejection names the anchor field, and shows the file rather than the anchor.
+        with self.assertRaisesRegex(ValueError, 'insert_after text did not apply'):
             apply_edit(SOURCE, {'path': 'x', 'insert_after': 'absent', 'new': 'y'})
+        missing = None
+        try:
+            apply_edit(SOURCE, {'path': 'x', 'insert_after': 'absent', 'new': 'y'}, 'app.html')
+        except ValueError as exc:
+            missing = str(exc)
+        self.assertIn('is not present in app.html', missing)
+        self.assertIn('<<<HERE>>>', missing)
         with self.assertRaisesRegex(ValueError, 'occurs 2 times'):
             apply_edit('m\nm\n', {'path': 'x', 'insert_after': 'm', 'new': 'y'})
 

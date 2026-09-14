@@ -449,7 +449,7 @@ specification, not as prose, and emit a startup seeder. Crucially it must alloca
 row per mutating scenario rather than reusing one account, because with `workers: 4` the hosted
 runner can execute four requirement files against one database at once.
 
-### 5.3 Never leave a control whose name collides with a navigation keyword
+### 5.3 Eliminate ambiguity on the actual interaction path
 
 **Motivating citation.** This is what broke the organizers' own reference under artifact capture.
 `toPattern` (`12306/tests/helpers.ts:237-240`) turns every string into a case-insensitive
@@ -468,12 +468,15 @@ Playwright call log names it explicitly:
 REQ-4.3.6 and REQ-4.3.7 failed this way in both artifact-capturing runs and passed in all three
 runs with capture off, which is what identifies it as a transition race rather than a fixed defect.
 
-**What changes.** Two generation constraints. First, no visible control's accessible name may
-contain, case-insensitively, a navigation keyword the suite uses to leave a page (`login`,
-`register`, `search`, `book`, `delete`, `save`, `edit`) unless that control *is* the target.
-Second, a view transition must unmount the old view rather than cross-fade it, so no stale control
-is momentarily visible alongside the new one. The first constraint is cheap and mechanical; it is
-the one to adopt.
+**What changes.** Two generation constraints. First, on the path the suite actually interacts
+with, no other visible control may be a candidate for the name the suite is looking for: at the
+moment of a navigation click, exactly one visible element may match that substring regex. That is
+a constraint on the interaction path and on the transition, not a global ban on business
+vocabulary. A blanket rule forbidding `login`, `register`, `search`, `book`, `delete`, `save` and
+`edit` in every accessible name would contradict requirement text that names those controls
+explicitly, and a required label that the specification states verbatim always wins. Second, a
+view transition must unmount the old view rather than cross-fade it, so no stale control is
+momentarily visible alongside the new one; that is what actually created the observed race.
 
 ### 5.4 Build the DOM for the accessibility tree; `data-testid` is worthless here
 

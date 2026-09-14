@@ -14,12 +14,13 @@ from .trace import atomic_json
 
 VISION_MODEL_VARIABLE = 'FACTORY_VISION_MODEL'
 # Keep the screenshots and stop paying kimi-k3 prices for them. docs/image-ablation-2026-09-14.md
-# measured that removing the observation entirely still scored 10/10 but cost more, because the
-# generation then needed four extra repair rounds, so the images are worth reading. qwen3.6-flash
-# reads the same three images correctly and is priced 1.2/7.2 CNY per million against kimi-k3's
-# 20/100, rates confirmed against an official charge to six decimals. deepseek-v4-flash can never
-# be the value: the gateway accepts an image for it and the model does not see it, replying that
-# the image data is truncated. deepseek-v4.1-flash is not served by this gateway at all.
+# recorded one run without the observation that still scored 10/10 at a higher cost and with four
+# more repair rounds; that is a single sample and not a cause, so it is not a reason either way.
+# The reason to switch is price: qwen3.6-flash reads the same three images correctly and is priced
+# 1.2/7.2 CNY per million against kimi-k3's 20/100, rates confirmed against an official charge to
+# six decimals. deepseek-v4-flash can never be the value: the gateway accepts an image for it and
+# the model does not see it, replying that the image data is truncated. deepseek-v4.1-flash is not
+# served by this gateway at all.
 DEFAULT_VISION_MODEL = 'qwen3.6-flash'
 VISION_OFF_VALUES = frozenset({'', 'off', 'none', 'no', 'false', '0', 'disabled'})
 

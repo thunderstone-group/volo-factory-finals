@@ -25,7 +25,10 @@ test('feedback',async(page)=>{assert.equal(await page.getByRole('alert').count()
 class CapturedSelfCheckTests(TempCase):
     @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE') and
                          os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'), 'Installed Chrome/Playwright required')
-    def test_ambiguity_cannot_be_scoped_away_but_unrelated_waits_can_be_fixed(self):
+    def test_ambiguity_is_reported_after_scoping_and_the_requirement_assertions_decide(self):
+        """A capture is evidence. It survives a rewrite of the live check, and it never
+        decides the run: a frozen bundle that is itself wrong must not be able to stop a
+        correct product from reaching independent acceptance."""
         wrapper = self.base / 'real-browser.cjs'
         wrapper.write_text('const pw=require(' + json.dumps(os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']) + ');'
             'module.exports={chromium:{launch:()=>pw.chromium.launch({headless:true,executablePath:'
@@ -37,25 +40,31 @@ class CapturedSelfCheckTests(TempCase):
         self.assertFalse(initial['passed'])
         self.assertIn('retained_self_check', initial, initial)
         self.assertEqual(initial['retained_self_check']['cases'], ['identity (primary)'])
+        self.assertEqual(initial['retained_self_check']['authority'], 'diagnostic_only')
         captured = self.workspace.required_checks[0]
         revised = CHECKS.replace("{exact:true}).waitFor()", "{exact:true}).first().waitFor()")
         revised = revised.replace("assert.equal(await page.getByRole('alert').count(),1)",
                                   "await page.getByRole('alert').waitFor()")
         self.workspace.write_files([{'path': 'checks/requirements.cjs', 'content': revised}])
         command = ['node', '--test', 'checks/requirements.cjs']
-        rejected = self.workspace.verify(command)
-        self.assertFalse(rejected['passed'])
-        self.assertEqual(rejected['executed_checks'], [captured['argv']])
+        scoped = self.workspace.verify(command)
+        # The scoped assertion passes, so the run proceeds; the ambiguity is still reported.
+        self.assertTrue(scoped['passed'], scoped)
+        self.assertEqual(scoped['captured_self_check'][0]['status'], 'failed')
+        self.assertEqual(scoped['captured_self_check'][0]['authority'], 'diagnostic_only')
+        self.assertEqual(scoped['acceptance']['verified_requirements'], [])
+        self.assertEqual(scoped['verification_scope'], 'local_checks_only')
         self.workspace.edit('frontend/public/index.html', '<span>Unique User</span><span>Unique User</span>',
                             '<span>Unique User</span>')
         accepted = self.workspace.verify(command)
         self.assertTrue(accepted['passed'], accepted)
+        self.assertEqual(accepted['captured_self_check'][0]['status'], 'passed')
         self.assertEqual(accepted['acceptance']['verified_requirements'], [])
         self.assertEqual(accepted['verification_scope'], 'local_checks_only')
         captured['argv'][3] = '--test-name-pattern=^absent$'
-        missing = self.workspace.verify(command)
-        self.assertFalse(missing['passed'])
-        self.assertIn('did not all execute', missing['error'])
+        filtered = self.workspace.verify(command)
+        self.assertTrue(filtered['passed'], filtered)
+        self.assertIn('did not all execute', filtered['captured_self_check'][0]['note'])
         operator = {'argv': ['node', 'external.cjs'], 'files': {}}
         self.workspace.required_checks.append(operator)
         self.workspace.clear_prepared_check_guards()
