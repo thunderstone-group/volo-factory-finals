@@ -407,6 +407,13 @@ def apply_edits(current, items, path=None):
     return ''.join(result)
 
 
+# Calls one contract batch may spend before it is recorded incomplete and the schedule
+# moves on. Measured on Keep at ccf0600: batches converged in 9, 7 and 17 calls, then one
+# batch spent 36 without converging, thrashing between its own check and three feature
+# files, because the only bound was the run-wide call budget.
+BATCH_CALL_LIMIT = 16
+
+
 class BudgetExhausted(RuntimeError):
     """The schedule ended because there was nothing left to spend, not because it finished."""
 
@@ -570,8 +577,38 @@ class Agent:
             print('[volo] batch did not converge: ' + self.trace.redact(str(exc))[:200], flush=True)
             if isinstance(exc, TimeoutError) or 'budget' in str(exc).lower():
                 raise BudgetExhausted(str(exc)) from exc
+            # The next batch starts from a tree that verified, not from this one's debris.
+            self.restore_verified_tree()
             return False
         self.snapshot_product()
+        return True
+
+    def restore_verified_tree(self):
+        """Put the product tree back to the last verified snapshot, removing files added since.
+
+        Returns True when something was restored. A tree that already matches the last
+        verification is left alone.
+        """
+        path = self.snapshot_path()
+        if not path.is_file():
+            return False
+        state = json.loads(path.read_text())
+        if state['source_fingerprint'] == self.workspace.fingerprint():
+            return False
+        removed = []
+        for item in self.workspace.list_files()['files']:
+            name = item['path']
+            if (name.startswith(('frontend/public/', 'backend/', 'checks/'))
+                    and name not in state['files']):
+                self.workspace.path(name).unlink()
+                removed.append(name)
+        self.workspace.write_files([{'path': name, 'content': content}
+                                    for name, content in state['files'].items()])
+        self.check_command = state['check_command']
+        self.completed = list(state['completed'])
+        self.trace.event('restored_product_snapshot', source_fingerprint=state['source_fingerprint'],
+                         completed=self.completed, removed=removed)
+        print('[volo] restored the last verified snapshot', flush=True)
         return True
 
     def snapshot_path(self):
@@ -587,10 +624,16 @@ class Agent:
             name = item['path']
             if not name.startswith(('frontend/public/', 'backend/', 'checks/')):
                 continue
+            # Runtime data and the harness's own dot-directories are not product source:
+            # backend/.volo/launcher.cjs is protected and made every real run's snapshot
+            # silently fail (Keep at b8e92a0 and ccf0600: nine and three verified batches,
+            # zero product_snapshot events), so exhaustion delivered whatever tree it hit.
+            if name.startswith('backend/data/') or any(part.startswith('.') for part in name.split('/')):
+                continue
             try:
                 files[name] = self.workspace.path(name).read_text()
             except (OSError, UnicodeError, ValueError):
-                return False
+                continue
         atomic_json(self.snapshot_path(), {'source_fingerprint': source['source_fingerprint'],
                                            'check_command': source['check_command'],
                                            'completed': list(self.completed), 'files': files})
@@ -600,23 +643,10 @@ class Agent:
 
     def deliver_best_snapshot(self):
         """If the tree no longer matches a verification, restore the last one that did."""
-        path = self.snapshot_path()
-        if not path.is_file():
-            return False
         current = self.workspace.fingerprint()
         if current == (self.workspace.last_verification or {}).get('source_fingerprint'):
             return False
-        state = json.loads(path.read_text())
-        if state['source_fingerprint'] == current:
-            return False
-        self.workspace.write_files([{'path': name, 'content': content}
-                                    for name, content in state['files'].items()])
-        self.check_command = state['check_command']
-        self.completed = list(state['completed'])
-        self.trace.event('restored_product_snapshot',
-                         source_fingerprint=state['source_fingerprint'], completed=self.completed)
-        print('[volo] restored the last verified snapshot', flush=True)
-        return True
+        return self.restore_verified_tree()
 
     def run_schedule(self):
         """Give every batch its first implementation; stop only when the budget is gone."""
@@ -1072,6 +1102,7 @@ class Agent:
         read_only_calls = 0
         last_failure = None
         self.read_paths = []
+        batch_start_calls = self.model.usage.calls
         for _ in range(self.max_calls):
             try:
                 self.guard_budget()
@@ -1079,6 +1110,10 @@ class Agent:
                 if self.verify_final_edit():
                     return
                 raise
+            if self.contract and self.model.usage.calls - batch_start_calls >= BATCH_CALL_LIMIT:
+                self.trace.event('batch_call_limit', limit=BATCH_CALL_LIMIT,
+                                 requirements=[node['id'] for node in nodes])
+                break
             model_messages, projection = project(messages, self.max_context_chars,
                 lambda: self.context_checkpoint(nodes, messages[0]["content"], last_failure))
             if projection:

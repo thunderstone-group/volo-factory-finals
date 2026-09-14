@@ -1247,6 +1247,92 @@ class ScheduleCompletionTests(TempCase):
         for path in written:
             self.assertIn('Fix the application', agent.locked_check(path))
 
+    def test_a_failed_batch_restores_the_last_verified_tree(self):
+        # Keep at ccf0600: a batch that never converged left three half-written feature
+        # files and its own failing check behind, and the next batch would have built on
+        # them. Synthetic: the first batch verifies and is snapshotted, the second edits a
+        # verified file, adds a new one, and fails.
+        agent = self.agent()
+        first = self.scheduled(agent)[0]
+
+        def run_batch(nodes):
+            ids = [node['id'] for node in nodes]
+            self.attempted.append(ids)
+            if ids == first:
+                self.workspace.write_files([{'path': 'frontend/public/features/home.js',
+                                             'content': '// verified\n'}])
+                self.workspace.last_verification = {
+                    'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+                    'check_command': ['node', '--test', 'checks/batch-1.spec.cjs'],
+                    'verification_scope': 'local_checks_only', 'acceptance': {}}
+                return
+            self.workspace.write_files([
+                {'path': 'frontend/public/features/home.js', 'content': '// broken\n'},
+                {'path': 'frontend/public/features/debris.js', 'content': '// debris\n'}])
+            raise RuntimeError('synthetic: batch did not converge')
+
+        agent.run_batch = run_batch
+        agent.run_schedule()
+        self.assertEqual(self.workspace.path('frontend/public/features/home.js').read_text(),
+                         '// verified\n')
+        self.assertFalse(self.workspace.path('frontend/public/features/debris.js').exists())
+        events = [json.loads(line) for line in
+                  (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+        restored = [event for event in events if event['event'] == 'restored_product_snapshot']
+        self.assertTrue(restored)
+        self.assertEqual(restored[0]['removed'], ['frontend/public/features/debris.js'])
+
+    def test_the_snapshot_survives_protected_and_runtime_files_in_the_tree(self):
+        # Every real run carries backend/.volo/launcher.cjs (protected) and
+        # backend/data/store.json (runtime data). Neither may abort the snapshot.
+        agent = self.agent()
+        (self.workspace.root / 'backend' / '.volo').mkdir(parents=True, exist_ok=True)
+        (self.workspace.root / 'backend' / '.volo' / 'launcher.cjs').write_text('// synthetic launcher\n')
+        (self.workspace.root / 'backend' / 'data').mkdir(parents=True, exist_ok=True)
+        (self.workspace.root / 'backend' / 'data' / 'store.json').write_text('{}')
+        self.workspace.write_files([{'path': 'backend/api.cjs', 'content': '// synthetic api\n'}])
+        self.workspace.last_verification = {
+            'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+            'check_command': ['node', '--test', 'checks/batch-1.spec.cjs'],
+            'verification_scope': 'local_checks_only', 'acceptance': {}}
+        self.assertTrue(agent.snapshot_product())
+        state = json.loads(agent.snapshot_path().read_text())
+        self.assertIn('backend/api.cjs', state['files'])
+        self.assertNotIn('backend/.volo/launcher.cjs', state['files'])
+        self.assertNotIn('backend/data/store.json', state['files'])
+
+    def test_a_contract_batch_stops_at_its_call_limit(self):
+        # Synthetic transport that answers every request with a read-only tool call, so the
+        # batch can never converge. The cap, not the run-wide budget, must end it.
+        from volo.agent import BATCH_CALL_LIMIT
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        model = FakeModel('')
+
+        def complete(messages, tools, **kwargs):
+            model.requests.append(messages)
+            model.usage.calls += 1
+            model.usage.prompt_tokens += 1000
+            model.usage.completion_tokens += 100
+            return {'role': 'assistant', 'content': '',
+                    'tool_calls': [{'id': 'call-%d' % model.usage.calls, 'type': 'function',
+                                    'function': {'name': 'list_files', 'arguments': '{}'}}]}, 'tool_calls'
+
+        model.complete = complete
+        agent = Agent(requirements, model, self.workspace, Runtime(self.trace),
+                      contract=contract, max_calls=200)
+        agent.install_contract()
+        nodes = list(agent.schedule())[0]
+        with self.assertRaises(RuntimeError) as raised:
+            agent.run_batch(nodes)
+        self.assertNotIn('budget', str(raised.exception).lower())
+        self.assertLessEqual(model.usage.calls, BATCH_CALL_LIMIT)
+        events = [json.loads(line) for line in
+                  (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+        self.assertTrue(any(event['event'] == 'batch_call_limit' for event in events))
+
     def test_budget_exhaustion_stops_the_schedule_and_is_recorded(self):
         agent = self.agent(failing={'REQ-2.2'})
 

@@ -835,3 +835,28 @@ The synthetic fixtures under `tests/fixtures/` are hand written and implement no
 `synthetic-hover-rows.html` passes all four rules, and `synthetic-leaky-chooser.html` is the
 inertness defect reduced to one picker and one sidebar item. No generation has been run against
 any of this.
+
+### 2026-09-14, night — the second Keep run: the rules changed the shape, then one batch ate the budget
+
+- Second full Keep generation at ccf0600 (all three fix sets in), budget 320 calls / 8,000,000
+  tokens. Batches 1–3 converged in 9, 7 and 17 calls. Measured on the batch-2 application: at rest
+  the home page has **no** row-action buttons; hovering "Groceries" reveals exactly one
+  "More options" whose menu holds "Delete Note" — the shape the official helpers drive
+  (`hoverNamed(title)` then the first `/more/i`). The ambiguity rule fired once in batch 3 on a
+  real defect (two "Archive" visible after hovering "Team retro remove label") and the model
+  repaired it in two rounds. The frontend was split into `features/*.js` as instructed.
+- Batch 4 (REQ-2.7.1 alone) then spent **36 calls without converging**: its own check called
+  `page.goto(undefined)`, and the model thrashed between that check and three duplicate feature
+  files (`labels.js`, `assign-labels.js`, `label-assign.js`), re-reading the same regression
+  checks each round. The only bound on the contract path was the run-wide call budget. The run
+  was stopped at 72 calls / 2.36 M tokens.
+- Two defects found in the process: **no real run had ever written a product snapshot**
+  (`product_snapshot` events: 0 in both runs, against 9 and 3 verified batches), because
+  `backend/.volo/launcher.cjs` is a protected path and one `ValueError` aborted the whole
+  snapshot; so "restore the last verified tree" had never been possible. And a batch that failed
+  left its debris in place for the next batch to build on.
+- Changes: `BATCH_CALL_LIMIT = 16` on the contract path records the batch incomplete and moves on;
+  a failed batch restores the last verified snapshot, removing files added since; the snapshot
+  skips runtime data and dot-directories instead of aborting. Three synthetic tests pin them.
+- One more rejected call to answer later: a `write_files` whose JSON was invalid because the model
+  wrote CSS `content:"\22EF"` inside a JS string (an invalid `\2` escape at the JSON level).
