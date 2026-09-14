@@ -17,6 +17,8 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
   the `FACTORY_VISION_MODEL` switch and which gateway models actually read an image.
 - `docs/selfcheck-deadend-2026-09-14.md`: why a run can spend its whole budget repairing its own
   check, the two autopsies, and the rules that bound it.
+- `docs/state-contract-2026-09-14.md`: the global state contract for multi-page packages,
+  the Keep rehearsal and the Bookstack holdout, with per-iteration cost.
 - `docs/harness-consolidation-2026-09-12.md`: integration decisions and validation boundaries.
 - `docs/harness-design-2026-09-12.md`: pinned-source comparison and proposed next experiments.
 - `docs/strategy.md`: verified competition facts, design choices and next experiments.

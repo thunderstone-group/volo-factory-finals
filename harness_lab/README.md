@@ -7,6 +7,7 @@ requests implicitly. The uploaded optional acceptance runner is `volo/acceptance
 | Entry | Purpose | Model calls | Current boundary |
 |---|---|---|---|
 | `python -m harness_lab.acceptance_probe` | Generate a bounded declarative browser plan from original requirements and initial page evidence | Zero by default; one attempted gateway request with `--allow-model-calls` | Diagnostic proposal; synthetic plans and real browser plumbing tested, model quality not measured |
+| `python harness_lab/state_rehearsal.py` | Start a generated application on a fresh data directory and score it against one ARC-Bench app's published suite | None | Starts the app itself, waits for `/api/health`, and writes its four-worker config into the session scratch directory; never modifies the corpus clone |
 | `python -m harness_lab.local_gate` | Replay the unchanged public tests against a local generation in the calibrated host configuration | None | Refuses a generation whose recorded `browser_available` is not true, and any product source with browser self-navigation |
 | `python -m harness_lab.external_gate` | Evaluate an already-running app with a pinned interpreter/script and structured case evidence | None | Caller binds the URL to an isolated app and frozen source; checks themselves need calibration |
 | `python -m harness_lab.evaluate` | Snapshot candidate and trusted suite, run in separate local containers | None | HTTP/isolation calibration exists; a competition-equivalent GUI suite/image is not supplied |
