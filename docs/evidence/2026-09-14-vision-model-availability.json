@@ -1,0 +1,241 @@
+{
+ "observed_at": "2026-09-14T04:54:41.532204+00:00",
+ "questions": [
+  "Can deepseek-v4.1-flash carry the reference-image observation on the organizer gateway?",
+  "Is the qwen3.6-flash row of the inferred price table real, and is it the same price as deepseek-v4-flash?"
+ ],
+ "verdicts": {
+  "deepseek_v4_1_flash": "Not served by this gateway. Four independent checks, all negative.",
+  "qwen36_flash_price": "Confirmed at 1.2 CNY per million cache-miss input and 7.2 output against three official charges, to six decimals with zero token gap. It is cheaper than deepseek-v4-flash (3/9), not the same price. Its cache-hit rate stays unobserved."
+ },
+ "model_availability": {
+  "gateway": "https://api.arc-bench.com/v1",
+  "models_endpoint_ids": [
+   "deepseek-v4-flash",
+   "deepseek-v4-pro",
+   "glm-5.2",
+   "glm-5.3",
+   "kimi-k3",
+   "minimax-m3",
+   "qwen3.6-flash",
+   "qwen3.6-plus",
+   "qwen3.7-max",
+   "qwen3.7-plus",
+   "qwen3.8-max"
+  ],
+  "probed_absent": [
+   {
+    "model": "deepseek-v4.1-flash",
+    "http_status": 400,
+    "code": "provider_not_selected"
+   },
+   {
+    "model": "deepseek-v4-1-flash",
+    "http_status": 400,
+    "code": "provider_not_selected"
+   },
+   {
+    "model": "deepseek-v4.1",
+    "http_status": 400,
+    "code": "provider_not_selected"
+   },
+   {
+    "model": "deepseek-v41-flash",
+    "http_status": 400,
+    "code": "provider_not_selected"
+   }
+  ],
+  "controls": [
+   {
+    "model": "definitely-not-a-model-xyz",
+    "http_status": 400,
+    "code": "provider_not_selected",
+    "note": "An invented name returns the identical error, so the code means unknown model."
+   },
+   {
+    "model": "deepseek-v4-flash",
+    "http_status": 200,
+    "served_as": "deepseek-v4-flash"
+   }
+  ],
+  "account_run_model_names": {
+   "deepseek-v4-flash": 72,
+   "qwen3.6-flash": 41,
+   "deepseek-v4-pro": 23,
+   "kimi-k3": 3,
+   "minimax-m3": 2,
+   "qwen3.8-max": 1,
+   "glm-5.3": 1
+  },
+  "leaderboard_model_names": {
+   "rows_scanned": 31,
+   "competitions": [
+    "arc-bench-web",
+    "smoke",
+    "smoke-evolution",
+    "ticket-booking",
+    "ticket-booking-evolution"
+   ],
+   "observed": [
+    "deepseek-v4-flash",
+    "qwen3.6-flash"
+   ]
+  }
+ },
+ "image_reading_probe": {
+  "method": "One chat/completions request per model with the run's own 1,746x1,021 registration screenshot, asking for the visible section heading and first three field labels.",
+  "results": [
+   {
+    "model": "kimi-k3",
+    "images": 3,
+    "prompt_tokens": 7349,
+    "sees_image": true,
+    "source": "run 01b06fb30564 captured usage, for scale"
+   },
+   {
+    "model": "deepseek-v4-flash",
+    "prompt_tokens": 209,
+    "completion_tokens": 14789,
+    "sees_image": false,
+    "response": "Image data is truncated; unable to transcribe.",
+    "note": "The gateway accepted the payload; the pixels did not reach the model."
+   },
+   {
+    "model": "qwen3.6-flash",
+    "prompt_tokens": 1801,
+    "completion_tokens": 1316,
+    "sees_image": true,
+    "response": "账户信息 / 用户名 / 登录密码 / 确认密码, correct"
+   },
+   {
+    "model": "minimax-m3",
+    "prompt_tokens": 2538,
+    "completion_tokens": 112,
+    "sees_image": true,
+    "response": "correct",
+    "note": "No price-table entry, so it cannot be costed."
+   },
+   {
+    "model": "qwen3.6-plus",
+    "sees_image": "not_measured",
+    "note": "Rejected an 8x8 probe as under a 10-pixel minimum, which shows it decodes the payload."
+   },
+   {
+    "model": "glm-5.2",
+    "sees_image": "not_measured",
+    "note": "20 prompt tokens on an 8x8 probe, which suggests the payload is dropped."
+   }
+  ]
+ },
+ "price_verification": {
+  "method": "Reconstruct each official charge from captured per-request usage. A run mixing a known-rate model with qwen3.6-flash pins the qwen rates.",
+  "price_table_cny_per_million": {
+   "deepseek-v4-flash": {
+    "input_cache_miss": 3.0,
+    "input_cache_hit": 0.1,
+    "output": 9.0
+   },
+   "kimi-k3": {
+    "input_cache_miss": 20.0,
+    "input_cache_hit": 2.0,
+    "output": 100.0
+   },
+   "qwen3.6-flash": {
+    "input_cache_miss": 1.2,
+    "input_cache_hit": 1.2,
+    "output": 7.2
+   }
+  },
+  "runs": {
+   "01b06fb30564": {
+    "official": {
+     "id": "01b06fb30564",
+     "status": "PASSED",
+     "token_count": 72854,
+     "cost_cny": 0.629725
+    },
+    "per_model": {
+     "kimi-k3": {
+      "calls": 1,
+      "prompt_tokens": 7349,
+      "cached_prompt_tokens": 0,
+      "completion_tokens": 1372,
+      "reconstructed_cny": 0.28418
+     },
+     "deepseek-v4-flash": {
+      "calls": 2,
+      "prompt_tokens": 36629,
+      "cached_prompt_tokens": 4096,
+      "completion_tokens": 27504,
+      "reconstructed_cny": 0.345545
+     }
+    },
+    "captured_tokens": 72854,
+    "reconstructed_cny": 0.629725,
+    "token_gap": 0,
+    "cny_residual": 0.0
+   },
+   "d855ead6df43": {
+    "official": {
+     "id": "d855ead6df43",
+     "status": "PASSED",
+     "token_count": 173870,
+     "cost_cny": 0.779834
+    },
+    "per_model": {
+     "deepseek-v4-flash": {
+      "calls": 6,
+      "prompt_tokens": 116851,
+      "cached_prompt_tokens": 28928,
+      "completion_tokens": 57019,
+      "reconstructed_cny": 0.779833
+     }
+    },
+    "captured_tokens": 173870,
+    "reconstructed_cny": 0.779833,
+    "token_gap": 0,
+    "cny_residual": 1e-06
+   },
+   "8abb7f040604": {
+    "official": {
+     "id": "8abb7f040604",
+     "status": "FAILED",
+     "token_count": 477861,
+     "cost_cny": 1.072651
+    },
+    "per_model": {
+     "qwen3.6-flash": {
+      "calls": 1,
+      "prompt_tokens": 5462,
+      "cached_prompt_tokens": 0,
+      "completion_tokens": 4236,
+      "reconstructed_cny": 0.037054
+     },
+     "deepseek-v4-flash": {
+      "calls": 14,
+      "prompt_tokens": 412222,
+      "cached_prompt_tokens": 242944,
+      "completion_tokens": 55941,
+      "reconstructed_cny": 1.035597
+     }
+    },
+    "captured_tokens": 477861,
+    "reconstructed_cny": 1.072651,
+    "token_gap": 0,
+    "cny_residual": 0.0
+   }
+  },
+  "observation_cost_per_ticket_run": {
+   "kimi-k3": 0.28418,
+   "qwen3.6-flash": 0.037054,
+   "measured_saving": 0.247126
+  }
+ },
+ "not_established": [
+  "One probe request per model on one screenshot; not a ranking of how well each reads a UI.",
+  "qwen3.6-flash returned 4,236 observation tokens against kimi-k3 1,322 for the same three images.",
+  "glm-5.2 and qwen3.6-plus were not measured on a real screenshot.",
+  "minimax-m3 has no price-table entry and was not considered further.",
+  "The absence of deepseek-v4.1-flash is a fact about this gateway on this date."
+ ]
+}
