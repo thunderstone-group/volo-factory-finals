@@ -408,3 +408,7 @@ each rule snapshot and experiment with date and source.
   gate and confirmed rates; it has no passing official run, and its one trial died on the
   unfixed frozen-self-check budget trap rather than on anything to do with the observer.
   See `docs/vision-model-availability-2026-09-14.md`.
+- Confirmation condition, agreed with the team lead: no official trial was spent on this. The
+  flip must be confirmed by the first official trial taken after the frozen-self-check fix on
+  `fix/selfcheck-deadend` lands, so that the observer result is not confounded by the trap that
+  ended `8abb7f040604`. Until then this default carries a local gate and price arithmetic only.
