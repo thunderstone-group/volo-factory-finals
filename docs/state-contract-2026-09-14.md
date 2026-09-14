@@ -308,6 +308,20 @@ scratch, which is what the competition runner does and what
 `harness_lab/state_rehearsal.py` does between profiles. There is deliberately no reset endpoint:
 the corpus has none, and the requirements state durability that a restart-reset would contradict.
 
+**No scored run had the repair bounds this branch now carries.** The rehearsals ran before
+`main`'s repair-loop work was merged in, and the largest single cost in them is a batch repairing
+itself: one Keep batch spent thirteen calls applying one edit at a time. That work bounds exactly
+this, so the merged head should do better than every number here. Nothing in this document
+measures the two together.
+
+**No scored run implemented its whole schedule.** Keep schedules 15 batches and Bookstack 18,
+and the runs reported here stopped earlier: the default `FACTORY_MAX_CALLS` of 32 was raised for
+these rehearsals, and the binding constraint became wall time on a machine running several
+agents' generations at once. Every pass count below therefore measures a partially implemented
+application, and section 1.4 separates the requirements a run never reached from the ones it
+implemented and still failed. A batch costs five to thirteen model calls, most of it repair, so
+a package of this size needs a call budget in the low hundreds rather than the default 32.
+
 **The four-worker profile runs on this machine, not the organizers'.** Absolute wall times are
 ours. The corpus catalogue's measurement that artifact capture, not the ten-second budget, is
 what breaks a suite locally is the reason both profiles here disable trace and video.
