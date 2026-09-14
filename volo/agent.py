@@ -152,16 +152,13 @@ SMALL_EDIT_SYSTEM = """Implement a small requirement change in the supplied exis
 Current source is included below when it fits the bounded snapshot. Preserve all working behavior
 and regression checks. Call patch_and_verify ONCE with the complete small change.
 Make the smallest complete edit and add a behavioral assertion for the new requirement.
-Adding a control, an element, a handler or a test is always an insertion, never a rewrite:
-{"path","insert_after":"<short unique existing text>","new":"<text added directly after it>"}.
-The anchor stays exactly where it is and your new text lands directly after it, so anchor on the
-line your addition follows. Text named in replace is DELETED:
-{"path","replace":"<short unique text>","new":"<what takes its place>"}, and
-{"path","replace":"<first line of a block>","until":"<last line of that block>","new":"<...>"}
-deletes everything from the first anchor through the last. Use replace only where existing text
-must actually change, never to say where an addition goes; anything it spans is gone unless new
-contains it again. Never repeat unchanged text, and never restate a whole file. Each anchor must
-occur exactly once in the current file. Extend existing tests and reuse their variables.
+{"path","old":"<exact existing text>","new":"<what takes its place>"} replaces that text, exactly
+as before. To ADD something, insert it instead of rewriting what surrounds it:
+{"path","insert_after":"<short unique existing text>","new":"<text added directly after it>"}
+keeps the anchor where it is and puts your text straight after it, so an added control, handler or
+test costs only the text you are adding. Every anchor must occur exactly once in the file as it is
+shown to you, and two edits may not overlap the same text. Extend existing tests and reuse their
+variables; do not repeat full files, browser setup or already-covered flows in replacement text.
 Edits are validated together before writing.
 The tool then runs dependency installation, frontend build, the managed server and checks.
 check_command is argv: ["node","--test","checks/requirements.cjs"], with separate arguments.
@@ -178,16 +175,13 @@ harness-owned, is not shown to you, and runs automatically with the checks below
 those exactly and assert only what it cannot: each new action and its exact resulting values.
 No check command is needed.
 Call patch_and_verify ONCE with the complete small change.
-Adding a control, an element, a handler or a test is always an insertion, never a rewrite:
-{"path","insert_after":"<short unique existing text>","new":"<text added directly after it>"}.
-The anchor stays exactly where it is and your new text lands directly after it, so anchor on the
-line your addition follows. Text named in replace is DELETED:
-{"path","replace":"<short unique text>","new":"<what takes its place>"}, and
-{"path","replace":"<first line of a block>","until":"<last line of that block>","new":"<...>"}
-deletes everything from the first anchor through the last. Use replace only where existing text
-must actually change, never to say where an addition goes; anything it spans is gone unless new
-contains it again. Never repeat unchanged text, and never restate a whole file. Each anchor must
-occur exactly once in the current file. Extend existing tests and reuse their variables.
+{"path","old":"<exact existing text>","new":"<what takes its place>"} replaces that text, exactly
+as before. To ADD something, insert it instead of rewriting what surrounds it:
+{"path","insert_after":"<short unique existing text>","new":"<text added directly after it>"}
+keeps the anchor where it is and puts your text straight after it, so an added control, handler or
+test costs only the text you are adding. Every anchor must occur exactly once in the file as it is
+shown to you, and two edits may not overlap the same text. Extend existing tests and reuse their
+variables; do not repeat full files, browser setup or already-covered flows in replacement text.
 Edits are validated together before writing. The tool then runs dependency installation,
 frontend build, the managed server and every check.
 Keep the existing backend start and frontend build contracts; the backend reads process.env.PORT.
@@ -223,10 +217,8 @@ EDIT = {"type": "object", "properties": {
     "path": STR,
     "insert_after": {"type": "string", "description":
         "Short unique existing text, kept as it is; new is inserted directly after it"},
-    "replace": {"type": "string", "description":
+    "old": {"type": "string", "description":
         "Short unique existing text that is deleted and replaced by new; use it only where text must change"},
-    "until": {"type": "string", "description":
-        "Optional second anchor; everything from replace through it is deleted and replaced by new"},
     "new": {"type": "string", "description": "Only the text being inserted or written in place"}},
     "required": ["path", "new"], "additionalProperties": False}
 EDITS = {"type": "array", "items": EDIT}
@@ -285,44 +277,59 @@ def locate(text, anchor, label):
     return text.index(anchor)
 
 
-def apply_edit(current, item):
-    """Apply one anchored edit, without requiring unchanged text to be repeated.
-
-    The destructive operation is named `replace` because `old` was read as a
-    placement locator: two of three local evolution generations anchored on an
-    existing control and lost it.
-    """
+def edit_span(current, item):
+    """Resolve one anchored edit to a (start, end, text) span of the current file."""
     new = item.get('new')
-    # The general tool menu still offers `edit` with old/new, so a model that copies
-    # that shape here means a replacement. Accept it rather than spend a round trip.
-    replace = item.get('replace') if item.get('replace') is not None else item.get('old')
-    until, after = item.get('until'), item.get('insert_after')
+    # `old` keeps the spelling this harness and the general `edit` tool already use.
+    # Renaming it to `replace` was tried and measured worse: the evolution board
+    # went from one model call per task to three to twenty-six.
+    replace = item.get('old') if item.get('old') is not None else item.get('replace')
+    after = item.get('insert_after')
     if not isinstance(new, str):
         raise ValueError('Provide the inserted or replacing text in new')
-    for value in (replace, until, after):
+    for value in (replace, after):
         if value is not None and (not isinstance(value, str) or not value):
             raise ValueError('Anchors must be nonempty strings')
     if replace is None and after is None:
         # A file that is currently empty has no anchor to name; its whole content
         # is the edit. Anything else must anchor to text that actually exists.
-        if current or until is not None:
-            raise ValueError('Provide exactly one of insert_after or replace')
-        return new
+        if current:
+            raise ValueError('Provide exactly one of insert_after or old')
+        return 0, 0, new
     if replace is not None and after is not None:
-        raise ValueError('Provide exactly one of insert_after or replace')
+        raise ValueError('Provide exactly one of insert_after or old')
     if after is not None:
-        if until is not None:
-            raise ValueError('until applies to replace, not insert_after')
         end = locate(current, after, 'insert_after') + len(after)
-        return current[:end] + new + current[end:]
+        return end, end, new
     start = locate(current, replace, 'replace')
-    end = start + len(replace)
-    if until is not None:
-        stop = locate(current, until, 'until')
-        if stop < end:
-            raise ValueError('until text must appear after replace text: %r' % until[:120])
-        end = stop + len(until)
-    return current[:start] + new + current[end:]
+    return start, start + len(replace), new
+
+
+def apply_edit(current, item):
+    return apply_edits(current, [item])
+
+
+def apply_edits(current, items):
+    """Apply every edit to one file, all anchored in the text the model was shown.
+
+    Resolving each anchor against the original avoids the failure where an earlier
+    edit in the same call moves the text a later anchor names; that cost one local
+    evolution run three identical rejected attempts.
+    """
+    spans = []
+    for index, item in enumerate(items):
+        start, end, text = edit_span(current, item)
+        spans.append((start, end, index, text))
+    for (start, end, _index, _text), (next_start, _e, _i, _t) in zip(sorted(spans), sorted(spans)[1:]):
+        if next_start < end:
+            raise ValueError('Edits overlap the same text; combine them into one edit')
+    result, position = [], 0
+    for start, end, _index, text in sorted(spans):
+        result.append(current[position:start])
+        result.append(text)
+        position = max(position, end)
+    result.append(current[position:])
+    return ''.join(result)
 
 
 class Agent:
@@ -345,6 +352,17 @@ class Agent:
         if self.public_specs:
             self.trace.event('public_specs_supplied', source=self.public_specs['source'],
                              files=list(self.public_specs['files']), executed=False)
+
+    def prepared_check_written(self):
+        """A prepared check on disk owns its file and its command in every mode.
+
+        Mode can change mid-batch; when it did, a model that had learned the
+        prepared call shape lost a turn to a missing check command.
+        """
+        try:
+            return self.workspace.path(PREPARED_CHECK_PATH).is_file()
+        except (OSError, ValueError):
+            return False
 
     def reference_assets(self):
         """Requirement inputs an observer could actually have looked at."""
@@ -426,7 +444,7 @@ class Agent:
             raise ValueError("Tool arguments must be a JSON object")
         if name in ('finish', 'deliver', 'patch_and_verify'):
             command = args.get('check_command')
-            if command is None and name == 'patch_and_verify' and self.prepared_checks:
+            if command is None and name == 'patch_and_verify' and self.prepared_check_written():
                 command = PREPARED_CHECK_COMMAND
             args = {**args, 'check_command': normalize_check_command(command)}
         if name == 'write_files':
@@ -442,16 +460,18 @@ class Agent:
             edits = args['edits']
             if not isinstance(edits, list) or not 1 <= len(edits) <= 20:
                 raise ValueError('Provide 1-20 exact edits')
-            pending, skipped = {}, []
+            grouped, skipped = {}, []
             for item in edits:
                 path = item['path']
-                if self.prepared_checks and path == PREPARED_CHECK_PATH:
+                if self.prepared_check_written() and path == PREPARED_CHECK_PATH:
                     skipped.append(path)
                     continue
-                target = self.workspace.path(path, write=True)
-                current = pending[path] if path in pending else target.read_text()
+                self.workspace.path(path, write=True)
+                grouped.setdefault(path, []).append(item)
+            pending = {}
+            for path, items in grouped.items():
                 try:
-                    pending[path] = apply_edit(current, item)
+                    pending[path] = apply_edits(self.workspace.path(path, write=True).read_text(), items)
                 except ValueError as exc:
                     raise ValueError('%s in %s' % (exc, path)) from exc
             if skipped:
@@ -470,10 +490,11 @@ class Agent:
             return result
         if name == 'build_app':
             args.setdefault('app_js', '')
+            prepared = self.prepared_check_written()
             result = implement(self.workspace, **args,
-                               check_command=PREPARED_BUNDLE_COMMAND if self.prepared_checks else None)
+                               check_command=PREPARED_BUNDLE_COMMAND if prepared else None)
             if result['passed']:
-                self.check_command = list(PREPARED_CHECK_COMMAND if self.prepared_checks
+                self.check_command = list(PREPARED_CHECK_COMMAND if prepared
                                           else ['node', '--test', AUTHORED_CHECK_PATH])
             return result
         if name in ("finish", "deliver"):
@@ -489,7 +510,7 @@ class Agent:
         if self.inline_source:
             source = self.source_snapshot() or {}
             omitted = [path for path, content in source.items() if content == KNOWN_RUNTIME.get(path)]
-            prepared = [PREPARED_CHECK_PATH] if self.prepared_checks and PREPARED_CHECK_PATH in source else []
+            prepared = [PREPARED_CHECK_PATH] if PREPARED_CHECK_PATH in source and self.prepared_check_written() else []
             payload = {'requirements': json.loads(self.requirements.batch_prompt(nodes)),
                 'source': {path: content for path, content in source.items()
                            if path not in omitted and path not in prepared},
