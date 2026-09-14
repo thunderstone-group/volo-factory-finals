@@ -546,6 +546,12 @@ class ToolShapeTests(TempCase):
             state_runtime.coerce_file_batch({'files': {'path': 'a.js', 'content': 'x'}}),
             {'files': [{'path': 'a.js', 'content': 'x'}]})
 
+    def test_an_extra_argument_does_not_discard_the_write(self):
+        self.assertEqual(
+            state_runtime.coerce_file_batch(
+                {'files': [{'path': 'a.js', 'content': 'x'}], 'check_command': ['node', 'a.js']}),
+            {'files': [{'path': 'a.js', 'content': 'x'}]})
+
     def test_the_normal_shape_is_untouched(self):
         args = {'files': [{'path': 'a.js', 'content': 'x'}]}
         self.assertIs(state_runtime.coerce_file_batch(args), args)
@@ -568,3 +574,39 @@ class SourceDeliveryTests(TempCase):
         request = agent.batch_request(requirements.nodes[:1])
         self.assertIn('product code', request)
         self.assertNotIn('Harness-managed shared state', request)
+
+
+class HarnessReadTests(TempCase):
+    def agent(self):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, None, self.workspace, Runtime(self.trace), contract=contract)
+        agent.install_contract()
+        return agent
+
+    def test_reading_a_harness_file_returns_its_contract_not_its_bytes(self):
+        agent = self.agent()
+        result = agent.dispatch('read_files', {'paths': ['backend/state.cjs', 'backend/seed.cjs']})
+        self.assertEqual(sorted(result['files']), ['backend/seed.cjs', 'backend/state.cjs'])
+        self.assertNotIn('Object.assign', json.dumps(result))
+        self.assertIn('state contract', result['files']['backend/seed.cjs'])
+        chunk = agent.dispatch('read_file_chunk', {'path': 'backend/seed.cjs'})
+        self.assertIn('backend/seed.cjs', chunk['files'])
+
+    def test_reading_product_source_is_unaffected(self):
+        agent = self.agent()
+        agent.dispatch('write_files', {'files': [
+            {'path': 'backend/api.cjs', 'content': 'module.exports=async()=>false;\n'}]})
+        result = agent.dispatch('read_files', {'paths': ['backend/api.cjs']})
+        self.assertIn('module.exports', json.dumps(result))
+        mixed = agent.dispatch('read_files', {'paths': ['backend/api.cjs', 'backend/state.cjs']})
+        self.assertNotIn('note', mixed)
+
+    def test_a_package_without_a_contract_reads_normally(self):
+        requirements = RequirementSet.load(self.req)
+        agent = Agent(requirements, None, self.workspace, Runtime(self.trace))
+        scaffold(self.workspace)
+        result = agent.dispatch('read_files', {'paths': ['backend/server.cjs']})
+        self.assertIn('createServer', json.dumps(result))

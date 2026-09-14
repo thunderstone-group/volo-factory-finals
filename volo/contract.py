@@ -475,7 +475,7 @@ def requirement_state(contract):
     return {key: sorted(value) for key, value in touches.items()}
 
 
-def state_batches(requirements, contract, *, max_nodes=6, max_chars=24000):
+def state_batches(requirements, contract, *, max_nodes=3, max_chars=12000):
     """Group requirements that share business state, keeping dependency order.
 
     The schedule stays a topological order of the requirement graph. Within it, a
@@ -487,6 +487,12 @@ def state_batches(requirements, contract, *, max_nodes=6, max_chars=24000):
     A top-level folder boundary also closes a batch once it is at least half full,
     which keeps a screen and the behaviour on it in one conversation without
     producing a batch per requirement.
+
+    Batches are half the size the size-only scheduler uses. Six requirements of a
+    large application demanded more complete files than one reply could carry: run
+    'keep i3' lost a batch to a 30 KB tool call that arrived as invalid JSON. Smaller
+    batches are only safe because the contract already fixes what they share, which
+    is the whole point of extracting it first.
     """
     touches = requirement_state(contract)
     batches, current, size, keys = [], [], 0, set()

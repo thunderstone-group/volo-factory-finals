@@ -239,5 +239,42 @@ def coerce_file_batch(args):
     if isinstance(args, dict) and "files" not in args and {"path", "content"} <= set(args):
         return {"files": [{"path": args["path"], "content": args["content"]}]}
     if isinstance(args, dict) and isinstance(args.get("files"), dict):
-        return {**args, "files": [args["files"]]}
+        args = {**args, "files": [args["files"]]}
+    if isinstance(args, dict) and set(args) - {"files"}:
+        # A batch that also passes check_command means to write and then verify; the
+        # write is unambiguous, so do it rather than returning a TypeError.
+        return {"files": args["files"]} if "files" in args else args
     return args
+
+
+HARNESS_SUMMARY = {
+    "backend/state.cjs": "Harness-owned. Exports {ready, store, seed}. The store API and the "
+                         "readiness contract are stated in your instructions in full.",
+    "backend/seed.cjs": "Harness-owned data file. Every row it contains is already listed under "
+                        "`seeds` in the global state contract you were given.",
+    "backend/server.cjs": "Harness-owned. Serves /api/health, the built frontend and the SPA "
+                          "fallback, and delegates every other request to your backend/api.cjs.",
+    "frontend/build.cjs": "Harness-owned. Copies frontend/public to frontend/dist.",
+    "frontend/package.json": 'Harness-owned. {"scripts":{"build":"node build.cjs"}}',
+    "backend/package.json": 'Harness-owned. {"scripts":{"start":"node server.cjs"}}',
+    "checks/browser.cjs": "Harness-owned helper. Exports test(name, async (page, assert) => {}). "
+                          "`page` is a Playwright page already on the entry URL; `assert` is "
+                          "node:assert/strict. Await Playwright results and pass the values to "
+                          "assert, never to Playwright's expect.",
+}
+
+
+def harness_read(paths):
+    """Answer a read of harness-owned files without spending the read on their bytes.
+
+    Runs i1 and i3 each spent three or more calls reading 14 KB of files the agent is
+    told not to modify. Returning the contract instead keeps the call productive.
+    """
+    names = [paths] if isinstance(paths, str) else list(paths or ())
+    known = [name for name in names if name in HARNESS_SUMMARY]
+    if not known or len(known) != len(names):
+        return None
+    return {"files": {name: HARNESS_SUMMARY[name] for name in known},
+            "note": "These files are managed by the harness and were not returned verbatim. "
+                    "Do not modify them. Implement your requirements in backend/api.cjs, "
+                    "frontend/public/* and checks/*.spec.cjs."}

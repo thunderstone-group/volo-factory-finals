@@ -362,6 +362,10 @@ class Agent:
             raise ValueError("Tool arguments must be a JSON object")
         if name in ('finish', 'deliver', 'patch_and_verify'):
             args = {**args, 'check_command': normalize_check_command(args['check_command'])}
+        if self.contract and name in ('read_files', 'read_file_chunk'):
+            summary = state_runtime.harness_read(args.get('paths') or args.get('path'))
+            if summary is not None:
+                return summary
         if name == 'write_files':
             if self.contract:
                 args = state_runtime.coerce_file_batch(args)
