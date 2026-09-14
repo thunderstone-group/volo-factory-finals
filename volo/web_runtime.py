@@ -4,6 +4,7 @@ Only build, serving and browser-test lifecycle are supplied here. Product UI,
 behavior, data/API logic and assertions are always generated from requirements.
 """
 import json
+import re
 
 
 SERVER = r"""const http = require('node:http');
@@ -97,17 +98,61 @@ def scaffold(workspace):
     ])
 
 
-def implement(workspace, index_html, app_js, checks_js, api_js=None):
-    files = [
-        {"path": "frontend/public/index.html", "content": index_html},
-        {"path": "frontend/public/app.js", "content": app_js},
-        {"path": "checks/requirements.cjs", "content": checks_js},
-    ]
+def implement(workspace, index_html, app_js, checks_js=None, api_js=None, check_command=None):
+    """Write the product bundle; prepared checks are written by the caller."""
+    files = [{"path": "frontend/public/index.html", "content": index_html}]
+    # An empty app.js only invited edits to a file the prompt forbids referencing.
+    if app_js and app_js.strip():
+        files.append({"path": "frontend/public/app.js", "content": app_js})
+    if checks_js is not None:
+        files.append({"path": "checks/requirements.cjs", "content": checks_js})
     if api_js is not None and api_js.strip():
         files.append({"path": "backend/api.cjs", "content": api_js})
     workspace.write_files(files)
-    result = workspace.verify(["node", "--test", "--test-reporter=tap", "checks/requirements.cjs"])
+    result = workspace.verify(check_command or ["node", "--test", "--test-reporter=tap", "checks/requirements.cjs"])
     retained = workspace.capture_failed_prepared_check(result)
     if retained:
         result['retained_self_check'] = retained
     return result
+
+
+TEST_ID = re.compile(r'(?:test[\s-]?id|data-testid)[s]?\s+(?:of\s+|is\s+|=\s*)?"([^"\n]{1,60})"', re.I)
+BUTTON_NAMES = re.compile(r'buttons?\s+(?:named|labell?ed|called)\s+((?:"[^"\n]{1,60}"(?:\s*(?:,|and|or)\s*)?)+)', re.I)
+QUOTED = re.compile(r'"([^"\n]{1,60})"')
+PREPARED_HEADER = "const {test,assert}=require('./browser.cjs');\n"
+
+
+def prepared_assertions(text):
+    """Derive presence assertions from names the requirement states literally.
+
+    Only quoted literals are used, and only for existence of the exact test id or
+    button accessible name the requirement names. This is deterministic harness
+    input, never a model claim, and it asserts strictly less than the written
+    requirement; behavioral outcomes stay with the official evaluation.
+    """
+    lines, seen = [], set()
+    for name in TEST_ID.findall(text or ''):
+        if ('testid', name) in seen:
+            continue
+        seen.add(('testid', name))
+        locator = 'page.getByTestId(%s)' % json.dumps(name)
+        lines.append('  await %s.first().waitFor({state:"attached"});' % locator)
+        lines.append('  assert.equal(await %s.count(),1,%s);'
+                     % (locator, json.dumps('Expected exactly one element with test id ' + name)))
+    for group in BUTTON_NAMES.findall(text or ''):
+        for name in QUOTED.findall(group):
+            if ('button', name) in seen:
+                continue
+            seen.add(('button', name))
+            # Name matching and waiting follow the public specifications: a role/name
+            # lookup that retries, never a stricter or a substring match.
+            lines.append('  await page.getByRole("button",{name:%s}).waitFor({state:"visible"});'
+                         % json.dumps(name))
+    return lines
+
+
+def prepared_check(text):
+    """A complete executable check file; the wrapper also rejects page errors."""
+    body = prepared_assertions(text) or ['  assert.equal(await page.locator("body").count(),1);']
+    return (PREPARED_HEADER + "test('prepared interface check',async(page,assert)=>{\n"
+            + '\n'.join(body) + '\n});\n')

@@ -185,7 +185,7 @@ assert.equal(text,'hello');}).catch(error=>{console.error(error);process.exitCod
         checks += '\n/*' + 'padding' * 4000 + '*/\n'
         initial = response([('build_app', {'index_html': 'wrong', 'checks_js': checks})])
         repair = response([('patch_and_verify', {'edits': [{
-            'path': 'frontend/public/index.html', 'old': 'wrong', 'new': 'hello'}],
+            'path': 'frontend/public/index.html', 'replace': 'wrong', 'new': 'hello'}],
             'check_command': ['node', '--test', 'checks/requirements.cjs']})])
         with FakeGateway([initial, repair]) as gateway:
             agent = Agent(RequirementSet.load(self.req),
@@ -228,8 +228,8 @@ assert.equal(text,'hello');}).catch(error=>{console.error(error);process.exitCod
         (self.out / '.env').write_text('PRIVATE=never-inline-secret')
         (self.trace.directory / 'internal.js').write_text('never-inline-harness')
         answer = response([('patch_and_verify', {'edits': [
-            {'path': 'backend/server.cjs', 'old': "s.end('hello')", 'new': "s.end('welcome')"},
-            {'path': 'checks/greeting.cjs', 'old': "'hello'", 'new': "'welcome'"}],
+            {'path': 'backend/server.cjs', 'replace': "s.end('hello')", 'new': "s.end('welcome')"},
+            {'path': 'checks/greeting.cjs', 'replace': "'hello'", 'new': "'welcome'"}],
             'check_command': ['node checks/greeting.cjs']})])
         with FakeGateway([answer]) as gateway:
             agent = Agent(RequirementSet.load(self.req),
@@ -250,13 +250,13 @@ assert.equal(text,'hello');}).catch(error=>{console.error(error);process.exitCod
         before = (self.out / 'backend/server.cjs').read_text()
         with self.assertRaisesRegex(ValueError, 'Node/Python'):
             agent.dispatch('patch_and_verify', {'edits': [
-                {'path': 'backend/server.cjs', 'old': "s.end('welcome')", 'new': "s.end('changed')"}],
+                {'path': 'backend/server.cjs', 'replace': "s.end('welcome')", 'new': "s.end('changed')"}],
                 'check_command': ['bash', '-c', 'true']})
         self.assertEqual((self.out / 'backend/server.cjs').read_text(), before)
         with self.assertRaisesRegex(ValueError, 'exactly once'):
             agent.dispatch('patch_and_verify', {'edits': [
-                {'path': 'backend/server.cjs', 'old': "s.end('welcome')", 'new': "s.end('changed')"},
-                {'path': 'checks/greeting.cjs', 'old': 'missing-text', 'new': 'replacement'}],
+                {'path': 'backend/server.cjs', 'replace': "s.end('welcome')", 'new': "s.end('changed')"},
+                {'path': 'checks/greeting.cjs', 'replace': 'missing-text', 'new': 'replacement'}],
                 'check_command': ['node', 'checks/greeting.cjs']})
         self.assertEqual((self.out / 'backend/server.cjs').read_text(), before)
         (self.out / 'large.js').write_text('x' * 24001)
