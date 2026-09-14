@@ -561,3 +561,121 @@ defects combined.
 None of this has been through a generation yet. The next iteration is one Keep run to completion,
 replayed under both runner profiles, then one Bookstack run with the one-worker control finished.
 
+## 9. 2026-09-14, after the attribution: four rules, checked in every state one step away
+
+Section 8 was written before the generation it was meant to fix. The generation ran, and
+`docs/keep-attribution-2026-09-14.md` attributes every official failure to the locator it waits
+on. The finding that matters is that section 8's rules were obeyed and did not help. Across nine
+measured states the application had zero duplicate accessible names and zero nameless controls,
+and six of the eight attributable failures still acted on the wrong row.
+
+The reason is mechanical. The published helpers never search a full name. `archiveNote` resolves
+`/archive/i`, `pinNote` resolves `/pin/i`, `deleteNote` resolves `/more/i`, each through the role
+ladder in `helpers.ts:89-116`, and each takes `.first()`. Nineteen buttons named
+`"Archive for <title>"` are nineteen matches for `archive`, and DOM order picks the pinned card.
+Scoping a name to its row makes it unique without making it unambiguous.
+
+### 9.1 What the model is told
+
+`checks/interface.spec.cjs` is still harness-owned, still written from the contract, still runs
+with every batch. It now carries four rules instead of two, and the contract supplement states
+them in these words:
+
+```
+Four rules the harness checks mechanically, on the entry page and in every
+state one click or one hover away from it, because the 2026-09-14 Keep rehearsal lost six of its
+eight attributable failures to the first rule alone, on a page that had no duplicate names at all:
+
+1. At most one control carrying a given action verb is visible at any moment. The evaluator
+   resolves an action by the verb alone, "archive", "pin", "more", "color", matches it as a
+   case-insensitive substring of the accessible name, and takes the first match in DOM order.
+   Nineteen rows each showing "Archive for <title>" are nineteen matches for "archive", so the row
+   acted on is decided by DOM position and not by the name. Render a row's actions only while that
+   row is hovered or focused, and hide them with display:none or visibility:hidden. opacity:0, a
+   transparent overlay and off-screen positioning all stay in the accessibility tree and still
+   match. Keep the row's own title in the name ("Archive for Delete me 2.3.1"): the title is what
+   makes the acted-on row assertable, and the hiding is what makes the verb unambiguous. Both.
+2. Every input, select, textarea, colour swatch, dialog field, toggle and meter carries an
+   accessible name, through aria-label, <label for> or placeholder, using the requirement's own
+   wording. A control with no name cannot be reached at all: a note body with no label matching
+   the requirement's word for it sends the test's typing into the search box instead.
+3. While a chooser is open, meaning a dialog, menu, listbox or role="group" picker the application
+   opens over the page, nothing outside it may answer to a name something inside it carries. Give
+   the chooser role="dialog" with aria-modal="true", or hide every control outside it whose name
+   shares a substring with one inside it. In the last run a label picker offered a checkbox named
+   "Work for Sprint goals" while the sidebar still offered a menuitem named "Work"; the evaluator
+   reaches menuitem before checkbox, and navigated away instead of ticking the box.
+4. Text already typed into a form survives a click on another control in the same form. When a
+   state change re-renders the form, carry the current values into the new markup, through the
+   value attribute, the textarea body, or by not rebuilding the fields at all. In the last run the
+   composer's pin toggle re-rendered the title input with no value, and the note saved empty.
+
+And one rule about the checks you write, which the harness cannot enforce for you:
+
+5. A self-check for an action on a named row asserts on that row afterwards: it is in the
+   destination list, or it carries the attribute the requirement names. Never assert only that a
+   toast, snackbar or notification appeared. Four of the last run's specs passed against a toast
+   while the action had gone to the wrong row.
+```
+
+### 9.2 What the check does with them
+
+* **One visible control per action verb.** Each visible action name is collapsed before it is
+  compared: a trailing ` for <anything>` and a leading `<anything>: ` are removed, then every row
+  title the contract seeds, which `checks/vocabulary.cjs` now exports as `titles`, longest first.
+  Two controls that collapse to the same remainder fail, naming the verb and the count. A row
+  whose actions are in the accessibility tree only while it is hovered passes, because only one
+  row's actions are ever there. `display:none` and `visibility:hidden` are the only hiding that
+  counts: `getByRole` still matches an element at `opacity:0` or off screen.
+* **Every state one interaction away.** From a fresh load the check clicks each visible control
+  once, deduplicated by the verb the helpers would resolve, applies the rules to the resulting
+  tree, and reloads. Then it hovers each seeded row title and applies them again. Every finding
+  names its state. Bounded by 60 clicks, 12 hovers and a 25-second wall clock.
+* **An open chooser makes the page behind it inert.** When a click opens a `dialog`, `listbox`,
+  `menu` or `role="group"` containing controls, the check passes it only if it is a `dialog` with
+  `aria-modal="true"`, or if no control outside it shares a name substring with one inside it.
+  Otherwise it fails, naming the leaked pairs.
+* **Typing survives a click in the same form.** Every visible named text input in a group is
+  filled with a marker, each other button in that group is clicked once, and a marker that is gone
+  while the field is still there fails. A click that issues a non-GET request is exempt: a form is
+  allowed to clear itself on a submission, and the request is the discriminator rather than a list
+  of English verbs.
+
+The walk clicks the application's own controls, so it writes rows. `backend/state.cjs` gained
+`store.snapshot()` and `store.restore()` and `backend/server.cjs` serves them at
+`/__factory/store`, harness-owned like `/api/health`; the check saves the store before the walk
+and puts it back in a `finally`. Findings are deduplicated by verb, by chooser and by
+input-and-button and capped at six or eight, so a page with nineteen ambiguous rows in
+twenty-seven states sends one copy of each defect into a repair prompt, not a hundred.
+
+The vocabulary report is unchanged in kind: still printed, never asserted.
+
+### 9.3 Measured
+
+On the generated Keep application at `b8e92a0`, fresh data directory, this machine:
+
+| Quantity | Value |
+|---|---|
+| States inspected | 27 |
+| Input groups probed | 2 |
+| Check wall time | 4434, 4453, 4516 ms over three runs |
+| Namelessness | does not fire |
+| Ambiguity | fires: `more options` ×19, `change color` ×19, `archive` ×19, `pin note` ×18 on the entry page; `edit label` ×3 and `delete label` ×3 after clicking "Edit Labels" |
+| Inertness | does not fire; the label picker is two clicks from the entry page, not one |
+| Form durability | fires: `Title` and `Take a note` are lost to each of "Choose color for new note", "Pin new note" and "Change labels for new note", in the composer opened by clicking "Take a note" |
+| Store after the walk | byte-identical to before it |
+
+The ambiguity rule therefore fires on exactly the defect that cost six specs, and the durability
+rule on exactly the defect that cost REQ-2.8.3. The inertness rule, which would recover the second
+half of REQ-2.7.1 and REQ-2.7.2, does not fire on this application because the picker it describes
+opens from a dropdown that is itself one click in; a two-click walk would reach it and is not what
+this check does.
+
+Two synthetic fixtures under `tests/fixtures/` pin the accepted shape and the rejected one. They
+are hand written, implement no requirement, and are named accordingly:
+`synthetic-hover-rows.html` shows hover-revealed row actions, a modal chooser and a re-render that
+carries its field values, and passes every rule; `synthetic-leaky-chooser.html` is one picker and
+one sidebar item, and fails the inertness rule alone.
+
+Nothing here has been through a generation. The next iteration is one Keep run to completion under
+both runner profiles, scored against the same eight attributable specs.

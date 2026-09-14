@@ -1,0 +1,22 @@
+<!-- Synthetic fixture, hand written for tests/test_state_contract.py. It is not a
+     generated application. It is the defect REQ-2.7.1 and REQ-2.7.2 died of, reduced:
+     a picker opens inside the row as a role="group", and the sidebar behind it still
+     carries a control whose name is a substring of one inside the picker. The published
+     helpers reach menuitem before checkbox, so "Utilities" navigates away instead of
+     ticking the box. -->
+<nav aria-label="Filters">
+  <button type="button" role="menuitem">Utilities</button>
+</nav>
+
+<button type="button" id="open-categories">Edit categories</button>
+
+<div id="categories" role="group" aria-label="Categories" style="display:none">
+  <button type="button" role="checkbox" aria-checked="false"
+          aria-label="Utilities for Opening balance">Utilities</button>
+</div>
+
+<script>
+  document.getElementById('open-categories').addEventListener('click', function () {
+    document.getElementById('categories').style.display = 'block';
+  });
+</script>

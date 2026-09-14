@@ -768,3 +768,70 @@ one stale assertion corrected.
 
 Suite 322, 4 skips, with a local Playwright 1.61.1 and Chromium supplied so the browser-gated
 checks ran. No generation has been run against these changes.
+
+## 2026-09-14 — What the naming rules bought, and the four rules that replace them
+
+`feat/state-contract`. The Keep generation at `b8e92a0` was attributed failure by failure
+(`docs/keep-attribution-2026-09-14.md`, copied into the repo unedited). The headline is that
+section 8's naming rules were obeyed and did not help: across nine measured states the page had
+**zero** duplicate accessible names and **zero** nameless controls, and six of the eight
+attributable official failures still picked the wrong row. The published helpers never search a
+full name. `archiveNote` searches `/archive/i`, `pinNote` searches `/pin/i`, `deleteNote` searches
+`/more/i`, then take `.first()`. Nineteen buttons named `"Archive for <title>"` are nineteen
+matches, and DOM order put the pinned card first. A unique name is not an unambiguous one.
+
+What the branch does about it, all in `checks/interface.spec.cjs`, which the harness writes and
+the model may not edit:
+
+- **The duplicate-name rule is replaced by a verb-collapse rule.** Every visible action name has
+  its row-scoping stripped — a trailing ` for <anything>`, a leading `<anything>: `, and every row
+  title the contract seeds, now exported as `titles` from `checks/vocabulary.cjs` — and two
+  controls that collapse to the same remainder fail, naming the verb and the count. The
+  hover-revealed shape passes, because only the hovered row's actions are in the tree. Nineteen
+  rows of actions at rest do not.
+- **The rules run in every state one interaction away.** The check used to inspect the single tree
+  `checks/browser.cjs` loads and stop, and every one of the eight failures happened in a state it
+  never reached. It now clicks each visible control once from a fresh load, deduplicated by the
+  verb the helpers would search for, applies the rules to the resulting tree, and reloads; then
+  hovers each seeded row title. Every finding names the state it was found in.
+- **An open chooser must leave the page behind it inert.** When a click opens a `dialog`,
+  `listbox`, `menu` or `role="group"` holding controls, either it is a `dialog` with
+  `aria-modal="true"` or no control outside it may share a name substring with one inside it. This
+  is REQ-2.7.1 and REQ-2.7.2: a picker offered `checkbox "Work for Sprint goals"` while the sidebar
+  still offered `menuitem "Work"`, and the ladder reaches menuitem two rungs before checkbox.
+- **Typing must survive a click inside the same form.** Each input group is filled with markers,
+  each other button in it is clicked once, and a lost marker fails. A click that sends a non-GET
+  request is exempt: a form is allowed to clear itself on a successful submission, and the write
+  is the discriminator, not a list of English verbs.
+- **The supplement says all four in the words the model receives**, plus a fifth the harness cannot
+  enforce: a self-check for a row-scoped action asserts on the named row afterwards, never only on
+  a toast. Four of the last run's specs passed against a toast while acting on the wrong row.
+
+Two supporting changes the walk needs. `backend/state.cjs` gained `store.snapshot()` and
+`store.restore()`, and `backend/server.cjs` serves them at `/__factory/store`: the check reaches
+an application's states by clicking its own controls, which moves rows, so it saves the store
+before the walk and puts it back afterwards. A regression test drives an application whose only
+button deletes every seeded row and asserts the store on disk is intact afterwards. And
+`source_snapshot()` now skips harness-owned paths in a contract run: the interface check grew to
+20 KB, and it was being counted against the 24,000-character budget that decides whether a small
+edit gets inline source at all.
+
+Measured on the generated Keep application at `b8e92a0`, fresh data directory, this machine:
+
+| Quantity | Value |
+|---|---|
+| States inspected | 27 |
+| Input groups probed | 2 |
+| Check wall time | 4434, 4453, 4516 ms over three runs |
+| Ambiguity | fires, 6 findings: `more options` ×19, `change color` ×19, `archive` ×19 and `pin note` ×18 on the entry page, `edit label` ×3 and `delete label` ×3 after clicking "Edit Labels" |
+| Namelessness | does not fire |
+| Inertness | does not fire: the label picker is two clicks from the entry page, not one |
+| Form durability | fires, 6 findings, all in the composer opened by clicking "Take a note": `Title` and `Take a note` are lost to each of "Choose color for new note", "Pin new note" and "Change labels for new note" |
+| Rows left moved by the walk | none; the store is byte-identical afterwards |
+
+Suite 334, 4 skips, with a local Playwright 1.61.1 and Chromium supplied so the twenty
+browser-gated interface checks ran; 31 skips without them.
+The synthetic fixtures under `tests/fixtures/` are hand written and implement no requirement:
+`synthetic-hover-rows.html` passes all four rules, and `synthetic-leaky-chooser.html` is the
+inertness defect reduced to one picker and one sidebar item. No generation has been run against
+any of this.

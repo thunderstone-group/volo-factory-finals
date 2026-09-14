@@ -18,7 +18,7 @@ from volo.agent import Agent, CONTRACT_SYSTEM
 from volo.requirements import RequirementSet
 from volo.trace import Runtime
 from volo.web_runtime import scaffold
-from test_core import TempCase
+from test_core import ROOT, TempCase
 
 
 # Synthetic requirement package. Its shape copies the published corpus convention —
@@ -645,14 +645,15 @@ class InterfaceVocabularyReportTests(unittest.TestCase):
     """
 
     def test_the_row_title_suffix_is_stripped_before_matching(self):
-        self.assertIn("replace(/\\s+for\\s+[\\s\\S]*$/i, '')", state_runtime.INTERFACE_CHECK)
+        self.assertIn("replace(/\\s+for\\s+[\\s\\S]+$/i, ' ')", state_runtime.INTERFACE_CHECK)
 
     def test_the_reported_list_is_capped_and_says_how_many_were_omitted(self):
         self.assertIn('outside.slice(0, 20)', state_runtime.INTERFACE_CHECK)
         self.assertIn("' and ' + (outside.length - 20) + ' more'", state_runtime.INTERFACE_CHECK)
 
     def test_the_report_is_still_a_log_line_and_never_an_assertion(self):
-        report = state_runtime.INTERFACE_CHECK.split('// 3. Vocabulary')[1]
+        report = state_runtime.INTERFACE_CHECK.split('  // Vocabulary.')[1].split('\n  assert.')[0]
+        self.assertIn('console.log', report)
         self.assertNotIn('assert.', report)
 
 
@@ -928,11 +929,23 @@ class VocabularyModuleTests(TempCase):
         self.assertIn('"Opening balance"', source)  # a seed value
         self.assertIn('"Preferences"', source)      # a navigation name
         self.assertIn('"Heading"', source)          # observed only in a reference image
-        self.assertIn('module.exports = {terms, matches}', source)
+        self.assertIn('module.exports = {terms, titles, matches}', source)
 
     def test_an_empty_contract_produces_a_loadable_module(self):
         source = state_runtime.vocabulary_module({})
         self.assertIn('const terms = []', source)
+        self.assertIn('const titles = []', source)
+
+    def test_the_seeded_row_titles_are_exported_longest_first(self):
+        # The interface check strips a row title out of an action name before comparing
+        # two names, and strips the longest match first so a title that contains another
+        # title cannot leave half of itself behind.
+        source = state_runtime.vocabulary_module(self.contract())
+        titles = json.loads(source.split('const titles = ')[1].split(';\n')[0])
+        self.assertIn('Opening balance', titles)
+        self.assertIn('Monthly rent', titles)
+        self.assertNotIn('Preferences', titles)   # a navigation name, not a row title
+        self.assertEqual(titles, sorted(titles, key=lambda title: (-len(title), title)))
 
 
 @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE')
@@ -964,6 +977,14 @@ class InterfaceCheckTests(TempCase):
             {'path': 'backend/api.cjs', 'content': 'module.exports=async()=>{return false;};\n'}])
         return contract
 
+    def build_fixture(self, name):
+        """Serve a hand-written synthetic page from tests/fixtures/."""
+        return self.build((ROOT / 'tests' / 'fixtures' / name).read_text())
+
+    def failure(self, result):
+        self.assertFalse(result['passed'], 'the check passed and was expected to fail')
+        return str((result['steps'] or [{}])[-1].get('output', ''))
+
     def run_check(self):
         self.workspace.deadline = time.monotonic() + 90
         return self.workspace.verify(['node', '--test', state_runtime.INTERFACE_CHECK_PATH])
@@ -973,31 +994,96 @@ class InterfaceCheckTests(TempCase):
         rows = ''.join(f'<li>Row {index}<button aria-label="More options">x</button></li>'
                        for index in range(3))
         self.build(f'<ul>{rows}</ul>')
-        result = self.run_check()
-        self.assertFalse(result['passed'])
-        output = str((result['steps'] or [{}])[-1].get('output', ''))
-        self.assertIn('share one accessible name', output)
+        output = self.failure(self.run_check())
+        self.assertIn('same action verb', output)
         self.assertIn('more options', output.lower())
 
-    def test_row_scoped_names_pass(self):
-        rows = ''.join(f'<li>Row {index}<button aria-label="More options for Row {index}">x</button></li>'
-                       for index in range(3))
+    def test_row_scoped_names_visible_at_rest_fail_on_the_verb(self):
+        # The rule the 2026-09-14 rehearsal obeyed and still lost six specs to: every
+        # name is unique, and every one of them answers to a search for "archive".
+        rows = ''.join(f'<li>Row {index}<button aria-label="Archive for Row {index}">x</button></li>'
+                       for index in range(19))
         self.build(f'<ul>{rows}</ul>')
-        self.assertTrue(self.run_check()['passed'])
+        output = self.failure(self.run_check())
+        self.assertIn('same action verb', output)
+        self.assertIn('"verb":"archive"', output.replace(' ', ''))
+        self.assertIn('"count":19', output.replace(' ', ''))
 
     def test_actions_hidden_until_hover_pass(self):
         # The other permitted shape: the actions exist but only one is ever visible.
         rows = ''.join(f'<li>Row {index}'
-                       f'<button aria-label="More options" style="display:none">x</button></li>'
-                       for index in range(3))
+                       f'<button aria-label="Archive for Row {index}" style="display:none">x</button></li>'
+                       for index in range(19))
         self.build(f'<ul>{rows}</ul>')
         self.assertTrue(self.run_check()['passed'])
 
+    def test_actions_hidden_with_opacity_are_not_hidden_at_all(self):
+        # getByRole resolves against the accessibility tree, where opacity:0 is still
+        # there to be matched and clicked. Only display and visibility remove a control.
+        rows = ''.join(f'<li>Row {index}'
+                       f'<button aria-label="Archive for Row {index}" style="opacity:0">x</button></li>'
+                       for index in range(19))
+        self.build(f'<ul>{rows}</ul>')
+        output = self.failure(self.run_check())
+        self.assertIn('same action verb', output)
+        self.assertIn('opacity', output)
+
+    def test_a_rule_is_applied_to_a_state_one_click_away(self):
+        # The entry page is clean; the ambiguity is one click in. The old check loaded
+        # the entry page once, which is why every one of the eight failures escaped it.
+        rows = ''.join(f'<li>Row {index}<button aria-label="Archive for Row {index}">x</button></li>'
+                       for index in range(19))
+        self.build('<button type="button" id="open">Show entries</button>'
+                   f'<ul id="rows" style="display:none">{rows}</ul>'
+                   '<script>document.getElementById("open").addEventListener("click",'
+                   'function(){document.getElementById("rows").style.display="block";});</script>')
+        output = self.failure(self.run_check())
+        self.assertIn('same action verb', output)
+        self.assertIn('after clicking', output)
+        self.assertIn('Show entries', output)
+
+    def test_a_chooser_that_leaves_a_matching_name_behind_it_fails(self):
+        self.build_fixture('synthetic-leaky-chooser.html')
+        output = self.failure(self.run_check())
+        self.assertIn('Leaked', output)
+        self.assertIn('Utilities for Opening balance', output)
+
+    def test_the_synthetic_hover_fixture_passes_every_rule(self):
+        # Hover-revealed row actions, a modal chooser, and a re-render that keeps what
+        # was typed. Hand written; it implements no requirement.
+        self.build_fixture('synthetic-hover-rows.html')
+        result = self.run_check()
+        self.assertTrue(result['passed'], str((result['steps'] or [{}])[-1].get('output', '')))
+
+    def test_typing_lost_to_an_in_form_click_fails(self):
+        # REQ-2.8.3, reduced: the composer re-renders on a pin toggle and emits the
+        # title input with no value, so the note is saved empty.
+        self.build('<div id="composer">'
+                   '<input id="title" aria-label="Title" placeholder="Title">'
+                   '<button type="button" id="pin" aria-label="Pin new entry">Pin</button></div>'
+                   '<script>document.getElementById("pin").addEventListener("click",function(){'
+                   'document.getElementById("composer").innerHTML='
+                   '\'<input id="title" aria-label="Title" placeholder="Title">\''
+                   '+\'<button type="button" aria-label="Unpin new entry">Pin</button>\';});</script>')
+        output = self.failure(self.run_check())
+        self.assertIn('Text typed into a form was lost', output)
+        self.assertIn('Pin new entry', output)
+
+    def test_a_form_that_clears_itself_on_a_submission_passes(self):
+        # A submission is allowed to clear its own form. The discriminator is the write
+        # the click sends, not a list of English verbs.
+        self.build('<div id="composer">'
+                   '<input id="title" aria-label="Title" placeholder="Title">'
+                   '<button type="button" id="add" aria-label="Add entry">Add</button></div>'
+                   '<script>document.getElementById("add").addEventListener("click",function(){'
+                   'fetch("/api/entries",{method:"POST",body:"{}"}).catch(function(){});'
+                   'document.getElementById("title").value="";});</script>')
+        result = self.run_check()
+        self.assertTrue(result['passed'], str((result['steps'] or [{}])[-1].get('output', '')))
+
     def test_an_unnamed_input_fails(self):
         self.build('<form><input type="text"></form>')
-        result = self.run_check()
-        self.assertFalse(result['passed'])
-        self.assertIn('no accessible name', str((result['steps'] or [{}])[-1].get('output', '')))
+        self.assertIn('no accessible name', self.failure(self.run_check()))
 
     def test_a_named_input_passes(self):
         self.build('<form><label for="a">Title</label><input id="a" type="text"></form>')
@@ -1016,14 +1102,39 @@ class InterfaceCheckTests(TempCase):
         self.assertIn('matching no requirement text', output)
         self.assertIn('Frobnicate', output)
 
+    def test_the_walk_puts_back_every_row_it_moved(self):
+        # The walk reaches a state by clicking the application's own controls, which
+        # writes rows. A later check must still find the rows the contract seeded.
+        contract = self.build(
+            '<button type="button" id="scrap" aria-label="Scrap an entry">Scrap</button>'
+            '<script>document.getElementById("scrap").addEventListener("click",function(){'
+            'fetch("/api/scrap",{method:"POST"});});</script>')
+        self.workspace.write_files([{'path': 'backend/api.cjs', 'content': '''const {store}=require('./state.cjs');
+module.exports=async(req,res)=>{
+  const url=new URL(req.url,'http://localhost');
+  if(url.pathname==='/api/scrap'&&req.method==='POST'){
+    for(const row of store.list('entries')) store.remove('entries',row.id);
+    res.writeHead(200,{'content-type':'application/json'});res.end('{"ok":true}');return true;}
+  return false;};
+'''}])
+        seeded = len([seed for seed in contract['seeds'] if seed['collection'] == 'entries'])
+        self.assertGreater(seeded, 0)
+        self.assertTrue(self.run_check()['passed'])
+        stored = json.loads((self.workspace.root / state_runtime.DATA_DIRECTORY
+                             / 'store.json').read_text())
+        self.assertEqual(len(stored['collections']['entries']), seeded)
+
     def test_row_scoped_names_are_reported_once_per_action_and_capped(self):
         # The rule itself prescribes "<Action> for <title>", and a self-check adds a row
         # every run, so the raw report grew with every verification. Twenty-five rows,
         # two actions each, must reduce to the two action words.
+        # Only the first row's actions are visible, which is the shape rule 1 now
+        # requires; the rest are hidden exactly as a hover-revealed row would be.
         rows = ''.join('<li>Row {0}'
-                       '<button aria-label="Frobnicate for Synthetic row {0}">a</button>'
-                       '<button aria-label="Transclude for Synthetic row {0}">b</button>'
-                       '</li>'.format(index) for index in range(25))
+                       '<button aria-label="Frobnicate for Synthetic row {0}"{1}>a</button>'
+                       '<button aria-label="Transclude for Synthetic row {0}"{1}>b</button>'
+                       '</li>'.format(index, '' if index == 0 else ' style="display:none"')
+                       for index in range(25))
         self.build('<ul>' + rows + '</ul>')
         result = self.run_check()
         self.assertTrue(result['passed'], result.get('error'))
@@ -1046,9 +1157,29 @@ class InterfaceCheckTests(TempCase):
         self.assertIn('and 4 more', line)
 
     def test_the_rules_are_stated_to_the_model(self):
-        self.assertIn('No two controls visible at the same time', state_runtime.STORE_CONTRACT)
-        self.assertIn('More options for Delete me 2.3.1', state_runtime.STORE_CONTRACT)
-        self.assertIn('aria-label', state_runtime.STORE_CONTRACT)
+        rules = state_runtime.STORE_CONTRACT
+        self.assertIn('At most one control carrying a given action verb', rules)
+        self.assertIn('Archive for Delete me 2.3.1', rules)
+        self.assertIn('display:none or visibility:hidden', rules)
+        self.assertIn('opacity:0', rules)
+        self.assertIn('aria-label', rules)
+
+    def test_the_inertness_rule_is_stated_to_the_model(self):
+        rules = state_runtime.STORE_CONTRACT
+        self.assertIn('aria-modal="true"', rules)
+        self.assertIn('while a chooser is open', rules.lower())
+
+    def test_the_form_durability_rule_is_stated_to_the_model(self):
+        self.assertIn('survives a click on another control in the same form',
+                      state_runtime.STORE_CONTRACT)
+
+    def test_the_supplement_asks_a_self_check_to_assert_on_the_row_not_a_toast(self):
+        # Four of the last run's specs passed against a toast while the action had been
+        # applied to the wrong row, and the model's own checks agreed with them.
+        rules = state_runtime.STORE_CONTRACT
+        self.assertIn('asserts on that row afterwards', rules)
+        self.assertIn('Never assert only that a', rules)
+        self.assertIn('toast, snackbar or notification appeared', rules)
 
 
 class ScheduleCompletionTests(TempCase):

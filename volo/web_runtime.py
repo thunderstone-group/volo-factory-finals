@@ -37,6 +37,27 @@ http.createServer(async (req,res) => {
         return;
       }
       await state.ready;
+      // Harness-owned, like /api/health. The interface check reaches the application's
+      // states by clicking its own controls, which moves rows; it saves the store here
+      // before the walk and puts it back afterwards, so a later check still finds the
+      // rows the contract seeded. Product code never needs this route.
+      if (route === '/__factory/store' && state.store && typeof state.store.snapshot === 'function') {
+        if (req.method === 'GET') {
+          res.writeHead(200, {'content-type':'application/json'});
+          res.end(JSON.stringify(state.store.snapshot()));
+          return;
+        }
+        if (req.method === 'PUT') {
+          const chunks = [];
+          for await (const chunk of req) chunks.push(chunk);
+          let restored = false;
+          try { restored = state.store.restore(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
+          catch (error) { restored = false; }
+          res.writeHead(restored ? 200 : 400, {'content-type':'application/json'});
+          res.end(JSON.stringify({restored}));
+          return;
+        }
+      }
     }
     if (await api(req,res) || res.writableEnded) return;
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);

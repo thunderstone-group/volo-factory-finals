@@ -1,0 +1,71 @@
+<!-- Synthetic fixture, hand written for tests/test_state_contract.py. It is not a
+     generated application and it implements no requirement; its rows are named after
+     the synthetic contract's seeds so the check's hover pass reaches them. It is the
+     shape the interface rules are meant to accept: row actions that exist only while
+     their row is hovered or focused, a chooser that declares itself modal, and a form
+     whose re-render keeps what was typed. -->
+<style>
+  .row { padding: 6px; border: 1px solid #ccc; }
+  .row .actions { display: none; }
+  .row:hover .actions, .row:focus-within .actions { display: block; }
+  #categories[hidden] { display: none; }
+</style>
+
+<nav aria-label="Filters">
+  <button type="button" role="menuitem">Utilities</button>
+  <button type="button" role="menuitem">Preferences</button>
+</nav>
+
+<ul>
+  <li class="row" tabindex="0">
+    <h3>Opening balance</h3>
+    <div class="actions">
+      <button type="button" aria-label="Archive for Opening balance">A</button>
+      <button type="button" aria-label="More options for Opening balance">M</button>
+    </div>
+  </li>
+  <li class="row" tabindex="0">
+    <h3>Monthly rent</h3>
+    <div class="actions">
+      <button type="button" aria-label="Archive for Monthly rent">A</button>
+      <button type="button" aria-label="More options for Monthly rent">M</button>
+    </div>
+  </li>
+  <li class="row" tabindex="0">
+    <h3>Scrap me 2.2</h3>
+    <div class="actions">
+      <button type="button" aria-label="Archive for Scrap me 2.2">A</button>
+      <button type="button" aria-label="More options for Scrap me 2.2">M</button>
+    </div>
+  </li>
+</ul>
+
+<button type="button" id="open-categories">Edit categories</button>
+
+<div id="categories" role="dialog" aria-modal="true" aria-label="Categories" hidden>
+  <button type="button" aria-label="Utilities for Opening balance">Utilities</button>
+  <button type="button" aria-label="Close categories">Close</button>
+</div>
+
+<div id="composer">
+  <input id="entry-title" aria-label="Title" placeholder="Title">
+  <button type="button" id="pin" aria-label="Pin new entry">Pin</button>
+</div>
+
+<script>
+  document.getElementById('open-categories').addEventListener('click', function () {
+    document.getElementById('categories').hidden = false;
+  });
+  // The durable re-render: the field is rebuilt, and its current value goes with it.
+  function bindPin() {
+    document.getElementById('pin').addEventListener('click', function () {
+      var composer = document.getElementById('composer');
+      var value = document.getElementById('entry-title').value;
+      composer.innerHTML = '<input id="entry-title" aria-label="Title" placeholder="Title" value="'
+        + value.replace(/"/g, '&quot;') + '">'
+        + '<button type="button" id="pin" aria-label="Pin new entry">Pin</button>';
+      bindPin();
+    });
+  }
+  bindPin();
+</script>

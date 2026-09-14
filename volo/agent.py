@@ -687,10 +687,17 @@ class Agent:
     def source_snapshot(self):
         """Include only a bounded set of product code, never state or protected files."""
         candidates = []
+        # In a contract run these paths are written by the harness and the model may not
+        # edit them, and every caller drops them again. Counting their bytes only shrinks
+        # the room left for the product's own source: checks/interface.spec.cjs alone is
+        # 20 KB of it. Outside a contract run the same paths hold the model's own code.
+        harness_owned = state_runtime.HARNESS_OWNED if self.contract else ()
         for item in self.workspace.list_files()['files']:
             name = item['path']
             if not (name.endswith(('.js', '.cjs', '.mjs', '.jsx', '.ts', '.tsx', '.html', '.css', '.vue', '.svelte'))
                     or name.rsplit('/', 1)[-1] in ('package.json', 'DESIGN.md')):
+                continue
+            if name in harness_owned:
                 continue
             try:
                 self.workspace.path(name)
