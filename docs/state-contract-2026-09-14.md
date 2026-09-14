@@ -16,6 +16,7 @@ prompt; both were used only to score a finished application.
 |---|---|---|---:|---:|---:|
 | `keep` (i5) | 7 of 15 | hosted | 4 | 10 s | **17 of 32** |
 | `keep` (i5) | 7 of 15 | repo | 1 | 60 s | **17 of 32** |
+| `bookstack` (h1) | 8 of 18 | hosted | 4 | 10 s | **11 of 34** |
 
 Trace, video and screenshots are off in both profiles. `docs/arc-bench-corpus-2026-09-14.md` measures that artifact capture alone costs the organizers' own reference fourteen of its 135 tests.
 
@@ -46,11 +47,11 @@ Every one of the 22 identities the Keep requirements name reaches the running ap
 | i4 | 1 of 15 | no checkpoint | 19 | 409,090 | 347,648 | 0.353184 | not scored |
 | i5 | 7 of 15 | failed: Current requirements and workspace checkpoint exceed the context character limit | 50 | 1,295,489 | 917,248 | 1.720258 | 17 of 32 |
 | i6 | 7 of 15 | batch_verified | 50 | 1,244,230 | 940,800 | 1.400703 | not scored |
-| i7 | 1 of 15 | no checkpoint | 4 | 45,609 | 23,552 | 0.128417 | not scored |
-| bookstack h1 | 8 of 18 | batch_verified | 53 | 1,208,626 | 931,584 | 1.290064 | not scored |
-| bookstack h2 | 1 of 18 | no checkpoint | 1 | 17,607 | 10,240 | 0.062701 | not scored |
+| i7 | 2 of 15 | batch_verified | 18 | 313,695 | 244,224 | 0.369887 | not scored |
+| bookstack h1 | 8 of 18 | batch_verified | 53 | 1,208,626 | 931,584 | 1.290064 | 11 of 34 |
+| bookstack h2 | 3 of 18 | batch_verified | 15 | 242,571 | 171,776 | 0.349321 | not scored |
 
-Rehearsal total CNY 9.081047, plus CNY 0.397544 for the one Ticket generation used to measure the local gate. Prices are the rate table solved in `docs/token-accounting-2026-09-14.md`, applied to the usage each response reported. No official run was started, so no official charge exists for any of this.
+Rehearsal total CNY 9.609137, plus CNY 0.397544 for the one Ticket generation used to measure the local gate. Prices are the rate table solved in `docs/token-accounting-2026-09-14.md`, applied to the usage each response reported. No official run was started, so no official charge exists for any of this.
 
 ### 1.4 What the contract fixed, and what still failed
 
@@ -59,14 +60,15 @@ Every failing spec of a scored run, split by how far generation actually got. A 
 | Application | Requirements self-checked | Failed after passing their own check | Failed, never reached | Failed, batch did not complete |
 |---|---:|---|---|---|
 | `keep` (i5) | 13 | REQ-2.4, REQ-2.6.2, REQ-2.7.1, REQ-2.8.3 | REQ-2.7.2, REQ-2.7.4, REQ-2.7.5, REQ-2.7.6.1, REQ-2.7.6.2, REQ-2.7.6.3, REQ-3.1, REQ-4.2, REQ-5.1, REQ-5.2 | REQ-2.3.3 |
+| `bookstack` (h1) | 12 | REQ-4.3.1 | REQ-4.5.1, REQ-4.5.2, REQ-5.2.2, REQ-5.4.1, REQ-5.4.2, REQ-5.5.1, REQ-5.5.2, REQ-5.6.1, REQ-6.1.1, REQ-6.1.2, REQ-6.1.3, REQ-6.2.1, REQ-6.3.1, REQ-6.3.2, REQ-7.1, REQ-7.2, REQ-8.1, REQ-8.2, REQ-9.1 | REQ-4.3.2, REQ-4.4.1, REQ-4.4.2 |
 
 How those specs failed, which is the more informative split:
 
 | Failure | Count |
 |---|---:|
-| test timed out | 15 |
+| test timed out | 38 |
 
-15 of the 15 failures are the spec running out of time and 0 are a failed assertion. That distinction matters, because an assertion failure is the application contradicting the requirement, and a timeout is an interaction that never completed. Not one failure was a missing seed row, a renamed field or a value that did not match: the helpers resolve a control by walking a ladder of roles and falling back to the first candidate, so a control that is absent or carries a name the ladder does not match holds the test until the budget runs out. What the contract set out to prevent did not appear. What is left is control naming and presence, which is a different lever and the one the corpus catalogue ranks next.
+38 of the 38 failures are the spec running out of time and 0 are a failed assertion. That distinction matters, because an assertion failure is the application contradicting the requirement, and a timeout is an interaction that never completed. Not one failure was a missing seed row, a renamed field or a value that did not match: the helpers resolve a control by walking a ladder of roles and falling back to the first candidate, so a control that is absent or carries a name the ladder does not match holds the test until the budget runs out. What the contract set out to prevent did not appear. What is left is control naming and presence, which is a different lever and the one the corpus catalogue ranks next.
 
 ### 1.5 Ticket Booking is unchanged
 
@@ -210,7 +212,7 @@ regions and named `<meter>` controls are all still stated.
 
 ## 4. What the rehearsal cost, and where it went
 
-The rehearsal spent CNY 9.08 across 7 Keep iterations and the holdout. Where it went, and what each fix bought:
+The rehearsal spent CNY 9.61 across 7 Keep iterations and the holdout. Where it went, and what each fix bought:
 
 | Change | Measured effect |
 |---|---|

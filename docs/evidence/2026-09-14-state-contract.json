@@ -1,8 +1,8 @@
 {
-  "recorded_at": "2026-09-14T07:01:37+00:00",
+  "recorded_at": "2026-09-14T07:04:07+00:00",
   "purpose": "Rehearse a global state contract for multi-page requirement packages.",
   "branch": "feat/state-contract",
-  "commit": "3d2f1be666187ccebbdeabc42c3a9da3293f3cc6",
+  "commit": "d597b9e7958e64050d0e2856f7d00083a56ef971",
   "model": "deepseek-v4-flash",
   "gateway": "https://api.arc-bench.com/v1",
   "price_table_source": "docs/token-accounting-2026-09-14.md",
@@ -791,13 +791,13 @@
       "iteration": "i7",
       "app": "keep",
       "workspace": "gen-keep-i7",
-      "outcome": "no checkpoint",
+      "outcome": "batch_verified",
       "usage": {
-        "calls": 4,
-        "tokens": 45609,
-        "cached_prompt_tokens": 23552,
-        "reasoning_tokens": 6158,
-        "cny": 0.128417
+        "calls": 18,
+        "tokens": 313695,
+        "cached_prompt_tokens": 244224,
+        "reasoning_tokens": 12527,
+        "cny": 0.369887
       },
       "state_contract": {
         "audit": {
@@ -882,10 +882,15 @@
           [
             "REQ-1.1",
             "REQ-2.1"
+          ],
+          [
+            "REQ-2.2",
+            "REQ-2.3.1",
+            "REQ-2.4"
           ]
         ],
         "scheduled_count": 15,
-        "started_count": 1
+        "started_count": 2
       },
       "hosted": null,
       "repo": null
@@ -1027,20 +1032,126 @@
         "scheduled_count": 18,
         "started_count": 8
       },
-      "hosted": null,
-      "repo": null
+      "hosted": {
+        "app": "bookstack",
+        "profile": "hosted",
+        "workers": 4,
+        "test_timeout_ms": 10000,
+        "expect_timeout_ms": 10000,
+        "trace": "off",
+        "video": "off",
+        "application": "/private/tmp/claude-501/-Users-e0-7-projects/21a88b56-d9d2-4a88-ae5c-488913ee4196/scratchpad/bigtask-keep/gen-bookstack-h1-truncated",
+        "readiness": {
+          "health": 0.358,
+          "root": 0.36,
+          "health_last": "<urlopen error [Errno 61] Connection refused>"
+        },
+        "wall_seconds": 63.4,
+        "exit_code": 1,
+        "total": 34,
+        "passed": 11,
+        "failed": 23,
+        "failed_titles": [
+          "REQ-4.3.1: Create Shelf",
+          "REQ-4.3.2: Cancel Creation",
+          "REQ-4.4.1: Confirm Delete Shelf",
+          "REQ-4.4.2: Cancel Delete Shelf",
+          "REQ-4.5.1: Save Shelf Edits",
+          "REQ-4.5.2: Cancel Shelf Edits",
+          "REQ-5.2.2: Enter Book Details Page through Shelf Details Page",
+          "REQ-5.4.1: Save Book Edits",
+          "REQ-5.4.2: Cancel Book Edits",
+          "REQ-5.5.1: Confirm Delete Book",
+          "REQ-5.5.2: Cancel Delete Book",
+          "REQ-5.6.1: Fill out and Save Book with Shelf",
+          "REQ-6.1.1: Save Page",
+          "REQ-6.1.2: Save Draft",
+          "REQ-6.1.3: Delete Draft",
+          "REQ-6.2.1: Create Chapter",
+          "REQ-6.3.1: Enter Page Reading Page",
+          "REQ-6.3.2: Redirect to Page Edit Page",
+          "REQ-7.1: Add to Recently Viewed",
+          "REQ-7.2: Quick Navigation from Recently Viewed",
+          "REQ-8.1: Favorite Items",
+          "REQ-8.2: Quick Navigation from Favorites",
+          "REQ-9.1: Quick Navigation from Recently Updated"
+        ]
+      },
+      "repo": null,
+      "failure_split": {
+        "workspace": "gen-bookstack-h1-truncated",
+        "passed": 11,
+        "total": 34,
+        "batches_started": 8,
+        "batches_scheduled": 18,
+        "requirements_self_checked": 12,
+        "failed_and_self_checked": [
+          "REQ-4.3.1"
+        ],
+        "failed_and_never_reached": [
+          "REQ-4.5.1",
+          "REQ-4.5.2",
+          "REQ-5.2.2",
+          "REQ-5.4.1",
+          "REQ-5.4.2",
+          "REQ-5.5.1",
+          "REQ-5.5.2",
+          "REQ-5.6.1",
+          "REQ-6.1.1",
+          "REQ-6.1.2",
+          "REQ-6.1.3",
+          "REQ-6.2.1",
+          "REQ-6.3.1",
+          "REQ-6.3.2",
+          "REQ-7.1",
+          "REQ-7.2",
+          "REQ-8.1",
+          "REQ-8.2",
+          "REQ-9.1"
+        ],
+        "failed_and_attempted_but_not_self_checked": [
+          "REQ-4.3.2",
+          "REQ-4.4.1",
+          "REQ-4.4.2"
+        ],
+        "failure_reasons": {
+          "REQ-4.3.1": "test timed out",
+          "REQ-4.3.2": "test timed out",
+          "REQ-4.4.1": "test timed out",
+          "REQ-4.4.2": "test timed out",
+          "REQ-4.5.1": "test timed out",
+          "REQ-4.5.2": "test timed out",
+          "REQ-5.2.2": "test timed out",
+          "REQ-5.4.1": "test timed out",
+          "REQ-5.4.2": "test timed out",
+          "REQ-5.5.1": "test timed out",
+          "REQ-5.5.2": "test timed out",
+          "REQ-5.6.1": "test timed out",
+          "REQ-6.1.1": "test timed out",
+          "REQ-6.1.2": "test timed out",
+          "REQ-6.1.3": "test timed out",
+          "REQ-6.2.1": "test timed out",
+          "REQ-6.3.1": "test timed out",
+          "REQ-6.3.2": "test timed out",
+          "REQ-7.1": "test timed out",
+          "REQ-7.2": "test timed out",
+          "REQ-8.1": "test timed out",
+          "REQ-8.2": "test timed out",
+          "REQ-9.1": "test timed out"
+        }
+      }
     },
     {
       "iteration": "h2",
       "app": "bookstack",
       "workspace": "gen-bookstack-h2",
-      "outcome": "no checkpoint",
+      "outcome": "batch_verified",
       "usage": {
-        "calls": 1,
-        "tokens": 17607,
-        "cached_prompt_tokens": 10240,
-        "reasoning_tokens": 0,
-        "cny": 0.062701
+        "calls": 15,
+        "tokens": 242571,
+        "cached_prompt_tokens": 171776,
+        "reasoning_tokens": 10257,
+        "cny": 0.349321
       },
       "state_contract": {
         "audit": {
@@ -1133,10 +1244,17 @@
           [
             "REQ-1.1",
             "REQ-1.2"
+          ],
+          [
+            "REQ-2.1",
+            "REQ-4.1"
+          ],
+          [
+            "REQ-5.1"
           ]
         ],
         "scheduled_count": 18,
-        "started_count": 1
+        "started_count": 3
       },
       "hosted": null,
       "repo": null

@@ -1,0 +1,3123 @@
+{
+ "date": "2026-09-14",
+ "subject": "Every model call of every retained run, labelled by failure source",
+ "method": {
+  "input": "retained .factory/events.jsonl traces; each model_request/model_response pair and the tool_start/tool_result events it produced form one row",
+  "prices": "CNY per million tokens from docs/token-accounting-2026-09-14.md: deepseek-v4-flash 3.0/0.1/9.0, deepseek-v4-pro 9.0/0.3/27.0, kimi-k3 20.0/2.0/100.0, qwen3.6-flash 1.2/-/7.2 with every prompt token billed at the miss rate because its cache-hit tier was never observed",
+  "validation": "the five official Ticket Booking runs of 2026-09-14 reconstruct their official charge to six decimals from these rows alone",
+  "categories": {
+   "product_assertion": "a behavioral check ran and the product failed it",
+   "check_defect": "the check log shows misuse of the check's own API, not product evidence",
+   "edit_not_applied": "an edit tool rejected the call, so nothing was written",
+   "no_op_diagnosis": "the call executed only read-only tools and produced no verification",
+   "harness_error": "a tool refused the call (protected path, read bound, unknown tool)",
+   "harness_guard": "a harness guard rejected the product source before checks ran",
+   "environment_error": "dependency install, build or server startup failed",
+   "wrote_no_verification": "files were written with no verification in the same call; progress, not waste, on the incremental path",
+   "ran_check_only": "a check was run through the run tool, outside verification",
+   "delivered": "a verification in this call passed",
+   "observation": "the separate reference-image call",
+   "no_tool_call": "the gateway returned no executable tool call"
+  },
+  "budget_note": "No call is labelled \"budget\". Budget exhaustion terminates a run between calls, so it is a run outcome, not a call category; the runs that ended that way are named in terminal_outcomes.",
+  "unverified_tail": "Per run: tokens spent after the last call that produced a verification, without producing another. It depends only on which calls ran a real build/start/check cycle, not on how any read or write is classified, so it is the target the diagnosis-stall bound is measured against."
+ },
+ "terminal_outcomes": {
+  "official 8abb7f040604 image-qwen": "budget exhausted one call after a plausible fix, FAILED",
+  "local nav-race app1 (dead end)": "budget exhausted, no application delivered",
+  "archive e056-dev34-public-flash": "budget exhausted after thirteen consecutive read-only calls",
+  "archive e052-dev32-pro": "delivered at call 17",
+  "archive e057-dev35-repair-flash": "delivered locally at call 2; the official run timed out during evaluation, before submission"
+ },
+ "category_summary": [
+  {
+   "category": "product_assertion",
+   "calls": 31,
+   "tokens": 1061948,
+   "cny": 5.132862,
+   "runs": 11,
+   "attribution": "product"
+  },
+  {
+   "category": "observation",
+   "calls": 13,
+   "tokens": 113089,
+   "cny": 3.053414,
+   "runs": 13,
+   "attribution": "not a failure"
+  },
+  {
+   "category": "delivered",
+   "calls": 12,
+   "tokens": 422496,
+   "cny": 1.878462,
+   "runs": 12,
+   "attribution": "not a failure"
+  },
+  {
+   "category": "wrote_no_verification",
+   "calls": 22,
+   "tokens": 660447,
+   "cny": 1.507883,
+   "runs": 7,
+   "attribution": "not a failure"
+  },
+  {
+   "category": "no_op_diagnosis",
+   "calls": 25,
+   "tokens": 766402,
+   "cny": 1.232513,
+   "runs": 5,
+   "attribution": "harness defect"
+  },
+  {
+   "category": "check_defect",
+   "calls": 6,
+   "tokens": 216095,
+   "cny": 0.878763,
+   "runs": 1,
+   "attribution": "harness defect"
+  },
+  {
+   "category": "harness_error",
+   "calls": 7,
+   "tokens": 207850,
+   "cny": 0.428302,
+   "runs": 5,
+   "attribution": "harness defect"
+  },
+  {
+   "category": "harness_guard",
+   "calls": 1,
+   "tokens": 43701,
+   "cny": 0.258352,
+   "runs": 1,
+   "attribution": "product"
+  },
+  {
+   "category": "edit_not_applied",
+   "calls": 5,
+   "tokens": 139795,
+   "cny": 0.203733,
+   "runs": 2,
+   "attribution": "harness defect"
+  },
+  {
+   "category": "ran_check_only",
+   "calls": 1,
+   "tokens": 32205,
+   "cny": 0.079301,
+   "runs": 1,
+   "attribution": "not a failure"
+  },
+  {
+   "category": "no_tool_call",
+   "calls": 1,
+   "tokens": 0,
+   "cny": 0.0,
+   "runs": 1,
+   "attribution": "not a failure"
+  }
+ ],
+ "run_summary": [
+  {
+   "run": "official 01b06fb30564 nav-race",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.629725",
+   "calls": 3,
+   "tokens": 72854,
+   "cny": 0.629725,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 3,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "observation": 1,
+    "product_assertion": 1,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "official d855ead6df43 image-off",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.779834",
+   "calls": 6,
+   "tokens": 173870,
+   "cny": 0.779834,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 6,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "product_assertion": 4,
+    "wrote_no_verification": 1,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "calls": 15,
+   "tokens": 477861,
+   "cny": 1.072651,
+   "harness_defect_calls": 9,
+   "harness_defect_cny": 0.478583,
+   "unverified_tail": {
+    "last_verification_call": 8,
+    "calls_after": 7,
+    "tokens_after": 250609,
+    "cny_after": 0.507245,
+    "share_of_run_tokens": 0.5244
+   },
+   "categories": {
+    "observation": 1,
+    "product_assertion": 2,
+    "edit_not_applied": 4,
+    "no_op_diagnosis": 4,
+    "harness_error": 1,
+    "wrote_no_verification": 2,
+    "ran_check_only": 1
+   }
+  },
+  {
+   "run": "official b6b89caa3f8c default-restore",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.870779",
+   "calls": 4,
+   "tokens": 120468,
+   "cny": 0.870779,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 4,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "observation": 1,
+    "product_assertion": 2,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "official e34e78400983 selfcheck-fix",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.899558",
+   "calls": 5,
+   "tokens": 143279,
+   "cny": 0.899558,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 5,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "observation": 1,
+    "product_assertion": 3,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "calls": 14,
+   "tokens": 464707,
+   "cny": 1.53658,
+   "harness_defect_calls": 12,
+   "harness_defect_cny": 1.203512,
+   "unverified_tail": {
+    "last_verification_call": 11,
+    "calls_after": 3,
+    "tokens_after": 106738,
+    "cny_after": 0.147109,
+    "share_of_run_tokens": 0.2297
+   },
+   "categories": {
+    "observation": 1,
+    "check_defect": 6,
+    "no_op_diagnosis": 5,
+    "wrote_no_verification": 1,
+    "harness_error": 1
+   }
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "calls": 13,
+   "tokens": 436143,
+   "cny": 1.668221,
+   "harness_defect_calls": 2,
+   "harness_defect_cny": 0.234396,
+   "unverified_tail": {
+    "last_verification_call": 13,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "observation": 1,
+    "product_assertion": 4,
+    "edit_not_applied": 1,
+    "harness_error": 1,
+    "wrote_no_verification": 5,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "local image-ablation app-a",
+   "source": "local generation, no browser discovered",
+   "calls": 1,
+   "tokens": 36660,
+   "cny": 0.267541,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 1,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "delivered": 1
+   }
+  },
+  {
+   "run": "local image-ablation app-a2",
+   "source": "local generation, regenerated variant A",
+   "calls": 4,
+   "tokens": 151311,
+   "cny": 0.755362,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 4,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "product_assertion": 2,
+    "harness_guard": 1,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "local image-ablation app-b",
+   "source": "local generation, variant B",
+   "calls": 4,
+   "tokens": 136777,
+   "cny": 0.760666,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 4,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "observation": 1,
+    "product_assertion": 2,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "calls": 15,
+   "tokens": 459856,
+   "cny": 1.344183,
+   "harness_defect_calls": 5,
+   "harness_defect_cny": 0.227017,
+   "unverified_tail": {
+    "last_verification_call": 15,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "observation": 1,
+    "product_assertion": 7,
+    "no_op_diagnosis": 4,
+    "harness_error": 1,
+    "wrote_no_verification": 1,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "calls": 17,
+   "tokens": 428387,
+   "cny": 1.413183,
+   "harness_defect_calls": 1,
+   "harness_defect_cny": 0.030577,
+   "unverified_tail": {
+    "last_verification_call": 17,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "observation": 1,
+    "product_assertion": 3,
+    "wrote_no_verification": 11,
+    "no_op_diagnosis": 1,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "archive e053-dev33-pro-low",
+   "source": "retained archive trace events-live1.jsonl",
+   "calls": 2,
+   "tokens": 8613,
+   "cny": 0.27338,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": null,
+    "calls_after": 2,
+    "tokens_after": 8613,
+    "cny_after": 0.27338,
+    "share_of_run_tokens": 1.0
+   },
+   "categories": {
+    "observation": 1,
+    "no_tool_call": 1
+   }
+  },
+  {
+   "run": "archive e054-dev33-flash-low",
+   "source": "retained archive trace events-final.jsonl",
+   "calls": 2,
+   "tokens": 44059,
+   "cny": 0.556664,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 2,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "observation": 1,
+    "delivered": 1
+   }
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "calls": 17,
+   "tokens": 458226,
+   "cny": 1.24442,
+   "harness_defect_calls": 14,
+   "harness_defect_cny": 0.569226,
+   "unverified_tail": {
+    "last_verification_call": 2,
+    "calls_after": 15,
+    "tokens_after": 402906,
+    "cny_after": 0.627582,
+    "share_of_run_tokens": 0.8793
+   },
+   "categories": {
+    "observation": 1,
+    "product_assertion": 1,
+    "harness_error": 3,
+    "no_op_diagnosis": 11,
+    "wrote_no_verification": 1
+   }
+  },
+  {
+   "run": "archive e057-dev35-repair-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "calls": 2,
+   "tokens": 50957,
+   "cny": 0.580838,
+   "harness_defect_calls": 0,
+   "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 2,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
+   "categories": {
+    "observation": 1,
+    "delivered": 1
+   }
+  }
+ ],
+ "read_only_streaks": [
+  {
+   "run": "archive e056-dev34-public-flash",
+   "first_call": 3,
+   "last_call": 16,
+   "length": 14,
+   "cny": 0.569226
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "first_call": 6,
+   "last_call": 10,
+   "length": 5,
+   "cny": 0.227017
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "first_call": 9,
+   "last_call": 11,
+   "length": 3,
+   "cny": 0.228751
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "first_call": 12,
+   "last_call": 14,
+   "length": 3,
+   "cny": 0.147109
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "first_call": 13,
+   "last_call": 14,
+   "length": 2,
+   "cny": 0.137231
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "first_call": 9,
+   "last_call": 10,
+   "length": 2,
+   "cny": 0.07882
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "first_call": 6,
+   "last_call": 6,
+   "length": 1,
+   "cny": 0.079379
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "first_call": 6,
+   "last_call": 6,
+   "length": 1,
+   "cny": 0.09882
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "first_call": 6,
+   "last_call": 6,
+   "length": 1,
+   "cny": 0.143186
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "first_call": 13,
+   "last_call": 13,
+   "length": 1,
+   "cny": 0.030577
+  }
+ ],
+ "calls": [
+  {
+   "run": "official 01b06fb30564 nav-race",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.629725",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1372,
+   "tokens_total": 8721,
+   "cumulative_tokens": 8721,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.28418
+  },
+  {
+   "run": "official 01b06fb30564 nav-race",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.629725",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11377,
+   "cached_in": 2048,
+   "tokens_out": 24504,
+   "tokens_total": 35881,
+   "cumulative_tokens": 44602,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.248728
+  },
+  {
+   "run": "official 01b06fb30564 nav-race",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.629725",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25252,
+   "cached_in": 2048,
+   "tokens_out": 3000,
+   "tokens_total": 28252,
+   "cumulative_tokens": 72854,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "delivered",
+   "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
+   "cny": 0.096817
+  },
+  {
+   "run": "official d855ead6df43 image-off",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.779834",
+   "call": 1,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 9436,
+   "cached_in": 4096,
+   "tokens_out": 23868,
+   "tokens_total": 33304,
+   "cumulative_tokens": 33304,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.231242
+  },
+  {
+   "run": "official d855ead6df43 image-off",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.779834",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 21751,
+   "cached_in": 2048,
+   "tokens_out": 10113,
+   "tokens_total": 31864,
+   "cumulative_tokens": 65168,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.150331
+  },
+  {
+   "run": "official d855ead6df43 image-off",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.779834",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 21205,
+   "cached_in": 4096,
+   "tokens_out": 17086,
+   "tokens_total": 38291,
+   "cumulative_tokens": 103459,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.205511
+  },
+  {
+   "run": "official d855ead6df43 image-off",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.779834",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 20586,
+   "cached_in": 6144,
+   "tokens_out": 4633,
+   "tokens_total": 25219,
+   "cumulative_tokens": 128678,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.085637
+  },
+  {
+   "run": "official d855ead6df43 image-off",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.779834",
+   "call": 5,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 22206,
+   "cached_in": 4096,
+   "tokens_out": 1176,
+   "tokens_total": 23382,
+   "cumulative_tokens": 152060,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.065324
+  },
+  {
+   "run": "official d855ead6df43 image-off",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.779834",
+   "call": 6,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 21667,
+   "cached_in": 8448,
+   "tokens_out": 143,
+   "tokens_total": 21810,
+   "cumulative_tokens": 173870,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "delivered",
+   "detail": "finish verified the application",
+   "produced_verification": true,
+   "cny": 0.041789
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 1,
+   "model": "qwen3.6-flash",
+   "role": "observation",
+   "tokens_in": 5462,
+   "cached_in": 0,
+   "tokens_out": 4236,
+   "tokens_total": 9698,
+   "cumulative_tokens": 9698,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.037054
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11406,
+   "cached_in": 4096,
+   "tokens_out": 33973,
+   "tokens_total": 45379,
+   "cumulative_tokens": 55077,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.328097
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25004,
+   "cached_in": 2048,
+   "tokens_out": 1241,
+   "tokens_total": 26245,
+   "cumulative_tokens": 81322,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": false,
+   "category": "edit_not_applied",
+   "detail": "Exact old text must occur exactly once: backend/api.cjs",
+   "produced_verification": false,
+   "cny": 0.080242
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 26275,
+   "cached_in": 24832,
+   "tokens_out": 895,
+   "tokens_total": 27170,
+   "cumulative_tokens": 108492,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": false,
+   "category": "edit_not_applied",
+   "detail": "'path'",
+   "produced_verification": false,
+   "cny": 0.014867
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 5,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 27188,
+   "cached_in": 26112,
+   "tokens_out": 366,
+   "tokens_total": 27554,
+   "cumulative_tokens": 136046,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": false,
+   "category": "edit_not_applied",
+   "detail": "Exact old text must occur exactly once: backend/api.cjs",
+   "produced_verification": false,
+   "cny": 0.009133
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 6,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 29540,
+   "cached_in": 4096,
+   "tokens_out": 293,
+   "tokens_total": 29833,
+   "cumulative_tokens": 165879,
+   "tools": [
+    "run"
+   ],
+   "action": "diagnose",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.079379
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 7,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 30094,
+   "cached_in": 29440,
+   "tokens_out": 375,
+   "tokens_total": 30469,
+   "cumulative_tokens": 196348,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": false,
+   "category": "edit_not_applied",
+   "detail": "'path'",
+   "produced_verification": false,
+   "cny": 0.008281
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 8,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 30487,
+   "cached_in": 29952,
+   "tokens_out": 417,
+   "tokens_total": 30904,
+   "cumulative_tokens": 227252,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.008353
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 9,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 36612,
+   "cached_in": 5120,
+   "tokens_out": 3474,
+   "tokens_total": 40086,
+   "cumulative_tokens": 267338,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.126254
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 10,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 26708,
+   "cached_in": 22784,
+   "tokens_out": 391,
+   "tokens_total": 27099,
+   "cumulative_tokens": 294437,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.017569
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 11,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 35172,
+   "cached_in": 22784,
+   "tokens_out": 5054,
+   "tokens_total": 40226,
+   "cumulative_tokens": 334663,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "harness_error",
+   "detail": "Harness, credentials and evaluator inputs are protected",
+   "produced_verification": false,
+   "cny": 0.084928
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 12,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 34959,
+   "cached_in": 20480,
+   "tokens_out": 2632,
+   "tokens_total": 37591,
+   "cumulative_tokens": 372254,
+   "tools": [
+    "write_files"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.069173
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 13,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 32121,
+   "cached_in": 6144,
+   "tokens_out": 84,
+   "tokens_total": 32205,
+   "cumulative_tokens": 404459,
+   "tools": [
+    "run"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "ran_check_only",
+   "detail": "ran a check outside verification",
+   "produced_verification": false,
+   "cny": 0.079301
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 14,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 32513,
+   "cached_in": 22528,
+   "tokens_out": 2858,
+   "tokens_total": 35371,
+   "cumulative_tokens": 439830,
+   "tools": [
+    "run"
+   ],
+   "action": "diagnose",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.05793
+  },
+  {
+   "run": "official 8abb7f040604 image-qwen",
+   "source": "official run source API, ticket-booking, FAILED, CNY 1.072651",
+   "call": 15,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 34143,
+   "cached_in": 22528,
+   "tokens_out": 3888,
+   "tokens_total": 38031,
+   "cumulative_tokens": 477861,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.07209
+  },
+  {
+   "run": "official b6b89caa3f8c default-restore",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.870779",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7357,
+   "cached_in": 0,
+   "tokens_out": 1195,
+   "tokens_total": 8552,
+   "cumulative_tokens": 8552,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.26664
+  },
+  {
+   "run": "official b6b89caa3f8c default-restore",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.870779",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11032,
+   "cached_in": 4096,
+   "tokens_out": 20098,
+   "tokens_total": 31130,
+   "cumulative_tokens": 39682,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.2021
+  },
+  {
+   "run": "official b6b89caa3f8c default-restore",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.870779",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25834,
+   "cached_in": 2048,
+   "tokens_out": 15876,
+   "tokens_total": 41710,
+   "cumulative_tokens": 81392,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.214447
+  },
+  {
+   "run": "official b6b89caa3f8c default-restore",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.870779",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25369,
+   "cached_in": 4096,
+   "tokens_out": 13707,
+   "tokens_total": 39076,
+   "cumulative_tokens": 120468,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "delivered",
+   "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
+   "cny": 0.187592
+  },
+  {
+   "run": "official e34e78400983 selfcheck-fix",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.899558",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1149,
+   "tokens_total": 8498,
+   "cumulative_tokens": 8498,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.26188
+  },
+  {
+   "run": "official e34e78400983 selfcheck-fix",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.899558",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11094,
+   "cached_in": 4096,
+   "tokens_out": 34979,
+   "tokens_total": 46073,
+   "cumulative_tokens": 54571,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.336215
+  },
+  {
+   "run": "official e34e78400983 selfcheck-fix",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.899558",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 26223,
+   "cached_in": 2048,
+   "tokens_out": 4624,
+   "tokens_total": 30847,
+   "cumulative_tokens": 85418,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.114346
+  },
+  {
+   "run": "official e34e78400983 selfcheck-fix",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.899558",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25017,
+   "cached_in": 6144,
+   "tokens_out": 3382,
+   "tokens_total": 28399,
+   "cumulative_tokens": 113817,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.087671
+  },
+  {
+   "run": "official e34e78400983 selfcheck-fix",
+   "source": "official run source API, ticket-booking, PASSED, CNY 0.899558",
+   "call": 5,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 24649,
+   "cached_in": 6144,
+   "tokens_out": 4813,
+   "tokens_total": 29462,
+   "cumulative_tokens": 143279,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "delivered",
+   "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
+   "cny": 0.099446
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1179,
+   "tokens_total": 8528,
+   "cumulative_tokens": 8528,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.26488
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11210,
+   "cached_in": 0,
+   "tokens_out": 29574,
+   "tokens_total": 40784,
+   "cumulative_tokens": 49312,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "check_defect",
+   "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
+   "cny": 0.299796
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 26333,
+   "cached_in": 0,
+   "tokens_out": 8764,
+   "tokens_total": 35097,
+   "cumulative_tokens": 84409,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "check_defect",
+   "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
+   "cny": 0.157875
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 24681,
+   "cached_in": 10240,
+   "tokens_out": 11298,
+   "tokens_total": 35979,
+   "cumulative_tokens": 120388,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "check_defect",
+   "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
+   "cny": 0.146029
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 5,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 24768,
+   "cached_in": 4096,
+   "tokens_out": 9644,
+   "tokens_total": 34412,
+   "cumulative_tokens": 154800,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "check_defect",
+   "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
+   "cny": 0.149222
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 6,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 26610,
+   "cached_in": 0,
+   "tokens_out": 2110,
+   "tokens_total": 28720,
+   "cumulative_tokens": 183520,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.09882
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 7,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 28480,
+   "cached_in": 24576,
+   "tokens_out": 6002,
+   "tokens_total": 34482,
+   "cumulative_tokens": 218002,
+   "tools": [
+    "write_files"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.068188
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 8,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33988,
+   "cached_in": 6144,
+   "tokens_out": 66,
+   "tokens_total": 34054,
+   "cumulative_tokens": 252056,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "check_defect",
+   "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
+   "cny": 0.08474
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 9,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 34673,
+   "cached_in": 22528,
+   "tokens_out": 893,
+   "tokens_total": 35566,
+   "cumulative_tokens": 287622,
+   "tools": [
+    "list_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.046725
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 10,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 34392,
+   "cached_in": 25088,
+   "tokens_out": 186,
+   "tokens_total": 34578,
+   "cumulative_tokens": 322200,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.032095
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 11,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 34925,
+   "cached_in": 24576,
+   "tokens_out": 844,
+   "tokens_total": 35769,
+   "cumulative_tokens": 357969,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "check_defect",
+   "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
+   "cny": 0.041101
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 12,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 32720,
+   "cached_in": 22528,
+   "tokens_out": 1266,
+   "tokens_total": 33986,
+   "cumulative_tokens": 391955,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.044223
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 13,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33844,
+   "cached_in": 25088,
+   "tokens_out": 3519,
+   "tokens_total": 37363,
+   "cumulative_tokens": 429318,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "harness_error",
+   "detail": "Harness, credentials and evaluator inputs are protected",
+   "produced_verification": false,
+   "cny": 0.060448
+  },
+  {
+   "run": "local nav-race app1 (dead end)",
+   "source": "local generation, budget exhausted, no application",
+   "call": 14,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 35122,
+   "cached_in": 22528,
+   "tokens_out": 267,
+   "tokens_total": 35389,
+   "cumulative_tokens": 464707,
+   "tools": [
+    "run"
+   ],
+   "action": "diagnose",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.042438
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1166,
+   "tokens_total": 8515,
+   "cumulative_tokens": 8515,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.26358
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11229,
+   "cached_in": 0,
+   "tokens_out": 32949,
+   "tokens_total": 44178,
+   "cumulative_tokens": 52693,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.330228
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 26344,
+   "cached_in": 2048,
+   "tokens_out": 2013,
+   "tokens_total": 28357,
+   "cumulative_tokens": 81050,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": false,
+   "category": "edit_not_applied",
+   "detail": "Exact old text must occur exactly once: frontend/public/index.html",
+   "produced_verification": false,
+   "cny": 0.09121
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 28388,
+   "cached_in": 26112,
+   "tokens_out": 424,
+   "tokens_total": 28812,
+   "cumulative_tokens": 109862,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.013255
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 5,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25077,
+   "cached_in": 6144,
+   "tokens_out": 32260,
+   "tokens_total": 57337,
+   "cumulative_tokens": 167199,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.347753
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 6,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 27049,
+   "cached_in": 4096,
+   "tokens_out": 8213,
+   "tokens_total": 35262,
+   "cumulative_tokens": 202461,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "harness_error",
+   "detail": "Source read exceeds 12000 bytes. Use read_file_chunk with character offsets. Requested file sizes: {\"frontend/public/index.html\": 11626, \"checks/requirements.cj",
+   "produced_verification": false,
+   "cny": 0.143186
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 7,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 32622,
+   "cached_in": 22528,
+   "tokens_out": 362,
+   "tokens_total": 32984,
+   "cumulative_tokens": 235445,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.035793
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 8,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 32932,
+   "cached_in": 12288,
+   "tokens_out": 3801,
+   "tokens_total": 36733,
+   "cumulative_tokens": 272178,
+   "tools": [
+    "write_files"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.09737
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 9,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 28801,
+   "cached_in": 6144,
+   "tokens_out": 129,
+   "tokens_total": 28930,
+   "cumulative_tokens": 301108,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.069746
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 10,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 34103,
+   "cached_in": 22016,
+   "tokens_out": 1375,
+   "tokens_total": 35478,
+   "cumulative_tokens": 336586,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.050838
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 11,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33412,
+   "cached_in": 8192,
+   "tokens_out": 144,
+   "tokens_total": 33556,
+   "cumulative_tokens": 370142,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.077775
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 12,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 32807,
+   "cached_in": 8960,
+   "tokens_out": 132,
+   "tokens_total": 32939,
+   "cumulative_tokens": 403081,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.073625
+  },
+  {
+   "run": "local nav-race app2 (delivered)",
+   "source": "local generation, delivered",
+   "call": 13,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 32952,
+   "cached_in": 8960,
+   "tokens_out": 110,
+   "tokens_total": 33062,
+   "cumulative_tokens": 436143,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "delivered",
+   "detail": "finish verified the application",
+   "produced_verification": true,
+   "cny": 0.073862
+  },
+  {
+   "run": "local image-ablation app-a",
+   "source": "local generation, no browser discovered",
+   "call": 1,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 9410,
+   "cached_in": 2048,
+   "tokens_out": 27250,
+   "tokens_total": 36660,
+   "cumulative_tokens": 36660,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "delivered",
+   "detail": "build_app verified the application",
+   "produced_verification": true,
+   "cny": 0.267541
+  },
+  {
+   "run": "local image-ablation app-a2",
+   "source": "local generation, regenerated variant A",
+   "call": 1,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 9511,
+   "cached_in": 4096,
+   "tokens_out": 29984,
+   "tokens_total": 39495,
+   "cumulative_tokens": 39495,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.286511
+  },
+  {
+   "run": "local image-ablation app-a2",
+   "source": "local generation, regenerated variant A",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 21503,
+   "cached_in": 2048,
+   "tokens_out": 22198,
+   "tokens_total": 43701,
+   "cumulative_tokens": 83196,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": false,
+   "category": "harness_guard",
+   "detail": "self-navigation guard rejected the product source",
+   "produced_verification": true,
+   "cny": 0.258352
+  },
+  {
+   "run": "local image-ablation app-a2",
+   "source": "local generation, regenerated variant A",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 20480,
+   "cached_in": 10240,
+   "tokens_out": 698,
+   "tokens_total": 21178,
+   "cumulative_tokens": 104374,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.038026
+  },
+  {
+   "run": "local image-ablation app-a2",
+   "source": "local generation, regenerated variant A",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33741,
+   "cached_in": 16384,
+   "tokens_out": 13196,
+   "tokens_total": 46937,
+   "cumulative_tokens": 151311,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "delivered",
+   "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
+   "cny": 0.172473
+  },
+  {
+   "run": "local image-ablation app-b",
+   "source": "local generation, variant B",
+   "call": 1,
+   "model": "qwen3.6-flash",
+   "role": "observation",
+   "tokens_in": 5462,
+   "cached_in": 0,
+   "tokens_out": 3398,
+   "tokens_total": 8860,
+   "cumulative_tokens": 8860,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.03102
+  },
+  {
+   "run": "local image-ablation app-b",
+   "source": "local generation, variant B",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11990,
+   "cached_in": 4096,
+   "tokens_out": 40935,
+   "tokens_total": 52925,
+   "cumulative_tokens": 61785,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.392507
+  },
+  {
+   "run": "local image-ablation app-b",
+   "source": "local generation, variant B",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 26132,
+   "cached_in": 2048,
+   "tokens_out": 1445,
+   "tokens_total": 27577,
+   "cumulative_tokens": 89362,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.085462
+  },
+  {
+   "run": "local image-ablation app-b",
+   "source": "local generation, variant B",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 24227,
+   "cached_in": 10240,
+   "tokens_out": 23188,
+   "tokens_total": 47415,
+   "cumulative_tokens": 136777,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "delivered",
+   "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
+   "cny": 0.251677
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1267,
+   "tokens_total": 8616,
+   "cumulative_tokens": 8616,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.27368
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11330,
+   "cached_in": 4096,
+   "tokens_out": 28194,
+   "tokens_total": 39524,
+   "cumulative_tokens": 48140,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.275858
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 24741,
+   "cached_in": 2048,
+   "tokens_out": 1000,
+   "tokens_total": 25741,
+   "cumulative_tokens": 73881,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.077284
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 24474,
+   "cached_in": 8192,
+   "tokens_out": 3707,
+   "tokens_total": 28181,
+   "cumulative_tokens": 102062,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.083028
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 5,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 24633,
+   "cached_in": 9472,
+   "tokens_out": 627,
+   "tokens_total": 25260,
+   "cumulative_tokens": 127322,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.052073
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 6,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 26381,
+   "cached_in": 4096,
+   "tokens_out": 913,
+   "tokens_total": 27294,
+   "cumulative_tokens": 154616,
+   "tools": [
+    "list_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.075482
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 7,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25894,
+   "cached_in": 22528,
+   "tokens_out": 124,
+   "tokens_total": 26018,
+   "cumulative_tokens": 180634,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "harness_error",
+   "detail": "Harness, credentials and evaluator inputs are protected",
+   "produced_verification": false,
+   "cny": 0.013467
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 8,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33780,
+   "cached_in": 22528,
+   "tokens_out": 195,
+   "tokens_total": 33975,
+   "cumulative_tokens": 214609,
+   "tools": [
+    "run"
+   ],
+   "action": "diagnose",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.037764
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 9,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 34963,
+   "cached_in": 23040,
+   "tokens_out": 1673,
+   "tokens_total": 36636,
+   "cumulative_tokens": 251245,
+   "tools": [
+    "run"
+   ],
+   "action": "diagnose",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.05313
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 10,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 34563,
+   "cached_in": 23296,
+   "tokens_out": 1227,
+   "tokens_total": 35790,
+   "cumulative_tokens": 287035,
+   "tools": [
+    "run"
+   ],
+   "action": "diagnose",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.047174
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 11,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 32082,
+   "cached_in": 23296,
+   "tokens_out": 3782,
+   "tokens_total": 35864,
+   "cumulative_tokens": 322899,
+   "tools": [
+    "write_files"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.062726
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 12,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33525,
+   "cached_in": 6144,
+   "tokens_out": 520,
+   "tokens_total": 34045,
+   "cumulative_tokens": 356944,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.087437
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 13,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 35185,
+   "cached_in": 21248,
+   "tokens_out": 1478,
+   "tokens_total": 36663,
+   "cumulative_tokens": 393607,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.057238
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 14,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 34034,
+   "cached_in": 21248,
+   "tokens_out": 3712,
+   "tokens_total": 37746,
+   "cumulative_tokens": 431353,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.073891
+  },
+  {
+   "run": "local selfcheck-fix app1",
+   "source": "local generation, capture released, delivered",
+   "call": 15,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25480,
+   "cached_in": 10240,
+   "tokens_out": 3023,
+   "tokens_total": 28503,
+   "cumulative_tokens": 459856,
+   "tools": [
+    "patch_and_verify"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "delivered",
+   "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
+   "cny": 0.073951
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1235,
+   "tokens_total": 8584,
+   "cumulative_tokens": 8584,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.27048
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 2,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 5805,
+   "cached_in": 4096,
+   "tokens_out": 8916,
+   "tokens_total": 14721,
+   "cumulative_tokens": 23305,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.257342
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 3,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 18690,
+   "cached_in": 4096,
+   "tokens_out": 426,
+   "tokens_total": 19116,
+   "cumulative_tokens": 42421,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.144077
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 4,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 19138,
+   "cached_in": 18432,
+   "tokens_out": 800,
+   "tokens_total": 19938,
+   "cumulative_tokens": 62359,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.033484
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 5,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 19960,
+   "cached_in": 18944,
+   "tokens_out": 181,
+   "tokens_total": 20141,
+   "cumulative_tokens": 82500,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.019714
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 6,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 20163,
+   "cached_in": 19712,
+   "tokens_out": 181,
+   "tokens_total": 20344,
+   "cumulative_tokens": 102844,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.01486
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 7,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 20366,
+   "cached_in": 19968,
+   "tokens_out": 223,
+   "tokens_total": 20589,
+   "cumulative_tokens": 123433,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.015593
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 8,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 20611,
+   "cached_in": 20224,
+   "tokens_out": 67,
+   "tokens_total": 20678,
+   "cumulative_tokens": 144111,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.011359
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 9,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 23293,
+   "cached_in": 20480,
+   "tokens_out": 4196,
+   "tokens_total": 27489,
+   "cumulative_tokens": 171600,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.144753
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 10,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 27511,
+   "cached_in": 22528,
+   "tokens_out": 577,
+   "tokens_total": 28088,
+   "cumulative_tokens": 199688,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.067184
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 11,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 28110,
+   "cached_in": 27392,
+   "tokens_out": 2489,
+   "tokens_total": 30599,
+   "cumulative_tokens": 230287,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.081883
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 12,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 30622,
+   "cached_in": 26624,
+   "tokens_out": 710,
+   "tokens_total": 31332,
+   "cumulative_tokens": 261619,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.063139
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 13,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 31355,
+   "cached_in": 30464,
+   "tokens_out": 497,
+   "tokens_total": 31852,
+   "cumulative_tokens": 293471,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.030577
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 14,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 32605,
+   "cached_in": 31232,
+   "tokens_out": 663,
+   "tokens_total": 33268,
+   "cumulative_tokens": 326739,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.039628
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 15,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 33549,
+   "cached_in": 16384,
+   "tokens_out": 320,
+   "tokens_total": 33869,
+   "cumulative_tokens": 360608,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.16804
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 16,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 33893,
+   "cached_in": 33280,
+   "tokens_out": 311,
+   "tokens_total": 34204,
+   "cumulative_tokens": 394812,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.023898
+  },
+  {
+   "run": "archive e052-dev32-pro",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 17,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 33510,
+   "cached_in": 31744,
+   "tokens_out": 65,
+   "tokens_total": 33575,
+   "cumulative_tokens": 428387,
+   "tools": [
+    "finish"
+   ],
+   "action": "run check",
+   "edit_applied": null,
+   "category": "delivered",
+   "detail": "finish verified the application",
+   "produced_verification": true,
+   "cny": 0.027172
+  },
+  {
+   "run": "archive e053-dev33-pro-low",
+   "source": "retained archive trace events-live1.jsonl",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1264,
+   "tokens_total": 8613,
+   "cumulative_tokens": 8613,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.27338
+  },
+  {
+   "run": "archive e053-dev33-pro-low",
+   "source": "retained archive trace events-live1.jsonl",
+   "call": 2,
+   "model": "deepseek-v4-pro",
+   "role": "generation",
+   "tokens_in": 0,
+   "cached_in": 0,
+   "tokens_out": 0,
+   "tokens_total": 0,
+   "cumulative_tokens": 8613,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "no_tool_call",
+   "detail": "model returned no tool call",
+   "produced_verification": false,
+   "cny": 0.0
+  },
+  {
+   "run": "archive e054-dev33-flash-low",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1252,
+   "tokens_total": 8601,
+   "cumulative_tokens": 8601,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.27218
+  },
+  {
+   "run": "archive e054-dev33-flash-low",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 5773,
+   "cached_in": 0,
+   "tokens_out": 29685,
+   "tokens_total": 35458,
+   "cumulative_tokens": 44059,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "delivered",
+   "detail": "build_app verified the application",
+   "produced_verification": true,
+   "cny": 0.284484
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1283,
+   "tokens_total": 8632,
+   "cumulative_tokens": 8632,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.27528
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11126,
+   "cached_in": 4096,
+   "tokens_out": 35562,
+   "tokens_total": 46688,
+   "cumulative_tokens": 55320,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "product_assertion",
+   "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
+   "cny": 0.341558
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 3,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 19366,
+   "cached_in": 0,
+   "tokens_out": 209,
+   "tokens_total": 19575,
+   "cumulative_tokens": 74895,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "harness_error",
+   "detail": "Source read exceeds 12000 bytes. Use read_file_chunk with character offsets. Requested file sizes: {\"frontend/public/index.html\": 10064, \"backend/api.cjs\": 8035",
+   "produced_verification": false,
+   "cny": 0.059979
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 4,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 15827,
+   "cached_in": 15104,
+   "tokens_out": 131,
+   "tokens_total": 15958,
+   "cumulative_tokens": 90853,
+   "tools": [
+    "read_file_chunk",
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.004858
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 5,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 23354,
+   "cached_in": 15360,
+   "tokens_out": 216,
+   "tokens_total": 23570,
+   "cumulative_tokens": 114423,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.027462
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 6,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 22864,
+   "cached_in": 15360,
+   "tokens_out": 583,
+   "tokens_total": 23447,
+   "cumulative_tokens": 137870,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "harness_error",
+   "detail": "Source read exceeds 12000 bytes. Use read_file_chunk with character offsets. Requested file sizes: {\"checks/browser.cjs\": 2643, \"checks/requirements.cjs\": 10091",
+   "produced_verification": false,
+   "cny": 0.029295
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 7,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 19779,
+   "cached_in": 15104,
+   "tokens_out": 152,
+   "tokens_total": 19931,
+   "cumulative_tokens": 157801,
+   "tools": [
+    "read_file_chunk",
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.016903
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 8,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 24484,
+   "cached_in": 15360,
+   "tokens_out": 530,
+   "tokens_total": 25014,
+   "cumulative_tokens": 182815,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.033678
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 9,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 26935,
+   "cached_in": 15360,
+   "tokens_out": 634,
+   "tokens_total": 27569,
+   "cumulative_tokens": 210384,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.041967
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 10,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25348,
+   "cached_in": 15360,
+   "tokens_out": 611,
+   "tokens_total": 25959,
+   "cumulative_tokens": 236343,
+   "tools": [
+    "read_files"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "harness_error",
+   "detail": "Harness, credentials and evaluator inputs are protected",
+   "produced_verification": false,
+   "cny": 0.036999
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 11,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 25118,
+   "cached_in": 15104,
+   "tokens_out": 749,
+   "tokens_total": 25867,
+   "cumulative_tokens": 262210,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.038293
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 12,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 27836,
+   "cached_in": 15104,
+   "tokens_out": 663,
+   "tokens_total": 28499,
+   "cumulative_tokens": 290709,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.045673
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 13,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 31879,
+   "cached_in": 15104,
+   "tokens_out": 1203,
+   "tokens_total": 33082,
+   "cumulative_tokens": 323791,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.062662
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 14,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33715,
+   "cached_in": 15104,
+   "tokens_out": 116,
+   "tokens_total": 33831,
+   "cumulative_tokens": 357622,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.058387
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 15,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33283,
+   "cached_in": 15360,
+   "tokens_out": 104,
+   "tokens_total": 33387,
+   "cumulative_tokens": 391009,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.056241
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 16,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33383,
+   "cached_in": 15360,
+   "tokens_out": 136,
+   "tokens_total": 33519,
+   "cumulative_tokens": 424528,
+   "tools": [
+    "read_file_chunk"
+   ],
+   "action": "read",
+   "edit_applied": null,
+   "category": "no_op_diagnosis",
+   "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
+   "cny": 0.056829
+  },
+  {
+   "run": "archive e056-dev34-public-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 17,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 33397,
+   "cached_in": 15360,
+   "tokens_out": 301,
+   "tokens_total": 33698,
+   "cumulative_tokens": 458226,
+   "tools": [
+    "edit"
+   ],
+   "action": "edit",
+   "edit_applied": true,
+   "category": "wrote_no_verification",
+   "detail": "wrote files without running a verification",
+   "produced_verification": false,
+   "cny": 0.058356
+  },
+  {
+   "run": "archive e057-dev35-repair-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 1,
+   "model": "kimi-k3",
+   "role": "observation",
+   "tokens_in": 7349,
+   "cached_in": 0,
+   "tokens_out": 1322,
+   "tokens_total": 8671,
+   "cumulative_tokens": 8671,
+   "tools": [],
+   "action": "none",
+   "edit_applied": null,
+   "category": "observation",
+   "detail": "reference observation call",
+   "produced_verification": false,
+   "cny": 0.27918
+  },
+  {
+   "run": "archive e057-dev35-repair-flash",
+   "source": "retained archive trace events-final.jsonl",
+   "call": 2,
+   "model": "deepseek-v4-flash",
+   "role": "generation",
+   "tokens_in": 11173,
+   "cached_in": 4096,
+   "tokens_out": 31113,
+   "tokens_total": 42286,
+   "cumulative_tokens": 50957,
+   "tools": [
+    "build_app"
+   ],
+   "action": "write",
+   "edit_applied": null,
+   "category": "delivered",
+   "detail": "build_app verified the application",
+   "produced_verification": true,
+   "cny": 0.301658
+  }
+ ]
+}

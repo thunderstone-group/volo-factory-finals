@@ -253,11 +253,16 @@ assert.equal(text,'hello');}).catch(error=>{console.error(error);process.exitCod
                 {'path': 'backend/server.cjs', 'old': "s.end('welcome')", 'new': "s.end('changed')"}],
                 'check_command': ['bash', '-c', 'true']})
         self.assertEqual((self.out / 'backend/server.cjs').read_text(), before)
-        with self.assertRaisesRegex(ValueError, 'exactly once'):
+        with self.assertRaises(ValueError) as rejected:
             agent.dispatch('patch_and_verify', {'edits': [
                 {'path': 'backend/server.cjs', 'old': "s.end('welcome')", 'new': "s.end('changed')"},
                 {'path': 'checks/greeting.cjs', 'old': 'missing-text', 'new': 'replacement'}],
                 'check_command': ['node', 'checks/greeting.cjs']})
+        # The rejection names which edit failed, in which file, and shows the real text there.
+        message = str(rejected.exception)
+        self.assertIn('edit 2 of this call', message)
+        self.assertIn('checks/greeting.cjs', message)
+        self.assertIn('<<<HERE>>>', message)
         self.assertEqual((self.out / 'backend/server.cjs').read_text(), before)
         (self.out / 'large.js').write_text('x' * 24001)
         self.assertIsNone(agent.source_snapshot())
