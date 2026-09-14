@@ -1,3 +1,61 @@
+# ARC continuation handoff — 2026-09-15 early morning (supersedes the sections below)
+
+Plan and rules: `docs/campaign-plan-2026-09-14.md`. Log: `docs/progress.md` (dated, append-only).
+This session ran step 3 of the plan, the big board, on branch `feat/state-contract` in the
+worktree `../volo-factory-worktrees/bigtask-keep`. Nothing is pushed or merged; PR #21 still
+points at the old head. `main` is unchanged at 863e5e4.
+
+## Where Keep stands
+
+| Run | Head | Batches | Calls | Hosted | Repo | Note |
+|---|---|---:|---:|---:|---:|---|
+| 1 | b8e92a0 | 11/15 (4 M token budget) | 148 | 19/32 | 21/32 | naming rules obeyed, `.first()` still picks the first card |
+| 2 | ccf0600 | stopped at 4 | 72 | — | — | one batch thrashed 36 calls; no per-batch cap |
+| 3 | fc496c4 | died at 2 | 32 | — | — | restore removed a protected path |
+| 4 | 69a7f59 | stopped at 4 | 42 | — | — | self-checks did not hover before locating hidden actions |
+| 5 | b3d2331 | 15/15 | 142 | **25/32** | **25/32** | ≈ CNY 8.4; two batches capped and rolled back |
+
+Run 5's seven failures: three from the two rolled-back batches, four attributed in
+`docs/keep-attribution-run5-2026-09-15.md` (chooser inertness not honoured by Playwright's
+resolver, hover-only control carrying the row title, a verb that resolves outside the composer,
+an async hide with a sync restore). Run 1's attribution is `docs/keep-attribution-2026-09-14.md`:
+the official helpers hover the row title and click the first control matching a bare verb, so
+row actions must be out of the accessibility tree until hover; that single rule moved Keep from
+19 to 25.
+
+## What landed tonight (all on feat/state-contract, all with synthetic tests)
+
+f1e879a mixed harness-owned reads · 9fddc0b twelve rejected tool-call shapes · ccf0600 four
+interface rules + one-click state walk + store snapshot/restore endpoint · fc496c4 per-batch call
+cap + restore verified tree + snapshot no longer aborts on `.volo` · 155f14a invalid-JSON escape
+repair · 69a7f59 restore skips protected paths · b3d2331 hover-first self-check rule, cap 20 ·
+11e21cc snapshot after `completed` is updated · 17b566a/dd8acdb transport retries (TLS EOF,
+IncompleteRead). Evidence for every run under `runs/2026-09-14-keep-full-*/` and
+`runs/2026-09-15-bookstack-*/` (git-ignored).
+
+## In flight at handoff
+
+- `keep-rules` (Opus) implementing RA–RE from the run-5 attribution: inertness without the
+  aria-modal exemption plus a nameless-textbox clause, title never a hover-only control, verbs
+  resolve inside their container, page recovers after each click, and one 12-call retry of a
+  capped batch. Check `git log` on the branch for its commits.
+- Bookstack holdout run 2 (`runs/2026-09-15-bookstack-2/` when archived) on dd8acdb, the
+  rule set before RA–RE; run it again after RA–RE for the holdout before/after.
+
+## Next
+
+1. Keep ≥ 26/32 in three consecutive local generations, then Bookstack ≥ 28/34 without tuning on
+   it, then the first official Keep run (plan step 3). Do not upload before that.
+2. Unknown: the hosted runner's limit on generation time; Keep takes 60–85 minutes locally.
+   Ask the organizer or find out from the first official run.
+3. Cost line: run 5 ≈ CNY 8.4; the two capped batches cost ≈ 40 calls for nothing. RE is the
+   lever; the objective-function work (GPT-6 review) is still not started.
+
+## Discipline (unchanged)
+
+One scheduler for the shared key; no upload from an agent; trace/video off locally; never
+re-run a default package for a board row; one sample is not a cause.
+
 # ARC continuation handoff — 2026-09-12
 
 ## Latest continuation
