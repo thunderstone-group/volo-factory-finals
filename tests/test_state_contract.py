@@ -1547,8 +1547,14 @@ class DeliveryTests(TempCase):
             self.workspace.last_verification['source_fingerprint'] = 'stale'
 
         agent.run_schedule = run_schedule
-        self.workspace.verify = lambda command: {'passed': False, 'error': 'synthetic: wall clock',
-                                                 'verification_scope': 'local_checks_only', 'acceptance': {}}
+        def failing_verify(command):
+            # The real Workspace.verify clears last_verification on a failure; run
+            # 1c2af08cf3cc died on exactly that after delivering the snapshot.
+            self.workspace.last_verification = None
+            return {'passed': False, 'error': 'synthetic: wall clock',
+                    'verification_scope': 'local_checks_only', 'acceptance': {}}
+
+        self.workspace.verify = failing_verify
         return agent
 
     def test_a_current_verified_snapshot_is_delivered_when_the_final_check_fails(self):
