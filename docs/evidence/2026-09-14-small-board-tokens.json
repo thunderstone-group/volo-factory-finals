@@ -1604,7 +1604,54 @@
     ]
    }
   },
-  "rejected_assertion_rule_per_batch": {},
+  "rejected_assertion_rule_per_batch": {
+   "smoke-evolution--counter": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "m5_2",
+      "model_calls": 4,
+      "prompt_tokens": 12600,
+      "completion_tokens": 1972,
+      "total_tokens": 14572,
+      "reconstructed_cost_cny": 0.029318,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 14572,
+    "median_cost_cny": 0.029318,
+    "model_calls_observed": [
+     4
+    ],
+    "note": "cohort stopped after this run; its workspace was not replayed"
+   },
+   "smoke-evolution--dice": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "m5_1",
+      "model_calls": 6,
+      "prompt_tokens": 16276,
+      "completion_tokens": 1275,
+      "total_tokens": 17551,
+      "reconstructed_cost_cny": 0.028711,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 17551,
+    "median_cost_cny": 0.028711,
+    "model_calls_observed": [
+     6
+    ],
+    "note": "cohort stopped after this run; its workspace was not replayed"
+   }
+  },
   "rejected_prepared_claim_in_build_prompt": {
    "smoke--counter": {
     "model": "deepseek-v4-flash",
