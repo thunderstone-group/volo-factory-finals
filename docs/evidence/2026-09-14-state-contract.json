@@ -1,8 +1,8 @@
 {
-  "recorded_at": "2026-09-14T06:28:01+00:00",
+  "recorded_at": "2026-09-14T06:54:39+00:00",
   "purpose": "Rehearse a global state contract for multi-page requirement packages.",
   "branch": "feat/state-contract",
-  "commit": "482009f5b05eaec7ad6e31975c819cbfb6ed7c82",
+  "commit": "e391cde8a8530426465b208865fb42317808893f",
   "model": "deepseek-v4-flash",
   "gateway": "https://api.arc-bench.com/v1",
   "price_table_source": "docs/token-accounting-2026-09-14.md",
@@ -13,6 +13,8 @@
     {
       "iteration": "i1",
       "app": "keep",
+      "workspace": "gen-keep-i1",
+      "outcome": "no checkpoint",
       "usage": {
         "calls": 33,
         "tokens": 1051058,
@@ -105,6 +107,8 @@
     {
       "iteration": "i2",
       "app": "keep",
+      "workspace": "gen-keep-i2",
+      "outcome": "batch_verified",
       "usage": {
         "calls": 21,
         "tokens": 391126,
@@ -205,6 +209,8 @@
     {
       "iteration": "i3",
       "app": "keep",
+      "workspace": "gen-keep-i3",
+      "outcome": "batch_verified",
       "usage": {
         "calls": 17,
         "tokens": 392936,
@@ -305,12 +311,14 @@
     {
       "iteration": "i4",
       "app": "keep",
+      "workspace": "gen-keep-i4",
+      "outcome": "no checkpoint",
       "usage": {
-        "calls": 11,
-        "tokens": 191366,
-        "cached_prompt_tokens": 147712,
-        "reasoning_tokens": 8336,
-        "cny": 0.244048
+        "calls": 19,
+        "tokens": 409090,
+        "cached_prompt_tokens": 347648,
+        "reasoning_tokens": 9446,
+        "cny": 0.353184
       },
       "state_contract": {
         "audit": {
@@ -402,9 +410,438 @@
       },
       "hosted": null,
       "repo": null
+    },
+    {
+      "iteration": "i5",
+      "app": "keep",
+      "workspace": "gen-keep-i5-stale",
+      "outcome": "failed: Current requirements and workspace checkpoint exceed the context character limit",
+      "usage": {
+        "calls": 50,
+        "tokens": 1295489,
+        "cached_prompt_tokens": 917248,
+        "reasoning_tokens": 41466,
+        "cny": 1.720258
+      },
+      "state_contract": {
+        "audit": {
+          "quoted_literals_declared": 48,
+          "quoted_literals_recovered_mechanically": 0,
+          "seed_sentences_declared": 26,
+          "seed_sentences_unresolved": 0,
+          "seed_rows": 22,
+          "entities": 2
+        },
+        "cost": {
+          "calls": 1,
+          "tokens": 13755
+        }
+      },
+      "batches": {
+        "scheduled": [
+          [
+            "REQ-1.1",
+            "REQ-2.1"
+          ],
+          [
+            "REQ-2.2",
+            "REQ-2.3.1",
+            "REQ-2.4"
+          ],
+          [
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2"
+          ],
+          [
+            "REQ-2.7.1"
+          ],
+          [
+            "REQ-2.7.3"
+          ],
+          [
+            "REQ-2.8.1",
+            "REQ-2.8.3",
+            "REQ-2.3.2"
+          ],
+          [
+            "REQ-2.3.3",
+            "REQ-2.5.2",
+            "REQ-2.5.3"
+          ],
+          [
+            "REQ-2.7.2",
+            "REQ-2.7.4"
+          ],
+          [
+            "REQ-2.7.5"
+          ],
+          [
+            "REQ-2.7.6.1",
+            "REQ-2.7.6.3",
+            "REQ-2.8.2"
+          ],
+          [
+            "REQ-2.5.4",
+            "REQ-2.7.6.2"
+          ],
+          [
+            "REQ-3.1",
+            "REQ-4.1"
+          ],
+          [
+            "REQ-5.1",
+            "REQ-5.2"
+          ],
+          [
+            "REQ-6.1",
+            "REQ-3.2"
+          ],
+          [
+            "REQ-4.2",
+            "REQ-6.2"
+          ]
+        ],
+        "started": [
+          [
+            "REQ-1.1",
+            "REQ-2.1"
+          ],
+          [
+            "REQ-2.2",
+            "REQ-2.3.1",
+            "REQ-2.4"
+          ],
+          [
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2"
+          ],
+          [
+            "REQ-2.7.1"
+          ],
+          [
+            "REQ-2.7.3"
+          ],
+          [
+            "REQ-2.8.1",
+            "REQ-2.8.3",
+            "REQ-2.3.2"
+          ],
+          [
+            "REQ-2.3.3",
+            "REQ-2.5.2",
+            "REQ-2.5.3"
+          ]
+        ],
+        "scheduled_count": 15,
+        "started_count": 7
+      },
+      "hosted": {
+        "app": "keep",
+        "profile": "hosted",
+        "workers": 4,
+        "test_timeout_ms": 10000,
+        "expect_timeout_ms": 10000,
+        "trace": "off",
+        "video": "off",
+        "application": "/private/tmp/claude-501/-Users-e0-7-projects/21a88b56-d9d2-4a88-ae5c-488913ee4196/scratchpad/bigtask-keep/gen-keep-i5-stale",
+        "readiness": {
+          "health": 0.375,
+          "root": 0.377,
+          "health_last": "<urlopen error [Errno 61] Connection refused>"
+        },
+        "wall_seconds": 44.7,
+        "exit_code": 1,
+        "total": 32,
+        "passed": 17,
+        "failed": 15,
+        "failed_titles": [
+          "REQ-2.3.3: Trash list",
+          "REQ-2.4: Update Note",
+          "REQ-2.6.2: Choose note color when created",
+          "REQ-2.7.1: Assign label to a note",
+          "REQ-2.7.2: Remove label from a note",
+          "REQ-2.7.4: Assign default label when creating note",
+          "REQ-2.7.5: Edit labels",
+          "REQ-2.7.6.1: View list filtered by label",
+          "REQ-2.7.6.2: View all notes",
+          "REQ-2.7.6.3: View Reminders",
+          "REQ-2.8.3: Pin note when creating it",
+          "REQ-3.1: Initial suggested filters",
+          "REQ-4.2: Detailed settings",
+          "REQ-5.1: Toggle between list and grid views",
+          "REQ-5.2: Grid View by default"
+        ]
+      },
+      "repo": null,
+      "failure_split": {
+        "workspace": "gen-keep-i5-stale",
+        "passed": 17,
+        "total": 32,
+        "batches_started": 7,
+        "batches_scheduled": 15,
+        "requirements_self_checked": 13,
+        "failed_and_self_checked": [
+          "REQ-2.4",
+          "REQ-2.6.2",
+          "REQ-2.7.1",
+          "REQ-2.8.3"
+        ],
+        "failed_and_never_reached": [
+          "REQ-2.7.2",
+          "REQ-2.7.4",
+          "REQ-2.7.5",
+          "REQ-2.7.6.1",
+          "REQ-2.7.6.2",
+          "REQ-2.7.6.3",
+          "REQ-3.1",
+          "REQ-4.2",
+          "REQ-5.1",
+          "REQ-5.2"
+        ],
+        "failed_and_attempted_but_not_self_checked": [
+          "REQ-2.3.3"
+        ]
+      }
+    },
+    {
+      "iteration": "i6",
+      "app": "keep",
+      "workspace": "gen-keep-i6",
+      "outcome": "batch_verified",
+      "usage": {
+        "calls": 13,
+        "tokens": 230163,
+        "cached_prompt_tokens": 135936,
+        "reasoning_tokens": 18171,
+        "cny": 0.499595
+      },
+      "state_contract": {
+        "audit": {
+          "quoted_literals_declared": 48,
+          "quoted_literals_recovered_mechanically": 0,
+          "seed_sentences_declared": 26,
+          "seed_sentences_unresolved": 0,
+          "seed_rows": 22,
+          "entities": 2
+        },
+        "cost": {
+          "calls": 1,
+          "tokens": 13631
+        }
+      },
+      "batches": {
+        "scheduled": [
+          [
+            "REQ-1.1",
+            "REQ-2.1"
+          ],
+          [
+            "REQ-2.2",
+            "REQ-2.3.1",
+            "REQ-2.4"
+          ],
+          [
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2"
+          ],
+          [
+            "REQ-2.7.1"
+          ],
+          [
+            "REQ-2.7.3"
+          ],
+          [
+            "REQ-2.8.1",
+            "REQ-2.8.3",
+            "REQ-2.3.2"
+          ],
+          [
+            "REQ-2.3.3",
+            "REQ-2.5.2",
+            "REQ-2.5.3"
+          ],
+          [
+            "REQ-2.7.2",
+            "REQ-2.7.4"
+          ],
+          [
+            "REQ-2.7.5"
+          ],
+          [
+            "REQ-2.7.6.1",
+            "REQ-2.7.6.3",
+            "REQ-2.8.2"
+          ],
+          [
+            "REQ-2.5.4",
+            "REQ-2.7.6.2"
+          ],
+          [
+            "REQ-3.1",
+            "REQ-4.1"
+          ],
+          [
+            "REQ-5.1",
+            "REQ-5.2"
+          ],
+          [
+            "REQ-6.1",
+            "REQ-3.2"
+          ],
+          [
+            "REQ-4.2",
+            "REQ-6.2"
+          ]
+        ],
+        "started": [
+          [
+            "REQ-1.1",
+            "REQ-2.1"
+          ],
+          [
+            "REQ-2.2",
+            "REQ-2.3.1",
+            "REQ-2.4"
+          ],
+          [
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2"
+          ]
+        ],
+        "scheduled_count": 15,
+        "started_count": 3
+      },
+      "hosted": null,
+      "repo": null
     }
   ],
-  "holdout": [],
+  "holdout": [
+    {
+      "iteration": "h1",
+      "app": "bookstack",
+      "workspace": "gen-bookstack-h1",
+      "outcome": "batch_verified",
+      "usage": {
+        "calls": 24,
+        "tokens": 485170,
+        "cached_prompt_tokens": 356608,
+        "reasoning_tokens": 16236,
+        "cny": 0.598367
+      },
+      "state_contract": {
+        "audit": {
+          "quoted_literals_declared": 38,
+          "quoted_literals_recovered_mechanically": 0,
+          "seed_sentences_declared": 29,
+          "seed_sentences_unresolved": 0,
+          "seed_rows": 32,
+          "entities": 7
+        },
+        "cost": {
+          "calls": 1,
+          "tokens": 17446
+        }
+      },
+      "batches": {
+        "scheduled": [
+          [
+            "REQ-1.1",
+            "REQ-1.2"
+          ],
+          [
+            "REQ-2.1",
+            "REQ-4.1"
+          ],
+          [
+            "REQ-5.1"
+          ],
+          [
+            "REQ-2.2"
+          ],
+          [
+            "REQ-4.2.1"
+          ],
+          [
+            "REQ-5.2.1",
+            "REQ-5.3.1",
+            "REQ-5.3.2"
+          ],
+          [
+            "REQ-3.1",
+            "REQ-4.3.1"
+          ],
+          [
+            "REQ-4.3.2",
+            "REQ-4.4.1",
+            "REQ-4.4.2"
+          ],
+          [
+            "REQ-4.5.1",
+            "REQ-4.5.2"
+          ],
+          [
+            "REQ-5.2.2",
+            "REQ-5.6.1",
+            "REQ-5.4.1"
+          ],
+          [
+            "REQ-5.4.2",
+            "REQ-5.5.1",
+            "REQ-5.5.2"
+          ],
+          [
+            "REQ-6.1.1",
+            "REQ-6.1.2",
+            "REQ-6.2.1"
+          ],
+          [
+            "REQ-6.1.3",
+            "REQ-6.3.1"
+          ],
+          [
+            "REQ-9.1",
+            "REQ-6.3.2"
+          ],
+          [
+            "REQ-7.1"
+          ],
+          [
+            "REQ-8.1"
+          ],
+          [
+            "REQ-7.2"
+          ],
+          [
+            "REQ-8.2"
+          ]
+        ],
+        "started": [
+          [
+            "REQ-1.1",
+            "REQ-1.2"
+          ],
+          [
+            "REQ-2.1",
+            "REQ-4.1"
+          ],
+          [
+            "REQ-5.1"
+          ],
+          [
+            "REQ-2.2"
+          ]
+        ],
+        "scheduled_count": 18,
+        "started_count": 4
+      },
+      "hosted": null,
+      "repo": null
+    }
+  ],
   "ticket_local_gate": {
     "purpose": "Measure whether the server file's new state hook changes Ticket behaviour.",
     "method": "One generated Ticket application, gated five times with this branch's server.cjs and five times with main's server.cjs restored byte for byte.",
@@ -448,6 +885,53 @@
       "cny": 0.397544
     },
     "contract_extracted_for_ticket": false
+  },
+  "seed_delivery_probe": {
+    "probe": "Seeded identities reach the running application through model-authored code",
+    "application": "/private/tmp/claude-501/-Users-e0-7-projects/21a88b56-d9d2-4a88-ae5c-488913ee4196/scratchpad/bigtask-keep/gen-keep-i4",
+    "note": "The application is the i4 generation, whose api.cjs answers every non-API request with 404 and therefore serves no pages. Its API routes still read the shared store, which is what this probe measures. It is not a pass count.",
+    "health_status": 200,
+    "health_body": {
+      "code": 200,
+      "message": "Backend Ready"
+    },
+    "notes_served": 19,
+    "labels_served": [
+      "Work",
+      "Reminders",
+      "Work editable"
+    ],
+    "seed_rows_declared": 22,
+    "declared_names_served": [
+      "Call dentist existing",
+      "Delete me 2.3.1",
+      "Delete me 2.3.2",
+      "Delete me 2.3.3",
+      "Design review",
+      "Garden tasks existing",
+      "Groceries",
+      "Meeting agenda 2.8.1",
+      "Meeting agenda 2.8.2",
+      "Movie list",
+      "Project ideas",
+      "Reminders",
+      "Sprint goals",
+      "Study schedule",
+      "Team retro add label",
+      "Team retro remove label",
+      "Travel plans 2.5.1",
+      "Travel plans 2.5.2",
+      "Travel plans 2.5.3",
+      "Travel plans 2.5.4",
+      "Work",
+      "Work editable"
+    ],
+    "declared_names_missing": [],
+    "private_delete_rows_served": [
+      "Delete me 2.3.1",
+      "Delete me 2.3.2",
+      "Delete me 2.3.3"
+    ]
   },
   "unit_tests": {
     "command": "python -m unittest discover -s tests",
