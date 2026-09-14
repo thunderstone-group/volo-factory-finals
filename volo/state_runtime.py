@@ -425,14 +425,24 @@ def harness_read(paths):
 
     Runs i1 and i3 each spent three or more calls reading 14 KB of files the agent is
     told not to modify. Returning the contract instead keeps the call productive.
+
+    A read that mixes harness-owned and product files is answered in two parts: the
+    owned names come back as their summaries under ``files`` and the product names are
+    listed under ``product`` for the caller to read verbatim. The first full Keep run
+    on this branch lost a call to exactly that mix, because the owned bytes counted
+    against the 12,000-byte read bound.
     """
     names = [paths] if isinstance(paths, str) else list(paths or ())
     known = [name for name in names if name in HARNESS_SUMMARY]
-    if not known or len(known) != len(names):
+    if not known:
         return None
-    return {"files": {name: HARNESS_SUMMARY[name] for name in known},
-            "note": "These files are managed by the harness and were not returned verbatim. "
-                    "Do not modify them. Implement your requirements in backend/api.cjs, "
-                    "frontend/public/* and checks/*.spec.cjs."}
+    product = [name for name in names if name not in HARNESS_SUMMARY]
+    answer = {"files": {name: HARNESS_SUMMARY[name] for name in known},
+              "note": "These files are managed by the harness and were not returned verbatim. "
+                      "Do not modify them. Implement your requirements in backend/api.cjs, "
+                      "frontend/public/* and checks/*.spec.cjs."}
+    if product:
+        answer["product"] = product
+    return answer
 
 

@@ -734,6 +734,9 @@ class Agent:
         if self.contract and name in ('read_files', 'read_file_chunk'):
             summary = state_runtime.harness_read(args.get('paths') or args.get('path'))
             if summary is not None:
+                product = summary.pop('product', None)
+                if product and name == 'read_files':
+                    summary['files'].update(self.workspace.read_files(product))
                 return summary
         if name == 'write_files':
             if self.contract:

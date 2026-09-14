@@ -968,3 +968,25 @@ class SnapshotDeliveryTests(TempCase):
         self.workspace.last_verification = None
         self.assertFalse(agent.snapshot_product())
         self.assertFalse(agent.snapshot_path().exists())
+
+
+class HarnessReadTests(unittest.TestCase):
+    """A read of harness-owned files is answered with their contract, never their bytes.
+
+    The first full Keep run on this branch lost a call to a read that mixed the two new
+    check files with product files: the owned bytes counted against the read bound.
+    """
+
+    def test_owned_only_read_is_summarised(self):
+        answer = state_runtime.harness_read(['backend/state.cjs', 'checks/vocabulary.cjs'])
+        self.assertEqual(set(answer['files']), {'backend/state.cjs', 'checks/vocabulary.cjs'})
+        self.assertNotIn('product', answer)
+
+    def test_product_only_read_is_not_intercepted(self):
+        self.assertIsNone(state_runtime.harness_read(['backend/api.cjs']))
+
+    def test_mixed_read_names_the_product_files_for_a_verbatim_read(self):
+        answer = state_runtime.harness_read([
+            'checks/interface.spec.cjs', 'frontend/public/app.js', 'checks/vocabulary.cjs', 'backend/api.cjs'])
+        self.assertEqual(set(answer['files']), {'checks/interface.spec.cjs', 'checks/vocabulary.cjs'})
+        self.assertEqual(answer['product'], ['frontend/public/app.js', 'backend/api.cjs'])
