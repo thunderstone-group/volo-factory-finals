@@ -696,3 +696,32 @@ each rule snapshot and experiment with date and source.
   first assertion, `getByText('账户信息', {exact: true})`, which the register page never renders;
   its only heading is `注册旅客账号`. Every other locator in that test resolves, including the
   `密码强度` meter. So my generation does not reproduce the official signed-in regression.
+
+### 2026-09-14, evening — the two naming rules, checked mechanically, and a schedule that finishes
+
+- `checks/interface.spec.cjs` is harness-owned, generated from the contract, and runs with every
+  batch because check discovery already collects every `checks/*.spec.*`. It **fails** on two
+  things and only two: two controls visible at the same moment sharing an accessible name, and a
+  visible input, swatch, field, toggle or meter with no accessible name at all. Those are the two
+  defects section 1.8 measured, worth eight of fifteen Keep failures. Both permitted shapes pass —
+  actions revealed only on hover or focus, and actions carrying their row's own title.
+- The same check **reports without failing** every name matching no requirement text, against a
+  `checks/vocabulary.cjs` built from the contract's exact texts, navigation names, entity and field
+  names, seeded values, and the strings a reference observation transcribed. The asymmetry is
+  deliberate: ambiguity and namelessness are unambiguous defects, while a name outside the
+  vocabulary is a smell, and failing a run on a smell buys the repair loop this branch already
+  measured at CNY 2.22 in one iteration.
+- The observed-headings source is load-bearing, not decorative. Section 1.9 records the chain for
+  Ticket: the observation step **was enabled** (`qwen3.6-flash`), it transcribed *"a centered
+  modal-style form titled \"Account Information\" (账户信息)"*, that reached the generation prompt,
+  the requirement prose contains 账户信息 zero times, and the page still rendered only
+  `注册旅客账号`. So the image was read and the model dropped the string anyway — prompt adherence,
+  not a gap in observation, and the image is the only source for that required string.
+- `run_schedule()` now gives every batch its first implementation. A batch that cannot converge is
+  recorded under `batch_incomplete` and the batches after it still get their turn; only an
+  exhausted call, token or wall-clock budget stops the schedule, under
+  `schedule_stopped_on_budget`. Every verified tree is snapshotted and a run ending on a tree no
+  verification matches restores the last one that did. `incomplete_requirements` is reported
+  alongside `self_checked_requirements`.
+- Suite 295, 4 skips. None of this has been through a generation yet; the next iteration tests the
+  fixes rather than re-rolling the same application.
