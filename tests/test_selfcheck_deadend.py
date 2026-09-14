@@ -157,7 +157,13 @@ class RepairLoopBoundTests(TempCase):
 
 class MalformedEditTests(TempCase):
     def test_an_edit_missing_a_key_reports_what_it_needs(self):
-        """Run 8abb spent two of fifteen calls on a KeyError reported to the model as "'path'"."""
+        """Run 8abb spent two of fifteen calls on a KeyError reported to the model as "'path'".
+
+        The file has to exist for this to be a malformed edit at all: the same shape on a
+        path that does not exist is a file creation, and is carried out rather than
+        refused.
+        """
+        self.workspace.write_files([{'path': 'a.js', 'content': 'const a = 1;\n'}])
         with FakeGateway([]) as gateway:
             agent = Agent(RequirementSet.load(self.req),
                           Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace),
@@ -167,6 +173,17 @@ class MalformedEditTests(TempCase):
                                                     'edits': [{'path': 'a.js', 'new': 'b'}]})
         self.assertIn("'old'", str(failure.exception))
         self.assertIn('Received keys', str(failure.exception))
+
+    def test_an_edit_missing_its_path_still_names_the_edit_and_the_key(self):
+        with FakeGateway([]) as gateway:
+            agent = Agent(RequirementSet.load(self.req),
+                          Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace),
+                          self.workspace, Runtime(self.trace))
+            with self.assertRaises(ValueError) as failure:
+                agent.dispatch('patch_and_verify', {'check_command': ['node', 'checks/x.cjs'],
+                                                    'edits': [{'new': 'b', 'old': 'a'}]})
+        self.assertIn('Edit 1', str(failure.exception))
+        self.assertIn("'path'", str(failure.exception))
 
 
 class BrowserAvailabilityTests(TempCase):

@@ -958,7 +958,27 @@ for the action: a page with a global control answering a verb, and a row that le
 such action, is a finding. The composer is checked against the six verbs the published helpers
 actually use on a composer rather than all eight, which removes the noisiest case.
 
-Suite 352, 4 skips, with a local Playwright 1.61.1 and Chromium supplied. Five synthetic fixtures under
+Two more, from Bookstack run 2 at `dd8acdb`, whose first batch spent all twenty calls writing
+nothing and verifying nothing. The loop was: three read-only calls, `diagnosis_stall_repair` forces
+compact patch mode, the model answers with an edit that carries only new text for
+`checks/requirements.cjs`, the edit is rejected because the file does not exist, back to reading.
+
+- **A patch edit that carries only new text, for a path that does not exist, creates the file.**
+  It goes through the same write path as `write_files`, so the regression-check lock and
+  `node --check` both apply, and the verify then runs as it would for any patch. This is the
+  intent-over-rejection rule the rest of the branch already follows.
+- **The read-only stall does not force patch mode before anything has been written.** When the
+  only files under the product roots are the ones the harness and the scaffold wrote, there is
+  nothing to patch; the batch is told "Nothing is implemented yet; write the implementation and
+  its check with write_files now" and keeps the full tool menu. `backend/api.cjs` exists from the
+  first moment as a stub that answers nothing, so `implemented_files()` compares against it rather
+  than trusting the path.
+- **A batch that failed before anything ever verified now leaves the scaffold, not its debris.**
+  `restore_verified_tree` has no snapshot to restore in a first batch, so the retry would start
+  from exactly the half-written files that did not converge. They are removed, `backend/api.cjs`
+  goes back to the stub, and `cleared_unverified_product` records what went.
+
+Suite 361, 4 skips, with a local Playwright 1.61.1 and Chromium supplied. Five synthetic fixtures under
 `tests/fixtures/` are hand written and implement no requirement: the hover-rows page that passes
 every rule, and one page each for a modal that is not inert, a hover-only control carrying the row
 title, a verb that resolves outside its row, and controls a reload does not bring back. No

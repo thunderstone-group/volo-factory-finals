@@ -160,6 +160,75 @@ class EditAnchorTests(TempCase):
         self.assertEqual((self.out / 'backend/api.cjs').read_text(), API)
 
 
+class PatchCreatesAFileTests(TempCase):
+    """Bookstack run 2, batch 1: twenty calls, no file written, no verification.
+
+    Patch mode was forced on a batch that had written nothing, the model answered with
+    an edit that carried only new text for checks/requirements.cjs, and the edit was
+    rejected because the file does not exist.
+    """
+
+    def agent(self, gateway):
+        scaffold(self.workspace)
+        return Agent(RequirementSet.load(self.req),
+                     Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace),
+                     self.workspace, Runtime(self.trace))
+
+    def events(self):
+        return [json.loads(line) for line in
+                (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+
+    def test_an_edit_with_only_new_text_for_a_missing_path_creates_it_and_verifies(self):
+        check = ("const test=require('node:test');const assert=require('node:assert/strict');\n"
+                 "test('the application answers', async () => {\n"
+                 "  const response = await fetch(process.env.FACTORY_BASE_URL);\n"
+                 "  assert.equal(response.status, 200);\n});\n")
+        with FakeGateway([]) as gateway:
+            agent = self.agent(gateway)
+            agent.workspace.write_files([{'path': 'frontend/public/index.html',
+                                          'content': '<!doctype html><title>x</title><h1>x</h1>'}])
+            result = agent.dispatch('patch_and_verify', {
+                'edits': [{'path': 'checks/requirements.cjs', 'new': check}],
+                'check_command': ['node', '--test', 'checks/requirements.cjs']})
+        self.assertEqual((self.out / 'checks' / 'requirements.cjs').read_text(), check)
+        self.assertTrue(result['passed'], result.get('error'))
+        self.assertEqual(agent.check_command, ['node', '--test', 'checks/requirements.cjs'])
+        created = [event for event in self.events() if event['event'] == 'patch_created_files']
+        self.assertEqual([event['paths'] for event in created], [['checks/requirements.cjs']])
+
+    def test_a_created_file_that_does_not_parse_is_reported_and_not_verified(self):
+        # The same guard write_files runs. A file created here has never been parsed.
+        with FakeGateway([]) as gateway:
+            agent = self.agent(gateway)
+            agent.contract = {'seeds': []}
+            result = agent.dispatch('patch_and_verify', {
+                'edits': [{'path': 'frontend/public/app.js', 'new': 'function ( {\n'}],
+                'check_command': ['node', '--test', 'checks/requirements.cjs']})
+        self.assertIn('syntax_errors', result)
+        self.assertEqual(result['syntax_errors'][0]['file'], 'frontend/public/app.js')
+        self.assertNotIn('passed', result)
+
+    def test_an_anchored_edit_to_a_missing_file_is_still_refused(self):
+        with FakeGateway([]) as gateway:
+            agent = self.agent(gateway)
+            with self.assertRaises(ValueError) as rejected:
+                agent.dispatch('patch_and_verify', {
+                    'edits': [{'path': 'backend/nothing.cjs', 'old': 'x', 'new': 'y'}],
+                    'check_command': ['node', '--test', 'checks/x.cjs']})
+        self.assertIn('Edit a file that exists', str(rejected.exception))
+
+    def test_an_edit_with_no_anchor_on_a_file_that_exists_is_still_refused(self):
+        with FakeGateway([]) as gateway:
+            agent = self.agent(gateway)
+            self.workspace.write_files([{'path': 'backend/api.cjs', 'content': API}])
+            with self.assertRaises(ValueError) as rejected:
+                agent.dispatch('patch_and_verify', {
+                    'edits': [{'path': 'backend/api.cjs', 'new': 'const X=1;'}],
+                    'check_command': ['node', '--test', 'checks/x.cjs']})
+        self.assertIn("needs 'insert_after' or 'old'", str(rejected.exception))
+        self.assertEqual((self.out / 'backend/api.cjs').read_text(), API)
+
+
 class DiagnosisStallTests(TempCase):
     """E056 spent thirteen consecutive read-only calls; 8abb7f040604 spent three."""
 

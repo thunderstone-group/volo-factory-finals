@@ -772,7 +772,32 @@ attempt's last failing check output in its request and `batch_retry` on the trac
 records `batch_incomplete` as before. No other failure is retried: it would spend a second batch's
 calls on the wall it just hit.
 
-### 10.6 What the model is told
+### 10.6 The patch-mode dead loop, from Bookstack run 2
+
+Different application, same round. The first batch of Bookstack run 2 at `dd8acdb` spent all
+twenty of its calls and wrote nothing at all. The loop, three times over: `list_files`, a read of
+harness-owned files, `read_file_chunk`, then `diagnosis_stall_repair` forcing compact patch mode,
+then `patch_and_verify` with an edit of shape `{path: "checks/requirements.cjs", new: "..."}`,
+then the rejection "Edit a file that exists; checks/requirements.cjs does not", then back to
+reading. Two harness defects meet there.
+
+**A patch that creates a file is a file creation.** An edit carrying `new` and neither `old` nor
+`insert_after`, on a path that does not exist, now writes the file and the verify proceeds. It
+goes through the same guarded write as the `write_files` tool, so an earlier batch's regression
+check is still withheld and the created file is still parsed before anything runs.
+
+**Patch mode has nothing to offer a batch that has written nothing.** The stall check now asks
+whether this run has written any product file at all, and if it has not, it keeps the full tool
+menu and appends one line: "Nothing is implemented yet; write the implementation and its check
+with write_files now". `backend/api.cjs` exists from the first moment as a scaffold stub that
+answers nothing, so the question is answered by comparing content, not by listing paths.
+
+The same absence bites the retry in 10.5: a first batch has no verified snapshot, so
+`restore_verified_tree` finds nothing to restore and the retry would start from the debris of the
+attempt that just failed. When no snapshot exists, every product file that is not harness-owned is
+removed and `backend/api.cjs` goes back to the stub, recorded as `cleared_unverified_product`.
+
+### 10.7 What the model is told
 
 ```
 Six rules the harness checks mechanically, on the entry page and in every
@@ -832,7 +857,7 @@ And two rules about the checks you write, which the harness cannot enforce for y
    against a correct page. One batch of run 5 spent its whole call budget on exactly that.
 ```
 
-### 10.7 Measured
+### 10.8 Measured
 
 On `runs/2026-09-14-keep-full-5/app`, fresh data directory, this machine:
 

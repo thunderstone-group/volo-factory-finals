@@ -10,7 +10,7 @@ from . import contract as state_contract
 from . import state_runtime
 from .context import excerpt, project, size
 from .trace import atomic_json
-from .web_runtime import scaffold, implement, prepared_check, SERVER, BUILD, BROWSER_CHECK
+from .web_runtime import scaffold, implement, prepared_check, API_STUB, SERVER, BUILD, BROWSER_CHECK
 from .workspace import edit_anchor_failure, normalize_check_command, tool_failure
 
 
@@ -583,6 +583,31 @@ class Agent:
                              requirements=list(requirements), paths=recorded)
         return recorded
 
+    def write_guarded(self, args):
+        """Write through the guards every write goes through.
+
+        An earlier batch's regression checks are withheld and the parser is run over
+        what was written. Both the write_files tool and a patch that creates a file go
+        through here, so a created file cannot slip past either guard.
+        """
+        locked = {}
+        if self.contract:
+            args = state_runtime.coerce_file_batch(args)
+            args, locked = self.withhold_locked_checks(args)
+            if locked and not args.get('files'):
+                raise ValueError(' '.join(locked.values()))
+        result = self.workspace.write_files(**args)
+        if locked:
+            result['refused'] = locked
+            self.trace.event('regression_check_write_refused', paths=sorted(locked))
+        if self.contract:
+            defects = state_runtime.syntax_findings(self.workspace, result['written'])
+            if defects:
+                result['syntax_errors'] = defects
+                result['next'] = ('Each file above failed node --check at the reported '
+                                  'position. Rewrite only that file, complete and valid.')
+        return result
+
     def withhold_locked_checks(self, args):
         """Write everything in this call except an earlier batch's regression checks."""
         files = args.get('files')
@@ -665,6 +690,29 @@ class Agent:
             self.restore_verified_tree()
         except (OSError, ValueError) as restore_error:
             self.trace.event('restore_failed', error=str(restore_error)[:300])
+        self.clear_unverified_product()
+
+    def clear_unverified_product(self):
+        """Put the tree back to the scaffold when nothing has ever verified.
+
+        The first batch has no snapshot, so restore_verified_tree has nothing to restore
+        and leaves that batch's half-written files in place for the retry and for every
+        batch after it. Nothing here was ever verified, so none of it is worth keeping.
+        """
+        if self.snapshot_path().is_file():
+            return []
+        removed = []
+        for name in self.implemented_files():
+            try:
+                self.workspace.path(name, write=True).unlink()
+            except (OSError, ValueError):
+                continue
+            removed.append(name)
+        if 'backend/api.cjs' in removed:
+            self.workspace.write_files([{'path': 'backend/api.cjs', 'content': API_STUB}])
+        if removed:
+            self.trace.event('cleared_unverified_product', paths=sorted(removed))
+        return removed
 
     def retry_brief(self):
         """What the first attempt was stuck on, in the second attempt's own request."""
@@ -719,6 +767,30 @@ class Agent:
                          completed=self.completed, removed=removed)
         print('[volo] restored the last verified snapshot', flush=True)
         return True
+
+    def implemented_files(self):
+        """Product files this run has written, ignoring everything the scaffold wrote.
+
+        backend/api.cjs exists from the first moment as a stub that answers nothing, so
+        a batch that has written no code still has a product file by path. Telling the
+        two apart is what decides whether there is anything to patch.
+        """
+        names = []
+        for item in self.workspace.list_files()['files']:
+            name = item['path']
+            if (name in state_runtime.HARNESS_OWNED or name in KNOWN_RUNTIME
+                    or name.startswith('backend/data/')
+                    or any(part.startswith('.') for part in name.split('/'))):
+                continue
+            try:
+                text = self.workspace.path(name).read_text()
+            except (OSError, UnicodeError, ValueError):
+                names.append(name)
+                continue
+            if text == KNOWN_RUNTIME.get(name) or text == API_STUB or not text.strip():
+                continue
+            names.append(name)
+        return names
 
     def snapshot_path(self):
         return self.trace.directory / 'snapshot.json'
@@ -977,25 +1049,11 @@ class Agent:
             if refusal:
                 raise ValueError(refusal)
         if name == 'write_files':
-            locked = {}
-            if self.contract:
-                args = state_runtime.coerce_file_batch(args)
-                args, locked = self.withhold_locked_checks(args)
-                if locked and not args.get('files'):
-                    raise ValueError(' '.join(locked.values()))
-            result = self.workspace.write_files(**args)
-            if locked:
-                result['refused'] = locked
-                self.trace.event('regression_check_write_refused', paths=sorted(locked))
-            if self.contract:
-                defects = state_runtime.syntax_findings(self.workspace, result['written'])
-                if defects:
-                    # Hand back the parser's own diagnosis instead of letting the model
-                    # rediscover it with ad-hoc scripts.
-                    result['syntax_errors'] = defects
-                    result['next'] = ('Each file above failed node --check at the reported '
-                                      'position. Rewrite only that file, complete and valid.')
-                    return result
+            result = self.write_guarded(args)
+            if result.get('syntax_errors'):
+                # Hand back the parser's own diagnosis instead of letting the model
+                # rediscover it with ad-hoc scripts.
+                return result
             command = self.workspace.discovered_check_command()
             if command and any(path in command for path in result['written']):
                 self.trace.event('authored_test_bundle_ready', check_command=command)
@@ -1012,7 +1070,7 @@ class Agent:
                                  'to add text after a unique anchor, or "old" to replace unique text. '
                                  'Return the smallest edit that implements the requirement, '
                                  'plus the assertion for it.')
-            grouped, skipped = {}, []
+            grouped, skipped, created = {}, [], {}
             for position, item in enumerate(edits, 1):
                 # Run 8abb spent two of fifteen calls on a KeyError reported as "'path'".
                 # Every rejection here names which edit failed, what it needs and what it carried.
@@ -1028,6 +1086,14 @@ class Agent:
                 target = self.workspace.path(path, write=True)
                 empty = target.is_file() and not target.read_text()
                 if not {'insert_after', 'old'} & set(item) and not empty:
+                    # New text and no anchor, for a path that does not exist, is a file
+                    # creation whatever the tool is called. Bookstack run 2 spent a whole
+                    # batch of twenty calls in this loop: patch mode was forced, the model
+                    # answered with exactly this shape for checks/requirements.cjs, and
+                    # the rejection sent it back to reading.
+                    if not target.is_file():
+                        created[path] = item['new']
+                        continue
                     raise ValueError('Edit ' + str(position) + " needs 'insert_after' or 'old', unless the "
                                      'file exists and is empty. Received keys: '
                                      + json.dumps(sorted(key for key in item if key != 'position')))
@@ -1040,9 +1106,17 @@ class Agent:
                 pending[path] = apply_edits(self.workspace.path(path, write=True).read_text(), items, path)
             if skipped:
                 self.trace.event('prepared_check_edit_skipped', paths=skipped)
-            if not pending:
+            if not pending and not created:
                 raise ValueError('Edit the application; ' + PREPARED_CHECK_PATH + ' is harness-owned')
-            self.workspace.write_files([{'path': path, 'content': content} for path, content in pending.items()])
+            if created:
+                self.trace.event('patch_created_files', paths=sorted(created))
+                written = self.write_guarded({'files': [{'path': path, 'content': content}
+                                                        for path, content in sorted(created.items())]})
+                if written.get('syntax_errors'):
+                    return written
+            if pending:
+                self.workspace.write_files([{'path': path, 'content': content}
+                                            for path, content in pending.items()])
             result = self.workspace.verify(args['check_command'])
             if result['passed']:
                 self.check_command = args['check_command']
@@ -1373,6 +1447,17 @@ class Agent:
                     compact, compact_attempts = True, 0
                 else:
                     self.source_snapshot_limit = 24000
+            elif read_only_calls >= STALL_REPAIR_AFTER and not compact and not self.implemented_files():
+                # Three read-only calls, and nothing written yet. Forcing patch mode here
+                # asks for an edit to a file that does not exist: Bookstack run 2 spent
+                # all twenty calls of its first batch alternating between a forced patch
+                # of checks/requirements.cjs and the rejection that the file is not there.
+                self.trace.event('diagnosis_stall_nudge', consecutive_read_only=read_only_calls,
+                                 reason='nothing_implemented')
+                messages.append({'role': 'user', 'content':
+                    'Nothing is implemented yet; write the implementation and its check with '
+                    'write_files now'})
+                read_only_calls = 0
             elif read_only_calls >= STALL_REPAIR_AFTER and not compact:
                 # Three consecutive calls produced no change and no check. Stop offering
                 # the read tools and force one bounded full-source repair.

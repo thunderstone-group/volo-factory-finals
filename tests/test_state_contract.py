@@ -16,10 +16,11 @@ from unittest.mock import patch
 from volo import contract as state_contract
 from volo import state_runtime
 from volo.agent import Agent, CONTRACT_SYSTEM
+from volo.model import Model
 from volo.requirements import RequirementSet
 from volo.trace import Runtime
 from volo.web_runtime import scaffold
-from test_core import ROOT, TempCase
+from test_core import ROOT, FakeGateway, TempCase, response
 
 
 # Synthetic requirement package. Its shape copies the published corpus convention —
@@ -1546,6 +1547,100 @@ class ScheduleCompletionTests(TempCase):
 
 
 @unittest.skipUnless(__import__('shutil').which('node'), 'node is required')
+class NothingImplementedTests(TempCase):
+    """Bookstack run 2, batch 1: twenty calls, zero files written, zero verifications.
+
+    Three read-only calls forced compact patch mode, the model answered with a patch
+    creating checks/requirements.cjs, the patch was rejected because the file does not
+    exist, and the batch went round that loop until its calls ran out.
+    """
+
+    def agent(self, gateway):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, Model(gateway.url, 'synthetic-key', 'synthetic-model',
+                                          self.trace),
+                      self.workspace, Runtime(self.trace), contract=contract)
+        agent.install_contract()
+        return agent
+
+    def replies(self, payloads):
+        replies = []
+        for index, payload in enumerate(payloads):
+            reply = response([payload])
+            for call in reply['choices'][0]['message']['tool_calls']:
+                call['id'] = 'step-%d-' % index + call['id']
+            replies.append(reply)
+        return replies
+
+    def events(self):
+        return [json.loads(line) for line in
+                (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+
+    def run_stall(self):
+        read = ('read_files', {'paths': ['backend/api.cjs']})
+        replies = self.replies([read, read, read])
+        with patch('volo.agent.SMALL_BATCH_CHARS', 0), patch('volo.agent.BOUNDED_BATCH_CHARS', 0):
+            with FakeGateway(replies + [response([])]) as gateway:
+                agent = self.agent(gateway)
+                agent.max_calls = 4
+                with self.assertRaises(RuntimeError):
+                    agent.run_batch(agent.requirements.nodes[:1])
+                return gateway
+
+    def test_the_scaffold_alone_is_not_an_implementation(self):
+        with FakeGateway([]) as gateway:
+            agent = self.agent(gateway)
+            self.assertEqual(agent.implemented_files(), [])
+            agent.dispatch('write_files', {'files': [
+                {'path': 'frontend/public/app.js', 'content': '// product\n'}]})
+            self.assertEqual(agent.implemented_files(), ['frontend/public/app.js'])
+
+    def test_a_stall_before_anything_is_written_keeps_the_full_tools_and_says_so(self):
+        gateway = self.run_stall()
+        self.assertEqual([event['reason'] for event in self.events()
+                          if event['event'] == 'diagnosis_stall_nudge'], ['nothing_implemented'])
+        self.assertEqual([event for event in self.events()
+                          if event['event'] == 'diagnosis_stall_repair'], [])
+        offered = [tool['function']['name'] for tool in gateway.requests[-1]['tools']]
+        self.assertIn('write_files', offered)
+        self.assertNotEqual(offered, ['patch_and_verify'])
+        self.assertIn('Nothing is implemented yet', json.dumps(gateway.requests[-1]['messages']))
+
+    def test_a_stall_after_a_product_file_still_enters_patch_mode(self):
+        scaffold(self.workspace)
+        self.workspace.write_files([{'path': 'frontend/public/app.js',
+                                     'content': 'const marker="product";\n'}])
+        gateway = self.run_stall()
+        self.assertEqual([event['consecutive_read_only'] for event in self.events()
+                          if event['event'] == 'diagnosis_stall_repair'], [3])
+        self.assertEqual([tool['function']['name'] for tool in gateway.requests[-1]['tools']],
+                         ['patch_and_verify'])
+
+    def test_a_first_batch_that_failed_leaves_no_product_files_for_the_retry(self):
+        # With no verified snapshot there is nothing to restore, so the debris of the
+        # attempt that just failed would otherwise be what the retry starts from.
+        with FakeGateway([]) as gateway:
+            agent = self.agent(gateway)
+            agent.dispatch('write_files', {'files': [
+                {'path': 'frontend/public/app.js', 'content': '// half written\n'},
+                {'path': 'checks/batch-1.spec.cjs', 'content': '// half written\n'},
+                {'path': 'backend/api.cjs', 'content': 'module.exports=async()=>false;\n'}]})
+            agent.restore_quietly()
+        self.assertFalse((self.out / 'frontend/public/app.js').exists())
+        self.assertFalse((self.out / 'checks/batch-1.spec.cjs').exists())
+        # The scaffold's own files stay, so the application still starts.
+        self.assertEqual((self.out / 'backend/api.cjs').read_text(),
+                         'module.exports=async(req,res)=>false;\n')
+        self.assertTrue((self.out / 'backend/state.cjs').is_file())
+        self.assertTrue((self.out / 'checks/interface.spec.cjs').is_file())
+        cleared = [event for event in self.events() if event['event'] == 'cleared_unverified_product']
+        self.assertEqual(cleared[0]['paths'],
+                         ['backend/api.cjs', 'checks/batch-1.spec.cjs', 'frontend/public/app.js'])
+
+
 class SnapshotDeliveryTests(TempCase):
     """Exhaustion delivers the best tree that verified, not whatever was half-written."""
 

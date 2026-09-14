@@ -76,6 +76,11 @@ http.createServer(async (req,res) => {
 }).listen(Number(process.env.PORT || 3000), '0.0.0.0');
 """
 
+# The handler scaffold writes before the model has written anything: a product file by
+# path, and no implementation at all. The agent compares against it to tell a batch that
+# has written nothing from one that has.
+API_STUB = "module.exports=async(req,res)=>false;\n"
+
 BUILD = """const fs=require('node:fs');
 fs.rmSync('dist',{recursive:true,force:true});
 fs.cpSync('public','dist',{recursive:true});
@@ -135,7 +140,7 @@ def scaffold(workspace):
         {"path": "frontend/build.cjs", "content": BUILD},
         {"path": "backend/package.json", "content": json.dumps({"private": True, "scripts": {"start": "node server.cjs"}})},
         {"path": "backend/server.cjs", "content": SERVER},
-        {"path": "backend/api.cjs", "content": "module.exports=async(req,res)=>false;\n"},
+        {"path": "backend/api.cjs", "content": API_STUB},
         {"path": "checks/browser.cjs", "content": BROWSER_CHECK},
     ])
 
