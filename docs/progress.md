@@ -1015,3 +1015,17 @@ generation has been run against any of this.
   02:18. No local generation while it runs. The Keep board moved overnight: 100%, 62.5%,
   59.4%, 56.2% at the top, so a junior row needs more than 62.5% for rank 2.
 - Bundle of the failed run: `runs/2026-09-15-official-keep-3313c37b801c/`.
+
+### 2026-09-15, 03:50 — second official Keep run: delivered the snapshot, then crashed on the summary
+
+- Run `1c2af08cf3cc` (package ebb5ab8): FAILED, 0/32, 99 minutes, CNY 12.57, 6.09 M metered
+  tokens, 200 calls exhausted at 16 of 32 requirements (the hosted machine makes 2 calls a
+  minute; no batch retry in this package, so capped batches cost their calls for nothing).
+  The delivery fix worked — `delivered_verified_snapshot` is on the trace — and the summary
+  line after it read `last_verification.get(...)` on the value the failed fresh verification
+  had cleared: exit 1, no tests. The synthetic delivery test had faked `verify` without
+  clearing that field, so it passed on code that could not survive the real path.
+- Fixed on the upload branch (null-safe summary; the fake verify now clears the field). Before
+  uploading again, the wall-clock delivery path is being exercised end to end with a real
+  seven-minute local generation, not only with the synthetic test.
+- Bundle: `runs/2026-09-15-official-keep-1c2af08cf3cc/`.
