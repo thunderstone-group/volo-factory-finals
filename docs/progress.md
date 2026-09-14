@@ -686,3 +686,23 @@ each rule snapshot and experiment with date and source.
 - A codex job is reproducing the stall in a single cgroup locally
   (`~/.codex-jobs/volo-factory/2026-09-14-early-stall-repro/`, memory x CPU sweep over two real
   apps); its result will be appended to `early-stall-2026-09-14.md` once verified.
+
+## 2026-09-14 — Probed the hosted container: a 1-CPU quota, 86% throttled during the suite
+
+- Team lead asked whether the early-stall mechanism was measured or guessed. It was inferred, so
+  PR #26 added a sampler to the managed launcher (cgroup limits, memory/OOM counters, CPU
+  throttling, pressure, process table, 0.5 s cadence, 3 MB cap, rotated per launcher start, file
+  `.factory/probe.jsonl`) plus `harness_lab/probe_summary.py`; suite 243 green.
+- Official run `07cd84033853` (main 3ba481e): PASSED 10/10, CNY 0.821109, 307,411 tokens equal to
+  captured usage, 10 model calls. The bundle returned the probe. Container: cgroup v2,
+  `cpu.max` = 1.0 CPU, `memory.max` 2 GiB, `/dev/shm` 64 MB, 16-CPU/65 GB host; app gets
+  `PORT=3000`, no `E2E_BASE_URL`. Test phase: 147 of 171 CPU periods throttled, 38.6 s throttled
+  vs 15.4 s used (about 2.9 CPUs of demand), cpu.pressure full avg10 up to 20.1%, memory peak
+  714 MB, no OOM, 32 Chromium processes at peak. Mechanism: CPU-quota starvation at browser
+  launch, not memory. Written into `docs/early-stall-2026-09-14.md`; organizer report rewritten
+  with the measured numbers in `docs/organizer-report-2026-09-14.md`.
+- Local single-cgroup sweep (codex, docker): idle host at 1 CPU and 0.5 CPU passes 10/10 (suite
+  slows to 22 to 24 s); 256 MB fails 2/10 to 6/10 by swap/OOM, a mechanism the hosted counters
+  rule out. A noisy host on a 1-CPU quota is what local cannot emulate.
+- Board: the probe run is a passing run at CNY 0.821109, below the previous row's 0.899558, so the
+  Ticket row moved to it.
