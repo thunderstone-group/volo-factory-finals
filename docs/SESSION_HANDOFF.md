@@ -27,13 +27,13 @@ and the order of work. `docs/progress.md` is the dated development log.
 
 ## Unresolved, in priority order
 
-1. **Hosted early-window stall.** Official Ticket runs today: 10/10 x3, 9/10, 7/10, 8/10.
-   Every failure is a test that started in the first 10 to 17 s of the test phase
-   (timeouts, one `Target crashed`); later tests pass fast; the delivered apps replay
-   10/10 locally 25 of 25. PR #22 (one browser per check run) did not remove it. Agent
-   `early-stall` is building the cross-run timeline; suspects are our process-tree
-   teardown, app cold start and the 3000/3301 proxy. Confirmation needs one official
-   trial in a quiet window.
+1. **Hosted early-window stall: resolved as the runner's, not ours** (`docs/early-stall-2026-09-14.md`).
+   Ten runs aligned by Playwright worker: every lost test is the first test of an initial
+   worker, replacement workers pass everything; the 09-12 security-reproduction runs (canned
+   app, no browser, no launcher) show the same signature, so teardown, self-check pressure and
+   the relay are excluded; hashing is not a discriminator. The 09-14 trial after PR #22
+   (`c399145c5eb1`) lost both initial workers, 8/10 at CNY 0.529, row unchanged. Open: a
+   single-cgroup local reproduction (memory vs CPU) and whether to report it to the organizer.
 2. **Objective function.** GPT-6 review at
    `~/.codex-jobs/volo-factory/2026-09-14-objective-review/last-message.md`: optimise
    pass rate / cost under a 95% probability of clearing the threshold; the one change

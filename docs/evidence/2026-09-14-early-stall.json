@@ -1,0 +1,1004 @@
+{
+ "question": "Why do hosted Ticket Booking runs lose tests in the first 10 to 17 s of the test phase, and is anything on our side the cause?",
+ "answer": "It is a hosted-runner phenomenon at suite start, not our agent: in every affected run the failures are the first test of each initial Playwright worker (w0/w1) plus at most the first test of the first replacement worker; the replacement workers pass everything, faster than the first tests of clean runs. The same signature appears in three security-reproduction runs whose agent phase was one 25-token call writing a canned app, with no self-check browser and no launcher, so process teardown, self-check browser pressure and the 3000/3301 relay are excluded as necessary causes. Password hashing is excluded too: three clean 10/10 runs used scryptSync like the failing ones.",
+ "runs": [
+  {
+   "run_id": "01b06fb30564",
+   "date": "2026-09-14",
+   "score": "10/10",
+   "note": "nav-race, ccc3eb9, generated",
+   "suite_start": "2026-09-14T03:20:35.939Z",
+   "suite_seconds": 13.8,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1
+   ],
+   "tests": [
+    {
+     "start": "2026-09-14T03:20:37.031Z",
+     "worker": 1,
+     "duration_ms": 2902,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T03:20:37.042Z",
+     "worker": 0,
+     "duration_ms": 2299,
+     "status": "passed",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T03:20:40.437Z",
+     "worker": 0,
+     "duration_ms": 2383,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T03:20:41.122Z",
+     "worker": 1,
+     "duration_ms": 1511,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T03:20:42.641Z",
+     "worker": 1,
+     "duration_ms": 2781,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T03:20:42.828Z",
+     "worker": 0,
+     "duration_ms": 2301,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T03:20:45.138Z",
+     "worker": 0,
+     "duration_ms": 1295,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T03:20:45.430Z",
+     "worker": 1,
+     "duration_ms": 2594,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T03:20:46.442Z",
+     "worker": 0,
+     "duration_ms": 1707,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T03:20:48.156Z",
+     "worker": 0,
+     "duration_ms": 1478,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    }
+   ]
+  },
+  {
+   "run_id": "d855ead6df43",
+   "date": "2026-09-14",
+   "score": "10/10",
+   "note": "image-off variant, generated",
+   "suite_start": "2026-09-14T04:01:54.935Z",
+   "suite_seconds": 13.2,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1
+   ],
+   "tests": [
+    {
+     "start": "2026-09-14T04:01:56.029Z",
+     "worker": 0,
+     "duration_ms": 2218,
+     "status": "passed",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:01:56.030Z",
+     "worker": 1,
+     "duration_ms": 3112,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:01:58.749Z",
+     "worker": 0,
+     "duration_ms": 2299,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:01:59.641Z",
+     "worker": 1,
+     "duration_ms": 1506,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:02:01.128Z",
+     "worker": 0,
+     "duration_ms": 2515,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:02:01.322Z",
+     "worker": 1,
+     "duration_ms": 2502,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:02:03.650Z",
+     "worker": 0,
+     "duration_ms": 1323,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:02:03.832Z",
+     "worker": 1,
+     "duration_ms": 2212,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:02:05.024Z",
+     "worker": 0,
+     "duration_ms": 1508,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:02:06.542Z",
+     "worker": 0,
+     "duration_ms": 1483,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    }
+   ]
+  },
+  {
+   "run_id": "b6b89caa3f8c",
+   "date": "2026-09-14",
+   "score": "10/10",
+   "note": "default restore, generated",
+   "suite_start": "2026-09-14T04:55:09.315Z",
+   "suite_seconds": 9.6,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1
+   ],
+   "tests": [
+    {
+     "start": "2026-09-14T04:55:10.115Z",
+     "worker": 1,
+     "duration_ms": 2108,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:55:10.118Z",
+     "worker": 0,
+     "duration_ms": 1707,
+     "status": "passed",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:55:12.115Z",
+     "worker": 0,
+     "duration_ms": 1791,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:55:12.515Z",
+     "worker": 1,
+     "duration_ms": 1291,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:55:13.813Z",
+     "worker": 1,
+     "duration_ms": 1603,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:55:13.912Z",
+     "worker": 0,
+     "duration_ms": 1597,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:55:15.422Z",
+     "worker": 1,
+     "duration_ms": 1797,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:55:15.601Z",
+     "worker": 0,
+     "duration_ms": 880,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:55:16.488Z",
+     "worker": 0,
+     "duration_ms": 1224,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T04:55:17.717Z",
+     "worker": 0,
+     "duration_ms": 1173,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    }
+   ]
+  },
+  {
+   "run_id": "e34e78400983",
+   "date": "2026-09-14",
+   "score": "10/10",
+   "note": "selfcheck-fix f720337, generated (board row)",
+   "suite_start": "2026-09-14T05:22:18.343Z",
+   "suite_seconds": 12.7,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1
+   ],
+   "tests": [
+    {
+     "start": "2026-09-14T05:22:19.429Z",
+     "worker": 1,
+     "duration_ms": 2503,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T05:22:19.448Z",
+     "worker": 0,
+     "duration_ms": 2240,
+     "status": "passed",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T05:22:22.331Z",
+     "worker": 0,
+     "duration_ms": 2393,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T05:22:22.436Z",
+     "worker": 1,
+     "duration_ms": 1518,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T05:22:24.047Z",
+     "worker": 1,
+     "duration_ms": 2208,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T05:22:24.732Z",
+     "worker": 0,
+     "duration_ms": 2105,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T05:22:26.426Z",
+     "worker": 1,
+     "duration_ms": 2392,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T05:22:26.845Z",
+     "worker": 0,
+     "duration_ms": 1246,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T05:22:28.178Z",
+     "worker": 0,
+     "duration_ms": 1458,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T05:22:29.644Z",
+     "worker": 0,
+     "duration_ms": 1353,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    }
+   ]
+  },
+  {
+   "run_id": "92220c94fd25",
+   "date": "2026-09-14",
+   "score": "7/10",
+   "note": "main b565095, generated",
+   "suite_start": "2026-09-14T07:42:26.755Z",
+   "suite_seconds": 19.3,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "tests": [
+    {
+     "start": "2026-09-14T07:42:27.149Z",
+     "worker": 0,
+     "duration_ms": 10013,
+     "status": "timedOut",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": "Test timeout of 10000ms exceeded."
+    },
+    {
+     "start": "2026-09-14T07:42:27.149Z",
+     "worker": 1,
+     "duration_ms": 1193,
+     "status": "failed",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": "Error: expect(locator).toBeVisible() failed | Locator: getByText('tb-user-1789371747433-uqk0z2', { exact: true }) | Expected: visible | Error: element(s) not found"
+    },
+    {
+     "start": "2026-09-14T07:42:28.905Z",
+     "worker": 2,
+     "duration_ms": 15018,
+     "status": "timedOut",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": "Test timeout of 10000ms exceeded."
+    },
+    {
+     "start": "2026-09-14T07:42:37.737Z",
+     "worker": 3,
+     "duration_ms": 980,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T07:42:38.802Z",
+     "worker": 3,
+     "duration_ms": 691,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T07:42:39.500Z",
+     "worker": 3,
+     "duration_ms": 241,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T07:42:39.747Z",
+     "worker": 3,
+     "duration_ms": 490,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T07:42:40.243Z",
+     "worker": 3,
+     "duration_ms": 611,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T07:42:44.404Z",
+     "worker": 4,
+     "duration_ms": 769,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T07:42:45.262Z",
+     "worker": 4,
+     "duration_ms": 772,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    }
+   ]
+  },
+  {
+   "run_id": "c399145c5eb1",
+   "date": "2026-09-14",
+   "score": "8/10",
+   "note": "main 7e4a053 with one-browser fix, generated",
+   "suite_start": "2026-09-14T08:23:51.385Z",
+   "suite_seconds": 18.3,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "tests": [
+    {
+     "start": "2026-09-14T08:23:51.786Z",
+     "worker": 0,
+     "duration_ms": 10011,
+     "status": "timedOut",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": "Test timeout of 10000ms exceeded."
+    },
+    {
+     "start": "2026-09-14T08:23:51.787Z",
+     "worker": 1,
+     "duration_ms": 15017,
+     "status": "timedOut",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": "Test timeout of 10000ms exceeded."
+    },
+    {
+     "start": "2026-09-14T08:24:02.385Z",
+     "worker": 2,
+     "duration_ms": 967,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T08:24:03.442Z",
+     "worker": 2,
+     "duration_ms": 685,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T08:24:04.134Z",
+     "worker": 2,
+     "duration_ms": 361,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T08:24:04.501Z",
+     "worker": 2,
+     "duration_ms": 657,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T08:24:05.165Z",
+     "worker": 2,
+     "duration_ms": 928,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T08:24:07.311Z",
+     "worker": 3,
+     "duration_ms": 659,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T08:24:08.064Z",
+     "worker": 3,
+     "duration_ms": 802,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-14T08:24:08.872Z",
+     "worker": 3,
+     "duration_ms": 742,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    }
+   ]
+  },
+  {
+   "run_id": "a129e387e562",
+   "date": "2026-09-12",
+   "score": "9/10",
+   "note": "dev35, generated",
+   "suite_start": "2026-09-12T10:06:32.307Z",
+   "suite_seconds": 14.6,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1,
+    2
+   ],
+   "tests": [
+    {
+     "start": "2026-09-12T10:06:32.704Z",
+     "worker": 1,
+     "duration_ms": 989,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T10:06:32.706Z",
+     "worker": 0,
+     "duration_ms": 10013,
+     "status": "timedOut",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": "Test timeout of 10000ms exceeded."
+    },
+    {
+     "start": "2026-09-12T10:06:33.881Z",
+     "worker": 1,
+     "duration_ms": 600,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T10:06:34.488Z",
+     "worker": 1,
+     "duration_ms": 814,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T10:06:35.308Z",
+     "worker": 1,
+     "duration_ms": 795,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T10:06:43.236Z",
+     "worker": 2,
+     "duration_ms": 800,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T10:06:44.137Z",
+     "worker": 2,
+     "duration_ms": 688,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T10:06:44.831Z",
+     "worker": 2,
+     "duration_ms": 363,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T10:06:45.200Z",
+     "worker": 2,
+     "duration_ms": 689,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T10:06:45.894Z",
+     "worker": 2,
+     "duration_ms": 926,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    }
+   ]
+  },
+  {
+   "run_id": "c4a7908ca693",
+   "date": "2026-09-12",
+   "score": "7/10",
+   "note": "security reproduction run: one 25-token model call wrote a canned application; no generation loop, no self-check browser, no .volo launcher (start = node server.cjs)",
+   "suite_start": "2026-09-12T19:12:00.754Z",
+   "suite_seconds": 19.9,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "tests": [
+    {
+     "start": "2026-09-12T19:12:01.148Z",
+     "worker": 1,
+     "duration_ms": 1613,
+     "status": "failed",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": "Error: expect(locator).toBeVisible() failed | Locator: getByText('tb-user-1789240321420-4n7qwe', { exact: true }) | Expected: visible | Error: element(s) not found"
+    },
+    {
+     "start": "2026-09-12T19:12:01.186Z",
+     "worker": 0,
+     "duration_ms": 10012,
+     "status": "timedOut",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": "Test timeout of 10000ms exceeded."
+    },
+    {
+     "start": "2026-09-12T19:12:03.310Z",
+     "worker": 2,
+     "duration_ms": 15017,
+     "status": "timedOut",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": "Test timeout of 10000ms exceeded."
+    },
+    {
+     "start": "2026-09-12T19:12:11.707Z",
+     "worker": 3,
+     "duration_ms": 795,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:12:12.596Z",
+     "worker": 3,
+     "duration_ms": 705,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:12:13.307Z",
+     "worker": 3,
+     "duration_ms": 360,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:12:13.673Z",
+     "worker": 3,
+     "duration_ms": 689,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:12:14.368Z",
+     "worker": 3,
+     "duration_ms": 947,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:12:18.825Z",
+     "worker": 4,
+     "duration_ms": 915,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:12:19.831Z",
+     "worker": 4,
+     "duration_ms": 806,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    }
+   ]
+  },
+  {
+   "run_id": "fef7c9c91778",
+   "date": "2026-09-12",
+   "score": "9/10",
+   "note": "security reproduction run: one 25-token model call wrote a canned application; no generation loop, no self-check browser, no .volo launcher (start = node server.cjs)",
+   "suite_start": "2026-09-12T19:36:44.126Z",
+   "suite_seconds": 17.6,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1,
+    2
+   ],
+   "tests": [
+    {
+     "start": "2026-09-12T19:36:44.512Z",
+     "worker": 0,
+     "duration_ms": 1531,
+     "status": "passed",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:36:44.549Z",
+     "worker": 1,
+     "duration_ms": 15015,
+     "status": "timedOut",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": "Test timeout of 10000ms exceeded."
+    },
+    {
+     "start": "2026-09-12T19:36:46.171Z",
+     "worker": 0,
+     "duration_ms": 540,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:36:46.718Z",
+     "worker": 0,
+     "duration_ms": 507,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:36:47.231Z",
+     "worker": 0,
+     "duration_ms": 261,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:36:47.499Z",
+     "worker": 0,
+     "duration_ms": 523,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:36:48.029Z",
+     "worker": 0,
+     "duration_ms": 651,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:37:00.065Z",
+     "worker": 2,
+     "duration_ms": 502,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:37:00.649Z",
+     "worker": 2,
+     "duration_ms": 547,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:37:01.202Z",
+     "worker": 2,
+     "duration_ms": 511,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    }
+   ]
+  },
+  {
+   "run_id": "bef9631c8245",
+   "date": "2026-09-12",
+   "score": "9/10",
+   "note": "security reproduction run: one 25-token model call wrote a canned application; no generation loop, no self-check browser, no .volo launcher (start = node server.cjs)",
+   "suite_start": "2026-09-12T19:53:21.208Z",
+   "suite_seconds": 17.6,
+   "initial_workers": 2,
+   "workers_seen": [
+    0,
+    1,
+    2
+   ],
+   "tests": [
+    {
+     "start": "2026-09-12T19:53:21.600Z",
+     "worker": 0,
+     "duration_ms": 1382,
+     "status": "passed",
+     "test": "REQ-1.1: successfully register a new account and remain signed in",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:53:21.632Z",
+     "worker": 1,
+     "duration_ms": 15016,
+     "status": "timedOut",
+     "test": "REQ-1.2: sign in with a valid username and password",
+     "error": "Test timeout of 10000ms exceeded."
+    },
+    {
+     "start": "2026-09-12T19:53:23.137Z",
+     "worker": 0,
+     "duration_ms": 519,
+     "status": "passed",
+     "test": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:53:23.662Z",
+     "worker": 0,
+     "duration_ms": 490,
+     "status": "passed",
+     "test": "REQ-1.1: reject duplicate email with a different username",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:53:24.159Z",
+     "worker": 0,
+     "duration_ms": 272,
+     "status": "passed",
+     "test": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:53:24.443Z",
+     "worker": 0,
+     "duration_ms": 506,
+     "status": "passed",
+     "test": "REQ-1.1: reject missing required registration values before creating a session",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:53:24.956Z",
+     "worker": 0,
+     "duration_ms": 658,
+     "status": "passed",
+     "test": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:53:37.151Z",
+     "worker": 2,
+     "duration_ms": 482,
+     "status": "passed",
+     "test": "REQ-1.2: sign in with a case-insensitive email and password",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:53:37.722Z",
+     "worker": 2,
+     "duration_ms": 532,
+     "status": "passed",
+     "test": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "error": null
+    },
+    {
+     "start": "2026-09-12T19:53:38.261Z",
+     "worker": 2,
+     "duration_ms": 528,
+     "status": "passed",
+     "test": "REQ-1.2: reject an unknown account and stay logged out",
+     "error": null
+    }
+   ]
+  }
+ ],
+ "mechanism_notes": {
+  "worker_restart": "Playwright tears a worker down after a failed test and starts a new one; workerIndex 2+ are replacements. Every failure sits on w0, w1 or the first test of w2.",
+  "fast_fail": "A login test that fails in about 1.2 s with \"element(s) not found\" is a page that died mid-expect: Frame._expect (playwright-core lib/server/frames.js) swallows a non-timeout exception such as a renderer crash and reports the last intermediate poll result instead. The next test on the replacement worker in both such runs reported \"Target crashed\" or hung 15 s.",
+  "evaluate_hang": "locator.evaluate hanging after expect(control).toBeVisible() passed is a renderer or worker that stopped answering, not an application condition; tagName.toLowerCase() cannot block.",
+  "browser_fixture": "The built-in browser fixture has timeout 0, so browser launch time is not charged to the first test.",
+  "trace_video": "No attachments on any failed result, so the hosted runner records neither trace nor video; the local gate setting trace/video off matches."
+ },
+ "board_2026-09-14T16:45+08:00": {
+  "volo_row": {
+   "rank": 7,
+   "run": "e34e78400983",
+   "pass": 100,
+   "cost_cny": 0.899558
+  },
+  "rank1": {
+   "team": "你也秃对不队",
+   "pass": 80,
+   "cost_cny": 2.4e-05,
+   "submissions": 12
+  },
+  "rank2": {
+   "team": "net1111",
+   "pass": 100,
+   "cost_cny": 0.423495
+  },
+  "note": "The 8/10 run c399145c5eb1 (CNY 0.529221, status FAILED) did not replace the row."
+ },
+ "meter_check": {
+  "c399145c5eb1": {
+   "official_tokens": 109816,
+   "captured": 109816
+  },
+  "92220c94fd25": {
+   "official_tokens": 77772,
+   "captured": 77772
+  }
+ }
+}

@@ -644,3 +644,33 @@ each rule snapshot and experiment with date and source.
   official trials with no browser fault in the evaluation window; a pass-rate change alone would not
   separate the fix from generation variance. Container logs for the run were collected at
   `stdout_bytes=0, stderr_bytes=0`, so there is no in-container memory evidence.
+
+## 2026-09-14 — The hosted early-window stall is the runner's, not ours
+
+- Aligned the Playwright JSON reports of the last ten official Ticket Booking runs (four clean,
+  six affected, 09-12 and 09-14) by worker index and start time. Every lost test is the first test
+  of an initial worker (w0/w1), or the first test of the first replacement worker while the window
+  was still open; every later test passes faster (241 to 980 ms) than the first tests of clean runs
+  (1.7 to 3.1 s). Write-up in `docs/early-stall-2026-09-14.md`, rows in
+  `docs/evidence/2026-09-14-early-stall.json`, raw reports and logs under
+  `runs/2026-09-14-early-stall/`.
+- All three suspects on our side are excluded by runs that never had them: the 09-12
+  security-reproduction runs (`c4a7908ca693`, `fef7c9c91778`, `bef9631c8245`) wrote a canned app
+  from one 25-token call, launched no browser, had no `.volo` launcher, and lost the same first
+  tests. Hashing is not the discriminator either: three clean 10/10 runs use `scryptSync` like the
+  failing ones. PR #22 (one browser per check run) could not have fixed it and `c399145c5eb1`
+  confirms it did not.
+- Read the signatures: the 1.2 s `element(s) not found` login failures are pages that died
+  mid-expect (`Frame._expect` swallows non-timeout exceptions and reports the last poll), followed
+  in both runs by `Target crashed` on the replacement worker; the `locator.evaluate` hangs after a
+  passed `toBeVisible` on the same locator are a renderer or worker that stopped answering. The
+  browser fixture has `timeout: 0`, so launch time is not charged to the first test. No failed
+  result carries attachments, so the runner records neither trace nor video.
+- Meter check for the two new runs: `c399145c5eb1` official 109,816 = captured 66,147 + 43,669;
+  `92220c94fd25` official 77,772 = captured 41,022 + 36,750. Both clean, no concurrent run.
+- Board consequence: our row stays `e34e78400983` (100%, CNY 0.899558, rank 7); the 8/10 run at
+  CNY 0.529 did not replace it. Rank 2 is 100% at CNY 0.4235, so the Ticket board moves only with a
+  generation cost cut, not with more trials; each trial carried about a 60% chance of losing one to
+  three tests to this stall.
+- Not done: no single-cgroup local reproduction (memory vs CPU vs host is unread); the board's row
+  selection rule is still unclear (rank 1 shows an 80% row, our 80% run did not replace ours).
