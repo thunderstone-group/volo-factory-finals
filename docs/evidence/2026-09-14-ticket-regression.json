@@ -1,0 +1,343 @@
+{
+ "question": "Why did official run 92220c94fd25 score 7/10 where the previous main scored 10/10 three times, and which merged change caused it?",
+ "answer": "No merged change caused it. All three failures are browser-process faults on the hosted runner inside one 19.3 s window; the same application passes the same unchanged public tests 25 of 25 locally in the calibrated hosted configuration.",
+ "failed_run": {
+  "id": "92220c94fd25",
+  "submission": "13f5a75f8aeb",
+  "agent_source": "413b112",
+  "score": 70.0,
+  "passed": 7,
+  "failed": 3,
+  "cost_cny": 0.439112,
+  "token_count": 77772,
+  "run_duration_seconds": 248,
+  "model": "deepseek-v4-flash",
+  "vision_model": "qwen3.6-flash",
+  "model_calls": 3,
+  "prompt_tokens": 41022,
+  "completion_tokens": 36750
+ },
+ "reference_run": {
+  "id": "01b06fb30564",
+  "agent_source": "ccc3eb9",
+  "score": 100.0,
+  "cost_cny": 0.629725,
+  "token_count": 72854,
+  "vision_model": "kimi-k3",
+  "model_calls": 3,
+  "prompt_tokens": 43978,
+  "completion_tokens": 28876
+ },
+ "failure_mechanism": {
+  "summary": "Three tests in flight during a 17 s window died to renderer faults; the seven that ran after the window all passed and were faster than the 10/10 run fastest test.",
+  "suite_window_utc": {
+   "started": "2026-09-14T07:42:26Z",
+   "finished": "2026-09-14T07:42:46Z",
+   "reported_wall_seconds": 19.3,
+   "workers_requested": 4,
+   "workers_used": 2
+  },
+  "failures": [
+   {
+    "test": "REQ-1.1: successfully register a new account and remain signed in",
+    "status": "timedOut",
+    "duration_ms": 10013,
+    "runner_error": "locator.evaluate: Test timeout of 10000ms exceeded",
+    "call_log": "locator resolved to visible <select id=\"r-doctype\">",
+    "reading": "A trivial evaluate (element.tagName.toLowerCase()) hung on an already-resolved visible element. Application code cannot make that hang; the renderer was wedged."
+   },
+   {
+    "test": "REQ-1.2: sign in with a valid username and password",
+    "status": "failed",
+    "duration_ms": 1193,
+    "runner_error": "expect(getByText(username, {exact:true})).toBeVisible() - element(s) not found",
+    "reading": "Reported after 1,193 ms against a 10,000 ms expect timeout, on the same machine inside the same window; the expect did not run its timeout."
+   },
+   {
+    "test": "REQ-1.2: sign in with a case-insensitive email and password",
+    "status": "timedOut",
+    "duration_ms": 15018,
+    "runner_error": "locator.click: Target crashed",
+    "reading": "Unambiguous Chromium renderer crash. Duration exceeds the 10 s test timeout by 5 s, which is teardown also hanging on the dead target."
+   }
+  ],
+  "passing_tests_after_the_window_ms": [
+   980,
+   691,
+   241,
+   490,
+   611,
+   769,
+   772
+  ],
+  "reference_run_test_durations_ms": {
+   "fastest": 1295,
+   "slowest": 2902,
+   "registration": 2299
+  },
+  "note": "Every passing test in the 7/10 run is faster than the fastest test of the 10/10 run, so the application is not heavier or slower."
+ },
+ "local_replay": {
+  "configuration": "harness_lab/local_gate.py host mode: application in a 1 CPU / 256 MB container behind the volo launcher, Playwright workers 4, fullyParallel false, 10 s timeouts, retries 0, video off, trace on for diagnosis only",
+  "application": "workspace of run 92220c94fd25, backend/data stripped by the gate as usual",
+  "tests": "runs/20260912-objective-review/public-tests, unchanged",
+  "batches": [
+   {
+    "label": "bad",
+    "repetitions": 5,
+    "clean_replays": 5,
+    "rows": [
+     {
+      "run": 0,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 5.73
+     },
+     {
+      "run": 1,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.75
+     },
+     {
+      "run": 2,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.59
+     },
+     {
+      "run": 3,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.69
+     },
+     {
+      "run": 4,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.62
+     }
+    ]
+   },
+   {
+    "label": "bad20",
+    "repetitions": 20,
+    "clean_replays": 20,
+    "rows": [
+     {
+      "run": 0,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 5.09
+     },
+     {
+      "run": 1,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.76
+     },
+     {
+      "run": 2,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 5.02
+     },
+     {
+      "run": 3,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.91
+     },
+     {
+      "run": 4,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.91
+     },
+     {
+      "run": 5,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.8
+     },
+     {
+      "run": 6,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.8
+     },
+     {
+      "run": 7,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.66
+     },
+     {
+      "run": 8,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.72
+     },
+     {
+      "run": 9,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.75
+     },
+     {
+      "run": 10,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.66
+     },
+     {
+      "run": 11,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.67
+     },
+     {
+      "run": 12,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.7
+     },
+     {
+      "run": 13,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.67
+     },
+     {
+      "run": 14,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.67
+     },
+     {
+      "run": 15,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.58
+     },
+     {
+      "run": 16,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.6
+     },
+     {
+      "run": 17,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.63
+     },
+     {
+      "run": 18,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.58
+     },
+     {
+      "run": 19,
+      "expected": 10,
+      "unexpected": 0,
+      "wall_seconds": 4.53
+     }
+    ]
+   }
+  ],
+  "total_replays": 25,
+  "total_clean": 25,
+  "total_unexpected_failures": 0
+ },
+ "attribution": {
+  "verdict": "None of PR #17, PR #19 or PR #11 produced the failing behaviour.",
+  "pr_17_small_board_tokens": {
+   "generation_system_prompt": "byte-identical between the two runs, 3,996 characters both",
+   "request_payload_removed": [
+    "all_requirements",
+    "inherited_constraints (empty)",
+    "Current application files: {\"files\": []}",
+    "Previously self-checked requirement ids (empty)",
+    "JSON pretty-printing (whitespace only)"
+   ],
+   "requirement_semantics": "preserved verbatim, including the REQ-1 scenario \"系统保存账号并创建会话，首页显示用户名和\\u201c退出登录\\u201d，刷新页面后仍保持登录\"",
+   "user_message_chars": {
+    "reference_run": 31545,
+    "failed_run": 29855
+   },
+   "evidence_strength": "strong - the removed fields were empty or redundant on a fresh small board"
+  },
+  "pr_19_repair_loop": {
+   "observed": "The first self-check failed 3 of 11; the repair edited checks/requirements.cjs only, inserting page.goto(\"/\") before three page.click(\"a[href=/register|/login]\") calls.",
+   "assessment": "The edit makes the model check navigate the way the official helper does (openRegister and openLogin both call openHome first). It corrected a defect in the model own check and masked nothing in the application.",
+   "reference_run_shape": "identical - first self-check failed, one repair round, second passed, 3 model calls total",
+   "evidence_strength": "strong - the repair diff is in the trace and is three navigation insertions"
+  },
+  "pr_11_observer_model": {
+   "images_sent": "identical, same three sha256 values and same transformed sizes",
+   "observer": {
+    "reference_run": "kimi-k3",
+    "failed_run": "qwen3.6-flash"
+   },
+   "observation_chars": {
+    "reference_run": 3946,
+    "failed_run": 4337
+   },
+   "observation_latency_seconds": {
+    "reference_run": 59.7,
+    "failed_run": 14.9
+   },
+   "assessment": "Both observations describe the same header links, nav bar, form fields and buttons. Neither mentions signed-in state, because all three reference screenshots are of the signed-out site. Nothing in either text touches the failing behaviour.",
+   "evidence_strength": "strong for exoneration, one sample for any quality claim"
+  },
+  "sampling_caveat": "One official run is one sample. A 7/10 and a 10/10 on this board differ by three tests that died to browser faults, which the bench has now shown at least once."
+ },
+ "fix": {
+  "file": "volo/web_runtime.py",
+  "symbol": "BROWSER_CHECK",
+  "change": "The prepared check harness launches one Chromium for the whole check run and gives each check its own browser context, instead of launching and closing a browser per check. The browser is closed in a node:test after hook, a crashed browser is relaunched, and context teardown no longer masks the authored failure.",
+  "rationale": "The only lever in our control on this failure class. The run last act before the official suite was its own self-check launching 11 Chromium processes in 7.9 s, finishing 2.1 s before the official suite started in the same container.",
+  "measurement": {
+   "subject": "the failed run own checks/requirements.cjs, 11 checks, against its own application",
+   "repetitions": 3,
+   "before": {
+    "browser_launches": 11,
+    "wall_seconds": [
+     11.01,
+     11.02,
+     11.0
+    ],
+    "checks_passed": 11
+   },
+   "after": {
+    "browser_launches": 1,
+    "wall_seconds": [
+     8.44,
+     8.57,
+     8.43
+    ],
+    "checks_passed": 11
+   }
+  },
+  "unit_tests": "tests/test_browser_lifecycle.py, 6 cases: one browser for three checks with a context each, single close after the last check, a failing check still releasing both, relaunch after a browser crash, missing Playwright still failing the check, and an installed Chromium launched once for three checks.",
+  "suite": {
+   "before": {
+    "tests": 232,
+    "failures": 0,
+    "skipped": 4
+   },
+   "after": {
+    "tests": 238,
+    "failures": 0,
+    "skipped": 4
+   }
+  },
+  "what_it_does_not_claim": "This does not prove the renderer faults were caused by self-check browser pressure, and it cannot, from one run. It removes a measured 11-to-1 process churn immediately before evaluation. Confirmation would be a run of official trials on this board with no browser fault in the evaluation window."
+ },
+ "confirming_evidence_wanted": [
+  "Official Ticket Booking runs from this main with the fix, looking only at whether any evaluation-window browser fault appears; a pass rate change alone would not separate the fix from generation variance.",
+  "A local generation with PR #11 reverted to kimi-k3 would test the observer question, which this run does not answer either way."
+ ]
+}

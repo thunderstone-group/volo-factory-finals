@@ -597,3 +597,50 @@ each rule snapshot and experiment with date and source.
 - `python -m unittest discover -s tests -v` reports 232 tests, 0 failures, 11 skipped, against 213
   on `main` at `b00679c`. `tests/test_external_gate.py` flaked twice under heavy concurrent load
   with `[Errno 1] Operation not permitted` and passed on every clean run, including on `main`.
+
+## 2026-09-14 — The 7/10 Ticket Booking run was a browser fault, not a merged change
+
+- Run `92220c94fd25` (submission `13f5a75f8aeb`, agent source `413b112`) scored 7/10 at CNY 0.439112
+  and 77,772 tokens where the previous main scored 10/10 three times. The three failures are the
+  three tests that assert a signed-in header, which invites the reading that the run lost its
+  session. That reading is wrong. The runner log names the cause: `locator.click: Target crashed` on
+  the case-insensitive login, and `locator.evaluate` hanging for the full 10 s on an already-resolved
+  visible `<select id="r-doctype">` on the registration test. `element.tagName.toLowerCase()` cannot
+  hang on a resolved element, so the renderer was wedged, not the application. The third failure was
+  reported after 1,193 ms against a 10,000 ms expect timeout on the same machine in the same window.
+- The window is bounded and the rest of the suite is healthy. The suite ran 07:42:26 to 07:42:46 UTC;
+  the three failures were the three tests in flight from 07:42:27 to 07:42:44. Tests 4 through 10 ran
+  from 07:42:38 and all passed in 241 to 980 ms, every one of them faster than the 1,295 ms fastest
+  test of the 10/10 run `01b06fb30564`. Both runs requested `--workers=4` and both got
+  `Running 10 tests using 2 workers`, so the runner configuration was identical.
+- The application is not defective. Its workspace replayed against the unchanged public tests in
+  `harness_lab/local_gate.py` host mode is clean 25 times out of 25, in a batch of 5 and a batch of
+  20, zero unexpected failures. Its own self-checks pass `valid registration stays signed in after
+  reload` and `login with username and reload session`, the exact behaviours that failed officially.
+- Attribution, from the traces of both runs. **PR #17** is not implicated: the generation system
+  prompt is byte-identical, 3,996 characters each, and the request trim removed only
+  `all_requirements`, an empty `inherited_constraints`, an empty current-file list, an empty
+  self-checked-id list and JSON whitespace; the REQ-1 scenario requiring the username, 退出登录 and
+  survival of a refresh survives verbatim. **PR #19** is not implicated and behaved correctly: the
+  repair edited `checks/requirements.cjs` only, inserting `page.goto('/')` before three
+  `page.click('a[href="/register"]')` and `/login` calls, which makes the model's own check navigate
+  the way `openRegister` and `openLogin` do; it masked nothing. **PR #11** is not implicated: both
+  runs sent the same three images by SHA-256, and kimi-k3's 3,946 characters and qwen3.6-flash's
+  4,337 describe the same header links, nav bar, fields and buttons, neither mentioning signed-in
+  state because every reference screenshot is of the signed-out site. One official run is one sample
+  and this does not settle observer quality either way.
+- Fixed the one lever we control. The run's last act before the official suite was its own
+  browser-driven self-check, and `volo/web_runtime.py` launched a fresh Chromium per check: eleven
+  launches in 7.9 s, finishing 2.1 s before the official suite started in the same container. The
+  prepared harness now launches one browser per check run and gives each check its own context,
+  keeping the per-check cookie and storage isolation the checks rely on. Measured on that run's own
+  eleven checks against its own application, three repetitions each: 11 launches and 11.01/11.02/11.00 s
+  before, 1 launch and 8.44/8.57/8.43 s after, 11 of 11 checks passing on both sides.
+- `tests/test_browser_lifecycle.py` adds six cases, including relaunch after a browser crash and an
+  installed Chromium launched once for three checks. `python -m unittest discover -s tests` reports
+  238 tests, 0 failures, 4 skipped, against 232 before the change with the same four skips.
+- This does not prove the renderer faults came from self-check browser pressure, and one run cannot.
+  It removes a measured 11-to-1 process churn immediately before evaluation. Confirmation would be
+  official trials with no browser fault in the evaluation window; a pass-rate change alone would not
+  separate the fix from generation variance. Container logs for the run were collected at
+  `stdout_bytes=0, stderr_bytes=0`, so there is no in-container memory evidence.
