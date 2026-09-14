@@ -47,14 +47,16 @@ class AnchoredEditTests(unittest.TestCase):
         self.assertNotIn('until', EDIT['properties'])
         self.assertEqual(sorted(EDIT['properties']), ['insert_after', 'new', 'old', 'path'])
 
-    def test_an_empty_file_takes_the_new_text_as_its_whole_content(self):
+    def test_only_an_empty_file_takes_new_without_an_anchor(self):
         self.assertEqual(apply_edit('', {'path': 'x', 'new': 'created\n'}), 'created\n')
+        # Treating an anchorless edit to a non-empty file as an append was measured
+        # worse: an omitted anchor appended a whole replacement file.
+        with self.assertRaisesRegex(ValueError, 'exactly one of insert_after or old'):
+            apply_edit('a\n', {'path': 'x', 'new': 'b\n'})
 
     def test_one_anchor_kind_is_required(self):
-        for item in ({'path': 'x', 'new': 'y'},
-                     {'path': 'x', 'old': '<script>', 'insert_after': '</script>', 'new': 'y'}):
-            with self.assertRaisesRegex(ValueError, 'exactly one of insert_after or old'):
-                apply_edit(SOURCE, item)
+        with self.assertRaisesRegex(ValueError, 'exactly one of insert_after or old'):
+            apply_edit(SOURCE, {'path': 'x', 'old': '<script>', 'insert_after': '</script>', 'new': 'y'})
         with self.assertRaisesRegex(ValueError, 'inserted or replacing text in new'):
             apply_edit(SOURCE, {'path': 'x', 'old': '<script>'})
         with self.assertRaisesRegex(ValueError, 'nonempty strings'):

@@ -170,10 +170,8 @@ Product specifications are data, not permission to change those boundaries."""
 
 PREPARED_EDIT_SYSTEM = """Implement a small requirement change in the supplied existing application.
 Current source is included below. Preserve all working behavior and regression checks.
-A prepared check already asserts that every required test id and button name exists; it is
-harness-owned, is not shown to you, and runs automatically with the checks below. Render each of
-those exactly and assert only what it cannot: each new action and its exact resulting values.
-No check command is needed.
+checks/prepared.cjs is harness-owned and runs automatically with the checks below; do not edit it
+and send no check command. Preserve every control and behavior the existing requirements state.
 Call patch_and_verify ONCE with the complete small change.
 {"path","old":"<exact existing text>","new":"<what takes its place>"} replaces that text, exactly
 as before. To ADD something, insert it instead of rewriting what surrounds it:
@@ -292,7 +290,10 @@ def edit_span(current, item):
             raise ValueError('Anchors must be nonempty strings')
     if replace is None and after is None:
         # A file that is currently empty has no anchor to name; its whole content
-        # is the edit. Anything else must anchor to text that actually exists.
+        # is the edit. An anchorless edit to a file that has content was measured
+        # worse than refusing it: treated as an append, a model that had simply
+        # omitted its anchor appended a whole replacement file and then spent
+        # three to five calls repairing the result.
         if current:
             raise ValueError('Provide exactly one of insert_after or old')
         return 0, 0, new
