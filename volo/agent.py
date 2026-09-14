@@ -1546,14 +1546,17 @@ class Agent:
                                      fresh_verification_error=str(result.get('error', ''))[:300])
             self.checkpoint("completed")
             self.runtime.emit("mark_run_completed", "Build, startup and agent checks passed; ready for official evaluation")
-            acceptance = self.workspace.last_verification.get('acceptance', {})
+            # A failed fresh verification leaves last_verification empty (run 1c2af08cf3cc
+            # died here on 'NoneType' after delivering the snapshot); read it defensively.
+            latest = self.workspace.last_verification or {}
+            acceptance = latest.get('acceptance', {}) or {}
             return {"status": "completed", "self_checked_requirements": self.completed,
                     "delivery": delivery,
                     "incomplete_requirements": [item for record in self.incomplete
                                                 for item in record['requirements']],
                     "verified_requirements": acceptance.get('verified_requirements', []),
                     "independent_acceptance": acceptance.get('status', 'not_configured'),
-                    "verification_scope": self.workspace.last_verification['verification_scope'],
+                    "verification_scope": latest.get('verification_scope', 'local_checks_only'),
                     "usage": asdict(self.model.usage), "official_evaluation": "pending"}
         except Exception as exc:
             self.trace.event("run_failed", error=str(exc), completed=self.completed)
