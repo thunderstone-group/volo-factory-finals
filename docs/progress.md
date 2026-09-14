@@ -997,3 +997,21 @@ generation has been run against any of this.
 - The run's backend log says "Waiting for container to exit without timeout": the platform
   puts no time limit on the generation container. The open question about hosted generation
   time is closed by that line; our own 45-minute wall clock is the only limit in play.
+
+### 2026-09-15, 02:03 — the first official Keep run failed on our own wall clock; second run started
+
+- Run `3313c37b801c` (package e277e2c): FAILED, 0/32, 45 minutes, CNY 5.09, 3.24 M metered
+  tokens. The hosted machine verified nine requirements in the 45 minutes (1.4 calls a minute
+  against 1.7 locally), then the wall clock ended a batch, the schedule restored the snapshot,
+  and the delivery path re-verified it with no time left: "Previously completed source failed
+  fresh verification", exit 1, no tests run. The restored check command was a one-off
+  diagnostic (`node checks/diag-color.cjs`), another defect in the snapshot.
+- Fixed in a745b33 (feat/state-contract) and cherry-picked as ebb5ab8 on
+  `upload/keep-2026-09-15`: the final verification gets a five-minute grace past our clock
+  (the platform sets no container timeout), a tree that equals a verified snapshot is delivered
+  when the fresh check fails, the snapshot records the authored bundle, and the large default
+  budget is 200 calls / 6.5 M tokens / 100 minutes.
+- Second official run `1c2af08cf3cc` on submission `e8a7039ba09b` (sha 7632baad…), started
+  02:18. No local generation while it runs. The Keep board moved overnight: 100%, 62.5%,
+  59.4%, 56.2% at the top, so a junior row needs more than 62.5% for rank 2.
+- Bundle of the failed run: `runs/2026-09-15-official-keep-3313c37b801c/`.
