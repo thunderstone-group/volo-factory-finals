@@ -334,3 +334,22 @@ each rule snapshot and experiment with date and source.
   The registration test that timed out in E057 took 2,299 ms. One of two allowed trials
   was used. See `docs/nav-race-2026-09-14.md` and
   `docs/evidence/2026-09-14-nav-race-trial.json`.
+
+## 2026-09-14 — Small-board token reduction, measured against the public tests
+
+- Implemented the ranked small-board levers from `token-accounting-2026-09-14.md` and measured each
+  one through the real gateway: an anchored `insert_after` edit that does not repeat kept text, a
+  harness-prepared interface check derived from the literal test ids and button names the
+  requirement states, and request sections that state nothing being dropped.
+- Official result on the shipped commit: Smoke board CNY 0.013428 against 0.016023, Smoke Evolution
+  0.008119 against 0.017810, every run 100% pass and 100% feature implementation. Per-task board
+  positions are rank 4, 3, 3 and 3.
+- Five configurations were measured and rejected, including the accounting document's biggest
+  single Smoke lever. Dropping authored checks in favour of prepared ones was the cheapest thing
+  measured and shipped three broken applications out of eight; telling either prompt that test ids
+  are checked elsewhere made the model stop rendering them. Both findings are in
+  `small-board-tokens-2026-09-14.md` with their numbers.
+- One official dice run failed 1/2 after passing every local check: the model added the required
+  element, never wired it, and never extended the authored check. Its re-run passed. The harness
+  has no check that a newly required behavior is actually asserted, which is the next piece of work.
+- Local campaign cost CNY 2.4827 over 138 generations; the seven official runs cost CNY 0.093.

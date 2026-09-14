@@ -1,0 +1,1577 @@
+{
+ "generated": "2026-09-14",
+ "question": "Which of the ranked small-board token levers survive a local gate and an official run?",
+ "method": {
+  "generation": "volo main.py against the organizer gateway; deepseek-v4-flash on Smoke and qwen3.6-flash on Smoke Evolution, as in the previous winning runs.",
+  "evolution_seed": "each evolution task starts from the same cohort's smoke application, which is what the official runner supplies, confirmed in the run trace.",
+  "replay": "unchanged public tests from arcbench-campaign/evidence/2026-09-11, Playwright 1.57.0 with Google Chrome, application in a 1 CPU / 256 MB container behind the volo launcher, workers 4, fullyParallel false, 10 s test and expect timeouts, retries 0, trace/video/screenshot off.",
+  "cost": "reconstructed from captured usage with the price table in docs/token-accounting-2026-09-14.md; official cost is the platform figure."
+ },
+ "configurations": {
+  "baseline_main_0b18312": {
+   "smoke--counter": {
+    "model": "deepseek-v4-flash",
+    "generations": [
+     {
+      "cohort": "before",
+      "model_calls": 1,
+      "prompt_tokens": 1241,
+      "completion_tokens": 481,
+      "total_tokens": 1722,
+      "reconstructed_cost_cny": 0.008052,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "before2",
+      "model_calls": 1,
+      "prompt_tokens": 1241,
+      "completion_tokens": 563,
+      "total_tokens": 1804,
+      "reconstructed_cost_cny": 0.00879,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "before3",
+      "model_calls": 1,
+      "prompt_tokens": 1241,
+      "completion_tokens": 560,
+      "total_tokens": 1801,
+      "reconstructed_cost_cny": 0.008763,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 1801,
+    "median_cost_cny": 0.008763,
+    "model_calls_observed": [
+     1,
+     1,
+     1
+    ]
+   },
+   "smoke--dice": {
+    "model": "deepseek-v4-flash",
+    "generations": [
+     {
+      "cohort": "before",
+      "model_calls": 1,
+      "prompt_tokens": 1177,
+      "completion_tokens": 453,
+      "total_tokens": 1630,
+      "reconstructed_cost_cny": 0.007608,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "before2",
+      "model_calls": 1,
+      "prompt_tokens": 1177,
+      "completion_tokens": 359,
+      "total_tokens": 1536,
+      "reconstructed_cost_cny": 0.006762,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "before3",
+      "model_calls": 1,
+      "prompt_tokens": 1177,
+      "completion_tokens": 467,
+      "total_tokens": 1644,
+      "reconstructed_cost_cny": 0.007734,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 1630,
+    "median_cost_cny": 0.007608,
+    "model_calls_observed": [
+     1,
+     1,
+     1
+    ]
+   },
+   "smoke-evolution--counter": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "before",
+      "model_calls": 1,
+      "prompt_tokens": 1674,
+      "completion_tokens": 1218,
+      "total_tokens": 2892,
+      "reconstructed_cost_cny": 0.010778,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "before2",
+      "model_calls": 1,
+      "prompt_tokens": 1754,
+      "completion_tokens": 1215,
+      "total_tokens": 2969,
+      "reconstructed_cost_cny": 0.010853,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "before3",
+      "model_calls": 1,
+      "prompt_tokens": 1747,
+      "completion_tokens": 1400,
+      "total_tokens": 3147,
+      "reconstructed_cost_cny": 0.012176,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 2969,
+    "median_cost_cny": 0.010853,
+    "model_calls_observed": [
+     1,
+     1,
+     1
+    ]
+   },
+   "smoke-evolution--dice": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "before",
+      "model_calls": 1,
+      "prompt_tokens": 1615,
+      "completion_tokens": 1393,
+      "total_tokens": 3008,
+      "reconstructed_cost_cny": 0.011968,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "before2",
+      "model_calls": 1,
+      "prompt_tokens": 1512,
+      "completion_tokens": 214,
+      "total_tokens": 1726,
+      "reconstructed_cost_cny": 0.003355,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "before3",
+      "model_calls": 1,
+      "prompt_tokens": 1629,
+      "completion_tokens": 1457,
+      "total_tokens": 3086,
+      "reconstructed_cost_cny": 0.012445,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 3008,
+    "median_cost_cny": 0.011968,
+    "model_calls_observed": [
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  "shipped_smoke_49e4f21": {
+   "smoke--counter": {
+    "model": "deepseek-v4-flash",
+    "generations": [
+     {
+      "cohort": "v5_1",
+      "model_calls": 1,
+      "prompt_tokens": 1040,
+      "completion_tokens": 443,
+      "total_tokens": 1483,
+      "reconstructed_cost_cny": 0.007107,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v5_2",
+      "model_calls": 1,
+      "prompt_tokens": 1040,
+      "completion_tokens": 512,
+      "total_tokens": 1552,
+      "reconstructed_cost_cny": 0.007728,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v5_3",
+      "model_calls": 1,
+      "prompt_tokens": 1040,
+      "completion_tokens": 484,
+      "total_tokens": 1524,
+      "reconstructed_cost_cny": 0.007476,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v7_1",
+      "model_calls": 1,
+      "prompt_tokens": 1040,
+      "completion_tokens": 424,
+      "total_tokens": 1464,
+      "reconstructed_cost_cny": 0.006936,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v7_2",
+      "model_calls": 1,
+      "prompt_tokens": 1040,
+      "completion_tokens": 544,
+      "total_tokens": 1584,
+      "reconstructed_cost_cny": 0.008016,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v7_3",
+      "model_calls": 1,
+      "prompt_tokens": 1040,
+      "completion_tokens": 494,
+      "total_tokens": 1534,
+      "reconstructed_cost_cny": 0.007566,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     }
+    ],
+    "median_total_tokens": 1529.0,
+    "median_cost_cny": 0.007521,
+    "model_calls_observed": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   },
+   "smoke--dice": {
+    "model": "deepseek-v4-flash",
+    "generations": [
+     {
+      "cohort": "v5_1",
+      "model_calls": 1,
+      "prompt_tokens": 991,
+      "completion_tokens": 351,
+      "total_tokens": 1342,
+      "reconstructed_cost_cny": 0.006132,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v5_2",
+      "model_calls": 1,
+      "prompt_tokens": 991,
+      "completion_tokens": 328,
+      "total_tokens": 1319,
+      "reconstructed_cost_cny": 0.005925,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v5_3",
+      "model_calls": 1,
+      "prompt_tokens": 991,
+      "completion_tokens": 357,
+      "total_tokens": 1348,
+      "reconstructed_cost_cny": 0.006186,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v7_1",
+      "model_calls": 1,
+      "prompt_tokens": 991,
+      "completion_tokens": 369,
+      "total_tokens": 1360,
+      "reconstructed_cost_cny": 0.006294,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v7_2",
+      "model_calls": 1,
+      "prompt_tokens": 991,
+      "completion_tokens": 360,
+      "total_tokens": 1351,
+      "reconstructed_cost_cny": 0.006213,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "v7_3",
+      "model_calls": 1,
+      "prompt_tokens": 991,
+      "completion_tokens": 343,
+      "total_tokens": 1334,
+      "reconstructed_cost_cny": 0.00606,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     }
+    ],
+    "median_total_tokens": 1345.0,
+    "median_cost_cny": 0.006159,
+    "model_calls_observed": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  "shipped_evolution_49e4f21": {
+   "smoke-evolution--counter": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "v8_1",
+      "model_calls": 1,
+      "prompt_tokens": 1664,
+      "completion_tokens": 452,
+      "total_tokens": 2116,
+      "reconstructed_cost_cny": 0.005251,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "v8_2",
+      "model_calls": 1,
+      "prompt_tokens": 1811,
+      "completion_tokens": 277,
+      "total_tokens": 2088,
+      "reconstructed_cost_cny": 0.004168,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "v8_3",
+      "model_calls": 2,
+      "prompt_tokens": 7930,
+      "completion_tokens": 1252,
+      "total_tokens": 9182,
+      "reconstructed_cost_cny": 0.01853,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     }
+    ],
+    "median_total_tokens": 2116,
+    "median_cost_cny": 0.005251,
+    "model_calls_observed": [
+     1,
+     1,
+     2
+    ]
+   },
+   "smoke-evolution--dice": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "v8_1",
+      "model_calls": 1,
+      "prompt_tokens": 1598,
+      "completion_tokens": 290,
+      "total_tokens": 1888,
+      "reconstructed_cost_cny": 0.004006,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "v8_2",
+      "model_calls": 1,
+      "prompt_tokens": 1606,
+      "completion_tokens": 1185,
+      "total_tokens": 2791,
+      "reconstructed_cost_cny": 0.010459,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "v8_3",
+      "model_calls": 1,
+      "prompt_tokens": 1589,
+      "completion_tokens": 280,
+      "total_tokens": 1869,
+      "reconstructed_cost_cny": 0.003923,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     }
+    ],
+    "median_total_tokens": 1888,
+    "median_cost_cny": 0.004006,
+    "model_calls_observed": [
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  "rejected_prepared_checks_only": {
+   "smoke--counter": {
+    "model": "deepseek-v4-flash",
+    "generations": [
+     {
+      "cohort": "after",
+      "model_calls": 1,
+      "prompt_tokens": 975,
+      "completion_tokens": 223,
+      "total_tokens": 1198,
+      "reconstructed_cost_cny": 0.004932,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "after1",
+      "model_calls": 1,
+      "prompt_tokens": 975,
+      "completion_tokens": 247,
+      "total_tokens": 1222,
+      "reconstructed_cost_cny": 0.005148,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "after2",
+      "model_calls": 1,
+      "prompt_tokens": 975,
+      "completion_tokens": 221,
+      "total_tokens": 1196,
+      "reconstructed_cost_cny": 0.004914,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "after3",
+      "model_calls": 1,
+      "prompt_tokens": 975,
+      "completion_tokens": 227,
+      "total_tokens": 1202,
+      "reconstructed_cost_cny": 0.004968,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     }
+    ],
+    "median_total_tokens": 1200.0,
+    "median_cost_cny": 0.00495,
+    "model_calls_observed": [
+     1,
+     1,
+     1,
+     1
+    ]
+   },
+   "smoke--dice": {
+    "model": "deepseek-v4-flash",
+    "generations": [
+     {
+      "cohort": "after",
+      "model_calls": 1,
+      "prompt_tokens": 926,
+      "completion_tokens": 195,
+      "total_tokens": 1121,
+      "reconstructed_cost_cny": 0.004533,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "after1",
+      "model_calls": 1,
+      "prompt_tokens": 926,
+      "completion_tokens": 183,
+      "total_tokens": 1109,
+      "reconstructed_cost_cny": 0.004425,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "after2",
+      "model_calls": 1,
+      "prompt_tokens": 926,
+      "completion_tokens": 194,
+      "total_tokens": 1120,
+      "reconstructed_cost_cny": 0.004524,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "after3",
+      "model_calls": 1,
+      "prompt_tokens": 926,
+      "completion_tokens": 183,
+      "total_tokens": 1109,
+      "reconstructed_cost_cny": 0.004425,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     }
+    ],
+    "median_total_tokens": 1114.5,
+    "median_cost_cny": 0.004475,
+    "model_calls_observed": [
+     1,
+     1,
+     1,
+     1
+    ]
+   },
+   "smoke-evolution--counter": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "after",
+      "model_calls": 2,
+      "prompt_tokens": 5650,
+      "completion_tokens": 621,
+      "total_tokens": 6271,
+      "reconstructed_cost_cny": 0.011251,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "after1",
+      "model_calls": 1,
+      "prompt_tokens": 1522,
+      "completion_tokens": 369,
+      "total_tokens": 1891,
+      "reconstructed_cost_cny": 0.004483,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "after2",
+      "model_calls": 1,
+      "prompt_tokens": 1499,
+      "completion_tokens": 175,
+      "total_tokens": 1674,
+      "reconstructed_cost_cny": 0.003059,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 0,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "after3",
+      "model_calls": 1,
+      "prompt_tokens": 1503,
+      "completion_tokens": 60,
+      "total_tokens": 1563,
+      "reconstructed_cost_cny": 0.002236,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 0,
+      "public_tests_seen": [
+       1
+      ]
+     }
+    ],
+    "median_total_tokens": 1782.5,
+    "median_cost_cny": 0.003771,
+    "model_calls_observed": [
+     1,
+     1,
+     1,
+     2
+    ]
+   },
+   "smoke-evolution--dice": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "after",
+      "model_calls": 1,
+      "prompt_tokens": 1406,
+      "completion_tokens": 327,
+      "total_tokens": 1733,
+      "reconstructed_cost_cny": 0.004042,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "after1",
+      "model_calls": 1,
+      "prompt_tokens": 1423,
+      "completion_tokens": 284,
+      "total_tokens": 1707,
+      "reconstructed_cost_cny": 0.003752,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 0,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "after2",
+      "model_calls": 1,
+      "prompt_tokens": 1437,
+      "completion_tokens": 448,
+      "total_tokens": 1885,
+      "reconstructed_cost_cny": 0.00495,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     },
+     {
+      "cohort": "after3",
+      "model_calls": 1,
+      "prompt_tokens": 1423,
+      "completion_tokens": 399,
+      "total_tokens": 1822,
+      "reconstructed_cost_cny": 0.00458,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       2
+      ]
+     }
+    ],
+    "median_total_tokens": 1777.5,
+    "median_cost_cny": 0.004311,
+    "model_calls_observed": [
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  "rejected_replace_rename": {
+   "smoke-evolution--counter": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "v2_1",
+      "model_calls": 1,
+      "prompt_tokens": 1904,
+      "completion_tokens": 430,
+      "total_tokens": 2334,
+      "reconstructed_cost_cny": 0.005381,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v2_2",
+      "model_calls": 2,
+      "prompt_tokens": 6925,
+      "completion_tokens": 339,
+      "total_tokens": 7264,
+      "reconstructed_cost_cny": 0.010751,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v2_3",
+      "model_calls": 26,
+      "prompt_tokens": 313338,
+      "completion_tokens": 3944,
+      "total_tokens": 317282,
+      "reconstructed_cost_cny": 0.404402,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v3_1",
+      "model_calls": 6,
+      "prompt_tokens": 41016,
+      "completion_tokens": 1441,
+      "total_tokens": 42457,
+      "reconstructed_cost_cny": 0.059594,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v3_2",
+      "model_calls": 3,
+      "prompt_tokens": 9391,
+      "completion_tokens": 665,
+      "total_tokens": 10056,
+      "reconstructed_cost_cny": 0.016057,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 10056,
+    "median_cost_cny": 0.016057,
+    "model_calls_observed": [
+     1,
+     2,
+     3,
+     6,
+     26
+    ]
+   },
+   "smoke-evolution--dice": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "v2_1",
+      "model_calls": 6,
+      "prompt_tokens": 18157,
+      "completion_tokens": 1339,
+      "total_tokens": 19496,
+      "reconstructed_cost_cny": 0.031429,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v2_2",
+      "model_calls": 2,
+      "prompt_tokens": 7464,
+      "completion_tokens": 3370,
+      "total_tokens": 10834,
+      "reconstructed_cost_cny": 0.033221,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v2_3",
+      "model_calls": 11,
+      "prompt_tokens": 70656,
+      "completion_tokens": 1870,
+      "total_tokens": 72526,
+      "reconstructed_cost_cny": 0.098251,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v3_1",
+      "model_calls": 2,
+      "prompt_tokens": 3812,
+      "completion_tokens": 659,
+      "total_tokens": 4471,
+      "reconstructed_cost_cny": 0.009319,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v3_2",
+      "model_calls": 5,
+      "prompt_tokens": 32315,
+      "completion_tokens": 3246,
+      "total_tokens": 35561,
+      "reconstructed_cost_cny": 0.062149,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 19496,
+    "median_cost_cny": 0.033221,
+    "model_calls_observed": [
+     2,
+     2,
+     5,
+     6,
+     11
+    ]
+   }
+  },
+  "rejected_anchorless_append": {
+   "smoke-evolution--counter": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "v7_1",
+      "model_calls": 3,
+      "prompt_tokens": 13900,
+      "completion_tokens": 1634,
+      "total_tokens": 15534,
+      "reconstructed_cost_cny": 0.028445,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v7_2",
+      "model_calls": 4,
+      "prompt_tokens": 42649,
+      "completion_tokens": 8717,
+      "total_tokens": 51366,
+      "reconstructed_cost_cny": 0.113941,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v7_3",
+      "model_calls": 2,
+      "prompt_tokens": 3700,
+      "completion_tokens": 300,
+      "total_tokens": 4000,
+      "reconstructed_cost_cny": 0.0066,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 15534,
+    "median_cost_cny": 0.028445,
+    "model_calls_observed": [
+     2,
+     3,
+     4
+    ]
+   },
+   "smoke-evolution--dice": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "v7_1",
+      "model_calls": 5,
+      "prompt_tokens": 39349,
+      "completion_tokens": 715,
+      "total_tokens": 40064,
+      "reconstructed_cost_cny": 0.052367,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v7_2",
+      "model_calls": 23,
+      "prompt_tokens": 374809,
+      "completion_tokens": 2818,
+      "total_tokens": 377627,
+      "reconstructed_cost_cny": 0.47006,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "v7_3",
+      "model_calls": 1,
+      "prompt_tokens": 1589,
+      "completion_tokens": 280,
+      "total_tokens": 1869,
+      "reconstructed_cost_cny": 0.003923,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 40064,
+    "median_cost_cny": 0.052367,
+    "model_calls_observed": [
+     1,
+     5,
+     23
+    ]
+   }
+  },
+  "rejected_qwen_on_smoke": {
+   "smoke--counter": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "qwen1",
+      "model_calls": 2,
+      "prompt_tokens": 2653,
+      "completion_tokens": 634,
+      "total_tokens": 3287,
+      "reconstructed_cost_cny": 0.007748,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "qwen2",
+      "model_calls": 1,
+      "prompt_tokens": 945,
+      "completion_tokens": 267,
+      "total_tokens": 1212,
+      "reconstructed_cost_cny": 0.003056,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "qwen3",
+      "model_calls": 2,
+      "prompt_tokens": 2664,
+      "completion_tokens": 690,
+      "total_tokens": 3354,
+      "reconstructed_cost_cny": 0.008165,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 3287,
+    "median_cost_cny": 0.007748,
+    "model_calls_observed": [
+     1,
+     2,
+     2
+    ]
+   },
+   "smoke--dice": {
+    "model": "qwen3.6-flash",
+    "generations": [
+     {
+      "cohort": "qwen1",
+      "model_calls": 2,
+      "prompt_tokens": 2467,
+      "completion_tokens": 473,
+      "total_tokens": 2940,
+      "reconstructed_cost_cny": 0.006366,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "qwen2",
+      "model_calls": 2,
+      "prompt_tokens": 2458,
+      "completion_tokens": 527,
+      "total_tokens": 2985,
+      "reconstructed_cost_cny": 0.006744,
+      "exit_code": 0,
+      "public_replays": 5,
+      "public_replays_fully_passing": 5,
+      "public_tests_seen": [
+       1
+      ]
+     },
+     {
+      "cohort": "qwen3",
+      "model_calls": 2,
+      "prompt_tokens": 2467,
+      "completion_tokens": 460,
+      "total_tokens": 2927,
+      "reconstructed_cost_cny": 0.006272,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 2940,
+    "median_cost_cny": 0.006366,
+    "model_calls_observed": [
+     2,
+     2,
+     2
+    ]
+   }
+  },
+  "rejected_prepared_claim_in_build_prompt": {
+   "smoke--counter": {
+    "model": "deepseek-v4-flash",
+    "generations": [
+     {
+      "cohort": "final7",
+      "model_calls": 2,
+      "prompt_tokens": 3399,
+      "completion_tokens": 870,
+      "total_tokens": 4269,
+      "reconstructed_cost_cny": 0.018027,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "final8",
+      "model_calls": 2,
+      "prompt_tokens": 3380,
+      "completion_tokens": 809,
+      "total_tokens": 4189,
+      "reconstructed_cost_cny": 0.017421,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
+      "cohort": "final9",
+      "model_calls": 2,
+      "prompt_tokens": 3407,
+      "completion_tokens": 872,
+      "total_tokens": 4279,
+      "reconstructed_cost_cny": 0.018069,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     }
+    ],
+    "median_total_tokens": 4269,
+    "median_cost_cny": 0.018027,
+    "model_calls_observed": [
+     2,
+     2,
+     2
+    ]
+   }
+  }
+ },
+ "official_runs": [
+  {
+   "id": "981a010fbc40",
+   "submission_id": "c580c22370c7",
+   "requirement_id": "smoke--counter",
+   "display_name": "volo-smoke-small-tokens-2026-09-14-04eff10",
+   "model_name": "deepseek-v4-flash",
+   "status": "PASSED",
+   "test_pass_rate": 100.0,
+   "passed_count": 1,
+   "failed_count": 0,
+   "run_duration_seconds": 5,
+   "token_count": 1489,
+   "feature_implemented_count": 1,
+   "feature_total_count": 1,
+   "cost": {
+    "amount": 0.007089,
+    "currency": "CNY"
+   }
+  },
+  {
+   "id": "f8739c764e5c",
+   "submission_id": "c580c22370c7",
+   "requirement_id": "smoke--dice",
+   "display_name": "volo-smoke-small-tokens-2026-09-14-04eff10",
+   "model_name": "deepseek-v4-flash",
+   "status": "PASSED",
+   "test_pass_rate": 100.0,
+   "passed_count": 1,
+   "failed_count": 0,
+   "run_duration_seconds": 4,
+   "token_count": 1373,
+   "feature_implemented_count": 1,
+   "feature_total_count": 1,
+   "cost": {
+    "amount": 0.006339,
+    "currency": "CNY"
+   }
+  },
+  {
+   "id": "fbc91de510b8",
+   "submission_id": "e2ee433495b9",
+   "requirement_id": "smoke-evolution--counter",
+   "display_name": "volo-evolution-small-tokens-2026-09-14-04eff10",
+   "model_name": "qwen3.6-flash",
+   "status": "PASSED",
+   "test_pass_rate": 100.0,
+   "passed_count": 2,
+   "failed_count": 0,
+   "run_duration_seconds": 20,
+   "token_count": 57301,
+   "feature_implemented_count": 2,
+   "feature_total_count": 2,
+   "cost": {
+    "amount": 0.082124,
+    "currency": "CNY"
+   }
+  },
+  {
+   "id": "8718f0e11e26",
+   "submission_id": "e2ee433495b9",
+   "requirement_id": "smoke-evolution--dice",
+   "display_name": "volo-evolution-small-tokens-2026-09-14-04eff10",
+   "model_name": "qwen3.6-flash",
+   "status": "PASSED",
+   "test_pass_rate": 100.0,
+   "passed_count": 2,
+   "failed_count": 0,
+   "run_duration_seconds": 4,
+   "token_count": 1924,
+   "feature_implemented_count": 2,
+   "feature_total_count": 2,
+   "cost": {
+    "amount": 0.004049,
+    "currency": "CNY"
+   }
+  },
+  {
+   "id": "b9c65b8dbe00",
+   "submission_id": "39b447342506",
+   "requirement_id": "smoke-evolution--counter",
+   "display_name": "volo-evolution-small-tokens-2026-09-14-49e4f21",
+   "model_name": "qwen3.6-flash",
+   "status": "PASSED",
+   "test_pass_rate": 100.0,
+   "passed_count": 2,
+   "failed_count": 0,
+   "run_duration_seconds": 4,
+   "token_count": 1995,
+   "feature_implemented_count": 2,
+   "feature_total_count": 2,
+   "cost": {
+    "amount": 0.004104,
+    "currency": "CNY"
+   }
+  },
+  {
+   "id": "79741e4c25c1",
+   "submission_id": "39b447342506",
+   "requirement_id": "smoke-evolution--dice",
+   "display_name": "volo-evolution-small-tokens-2026-09-14-49e4f21",
+   "model_name": "qwen3.6-flash",
+   "status": "FAILED",
+   "test_pass_rate": 50.0,
+   "passed_count": 1,
+   "failed_count": 1,
+   "run_duration_seconds": 5,
+   "token_count": 13798,
+   "feature_implemented_count": 1,
+   "feature_total_count": 2,
+   "cost": {
+    "amount": 0.055118,
+    "currency": "CNY"
+   }
+  },
+  {
+   "id": "54b8062301b3",
+   "submission_id": "39b447342506",
+   "requirement_id": "smoke-evolution--dice",
+   "display_name": "volo-evolution-small-tokens-2026-09-14-49e4f21",
+   "model_name": "qwen3.6-flash",
+   "status": "PASSED",
+   "test_pass_rate": 100.0,
+   "passed_count": 2,
+   "failed_count": 0,
+   "run_duration_seconds": 3,
+   "token_count": 1896,
+   "feature_implemented_count": 2,
+   "feature_total_count": 2,
+   "cost": {
+    "amount": 0.004015,
+    "currency": "CNY"
+   }
+  }
+ ],
+ "task_leaderboards_after_the_runs": {
+  "smoke--counter": [
+   {
+    "rank": 1,
+    "username": "\u4f60\u4e5f\u79c3\u5bf9\u4e0d\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.001722,
+    "cost_efficiency": 58072.0093
+   },
+   {
+    "rank": 2,
+    "username": "\u674e\u5c27",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.005025,
+    "cost_efficiency": 19900.4975
+   },
+   {
+    "rank": 3,
+    "username": "niceeeeee",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.006378,
+    "cost_efficiency": 15678.8962
+   },
+   {
+    "rank": 4,
+    "username": "VOLO AI",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.007089,
+    "cost_efficiency": 14106.362
+   },
+   {
+    "rank": 5,
+    "username": "\u975e\u5e38\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.023741,
+    "cost_efficiency": 4212.1225
+   },
+   {
+    "rank": 6,
+    "username": "JustSoSO",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.037353,
+    "cost_efficiency": 2677.1611
+   },
+   {
+    "rank": 7,
+    "username": "\u5317\u6597\u4e03\u661f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.048866,
+    "cost_efficiency": 2046.4126
+   },
+   {
+    "rank": 8,
+    "username": "\u5305\u5b50\u5934\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.056235,
+    "cost_efficiency": 1778.252
+   }
+  ],
+  "smoke--dice": [
+   {
+    "rank": 1,
+    "username": "\u4f60\u4e5f\u79c3\u5bf9\u4e0d\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.001377,
+    "cost_efficiency": 72621.6412
+   },
+   {
+    "rank": 2,
+    "username": "\u674e\u5c27",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.004428,
+    "cost_efficiency": 22583.5592
+   },
+   {
+    "rank": 3,
+    "username": "VOLO AI",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.006339,
+    "cost_efficiency": 15775.3589
+   },
+   {
+    "rank": 4,
+    "username": "niceeeeee",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.010701,
+    "cost_efficiency": 9344.921
+   },
+   {
+    "rank": 5,
+    "username": "\u5305\u5b50\u5934\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.026031,
+    "cost_efficiency": 3841.5735
+   },
+   {
+    "rank": 6,
+    "username": "JustSoSO",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.029726,
+    "cost_efficiency": 3364.0584
+   },
+   {
+    "rank": 7,
+    "username": "\u5317\u6597\u4e03\u661f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.033065,
+    "cost_efficiency": 3024.346
+   },
+   {
+    "rank": 8,
+    "username": "\u975e\u5e38\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.04287,
+    "cost_efficiency": 2332.6335
+   }
+  ],
+  "smoke-evolution--counter": [
+   {
+    "rank": 1,
+    "username": "\u4f60\u4e5f\u79c3\u5bf9\u4e0d\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 2.4e-05,
+    "cost_efficiency": 4166666.6667
+   },
+   {
+    "rank": 2,
+    "username": "Orchestra",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.002064,
+    "cost_efficiency": 48449.6124
+   },
+   {
+    "rank": 3,
+    "username": "VOLO AI",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.004104,
+    "cost_efficiency": 24366.4717
+   },
+   {
+    "rank": 4,
+    "username": "\u674e\u5c27",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.004374,
+    "cost_efficiency": 22862.3685
+   },
+   {
+    "rank": 5,
+    "username": "niceeeeee",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.004824,
+    "cost_efficiency": 20729.6849
+   },
+   {
+    "rank": 6,
+    "username": "\u5305\u5b50\u5934\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.030663,
+    "cost_efficiency": 3261.2595
+   },
+   {
+    "rank": 7,
+    "username": "\u4e0d\u60f3\u4e0a\u65e9\u516b",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.056076,
+    "cost_efficiency": 1783.2941
+   },
+   {
+    "rank": 8,
+    "username": "\u975e\u5e38\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.151596,
+    "cost_efficiency": 659.648
+   }
+  ],
+  "smoke-evolution--dice": [
+   {
+    "rank": 1,
+    "username": "\u4f60\u4e5f\u79c3\u5bf9\u4e0d\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 2.4e-05,
+    "cost_efficiency": 4166666.6667
+   },
+   {
+    "rank": 2,
+    "username": "Orchestra",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.002553,
+    "cost_efficiency": 39169.6044
+   },
+   {
+    "rank": 3,
+    "username": "VOLO AI",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.004015,
+    "cost_efficiency": 24906.6002
+   },
+   {
+    "rank": 4,
+    "username": "\u674e\u5c27",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.0042,
+    "cost_efficiency": 23809.5238
+   },
+   {
+    "rank": 5,
+    "username": "niceeeeee",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.013992,
+    "cost_efficiency": 7146.9411
+   },
+   {
+    "rank": 6,
+    "username": "\u5305\u5b50\u5934\u961f",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.064359,
+    "cost_efficiency": 1553.7842
+   },
+   {
+    "rank": 7,
+    "username": "\u4e0d\u60f3\u4e0a\u65e9\u516b",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.142731,
+    "cost_efficiency": 700.6186
+   },
+   {
+    "rank": 8,
+    "username": "\u777f\u6b23\u8fbe\u5de5\u573a",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.602313,
+    "cost_efficiency": 166.0266
+   }
+  ]
+ },
+ "local_campaign": {
+  "generations": 138,
+  "model_calls": 256,
+  "reconstructed_cost_cny": 2.4827,
+  "note": "every configuration tried, including the rejected ones"
+ }
+}
