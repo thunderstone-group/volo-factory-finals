@@ -1,0 +1,269 @@
+{
+  "generated_at": "2026-09-14",
+  "scope": "Catalog of the official ARC-Bench corpus; one 12306 reference run per configuration.",
+  "commits": {
+    "arc_bench_clone": {
+      "path": "~/projects/arcbench-campaign/upstream/arc-bench",
+      "origin": "https://github.com/code-philia/arc-bench.git",
+      "head": "a0d049c9d24d54ebd843d8beaa37bb2b44b58f9f",
+      "head_date": "2026-09-12 04:25:29 +0800"
+    },
+    "volo_factory_worktree_base": "1717ef4f11bae8f330a794bea78a6d0d541a3a72"
+  },
+  "submodule_fetch": {
+    "name": "agentic-requirement-compiler",
+    "url": "https://github.com/code-philia/agentic-requirement-compiler.git",
+    "result": "success",
+    "note": "First clone attempt failed with 'LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443'; git's automatic retry succeeded. The repository is public.",
+    "head": "2feea347dc19d6dffa901ae80a9ad8c0c6fb340f",
+    "head_date": "2026-08-19 09:22:02 +0800",
+    "top_level_entries": [
+      "CONTRIBUTING.md",
+      "LICENSE",
+      "MANIFEST.in",
+      "README.md",
+      "assets",
+      "example",
+      "pyproject.toml",
+      "src"
+    ]
+  },
+  "tool_versions": {
+    "node": "v22.22.0",
+    "npm": "10.9.4",
+    "git": "git version 2.52.0",
+    "docker": "Docker version 29.3.1, build c2be9cc",
+    "playwright_in_clone": "Version 1.61.1",
+    "playwright_pinned_in_package_json": "1.61.1",
+    "dockerfile_base_image": "mcr.microsoft.com/playwright:v1.54.0-noble",
+    "host": "Darwin arm64"
+  },
+  "audit": {
+    "command": "npm run test:audit",
+    "exit_code": 0,
+    "output": "Benchmark test contract audit passed."
+  },
+  "per_app": {
+    "12306": {
+      "requirement_ids": 142,
+      "atomic": 117,
+      "folder": 26,
+      "scenarios": 135,
+      "spec_files": 117,
+      "test_cases": 135,
+      "pure_ui_specs": 5,
+      "seed_dependent_specs": 112,
+      "distinct_fixture_names": 33,
+      "helpers_lines": 721,
+      "seed_sentences_the_system_contains": 12,
+      "image_references": 34
+    },
+    "bookstack": {
+      "requirement_ids": 55,
+      "atomic": 34,
+      "folder": 22,
+      "scenarios": 34,
+      "spec_files": 34,
+      "test_cases": 34,
+      "pure_ui_specs": 2,
+      "seed_dependent_specs": 32,
+      "distinct_fixture_names": 35,
+      "helpers_lines": 283,
+      "seed_sentences_the_system_contains": 29,
+      "image_references": 20
+    },
+    "ctrip": {
+      "requirement_ids": 225,
+      "atomic": 125,
+      "folder": 101,
+      "scenarios": 125,
+      "spec_files": 125,
+      "test_cases": 125,
+      "pure_ui_specs": 11,
+      "seed_dependent_specs": 114,
+      "distinct_fixture_names": 70,
+      "helpers_lines": 823,
+      "seed_sentences_the_system_contains": 28,
+      "image_references": 48
+    },
+    "keep": {
+      "requirement_ids": 44,
+      "atomic": 32,
+      "folder": 13,
+      "scenarios": 32,
+      "spec_files": 32,
+      "test_cases": 32,
+      "pure_ui_specs": 2,
+      "seed_dependent_specs": 30,
+      "distinct_fixture_names": 13,
+      "helpers_lines": 341,
+      "seed_sentences_the_system_contains": 25,
+      "image_references": 23
+    },
+    "prestashop": {
+      "requirement_ids": 108,
+      "atomic": 86,
+      "folder": 23,
+      "scenarios": 86,
+      "spec_files": 86,
+      "test_cases": 86,
+      "pure_ui_specs": 11,
+      "seed_dependent_specs": 75,
+      "distinct_fixture_names": 36,
+      "helpers_lines": 469,
+      "seed_sentences_the_system_contains": 19,
+      "image_references": 27
+    },
+    "stackoverflow": {
+      "requirement_ids": 85,
+      "atomic": 66,
+      "folder": 20,
+      "scenarios": 66,
+      "spec_files": 66,
+      "test_cases": 66,
+      "pure_ui_specs": 3,
+      "seed_dependent_specs": 63,
+      "distinct_fixture_names": 54,
+      "helpers_lines": 493,
+      "seed_sentences_the_system_contains": 24,
+      "image_references": 13
+    }
+  },
+  "totals": {
+    "spec_files": 460,
+    "test_cases": 478,
+    "pure_ui_specs": 34,
+    "seed_dependent_specs": 426
+  },
+  "runs": {
+    "repo_config_host": {
+      "description": "Repository playwright.config.ts via npm run test, reference on the host.",
+      "timeout_ms": 60000,
+      "expect_timeout_ms": 10000,
+      "workers": 1,
+      "trace": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "video": "retain-on-failure",
+      "target_url": "http://127.0.0.1:3301",
+      "database": "fresh",
+      "wall_seconds": 416,
+      "counts": {
+        "passed": 121,
+        "failed": 14,
+        "reported_duration": "6.9m"
+      },
+      "failed_tests": [
+        "arc-bench/webapp/12306/tests/REQ-2.4.6.spec.ts:7:5 › REQ-2.4.6: Submit the new password step with mismatched passwords",
+        "arc-bench/webapp/12306/tests/REQ-4.3.6.spec.ts:7:5 › REQ-4.3.6: Save a valid password change from the account security page",
+        "arc-bench/webapp/12306/tests/REQ-4.3.7.spec.ts:7:5 › REQ-4.3.7: Save a valid security mailbox update",
+        "arc-bench/webapp/12306/tests/REQ-5.2.3.spec.ts:7:5 › REQ-5.2.3: Add selected passengers to the booking table",
+        "arc-bench/webapp/12306/tests/REQ-5.2.5.spec.ts:7:5 › REQ-5.2.5: Submit a valid booking request",
+        "arc-bench/webapp/12306/tests/REQ-5.2.7.spec.ts:7:5 › REQ-5.2.7: Submit the booking form with an unavailable ticket class",
+        "arc-bench/webapp/12306/tests/REQ-5.3.1.spec.ts:7:5 › REQ-5.3.1: Confirm the order information and continue",
+        "arc-bench/webapp/12306/tests/REQ-5.3.1.spec.ts:17:5 › REQ-5.3.1: Return to edit from the confirmation dialog",
+        "arc-bench/webapp/12306/tests/REQ-5.3.2.spec.ts:7:5 › REQ-5.3.2: Open the payment page after confirming the order",
+        "arc-bench/webapp/12306/tests/REQ-5.3.3.spec.ts:7:5 › REQ-5.3.3: Cancel the order from the payment page",
+        "arc-bench/webapp/12306/tests/REQ-5.3.4.spec.ts:7:5 › REQ-5.3.4: Complete payment from the payment page",
+        "arc-bench/webapp/12306/tests/REQ-5.3.5.spec.ts:7:5 › REQ-5.3.5: Show an unpaid order in the uncompleted orders tab",
+        "arc-bench/webapp/12306/tests/REQ-5.3.6.spec.ts:7:5 › REQ-5.3.6: Show a paid upcoming order in the upcoming trips tab",
+        "arc-bench/webapp/12306/tests/REQ-5.3.7.spec.ts:7:5 › REQ-5.3.7: Show a cancelled order in the uncompleted orders tab"
+      ]
+    },
+    "repo_docker_reference": {
+      "description": "npm run reference:12306, the organizers' own Docker path.",
+      "timeout_ms": 15000,
+      "expect_timeout_ms": 10000,
+      "workers": 1,
+      "trace": "retain-on-failure",
+      "screenshot": "only-on-failure",
+      "video": "retain-on-failure",
+      "target_url": "http://127.0.0.1:3301 (in container)",
+      "database": "fresh",
+      "wall_seconds": 331,
+      "counts": {
+        "passed": 119,
+        "failed": 16,
+        "reported_duration": "5.2m"
+      },
+      "failed_tests": [
+        "arc-bench/webapp/12306/tests/REQ-2.4.3.spec.ts:7:5 › REQ-2.4.3: Complete a valid password reset",
+        "arc-bench/webapp/12306/tests/REQ-2.4.5.spec.ts:7:5 › REQ-2.4.5: Submit the identity verification step with unmatched records",
+        "arc-bench/webapp/12306/tests/REQ-2.4.6.spec.ts:7:5 › REQ-2.4.6: Submit the new password step with mismatched passwords",
+        "arc-bench/webapp/12306/tests/REQ-3.2.9.spec.ts:7:5 › REQ-3.2.9: Filter the result list by train type",
+        "arc-bench/webapp/12306/tests/REQ-4.3.6.spec.ts:7:5 › REQ-4.3.6: Save a valid password change from the account security page",
+        "arc-bench/webapp/12306/tests/REQ-4.3.7.spec.ts:7:5 › REQ-4.3.7: Save a valid security mailbox update",
+        "arc-bench/webapp/12306/tests/REQ-5.2.3.spec.ts:7:5 › REQ-5.2.3: Add selected passengers to the booking table",
+        "arc-bench/webapp/12306/tests/REQ-5.2.5.spec.ts:7:5 › REQ-5.2.5: Submit a valid booking request",
+        "arc-bench/webapp/12306/tests/REQ-5.3.1.spec.ts:7:5 › REQ-5.3.1: Confirm the order information and continue",
+        "arc-bench/webapp/12306/tests/REQ-5.3.1.spec.ts:17:5 › REQ-5.3.1: Return to edit from the confirmation dialog",
+        "arc-bench/webapp/12306/tests/REQ-5.3.2.spec.ts:7:5 › REQ-5.3.2: Open the payment page after confirming the order",
+        "arc-bench/webapp/12306/tests/REQ-5.3.3.spec.ts:7:5 › REQ-5.3.3: Cancel the order from the payment page",
+        "arc-bench/webapp/12306/tests/REQ-5.3.4.spec.ts:7:5 › REQ-5.3.4: Complete payment from the payment page",
+        "arc-bench/webapp/12306/tests/REQ-5.3.5.spec.ts:7:5 › REQ-5.3.5: Show an unpaid order in the uncompleted orders tab",
+        "arc-bench/webapp/12306/tests/REQ-5.3.6.spec.ts:7:5 › REQ-5.3.6: Show a paid upcoming order in the upcoming trips tab",
+        "arc-bench/webapp/12306/tests/REQ-5.3.7.spec.ts:7:5 › REQ-5.3.7: Show a cancelled order in the uncompleted orders tab"
+      ]
+    },
+    "hosted_config_workers4": {
+      "description": "Scratch config copy mirroring the observed hosted runner.",
+      "timeout_ms": 10000,
+      "expect_timeout_ms": 10000,
+      "workers": 4,
+      "trace": "off",
+      "screenshot": "off",
+      "video": "off",
+      "target_url": "http://127.0.0.1:3301",
+      "database": "fresh",
+      "wall_seconds": 38,
+      "counts": {
+        "passed": 135,
+        "reported_duration": "37.1s"
+      },
+      "failed_tests": []
+    },
+    "hosted_config_workers1_control": {
+      "description": "Same as hosted, workers forced to 1, to isolate the worker variable.",
+      "timeout_ms": 10000,
+      "expect_timeout_ms": 10000,
+      "workers": 1,
+      "trace": "off",
+      "screenshot": "off",
+      "video": "off",
+      "target_url": "http://127.0.0.1:3301",
+      "database": "fresh",
+      "wall_seconds": 124,
+      "counts": {
+        "passed": 133,
+        "failed": 2,
+        "reported_duration": "2.1m"
+      },
+      "failed_tests": [
+        "arc-bench/webapp/12306/tests/REQ-3.2.10.spec.ts:7:5 › REQ-3.2.10: Filter the result list by departure station",
+        "arc-bench/webapp/12306/tests/REQ-3.2.11.spec.ts:7:5 › REQ-3.2.11: Filter the result list by arrival station"
+      ]
+    },
+    "repo_timeout_artifacts_off_control": {
+      "description": "Control: repository 60s timeout, workers 1, trace/screenshot/video off.",
+      "timeout_ms": 60000,
+      "expect_timeout_ms": 10000,
+      "workers": 1,
+      "trace": "off",
+      "screenshot": "off",
+      "video": "off",
+      "target_url": "http://127.0.0.1:3301",
+      "database": "fresh",
+      "wall_seconds": 122,
+      "counts": {
+        "passed": 135,
+        "reported_duration": "2.0m"
+      },
+      "failed_tests": []
+    }
+  },
+  "finding": {
+    "dominant_variable": "Playwright artifact capture (trace/video/screenshot), not the test timeout or worker count.",
+    "support": "repo_config_host and repo_timeout_artifacts_off_control differ only in artifact capture: 121/135 vs 135/135, 416 s vs 122 s. The same effect reproduces inside the organizers' Docker image (repo_docker_reference, 119/135).",
+    "timeout_sensitivity": "With artifacts off, dropping 60 s to 10 s costs 2 of 135 tests at one worker (REQ-3.2.10, REQ-3.2.11) and 0 at four workers.",
+    "failure_set_stability": "Not stable between runs; single-run failure lists are indicative only."
+  }
+}
