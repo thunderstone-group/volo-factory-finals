@@ -94,7 +94,17 @@ repair loop that produces the variance. The one thing it does change is the size
 observation text, 4,236 tokens against `kimi-k3`'s 1,195 to 1,372, which adds roughly 3,000
 prompt tokens to the generation call, about CNY 0.009 at the cache-miss rate.
 
-## 5. What this does not establish
+## 5. Confirmation condition
+
+No official trial was spent on this change, by agreement with the team lead, because section 4
+shows a single trial cannot resolve it and a passing run at a high cost would replace the board
+entry. The flip must be confirmed by **the first official trial taken after the frozen-self-check
+fix on `fix/selfcheck-deadend` lands**. That ordering matters: the trap ended `8abb7f040604` at 14
+generation calls, so any observer result taken before the fix is confounded by it. Until that
+trial exists, this default rests on a 20 of 20 local gate and price arithmetic on confirmed rates,
+and on nothing else.
+
+## 6. What this does not establish
 
 - The probe is one request per model on one screenshot. It is enough to rule `deepseek-v4-flash`
   out and to put `qwen3.6-flash` and `minimax-m3` in. It does not rank how well either reads a UI,
