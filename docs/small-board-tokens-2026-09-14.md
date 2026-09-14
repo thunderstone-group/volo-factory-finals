@@ -13,12 +13,19 @@ test. Raw generations, replays, run records and board rows are in
 | **Smoke board** | | **3,307** | **0.016023** | | **2,862** | **0.013428** | **−16.2%** |
 | **Evolution board** | | **5,202** | **0.017810** | | **3,891** | **0.008119** | **−54.4%** |
 
+The comparison is against the last real-agent runs, from 09-12. It is deliberately not against the
+VOLO AI rows that sat on top of both aggregate boards at CNY 0.000072 and 0.000074: those come from
+the disclosed attack/defence audit submission `dd8c3b615208` and the two `SECURITY-REPRO`
+submissions before it, which were zero-model prewritten answers handed to the organisers and since
+retired. A later reader should not mistake the move from 0.000072 to 0.013428 for a harness
+regression; it is the difference between an audit control and an agent that writes the application.
+
 On the per-task boards immediately afterwards, VOLO AI is rank 4 on smoke counter, rank 3 on smoke
 dice, and rank 3 on both evolution tasks, all at 100% pass and 100% feature implementation. Rank 1
 on three of the four is a 24-token entry that runs in one second; the best real agent above us is
-Orchestra at CNY 0.002064 and 0.002553 on the two evolution tasks. The aggregate board rows for
-VOLO AI still show an older 0.000072 submission, so the aggregate and per-task views disagree; the
-per-task rows are the ones that moved.
+Orchestra at CNY 0.002064 and 0.002553 on the two evolution tasks. The aggregate board rows still
+show the retired audit submission, so the aggregate and per-task views disagree; the per-task rows
+are the ones that moved.
 
 ## Local gate
 
@@ -120,24 +127,104 @@ them is the compact-edit prompt, which the one-shot Smoke path never uses, so th
 stand for the shipped code. The evolution board was rerun on `49e4f21` because `fbc91de510b8` had
 exposed the prompt claim above.
 
-**The failed dice run is the honest limit of this work.** `79741e4c25c1` made one model call, added
+**The failed dice run is the honest limit of this work, and closing it was measured and rejected.** `79741e4c25c1` made one model call, added
 the `roll-count` element, never wired it to the click handler, never extended the authored check,
 and passed both local checks: the prepared check asserts that the element exists, and the inherited
-check only covers REQ-1. Its re-run on the same submission passed 2/2 in one call. Three local
-cohorts of that task had passed 15 of 15 replays beforehand. So this is generation variance that the
-local gate does not catch, and the harness has no check that a newly required behavior is actually
-asserted. That gap is the obvious next piece of work.
+check only covers REQ-1. Its re-run on the same submission passed 2/2 in one call, and the same
+shape then reproduced in one of three local cohorts on the merged head, so it is roughly a
+one-in-four defect rather than a one-off.
+
+The obvious fix was implemented and withdrawn. Requiring a compact edit to extend
+`checks/requirements.cjs` whenever it still covers only the behavior it inherited does prevent the
+defect: all eight local evolution applications generated under it passed 40 of 40 replays. It also
+made the board worse in every variant measured, four cohorts each. Per call with no way to append:
+1, 8, 2 and 3 model calls on counter, 1, 1, 1 and 3 on dice, median cost roughly double the merged
+head. With the misleading error messages corrected: 1, 6, 4 on counter and 6, 1, 2 on dice. Per
+batch, with an anchorless edit to the check file appended instead of refused: one run reached
+nineteen calls and CNY 0.244. The rule is cheap to state and expensive to satisfy, because the
+model answers a rejection by re-deriving the whole edit rather than adding the missing piece.
+
+What survives from the attempt is in the shipped code: an anchorless edit to
+`checks/requirements.cjs` is appended rather than refused, which removes a rejection the model
+earned on most first calls, and two error messages that named the wrong field or gave a bare count
+are fixed. The gap itself stands, now with a measured price for closing it that way. A cheaper
+direction, untried here, is to derive the behavioral assertion in the harness the way the interface
+assertions already are, from the scenario steps rather than from quoted names.
+
+## Re-gate after merging main, and the model that is not there
+
+Main was merged into this branch afterwards, for PR #13's failed-edit reporting. The nine-call
+evolution run was checked against that bug first and does not have it: no tool result in its trace
+carries the bare `'path'` message, so its repair loop was the prompt claim this branch had already
+removed. The merge needed the same guarantee in this branch's vocabulary, since its edit shape is
+`path` plus `new` with `insert_after` or `old`, and that is what the resolution implements.
+
+The whole gate was then re-run on the merged head, three cohorts of four tasks with the same public
+replays.
+
+| Task | Baseline median | Merged-head median | Change | Model calls | Replays |
+|---|---:|---:|---:|---|---|
+| smoke counter | 0.008763 | 0.007449 | −15% | 1 in 3 of 3 | 15 of 15 |
+| smoke dice | 0.007608 | 0.006888 | −9% | 1 in 3 of 3 | 15 of 15 |
+| evolution counter | 0.010853 | 0.008927 | −18% | 1 in 2 of 3 | 15 of 15 |
+| evolution dice | 0.011968 | 0.004032 | −66% | 1 in 3 of 3 | 10 of 15 |
+
+The five failing replays are one application, and they are the unasserted-requirement defect
+described below, reproduced locally for the first time. The merge itself changed nothing else the
+gate can see.
+
+**`deepseek-v4.1-flash` is not routable on this gateway.** A minimal chat request for that model
+name returns HTTP 400 `provider_not_selected`, "no provider selected: set x-onr-provider or
+configure models.yaml", while the identical body with `deepseek-v4-flash` and the same key succeeds.
+Three other spellings return the same error, and no run on the account has ever recorded that model
+name. Submitting with it would fail at the first model call, so the boards stay on
+`deepseek-v4-flash` and `qwen3.6-flash`.
 
 ## Meter accounting
 
 The official token count is a usage-meter delta on the shared access key between run start and run
 finish. No local gateway call was made while any run on the account was QUEUED or RUNNING: the
 generation driver reads `/runs` first and refuses to start otherwise, which it did four times while
-another agent's Ticket trials were in flight. Five of the seven runs reconstruct close to their
-captured usage. Two do not: `fbc91de510b8` reports 57,301 against 57,301 captured, and
-`79741e4c25c1` reports 13,798 against 1,869 captured, an 11,929-token gap on a run that made one
-model call. Nothing of ours was billed in that window, so the residual is another user of the shared
-key, the same mechanism section 2 of the accounting document describes.
+other agents' Ticket trials were in flight.
+
+Six of the seven runs have a zero gap: the official `token_count` equals the run's own captured
+usage exactly, and the official charge equals the price table's reconstruction to six decimals.
+That is an independent confirmation of the table for both models.
+
+| Run | Model | Captured | Official | Gap | Official CNY | Reconstructed CNY | Official CNY/M |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `981a010fbc40` | deepseek-v4-flash | 1,489 | 1,489 | 0 | 0.007089 | 0.007089 | 4.761 |
+| `f8739c764e5c` | deepseek-v4-flash | 1,373 | 1,373 | 0 | 0.006339 | 0.006339 | 4.617 |
+| `fbc91de510b8` | qwen3.6-flash | 57,301 | 57,301 | 0 | 0.082124 | 0.082123 | 1.433 |
+| `8718f0e11e26` | qwen3.6-flash | 1,924 | 1,924 | 0 | 0.004049 | 0.004049 | 2.104 |
+| `b9c65b8dbe00` | qwen3.6-flash | 1,995 | 1,995 | 0 | 0.004104 | 0.004104 | 2.057 |
+| `79741e4c25c1` | qwen3.6-flash | 1,869 | 13,798 | **11,929** | 0.055118 | 0.003821 | 3.995 |
+| `54b8062301b3` | qwen3.6-flash | 1,896 | 1,896 | 0 | 0.004015 | 0.004015 | 2.118 |
+
+The CNY per million is blended over that run's own input and output mix, which is why
+`deepseek-v4-flash` sits near 4.7 against its 3.0/9.0 tiers and `qwen3.6-flash` near 2.1 against
+1.2/7.2. The one contaminated run is the failed dice run: it made a single model call for 1,869
+tokens and was charged for 13,798. Nothing of ours ran in that window, so the residual is another
+user of the shared key, the mechanism section 2 of the accounting document describes.
+
+## A second validation, spoiled by the meter
+
+Two runs of the merged head on the Smoke board both passed 1/1 with a single model call, and their
+own checkpoints record 1,495 and 1,486 tokens, within ten tokens of the clean runs earlier in the
+day. Their meter deltas do not agree with that at all.
+
+| Run | Task | Captured | Official | Gap | Official CNY |
+|---|---|---:|---:|---:|---:|
+| `e96528d0c088` | smoke counter | 1,495 | 6,526 | 5,031 | 0.030322 |
+| `75d87d03568f` | smoke dice | 1,486 | 56,328 | 54,842 | 0.181991 |
+
+Nothing of this task's was running: the generation driver was idle and both runs made exactly one
+model call each. The residual is other use of the shared key inside the run windows. It is worth
+being precise about the rule this exposes: the meter charges a run for **any** use of the key in
+its window, so a teammate's *local* generation contaminates an official run exactly as another
+official run would. The Evolution board was therefore left on its clean rows from `39b447342506`
+rather than re-validated during the contamination, and the per-task Smoke rows now carry the two
+inflated numbers until they can be re-run in a quiet window.
 
 ## Cost of the work
 

@@ -1332,6 +1332,44 @@
     "amount": 0.004015,
     "currency": "CNY"
    }
+  },
+  {
+   "id": "e96528d0c088",
+   "submission_id": "9f75ebfa8086",
+   "requirement_id": "smoke--counter",
+   "display_name": "volo-smoke-small-tokens-2026-09-14-63fdc58",
+   "model_name": "deepseek-v4-flash",
+   "status": "PASSED",
+   "test_pass_rate": 100.0,
+   "passed_count": 1,
+   "failed_count": 0,
+   "run_duration_seconds": 6,
+   "token_count": 6526,
+   "feature_implemented_count": 1,
+   "feature_total_count": 1,
+   "cost": {
+    "amount": 0.030322,
+    "currency": "CNY"
+   }
+  },
+  {
+   "id": "75d87d03568f",
+   "submission_id": "9f75ebfa8086",
+   "requirement_id": "smoke--dice",
+   "display_name": "volo-smoke-small-tokens-2026-09-14-63fdc58",
+   "model_name": "deepseek-v4-flash",
+   "status": "PASSED",
+   "test_pass_rate": 100.0,
+   "passed_count": 1,
+   "failed_count": 0,
+   "run_duration_seconds": 6,
+   "token_count": 56328,
+   "feature_implemented_count": 1,
+   "feature_total_count": 1,
+   "cost": {
+    "amount": 0.181991,
+    "currency": "CNY"
+   }
   }
  ],
  "task_leaderboards_after_the_runs": {
@@ -1359,17 +1397,17 @@
    },
    {
     "rank": 4,
-    "username": "VOLO AI",
-    "avg_pass_rate": 100.0,
-    "total_token_cost": 0.007089,
-    "cost_efficiency": 14106.362
-   },
-   {
-    "rank": 5,
     "username": "\u975e\u5e38\u961f",
     "avg_pass_rate": 100.0,
     "total_token_cost": 0.023741,
     "cost_efficiency": 4212.1225
+   },
+   {
+    "rank": 5,
+    "username": "VOLO AI",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.030322,
+    "cost_efficiency": 3297.9355
    },
    {
     "rank": 6,
@@ -1410,45 +1448,45 @@
    },
    {
     "rank": 3,
-    "username": "VOLO AI",
-    "avg_pass_rate": 100.0,
-    "total_token_cost": 0.006339,
-    "cost_efficiency": 15775.3589
-   },
-   {
-    "rank": 4,
     "username": "niceeeeee",
     "avg_pass_rate": 100.0,
     "total_token_cost": 0.010701,
     "cost_efficiency": 9344.921
    },
    {
-    "rank": 5,
+    "rank": 4,
     "username": "\u5305\u5b50\u5934\u961f",
     "avg_pass_rate": 100.0,
     "total_token_cost": 0.026031,
     "cost_efficiency": 3841.5735
    },
    {
-    "rank": 6,
+    "rank": 5,
     "username": "JustSoSO",
     "avg_pass_rate": 100.0,
     "total_token_cost": 0.029726,
     "cost_efficiency": 3364.0584
    },
    {
-    "rank": 7,
+    "rank": 6,
     "username": "\u5317\u6597\u4e03\u661f",
     "avg_pass_rate": 100.0,
     "total_token_cost": 0.033065,
     "cost_efficiency": 3024.346
    },
    {
-    "rank": 8,
+    "rank": 7,
     "username": "\u975e\u5e38\u961f",
     "avg_pass_rate": 100.0,
     "total_token_cost": 0.04287,
     "cost_efficiency": 2332.6335
+   },
+   {
+    "rank": 8,
+    "username": "haiknow",
+    "avg_pass_rate": 100.0,
+    "total_token_cost": 0.152421,
+    "cost_efficiency": 656.0776
    }
   ],
   "smoke-evolution--counter": [
@@ -1569,9 +1607,129 @@
   ]
  },
  "local_campaign": {
-  "generations": 138,
-  "model_calls": 256,
-  "reconstructed_cost_cny": 2.4827,
+  "generations": 168,
+  "model_calls": 316,
+  "reconstructed_cost_cny": 2.9741,
   "note": "every configuration tried, including the rejected ones"
+ },
+ "meter_accounting": [
+  {
+   "run": "981a010fbc40",
+   "task": "smoke--counter",
+   "model": "deepseek-v4-flash",
+   "status": "PASSED",
+   "calls": 1,
+   "captured_tokens": 1489,
+   "official_tokens": 1489,
+   "gap": 0,
+   "reconstructed_cny": 0.007089,
+   "official_cny": 0.007089,
+   "official_cny_per_million": 4.7609,
+   "reconstructed_cny_per_million": 4.7609
+  },
+  {
+   "run": "f8739c764e5c",
+   "task": "smoke--dice",
+   "model": "deepseek-v4-flash",
+   "status": "PASSED",
+   "calls": 1,
+   "captured_tokens": 1373,
+   "official_tokens": 1373,
+   "gap": 0,
+   "reconstructed_cny": 0.006339,
+   "official_cny": 0.006339,
+   "official_cny_per_million": 4.6169,
+   "reconstructed_cny_per_million": 4.6169
+  },
+  {
+   "run": "fbc91de510b8",
+   "task": "smoke-evolution--counter",
+   "model": "qwen3.6-flash",
+   "status": "PASSED",
+   "calls": 9,
+   "captured_tokens": 57301,
+   "official_tokens": 57301,
+   "gap": 0,
+   "reconstructed_cny": 0.082123,
+   "official_cny": 0.082124,
+   "official_cny_per_million": 1.4332,
+   "reconstructed_cny_per_million": 1.4332
+  },
+  {
+   "run": "8718f0e11e26",
+   "task": "smoke-evolution--dice",
+   "model": "qwen3.6-flash",
+   "status": "PASSED",
+   "calls": 1,
+   "captured_tokens": 1924,
+   "official_tokens": 1924,
+   "gap": 0,
+   "reconstructed_cny": 0.004049,
+   "official_cny": 0.004049,
+   "official_cny_per_million": 2.1045,
+   "reconstructed_cny_per_million": 2.1044
+  },
+  {
+   "run": "b9c65b8dbe00",
+   "task": "smoke-evolution--counter",
+   "model": "qwen3.6-flash",
+   "status": "PASSED",
+   "calls": 1,
+   "captured_tokens": 1995,
+   "official_tokens": 1995,
+   "gap": 0,
+   "reconstructed_cny": 0.004104,
+   "official_cny": 0.004104,
+   "official_cny_per_million": 2.0571,
+   "reconstructed_cny_per_million": 2.0571
+  },
+  {
+   "run": "79741e4c25c1",
+   "task": "smoke-evolution--dice",
+   "model": "qwen3.6-flash",
+   "status": "FAILED",
+   "calls": 1,
+   "captured_tokens": 1869,
+   "official_tokens": 13798,
+   "gap": 11929,
+   "reconstructed_cny": 0.003821,
+   "official_cny": 0.055118,
+   "official_cny_per_million": 3.9946,
+   "reconstructed_cny_per_million": 2.0443
+  },
+  {
+   "run": "54b8062301b3",
+   "task": "smoke-evolution--dice",
+   "model": "qwen3.6-flash",
+   "status": "PASSED",
+   "calls": 1,
+   "captured_tokens": 1896,
+   "official_tokens": 1896,
+   "gap": 0,
+   "reconstructed_cny": 0.004015,
+   "official_cny": 0.004015,
+   "official_cny_per_million": 2.1176,
+   "reconstructed_cny_per_million": 2.1177
+  }
+ ],
+ "model_routing_probe": {
+  "question": "Is deepseek-v4.1-flash served by the organizer gateway?",
+  "method": "minimal chat/completions request with the account access key, no tools",
+  "deepseek-v4.1-flash": {
+   "http_status": 400,
+   "code": "provider_not_selected",
+   "message": "no provider selected: set x-onr-provider or configure models.yaml"
+  },
+  "deepseek-v4-flash": {
+   "http_status": 200,
+   "usage_returned": true
+  },
+  "other_spellings_tried": [
+   "deepseek-v4.1",
+   "deepseek-v41-flash",
+   "deepseek-v4.1-pro",
+   "deepseek-v4-flash-4.1"
+  ],
+  "conclusion": "not routable; a submission using that model name would fail at its first model call"
  }
 }

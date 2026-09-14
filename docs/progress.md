@@ -510,3 +510,23 @@ each rule snapshot and experiment with date and source.
   element, never wired it, and never extended the authored check. Its re-run passed. The harness
   has no check that a newly required behavior is actually asserted, which is the next piece of work.
 - Local campaign cost CNY 2.4827 over 138 generations; the seven official runs cost CNY 0.093.
+
+## 2026-09-14 — Merge, re-gate, and two levers that did not survive measurement
+
+- Merged `main` into `perf/small-board-tokens` for PR #13's failed-edit reporting, resolved the two
+  conflicts, and gave the same guarantee in this branch's edit vocabulary. The nine-call evolution
+  run was checked for that bug first: its trace has no bare `'path'` result, so its repair loop was
+  the prompt claim this branch had already removed.
+- Re-ran the full gate on the merged head: twelve generations, sixty replays, 55 fully passing. The
+  five failures are one application exhibiting the unasserted-requirement defect, which had only
+  been seen officially before.
+- `deepseek-v4.1-flash` is not routable on the organizer gateway: HTTP 400 `provider_not_selected`
+  for four spellings, while `deepseek-v4-flash` succeeds with the same key and body. A submission
+  naming it would fail at its first model call, so both boards stay on the current models.
+- Implemented and withdrew a rule requiring an evolution edit to assert the requirement it adds. It
+  prevents the defect, 40 of 40 replays, and costs more than it saves in all three variants
+  measured: model calls of 8, 6 and 19 appear where the merged head uses 1 or 2.
+- Two official runs of the merged head passed 1/1 with one model call each and captured 1,495 and
+  1,486 tokens, but their meter deltas were 6,526 and 56,328. The contamination is other use of the
+  shared key inside the run windows, which includes teammates' local generation, not only official
+  runs. The Evolution board was left on its clean rows rather than re-validated during it.
