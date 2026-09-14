@@ -1290,6 +1290,10 @@ class ScheduleCompletionTests(TempCase):
         self.assertFalse(self.workspace.path('frontend/public/features/debris.js').exists())
         self.assertTrue((self.workspace.root / 'backend' / '.volo' / 'launcher.cjs').exists())
         self.assertTrue((self.workspace.root / 'backend' / 'data' / 'store.json').exists())
+        # The restore must not forget the batch whose tree it restored to.
+        for item in first:
+            self.assertIn(item, agent.completed)
+        self.assertEqual(json.loads(agent.snapshot_path().read_text())['completed'], first)
         events = [json.loads(line) for line in
                   (self.trace.directory / 'events.jsonl').read_text().splitlines()]
         restored = [event for event in events if event['event'] == 'restored_product_snapshot']

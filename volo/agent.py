@@ -609,7 +609,6 @@ class Agent:
             except (OSError, ValueError) as restore_error:
                 self.trace.event('restore_failed', error=str(restore_error)[:300])
             return False
-        self.snapshot_product()
         return True
 
     def restore_verified_tree(self):
@@ -708,6 +707,11 @@ class Agent:
                     if node['id'] in verified:
                         self.runtime.emit('mark_test_passed', node['id'],
                                           'Pinned external acceptance passed; official evaluation is pending')
+                if self.contract:
+                    # After `completed` carries this batch: run keep at b3d2331 snapshotted
+                    # before it, and a later restore dropped batch 6's three requirements
+                    # from every list while their files stayed in the tree.
+                    self.snapshot_product()
                 self.trace.event('self_checks_completed', requirements=[node['id'] for node in nodes],
                                  source_fingerprint=self.workspace.fingerprint(),
                                  verification_scope=self.workspace.last_verification['verification_scope'])
