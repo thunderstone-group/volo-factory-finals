@@ -42,6 +42,40 @@ def normalize_check_command(command):
     return command
 
 
+# Generated code that hands the browser a navigation after an awaited fetch races the
+# test runner's next goto/reload. Measured on 2026-09-14: 10 of 48 replays of an
+# application that assigns location.href failed with ERR_ABORTED or "interrupted by
+# another navigation", against 0 of 18 replays of the same application re-rendering in
+# place. See docs/registration-timing-2026-09-14.md.
+GLOBAL = r'(?:(?:window|document|self|top|parent)\s*\.\s*)?'
+SELF_NAVIGATION = re.compile(
+    r'<meta[^>]+http-equiv\s*=\s*["\']?\s*refresh'
+    r'|(?<![\w$.])' + GLOBAL + r'location\s*\.\s*(?:assign|replace|reload)\s*\('
+    r'|(?<![\w$.])' + GLOBAL +
+    r'location\s*(?:\.\s*(?:href|pathname|search|hash|host|hostname|protocol|port)\s*)?=(?!=)',
+    re.IGNORECASE)
+DECLARED_NAME = re.compile(r'\b(?:var|let|const|function|class)\s+$')
+NAVIGATION_SOURCES = ('.html', '.htm', '.js', '.cjs', '.mjs', '.jsx', '.ts', '.tsx', '.vue', '.svelte')
+
+
+def self_navigation_findings(path, source, limit=5):
+    """Report browser self-navigation in one product file, one finding per line.
+
+    Reads such as location.pathname and every history.* call are deliberately allowed.
+    """
+    findings = []
+    for number, line in enumerate(source.splitlines(), 1):
+        for match in SELF_NAVIGATION.finditer(line):
+            if DECLARED_NAME.search(line[:match.start()]):
+                continue
+            findings.append({'file': path, 'line': number,
+                             'source': line.strip()[:200], 'match': match.group(0)[:80]})
+            break
+        if len(findings) >= limit:
+            break
+    return findings
+
+
 def stop_process(process):
     if process.poll() is None:
         try:
@@ -76,6 +110,7 @@ class Workspace:
         self.last_verification_attempt = None
         self.required_checks = []
         self.retain_failed_prepared_checks = False
+        self.authored = set()
         self.acceptance_suite = None
         self.acceptance_requirement_ids = None
         self.root.mkdir(parents=True, exist_ok=True)
@@ -186,7 +221,9 @@ class Workspace:
                 else:
                     path.write_bytes(content)
             raise
-        return {"written": [str(p.relative_to(self.root)) for p in pending]}
+        written = [str(p.relative_to(self.root)) for p in pending]
+        self.authored.update(written)
+        return {"written": written}
 
     def edit(self, path, old, new):
         target = self.path(path, write=True)
@@ -336,6 +373,27 @@ class Workspace:
                                'A genuinely incorrect captured check remains a reported limitation, not permission '
                                'to weaken required product behavior or claim independent acceptance.'}
 
+    def self_navigation_guard(self):
+        """Reject browser self-navigation in product code this run authored.
+
+        Files supplied by an existing project are not scanned until the agent
+        rewrites them, so a legacy pattern never makes verification unreachable.
+        """
+        findings = []
+        for path in self.files():
+            relative = str(path.relative_to(self.root))
+            if (relative not in self.authored or relative.startswith('checks/')
+                    or path.suffix.lower() not in NAVIGATION_SOURCES):
+                continue
+            try:
+                source = path.read_text()
+            except (OSError, UnicodeError):
+                continue
+            findings.extend(self_navigation_findings(relative, source))
+            if len(findings) >= 8:
+                break
+        return findings[:8]
+
     def verify(self, check_command):
         """Verify the actual current tree, never a model's claimed test result."""
         check_command = normalize_check_command(check_command)
@@ -369,6 +427,16 @@ class Workspace:
             self.trace.event("verification", **value)
             return value
         try:
+            findings = self.self_navigation_guard()
+            if findings:
+                return result(False, self_navigation=findings, error=(
+                    'Product code navigates the browser itself, which races the test runner: '
+                    + json.dumps(findings, ensure_ascii=False)
+                    + '. Remove every window.location/location.href assignment, location.assign, '
+                      'location.replace, location.reload and <meta http-equiv="refresh">. After a '
+                      'submission or sign-out, re-render the affected view in place and update the URL '
+                      'with history.replaceState; route in-app links with history.pushState and a '
+                      'popstate handler. Reading location.pathname is allowed.'))
             for relative in ("frontend", "backend"):
                 manifest = self.root / relative / "package.json"
                 if not manifest.is_file():
