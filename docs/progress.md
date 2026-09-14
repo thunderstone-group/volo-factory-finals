@@ -449,3 +449,55 @@ each rule snapshot and experiment with date and source.
   read-only calls, the official failure calls 9 to 15. That is the largest remaining block of
   avoidable spend. See `docs/selfcheck-deadend-2026-09-14.md` and
   `docs/evidence/2026-09-14-selfcheck-deadend.json`.
+
+## 2026-09-14 — Attribute every repair round, then fix the three mechanical defects (`fix/repair-loop`)
+
+- Labelled all 124 model calls of 16 retained runs by failure source: the five official Ticket
+  Booking runs of 2026-09-14, six local generations and five archived E052 to E057 traces. Rows in
+  `docs/evidence/2026-09-14-repair-loop-autopsy.json`, write-up in
+  `docs/repair-loop-autopsy-2026-09-14.md`. The five official runs reconstruct their official
+  charge from these rows to six decimals, which is the check on the parse.
+- 43 of 124 calls and CNY 2.7433 of CNY 14.6536 are harness defects: 34.7% of calls, 18.7% of cost.
+  They are concentrated in four runs. The four official runs that passed have none; the one that
+  failed has nine. `product_assertion`, the repair loop working, is the largest block at CNY 5.13
+  and is not waste.
+- Defect 1, bare exception strings. `{"error": str(exc)}` sent run `8abb7f040604` the message
+  `'path'` twice. Every escaping tool exception now goes through `tool_failure`, which names the
+  tool, what was wrong and what to do; `write_files` and `deliver` validate entries by position so
+  a malformed file can no longer raise a bare `KeyError`.
+- Defect 2, edits that never applied. `Exact old text must occur exactly once: <file>` carried no
+  count, no line numbers, no failing edit index and no current text. `edit_anchor_failure` now
+  reports the occurrence count and line numbers for an ambiguous anchor, and for an absent one how
+  many characters matched, what the file holds there, what the edit expected and a marked window of
+  the real text.
+- Defect 3, unbounded read-only diagnosis, the largest block at 25 calls and CNY 1.2325. Two fixed
+  values, no knobs: after two consecutive calls that neither write nor run a check the next tool
+  result carries the complete current source of what the model has read, bounded at 48,000
+  characters; after three the run switches to the bounded full-source repair path with
+  `patch_and_verify` as the only offered tool.
+- The external review's check-authority claim held. Captured self-checks ran at the head of the
+  check loop with fail-fast, so a defective frozen bundle could stop a correct product before
+  independent acceptance. They are still executed and still reported, now with
+  `authority: diagnostic_only`; the requirement assertions decide, independent acceptance decides
+  whenever configured, and operator-supplied required checks keep their authority. Nothing about
+  independent acceptance is weakened.
+- Local measurement, gateway only, no official run started and none queued or running: five
+  generations on `main` and five on the branch, each replayed by `harness_lab.local_gate` at three
+  repetitions. Harness-defect calls fell from 15 to 4 and their cost from CNY 0.7971 to 0.2228.
+  Read-only diagnosis fell from 11 calls to 1, non-applying edits from 3 to 1. Mean cost fell from
+  CNY 0.8516 to 0.6975 and mean calls from 8.4 to 5.2; four of five runs completed on each side.
+  The spread did not narrow: the most expensive run in the measurement is `after 3` at CNY 1.6179,
+  which ended on a gateway transport failure, not on budget.
+- Both new mechanisms fired on a real model. `after 3` records `diagnosis_stall_sources` and
+  `diagnosis_stall_repair` and then made three product edits instead of more reads; `after 5`
+  received the new anchor message and delivered on its very next call. The check-authority change
+  was not exercised by these ten generations and rests on the unit tests.
+- Corrections in the same branch: the E057 timeout root cause is not proven and the change's
+  defensible claim is a removed failure class plus 10/10; the observer switch is measured only at
+  the observation call, CNY 0.23 to 0.25, with the end-to-end effect unmeasured; the single-sample
+  causal comment in `volo/references.py` is gone; the corpus navigation-keyword recommendation is
+  narrowed to the actual interaction path. The corpus counts already read 460 spec files and 478
+  test cases and needed no change.
+- `python -m unittest discover -s tests -v` reports 209 tests, 0 failures, 11 skipped, against 190
+  on `main`. `tests/test_external_gate.py` flaked twice under heavy concurrent load with
+  `[Errno 1] Operation not permitted` and passed on every clean run, including on `main`.

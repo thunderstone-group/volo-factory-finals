@@ -156,7 +156,73 @@ reports `failed`, and `verified_requirements` stays empty.
 `python -m unittest discover -s tests -v` reports **209 tests, 0 failures, 11 skipped**, against
 190 on `main`. The 11 skips are the same machine-local browser and Docker cases that skip on main.
 
-## 7. Corrections to earlier documents
+## 7. Local measurement: five generations before, five after
+
+Ten Ticket Booking applications were generated locally through the organizer gateway with
+`deepseek-v4-flash` from the same retained requirement package, five on `main` and five on this
+branch, and each was replayed in the hosted configuration by `harness_lab.local_gate` at three
+repetitions. No official run was started and no official run was queued or running at any point.
+Per-call rows are in
+[`evidence/2026-09-14-repair-loop-measurement.json`](evidence/2026-09-14-repair-loop-measurement.json).
+
+| Generation | Calls | Tokens | CNY | Defect calls | Defect CNY | Outcome | Gate |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| before 1 | 3 | 83,884 | 0.4702 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
+| before 2 | 16 | 479,906 | 0.9910 | 9 | 0.3888 | failed, token budget | 3 of 3 at 10/10 |
+| before 3 | 6 | 203,836 | 0.9520 | 1 | 0.1425 | completed | 3 of 3 at 10/10 |
+| before 4 | 12 | 394,424 | 1.1971 | 5 | 0.2658 | completed | 3 of 3 at 10/10 |
+| before 5 | 5 | 142,895 | 0.6477 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
+| after 1 | 4 | 113,901 | 0.5582 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
+| after 2 | 3 | 83,683 | 0.4598 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
+| after 3 | 12 | 379,596 | 1.6179 | 3 | 0.1353 | **failed, gateway transport error** | 0 of 3 |
+| after 4 | 3 | 77,670 | 0.4177 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
+| after 5 | 4 | 107,686 | 0.4339 | 1 | 0.0875 | completed | 3 of 3 at 10/10 |
+
+| Quantity | before, n=5 | after, n=5 |
+| --- | ---: | ---: |
+| Calls, mean | 8.4 | 5.2 |
+| CNY, mean | 0.8516 | 0.6975 |
+| Harness-defect calls, total | 15 | 4 |
+| Harness-defect CNY, total | 0.7971 | 0.2228 |
+| Runs that completed | 4 of 5 | 4 of 5 |
+
+By category, across the five runs of each side:
+
+| Category | before calls | before CNY | after calls | after CNY |
+| --- | ---: | ---: | ---: | ---: |
+| `no_op_diagnosis` | 11 | 0.3602 | 1 | 0.0245 |
+| `edit_not_applied` | 3 | 0.3517 | 1 | 0.0875 |
+| `harness_error` | 1 | 0.0853 | 2 | 0.1108 |
+| `product_assertion` | 16 | 2.6636 | 12 | 2.7920 |
+
+**The criterion is met on the harness categories.** Read-only diagnosis falls from 11 calls to 1,
+and non-applying edits from 3 to 1. Product assertions, which are the repair loop working, are
+unchanged in character.
+
+**Both new mechanisms fired on a real model.** In `after 3` the trace records
+`diagnosis_stall_sources` after two read-only calls, carrying 11,705 characters of
+`backend/server.cjs` and `frontend/public/index.html`, and `diagnosis_stall_repair` after the
+third; the next three calls were product edits rather than more reads. In `after 5` the new
+anchor message reached the model verbatim — "edit 1 of this call did not apply: its old text is
+not present in frontend/public/index.html. The first 2 of 94 characters match, then the file has
+..." — and the very next call delivered the application. Under `main`, the comparable rejections
+in `before 2` and `before 3` said only `Exact old text must occur exactly once` and were followed
+by further churn.
+
+**Report honestly what did not move.** The spread did not narrow: the single most expensive run in
+the whole measurement is `after 3` at CNY 1.6179. That run ended on
+`model_transport_uncertain`, a gateway transport failure with no retry, not on budget and not on
+anything this change touches; its application was incomplete when the gate replayed it, which is
+why it scored 0 of 3. It is a fair row in the table and an unfair sample of the branch. With it
+excluded the four remaining runs average 3.5 calls and CNY 0.4674, but four runs chosen after the
+fact are not a measurement.
+
+**The check-authority change was not exercised here.** One `main` generation, `before 5`, froze a
+capture and still completed in five calls with a clean gate; no run on either side hit a capture
+that blocked a correct product. That path is covered by the unit tests in section 6 and by the
+traced reading of `Workspace.verify` in section 5, not by these ten generations.
+
+## 8. Corrections to earlier documents
 
 - [nav-race](nav-race-2026-09-14.md) opened by presenting the self-navigation race as the
   explanation of E057's timeout. It is not proven. E057 stalled at registration spec line 67,
@@ -180,7 +246,7 @@ reports `failed`, and `verified_requirements` stays empty.
   [its evidence file](evidence/2026-09-14-arc-bench-corpus.json) and already read 460 spec files,
   478 `test()` cases and 426 seed-dependent specs; no correction was needed.
 
-## 8. What this does not establish
+## 9. What this does not establish
 
 - The categories are assigned by a classifier over retained traces, not by a human reading 124
   calls. Its rules are in the evidence file under `method.categories`, and the price
