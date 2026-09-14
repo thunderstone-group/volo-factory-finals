@@ -123,10 +123,11 @@ out of the harness as an error string, which tells the model nothing it can act 
 does not bound the read-only diagnosis stall, which is the larger half at 204,820 tokens.
 
 So this run is not evidence about `qwen3.6-flash` either way, and the reason is a repair-loop
-stall rather than the trap originally named. One subtotal in the correcting report, 215,001
-tokens for seven read-only diagnosis calls, does not reproduce from the per-call usage here; I
-count 204,820 over six such calls, or 242,851 if the final unverified edit is counted with them.
-The headline is unaffected and is confirmed.
+stall rather than the trap originally named. The subtotal queried here, 215,001 tokens for seven
+read-only diagnosis calls, was an arithmetic error in the correcting report and its author has
+withdrawn it: it matches no subset of the per-call usage. The 204,820 over six calls counted in
+this document is correct, and the classification behind it, with the diagnostic write at call 12
+and the fix at call 15 held apart from the reads, is the one to use.
 
 ## 6. The switch
 

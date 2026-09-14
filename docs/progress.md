@@ -422,7 +422,7 @@ each rule snapshot and experiment with date and source.
   use it.
 - Official run `8abb7f040604` was a different failure and two earlier documents were wrong to call
   it the same one. Nothing was frozen there. Its 477,861 tokens split into 111,438 on four edits
-  that never applied and 215,001 on seven read-only diagnosis calls; it applied a plausible fix on
+  that never applied and 204,820 on six read-only diagnosis calls; it applied a plausible fix on
   its last call and ran out before verifying it. Four of those calls were lost to a bare `KeyError`
   reaching the model as the string `'path'`.
 - Fix, three rules and no configuration knobs. Harness/API misuse inside the run's own checks
@@ -473,3 +473,20 @@ each rule snapshot and experiment with date and source.
 - Corrected in `docs/image-ablation-2026-09-14.md`, `docs/vision-model-availability-2026-09-14.md`
   and both evidence files.
 
+
+## 2026-09-14 — Correcting my own subtotal for run 8abb7f040604
+
+- The `image-ablation` agent could not reproduce the figure `215,001 tokens over seven read-only
+  diagnosis calls` that I put in `docs/selfcheck-deadend-2026-09-14.md` and in the progress entry
+  above. They were right and I was wrong. Recomputed from the retained per-call usage, the number
+  matches no subset of the calls; it was an arithmetic error on my part, not a classification
+  difference.
+- Their count reproduces exactly: 204,820 over calls 6, 9, 10, 11, 13 and 14. Their classification
+  is also the better one. I had lumped call 12, which wrote a diagnostic API simulation, and call
+  15, which applied the real fix, in with the reads; both are writes.
+- The figure that does not depend on the split: after the last verification at call 8, 250,609
+  tokens were spent without producing another verification. That is the quantity the next bound
+  should target.
+- `111,438` on the four failed edits is unchanged and reproduces exactly, as do calls 4 and 7 being
+  the two rejected with the bare `'path'`.
+- Corrected in `docs/selfcheck-deadend-2026-09-14.md` and in the entry above.
