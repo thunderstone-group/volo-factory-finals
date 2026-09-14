@@ -1272,10 +1272,17 @@ class ScheduleCompletionTests(TempCase):
             raise RuntimeError('synthetic: batch did not converge')
 
         agent.run_batch = run_batch
+        # Every real tree carries these two; the restore must step over them.
+        (self.workspace.root / 'backend' / '.volo').mkdir(parents=True, exist_ok=True)
+        (self.workspace.root / 'backend' / '.volo' / 'launcher.cjs').write_text('// synthetic launcher\n')
+        (self.workspace.root / 'backend' / 'data').mkdir(parents=True, exist_ok=True)
+        (self.workspace.root / 'backend' / 'data' / 'store.json').write_text('{}')
         agent.run_schedule()
         self.assertEqual(self.workspace.path('frontend/public/features/home.js').read_text(),
                          '// verified\n')
         self.assertFalse(self.workspace.path('frontend/public/features/debris.js').exists())
+        self.assertTrue((self.workspace.root / 'backend' / '.volo' / 'launcher.cjs').exists())
+        self.assertTrue((self.workspace.root / 'backend' / 'data' / 'store.json').exists())
         events = [json.loads(line) for line in
                   (self.trace.directory / 'events.jsonl').read_text().splitlines()]
         restored = [event for event in events if event['event'] == 'restored_product_snapshot']

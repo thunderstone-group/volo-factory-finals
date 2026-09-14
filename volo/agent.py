@@ -603,7 +603,10 @@ class Agent:
             if isinstance(exc, TimeoutError) or 'budget' in str(exc).lower():
                 raise BudgetExhausted(str(exc)) from exc
             # The next batch starts from a tree that verified, not from this one's debris.
-            self.restore_verified_tree()
+            try:
+                self.restore_verified_tree()
+            except (OSError, ValueError) as restore_error:
+                self.trace.event('restore_failed', error=str(restore_error)[:300])
             return False
         self.snapshot_product()
         return True
@@ -623,10 +626,17 @@ class Agent:
         removed = []
         for item in self.workspace.list_files()['files']:
             name = item['path']
-            if (name.startswith(('frontend/public/', 'backend/', 'checks/'))
-                    and name not in state['files']):
+            if not name.startswith(('frontend/public/', 'backend/', 'checks/')) or name in state['files']:
+                continue
+            # The same paths the snapshot leaves out: runtime data and protected
+            # dot-directories. Run keep at fc496c4 died here on backend/.volo/launcher.cjs.
+            if name.startswith('backend/data/') or any(part.startswith('.') for part in name.split('/')):
+                continue
+            try:
                 self.workspace.path(name).unlink()
-                removed.append(name)
+            except (OSError, ValueError):
+                continue
+            removed.append(name)
         self.workspace.write_files([{'path': name, 'content': content}
                                     for name, content in state['files'].items()])
         self.check_command = state['check_command']
