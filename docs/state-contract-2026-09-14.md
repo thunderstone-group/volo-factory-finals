@@ -86,7 +86,8 @@ pins that exact wrong-shaped response as a synthetic fixture.
 
 ### 3.4 Startup contract in the generated application
 
-`volo/state_runtime.py` writes three backend files the model does not author:
+`volo/state_runtime.py` writes three backend files the model does not author, and the contract
+supplement states the boundary between them and `backend/api.cjs`, which the model does author:
 
 | File | Role |
 |---|---|
@@ -123,7 +124,10 @@ shapes for them. A requirement touching no shared state conflicts with nothing a
 A top-level folder boundary also closes a batch once it is at least half full, so a screen and
 the behaviour on it stay together without producing a batch per requirement.
 
-On Keep this produces 8 batches against the size-only scheduler's 6.
+Contract batches hold three requirements or 12,000 characters, half what the size-only
+scheduler uses, because six requirements of a large application demanded more complete files
+than one reply could carry (section 5.5). On Keep that produces 15 batches against the size-only
+scheduler's 6.
 
 ### 3.6 Cross-batch regression
 
