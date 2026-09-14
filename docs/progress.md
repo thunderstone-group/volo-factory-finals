@@ -983,3 +983,17 @@ Suite 361, 4 skips, with a local Playwright 1.61.1 and Chromium supplied. Five s
 every rule, and one page each for a modal that is not inert, a hover-only control carrying the row
 title, a verb that resolves outside its row, and controls a reload does not bring back. No
 generation has been run against any of this.
+
+### 2026-09-15, 01:17 — first official Keep run, to hold the board
+
+- The team lead asked for a package on the big board now. Uploaded e277e2c (= dd8acdb, the
+  run-5 rule set plus the transport retries, plus f5241c9's larger default budget for a
+  multi-batch package: 160 calls, 5 M tokens, 45 minutes) as submission `376b26f49bd5`, sha256
+  eed48550…; RA–RG (7db22d7) deliberately left out because no full generation had run on them.
+- Official run `3313c37b801c` on `arc-bench-web--keep`. Both local generations (Keep 6 on
+  7db22d7 at batch 3, Bookstack 2 on dd8acdb at batch 11/18) were stopped first so the meter
+  delta is clean; their partial output is under `runs/2026-09-15-keep-full-6/` and
+  `runs/2026-09-15-bookstack-2/`.
+- The run's backend log says "Waiting for container to exit without timeout": the platform
+  puts no time limit on the generation container. The open question about hosted generation
+  time is closed by that line; our own 45-minute wall clock is the only limit in play.
