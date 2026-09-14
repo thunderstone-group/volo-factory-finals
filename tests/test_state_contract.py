@@ -1658,17 +1658,21 @@ class SnapshotDeliveryTests(TempCase):
         agent = self.agent()
         self.workspace.write_files([
             {'path': 'frontend/public/index.html', 'content': '<!doctype html><title>good</title>'},
-            {'path': 'backend/api.cjs', 'content': '// good\nmodule.exports=async()=>false;\n'}])
+            {'path': 'backend/api.cjs', 'content': '// good\nmodule.exports=async()=>false;\n'},
+            {'path': 'checks/a.spec.cjs', 'content': '// synthetic check\n'}])
+        # The last verification ran a one-off diagnostic; the snapshot must carry the
+        # authored bundle instead (run 3313c37b801c restored `node checks/diag-color.cjs`).
         self.workspace.last_verification = {
             'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
-            'check_command': ['node', '--test', 'checks/a.spec.cjs'], 'acceptance': {}}
+            'check_command': ['node', 'checks/diag-color.cjs'], 'acceptance': {}}
         self.assertTrue(agent.snapshot_product())
 
         # A later batch half-writes the application and never verifies.
         self.workspace.write_files([{'path': 'backend/api.cjs', 'content': '// broken'}])
         self.assertTrue(agent.deliver_best_snapshot())
         self.assertIn('// good', (self.workspace.root / 'backend' / 'api.cjs').read_text())
-        self.assertEqual(agent.check_command, ['node', '--test', 'checks/a.spec.cjs'])
+        self.assertIn('checks/a.spec.cjs', agent.check_command)
+        self.assertNotIn('checks/diag-color.cjs', agent.check_command)
 
     def test_nothing_is_restored_when_the_tree_already_matches_a_verification(self):
         agent = self.agent()
@@ -1728,6 +1732,54 @@ class ToolArgumentRepairTests(unittest.TestCase):
         self.assertEqual(tool_arguments('{"paths":["a","b"]}'), {'paths': ['a', 'b']})
         with self.assertRaises(ValueError):
             tool_arguments('{"paths":[')
+
+
+class DeliveryTests(TempCase):
+    """The tree a snapshot was taken from is delivered even when the final check cannot pass.
+
+    Run 3313c37b801c exited 1 after the wall clock with nine requirements verified.
+    Synthetic: the schedule is faked, the fresh verification is forced and made to fail.
+    """
+
+    def delivering_agent(self, with_snapshot=True):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, FakeModel('{}'), self.workspace, Runtime(self.trace),
+                      contract=contract)
+        agent.install_contract()
+
+        def run_schedule():
+            self.workspace.write_files([{'path': 'backend/api.cjs', 'content': '// verified\n'}])
+            agent.check_command = ['node', '--test', 'checks/batch-1.spec.cjs']
+            agent.completed = ['REQ-1.1']
+            self.workspace.last_verification = {
+                'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+                'check_command': agent.check_command, 'verification_scope': 'local_checks_only',
+                'acceptance': {}}
+            if with_snapshot:
+                self.assertTrue(agent.snapshot_product())
+            # Force the fresh verification: the recorded fingerprint is stale.
+            self.workspace.last_verification['source_fingerprint'] = 'stale'
+
+        agent.run_schedule = run_schedule
+        self.workspace.verify = lambda command: {'passed': False, 'error': 'synthetic: wall clock',
+                                                 'verification_scope': 'local_checks_only', 'acceptance': {}}
+        return agent
+
+    def test_a_current_verified_snapshot_is_delivered_when_the_final_check_fails(self):
+        agent = self.delivering_agent()
+        before = self.workspace.deadline
+        result = agent.run()
+        self.assertEqual(result['status'], 'completed')
+        self.assertEqual(result['delivery'], 'last_verified_snapshot')
+        self.assertGreaterEqual(self.workspace.deadline, before)
+
+    def test_without_a_verified_snapshot_the_failure_still_raises(self):
+        agent = self.delivering_agent(with_snapshot=False)
+        with self.assertRaises(RuntimeError):
+            agent.run()
 
 
 class BudgetDefaultTests(unittest.TestCase):
