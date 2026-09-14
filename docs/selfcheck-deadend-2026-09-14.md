@@ -66,9 +66,11 @@ the page.
 | 15 | 38,031 | 477,861 | `edit` | applied a plausible fix to `doSignout` |
 
 Budget exhausted one call after the fix, before any verification of it. The waste splits into
-111,438 tokens on four edits that never applied and 215,001 on seven read-only diagnosis calls.
-Four of those calls were lost to a harness defect: a missing key in an edit object raised a bare
-`KeyError` that reached the model as the string `'path'`.
+111,438 tokens on calls 3, 4, 5 and 7, whose edits never applied, and 204,820 on calls 6, 9, 10,
+11, 13 and 14, which read and never verified. Counting call 12's diagnostic write and the
+unverified fix at call 15, 250,609 tokens passed after the last verification without producing
+another one. Two of the four failed edits were lost to a harness defect: a missing key in an edit
+object raised a bare `KeyError` that reached the model as the string `'path'`.
 
 ## 3. The fix
 
