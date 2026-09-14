@@ -10,7 +10,75 @@ prompt; both were used only to score a finished application.
 
 ## 1. Results
 
-PLACEHOLDER_RESULTS
+### 1.1 Official suites against the generated applications
+
+| Application | Batches completed | Runner profile | Workers | Test timeout | Passed |
+|---|---|---|---:|---:|---:|
+| `keep` (i5) | 7 of 15 | hosted | 4 | 10 s | **17 of 32** |
+| `keep` (i5) | 7 of 15 | repo | 1 | 60 s | **17 of 32** |
+
+Trace, video and screenshots are off in both profiles. `docs/arc-bench-corpus-2026-09-14.md` measures that artifact capture alone costs the organizers' own reference fourteen of its 135 tests.
+
+`keep` (i5) scores 17 under the hosted profile and 17 under the repository profile, on exactly the same specs, while the suite takes 44.7 s against 560.5 s. Six times the per-test budget and a single worker change nothing, which rules out time pressure as the cause and says the controls those specs look for are absent or carry names the helpers' resolution ladder never matches.
+
+### 1.2 The contract itself
+
+| Quantity | Keep | Bookstack |
+|---|---:|---:|
+| Quoted literals recovered from the prose | 48 | 38 |
+| Literals reattached mechanically after extraction | 0 | 0 |
+| Seed sentences recovered from the prose | 26 | 29 |
+| Seed sentences left unresolved | 0 | 0 |
+| Seed rows in the contract | 22 | 32 |
+| Entities in the contract | 2 | 7 |
+| Extraction cost, tokens | 13585 | 17446 |
+| Extraction cost, model calls | 1 | 1 |
+
+Every one of the 22 identities the Keep requirements name reaches the running application: a probe of a generated build served 19 seeded notes and the labels 'Work', 'Reminders', 'Work editable' through the model's own request handler, with `/api/health` answering 200. Nothing declared was missing, including the three private rows each destructive requirement owns ('Delete me 2.3.1', 'Delete me 2.3.2', 'Delete me 2.3.3').
+
+### 1.3 Cost per rehearsal iteration
+
+| Iteration | Batches | Outcome | Calls | Tokens | Cache-hit | CNY | Hosted suite |
+|---|---|---|---:|---:|---:|---:|---:|
+| i1 | 1 of 10 | no checkpoint | 33 | 1,051,058 | 485,376 | 2.216533 | not scored |
+| i2 | 2 of 10 | batch_verified | 21 | 391,126 | 256,512 | 0.651235 | not scored |
+| i3 | 2 of 10 | batch_verified | 17 | 392,936 | 208,896 | 1.257952 | not scored |
+| i4 | 1 of 15 | no checkpoint | 19 | 409,090 | 347,648 | 0.353184 | not scored |
+| i5 | 7 of 15 | failed: Current requirements and workspace checkpoint exceed the context character limit | 50 | 1,295,489 | 917,248 | 1.720258 | 17 of 32 |
+| i6 | 7 of 15 | batch_verified | 50 | 1,244,230 | 940,800 | 1.400703 | not scored |
+| i7 | 1 of 15 | no checkpoint | 4 | 45,609 | 23,552 | 0.128417 | not scored |
+| bookstack h1 | 8 of 18 | batch_verified | 53 | 1,208,626 | 931,584 | 1.290064 | not scored |
+| bookstack h2 | 1 of 18 | no checkpoint | 1 | 17,607 | 10,240 | 0.062701 | not scored |
+
+Rehearsal total CNY 9.081047, plus CNY 0.397544 for the one Ticket generation used to measure the local gate. Prices are the rate table solved in `docs/token-accounting-2026-09-14.md`, applied to the usage each response reported. No official run was started, so no official charge exists for any of this.
+
+### 1.4 What the contract fixed, and what still failed
+
+Every failing spec of a scored run, split by how far generation actually got. A requirement the run never reached cannot say anything about the contract; a requirement that passed the agent's own check and then failed the official spec can.
+
+| Application | Requirements self-checked | Failed after passing their own check | Failed, never reached | Failed, batch did not complete |
+|---|---:|---|---|---|
+| `keep` (i5) | 13 | REQ-2.4, REQ-2.6.2, REQ-2.7.1, REQ-2.8.3 | REQ-2.7.2, REQ-2.7.4, REQ-2.7.5, REQ-2.7.6.1, REQ-2.7.6.2, REQ-2.7.6.3, REQ-3.1, REQ-4.2, REQ-5.1, REQ-5.2 | REQ-2.3.3 |
+
+How those specs failed, which is the more informative split:
+
+| Failure | Count |
+|---|---:|
+| test timed out | 15 |
+
+15 of the 15 failures are the spec running out of time and 0 are a failed assertion. That distinction matters, because an assertion failure is the application contradicting the requirement, and a timeout is an interaction that never completed. Not one failure was a missing seed row, a renamed field or a value that did not match: the helpers resolve a control by walking a ladder of roles and falling back to the first candidate, so a control that is absent or carries a name the ladder does not match holds the test until the budget runs out. What the contract set out to prevent did not appear. What is left is control naming and presence, which is a different lever and the one the corpus catalogue ranks next.
+
+### 1.5 Ticket Booking is unchanged
+
+One generated Ticket application, gated five times with this branch's server file and five times with `main`'s restored byte for byte. Same application otherwise.
+
+| Server | Passed per replay | Median suite wall | Failing test |
+|---|---|---:|---|
+| this branch | [9, 9, 9, 9, 9] of 10 | 15.03 s | REQ-1.1: successfully register a new account and remain signed in |
+| `main` | [9, 9, 9, 9, 9] of 10 | 15.32 s | REQ-1.1: successfully register a new account and remain signed in |
+
+The two are identical. That application passes 9 of its 10 public tests, which is a property of that generation, not of the change: both servers agree exactly, replay after replay. Ticket also confirms the routing rule directly, because no contract was extracted for it at all.
+
 
 ## 2. The problem this addresses
 
@@ -142,7 +210,17 @@ regions and named `<meter>` controls are all still stated.
 
 ## 4. What the rehearsal cost, and where it went
 
-PLACEHOLDER_COST
+The rehearsal spent CNY 9.08 across 7 Keep iterations and the holdout. Where it went, and what each fix bought:
+
+| Change | Measured effect |
+|---|---|
+| Contract extraction at default reasoning effort | 44,187 tokens; with reasoning disabled the same package costs 13,677 and resolves the same 26 seed sentences |
+| Harness files answered with their contract instead of their bytes | removes a 14 KB read the agent made repeatedly, and the retries it spent hitting the 12,000-byte bound |
+| Product source delivered in the batch request | `read_files` is not needed to see the application at all |
+| `node --check` at write time | run i1 spent 9 of 21 calls locating a syntax error the parser already knew the position of |
+| Batches halved to three requirements | run i3 lost a batch to a 30 KB tool call that arrived as invalid JSON |
+
+Cache hits dominate the prompt cost: the contract and the product source are re-sent inside a batch, and the gateway bills a cache hit at 0.1 CNY per million against 3.0 for a miss. That is why i4 cost CNY 0.353 against i1's 2.217 on a comparable token count.
 
 ## 5. What broke, and why
 
