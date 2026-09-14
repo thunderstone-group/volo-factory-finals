@@ -435,8 +435,25 @@
    "failure": {
     "model_calls": 15,
     "reason": "Observed model token budget exhausted",
-    "detail": "Repairing the run's own logout self-check with a POST /api/logout still pending when the assertion read the page. The known frozen-self-check dead end in docs/nav-race-2026-09-14.md.",
-    "reached_test_suite": false
+    "detail": "Budget exhausted in the repair loop. Four edits never applied (111,438 tokens), two of them rejected with the bare message 'path' from a KeyError in the harness; six read-only diagnosis calls produced no verification (204,820 tokens); a plausible doSignout fix was applied on the last call and never verified (38,031 tokens).",
+    "reached_test_suite": false,
+    "corrected_2026_09_14": {
+     "original_claim": "The known frozen-self-check dead end in docs/nav-race-2026-09-14.md.",
+     "verdict": "Wrong. Corrected after the selfcheck-fix agent re-read the trace.",
+     "evidence": "The retained trace contains no preserved-self-check event. The failing logout check was genuinely failing, a real product race with POST /api/logout still pending when the assertion read the page.",
+     "token_breakdown": {
+      "reference_observation": 9698,
+      "first_build_app": 45379,
+      "edits_that_never_applied": 111438,
+      "read_only_diagnosis": 204820,
+      "final_unverified_edit": 38031,
+      "applied_but_failed_verification": 30904,
+      "remaining_call": 37591,
+      "total": 477861
+     },
+     "unreproduced_figure": "The correcting report cites 215,001 tokens over seven read-only diagnosis calls. Per-call usage here gives 204,820 over six, or 242,851 including the final unverified edit. The headline is unaffected.",
+     "implication": "This run is not evidence about qwen3.6-flash either way, and the cause is a repair-loop stall rather than the trap originally named."
+    }
    }
   }
  },
