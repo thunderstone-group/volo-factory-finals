@@ -5,6 +5,7 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
 
 ## Map
 
+- `docs/campaign-plan-2026-09-14.md`: competition rules as stated by the organizers, the arc-bench-web board state, the objective-driven generalisation strategy and the order of work up to the 2026-09-21 preliminary.
 - `docs/SESSION_HANDOFF.md`: current continuation entrypoint, retained run evidence and unresolved work.
 - `docs/competition-optimization-2026-09-12.md`: three-board objective, fresh Fable review, exact E057 failure step and current-main small-board comparison.
 - `main.py`: ArcBench upload entrypoint.
