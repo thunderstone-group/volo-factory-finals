@@ -156,7 +156,8 @@ Make the smallest complete edit and add a behavioral assertion for the new requi
 as before. To ADD something, insert it instead of rewriting what surrounds it:
 {"path","insert_after":"<short unique existing text>","new":"<text added directly after it>"}
 keeps the anchor where it is and puts your text straight after it, so an added control, handler or
-test costs only the text you are adding. Every anchor must occur exactly once in the file as it is
+test costs only the text you are adding. In checks/requirements.cjs an edit with neither anchor,
+{"path":"checks/requirements.cjs","new":"<the new test>"}, is appended to the end of the file. Every anchor must occur exactly once in the file as it is
 shown to you, and two edits may not overlap the same text. Extend existing tests and reuse their
 variables; do not repeat full files, browser setup or already-covered flows in replacement text.
 Edits are validated together before writing.
@@ -177,7 +178,8 @@ Call patch_and_verify ONCE with the complete small change.
 as before. To ADD something, insert it instead of rewriting what surrounds it:
 {"path","insert_after":"<short unique existing text>","new":"<text added directly after it>"}
 keeps the anchor where it is and puts your text straight after it, so an added control, handler or
-test costs only the text you are adding. Every anchor must occur exactly once in the file as it is
+test costs only the text you are adding. In checks/requirements.cjs an edit with neither anchor,
+{"path":"checks/requirements.cjs","new":"<the new test>"}, is appended to the end of the file. Every anchor must occur exactly once in the file as it is
 shown to you, and two edits may not overlap the same text. Extend existing tests and reuse their
 variables; do not repeat full files, browser setup or already-covered flows in replacement text.
 Edits are validated together before writing. The tool then runs dependency installation,
@@ -275,7 +277,7 @@ def locate(text, anchor, label):
     return text.index(anchor)
 
 
-def edit_span(current, item):
+def edit_span(current, item, append=False):
     """Resolve one anchored edit to a (start, end, text) span of the current file."""
     new = item.get('new')
     # `old` keeps the spelling this harness and the general `edit` tool already use.
@@ -288,14 +290,14 @@ def edit_span(current, item):
         if value is not None and (not isinstance(value, str) or not value):
             raise ValueError('Anchors must be nonempty strings')
     if replace is None and after is None:
-        # A file that is currently empty has no anchor to name; its whole content
-        # is the edit. An anchorless edit to a file that has content was measured
-        # worse than refusing it: treated as an append, a model that had simply
-        # omitted its anchor appended a whole replacement file and then spent
-        # three to five calls repairing the result.
-        if current:
+        # Appending is allowed only where it is unambiguous: an empty file, or the
+        # authored check file, where adding a case is the point and the closing
+        # '});' is never unique. Everywhere else an anchorless edit was measured as
+        # a mistake rather than an intent: allowed generally, one local run appended
+        # a whole replacement file and spent twenty-three calls recovering.
+        if current and not append:
             raise ValueError('Provide exactly one of insert_after or old')
-        return 0, 0, new
+        return len(current), len(current), new
     if replace is not None and after is not None:
         raise ValueError('Provide exactly one of insert_after or old')
     if after is not None:
@@ -309,7 +311,7 @@ def apply_edit(current, item):
     return apply_edits(current, [item])
 
 
-def apply_edits(current, items):
+def apply_edits(current, items, append=False):
     """Apply every edit to one file, all anchored in the text the model was shown.
 
     Resolving each anchor against the original avoids the failure where an earlier
@@ -318,7 +320,7 @@ def apply_edits(current, items):
     """
     spans = []
     for index, item in enumerate(items):
-        start, end, text = edit_span(current, item)
+        start, end, text = edit_span(current, item, append=append)
         spans.append((start, end, index, text))
     for (start, end, _index, _text), (next_start, _e, _i, _t) in zip(sorted(spans), sorted(spans)[1:]):
         if next_start < end:
@@ -345,6 +347,7 @@ class Agent:
         self.references, self.reference_context = references, None
         self.inline_source = False
         self.prepared_checks = False
+        self.authored_check_baseline = None
         self.source_snapshot_limit = 24000
         self.last_tool_result = None
         from .public_specs import load_public_specs
@@ -352,6 +355,12 @@ class Agent:
         if self.public_specs:
             self.trace.event('public_specs_supplied', source=self.public_specs['source'],
                              files=list(self.public_specs['files']), executed=False)
+
+    def authored_check_text(self):
+        try:
+            return (self.workspace.root / AUTHORED_CHECK_PATH).read_text()
+        except (OSError, UnicodeError):
+            return None
 
     def prepared_check_written(self):
         """A prepared check on disk owns its file and its command in every mode.
@@ -480,16 +489,18 @@ class Agent:
                     continue
                 target = self.workspace.path(path, write=True)
                 empty = target.is_file() and not target.read_text()
-                if not {'insert_after', 'old'} & set(item) and not empty:
-                    raise ValueError("Each edit needs 'insert_after' or 'old', unless the file exists and "
-                                     'is empty. Received keys: ' + json.dumps(sorted(item)))
+                if not {'insert_after', 'old'} & set(item) and not empty and path != AUTHORED_CHECK_PATH:
+                    raise ValueError("Each edit needs 'insert_after' or 'old', unless the file is empty or is "
+                                     + AUTHORED_CHECK_PATH + ', where an edit with neither is appended. '
+                                     'Received keys: ' + json.dumps(sorted(item)))
                 if not target.is_file():
                     raise ValueError('Edit a file that exists; %s does not' % path)
                 grouped.setdefault(path, []).append(item)
             pending = {}
             for path, items in grouped.items():
                 try:
-                    pending[path] = apply_edits(self.workspace.path(path, write=True).read_text(), items)
+                    pending[path] = apply_edits(self.workspace.path(path, write=True).read_text(), items,
+                                                append=path == AUTHORED_CHECK_PATH)
                 except ValueError as exc:
                     raise ValueError('%s in %s' % (exc, path)) from exc
             if skipped:
@@ -500,11 +511,14 @@ class Agent:
             # still fails officially: run 79741e4c25c1 added the required element,
             # never wired it, and the inherited checks only covered the old
             # behavior. The prepared check sees the element, not the behavior.
+            # The requirement is per batch, not per call: once the assertion is in
+            # the file, a later repair call does not have to touch it again.
             if (self.inline_source and self.prepared_check_written()
                     and AUTHORED_CHECK_PATH not in pending
-                    and (self.workspace.root / AUTHORED_CHECK_PATH).is_file()):
+                    and self.authored_check_baseline is not None
+                    and self.authored_check_text() == self.authored_check_baseline):
                 raise ValueError('Assert the new requirement: extend ' + AUTHORED_CHECK_PATH
-                                 + ' in this same call. It currently covers only the existing behavior, '
+                                 + ' in this same call. It still covers only the behavior it inherited, '
                                    'and a prepared check can see that an element exists but not that it works.')
             self.workspace.write_files([{'path': path, 'content': content} for path, content in pending.items()])
             result = self.workspace.verify(args['check_command'])
@@ -648,6 +662,8 @@ class Agent:
         # output rate for, assertions the harness can prepare from its own text.
         prepared = small and self.workspace.browser.get('available', False) and (direct or compact)
         self.prepared_checks = prepared
+        # What the inherited checks covered before this batch added a requirement.
+        self.authored_check_baseline = self.authored_check_text() if compact else None
         if prepared:
             check = prepared_check(self.requirements.batch_text(nodes))
             self.workspace.write_files([{'path': PREPARED_CHECK_PATH, 'content': check}])

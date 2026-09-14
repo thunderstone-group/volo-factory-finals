@@ -47,10 +47,11 @@ class AnchoredEditTests(unittest.TestCase):
         self.assertNotIn('until', EDIT['properties'])
         self.assertEqual(sorted(EDIT['properties']), ['insert_after', 'new', 'old', 'path'])
 
-    def test_only_an_empty_file_takes_new_without_an_anchor(self):
+    def test_an_anchorless_edit_appends_only_where_that_is_unambiguous(self):
         self.assertEqual(apply_edit('', {'path': 'x', 'new': 'created\n'}), 'created\n')
-        # Treating an anchorless edit to a non-empty file as an append was measured
-        # worse: an omitted anchor appended a whole replacement file.
+        self.assertEqual(apply_edits('a\n', [{'path': 'x', 'new': 'b\n'}], append=True), 'a\nb\n')
+        # Everywhere else an omitted anchor is a mistake: one local run appended a
+        # whole replacement file and spent twenty-three calls recovering.
         with self.assertRaisesRegex(ValueError, 'exactly one of insert_after or old'):
             apply_edit('a\n', {'path': 'x', 'new': 'b\n'})
 
@@ -235,7 +236,17 @@ class NewRequirementAssertionTests(TempCase):
         agent = Agent(RequirementSet.load(self.req), None, self.workspace, None)
         agent.prepared_checks = True
         agent.inline_source = True
+        agent.authored_check_baseline = agent.authored_check_text()
         return agent
+
+    def test_the_authored_check_file_accepts_an_appended_case(self):
+        agent = self.prepared_agent()
+        result = agent.dispatch('patch_and_verify', {'edits': [
+            {'path': 'frontend/public/index.html', 'insert_after': '<h1>Product</h1>', 'new': '<p>More</p>'},
+            {'path': 'checks/requirements.cjs', 'new': "test('added',async(page,assert)=>{});\n"}]})
+        self.assertIn('check_command', result)
+        self.assertTrue((self.out / 'checks/requirements.cjs').read_text().endswith(
+            "test('added',async(page,assert)=>{});\n"))
 
     def test_a_product_only_edit_is_refused_when_checks_cover_only_old_behavior(self):
         agent = self.prepared_agent()
@@ -252,6 +263,15 @@ class NewRequirementAssertionTests(TempCase):
              'new': "\ntest('new behavior',async(page,assert)=>{});"}]})
         self.assertIn('check_command', result)
         self.assertIn('new behavior', (self.out / 'checks/requirements.cjs').read_text())
+
+    def test_a_repair_call_does_not_have_to_touch_checks_again(self):
+        agent = self.prepared_agent()
+        agent.dispatch('patch_and_verify', {'edits': [
+            {'path': 'checks/requirements.cjs', 'new': "test('added',async(page,assert)=>{});\n"}]})
+        # The assertion is in the file now; the next call may be product-only.
+        result = agent.dispatch('patch_and_verify', {'edits': [
+            {'path': 'frontend/public/index.html', 'insert_after': '<h1>Product</h1>', 'new': '<p>More</p>'}]})
+        self.assertIn('check_command', result)
 
     def test_a_one_shot_batch_without_inherited_checks_is_unaffected(self):
         agent = self.prepared_agent()
