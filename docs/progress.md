@@ -398,6 +398,12 @@ each rule snapshot and experiment with date and source.
   `deepseek-v4-flash` and the model never receives it, answering that the image data is truncated
   at 209 prompt tokens. Any observer change must transcribe a known screenshot before it ships,
   not merely return HTTP 200.
+- Headline, from four official runs that all reconstruct exactly: `01b06fb30564` and
+  `b6b89caa3f8c` are the same agent, default, model and task, both 10 of 10, and they cost CNY
+  0.629725 and 0.870779. That spread, 0.241054, is the size of the whole `kimi-k3` observation,
+  0.266640 to 0.284180. No single official trial can decide this lever in either direction, and
+  the earlier reading that removing the observation cost more is equally unsafe. Generation cost
+  across the four runs is 0.345545, 0.604138, 0.779833 and 1.035597 over 2, 3, 6 and 14 calls.
 - `DEFAULT_VISION_MODEL` is flipped to `qwen3.6-flash` on this branch. It has a 20 of 20 local
   gate and confirmed rates; it has no passing official run, and its one trial died on the
   unfixed frozen-self-check budget trap rather than on anything to do with the observer.

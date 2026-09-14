@@ -223,6 +223,36 @@
     "reconstructed_cny": 1.072651,
     "token_gap": 0,
     "cny_residual": 0.0
+   },
+   "b6b89caa3f8c": {
+    "official": {
+     "id": "b6b89caa3f8c",
+     "display_name": "volo-ticket-default-restore-2026-09-14-b13ee49",
+     "status": "PASSED",
+     "passed_count": 10,
+     "token_count": 120468,
+     "cost_cny": 0.870779
+    },
+    "per_model": {
+     "kimi-k3": {
+      "calls": 1,
+      "prompt_tokens": 7357,
+      "cached_prompt_tokens": 0,
+      "completion_tokens": 1195,
+      "reconstructed_cny": 0.26664
+     },
+     "deepseek-v4-flash": {
+      "calls": 3,
+      "prompt_tokens": 62235,
+      "cached_prompt_tokens": 10240,
+      "completion_tokens": 49681,
+      "reconstructed_cny": 0.604138
+     }
+    },
+    "captured_tokens": 120468,
+    "reconstructed_cny": 0.870778,
+    "token_gap": 0,
+    "cny_residual": 1e-06
    }
   },
   "observation_cost_per_ticket_run": {
@@ -236,6 +266,46 @@
   "qwen3.6-flash returned 4,236 observation tokens against kimi-k3 1,322 for the same three images.",
   "glm-5.2 and qwen3.6-plus were not measured on a real screenshot.",
   "minimax-m3 has no price-table entry and was not considered further.",
-  "The absence of deepseek-v4.1-flash is a fact about this gateway on this date."
- ]
+  "The absence of deepseek-v4.1-flash is a fact about this gateway on this date.",
+  "Four runs are four runs; the variance claim is narrow and predicts no particular next run.",
+  "qwen3.6-flash still has no passing official run; the case for it is arithmetic plus a 20 of 20 local gate."
+ ],
+ "variance_finding": {
+  "claim": "The run-to-run spread of identical code exceeds the observation line item, so a single official trial cannot decide whether the observation pays for itself.",
+  "identical_code_pair": {
+   "runs": [
+    "01b06fb30564",
+    "b6b89caa3f8c"
+   ],
+   "shared": "same agent default (kimi-k3 observation), same model, same task, both 10 of 10",
+   "cost_cny": [
+    0.629725,
+    0.870779
+   ],
+   "difference_cny": 0.241054
+  },
+  "observation_line_item_cny": {
+   "kimi-k3": [
+    0.28418,
+    0.26664
+   ],
+   "qwen3.6-flash": [
+    0.037054
+   ]
+  },
+  "generation_cost_cny_across_four_runs": [
+   0.345545,
+   0.604138,
+   0.779833,
+   1.035597
+  ],
+  "generation_calls_across_four_runs": [
+   2,
+   3,
+   6,
+   14
+  ],
+  "implication": "Switching the observer is an input-price change, not a behaviour change: the same three images are read and the same kind of text reaches the same prompt. On the two kimi-k3 runs the switch would have saved CNY 0.247126 and 0.229586 deterministically. The extra observation text, 4,236 tokens against 1,195 to 1,372, adds about CNY 0.009 to the generation prompt.",
+  "caveat": "Four runs are four runs. This is not a distribution and predicts no particular next run."
+ }
 }
