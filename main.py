@@ -14,7 +14,7 @@ from volo.agent import Agent
 from volo.acceptance import AcceptanceSuite
 from volo.model import Model
 from volo.requirements import RequirementSet
-from volo.references import ReferenceObserver
+from volo.references import ReferenceObserver, vision_model_name
 from volo.trace import Runtime, Trace
 from volo.workspace import Workspace
 
@@ -72,7 +72,7 @@ def main():
         runtime = Runtime(trace)
         client = Model(base, key, model_name, trace,
                        max_output=int(os.getenv("FACTORY_MAX_OUTPUT_TOKENS", "16384")))
-        vision_name = os.getenv('FACTORY_VISION_MODEL', 'kimi-k3')
+        vision_name = vision_model_name()
         references = None
         if vision_name:
             vision = Model(base, key, vision_name, trace, max_output=4096, timeout=240)

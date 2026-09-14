@@ -1,0 +1,2286 @@
+{
+ "date": "2026-09-14",
+ "subject": "A self-check that cannot pass must not consume the repair budget",
+ "branch": "fix/selfcheck-deadend",
+ "fix": {
+  "defective_check": "Verification reports harness/API misuse inside the run's own checks (assertion-library misuse, missing module, undefined symbol, syntax error) as a check defect with the exact error, and such a bundle is never frozen.",
+  "release_rules": {
+   "defective_check": "released at its first failure",
+   "no_progress": "released after 2 consecutive identical failure signatures over changed product source"
+  },
+  "fixed_values": {
+   "consecutive_rounds_before_release": 2,
+   "configuration_knobs_added": 0
+  },
+  "browser_guard": "verification.json and .factory/checkpoint.json carry browser_available; harness_lab/local_gate.py refuses to score a generation whose recorded browser environment was not available."
+ },
+ "dead_ends": {
+  "nav_race_first_local_generation": {
+   "source": "retained trace, scratchpad/nav-race/app1/.factory/events.jsonl",
+   "outcome": "budget exhausted at 464,707 observed tokens, no application delivered",
+   "mechanism": "a captured locator-ambiguity check was frozen at call 2; from call 3 on the frozen bytes failed with a TypeError from assert(locator).toBeVisible(), which no product change can clear",
+   "rounds": [
+    {
+     "call": 1,
+     "tokens": 8528,
+     "tools": [],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 8528
+    },
+    {
+     "call": 2,
+     "tokens": 40784,
+     "tools": [
+      "build_app"
+     ],
+     "passed": false,
+     "error": null,
+     "note": "captured_self_check_frozen",
+     "cumulative_tokens": 49312
+    },
+    {
+     "call": 3,
+     "tokens": 35097,
+     "tools": [
+      "patch_and_verify"
+     ],
+     "passed": false,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 84409
+    },
+    {
+     "call": 4,
+     "tokens": 35979,
+     "tools": [
+      "patch_and_verify"
+     ],
+     "passed": false,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 120388
+    },
+    {
+     "call": 5,
+     "tokens": 34412,
+     "tools": [
+      "patch_and_verify"
+     ],
+     "passed": false,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 154800
+    },
+    {
+     "call": 6,
+     "tokens": 28720,
+     "tools": [
+      "read_files"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 183520
+    },
+    {
+     "call": 7,
+     "tokens": 34482,
+     "tools": [
+      "write_files"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 218002
+    },
+    {
+     "call": 8,
+     "tokens": 34054,
+     "tools": [
+      "finish"
+     ],
+     "passed": false,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 252056
+    },
+    {
+     "call": 9,
+     "tokens": 35566,
+     "tools": [
+      "list_files"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 287622
+    },
+    {
+     "call": 10,
+     "tokens": 34578,
+     "tools": [
+      "read_file_chunk"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 322200
+    },
+    {
+     "call": 11,
+     "tokens": 35769,
+     "tools": [
+      "finish"
+     ],
+     "passed": false,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 357969
+    },
+    {
+     "call": 12,
+     "tokens": 33986,
+     "tools": [
+      "read_files"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 391955
+    },
+    {
+     "call": 13,
+     "tokens": 37363,
+     "tools": [
+      "read_file_chunk"
+     ],
+     "passed": null,
+     "error": "Harness, credentials and evaluator inputs are protected",
+     "note": null,
+     "cumulative_tokens": 429318
+    },
+    {
+     "call": 14,
+     "tokens": 35389,
+     "tools": [
+      "run"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 464707
+    }
+   ],
+   "check_logs": [
+    {
+     "log": "command-0001.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0002.log",
+     "bytes": 13246,
+     "check_defects": [
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')"
+     ],
+     "failure_signature": "e59f258fa417658b"
+    },
+    {
+     "log": "command-0003.log",
+     "bytes": 0,
+     "check_defects": [],
+     "failure_signature": "e3b0c44298fc1c14"
+    },
+    {
+     "log": "command-0004.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0005.log",
+     "bytes": 2221,
+     "check_defects": [
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')"
+     ],
+     "failure_signature": "406aa04abdfe9e62"
+    },
+    {
+     "log": "command-0006.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0007.log",
+     "bytes": 2221,
+     "check_defects": [
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')"
+     ],
+     "failure_signature": "406aa04abdfe9e62"
+    },
+    {
+     "log": "command-0008.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0009.log",
+     "bytes": 2056,
+     "check_defects": [
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')"
+     ],
+     "failure_signature": "406aa04abdfe9e62"
+    },
+    {
+     "log": "command-0010.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0011.log",
+     "bytes": 2056,
+     "check_defects": [
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')"
+     ],
+     "failure_signature": "406aa04abdfe9e62"
+    },
+    {
+     "log": "command-0012.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0013.log",
+     "bytes": 2056,
+     "check_defects": [
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')",
+      "Cannot read properties of undefined (reading 'toBeVisible')"
+     ],
+     "failure_signature": "406aa04abdfe9e62"
+    },
+    {
+     "log": "command-0014.log",
+     "bytes": 0,
+     "check_defects": [],
+     "failure_signature": "e3b0c44298fc1c14"
+    }
+   ]
+  },
+  "official_run_8abb7f040604": {
+   "source": "retained trace, scratchpad/image-ablation/events-8abb.jsonl",
+   "outcome": "FAILED, never reached the test suite, 477,861 official tokens, CNY 1.072651",
+   "mechanism": "no check was frozen; four calls produced no verification because their edits did not apply, and seven were read-only diagnosis of one genuinely failing logout self-check whose POST /api/logout was still pending",
+   "rounds": [
+    {
+     "call": 1,
+     "tokens": 9698,
+     "tools": [],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 9698
+    },
+    {
+     "call": 2,
+     "tokens": 45379,
+     "tools": [
+      "build_app"
+     ],
+     "passed": false,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 55077
+    },
+    {
+     "call": 3,
+     "tokens": 26245,
+     "tools": [
+      "patch_and_verify"
+     ],
+     "passed": null,
+     "error": "Exact old text must occur exactly once: backend/api.cjs",
+     "note": null,
+     "cumulative_tokens": 81322
+    },
+    {
+     "call": 4,
+     "tokens": 27170,
+     "tools": [
+      "patch_and_verify"
+     ],
+     "passed": null,
+     "error": "'path'",
+     "note": null,
+     "cumulative_tokens": 108492
+    },
+    {
+     "call": 5,
+     "tokens": 27554,
+     "tools": [
+      "patch_and_verify"
+     ],
+     "passed": null,
+     "error": "Exact old text must occur exactly once: backend/api.cjs",
+     "note": null,
+     "cumulative_tokens": 136046
+    },
+    {
+     "call": 6,
+     "tokens": 29833,
+     "tools": [
+      "run"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 165879
+    },
+    {
+     "call": 7,
+     "tokens": 30469,
+     "tools": [
+      "patch_and_verify"
+     ],
+     "passed": null,
+     "error": "'path'",
+     "note": null,
+     "cumulative_tokens": 196348
+    },
+    {
+     "call": 8,
+     "tokens": 30904,
+     "tools": [
+      "patch_and_verify"
+     ],
+     "passed": false,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 227252
+    },
+    {
+     "call": 9,
+     "tokens": 40086,
+     "tools": [
+      "read_file_chunk"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 267338
+    },
+    {
+     "call": 10,
+     "tokens": 27099,
+     "tools": [
+      "read_files"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 294437
+    },
+    {
+     "call": 11,
+     "tokens": 40226,
+     "tools": [
+      "read_files"
+     ],
+     "passed": null,
+     "error": "Harness, credentials and evaluator inputs are protected",
+     "note": null,
+     "cumulative_tokens": 334663
+    },
+    {
+     "call": 12,
+     "tokens": 37591,
+     "tools": [
+      "write_files"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 372254
+    },
+    {
+     "call": 13,
+     "tokens": 32205,
+     "tools": [
+      "run"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 404459
+    },
+    {
+     "call": 14,
+     "tokens": 35371,
+     "tools": [
+      "run"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 439830
+    },
+    {
+     "call": 15,
+     "tokens": 38031,
+     "tools": [
+      "edit"
+     ],
+     "passed": null,
+     "error": null,
+     "note": null,
+     "cumulative_tokens": 477861
+    }
+   ]
+  }
+ },
+ "detector_calibration": {
+  "note": "check_defect_findings replayed over retained real check logs",
+  "nav_race_app1_defective_generation": [
+   {
+    "log": "command-0001.log",
+    "bytes": 27,
+    "check_defects": [],
+    "failure_signature": "fbe784255de32040"
+   },
+   {
+    "log": "command-0002.log",
+    "bytes": 13246,
+    "check_defects": [
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')"
+    ],
+    "failure_signature": "e59f258fa417658b"
+   },
+   {
+    "log": "command-0003.log",
+    "bytes": 0,
+    "check_defects": [],
+    "failure_signature": "e3b0c44298fc1c14"
+   },
+   {
+    "log": "command-0004.log",
+    "bytes": 27,
+    "check_defects": [],
+    "failure_signature": "fbe784255de32040"
+   },
+   {
+    "log": "command-0005.log",
+    "bytes": 2221,
+    "check_defects": [
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')"
+    ],
+    "failure_signature": "406aa04abdfe9e62"
+   },
+   {
+    "log": "command-0006.log",
+    "bytes": 27,
+    "check_defects": [],
+    "failure_signature": "fbe784255de32040"
+   },
+   {
+    "log": "command-0007.log",
+    "bytes": 2221,
+    "check_defects": [
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')"
+    ],
+    "failure_signature": "406aa04abdfe9e62"
+   },
+   {
+    "log": "command-0008.log",
+    "bytes": 27,
+    "check_defects": [],
+    "failure_signature": "fbe784255de32040"
+   },
+   {
+    "log": "command-0009.log",
+    "bytes": 2056,
+    "check_defects": [
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')"
+    ],
+    "failure_signature": "406aa04abdfe9e62"
+   },
+   {
+    "log": "command-0010.log",
+    "bytes": 27,
+    "check_defects": [],
+    "failure_signature": "fbe784255de32040"
+   },
+   {
+    "log": "command-0011.log",
+    "bytes": 2056,
+    "check_defects": [
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')"
+    ],
+    "failure_signature": "406aa04abdfe9e62"
+   },
+   {
+    "log": "command-0012.log",
+    "bytes": 27,
+    "check_defects": [],
+    "failure_signature": "fbe784255de32040"
+   },
+   {
+    "log": "command-0013.log",
+    "bytes": 2056,
+    "check_defects": [
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')",
+     "Cannot read properties of undefined (reading 'toBeVisible')"
+    ],
+    "failure_signature": "406aa04abdfe9e62"
+   },
+   {
+    "log": "command-0014.log",
+    "bytes": 0,
+    "check_defects": [],
+    "failure_signature": "e3b0c44298fc1c14"
+   }
+  ],
+  "healthy_generations": {
+   "nav-race/app2": [
+    {
+     "log": "command-0001.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0002.log",
+     "bytes": 17174,
+     "check_defects": [],
+     "failure_signature": "41ab938f6f3c41aa"
+    },
+    {
+     "log": "command-0003.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0004.log",
+     "bytes": 12771,
+     "check_defects": [],
+     "failure_signature": "856c5d530a97aafa"
+    },
+    {
+     "log": "command-0005.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0006.log",
+     "bytes": 12909,
+     "check_defects": [],
+     "failure_signature": "28e7c36bb3d4460a"
+    },
+    {
+     "log": "command-0007.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0008.log",
+     "bytes": 5247,
+     "check_defects": [],
+     "failure_signature": "2b0fe9729040c1aa"
+    },
+    {
+     "log": "command-0009.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0010.log",
+     "bytes": 2003,
+     "check_defects": [],
+     "failure_signature": "8d7aa222a2e1ea73"
+    }
+   ],
+   "image-ablation/app-a2": [
+    {
+     "log": "command-0001.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0002.log",
+     "bytes": 3202,
+     "check_defects": [],
+     "failure_signature": "8f0ffcde5dbc981c"
+    },
+    {
+     "log": "command-0003.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0004.log",
+     "bytes": 3203,
+     "check_defects": [],
+     "failure_signature": "8f0ffcde5dbc981c"
+    },
+    {
+     "log": "command-0005.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0006.log",
+     "bytes": 2306,
+     "check_defects": [],
+     "failure_signature": "6c679b27f73259fa"
+    }
+   ],
+   "image-ablation/app-b": [
+    {
+     "log": "command-0001.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0002.log",
+     "bytes": 24402,
+     "check_defects": [],
+     "failure_signature": "5d32d44e0b553b68"
+    },
+    {
+     "log": "command-0003.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0004.log",
+     "bytes": 3264,
+     "check_defects": [],
+     "failure_signature": "5d332338ffb23f28"
+    },
+    {
+     "log": "command-0005.log",
+     "bytes": 27,
+     "check_defects": [],
+     "failure_signature": "fbe784255de32040"
+    },
+    {
+     "log": "command-0006.log",
+     "bytes": 1985,
+     "check_defects": [],
+     "failure_signature": "d2b5026337876459"
+    }
+   ]
+  }
+ },
+ "fixed_local_generation": {
+  "model": "deepseek-v4-flash",
+  "task": "ticket-booking",
+  "rounds": [
+   {
+    "call": 1,
+    "tokens": 8616,
+    "tools": [],
+    "passed": null,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 8616
+   },
+   {
+    "call": 2,
+    "tokens": 39524,
+    "tools": [
+     "build_app"
+    ],
+    "passed": false,
+    "error": null,
+    "note": "captured_self_check_frozen",
+    "cumulative_tokens": 48140
+   },
+   {
+    "call": 3,
+    "tokens": 25741,
+    "tools": [
+     "patch_and_verify"
+    ],
+    "passed": false,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 73881
+   },
+   {
+    "call": 4,
+    "tokens": 28181,
+    "tools": [
+     "patch_and_verify"
+    ],
+    "passed": false,
+    "error": null,
+    "note": "captured_self_check_released:no_progress",
+    "cumulative_tokens": 102062
+   },
+   {
+    "call": 5,
+    "tokens": 25260,
+    "tools": [
+     "patch_and_verify"
+    ],
+    "passed": false,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 127322
+   },
+   {
+    "call": 6,
+    "tokens": 27294,
+    "tools": [
+     "list_files"
+    ],
+    "passed": null,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 154616
+   },
+   {
+    "call": 7,
+    "tokens": 26018,
+    "tools": [
+     "read_files"
+    ],
+    "passed": null,
+    "error": "Harness, credentials and evaluator inputs are protected",
+    "note": null,
+    "cumulative_tokens": 180634
+   },
+   {
+    "call": 8,
+    "tokens": 33975,
+    "tools": [
+     "run"
+    ],
+    "passed": null,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 214609
+   },
+   {
+    "call": 9,
+    "tokens": 36636,
+    "tools": [
+     "run"
+    ],
+    "passed": null,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 251245
+   },
+   {
+    "call": 10,
+    "tokens": 35790,
+    "tools": [
+     "run"
+    ],
+    "passed": null,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 287035
+   },
+   {
+    "call": 11,
+    "tokens": 35864,
+    "tools": [
+     "write_files"
+    ],
+    "passed": null,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 322899
+   },
+   {
+    "call": 12,
+    "tokens": 34045,
+    "tools": [
+     "finish"
+    ],
+    "passed": false,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 356944
+   },
+   {
+    "call": 13,
+    "tokens": 36663,
+    "tools": [
+     "finish"
+    ],
+    "passed": false,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 393607
+   },
+   {
+    "call": 14,
+    "tokens": 37746,
+    "tools": [
+     "patch_and_verify"
+    ],
+    "passed": false,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 431353
+   },
+   {
+    "call": 15,
+    "tokens": 28503,
+    "tools": [
+     "patch_and_verify"
+    ],
+    "passed": true,
+    "error": null,
+    "note": null,
+    "cumulative_tokens": 459856
+   }
+  ]
+ },
+ "local_gate": [
+  {
+   "exit_code": 0,
+   "wall": 6.61,
+   "stats": {
+    "startTime": "2026-09-14T05:12:54.590Z",
+    "duration": 6196.324,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 823
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 744
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 773
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 473
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 718
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 945
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 933
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 587
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 809
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 808
+    }
+   ],
+   "run": 0
+  },
+  {
+   "exit_code": 0,
+   "wall": 6.38,
+   "stats": {
+    "startTime": "2026-09-14T05:13:01.648Z",
+    "duration": 6041.905,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 662
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 778
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 742
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 418
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 713
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 925
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 746
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 561
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 833
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 778
+    }
+   ],
+   "run": 1
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.46,
+   "stats": {
+    "startTime": "2026-09-14T05:13:08.594Z",
+    "duration": 5104.71,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 695
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 720
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 710
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 446
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 691
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 933
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 740
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 567
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 831
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 786
+    }
+   ],
+   "run": 2
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.64,
+   "stats": {
+    "startTime": "2026-09-14T05:13:14.579Z",
+    "duration": 5288.6939999999995,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 655
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 730
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 792
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 416
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 694
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 959
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 749
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 552
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 787
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 805
+    }
+   ],
+   "run": 3
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.48,
+   "stats": {
+    "startTime": "2026-09-14T05:13:20.750Z",
+    "duration": 5133.08,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 618
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 725
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 722
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 451
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 691
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 940
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 754
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 555
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 770
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 801
+    }
+   ],
+   "run": 4
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.55,
+   "stats": {
+    "startTime": "2026-09-14T05:13:26.760Z",
+    "duration": 5196.558999999999,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 668
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 773
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 761
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 452
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 693
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 948
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 704
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 590
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 816
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 822
+    }
+   ],
+   "run": 5
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.49,
+   "stats": {
+    "startTime": "2026-09-14T05:13:32.801Z",
+    "duration": 5153.367,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 628
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 728
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 735
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 428
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 690
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 927
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 763
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 584
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 786
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 784
+    }
+   ],
+   "run": 6
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.56,
+   "stats": {
+    "startTime": "2026-09-14T05:13:38.855Z",
+    "duration": 5211.455,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 693
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 735
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 697
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 409
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 689
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 937
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 724
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 557
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 784
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 782
+    }
+   ],
+   "run": 7
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.73,
+   "stats": {
+    "startTime": "2026-09-14T05:13:44.948Z",
+    "duration": 5374.31,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 693
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 719
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 727
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 448
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 690
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 943
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 698
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 571
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 810
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 801
+    }
+   ],
+   "run": 8
+  },
+  {
+   "exit_code": 0,
+   "wall": 7.23,
+   "stats": {
+    "startTime": "2026-09-14T05:13:51.245Z",
+    "duration": 6871.215999999999,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 693
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 752
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 753
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 440
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 695
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 926
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 762
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 602
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 785
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 784
+    }
+   ],
+   "run": 9
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.64,
+   "stats": {
+    "startTime": "2026-09-14T05:13:58.984Z",
+    "duration": 5288.696,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 734
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 735
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 741
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 413
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 758
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 988
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 747
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 579
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 802
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 791
+    }
+   ],
+   "run": 10
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.83,
+   "stats": {
+    "startTime": "2026-09-14T05:14:05.154Z",
+    "duration": 5473.803,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 715
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 752
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 751
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 510
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 747
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 1043
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 731
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 596
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 856
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 893
+    }
+   ],
+   "run": 11
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.85,
+   "stats": {
+    "startTime": "2026-09-14T05:14:11.585Z",
+    "duration": 5461.238,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 790
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 725
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 752
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 445
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 725
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 982
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 783
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 559
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 855
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 805
+    }
+   ],
+   "run": 12
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.92,
+   "stats": {
+    "startTime": "2026-09-14T05:14:17.953Z",
+    "duration": 5559.199,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 807
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 756
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 735
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 445
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 761
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 955
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 829
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 569
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 797
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 852
+    }
+   ],
+   "run": 13
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.72,
+   "stats": {
+    "startTime": "2026-09-14T05:14:24.631Z",
+    "duration": 5290.156,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 670
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 767
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 735
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 480
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 728
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 935
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 776
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 606
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 828
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 845
+    }
+   ],
+   "run": 14
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.79,
+   "stats": {
+    "startTime": "2026-09-14T05:14:30.839Z",
+    "duration": 5427.807,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 733
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 806
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 807
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 464
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 736
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 943
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 802
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 627
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 902
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 847
+    }
+   ],
+   "run": 15
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.76,
+   "stats": {
+    "startTime": "2026-09-14T05:14:37.162Z",
+    "duration": 5400.88,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 749
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 794
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 750
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 479
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 752
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 973
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 829
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 615
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 821
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 880
+    }
+   ],
+   "run": 16
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.67,
+   "stats": {
+    "startTime": "2026-09-14T05:14:43.472Z",
+    "duration": 5291.652,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 732
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 746
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 771
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 447
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 742
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 942
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 750
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 576
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 882
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 799
+    }
+   ],
+   "run": 17
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.78,
+   "stats": {
+    "startTime": "2026-09-14T05:14:49.655Z",
+    "duration": 5446.6720000000005,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 840
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 756
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 720
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 464
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 698
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 914
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 921
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 582
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 805
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 822
+    }
+   ],
+   "run": 18
+  },
+  {
+   "exit_code": 0,
+   "wall": 5.48,
+   "stats": {
+    "startTime": "2026-09-14T05:14:55.991Z",
+    "duration": 5106.434,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+   },
+   "tests": [
+    {
+     "title": "REQ-1.1: successfully register a new account and remain signed in",
+     "status": "passed",
+     "duration": 597
+    },
+    {
+     "title": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+     "status": "passed",
+     "duration": 737
+    },
+    {
+     "title": "REQ-1.1: reject duplicate email with a different username",
+     "status": "passed",
+     "duration": 701
+    },
+    {
+     "title": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+     "status": "passed",
+     "duration": 410
+    },
+    {
+     "title": "REQ-1.1: reject missing required registration values before creating a session",
+     "status": "passed",
+     "duration": 704
+    },
+    {
+     "title": "REQ-1.1: reject malformed username, email, or password without signing in",
+     "status": "passed",
+     "duration": 923
+    },
+    {
+     "title": "REQ-1.2: sign in with a valid username and password",
+     "status": "passed",
+     "duration": 755
+    },
+    {
+     "title": "REQ-1.2: sign in with a case-insensitive email and password",
+     "status": "passed",
+     "duration": 571
+    },
+    {
+     "title": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+     "status": "passed",
+     "duration": 772
+    },
+    {
+     "title": "REQ-1.2: reject an unknown account and stay logged out",
+     "status": "passed",
+     "duration": 768
+    }
+   ],
+   "run": 19
+  }
+ ],
+ "official_trial": {
+  "run": "e34e78400983",
+  "url": "https://arc-bench.com/runs/e34e78400983",
+  "submission": "cc2ade061bc7",
+  "display_name": "volo-ticket-selfcheck-fix-2026-09-14-f720337",
+  "agent_source": "f720337",
+  "package_sha256": "de08a3e40992223d5205ffc5ce2fe0bede6cc23d8133a4d3e4becb2eca0e9f5b",
+  "status": "PASSED",
+  "passed_count": 10,
+  "failed_count": 0,
+  "feature_implemented_count": 2,
+  "feature_total_count": 2,
+  "token_count": 143279,
+  "cost": {
+   "amount": 0.899558,
+   "currency": "CNY"
+  },
+  "run_duration_seconds": 372,
+  "meter_window_utc": {
+   "baseline": "2026-09-14T05:15:58Z",
+   "captured": "2026-09-14T05:22:36Z",
+   "concurrent_runs_on_account": 0
+  },
+  "captured_usage_total_tokens": 143279,
+  "meter_delta_minus_captured_usage": 0,
+  "guard_exercised": false,
+  "guard_note": "No self-check failed with a locator strict-mode violation, so nothing was frozen and nothing was released. The run shows the change does not break a healthy run.",
+  "rounds": [
+   {
+    "call": 1,
+    "tokens": 8498,
+    "tools": [],
+    "passed": null,
+    "note": null,
+    "cumulative_tokens": 8498
+   },
+   {
+    "call": 2,
+    "tokens": 46073,
+    "tools": [
+     "build_app"
+    ],
+    "passed": false,
+    "note": null,
+    "cumulative_tokens": 54571
+   },
+   {
+    "call": 3,
+    "tokens": 30847,
+    "tools": [
+     "patch_and_verify"
+    ],
+    "passed": false,
+    "note": null,
+    "cumulative_tokens": 85418
+   },
+   {
+    "call": 4,
+    "tokens": 28399,
+    "tools": [
+     "patch_and_verify"
+    ],
+    "passed": false,
+    "note": null,
+    "cumulative_tokens": 113817
+   },
+   {
+    "call": 5,
+    "tokens": 29462,
+    "tools": [
+     "patch_and_verify"
+    ],
+    "passed": true,
+    "note": null,
+    "cumulative_tokens": 143279
+   }
+  ],
+  "reference_observation": {
+   "model": "kimi-k3",
+   "prompt_tokens": 7349,
+   "completion_tokens": 1149,
+   "total_tokens": 8498,
+   "images_actually_read": true,
+   "evidence_that_images_were_read": "The prompt is 7,349 tokens, not the ~209 a model returns when it never received the images, and the text transcribes real page elements.",
+   "text_first_lines": [
+    "# reference/homepage.png",
+    "**Layout:** Top header (logo + search bar + utility links), blue primary nav bar, large hero carousel with an overlaid ticket-search form on the left, icon shortcut row below, then a 2×2 grid of promotional cards. Blue/white theme with an orange CTA button.",
+    "**Header:**",
+    "- Logo: 中国铁路12306 / 12306 CHINA RAILWAY",
+    "- Search placeholder: 搜索车票、餐饮、常旅客、相关规章",
+    "- Utility links: 无障碍 | 敬老版 | English | 我的12306 | 登录 注册",
+    "**Main nav:** 首页, 车票 ▾, 团购服务 ▾, 会员服务 ▾, 站车服务 ▾, 商旅服务 ▾, 出行指南 ▾, 信息查询 ▾",
+    "**Search panel (left tabs):** 车票, 常用查询, 订餐"
+   ],
+   "note": "This trial ran agent source f720337, branched from b13ee49, which predates the observer flip in PR #11/#12. Its observer is kimi-k3, not qwen3.6-flash, so this run is NOT the confirmation trial for the qwen default."
+  }
+ },
+ "unit_tests": {
+  "command": "python -m unittest discover -s tests -v",
+  "tests": 190,
+  "failures": 0,
+  "skipped": 11,
+  "baseline_on_main": 176
+ }
+}

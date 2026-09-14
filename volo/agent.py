@@ -394,6 +394,7 @@ class Agent:
         atomic_json(self.state_path, {
             "version": 1, "status": status, "requirement_fingerprint": self.requirements.fingerprint,
             "source_fingerprint": self.workspace.fingerprint(), "completed": self.completed,
+            "browser_available": bool(self.workspace.browser.get("available")),
             "check_command": self.check_command, "model": self.model.model,
             "verification_scope": (self.workspace.last_verification or {}).get(
                 "verification_scope", "local_checks_only"),
@@ -463,6 +464,11 @@ class Agent:
                 raise ValueError('Provide 1-20 exact edits')
             grouped, skipped = {}, []
             for item in edits:
+                if not isinstance(item, dict) or 'path' not in item:
+                    # Run 8abb spent two of fifteen calls on a KeyError reported as "'path'".
+                    raise ValueError("Each edit needs 'path' and 'new', plus 'insert_after' or 'old'. "
+                                     "Received keys: "
+                                     + json.dumps(sorted(item) if isinstance(item, dict) else type(item).__name__))
                 path = item['path']
                 if self.prepared_check_written() and path == PREPARED_CHECK_PATH:
                     skipped.append(path)
@@ -559,6 +565,18 @@ class Agent:
                            + json.dumps(self.public_specs, ensure_ascii=False))
         return "\n".join(request)
 
+    def observe_references(self, nodes):
+        """Read referenced images, or state plainly that no observer was configured.
+
+        With the reference observation switched off the run makes no image request at
+        all; the agent is told the binary references were not inspected so it cannot
+        claim to have matched them.
+        """
+        if self.references is None:
+            return {'unavailable': 'No reference observer configured; binary images have not been inspected'}
+        return self.references.observe(self.requirements, nodes,
+                                       deadline=self.workspace.deadline, guard_budget=self.guard_budget)
+
     def context_checkpoint(self, nodes, system, last_failure):
         attempt = self.workspace.last_verification_attempt
         verification = None
@@ -590,9 +608,7 @@ class Agent:
         self.workspace.clear_prepared_check_guards()
         self.inline_source = False
         self.source_snapshot_limit = 24000
-        self.reference_context = (self.references.observe(self.requirements, nodes,
-            deadline=self.workspace.deadline, guard_budget=self.guard_budget) if self.references else
-            {'unavailable': 'No reference observer configured; binary images have not been inspected'})
+        self.reference_context = self.observe_references(nodes)
         prompt_size = len(self.requirements.batch_prompt(nodes))
         small = len(nodes) <= 3 and prompt_size <= SMALL_BATCH_CHARS
         bounded = len(nodes) <= 3 and prompt_size <= BOUNDED_BATCH_CHARS
@@ -722,6 +738,8 @@ class Agent:
                     open_repairs = open_repairs or (not small and result.get('passed') is False)
                     model_result = {"passed": False, "error": result.get('error'),
                                     "retained_self_check": result.get('retained_self_check'),
+                                    "defective_check": result.get('defective_check'),
+                                    "released_self_check": result.get('released_self_check'),
                                     "check_output": excerpt((result.get('steps') or [{}])[-1].get('output', ''), 5000),
                                     "server_output": result.get('server_output', '')[-2000:],
                                     "source_paths": {'index_html': 'frontend/public/index.html',

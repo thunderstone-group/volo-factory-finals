@@ -1,0 +1,505 @@
+{
+ "observed_at": "2026-09-14T04:32:36.566309+00:00",
+ "question": "Does Ticket Booking still pass 10/10 without the kimi-k3 reference-image observation, or with a cheaper one, and is either cheaper in an official run?",
+ "verdict": "No. Both variants passed a 20 of 20 local gate. Removing the observation passed 10/10 officially and cost more, because the generation needed four extra repair rounds. Routing it to qwen3.6-flash exhausted its token budget on its one official trial for an unrelated self-check reason. The default is unchanged at kimi-k3.",
+ "change": {
+  "branch": "exp/image-ablation",
+  "commit": "e7e4f5c2174e99b4419dd7258ef3c01f9e34ab25",
+  "summary": "FACTORY_VISION_MODEL selects the reference-observation model or removes the call; DEFAULT_VISION_MODEL stays kimi-k3.",
+  "default_changed": false
+ },
+ "price_table_cny_per_million": {
+  "deepseek-v4-flash": {
+   "input_cache_miss": 3.0,
+   "input_cache_hit": 0.1,
+   "output": 9.0
+  },
+  "qwen3.6-flash": {
+   "input_cache_miss": 1.2,
+   "input_cache_hit": 1.2,
+   "output": 7.2
+  },
+  "kimi-k3": {
+   "input_cache_miss": 20.0,
+   "input_cache_hit": 2.0,
+   "output": 100.0
+  }
+ },
+ "price_table_source": "docs/token-accounting-2026-09-14.md, solved from 34 observed runs",
+ "unit_tests": {
+  "command": "python -m unittest discover -s tests -v",
+  "ran": 176,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 11,
+  "baseline_on_main": 169,
+  "note": "The 11 skips are the same machine-local browser and Docker-image cases as on main.",
+  "unexplained_observation": "One run in this session reported a single failure whose name was not captured; seven consecutive runs afterwards were green. Not reproduced and not attributed to this change.",
+  "consecutive_green_runs_after": 7
+ },
+ "image_support_probe": {
+  "method": "One chat/completions request per model with the run's own 1,746x1,021 registration screenshot, asking for the visible section heading and first three field labels.",
+  "results": [
+   {
+    "model": "deepseek-v4-flash",
+    "accepts_request": true,
+    "sees_image": false,
+    "prompt_tokens": 209,
+    "completion_tokens": 14789,
+    "response": "Image data is truncated; unable to transcribe."
+   },
+   {
+    "model": "qwen3.6-flash",
+    "accepts_request": true,
+    "sees_image": true,
+    "prompt_tokens": 1801,
+    "completion_tokens": 1316,
+    "response": "账户信息 / 用户名 / 登录密码 / 确认密码, correct"
+   },
+   {
+    "model": "minimax-m3",
+    "accepts_request": true,
+    "sees_image": true,
+    "prompt_tokens": 2538,
+    "completion_tokens": 112,
+    "response": "correct"
+   },
+   {
+    "model": "qwen3.6-plus",
+    "accepts_request": true,
+    "sees_image": "not_measured",
+    "note": "Rejected an 8x8 probe as under the 10-pixel minimum, which decodes the payload."
+   },
+   {
+    "model": "glm-5.2",
+    "accepts_request": true,
+    "sees_image": "not_measured",
+    "note": "20 prompt tokens on an 8x8 image; the payload appears to be dropped."
+   }
+  ],
+  "kimi_k3_reference": {
+   "model": "kimi-k3",
+   "images": 3,
+   "prompt_tokens": 7349,
+   "source": "run 01b06fb30564 captured usage"
+  }
+ },
+ "variants": {
+  "retained_default": {
+   "observation_model": "kimi-k3",
+   "local_gate": null,
+   "official": {
+    "id": "01b06fb30564",
+    "submission_id": "9c2951993e9a",
+    "display_name": "volo-ticket-nav-race-2026-09-14-ccc3eb9",
+    "model_name": "deepseek-v4-flash",
+    "status": "PASSED",
+    "score": 100.0,
+    "test_pass_rate": 100.0,
+    "passed_count": 10,
+    "failed_count": 0,
+    "token_count": 72854,
+    "run_duration_seconds": 279,
+    "failure_reason": null,
+    "cost": {
+     "amount": 0.629725,
+     "currency": "CNY"
+    }
+   },
+   "usage": {
+    "per_model": {
+     "kimi-k3": {
+      "calls": 1,
+      "prompt_tokens": 7349,
+      "cached_prompt_tokens": 0,
+      "completion_tokens": 1372,
+      "reconstructed_cny": 0.28418
+     },
+     "deepseek-v4-flash": {
+      "calls": 2,
+      "prompt_tokens": 36629,
+      "cached_prompt_tokens": 4096,
+      "completion_tokens": 27504,
+      "reconstructed_cny": 0.345545
+     }
+    },
+    "captured_tokens": 72854,
+    "reconstructed_cny": 0.629725
+   }
+  },
+  "A_observation_off": {
+   "observation_model": null,
+   "discarded_first_generation": {
+    "reason": "browser_environment.available was false; Playwright discovery failed locally",
+    "consequence": "The agent wrote HTTP-only self-checks, the prepared browser checks never ran, and the application shipped two /register links.",
+    "gate": {
+     "repetitions": 20,
+     "runs_with_10_of_10": 0,
+     "failed_tests": [
+      "REQ-1.1: reject a duplicate username without creating a signed-in session",
+      "REQ-1.1: reject duplicate email with a different username",
+      "REQ-1.1: reject malformed username, email, or password without signing in",
+      "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+      "REQ-1.1: reject missing required registration values before creating a session",
+      "REQ-1.1: successfully register a new account and remain signed in",
+      "REQ-1.2: reject an unknown account and stay logged out",
+      "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+      "REQ-1.2: sign in with a case-insensitive email and password",
+      "REQ-1.2: sign in with a valid username and password"
+     ],
+     "suite_wall_seconds_median": 5.84,
+     "test_duration_ms_min_median_max": {
+      "REQ-1.1: successfully register a new account and remain signed in": [
+       200,
+       218,
+       338
+      ],
+      "REQ-1.1: reject a duplicate username without creating a signed-in session": [
+       201,
+       214,
+       419
+      ],
+      "REQ-1.1: reject duplicate email with a different username": [
+       191,
+       217,
+       241
+      ],
+      "REQ-1.1: reject mismatched passwords without creating a signed-in session": [
+       193,
+       217,
+       270
+      ],
+      "REQ-1.1: reject missing required registration values before creating a session": [
+       172,
+       191,
+       203
+      ],
+      "REQ-1.1: reject malformed username, email, or password without signing in": [
+       179,
+       190,
+       201
+      ],
+      "REQ-1.2: sign in with a valid username and password": [
+       206,
+       218,
+       338
+      ],
+      "REQ-1.2: sign in with a case-insensitive email and password": [
+       207,
+       224,
+       410
+      ],
+      "REQ-1.2: reject wrong password and incomplete credentials with the same generic error": [
+       198,
+       228,
+       272
+      ],
+      "REQ-1.2: reject an unknown account and stay logged out": [
+       201,
+       224,
+       305
+      ]
+     }
+    },
+    "classification": "environment mismatch with the hosted runner, not a variant result"
+   },
+   "local_generation": {
+    "model_calls": 4,
+    "usage": {
+     "per_model": {
+      "deepseek-v4-flash": {
+       "calls": 4,
+       "prompt_tokens": 85235,
+       "cached_prompt_tokens": 32768,
+       "completion_tokens": 66076,
+       "reconstructed_cny": 0.755362
+      }
+     },
+     "captured_tokens": 151311,
+     "reconstructed_cny": 0.755362
+    },
+    "self_navigation_findings_in_product_source": 0
+   },
+   "local_gate": {
+    "repetitions": 20,
+    "runs_with_10_of_10": 20,
+    "failed_tests": [],
+    "suite_wall_seconds_median": 5.33,
+    "test_duration_ms_min_median_max": {
+     "REQ-1.1: successfully register a new account and remain signed in": [
+      582,
+      633,
+      759
+     ],
+     "REQ-1.1: reject a duplicate username without creating a signed-in session": [
+      694,
+      727,
+      769
+     ],
+     "REQ-1.1: reject duplicate email with a different username": [
+      689,
+      725,
+      802
+     ],
+     "REQ-1.1: reject mismatched passwords without creating a signed-in session": [
+      406,
+      429,
+      470
+     ],
+     "REQ-1.1: reject missing required registration values before creating a session": [
+      689,
+      716,
+      767
+     ],
+     "REQ-1.1: reject malformed username, email, or password without signing in": [
+      922,
+      948,
+      1004
+     ],
+     "REQ-1.2: sign in with a valid username and password": [
+      713,
+      772,
+      872
+     ],
+     "REQ-1.2: sign in with a case-insensitive email and password": [
+      579,
+      607,
+      764
+     ],
+     "REQ-1.2: reject wrong password and incomplete credentials with the same generic error": [
+      811,
+      841,
+      891
+     ],
+     "REQ-1.2: reject an unknown account and stay logged out": [
+      788,
+      813,
+      874
+     ]
+    }
+   },
+   "official": {
+    "id": "d855ead6df43",
+    "submission_id": "c359820665b5",
+    "display_name": "volo-ticket-image-off-2026-09-14-cc60f6d",
+    "model_name": "deepseek-v4-flash",
+    "status": "PASSED",
+    "score": 100.0,
+    "test_pass_rate": 100.0,
+    "passed_count": 10,
+    "failed_count": 0,
+    "token_count": 173870,
+    "run_duration_seconds": 425,
+    "failure_reason": null,
+    "cost": {
+     "amount": 0.779834,
+     "currency": "CNY"
+    }
+   },
+   "usage": {
+    "per_model": {
+     "deepseek-v4-flash": {
+      "calls": 6,
+      "prompt_tokens": 116851,
+      "cached_prompt_tokens": 28928,
+      "completion_tokens": 57019,
+      "reconstructed_cny": 0.779833
+     }
+    },
+    "captured_tokens": 173870,
+    "reconstructed_cny": 0.779833
+   }
+  },
+  "B_observation_on_qwen36_flash": {
+   "observation_model": "qwen3.6-flash",
+   "local_generation": {
+    "model_calls": 4,
+    "usage": {
+     "per_model": {
+      "qwen3.6-flash": {
+       "calls": 1,
+       "prompt_tokens": 5462,
+       "cached_prompt_tokens": 0,
+       "completion_tokens": 3398,
+       "reconstructed_cny": 0.03102
+      },
+      "deepseek-v4-flash": {
+       "calls": 3,
+       "prompt_tokens": 62349,
+       "cached_prompt_tokens": 16384,
+       "completion_tokens": 65568,
+       "reconstructed_cny": 0.729645
+      }
+     },
+     "captured_tokens": 136777,
+     "reconstructed_cny": 0.760665
+    },
+    "self_navigation_findings_in_product_source": 0
+   },
+   "local_gate": {
+    "repetitions": 20,
+    "runs_with_10_of_10": 20,
+    "failed_tests": [],
+    "suite_wall_seconds_median": 5.465,
+    "test_duration_ms_min_median_max": {
+     "REQ-1.1: successfully register a new account and remain signed in": [
+      571,
+      643,
+      864
+     ],
+     "REQ-1.1: reject a duplicate username without creating a signed-in session": [
+      684,
+      732,
+      1040
+     ],
+     "REQ-1.1: reject duplicate email with a different username": [
+      691,
+      723,
+      830
+     ],
+     "REQ-1.1: reject mismatched passwords without creating a signed-in session": [
+      402,
+      419,
+      481
+     ],
+     "REQ-1.1: reject missing required registration values before creating a session": [
+      675,
+      699,
+      730
+     ],
+     "REQ-1.1: reject malformed username, email, or password without signing in": [
+      910,
+      935,
+      1061
+     ],
+     "REQ-1.2: sign in with a valid username and password": [
+      721,
+      776,
+      903
+     ],
+     "REQ-1.2: sign in with a case-insensitive email and password": [
+      571,
+      588,
+      656
+     ],
+     "REQ-1.2: reject wrong password and incomplete credentials with the same generic error": [
+      799,
+      830,
+      879
+     ],
+     "REQ-1.2: reject an unknown account and stay logged out": [
+      790,
+      820,
+      861
+     ]
+    }
+   },
+   "official": {
+    "id": "8abb7f040604",
+    "submission_id": "721fb8eb844c",
+    "display_name": "volo-ticket-image-qwen-2026-09-14-e7e4f5c",
+    "model_name": "deepseek-v4-flash",
+    "status": "FAILED",
+    "score": 0.0,
+    "test_pass_rate": 0.0,
+    "passed_count": 0,
+    "failed_count": 0,
+    "token_count": 477861,
+    "run_duration_seconds": 442,
+    "failure_reason": "Command '['python3', '/workspace/submission/main.py', '/tmp/arcbench/requirements-source', '--output-dir', '/workspace/template']' returned non-zero exit status 1.",
+    "cost": {
+     "amount": 1.072651,
+     "currency": "CNY"
+    }
+   },
+   "usage": {
+    "per_model": {
+     "qwen3.6-flash": {
+      "calls": 1,
+      "prompt_tokens": 5462,
+      "cached_prompt_tokens": 0,
+      "completion_tokens": 4236,
+      "reconstructed_cny": 0.037054
+     },
+     "deepseek-v4-flash": {
+      "calls": 14,
+      "prompt_tokens": 412222,
+      "cached_prompt_tokens": 242944,
+      "completion_tokens": 55941,
+      "reconstructed_cny": 1.035597
+     }
+    },
+    "captured_tokens": 477861,
+    "reconstructed_cny": 1.072651
+   },
+   "failure": {
+    "model_calls": 15,
+    "reason": "Observed model token budget exhausted",
+    "detail": "Budget exhausted in the repair loop. Four edits never applied (111,438 tokens), two of them rejected with the bare message 'path' from a KeyError in the harness; six read-only diagnosis calls produced no verification (204,820 tokens); a plausible doSignout fix was applied on the last call and never verified (38,031 tokens).",
+    "reached_test_suite": false,
+    "corrected_2026_09_14": {
+     "original_claim": "The known frozen-self-check dead end in docs/nav-race-2026-09-14.md.",
+     "verdict": "Wrong. Corrected after the selfcheck-fix agent re-read the trace.",
+     "evidence": "The retained trace contains no preserved-self-check event. The failing logout check was genuinely failing, a real product race with POST /api/logout still pending when the assertion read the page.",
+     "token_breakdown": {
+      "reference_observation": 9698,
+      "first_build_app": 45379,
+      "edits_that_never_applied": 111438,
+      "read_only_diagnosis": 204820,
+      "final_unverified_edit": 38031,
+      "applied_but_failed_verification": 30904,
+      "remaining_call": 37591,
+      "total": 477861
+     },
+     "unreproduced_figure": "The correcting report cites 215,001 tokens over seven read-only diagnosis calls. Per-call usage here gives 204,820 over six, or 242,851 including the final unverified edit. The headline is unaffected.",
+     "implication": "This run is not evidence about qwen3.6-flash either way, and the cause is a repair-loop stall rather than the trap originally named."
+    }
+   }
+  }
+ },
+ "local_gate_configuration": {
+  "mode": "host: the application in a 1 CPU / 256 MB container behind the volo launcher, Playwright 1.57.0 and Google Chrome on macOS",
+  "public_tests": "runs/20260912-objective-review/public-tests (unchanged bytes)",
+  "playwright_settings": {
+   "workers": 4,
+   "fullyParallel": false,
+   "timeout_ms": 10000,
+   "expect_timeout_ms": 10000,
+   "retries": 0,
+   "trace": "off",
+   "video": "off",
+   "screenshot": "off"
+  }
+ },
+ "board_after": {
+  "source": "./arcbench leaderboard --competition ticket-booking --task ticket-booking",
+  "note": "The board reflects the team's most recent passing run, not its best.",
+  "volo_ai": {
+   "rank": 4,
+   "avg_pass_rate": 100.0,
+   "avg_feature_implementation_rate": 100.0,
+   "total_token_cost": 0.779834,
+   "cost_efficiency": 128.2324,
+   "reflects_run": "d855ead6df43"
+  },
+  "volo_ai_before": {
+   "rank": 2,
+   "total_token_cost": 0.629725,
+   "cost_efficiency": 158.8,
+   "reflects_run": "01b06fb30564"
+  },
+  "rank_1": {
+   "username": "你也秃对不队",
+   "avg_pass_rate": 80.0,
+   "avg_feature_implementation_rate": 0.0,
+   "total_token_cost": 2.4e-05,
+   "cost_efficiency": 3333333.3333
+  }
+ },
+ "not_established": [
+  "One official sample per variant; the retained run's 72,854 tokens against variant A's 173,870 is the noise floor.",
+  "Fewer repair rounds with the observation is a mechanism consistent with three runs, not a measured effect.",
+  "qwen3.6-flash has no passing official run; its single trial failed for an unrelated reason.",
+  "The image-support probe is one request per model on one screenshot."
+ ]
+}

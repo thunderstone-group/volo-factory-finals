@@ -335,6 +335,163 @@ each rule snapshot and experiment with date and source.
   was used. See `docs/nav-race-2026-09-14.md` and
   `docs/evidence/2026-09-14-nav-race-trial.json`.
 
+## 2026-09-14 — Check the nav-race trial against the meter definition
+
+- The official token count is a meter delta on the shared access key between run start
+  and run finish, so any use of the key inside that window is charged to the run. Run
+  `01b06fb30564` was checked against that definition after the fact, since the rule
+  arrived after it had finished.
+- Its meter window was 03:15:44 to 03:20:55 UTC and reported 72,854 tokens. The run's own
+  checkpoint records 43,978 prompt plus 28,876 completion tokens across three calls,
+  which is the same number: the meter delta minus our captured usage is zero.
+- No run on the account, from any user of the key, overlapped that window; the previous
+  one finished on 2026-09-12 at 19:53:44, and the two old PENDING entries have never
+  started. The last local gateway call was at 03:10:57 UTC and the gate replays make no
+  model calls. E057's 555,255-versus-50,957 gap stays unresolved, but it is not a
+  systematic offset between the two counters.
+## 2026-09-14 — Ablated the reference-image observation; the lever is not there
+
+- Made the observation switchable. `FACTORY_VISION_MODEL` selects the model, an off value
+  removes the call and the agent is told the images were not inspected. `DEFAULT_VISION_MODEL`
+  is unchanged at `kimi-k3`. `Agent.observe_references` holds the branch so the disabled path
+  is testable without a gateway. Tests: 176 passed, 0 failures, 11 environment skips.
+- Ruled `deepseek-v4-flash` out as a cheap observer by measurement, not assumption: the
+  gateway accepts an image payload for it and the model does not see it, replying that the
+  image data is truncated at 209 prompt tokens. `qwen3.6-flash` reads the same screenshot
+  correctly at 1,801 prompt tokens and became variant B.
+- Both variants passed the calibrated local gate 20 of 20 at 10/10 with no self-navigation
+  in product source. Neither gate predicted its official run; both local charges already
+  exceeded the retained run's official CNY 0.629725.
+- Official trials, both allowed ones used. Variant A, observation off, run `d855ead6df43`,
+  10/10 at CNY 0.779834 and 173,870 tokens: it removed CNY 0.284 of `kimi-k3` and added four
+  `deepseek-v4-flash` repair rounds. Variant B, run `8abb7f040604`, exhausted its 450,000-token
+  budget over 15 calls repairing its own logout self-check and never reached the suite; the
+  observation itself cost CNY 0.037054 of that run's 1.072651.
+- Conclusion: the observation is 45% of a passing run's charge and what it buys is a first
+  draft needing one repair instead of five. The default did not move. Both variants remain one
+  environment variable away. See `docs/image-ablation-2026-09-14.md` and
+  `docs/evidence/2026-09-14-image-ablation.json`.
+- Consequence to undo: the Ticket Booking board reflects the most recent passing run, so
+  variant A's run replaced the retained one and VOLO AI moved from rank 2 at efficiency 158.80
+  to rank 4 at 128.23. Restoring it needs one official run on the unchanged default.
+- Test suite caveat: one run reported a single unnamed failure and seven consecutive runs
+  afterwards were green. Not reproduced, not attributed.
+- Local gates must assert `browser_environment.available` first. A variant A generation run
+  without a discoverable Playwright produced HTTP-only self-checks and an application with two
+  `/register` links that failed all ten public tests in 20 of 20 replays; it was discarded.
+
+## 2026-09-14 — `deepseek-v4.1-flash` does not exist here; the cheap observer does
+
+- Checked a directive to move the reference-image observation to `deepseek-v4.1-flash`. The
+  organizer gateway does not serve it. `GET /v1/models` returns 11 ids and none is a 4.1; four
+  spellings each return HTTP 400 `provider_not_selected`; an invented model name returns the
+  identical error and `deepseek-v4-flash` succeeds, so that code means unknown model. No 4.1
+  appears in 143 account runs or in 31 leaderboard rows across five competitions.
+- Confirmed the inferred `qwen3.6-flash` price against official charges rather than assuming it.
+  1.2 CNY per million cache-miss input and 7.2 output reconstruct `8abb7f040604` exactly, and the
+  same method reproduces `01b06fb30564` and `d855ead6df43`, all three with a zero token gap and a
+  residual under one micro-yuan. It is cheaper than `deepseek-v4-flash`, not the same price. The
+  cache-hit rate stays unobserved because one observation call per run never gets a cache hit.
+- Reading the three references costs CNY 0.037054 on `qwen3.6-flash` against 0.284180 on
+  `kimi-k3`: a measured CNY 0.247126 per Ticket Booking run, with the screenshots still read.
+- Recorded the dangerous failure mode: the gateway accepts an image payload for
+  `deepseek-v4-flash` and the model never receives it, answering that the image data is truncated
+  at 209 prompt tokens. Any observer change must transcribe a known screenshot before it ships,
+  not merely return HTTP 200.
+- Headline, from four official runs that all reconstruct exactly: `01b06fb30564` and
+  `b6b89caa3f8c` are the same agent, default, model and task, both 10 of 10, and they cost CNY
+  0.629725 and 0.870779. That spread, 0.241054, is the size of the whole `kimi-k3` observation,
+  0.266640 to 0.284180. No single official trial can decide this lever in either direction, and
+  the earlier reading that removing the observation cost more is equally unsafe. Generation cost
+  across the four runs is 0.345545, 0.604138, 0.779833 and 1.035597 over 2, 3, 6 and 14 calls.
+- `DEFAULT_VISION_MODEL` is flipped to `qwen3.6-flash` on this branch. It has a 20 of 20 local
+  gate and confirmed rates; it has no passing official run, and its one trial died on the
+  unfixed frozen-self-check budget trap rather than on anything to do with the observer.
+  See `docs/vision-model-availability-2026-09-14.md`.
+- Confirmation condition, agreed with the team lead: no official trial was spent on this. The
+  flip must be confirmed by the first official trial taken after the frozen-self-check fix on
+  `fix/selfcheck-deadend` lands, so that the observer result is not confounded by the trap that
+  ended `8abb7f040604`. Until then this default carries a local gate and price arithmetic only.
+## 2026-09-14 — A self-check that cannot pass no longer consumes the repair budget
+
+- Two runs the same day spent their whole budget repairing a check instead of a product. The
+  nav-race first local generation froze a check bundle containing `assert(locator).toBeVisible()`,
+  where `assert` is `node:assert/strict`; from call 3 to call 14 the frozen bytes returned the same
+  `TypeError` while the product changed every round, and it died at 464,707 tokens with nothing
+  delivered. By call 7 the model had already written a correct check and could not make the harness
+  use it.
+- Official run `8abb7f040604` was a different failure and two earlier documents were wrong to call
+  it the same one. Nothing was frozen there. Its 477,861 tokens split into 111,438 on four edits
+  that never applied and 204,820 on six read-only diagnosis calls; it applied a plausible fix on
+  its last call and ran out before verifying it. Four of those calls were lost to a bare `KeyError`
+  reaching the model as the string `'path'`.
+- Fix, three rules and no configuration knobs. Harness/API misuse inside the run's own checks
+  (assertion-library misuse, missing module, undefined symbol, syntax error) is reported as
+  `defective_check` with the exact error and is never frozen. A captured check is released at its
+  first failure if that failure is a check defect, or at the second consecutive identical failure
+  signature over changed product source. `verify` results and `.factory/checkpoint.json` carry
+  `browser_available`, and `harness_lab/local_gate.py` refuses to score a generation that had no
+  browser. The malformed-edit message now names the missing keys.
+- Calibrated before any model call by replaying the detector over the retained check logs of five
+  generations: 6 positives, all of them the dead end's own frozen-check runs, and 0 across 26 logs
+  from four healthy generations and the official run's check steps.
+- `python -m unittest discover -s tests -v` reports 190 tests, 0 failures, 11 skipped, against 176
+  on main.
+- Local Ticket Booking generation with the fix: a bundle was frozen at call 2, calls 3 and 4
+  produced the identical failure over changed source, and the capture was released at call 4 with
+  reason `no_progress`. The run then delivered at call 15. `python -m harness_lab.local_gate`
+  scored it 20 of 20 at 10/10, browser availability asserted from the recorded value.
+- Official trial `e34e78400983`: PASSED, 10/10, features 2 of 2, 143,279 tokens, CNY 0.899558,
+  372 s. Its captured usage equals the meter delta exactly and no run was concurrent. It made five
+  model calls and never froze a check, so it does not exercise the new guard; it shows the change
+  does not break a healthy run.
+- Not fixed: neither run bounds diagnosis stalls. The local generation spent calls 6 to 13 on
+  read-only calls, the official failure calls 9 to 15. That is the largest remaining block of
+  avoidable spend. See `docs/selfcheck-deadend-2026-09-14.md` and
+  `docs/evidence/2026-09-14-selfcheck-deadend.json`.
+
+## 2026-09-14 — Correction: variant B was not killed by the frozen-self-check trap
+
+- I attributed run `8abb7f040604`'s budget exhaustion to the frozen self-check dead end. That was
+  wrong. The `selfcheck-fix` agent re-read the trace while working on that trap and found no
+  preserved-self-check event in it; its failing logout check was genuinely failing, a real product
+  race with `POST /api/logout` still pending when the assertion read the page. I verified both
+  points against the retained trace before correcting.
+- Where the 477,861 tokens actually went: 9,698 on the observation, 45,379 on the first
+  `build_app`, 111,438 on four edits that never applied, 204,820 on six read-only diagnosis calls
+  that produced no verification, 38,031 on a plausible `doSignout` fix applied on the last call and
+  never verified, 30,904 on one `patch_and_verify` that applied and failed, 37,591 on the rest.
+  Two of the four failed edits were rejected with the bare message `'path'`, a `KeyError` leaking
+  from the harness, which tells the model nothing it can act on.
+- Consequence for the plan: the confirmation trial for the `qwen3.6-flash` default no longer has
+  to wait for `fix/selfcheck-deadend`. The trap was never in the observer's path, so a trial before
+  or after that fix is equally valid. The fix remains worth having, and the repair loop remains the
+  dominant cost lever, but neither is a precondition here.
+- One subtotal in the correcting report, 215,001 tokens over seven read-only diagnosis calls, does
+  not reproduce from per-call usage; I count 204,820 over six, or 242,851 including the final
+  unverified edit. Recorded rather than reconciled, because the headline does not depend on it.
+- Corrected in `docs/image-ablation-2026-09-14.md`, `docs/vision-model-availability-2026-09-14.md`
+  and both evidence files.
+
+
+## 2026-09-14 — Correcting my own subtotal for run 8abb7f040604
+
+- The `image-ablation` agent could not reproduce the figure `215,001 tokens over seven read-only
+  diagnosis calls` that I put in `docs/selfcheck-deadend-2026-09-14.md` and in the progress entry
+  above. They were right and I was wrong. Recomputed from the retained per-call usage, the number
+  matches no subset of the calls; it was an arithmetic error on my part, not a classification
+  difference.
+- Their count reproduces exactly: 204,820 over calls 6, 9, 10, 11, 13 and 14. Their classification
+  is also the better one. I had lumped call 12, which wrote a diagnostic API simulation, and call
+  15, which applied the real fix, in with the reads; both are writes.
+- The figure that does not depend on the split: after the last verification at call 8, 250,609
+  tokens were spent without producing another verification. That is the quantity the next bound
+  should target.
+- `111,438` on the four failed edits is unchanged and reproduces exactly, as do calls 4 and 7 being
+  the two rejected with the bare `'path'`.
+- Corrected in `docs/selfcheck-deadend-2026-09-14.md` and in the entry above.
+
+
 ## 2026-09-14 — Small-board token reduction, measured against the public tests
 
 - Implemented the ranked small-board levers from `token-accounting-2026-09-14.md` and measured each

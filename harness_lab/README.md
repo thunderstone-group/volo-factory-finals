@@ -7,6 +7,7 @@ requests implicitly. The uploaded optional acceptance runner is `volo/acceptance
 | Entry | Purpose | Model calls | Current boundary |
 |---|---|---|---|
 | `python -m harness_lab.acceptance_probe` | Generate a bounded declarative browser plan from original requirements and initial page evidence | Zero by default; one attempted gateway request with `--allow-model-calls` | Diagnostic proposal; synthetic plans and real browser plumbing tested, model quality not measured |
+| `python -m harness_lab.local_gate` | Replay the unchanged public tests against a local generation in the calibrated host configuration | None | Refuses a generation whose recorded `browser_available` is not true, and any product source with browser self-navigation |
 | `python -m harness_lab.external_gate` | Evaluate an already-running app with a pinned interpreter/script and structured case evidence | None | Caller binds the URL to an isolated app and frozen source; checks themselves need calibration |
 | `python -m harness_lab.evaluate` | Snapshot candidate and trusted suite, run in separate local containers | None | HTTP/isolation calibration exists; a competition-equivalent GUI suite/image is not supplied |
 | `python -m harness_lab.pi_probe` | Run installed Pi against scripted loopback responses, optionally evaluate its artifact in Docker | None | Real Pi tools, synthetic model responses; no quality comparison |

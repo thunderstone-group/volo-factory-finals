@@ -5,11 +5,41 @@ import base64
 import hashlib
 import io
 import json
+import os
 import re
 import time
 from urllib.parse import unquote, urlsplit
 
 from .trace import atomic_json
+
+VISION_MODEL_VARIABLE = 'FACTORY_VISION_MODEL'
+# Keep the screenshots and stop paying kimi-k3 prices for them. docs/image-ablation-2026-09-14.md
+# measured that removing the observation entirely still scored 10/10 but cost more, because the
+# generation then needed four extra repair rounds, so the images are worth reading. qwen3.6-flash
+# reads the same three images correctly and is priced 1.2/7.2 CNY per million against kimi-k3's
+# 20/100, rates confirmed against an official charge to six decimals. deepseek-v4-flash can never
+# be the value: the gateway accepts an image for it and the model does not see it, replying that
+# the image data is truncated. deepseek-v4.1-flash is not served by this gateway at all.
+DEFAULT_VISION_MODEL = 'qwen3.6-flash'
+VISION_OFF_VALUES = frozenset({'', 'off', 'none', 'no', 'false', '0', 'disabled'})
+
+
+def vision_model_name(environ=None):
+    """Select the reference-observation model, or None to skip that call entirely.
+
+    Unset uses DEFAULT_VISION_MODEL. An empty value or one of VISION_OFF_VALUES
+    disables the observation, so the run makes no image request and the agent is
+    told plainly that the binary references have not been inspected. Any other
+    value names a gateway model, so FACTORY_VISION_MODEL=kimi-k3 restores the
+    previous behaviour; nothing validates the name here, so an unsupported one
+    fails at the first request instead of silently degrading.
+    """
+    environ = os.environ if environ is None else environ
+    value = environ.get(VISION_MODEL_VARIABLE)
+    if value is None:
+        return DEFAULT_VISION_MODEL
+    value = value.strip()
+    return None if value.lower() in VISION_OFF_VALUES else value
 
 
 PROMPT = """Inspect the attached product UI reference images. Return concise observations

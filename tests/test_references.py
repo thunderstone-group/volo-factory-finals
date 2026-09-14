@@ -10,7 +10,8 @@ from pathlib import Path
 from test_core import FakeGateway, ROOT
 from volo.agent import Agent
 from volo.model import Model
-from volo.references import ReferenceObserver, referenced_images, prepare_image
+from volo.references import (DEFAULT_VISION_MODEL, ReferenceObserver, prepare_image,
+                             referenced_images, vision_model_name)
 from volo.requirements import RequirementSet
 from volo.trace import Trace, Runtime
 from volo.workspace import Workspace
@@ -120,6 +121,85 @@ children:
                 deadline=time.monotonic() + 30, guard_budget=lambda: None)
             self.assertEqual(len(server.requests), 3)
             self.assertTrue(all(len(json.dumps(r, ensure_ascii=False).encode()) < 800000 for r in server.requests))
+
+
+class VisionSwitchTests(unittest.TestCase):
+    """FACTORY_VISION_MODEL selects, reroutes or removes the reference-observation call.
+
+    The observation is one gateway request on a separately priced model, so whether it
+    runs is a cost decision. Nothing here calls a gateway.
+    """
+
+    def test_unset_variable_reads_the_images_on_the_cheap_model(self):
+        self.assertEqual(vision_model_name({}), DEFAULT_VISION_MODEL)
+        self.assertEqual(DEFAULT_VISION_MODEL, 'qwen3.6-flash')
+
+    def test_the_expensive_observation_model_is_one_variable_away(self):
+        self.assertEqual(vision_model_name({'FACTORY_VISION_MODEL': 'kimi-k3'}), 'kimi-k3')
+
+    def test_empty_and_off_values_disable_the_observation(self):
+        for value in ('', '   ', 'off', 'OFF', 'none', 'None', 'no', 'false', '0', 'disabled'):
+            with self.subTest(value=value):
+                self.assertIsNone(vision_model_name({'FACTORY_VISION_MODEL': value}))
+
+    def test_any_other_value_names_the_observation_model_verbatim(self):
+        for value, expected in (('deepseek-v4-flash', 'deepseek-v4-flash'),
+                                (' qwen3.6-flash ', 'qwen3.6-flash'),
+                                ('kimi-k3', 'kimi-k3')):
+            with self.subTest(value=value):
+                self.assertEqual(vision_model_name({'FACTORY_VISION_MODEL': value}), expected)
+
+    def test_process_environment_is_read_when_no_mapping_is_supplied(self):
+        with patch.dict('os.environ', {'FACTORY_VISION_MODEL': 'deepseek-v4-flash'}):
+            self.assertEqual(vision_model_name(), 'deepseek-v4-flash')
+        with patch.dict('os.environ', {'FACTORY_VISION_MODEL': ''}):
+            self.assertIsNone(vision_model_name())
+
+
+class ObservationDisabledTests(unittest.TestCase):
+    """With no observer the agent makes no image request and says so in its input."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name).resolve()
+        self.inputs = self.root / 'inputs'
+        (self.inputs / 'reference').mkdir(parents=True)
+        (self.inputs / 'reference' / 'active.png').write_bytes(PNG)
+        (self.inputs / 'requirements.yaml').write_text(
+            'id: ROOT\nchildren:\n  - id: ACTIVE\n    description: "Current ![active](./reference/active.png)"\n')
+        self.requirements = RequirementSet.load(self.inputs)
+        self.nodes = self.requirements.nodes
+        self.trace = Trace(self.root / 'output/.factory')
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def agent(self, references):
+        with FakeGateway([]) as server:
+            model = Model(server.url, 'synthetic-test-key', 'coding-model', self.trace)
+        workspace = Workspace(self.root / 'output', self.inputs, self.trace, time.monotonic() + 30)
+        return Agent(self.requirements, model, workspace, Runtime(self.trace), references=references)
+
+    def test_disabled_observer_reports_uninspected_images_without_a_request(self):
+        agent = self.agent(None)
+        context = agent.observe_references(self.nodes)
+        self.assertEqual(context, {'unavailable': 'No reference observer configured; '
+                                                  'binary images have not been inspected'})
+        agent.reference_context = context
+        self.assertIn('binary images have not been inspected',
+                      agent.batch_request(self.nodes).replace('\\n', '\n'))
+
+    def test_configured_observer_is_still_asked_for_the_active_images(self):
+        calls = []
+
+        class Recorder:
+            def observe(self, requirements, nodes, *, deadline, guard_budget):
+                calls.append([node['id'] for node in nodes])
+                return {'observations': [{'observations': 'text'}], 'unavailable': []}
+
+        context = self.agent(Recorder()).observe_references(self.nodes)
+        self.assertEqual(calls, [['ACTIVE']])
+        self.assertEqual(context['observations'][0]['observations'], 'text')
 
 
 if __name__ == '__main__':
