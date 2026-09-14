@@ -74,6 +74,38 @@ is slow, so the application is not heavy and the server is not wedged.
   gate's trace/video-off setting matches the runner; what it does not match is running the browsers
   inside the same resource-limited container as the app.
 
+
+## Probed, not inferred (run `07cd84033853`, 2026-09-14 17:32)
+
+PR #26 put a sampler inside the managed launcher, the one process of ours that is alive while the
+official suite runs in the same container. It writes cgroup limits, memory and OOM counters, CPU
+throttling, pressure and a process table to `.factory/probe.jsonl` every 0.5 s, and the run
+bundle brings it back. Raw file: `evidence/2026-09-14-probe-07cd84033853.jsonl`; numbers in
+`evidence/2026-09-14-early-stall.json` under `probe_run_07cd84033853`. The run passed 10/10 at
+CNY 0.821109 (captured usage equals the meter delta), so this is the clean-run baseline.
+
+| Fact | Value |
+| --- | --- |
+| cgroup | v2, container root, 16-CPU / 65 GB host |
+| `cpu.max` | `100000 100000` = **1.0 CPU** for app + runner + 2 workers + 2 browsers |
+| `memory.max` | 2 GiB; `/dev/shm` 64 MB |
+| Test phase, 20 s window | 147 of 171 CPU periods throttled (86%); 38.6 s throttled vs 15.4 s used, i.e. demand of ~2.9 CPUs on a 1-CPU quota |
+| `cpu.pressure` full avg10 | rises from 3.6% to 20.1% during the suite |
+| `memory.current` peak | 714 MB, `oom_kill` 0, memory pressure 0 |
+| Processes at peak | 325 pids, 32 Chromium processes; browsers 185 MB RSS each, renderers up to 147 MB, Playwright workers 121 MB each, runner 133 MB |
+| App env | `PORT=3000`; `E2E_BASE_URL` unset in the app's environment (the tests default to 3301, so the 3301 relay stays) |
+
+Reading: the mechanism is CPU-quota starvation, not memory. Even a clean run spends 86% of its
+scheduling periods throttled while two browsers launch and the first two tests run; any extra
+demand from the shared host on top of a 1-CPU quota pushes a first test past the 10 s timeout,
+and a renderer that cannot get scheduled is what the earlier runs reported as a hang or
+`Target crashed`. The local single-cgroup sweep is consistent: with an idle host, 1 CPU and even
+0.5 CPU pass 10/10 (the suite merely slows to 22 to 24 s), while 256 MB fails by a different
+mechanism (swap, one OOM) that the hosted counters do not show.
+
+What the organizer can change: `cpu.max` of at least 2 CPUs (4 to match `--workers=4`), or
+`retries: 1`, or a warm-up test before the scored ones.
+
 ## The 09-14 regression note, corrected
 
 `ticket-regression-2026-09-14.md` read the 7/10 run correctly as a browser fault and wrongly
@@ -100,8 +132,7 @@ it was harmless, but the security-reproduction runs show the stall without any b
 
 ## Not done
 
-- No local reproduction under a single cgroup was attempted; the mechanism (memory vs CPU vs host)
-  remains unread. A bounded experiment in the `arc-reproduction:latest` image with the official
-  specs, two workers and a memory or CPU sweep would settle it without spending a trial.
+- The local single-cgroup sweep (codex job `~/.codex-jobs/volo-factory/2026-09-14-early-stall-repro/`)
+  finished its main matrix; its summary will be linked here once verified.
 - The board's row selection is not fully understood: rank 1 shows an 80% row while our own 80%
   run (status `FAILED`) did not replace our 100% row.

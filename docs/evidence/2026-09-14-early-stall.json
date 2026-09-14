@@ -1000,5 +1000,52 @@
    "official_tokens": 77772,
    "captured": 77772
   }
+ },
+ "probe_run_07cd84033853": {
+  "result": "PASSED 10/10, CNY 0.821109, 307,411 tokens (captured 260,707 + 46,704, delta 0), 10 model calls, 370 s",
+  "container": {
+   "cgroup": "v2 at 0::/",
+   "memory.max_bytes": 2147483648,
+   "cpu.max": "100000 100000 (1.0 CPU)",
+   "host_cpus": 16,
+   "host_mem_gb": 65,
+   "dev_shm_bytes": 67108864,
+   "app_env": {
+    "PORT": "3000",
+    "E2E_BASE_URL": null,
+    "TARGET_URL": null,
+    "PLAYWRIGHT_BROWSERS_PATH": "/ms-playwright",
+    "HOME": "/root"
+   }
+  },
+  "test_phase_20s_window": {
+   "cpu_periods": 171,
+   "cpu_throttled_periods": 147,
+   "throttled_ratio": 0.86,
+   "throttled_seconds": 38.6,
+   "usage_seconds": 15.4,
+   "implied_cpu_demand": 2.9,
+   "cpu_pressure_full_avg10_max_pct": 20.1,
+   "memory_current_peak_bytes": 713916416,
+   "oom_kill": 0,
+   "memory_pressure_max": 0,
+   "pids_peak": 325,
+   "chromium_processes_peak": 32,
+   "browser_process_rss_kb": [
+    189780,
+    188472
+   ],
+   "renderer_rss_kb_max": 146604,
+   "playwright_worker_rss_kb": [
+    121548,
+    121248
+   ],
+   "runner_main_rss_kb": 132896
+  },
+  "first_tests_ms": {
+   "w0": 2426,
+   "w1": 2800
+  },
+  "raw": "docs/evidence/2026-09-14-probe-07cd84033853.jsonl (launcher probe, 0.5 s cadence), runs/2026-09-14-early-stall/report-07cd84033853.json"
  }
 }

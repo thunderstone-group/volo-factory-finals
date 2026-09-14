@@ -1,23 +1,22 @@
-# 报主办方：托管运行器套件启动瞬间的首测试超时/崩溃（2026-09-14）
+# 报主办方：运行器 1 核 CPU 配额造成套件启动瞬间首测试超时（2026-09-14，实测版）
 
-> 发送渠道：主办方微信群，由e0_7手工粘贴。下面是可直接发送的文本；证据细节在
-> `early-stall-2026-09-14.md` 与 `evidence/2026-09-14-early-stall.json`。
+> 发送渠道：主办方微信群，由e0_7手工粘贴。证据：`early-stall-2026-09-14.md`、
+> `evidence/2026-09-14-early-stall.json`、`evidence/2026-09-14-probe-07cd84033853.jsonl`。
 
 ---
 
-主办方好，反馈一个运行器侧的现象，我们在 ticket-booking 赛道近 10 次官方 run 里遇到 6 次，怀疑会影响所有队和正式赛的可信度。
+主办方好，反馈一个运行器侧的问题，附我们在容器内实测的数据。
 
-**现象**：Playwright 测试阶段开始的头 10～17 秒内，两个初始 worker 各自的第一个测试超时或崩溃；Playwright 换替补 worker 后，剩余测试全部通过，而且比正常 run 的首个测试还快（241～980 ms 对 1.7～3.1 s）。应用本身没问题：同一个生成物本地重放 25 次全 10/10。
+**现象**：ticket-booking 赛道近 11 次官方 run 里有 6 次，Playwright 测试阶段开头两个初始 worker 各自的第一个测试超时或渲染进程崩溃（`locator.evaluate: Test timeout`、`Target crashed`），Playwright 换替补 worker 后剩余测试全部通过，而且比干净 run 的首测试还快。同一生成物本地重放 25 次全 10/10。09-12 的三个固定应用 run（c4a7908ca693、fef7c9c91778、bef9631c8245，agent 阶段 1 秒、没起过任何浏览器）签名完全一样，所以不是选手侧的问题。
 
-**签名**（从 run 的 playwright-report.json 读出）：
-- `locator.evaluate: Test timeout of 10000ms exceeded`，紧接在同一 locator 刚 `toBeVisible` 通过之后，call log 停在 `waiting for getByLabel(...)`；
-- 登录测试在 1.2 s 内 `expect(locator).toBeVisible() failed / element(s) not found`（页面在 expect 轮询中死掉，Playwright 把异常吞成了最后一次轮询结果），下一个替补 worker 随即 `locator.click: Target crashed`；
-- 失败结果无 trace/video 附件，容器日志采集为 0 字节，所以我们看不到 cgroup 内存/CPU 情况。
+**容器内实测**（我们让应用进程在测试阶段每 0.5 s 采样 cgroup，run 07cd84033853，这次是干净的 10/10）：
+- cgroup v2，`cpu.max = 100000 100000`，即应用 + 测试主进程 + 2 个 worker + 2 个 Chromium 一共只有 **1 个核**；`memory.max` 2 GiB，`/dev/shm` 64 MB；宿主 16 核 / 65 GB。
+- 13 秒测试阶段里，171 个 CPU 调度周期有 147 个被节流（86%），节流累计 38.6 s、实际用量 15.4 s，相当于约 2.9 核的需求挤在 1 核上；`cpu.pressure` full avg10 从 3.6% 升到 20.1%。
+- 内存峰值 714 MB，`oom_kill` 0，memory pressure 0：不是内存问题。
+- 峰值时 325 个 pid、32 个 Chromium 进程，两个浏览器主进程各 185 MB RSS，worker 各 121 MB。
 
-**它不是选手侧的问题**：09-12 的三个 run（c4a7908ca693、fef7c9c91778、bef9631c8245）agent 阶段只有一次 25 token 调用写了个固定应用，没有启动过任何浏览器，也没有额外进程，签名完全一样。
+**判断**：即使是通过的 run，套件开头两个浏览器同时启动加首测试执行时 CPU 也已被节流 86%；宿主上有其他负载时，1 核配额下首测试就会超过 10 s 超时，渲染进程拿不到调度就表现为 hang 或 `Target crashed`。这在 10 题任务上一次就是 10～30 个百分点，正好跨 80% 门槛，正式赛一次定胜负会盖过选手差异。
 
-**受影响的 run id**（VOLO AI 账号）：a129e387e562（9/10，09-12）、c4a7908ca693（7/10）、fef7c9c91778（9/10）、bef9631c8245（9/10）、92220c94fd25（7/10，09-14）、c399145c5eb1（8/10，09-14）。干净对照：01b06fb30564、d855ead6df43、b6b89caa3f8c、e34e78400983（均 10/10，09-14 上午）。
+**受影响 run id**（VOLO AI 账号）：a129e387e562、c4a7908ca693、fef7c9c91778、bef9631c8245、92220c94fd25、c399145c5eb1；干净对照：01b06fb30564、d855ead6df43、b6b89caa3f8c、e34e78400983、07cd84033853。
 
-**影响**：10 题任务上一次抖动就是 10～30 个百分点，正好跨在 80% 的 senior 门槛上；正式赛一次定胜负的话，这个随机性会盖过选手差异。
-
-**建议**（任选其一即可消除）：给运行器加 `retries: 1`；或在正式测试前跑一个不计分的预热测试让两个浏览器先起来；或把每个 worker 首个测试的超时放宽。如需我们提供报告原文或本地重放数据，随时说。
+**建议**（任一即可）：把测试阶段容器的 `cpu.max` 提到至少 2 核（`--workers=4` 对应 4 核更稳）；或给运行器加 `retries: 1`；或在计分测试前跑一个不计分的预热测试。采样原始数据和分析脚本我们可以提供。
