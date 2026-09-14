@@ -674,3 +674,15 @@ each rule snapshot and experiment with date and source.
   three tests to this stall.
 - Not done: no single-cgroup local reproduction (memory vs CPU vs host is unread); the board's row
   selection rule is still unclear (rank 1 shows an 80% row, our 80% run did not replace ours).
+
+## 2026-09-14 — Ticket board closed; early-stall evidence goes to the organizer
+
+- Team lead decision, on the early-stall finding: keep the Ticket row as it is (`e34e78400983`,
+  100%, CNY 0.899558, rank 7) and stop official Ticket trials; the row moves only with the
+  generation cost cut in the objective-function line. Campaign plan step 1 rewritten accordingly.
+- Drafted the organizer report as `docs/organizer-report-2026-09-14.md` (WeChat text, sent by
+  hand; no automation on WeChat). It names the six affected and four clean run ids and asks for
+  retries, a warm-up test, or a wider first-test timeout.
+- A codex job is reproducing the stall in a single cgroup locally
+  (`~/.codex-jobs/volo-factory/2026-09-14-early-stall-repro/`, memory x CPU sweep over two real
+  apps); its result will be appended to `early-stall-2026-09-14.md` once verified.
