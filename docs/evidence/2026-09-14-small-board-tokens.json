@@ -1609,6 +1609,18 @@
     "model": "qwen3.6-flash",
     "generations": [
      {
+      "cohort": "m5_1",
+      "model_calls": 19,
+      "prompt_tokens": 184707,
+      "completion_tokens": 3127,
+      "total_tokens": 187834,
+      "reconstructed_cost_cny": 0.244163,
+      "exit_code": 0,
+      "public_replays": 0,
+      "public_replays_fully_passing": null,
+      "public_tests_seen": null
+     },
+     {
       "cohort": "m5_2",
       "model_calls": 4,
       "prompt_tokens": 12600,
@@ -1621,12 +1633,13 @@
       "public_tests_seen": null
      }
     ],
-    "median_total_tokens": 14572,
-    "median_cost_cny": 0.029318,
+    "median_total_tokens": 101203.0,
+    "median_cost_cny": 0.13674,
     "model_calls_observed": [
-     4
+     4,
+     19
     ],
-    "note": "cohort stopped after this run; its workspace was not replayed"
+    "note": "cohorts stopped early and not replayed; recorded from the driver log"
    },
    "smoke-evolution--dice": {
     "model": "qwen3.6-flash",
@@ -1649,7 +1662,7 @@
     "model_calls_observed": [
      6
     ],
-    "note": "cohort stopped after this run; its workspace was not replayed"
+    "note": "cohorts stopped early and not replayed; recorded from the driver log"
    }
   },
   "rejected_prepared_claim_in_build_prompt": {
