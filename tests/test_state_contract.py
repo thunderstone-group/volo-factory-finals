@@ -839,6 +839,19 @@ class GatewayRetryTests(TempCase):
         events = [json.loads(line) for line in (self.trace.directory / 'events.jsonl').read_text().splitlines()]
         self.assertTrue(any(e['event'] == 'model_transport_uncertain' for e in events))
 
+    def test_a_truncated_response_body_is_retried_and_then_surfaced_as_a_model_error(self):
+        # 2026-09-15: IncompleteRead(15355 bytes read) killed a whole Bookstack run at batch 7,
+        # because http.client.HTTPException is neither OSError nor ValueError. Synthetic.
+        import http.client
+        import urllib.request
+        from volo.model import Model, ModelError
+        model = Model("https://gateway.example/v1", "synthetic-test-key", "test", self.trace)
+        with patch("urllib.request.urlopen", side_effect=http.client.IncompleteRead(b'x' * 10)) as request, \
+                patch("time.sleep"):
+            with self.assertRaises(ModelError):
+                model.complete([{"role": "user", "content": "synthetic"}], [])
+        self.assertEqual(request.call_count, 3)
+
 
 class ServingDiagnosisTests(TempCase):
     def test_a_handler_that_never_returns_false_is_named(self):

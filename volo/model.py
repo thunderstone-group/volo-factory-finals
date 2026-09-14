@@ -1,6 +1,7 @@
 """Small Chat Completions transport; no unmetered model fallback."""
 from __future__ import annotations
 
+import http.client
 import json
 import time
 import urllib.error
@@ -104,13 +105,15 @@ class Model:
                         remaining_seconds -= time.monotonic() - started
                     continue
                 raise ModelError(f"Gateway HTTP {exc.code}: {self.trace.redact(detail)}") from exc
-            except (OSError, ValueError) as exc:
+            except (OSError, ValueError, http.client.HTTPException) as exc:
                 # A transport failure can have consumed tokens, so it is recorded, never
                 # hidden. It is retried once all the same: 2026-09-15, a Bookstack batch
                 # eight calls in was lost to one TLS EOF, and a duplicate prompt costs
-                # less than any batch.
+                # less than any batch. http.client.HTTPException covers IncompleteRead and
+                # RemoteDisconnected, which killed a whole Bookstack run at batch 7 because
+                # nothing above this frame catches them.
                 self.trace.event("model_transport_uncertain", error=str(exc), attempt=attempt + 1)
-                if isinstance(exc, OSError) and attempt < self.max_attempts - 1 and (
+                if isinstance(exc, (OSError, http.client.HTTPException)) and attempt < self.max_attempts - 1 and (
                         remaining_seconds is None or remaining_seconds > 10):
                     time.sleep(2)
                     if remaining_seconds is not None:
