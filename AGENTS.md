@@ -18,6 +18,9 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
   the `FACTORY_VISION_MODEL` switch and which gateway models actually read an image.
 - `docs/selfcheck-deadend-2026-09-14.md`: why a run can spend its whole budget repairing its own
   check, the two autopsies, and the rules that bound it.
+- `docs/ticket-regression-2026-09-14.md`: why the 7/10 Ticket Booking run was a hosted-runner browser
+  fault rather than a merged change, the 25-of-25 local replay that clears the application, the
+  per-PR attribution from both traces, and the one-browser-per-check-run fix.
 - `docs/repair-loop-autopsy-2026-09-14.md`: every model call of every retained run labelled by
   failure source, the three mechanical defects that cost CNY 2.74 across sixteen runs, and why a
   captured self-check is diagnostic rather than authoritative.

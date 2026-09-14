@@ -41,14 +41,24 @@ fs.cpSync('public','dist',{recursive:true});
 
 BROWSER_CHECK = r"""const nodeTest=require('node:test');
 const assert=require('node:assert/strict');
+let shared=null;
+async function sharedBrowser(){
+  if(shared&&shared.isConnected()) return shared;
+  if(!process.env.FACTORY_PLAYWRIGHT_MODULE) throw new Error('Provided Playwright is unavailable');
+  const {chromium}=require(process.env.FACTORY_PLAYWRIGHT_MODULE);
+  shared=await chromium.launch();
+  return shared;
+}
+nodeTest.after(async()=>{
+  const browser=shared;shared=null;
+  if(browser&&browser.isConnected()) await browser.close();
+});
 function test(name,check){
   nodeTest.test(name,async()=>{
-    if(!process.env.FACTORY_PLAYWRIGHT_MODULE) throw new Error('Provided Playwright is unavailable');
-    const {chromium}=require(process.env.FACTORY_PLAYWRIGHT_MODULE);
-    const browser=await chromium.launch();
+    const context=await (await sharedBrowser()).newContext({baseURL:process.env.FACTORY_BASE_URL});
     let page;const errors=[];const pending=new Map();
-    try{page=await browser.newPage({baseURL:process.env.FACTORY_BASE_URL});
-      page.setDefaultTimeout(5000);page.setDefaultNavigationTimeout(15000);
+    try{context.setDefaultTimeout(5000);context.setDefaultNavigationTimeout(15000);
+      page=await context.newPage();
       page.on('pageerror',error=>errors.push(error.message));
       page.on('request',request=>pending.set(request,request.method()+' '+new URL(request.url()).pathname));
       page.on('requestfinished',request=>pending.delete(request));
@@ -80,7 +90,7 @@ function test(name,check){
         pending_requests:[...pending.values()].slice(0,10),page_errors:errors.slice(0,10)});
       }catch{}
       throw error;
-    }finally{await browser.close();}
+    }finally{try{await context.close();}catch{}}
   });
 }
 module.exports={test,assert};
