@@ -33,6 +33,18 @@ repair · 69a7f59 restore skips protected paths · b3d2331 hover-first self-chec
 IncompleteRead). Evidence for every run under `runs/2026-09-14-keep-full-*/` and
 `runs/2026-09-15-bookstack-*/` (git-ignored).
 
+## Official Keep runs, 2026-09-15 (team lead asked to hold the board at 01:13)
+
+| Run | Package | Result | Cost | Why |
+|---|---|---|---:|---|
+| 3313c37b801c | e277e2c | FAILED, 0/32 | 5.09 | our 45-min wall clock, then fresh verification with no time left, exit 1 |
+| 1c2af08cf3cc | ebb5ab8 | FAILED, 0/32 | 12.57 | snapshot delivered, then summary read a cleared last_verification |
+| 762faa0bd756 | 875fbaa | **19/32, 59.4%, rank 4** | 9.68 | wall clock, snapshot delivered, exit 0 |
+
+Upload branch `upload/keep-2026-09-15` (worktree `../upload-keep`) = dd8acdb + budget +
+delivery fixes; RA–RG (7db22d7) are on feat/state-contract only. Hosted machine: ~2 calls a
+minute, no container timeout. Keep board top: 100%, 62.5%, 59.4%, 59.4% (us), 56.2%.
+
 ## In flight at handoff
 
 - `keep-rules` (Opus) implementing RA–RE from the run-5 attribution: inertness without the
