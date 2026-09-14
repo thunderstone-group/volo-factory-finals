@@ -610,3 +610,31 @@ class HarnessReadTests(TempCase):
         scaffold(self.workspace)
         result = agent.dispatch('read_files', {'paths': ['backend/server.cjs']})
         self.assertIn('createServer', json.dumps(result))
+
+
+class GatewayRetryTests(TempCase):
+    """A long multi-batch run must survive one transient proxy error."""
+
+    def transport(self, status, attempts=3):
+        import io
+        import urllib.request
+        from urllib.error import HTTPError
+        from volo.model import Model, ModelError
+        model = Model("https://gateway.example/v1", "synthetic-test-key", "test",
+                      self.trace, max_attempts=attempts)
+        error = HTTPError(model.url, status, "synthetic", {}, io.BytesIO(b'{}'))
+        with patch("urllib.request.urlopen", side_effect=error) as request, patch("time.sleep"):
+            with self.assertRaises(ModelError):
+                model.complete([{"role": "user", "content": "synthetic"}], [])
+        return request.call_count
+
+    def test_a_gateway_proxy_error_is_retried(self):
+        for status in (429, 502, 503, 504):
+            self.assertEqual(self.transport(status), 3, f"status {status}")
+
+    def test_a_request_error_is_not_retried(self):
+        for status in (400, 401, 404, 500):
+            self.assertEqual(self.transport(status), 1, f"status {status}")
+
+    def test_a_single_attempt_transport_still_makes_one_request(self):
+        self.assertEqual(self.transport(502, attempts=1), 1)

@@ -89,7 +89,13 @@ class Model:
             except urllib.error.HTTPError as exc:
                 detail = exc.read(4096).decode(errors="replace")
                 self.trace.event("model_http_error", status=exc.code, detail=detail)
-                if exc.code == 429 and attempt < self.max_attempts - 1:
+                # 502/503/504 come from the gateway's own proxy, which means no upstream
+                # answer reached us whether or not one was produced. A run that
+                # implements a large package makes tens of calls, so losing all of them
+                # to one transient proxy error is the worse failure. 2026-09-14: a Keep
+                # rehearsal died on `Gateway HTTP 502` from openresty, and the same key
+                # answered normally seconds later.
+                if exc.code in (429, 502, 503, 504) and attempt < self.max_attempts - 1:
                     delay = min(10, 2 ** (attempt + 1))
                     if remaining_seconds is not None and remaining_seconds < delay + 5:
                         raise ModelError("Model rate-limited with no retry time remaining") from exc
