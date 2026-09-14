@@ -411,8 +411,9 @@ def apply_edits(current, items, path=None):
 # Calls one contract batch may spend before it is recorded incomplete and the schedule
 # moves on. Measured on Keep at ccf0600: batches converged in 9, 7 and 17 calls, then one
 # batch spent 36 without converging, thrashing between its own check and three feature
-# files, because the only bound was the run-wide call budget.
-BATCH_CALL_LIMIT = 16
+# files, because the only bound was the run-wide call budget. 20 admits the 17-call batch
+# and still ends the 36-call one at a little over half its cost.
+BATCH_CALL_LIMIT = 20
 
 
 _INVALID_JSON_ESCAPE = re.compile(r'\\(?!["\\/bfnrtu])')

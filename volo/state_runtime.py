@@ -792,7 +792,12 @@ And one rule about the checks you write, which the harness cannot enforce for yo
 5. A self-check for an action on a named row asserts on that row afterwards: it is in the
    destination list, or it carries the attribute the requirement names. Never assert only that a
    toast, snackbar or notification appeared. Four of the last run's specs passed against a toast
-   while the action had gone to the wrong row."""
+   while the action had gone to the wrong row.
+6. A self-check reaches a row's action the way the evaluator does: hover the row's title text
+   first (page.getByText(title).first().hover()), then locate the action by its verb. Rule 1 hides
+   the action until then, so a check that waits for "Archive for <title>" without hovering times
+   out against a correct page. One batch of the last run spent its whole call budget on exactly
+   that."""
 
 
 STORE_CONTRACT = """The harness has already written three backend files. Do not rewrite them:

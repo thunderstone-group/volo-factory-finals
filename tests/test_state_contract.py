@@ -1181,6 +1181,13 @@ module.exports=async(req,res)=>{
         self.assertIn('Never assert only that a', rules)
         self.assertIn('toast, snackbar or notification appeared', rules)
 
+    def test_the_supplement_tells_a_self_check_to_hover_before_locating_a_row_action(self):
+        # Keep at 69a7f59, batch 3: the page hid row actions until hover as rule 1 asks, and the
+        # model's own check waited for "Archive for <title>" without hovering until the cap.
+        rules = state_runtime.STORE_CONTRACT
+        self.assertIn('hover the row\'s title text', rules)
+        self.assertIn('.hover()', rules)
+
 
 class ScheduleCompletionTests(TempCase):
     """A batch that cannot converge must not cost the batches after it their turn."""
