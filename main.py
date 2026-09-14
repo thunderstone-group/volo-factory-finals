@@ -20,17 +20,37 @@ from volo.trace import Runtime, Trace
 from volo.workspace import Workspace
 
 
+# A single-batch package (Smoke, Ticket) fits the small budget. A multi-batch package
+# takes the contract path, and Keep at b3d2331 needed 142 calls and 4.1 M tokens over
+# 83 minutes for 15 batches; the hosted runner's own limit on generation time is not
+# documented, so the wall clock stays moderate and the schedule delivers the last
+# verified snapshot when it runs out. Explicit flags and FACTORY_* env win.
+SMALL_BUDGET = {"max_calls": 32, "token_budget": 450000, "timeout": 1200}
+LARGE_BUDGET = {"max_calls": 160, "token_budget": 5000000, "timeout": 2700}
+
+
+def apply_budget_defaults(args, requirements):
+    large = len(requirements.batches()) > 1
+    env = {"max_calls": "FACTORY_MAX_CALLS", "token_budget": "FACTORY_TOKEN_BUDGET", "timeout": "FACTORY_TIMEOUT"}
+    for name, variable in env.items():
+        if getattr(args, name) is None:
+            value = os.getenv(variable)
+            setattr(args, name, int(value) if value else (LARGE_BUDGET if large else SMALL_BUDGET)[name])
+    return large
+
+
 def main():
     parser = argparse.ArgumentParser(description="VOLO Factory competition agent")
     parser.add_argument("requirement_path", type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--inspect", action="store_true", help="Validate inputs and print the schedule without model calls")
-    parser.add_argument("--max-calls", type=int, default=int(os.getenv("FACTORY_MAX_CALLS", "32")))
-    parser.add_argument("--token-budget", type=int, default=int(os.getenv("FACTORY_TOKEN_BUDGET", "450000")))
-    parser.add_argument("--timeout", type=int, default=int(os.getenv("FACTORY_TIMEOUT", "1200")))
+    parser.add_argument("--max-calls", type=int, default=None)
+    parser.add_argument("--token-budget", type=int, default=None)
+    parser.add_argument("--timeout", type=int, default=None)
     parser.add_argument('--acceptance-contract', type=Path,
                         help='Reviewed external acceptance manifest; never discovered from generated files')
     args = parser.parse_args()
+    apply_budget_defaults(args, RequirementSet.load(args.requirement_path))
     if min(args.max_calls, args.token_budget, args.timeout) <= 0:
         parser.error("Budgets must be positive")
     requirements = RequirementSet.load(args.requirement_path)

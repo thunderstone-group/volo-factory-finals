@@ -1728,3 +1728,47 @@ class ToolArgumentRepairTests(unittest.TestCase):
         self.assertEqual(tool_arguments('{"paths":["a","b"]}'), {'paths': ['a', 'b']})
         with self.assertRaises(ValueError):
             tool_arguments('{"paths":[')
+
+
+class BudgetDefaultTests(unittest.TestCase):
+    """A multi-batch package gets the large default budget; flags and env still win."""
+
+    class Package:
+        def __init__(self, count):
+            self.count = count
+
+        def batches(self):
+            return [[{'id': 'REQ-%d' % i}] for i in range(self.count)]
+
+    def clean(self):
+        for name in ('FACTORY_MAX_CALLS', 'FACTORY_TOKEN_BUDGET', 'FACTORY_TIMEOUT'):
+            os.environ.pop(name, None)
+
+    def test_a_multi_batch_package_gets_the_large_defaults(self):
+        import argparse
+        import main as entry
+        args = argparse.Namespace(max_calls=None, token_budget=None, timeout=None)
+        with patch.dict(os.environ, {}, clear=False):
+            self.clean()
+            self.assertTrue(entry.apply_budget_defaults(args, self.Package(2)))
+        self.assertEqual((args.max_calls, args.token_budget, args.timeout),
+                         tuple(entry.LARGE_BUDGET[k] for k in ('max_calls', 'token_budget', 'timeout')))
+
+    def test_a_single_batch_package_keeps_the_small_defaults(self):
+        import argparse
+        import main as entry
+        args = argparse.Namespace(max_calls=None, token_budget=None, timeout=None)
+        with patch.dict(os.environ, {}, clear=False):
+            self.clean()
+            self.assertFalse(entry.apply_budget_defaults(args, self.Package(1)))
+        self.assertEqual((args.max_calls, args.token_budget, args.timeout), (32, 450000, 1200))
+
+    def test_an_explicit_flag_and_the_environment_win(self):
+        import argparse
+        import main as entry
+        args = argparse.Namespace(max_calls=7, token_budget=None, timeout=None)
+        with patch.dict(os.environ, {'FACTORY_TIMEOUT': '99'}):
+            os.environ.pop('FACTORY_TOKEN_BUDGET', None)
+            entry.apply_budget_defaults(args, self.Package(3))
+        self.assertEqual((args.max_calls, args.timeout), (7, 99))
+        self.assertEqual(args.token_budget, entry.LARGE_BUDGET['token_budget'])
