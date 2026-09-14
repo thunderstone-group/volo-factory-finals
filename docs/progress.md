@@ -412,3 +412,40 @@ each rule snapshot and experiment with date and source.
   flip must be confirmed by the first official trial taken after the frozen-self-check fix on
   `fix/selfcheck-deadend` lands, so that the observer result is not confounded by the trap that
   ended `8abb7f040604`. Until then this default carries a local gate and price arithmetic only.
+## 2026-09-14 — A self-check that cannot pass no longer consumes the repair budget
+
+- Two runs the same day spent their whole budget repairing a check instead of a product. The
+  nav-race first local generation froze a check bundle containing `assert(locator).toBeVisible()`,
+  where `assert` is `node:assert/strict`; from call 3 to call 14 the frozen bytes returned the same
+  `TypeError` while the product changed every round, and it died at 464,707 tokens with nothing
+  delivered. By call 7 the model had already written a correct check and could not make the harness
+  use it.
+- Official run `8abb7f040604` was a different failure and two earlier documents were wrong to call
+  it the same one. Nothing was frozen there. Its 477,861 tokens split into 111,438 on four edits
+  that never applied and 215,001 on seven read-only diagnosis calls; it applied a plausible fix on
+  its last call and ran out before verifying it. Four of those calls were lost to a bare `KeyError`
+  reaching the model as the string `'path'`.
+- Fix, three rules and no configuration knobs. Harness/API misuse inside the run's own checks
+  (assertion-library misuse, missing module, undefined symbol, syntax error) is reported as
+  `defective_check` with the exact error and is never frozen. A captured check is released at its
+  first failure if that failure is a check defect, or at the second consecutive identical failure
+  signature over changed product source. `verify` results and `.factory/checkpoint.json` carry
+  `browser_available`, and `harness_lab/local_gate.py` refuses to score a generation that had no
+  browser. The malformed-edit message now names the missing keys.
+- Calibrated before any model call by replaying the detector over the retained check logs of five
+  generations: 6 positives, all of them the dead end's own frozen-check runs, and 0 across 26 logs
+  from four healthy generations and the official run's check steps.
+- `python -m unittest discover -s tests -v` reports 190 tests, 0 failures, 11 skipped, against 176
+  on main.
+- Local Ticket Booking generation with the fix: a bundle was frozen at call 2, calls 3 and 4
+  produced the identical failure over changed source, and the capture was released at call 4 with
+  reason `no_progress`. The run then delivered at call 15. `python -m harness_lab.local_gate`
+  scored it 20 of 20 at 10/10, browser availability asserted from the recorded value.
+- Official trial `e34e78400983`: PASSED, 10/10, features 2 of 2, 143,279 tokens, CNY 0.899558,
+  372 s. Its captured usage equals the meter delta exactly and no run was concurrent. It made five
+  model calls and never froze a check, so it does not exercise the new guard; it shows the change
+  does not break a healthy run.
+- Not fixed: neither run bounds diagnosis stalls. The local generation spent calls 6 to 13 on
+  read-only calls, the official failure calls 9 to 15. That is the largest remaining block of
+  avoidable spend. See `docs/selfcheck-deadend-2026-09-14.md` and
+  `docs/evidence/2026-09-14-selfcheck-deadend.json`.

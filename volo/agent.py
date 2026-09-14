@@ -255,6 +255,7 @@ class Agent:
         atomic_json(self.state_path, {
             "version": 1, "status": status, "requirement_fingerprint": self.requirements.fingerprint,
             "source_fingerprint": self.workspace.fingerprint(), "completed": self.completed,
+            "browser_available": bool(self.workspace.browser.get("available")),
             "check_command": self.check_command, "model": self.model.model,
             "verification_scope": (self.workspace.last_verification or {}).get(
                 "verification_scope", "local_checks_only"),
@@ -321,6 +322,10 @@ class Agent:
                 raise ValueError('Provide 1-20 exact edits')
             pending = {}
             for item in edits:
+                if not isinstance(item, dict) or not {'path', 'old', 'new'} <= set(item):
+                    # Run 8abb spent two of fifteen calls on a KeyError reported as "'path'".
+                    raise ValueError("Each edit needs 'path', 'old' and 'new'. Received keys: "
+                                     + json.dumps(sorted(item) if isinstance(item, dict) else type(item).__name__))
                 path, old, new = item['path'], item['old'], item['new']
                 if not isinstance(old, str) or not old or not isinstance(new, str):
                     raise ValueError('Provide nonempty old text and replacement text')
@@ -543,6 +548,8 @@ class Agent:
                     open_repairs = open_repairs or (not small and result.get('passed') is False)
                     model_result = {"passed": False, "error": result.get('error'),
                                     "retained_self_check": result.get('retained_self_check'),
+                                    "defective_check": result.get('defective_check'),
+                                    "released_self_check": result.get('released_self_check'),
                                     "check_output": excerpt((result.get('steps') or [{}])[-1].get('output', ''), 5000),
                                     "server_output": result.get('server_output', '')[-2000:],
                                     "source_paths": {'index_html': 'frontend/public/index.html',

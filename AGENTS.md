@@ -15,6 +15,8 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
   which ids the gateway serves, and the price table confirmed against official charges.
 - `docs/image-ablation-2026-09-14.md`: whether the reference-image observation pays for itself,
   the `FACTORY_VISION_MODEL` switch and which gateway models actually read an image.
+- `docs/selfcheck-deadend-2026-09-14.md`: why a run can spend its whole budget repairing its own
+  check, the two autopsies, and the rules that bound it.
 - `docs/harness-consolidation-2026-09-12.md`: integration decisions and validation boundaries.
 - `docs/harness-design-2026-09-12.md`: pinned-source comparison and proposed next experiments.
 - `docs/strategy.md`: verified competition facts, design choices and next experiments.
