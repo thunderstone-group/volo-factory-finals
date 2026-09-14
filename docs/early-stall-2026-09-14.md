@@ -132,7 +132,11 @@ it was harmless, but the security-reproduction runs show the stall without any b
 
 ## Not done
 
-- The local single-cgroup sweep (codex job `~/.codex-jobs/volo-factory/2026-09-14-early-stall-repro/`)
-  finished its main matrix; its summary will be linked here once verified.
+- Local single-cgroup sweep, done (129 runs, `runs/2026-09-14-early-stall/local-sweep/summary.md`,
+  local only): on an idle host 1 CPU and 0.5 CPU pass 10/10 down to 384 MB; the hosted
+  first-test-then-replacement structure appears only at 0.5 CPU with 512m/768m (c399 app 6/10,
+  7/10, 6/10 at 512m/0.5 CPU) and at 256 MB by swap/OOM, which the hosted counters rule out.
+  Removing the launcher saves 7.8 MiB and moves no threshold. What local cannot emulate is a
+  shared host on top of the 1-CPU quota.
 - The board's row selection is not fully understood: rank 1 shows an 80% row while our own 80%
   run (status `FAILED`) did not replace our 100% row.
