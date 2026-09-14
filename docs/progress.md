@@ -725,3 +725,46 @@ each rule snapshot and experiment with date and source.
   alongside `self_checked_requirements`.
 - Suite 295, 4 skips. None of this has been through a generation yet; the next iteration tests the
   fixes rather than re-rolling the same application.
+
+### 2026-09-14, night — the twelve calls one Keep generation spent on rejected tool calls
+
+One complete Keep generation at head `b8e92a0` made 148 model calls. Twelve of them returned
+nothing, because the harness rejected the tool call outright:
+
+- **8 × `read_files` over the 12,000-byte bound.** Two shapes. At the start of nearly every batch
+  the model read every earlier batch's `checks/batch-N.spec.cjs` together with the harness-owned
+  check files; by batch 11 four batch specs alone exceeded the bound. And `frontend/public/app.js`
+  itself grew past the bound (17.6 KB to 25.7 KB), so every later batch opened with a read of it
+  that could not be answered.
+- **3 × `read_file_chunk` with a limit above 8000**, asking for a 24 KB file whole.
+- **1 × `edit`** on an earlier batch's check whose old text did not match the file.
+
+Five changes, each pinned by a synthetic test:
+
+- `read_file_chunk` clamps a limit above 8000, and a negative or unusable offset to 0, instead of
+  raising. A limit of 24000 is an unambiguous request for the whole file; it is answered with the
+  first 8000 characters and the `next_offset` that continues it.
+- `read_files` past the bound returns what fits rather than nothing: files complete in the order
+  asked, then the first that does not fit as a leading chunk with its `next_offset`, then the
+  remaining names and sizes under `_read_bound` with the hint to continue with `read_file_chunk`.
+  The 20-path and 80,000-byte single-file guards are unchanged. A read never costs a call and
+  returns nothing.
+- Earlier batches' `checks/batch-N.spec.cjs` are now owned by the batch that wrote them. From the
+  next batch on, a read of one is answered the way a harness-owned file is — one line naming the
+  requirements it covers, that it passes, that it must not be edited, and where this batch's own
+  check file goes — and `edit` and `write_files` on one are refused with the same reminder that a
+  failure there is a regression in the application. A stall no longer hands back their bytes either.
+- The contract supplement now tells each batch to put its frontend code in its own
+  `frontend/public/features/<slug>.js`, loaded from `index.html`, and never to rewrite another
+  batch's feature file. Instruction text only; there is no module system.
+- The interface check's reported vocabulary list strips the `"<Action> for <title>"` suffix the
+  rule itself prescribes before matching, which collapses one row action per row to the action
+  word, and caps the printed list at 20 names with a count of the rest. Every self-check run
+  created fresh rows, so that list grew with each verification and was re-sent with each one.
+
+Also: a second `HarnessReadTests` class shadowed the dispatch-level class of that name, so three
+tests of the read interception never ran. The first is renamed `HarnessReadDispatchTests` and its
+one stale assertion corrected.
+
+Suite 322, 4 skips, with a local Playwright 1.61.1 and Chromium supplied so the browser-gated
+checks ran. No generation has been run against these changes.

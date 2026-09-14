@@ -129,8 +129,13 @@ class WorkspaceTests(TempCase):
     def test_large_source_is_read_in_complete_unicode_chunks(self):
         source = ('const message="中文文本";\n' * 1500) + 'END'
         self.workspace.write_files([{'path': 'large.js', 'content': source}])
-        with self.assertRaisesRegex(ValueError, 'read_file_chunk'):
-            self.workspace.read_files(['large.js'])
+        # Synthetic: one file past the read bound. It comes back as a leading chunk
+        # naming what to call next, never as a rejection that returns nothing.
+        bounded = self.workspace.read_files(['large.js'])
+        self.assertTrue(source.startswith(bounded['large.js']))
+        self.assertIn('read_file_chunk', bounded['_read_bound']['note'])
+        self.assertEqual(bounded['_read_bound']['truncated']['next_offset'],
+                         len(bounded['large.js']))
         parts, offset = [], 0
         while offset is not None:
             result = self.workspace.read_file_chunk('large.js', offset=offset, limit=1500)
@@ -508,6 +513,76 @@ assert.ok(await page.getByRole('link',{name:'Details',exact:true}).isVisible());
             self.assertEqual(server.requests[0]['thinking'], {'type': 'disabled'})
             self.assertEqual(server.requests[0]['temperature'], 0)
             self.assertEqual(model.usage.total_tokens, 5768)
+
+
+class BoundedReadTests(TempCase):
+    """A read past a declared bound is answered up to it, never rejected.
+
+    Measured on one full Keep generation of 2026-09-14: of 148 model calls, eight were
+    spent on read_files rejected for the 12000-byte bound and three on read_file_chunk
+    rejected for a limit above 8000. Every one of those calls returned nothing.
+    All fixtures below are synthetic.
+    """
+
+    def write(self, name, size):
+        self.workspace.write_files([{'path': name, 'content': 'x' * size}])
+        return name
+
+    def test_files_that_fit_are_all_returned_complete(self):
+        for index in range(3):
+            self.write('fits-%d.js' % index, 3000)
+        result = self.workspace.read_files(['fits-0.js', 'fits-1.js', 'fits-2.js'])
+        self.assertEqual(sorted(result), ['fits-0.js', 'fits-1.js', 'fits-2.js'])
+        self.assertNotIn('_read_bound', result)
+
+    def test_the_first_file_over_the_bound_is_returned_as_a_leading_chunk(self):
+        self.write('first.js', 9000)
+        self.write('second.js', 9000)
+        self.write('third.js', 9000)
+        result = self.workspace.read_files(['first.js', 'second.js', 'third.js'])
+        self.assertEqual(len(result['first.js']), 9000)
+        self.assertEqual(len(result['second.js']), 3000)
+        bound = result['_read_bound']
+        self.assertEqual(bound['truncated'], {'path': 'second.js', 'offset': 0,
+                                              'returned_chars': 3000, 'total_chars': 9000,
+                                              'next_offset': 3000})
+        self.assertEqual(bound['unread'], [{'path': 'third.js', 'bytes': 9000}])
+        self.assertIn('read_file_chunk', bound['note'])
+
+    def test_a_file_exactly_at_the_bound_leaves_no_partial_chunk(self):
+        self.write('exact.js', 12000)
+        result = self.workspace.read_files(['exact.js'])
+        self.assertEqual(len(result['exact.js']), 12000)
+        self.assertNotIn('_read_bound', result)
+
+    def test_a_single_oversized_file_is_still_refused_for_run(self):
+        self.write('huge.js', 90000)
+        with self.assertRaisesRegex(ValueError, 'too large'):
+            self.workspace.read_files(['huge.js'])
+
+    def test_a_limit_above_the_chunk_bound_is_clamped_rather_than_rejected(self):
+        self.write('chunk.js', 24000)
+        result = self.workspace.read_file_chunk('chunk.js', offset=0, limit=24000)
+        self.assertEqual(len(result['content']), 8000)
+        self.assertEqual(result['next_offset'], 8000)
+        self.assertEqual(result['total_chars'], 24000)
+
+    def test_a_negative_or_unusable_offset_reads_from_the_start(self):
+        self.write('chunk.js', 100)
+        for offset in (-5, None, 'begin'):
+            result = self.workspace.read_file_chunk('chunk.js', offset=offset)
+            self.assertEqual(result['offset'], 0)
+            self.assertEqual(len(result['content']), 100)
+
+    def test_a_missing_or_unusable_limit_takes_the_whole_bound(self):
+        self.write('chunk.js', 9000)
+        for limit in (None, 0, -3, 'all'):
+            result = self.workspace.read_file_chunk('chunk.js', limit=limit)
+            self.assertEqual(len(result['content']), 8000)
+
+    def test_a_path_that_does_not_exist_is_still_an_error(self):
+        with self.assertRaises((OSError, ValueError)):
+            self.workspace.read_file_chunk('absent.js', limit=99999)
 
 
 class PackagingTests(unittest.TestCase):

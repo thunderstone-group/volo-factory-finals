@@ -92,8 +92,9 @@ error and make a narrow repair. Avoid repeated full rewrites. run uses argv, not
 Do not start background servers yourself; finish manages their lifecycle.
 The structured requirement input is complete. Do not reread duplicate requirements.md or list
 an empty workspace. Read existing application files only when they materially affect the edit.
-read_files is bounded to 12000 total bytes. For larger files use read_file_chunk and its
-next_offset; request only the relevant section instead of repeatedly requesting entire files.
+read_files is bounded to 12000 total bytes: past that it returns what fits and names the rest,
+so a read never comes back empty. Continue with read_file_chunk and its next_offset, and
+request only the relevant section instead of repeatedly requesting entire files.
 For a small task in an empty workspace, start by writing its implementation and checks in one
 batch and call finish directly, in the same response if possible.
 Image observations in the request come from a separate call through the configured gateway.
@@ -189,6 +190,15 @@ file named checks/<batch>.spec.cjs and leave the existing files alone: verificat
 of them, so a regression in an earlier batch fails this batch. Your check command must run
 every checks/*.spec.cjs file that exists, for example
 ["node","--test","checks/batch-1.spec.cjs","checks/batch-2.spec.cjs"].
+Do not read an earlier batch's check file either. A read of one answers with the requirements
+it covers, not its text, and an edit of one is refused: if it fails, the application regressed.
+
+Put this batch's frontend code in its own file under frontend/public/, named
+frontend/public/features/<slug>.js after this batch's subject, and load it from
+frontend/public/index.html with its own <script> tag. Never rewrite, and never append to,
+another batch's feature file. One growing frontend/public/app.js is what this rule replaces:
+in the last run it passed 12 KB by the middle of the schedule, and from then on every batch
+began by asking for a file too large to return.
 
 Deliver complete, immediately runnable files for your requirements, and one clickable path
 from the entry page to every screen they add. The evaluator can only click and read: it never
@@ -302,7 +312,8 @@ TOOLS = [
                  "additionalProperties": False}}, "check_command": COMMAND}, ["files", "check_command"]),
     patch_tool(False),
     function("list_files", "List application source files, excluding runtime/cache directories.", {}, []),
-    function("read_files", "Read up to 20 UTF-8 files, at most 12000 bytes total. Use read_file_chunk for larger input.",
+    function("read_files", "Read up to 20 UTF-8 files. Returns what fits in 12000 bytes, in the "
+                           "order asked, then names the rest under _read_bound for read_file_chunk.",
              {"paths": STRINGS}, ["paths"]),
     function("read_file_chunk", "Read a bounded UTF-8 source chunk by character offset; follow next_offset only if needed.",
              {'path': STR, 'offset': {'type': 'integer', 'minimum': 0},
@@ -408,6 +419,10 @@ class Agent:
         self.contract_text = state_contract.document(contract) if contract else None
         self.observed = set()
         self.incomplete = []
+        # Which batch wrote which checks/*.spec.cjs, so a later batch is answered with
+        # what that check covers instead of its bytes, and cannot edit it.
+        self.batch_index = 0
+        self.regression_checks = {}
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
         self.max_context_chars = max_context_chars
@@ -481,6 +496,63 @@ class Agent:
                 texts.extend(part.strip(' .,:;"\'()[]') for part in value.split())
         return [text for text in texts if len(text) > 1][:4000]
 
+    def current_check_path(self):
+        """Where this batch writes its own checks, named the way the instructions state."""
+        return 'checks/batch-%d.spec.cjs' % max(1, self.batch_index)
+
+    def regression_summaries(self):
+        """Earlier batches' check files, each answered by what it covers."""
+        if not self.contract:
+            return {}
+        current = self.current_check_path()
+        return {path: state_runtime.regression_check_summary(record['requirements'], current)
+                for path, record in self.regression_checks.items() if path != current}
+
+    def record_batch_checks(self, requirements):
+        """Attribute every check file this batch left behind to this batch.
+
+        From the next batch on they are regression checks: read as a summary, not as
+        bytes, and not editable. One Keep generation re-read them at the start of
+        nearly every batch and paid a rejected read for it.
+        """
+        if not self.contract:
+            return []
+        recorded = []
+        for item in self.workspace.list_files()['files']:
+            path = item['path']
+            if (not path.startswith('checks/') or not path.endswith('.spec.cjs')
+                    or path in state_runtime.HARNESS_OWNED or path in self.regression_checks):
+                continue
+            self.regression_checks[path] = {'batch': self.batch_index,
+                                            'requirements': list(requirements)}
+            recorded.append(path)
+        if recorded:
+            self.trace.event('regression_checks_recorded', batch=self.batch_index,
+                             requirements=list(requirements), paths=recorded)
+        return recorded
+
+    def withhold_locked_checks(self, args):
+        """Write everything in this call except an earlier batch's regression checks."""
+        files = args.get('files')
+        if not isinstance(files, list):
+            return args, {}
+        kept, locked = [], {}
+        for item in files:
+            path = item.get('path') if isinstance(item, dict) else None
+            refusal = self.locked_check(path) if isinstance(path, str) else None
+            if refusal:
+                locked[path] = refusal
+            else:
+                kept.append(item)
+        return ({**args, 'files': kept}, locked) if locked else (args, {})
+
+    def locked_check(self, path):
+        """The refusal text for an edit of an earlier batch's check, or None."""
+        if not self.contract or path not in self.regression_checks or path == self.current_check_path():
+            return None
+        return state_runtime.REGRESSION_EDIT_REFUSAL.format(
+            path=path, current=self.current_check_path())
+
     def attempt_batch(self, nodes):
         """Implement one batch. True when it verified, False when it did not.
 
@@ -553,6 +625,7 @@ class Agent:
                 nodes = [node for node in batch if node["id"] not in self.completed]
                 if not nodes:
                     continue
+                self.batch_index += 1
                 self.trace.event("batch_started", requirements=[node["id"] for node in nodes])
                 print("[volo] implementing " + ", ".join(node["id"] for node in nodes), flush=True)
                 self.workspace.acceptance_requirement_ids = [*self.completed, *[node['id'] for node in nodes]]
@@ -561,6 +634,7 @@ class Agent:
                         continue
                 else:
                     self.run_batch(nodes)
+                self.record_batch_checks([node["id"] for node in nodes])
                 for node in nodes:
                     self.completed.append(node["id"])
                     self.runtime.emit("mark_implementation_done", node["id"], "Implementation built and started")
@@ -638,6 +712,10 @@ class Agent:
         """
         sources, total = {}, 0
         for name in self.read_paths:
+            # A file the model may not edit is never the answer to a stall, and its
+            # bytes are exactly what the summary was there to keep out of the context.
+            if self.contract and (name in state_runtime.HARNESS_OWNED or self.locked_check(name)):
+                continue
             try:
                 text = self.workspace.path(name).read_text()
             except (OSError, ValueError, UnicodeError):
@@ -732,16 +810,32 @@ class Agent:
                 command = PREPARED_CHECK_COMMAND
             args = {**args, 'check_command': normalize_check_command(command)}
         if self.contract and name in ('read_files', 'read_file_chunk'):
-            summary = state_runtime.harness_read(args.get('paths') or args.get('path'))
+            summary = state_runtime.harness_read(args.get('paths') or args.get('path'),
+                                                 owned=self.regression_summaries())
             if summary is not None:
                 product = summary.pop('product', None)
                 if product and name == 'read_files':
-                    summary['files'].update(self.workspace.read_files(product))
+                    verbatim = self.workspace.read_files(product)
+                    bound = verbatim.pop('_read_bound', None)
+                    summary['files'].update(verbatim)
+                    if bound:
+                        summary['_read_bound'] = bound
                 return summary
+        if name == 'edit':
+            refusal = self.locked_check(args.get('path'))
+            if refusal:
+                raise ValueError(refusal)
         if name == 'write_files':
+            locked = {}
             if self.contract:
                 args = state_runtime.coerce_file_batch(args)
+                args, locked = self.withhold_locked_checks(args)
+                if locked and not args.get('files'):
+                    raise ValueError(' '.join(locked.values()))
             result = self.workspace.write_files(**args)
+            if locked:
+                result['refused'] = locked
+                self.trace.event('regression_check_write_refused', paths=sorted(locked))
             if self.contract:
                 defects = state_runtime.syntax_findings(self.workspace, result['written'])
                 if defects:

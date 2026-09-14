@@ -247,12 +247,20 @@ test('every visible control carries a name, and no two share one', async (page) 
 
   // 3. Vocabulary. Reported, never failed: a name outside the requirement's own words is a
   //    smell, not a defect, and this check must not start a repair loop over a smell.
+  //
+  //    Rule 1 above tells the application to name a row action "<Action> for <title>", and
+  //    every self-check run adds rows of its own, so the raw list grows with each run and is
+  //    re-sent with every verification. Strip that prescribed suffix before matching, which
+  //    collapses one row action per row to the action word itself, and report at most twenty.
   if (vocabulary.terms.length) {
-    const outside = [...new Set([...actions, ...named].map(item => item.name).filter(Boolean))]
+    const action = name => normalize(String(name).replace(/\s+for\s+[\s\S]*$/i, ''));
+    const outside = [...new Set([...actions, ...named]
+      .map(item => item.name).filter(Boolean).map(action).filter(Boolean))]
       .filter(name => !vocabulary.matches(name));
     if (outside.length) {
       console.log('[interface] names matching no requirement text (reported, not failed): '
-        + JSON.stringify(outside));
+        + JSON.stringify(outside.slice(0, 20))
+        + (outside.length > 20 ? ' and ' + (outside.length - 20) + ' more' : ''));
     }
   }
 });
@@ -420,27 +428,53 @@ HARNESS_SUMMARY = {
 }
 
 
-def harness_read(paths):
+def regression_check_summary(requirements, current_check_path):
+    """One line for an earlier batch's check file, in place of its bytes.
+
+    A previous batch's `checks/batch-N.spec.cjs` is a regression check: it passes
+    against the current tree, it runs again with every later batch, and the current
+    batch must not edit it. One Keep generation re-read those files at the start of
+    nearly every batch, and by batch 11 four of them alone exceeded the read bound.
+    """
+    covered = ", ".join(requirements) if requirements else "earlier requirements"
+    return ("An earlier batch's regression check, covering " + covered + ". It passes "
+            "against the current application and runs again with this batch. Do not edit "
+            "it and do not read it: keep those requirements working, and write this "
+            "batch's own checks in " + current_check_path + ".")
+
+
+REGRESSION_EDIT_REFUSAL = ("{path} is an earlier batch's regression check and was not "
+                           "changed. It passed against the application as that batch left "
+                           "it, so a failure there is a regression in the application, not a "
+                           "defect in the check. Fix the application instead, and write this "
+                           "batch's own checks in {current}.")
+
+
+def harness_read(paths, owned=None):
     """Answer a read of harness-owned files without spending the read on their bytes.
 
     Runs i1 and i3 each spent three or more calls reading 14 KB of files the agent is
     told not to modify. Returning the contract instead keeps the call productive.
 
-    A read that mixes harness-owned and product files is answered in two parts: the
-    owned names come back as their summaries under ``files`` and the product names are
+    ``owned`` carries additional path-to-summary entries the caller owns for the
+    current batch, which is how earlier batches' regression checks are answered.
+
+    A read that mixes owned and product files is answered in two parts: the owned
+    names come back as their summaries under ``files`` and the product names are
     listed under ``product`` for the caller to read verbatim. The first full Keep run
     on this branch lost a call to exactly that mix, because the owned bytes counted
     against the 12,000-byte read bound.
     """
+    summaries = {**HARNESS_SUMMARY, **(owned or {})}
     names = [paths] if isinstance(paths, str) else list(paths or ())
-    known = [name for name in names if name in HARNESS_SUMMARY]
+    known = [name for name in names if name in summaries]
     if not known:
         return None
-    product = [name for name in names if name not in HARNESS_SUMMARY]
-    answer = {"files": {name: HARNESS_SUMMARY[name] for name in known},
-              "note": "These files are managed by the harness and were not returned verbatim. "
-                      "Do not modify them. Implement your requirements in backend/api.cjs, "
-                      "frontend/public/* and checks/*.spec.cjs."}
+    product = [name for name in names if name not in summaries]
+    answer = {"files": {name: summaries[name] for name in known},
+              "note": "These files are managed by the harness or by an earlier batch and were "
+                      "not returned verbatim. Do not modify them. Implement your requirements "
+                      "in backend/api.cjs, frontend/public/* and this batch's own check file."}
     if product:
         answer["product"] = product
     return answer

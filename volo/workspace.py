@@ -31,6 +31,11 @@ PROTECTED = {".git", ".arc", ".factory", ".volo", "requirements"}
 # them out of the fingerprint stops a check that mutates seeded data from invalidating
 # the verification it just passed. harness_lab/local_gate.py already stages it this way.
 RUNTIME_STATE = "backend/data"
+# One read_files call returns at most this many bytes, and one read_file_chunk call at
+# most this many characters. Both bounds are declared in the tool schema; a request that
+# exceeds either is answered up to the bound rather than rejected.
+READ_BOUND = 12000
+CHUNK_LIMIT = 8000
 
 
 def normalize_check_command(command):
@@ -168,8 +173,10 @@ TOOL_GUIDANCE = {
     'edit': 'Nothing was written. Resend one edit with path, old and new, using a unique anchor.',
     'write_files': 'Nothing was written. Resend files as a list of objects with path and content.',
     'deliver': 'Nothing was written. Resend files as objects with path and content, plus check_command as argv.',
-    'read_files': 'Request fewer or smaller product files, or use read_file_chunk with offsets.',
-    'read_file_chunk': 'Request an existing product file with a nonnegative offset and a limit of 1-8000.',
+    'read_files': 'Request 1-20 existing product files. A read past the size bound is answered '
+                  'up to it, so this failure is a path or a file over 80000 bytes.',
+    'read_file_chunk': 'Request an existing product file by path. An out-of-range offset or limit '
+                       'is clamped, so this failure is the path itself.',
     'run': 'Supply argv as a list of strings for an existing directory, without shell operators.',
     'finish': 'Supply check_command as argv, for example ["node","--test","checks/requirements.cjs"].',
     'build_app': 'Resend build_app with index_html and checks_js as complete strings.',
@@ -363,24 +370,57 @@ class Workspace:
                           for p in self.files() if p.name != ".gitignore"][:800]}
 
     def read_files(self, paths):
+        """Return as much of the requested source as the 12000-byte bound allows.
+
+        A read that is refused outright costs a model call and returns nothing. One
+        full Keep generation on 2026-09-14 spent eight of its 148 calls on reads
+        rejected for exceeding this bound, every one of them re-asked afterwards.
+        Files come back in the order they were requested, each complete; the first one
+        that does not fit comes back as a leading chunk with its next_offset, and every
+        name after it is listed under `_read_bound` with its size.
+        """
         if not isinstance(paths, list) or not 1 <= len(paths) <= 20:
             raise ValueError("Read 1–20 paths per call")
-        sizes = {name: self.path(name).stat().st_size for name in paths}
-        if sum(sizes.values()) > 12000:
-            raise ValueError('Source read exceeds 12000 bytes. Use read_file_chunk with character offsets. '
-                             'Requested file sizes: ' + json.dumps(sizes))
-        result = {}
+        for name in paths:
+            if self.path(name).stat().st_size > 80000:
+                raise ValueError(f"File is too large; use run to inspect a bounded slice: {name}")
+        result, unread, used, truncated = {}, [], 0, None
         for name in paths:
             path = self.path(name)
-            if path.stat().st_size > 80000:
-                raise ValueError(f"File is too large; use run to inspect a bounded slice: {name}")
-            result[name] = path.read_text()
+            size = path.stat().st_size
+            if truncated is not None or used >= READ_BOUND:
+                unread.append({"path": name, "bytes": size})
+                continue
+            if used + size <= READ_BOUND:
+                result[name] = path.read_text()
+                used += size
+                continue
+            content = path.read_text()
+            chunk = content[:READ_BOUND - used]
+            result[name] = chunk
+            used = READ_BOUND
+            truncated = {"path": name, "offset": 0, "returned_chars": len(chunk),
+                         "total_chars": len(content), "next_offset": len(chunk)}
+        if truncated is None and not unread:
+            return result
+        note = ("The 12000-byte read bound was reached, so this call returned what fits "
+                "instead of nothing. Continue with read_file_chunk(path, offset), and read "
+                "only the part you are about to change.")
+        result["_read_bound"] = {"note": note, "bytes_returned": used,
+                                 **({"truncated": truncated} if truncated else {}),
+                                 **({"unread": unread} if unread else {})}
         return result
 
     def read_file_chunk(self, path, offset=0, limit=8000):
-        if (not isinstance(offset, int) or offset < 0 or not isinstance(limit, int)
-                or not 1 <= limit <= 8000):
-            raise ValueError('Use a nonnegative character offset and a limit of 1-8000 characters')
+        """Read a bounded chunk, clamping an out-of-range offset or limit rather than refusing.
+
+        The same generation lost three calls to a limit of 24000, which is an
+        unambiguous request for the whole file: answer it with the first 8000
+        characters and the next_offset that continues it.
+        """
+        offset = offset if isinstance(offset, int) and not isinstance(offset, bool) and offset > 0 else 0
+        usable = isinstance(limit, int) and not isinstance(limit, bool) and limit > 0
+        limit = min(limit, CHUNK_LIMIT) if usable else CHUNK_LIMIT
         source = self.path(path)
         if source.stat().st_size > 1000000:
             raise ValueError('Source exceeds 1 MB; inspect a bounded slice with run')

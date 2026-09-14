@@ -487,6 +487,175 @@ class AgentWiringTests(TempCase):
         self.assertIn('/api/health', CONTRACT_SYSTEM)
 
 
+class BatchFeatureFileTests(TempCase):
+    """The instruction that stops one frontend file from growing past the read bound.
+
+    Measured: in the 2026-09-14 Keep generation frontend/public/app.js went from 17.6 KB
+    to 25.7 KB, and every batch after it opened with a read of that file that the
+    12000-byte bound refused.
+    """
+
+    def test_the_supplement_asks_each_batch_for_its_own_feature_file(self):
+        self.assertIn('frontend/public/features/', CONTRACT_SYSTEM)
+        self.assertIn('index.html', CONTRACT_SYSTEM)
+        self.assertIn("another batch's feature file", CONTRACT_SYSTEM)
+
+    def test_the_supplement_reaches_the_model_on_the_contract_path(self):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, None, self.workspace, Runtime(self.trace), contract=contract)
+        model = FakeModel('no tool call')
+        agent.model = model
+        agent.max_calls = 1
+        with self.assertRaises(Exception):
+            agent.run_batch(requirements.nodes[:1])
+        system = model.requests[0][0]['content']
+        self.assertIn('frontend/public/features/', system)
+
+
+class RegressionCheckOwnershipTests(TempCase):
+    """An earlier batch's check is answered by what it covers, and cannot be edited.
+
+    Synthetic reproduction of the measured waste: in one Keep generation the model
+    opened nearly every batch by reading every earlier checks/batch-N.spec.cjs, and by
+    batch 11 four of those files alone exceeded the 12000-byte read bound. One further
+    call was spent on an edit to an earlier batch's check whose anchor did not match.
+    """
+
+    def agent(self):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, None, self.workspace, Runtime(self.trace), contract=contract)
+        agent.install_contract()
+        return agent
+
+    def finished_batch(self, agent, path, requirements, content="// synthetic check\n"):
+        agent.batch_index += 1
+        agent.dispatch('write_files', {'files': [{'path': path, 'content': content}]})
+        agent.record_batch_checks(requirements)
+
+    def test_a_finished_batch_check_is_read_as_a_summary_not_as_bytes(self):
+        agent = self.agent()
+        self.finished_batch(agent, 'checks/batch-1.spec.cjs', ['REQ-1.1'],
+                            "// synthetic check body\n" * 400)
+        agent.batch_index += 1
+        answer = agent.dispatch('read_files', {'paths': ['checks/batch-1.spec.cjs']})
+        self.assertNotIn('synthetic check body', json.dumps(answer))
+        summary = answer['files']['checks/batch-1.spec.cjs']
+        self.assertIn('REQ-1.1', summary)
+        self.assertIn('checks/batch-2.spec.cjs', summary)
+        self.assertIn('regression check', summary)
+
+    def test_the_batch_writing_a_check_can_still_read_and_rewrite_it(self):
+        agent = self.agent()
+        agent.batch_index = 1
+        agent.dispatch('write_files', {'files': [
+            {'path': 'checks/batch-1.spec.cjs', 'content': '// mine\n'}]})
+        agent.record_batch_checks(['REQ-1.1'])
+        answer = agent.dispatch('read_files', {'paths': ['checks/batch-1.spec.cjs']})
+        self.assertEqual(answer['checks/batch-1.spec.cjs'], '// mine\n')
+        agent.dispatch('write_files', {'files': [
+            {'path': 'checks/batch-1.spec.cjs', 'content': '// mine, revised\n'}]})
+        self.assertIn('revised', (self.workspace.root / 'checks/batch-1.spec.cjs').read_text())
+
+    def test_a_mixed_read_still_returns_the_product_file_verbatim(self):
+        agent = self.agent()
+        self.finished_batch(agent, 'checks/batch-1.spec.cjs', ['REQ-1.1'])
+        agent.batch_index += 1
+        agent.dispatch('write_files', {'files': [
+            {'path': 'frontend/public/features/entries.js', 'content': 'const marker = 1;\n'}]})
+        answer = agent.dispatch('read_files', {'paths': [
+            'checks/batch-1.spec.cjs', 'frontend/public/features/entries.js']})
+        self.assertIn('const marker = 1;', answer['files']['frontend/public/features/entries.js'])
+        self.assertIn('REQ-1.1', answer['files']['checks/batch-1.spec.cjs'])
+
+    def test_an_edit_of_a_finished_batch_check_is_refused_and_names_the_remedy(self):
+        agent = self.agent()
+        self.finished_batch(agent, 'checks/batch-1.spec.cjs', ['REQ-1.1'])
+        agent.batch_index += 1
+        with self.assertRaises(ValueError) as refused:
+            agent.dispatch('edit', {'path': 'checks/batch-1.spec.cjs',
+                                    'old': '// synthetic check', 'new': '// weakened'})
+        self.assertIn('Fix the application', str(refused.exception))
+        self.assertIn('checks/batch-2.spec.cjs', str(refused.exception))
+        self.assertIn('// synthetic check',
+                      (self.workspace.root / 'checks/batch-1.spec.cjs').read_text())
+
+    def test_a_write_keeps_the_product_files_and_withholds_only_the_locked_check(self):
+        agent = self.agent()
+        self.finished_batch(agent, 'checks/batch-1.spec.cjs', ['REQ-1.1'])
+        agent.batch_index += 1
+        result = agent.dispatch('write_files', {'files': [
+            {'path': 'checks/batch-1.spec.cjs', 'content': '// weakened\n'},
+            {'path': 'backend/api.cjs', 'content': 'module.exports=async()=>false;\n'}]})
+        self.assertEqual(result['written'], ['backend/api.cjs'])
+        self.assertIn('checks/batch-1.spec.cjs', result['refused'])
+        self.assertIn('// synthetic check',
+                      (self.workspace.root / 'checks/batch-1.spec.cjs').read_text())
+
+    def test_a_write_of_only_a_locked_check_is_refused_with_the_reason(self):
+        agent = self.agent()
+        self.finished_batch(agent, 'checks/batch-1.spec.cjs', ['REQ-1.1'])
+        agent.batch_index += 1
+        with self.assertRaises(ValueError) as refused:
+            agent.dispatch('write_files', {'files': [
+                {'path': 'checks/batch-1.spec.cjs', 'content': '// weakened\n'}]})
+        self.assertIn('Fix the application', str(refused.exception))
+
+    def test_a_package_without_a_contract_locks_nothing(self):
+        requirements = RequirementSet.load(self.req)
+        agent = Agent(requirements, None, self.workspace, Runtime(self.trace))
+        agent.batch_index = 1
+        agent.dispatch('write_files', {'files': [
+            {'path': 'checks/batch-1.spec.cjs', 'content': '// synthetic\n'}]})
+        self.assertEqual(agent.record_batch_checks(['REQ-1']), [])
+        agent.batch_index += 1
+        answer = agent.dispatch('read_files', {'paths': ['checks/batch-1.spec.cjs']})
+        self.assertEqual(answer['checks/batch-1.spec.cjs'], '// synthetic\n')
+
+    def test_a_stall_never_hands_back_a_locked_check_it_declined_to_show(self):
+        agent = self.agent()
+        self.finished_batch(agent, 'checks/batch-1.spec.cjs', ['REQ-1.1'],
+                            "// synthetic check body\n" * 400)
+        agent.batch_index += 1
+        agent.dispatch('write_files', {'files': [
+            {'path': 'frontend/public/features/entries.js', 'content': 'const marker = 1;\n'}]})
+        agent.read_paths = ['checks/batch-1.spec.cjs', 'backend/state.cjs',
+                            'frontend/public/features/entries.js']
+        sources = agent.stall_sources()
+        self.assertEqual(list(sources), ['frontend/public/features/entries.js'])
+
+    def test_the_harness_owned_interface_check_is_not_attributed_to_a_batch(self):
+        agent = self.agent()
+        agent.batch_index = 1
+        agent.record_batch_checks(['REQ-1.1'])
+        self.assertNotIn(state_runtime.INTERFACE_CHECK_PATH, agent.regression_checks)
+
+
+class InterfaceVocabularyReportTests(unittest.TestCase):
+    """The reported vocabulary list must not grow with every self-check run.
+
+    Rule 1 of the interface check prescribes row action names of the form
+    "<Action> for <title>", and each verification creates fresh rows, so the raw list
+    re-sent with every verification grew without bound.
+    """
+
+    def test_the_row_title_suffix_is_stripped_before_matching(self):
+        self.assertIn("replace(/\\s+for\\s+[\\s\\S]*$/i, '')", state_runtime.INTERFACE_CHECK)
+
+    def test_the_reported_list_is_capped_and_says_how_many_were_omitted(self):
+        self.assertIn('outside.slice(0, 20)', state_runtime.INTERFACE_CHECK)
+        self.assertIn("' and ' + (outside.length - 20) + ' more'", state_runtime.INTERFACE_CHECK)
+
+    def test_the_report_is_still_a_log_line_and_never_an_assertion(self):
+        report = state_runtime.INTERFACE_CHECK.split('// 3. Vocabulary')[1]
+        self.assertNotIn('assert.', report)
+
+
 class RuntimeStateExclusionTests(TempCase):
     def test_rows_written_at_runtime_do_not_change_the_source_fingerprint(self):
         self.workspace.write_files([{'path': 'backend/api.cjs', 'content': 'x'}])
@@ -577,7 +746,13 @@ class SourceDeliveryTests(TempCase):
         self.assertNotIn('Harness-managed shared state', request)
 
 
-class HarnessReadTests(TempCase):
+class HarnessReadDispatchTests(TempCase):
+    """The same interception, through Agent.dispatch, against a real workspace.
+
+    This class was named HarnessReadTests until 2026-09-14 and was shadowed by the
+    module-level class of that name below, so none of it ran.
+    """
+
     def agent(self):
         requirements = synthetic_requirements(self)
         contract = state_contract.reconcile(
@@ -603,7 +778,8 @@ class HarnessReadTests(TempCase):
         result = agent.dispatch('read_files', {'paths': ['backend/api.cjs']})
         self.assertIn('module.exports', json.dumps(result))
         mixed = agent.dispatch('read_files', {'paths': ['backend/api.cjs', 'backend/state.cjs']})
-        self.assertNotIn('note', mixed)
+        self.assertIn('module.exports', mixed['files']['backend/api.cjs'])
+        self.assertNotIn('Object.assign', json.dumps(mixed))
 
     def test_a_package_without_a_contract_reads_normally(self):
         requirements = RequirementSet.load(self.req)
@@ -840,6 +1016,35 @@ class InterfaceCheckTests(TempCase):
         self.assertIn('matching no requirement text', output)
         self.assertIn('Frobnicate', output)
 
+    def test_row_scoped_names_are_reported_once_per_action_and_capped(self):
+        # The rule itself prescribes "<Action> for <title>", and a self-check adds a row
+        # every run, so the raw report grew with every verification. Twenty-five rows,
+        # two actions each, must reduce to the two action words.
+        rows = ''.join('<li>Row {0}'
+                       '<button aria-label="Frobnicate for Synthetic row {0}">a</button>'
+                       '<button aria-label="Transclude for Synthetic row {0}">b</button>'
+                       '</li>'.format(index) for index in range(25))
+        self.build('<ul>' + rows + '</ul>')
+        result = self.run_check()
+        self.assertTrue(result['passed'], result.get('error'))
+        output = ''.join(str(step.get('output', '')) for step in result['steps'])
+        line = [row for row in output.splitlines() if 'matching no requirement text' in row]
+        self.assertEqual(len(line), 1, output)
+        self.assertNotIn('Synthetic row', line[0])
+        self.assertEqual(line[0].count('Frobnicate'), 1)
+        self.assertEqual(line[0].count('Transclude'), 1)
+
+    def test_a_report_longer_than_twenty_names_is_cut_and_counted(self):
+        buttons = ''.join('<button aria-label="Frobnicate{0}">x</button>'.format(index)
+                          for index in range(24))
+        self.build(buttons)
+        result = self.run_check()
+        self.assertTrue(result['passed'], result.get('error'))
+        output = ''.join(str(step.get('output', '')) for step in result['steps'])
+        line = [row for row in output.splitlines() if 'matching no requirement text' in row][0]
+        self.assertEqual(line.count('Frobnicate'), 20)
+        self.assertIn('and 4 more', line)
+
     def test_the_rules_are_stated_to_the_model(self):
         self.assertIn('No two controls visible at the same time', state_runtime.STORE_CONTRACT)
         self.assertIn('More options for Delete me 2.3.1', state_runtime.STORE_CONTRACT)
@@ -885,6 +1090,31 @@ class ScheduleCompletionTests(TempCase):
         # Its requirements are not claimed as completed, but everything else is.
         self.assertNotIn('REQ-2.1', agent.completed)
         self.assertIn('REQ-3.1', agent.completed)
+
+    def test_each_batch_owns_the_checks_it_left_and_locks_the_earlier_ones(self):
+        # The batch loop is where a check file gets its owner: written during batch N,
+        # a regression check from batch N+1 on. Synthetic, driven by the fake batch above.
+        agent = self.agent()
+        written = []
+
+        def run_batch(nodes):
+            path = 'checks/batch-%d.spec.cjs' % agent.batch_index
+            written.append(path)
+            agent.dispatch('write_files', {'files': [{'path': path, 'content': '// synthetic\n'}]})
+            self.workspace.last_verification = {
+                'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+                'check_command': ['node', '--test', path],
+                'verification_scope': 'local_checks_only', 'acceptance': {}}
+
+        agent.run_batch = run_batch
+        agent.run_schedule()
+        self.assertEqual(sorted(agent.regression_checks), sorted(written))
+        self.assertEqual(agent.regression_checks[written[0]]['requirements'],
+                         self.scheduled(agent)[0])
+        # After the last batch every one of them is locked against an edit.
+        agent.batch_index += 1
+        for path in written:
+            self.assertIn('Fix the application', agent.locked_check(path))
 
     def test_budget_exhaustion_stops_the_schedule_and_is_recorded(self):
         agent = self.agent(failing={'REQ-2.2'})
