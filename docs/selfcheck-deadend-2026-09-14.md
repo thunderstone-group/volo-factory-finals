@@ -160,7 +160,7 @@ retries 0, trace and video off.
 | Recorded `browser_available` | true, from `.factory/verification.json` |
 | Forbidden self-navigation patterns | 0 |
 | Replays with 10 of 10 | 20 of 20 |
-| Suite wall, median | 5.70 s |
+| Suite wall, median | 5.72 s |
 
 ## 7. Official trial
 
