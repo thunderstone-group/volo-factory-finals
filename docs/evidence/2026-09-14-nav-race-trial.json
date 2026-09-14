@@ -197,7 +197,47 @@
       ]
     },
     "trials_used": 1,
-    "trials_allowed": 2
+    "trials_allowed": 2,
+    "meter_accounting": {
+      "definition": "The official token count is a usage-meter delta on the shared access key between run start and run finish, not a sum of our responses. Anything billed to the key inside that window lands on our run.",
+      "baseline_log_line": "[2026-09-14 03:15:44 UTC] [backend] Meter baseline captured for access key [REDACTED]",
+      "usage_log_line": "[2026-09-14 03:20:55 UTC] [backend] Meter usage captured: tokens=72854, cost=0.629725 CNY",
+      "window_utc": [
+        "2026-09-14T03:15:44Z",
+        "2026-09-14T03:20:55Z"
+      ],
+      "meter_token_count": 72854,
+      "captured_agent_usage": {
+        "calls": 3,
+        "prompt_tokens": 43978,
+        "completion_tokens": 28876,
+        "cached_prompt_tokens": 4096,
+        "missing_usage_calls": 0,
+        "total_tokens": 72854,
+        "source": "run .factory/checkpoint.json, read back through the run source API",
+        "sha256": "46cf5536b71716fdf235f4b39a55e00e289fc93c721af8294e413c1885f0f1fd"
+      },
+      "meter_minus_captured": 0,
+      "contamination_observed": false,
+      "concurrency_check": {
+        "method": "Listed every run on the account and read created/started/finished timestamps for the newest ten, which covers all users of the key, not only our submission chain.",
+        "runs_overlapping_the_window": 0,
+        "previous_run_on_the_account_finished": "2026-09-12T19:53:44.259224",
+        "unstarted_pending_entries": [
+          "c5608657cdd0",
+          "a6d5b8635598"
+        ],
+        "note": "Both old PENDING entries have never started and consume no metered tokens."
+      },
+      "local_gateway_quiet": {
+        "last_local_model_call": "2026-09-14T03:10:57Z",
+        "evidence": "mtime of the local run trace .factory/events.jsonl for the second generation",
+        "minutes_before_meter_baseline": 4.8,
+        "note": "The 20 gate replays make no model calls; only CLI status, source and leaderboard reads happened while the official run was in flight."
+      },
+      "checked_retroactively": true,
+      "checked_at": "2026-09-14T03:35:00Z"
+    }
   },
   "previous_official_run": {
     "run_id": "a129e387e562",
@@ -207,7 +247,10 @@
     "failed_duration_ms": 10013,
     "token_count": 555255,
     "cost_cny": 0.668715,
-    "run_duration_seconds": 212
+    "run_duration_seconds": 212,
+    "captured_model_tokens": 50957,
+    "meter_minus_captured": 504298,
+    "note": "Its official-versus-captured gap of 504,298 tokens remains unresolved; this run shows the two counters agreeing exactly, so that gap is not a systematic offset between them."
   },
   "leaderboard_after": {
     "task": "ticket-booking",

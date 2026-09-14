@@ -334,3 +334,18 @@ each rule snapshot and experiment with date and source.
   The registration test that timed out in E057 took 2,299 ms. One of two allowed trials
   was used. See `docs/nav-race-2026-09-14.md` and
   `docs/evidence/2026-09-14-nav-race-trial.json`.
+
+## 2026-09-14 — Check the nav-race trial against the meter definition
+
+- The official token count is a meter delta on the shared access key between run start
+  and run finish, so any use of the key inside that window is charged to the run. Run
+  `01b06fb30564` was checked against that definition after the fact, since the rule
+  arrived after it had finished.
+- Its meter window was 03:15:44 to 03:20:55 UTC and reported 72,854 tokens. The run's own
+  checkpoint records 43,978 prompt plus 28,876 completion tokens across three calls,
+  which is the same number: the meter delta minus our captured usage is zero.
+- No run on the account, from any user of the key, overlapped that window; the previous
+  one finished on 2026-09-12 at 19:53:44, and the two old PENDING entries have never
+  started. The last local gateway call was at 03:10:57 UTC and the gate replays make no
+  model calls. E057's 555,255-versus-50,957 gap stays unresolved, but it is not a
+  systematic offset between the two counters.
