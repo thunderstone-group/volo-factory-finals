@@ -631,6 +631,7 @@ class Agent:
                                     "retained_self_check": result.get('retained_self_check'),
                                     "defective_check": result.get('defective_check'),
                                     "released_self_check": result.get('released_self_check'),
+                                    "captured_self_check": result.get('captured_self_check'),
                                     "check_output": excerpt((result.get('steps') or [{}])[-1].get('output', ''), 5000),
                                     "server_output": result.get('server_output', '')[-2000:],
                                     "source_paths": {'index_html': 'frontend/public/index.html',
