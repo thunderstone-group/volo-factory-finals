@@ -422,7 +422,7 @@ each rule snapshot and experiment with date and source.
   use it.
 - Official run `8abb7f040604` was a different failure and two earlier documents were wrong to call
   it the same one. Nothing was frozen there. Its 477,861 tokens split into 111,438 on four edits
-  that never applied and 215,001 on seven read-only diagnosis calls; it applied a plausible fix on
+  that never applied and 204,820 on six read-only diagnosis calls; it applied a plausible fix on
   its last call and ran out before verifying it. Four of those calls were lost to a bare `KeyError`
   reaching the model as the string `'path'`.
 - Fix, three rules and no configuration knobs. Harness/API misuse inside the run's own checks
@@ -449,3 +449,44 @@ each rule snapshot and experiment with date and source.
   read-only calls, the official failure calls 9 to 15. That is the largest remaining block of
   avoidable spend. See `docs/selfcheck-deadend-2026-09-14.md` and
   `docs/evidence/2026-09-14-selfcheck-deadend.json`.
+
+## 2026-09-14 — Correction: variant B was not killed by the frozen-self-check trap
+
+- I attributed run `8abb7f040604`'s budget exhaustion to the frozen self-check dead end. That was
+  wrong. The `selfcheck-fix` agent re-read the trace while working on that trap and found no
+  preserved-self-check event in it; its failing logout check was genuinely failing, a real product
+  race with `POST /api/logout` still pending when the assertion read the page. I verified both
+  points against the retained trace before correcting.
+- Where the 477,861 tokens actually went: 9,698 on the observation, 45,379 on the first
+  `build_app`, 111,438 on four edits that never applied, 204,820 on six read-only diagnosis calls
+  that produced no verification, 38,031 on a plausible `doSignout` fix applied on the last call and
+  never verified, 30,904 on one `patch_and_verify` that applied and failed, 37,591 on the rest.
+  Two of the four failed edits were rejected with the bare message `'path'`, a `KeyError` leaking
+  from the harness, which tells the model nothing it can act on.
+- Consequence for the plan: the confirmation trial for the `qwen3.6-flash` default no longer has
+  to wait for `fix/selfcheck-deadend`. The trap was never in the observer's path, so a trial before
+  or after that fix is equally valid. The fix remains worth having, and the repair loop remains the
+  dominant cost lever, but neither is a precondition here.
+- One subtotal in the correcting report, 215,001 tokens over seven read-only diagnosis calls, does
+  not reproduce from per-call usage; I count 204,820 over six, or 242,851 including the final
+  unverified edit. Recorded rather than reconciled, because the headline does not depend on it.
+- Corrected in `docs/image-ablation-2026-09-14.md`, `docs/vision-model-availability-2026-09-14.md`
+  and both evidence files.
+
+
+## 2026-09-14 — Correcting my own subtotal for run 8abb7f040604
+
+- The `image-ablation` agent could not reproduce the figure `215,001 tokens over seven read-only
+  diagnosis calls` that I put in `docs/selfcheck-deadend-2026-09-14.md` and in the progress entry
+  above. They were right and I was wrong. Recomputed from the retained per-call usage, the number
+  matches no subset of the calls; it was an arithmetic error on my part, not a classification
+  difference.
+- Their count reproduces exactly: 204,820 over calls 6, 9, 10, 11, 13 and 14. Their classification
+  is also the better one. I had lumped call 12, which wrote a diagnostic API simulation, and call
+  15, which applied the real fix, in with the reads; both are writes.
+- The figure that does not depend on the split: after the last verification at call 8, 250,609
+  tokens were spent without producing another verification. That is the quantity the next bound
+  should target.
+- `111,438` on the four failed edits is unchanged and reproduces exactly, as do calls 4 and 7 being
+  the two rejected with the bare `'path'`.
+- Corrected in `docs/selfcheck-deadend-2026-09-14.md` and in the entry above.
