@@ -263,16 +263,47 @@ class Agent:
             self.trace.event('public_specs_supplied', source=self.public_specs['source'],
                              files=list(self.public_specs['files']), executed=False)
 
+    # The batch request travels in the context checkpoint too, so the source it carries
+    # has to leave room for the requirements, the contract and at least one exchange.
+    # Run 'keep i5' died at batch 7 of 15 with "requirements and workspace checkpoint
+    # exceed the context character limit" because the delivered source grew without one.
+    def source_budget(self):
+        fixed = len(self.contract_text or '') + len(self.requirements.batch_prompt(self.requirements.nodes[:1]))
+        return max(8000, min(48000, self.max_context_chars // 2 - fixed))
+
     def contract_source(self):
-        """Product source only: the harness-owned runtime files are already described."""
+        """Product source the model edits, bounded, without the files it must not touch.
+
+        Earlier batches' checks are excluded: each batch writes a new check file, so
+        their text is context the model pays for and never edits.
+        """
         previous = self.source_snapshot_limit
-        self.source_snapshot_limit = 90000
+        self.source_snapshot_limit = 200000
         try:
             source = self.source_snapshot() or {}
         finally:
             self.source_snapshot_limit = previous
-        return {path: content for path, content in source.items()
-                if path not in state_runtime.HARNESS_OWNED and content != KNOWN_RUNTIME.get(path)}
+        source = {path: content for path, content in source.items()
+                  if path not in state_runtime.HARNESS_OWNED
+                  and not path.startswith('checks/')
+                  and content != KNOWN_RUNTIME.get(path)}
+        budget = self.source_budget()
+        if sum(len(content) for content in source.values()) <= budget:
+            return source
+        # Deliver the largest files that fit, newest first, and name the rest so the
+        # model reads only what it actually needs.
+        kept, used = {}, 0
+        for path, content in sorted(source.items(), key=lambda item: len(item[1])):
+            if used + len(content) > budget:
+                continue
+            kept[path] = content
+            used += len(content)
+        omitted = sorted(set(source) - set(kept))
+        if omitted:
+            kept['_omitted_from_this_listing'] = (
+                'Too large to include: ' + ', '.join(omitted)
+                + '. Read a section with read_file_chunk if you must change it.')
+        return kept
 
     def contract_section(self):
         """The state contract, verbatim, in every batch request."""

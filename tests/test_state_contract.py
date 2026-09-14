@@ -695,3 +695,44 @@ class PromptRuleRetentionTests(TempCase):
     def test_the_supplement_is_additive_not_a_replacement(self):
         from volo.agent import SYSTEM
         self.assertTrue(self.system_prompt().startswith(SYSTEM))
+
+
+class SourceBudgetTests(TempCase):
+    """The delivered source must leave room for the checkpoint that carries it."""
+
+    def agent(self):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, None, self.workspace, Runtime(self.trace), contract=contract)
+        agent.install_contract()
+        return agent
+
+    def test_a_large_application_still_fits_the_context_checkpoint(self):
+        agent = self.agent()
+        agent.dispatch('write_files', {'files': [
+            {'path': f'frontend/public/part{index}.js', 'content': f'// part {index}\n' + 'x'.ljust(30000, 'y') + '\n'}
+            for index in range(6)]})
+        self.assertGreater(sum(len(p.read_text()) for p in
+                               (self.workspace.root / 'frontend' / 'public').iterdir()), 150000)
+        source = agent.contract_source()
+        self.assertLessEqual(sum(len(v) for v in source.values()),
+                             agent.source_budget() + 400)
+        self.assertIn('_omitted_from_this_listing', source)
+        checkpoint = agent.context_checkpoint(requirements_nodes(agent), 'system', None)
+        from volo.context import size
+        self.assertLess(size(checkpoint), agent.max_context_chars)
+
+    def test_earlier_batches_checks_are_not_re_delivered(self):
+        agent = self.agent()
+        agent.dispatch('write_files', {'files': [
+            {'path': 'checks/batch-1.spec.cjs', 'content': '// earlier batch check\n'},
+            {'path': 'frontend/public/app.js', 'content': '// product\n'}]})
+        source = agent.contract_source()
+        self.assertIn('frontend/public/app.js', source)
+        self.assertNotIn('checks/batch-1.spec.cjs', source)
+
+
+def requirements_nodes(agent):
+    return agent.requirements.nodes[:1]
