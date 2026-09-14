@@ -860,3 +860,18 @@ any of this.
   skips runtime data and dot-directories instead of aborting. Three synthetic tests pin them.
 - One more rejected call to answer later: a `write_files` whose JSON was invalid because the model
   wrote CSS `content:"\22EF"` inside a JS string (an invalid `\2` escape at the JSON level).
+
+### 2026-09-14, late — runs three and four: the cap and the restore, measured
+
+- Run 3 (fc496c4): batch 1 converged in 16 calls and, for the first time in any real run, wrote a
+  product snapshot. Batch 2 hit the cap; the restore then died on `backend/.volo/launcher.cjs`,
+  a protected path it tried to remove because the snapshot leaves it out. Fixed in 69a7f59: the
+  restore skips the same paths as the snapshot and a restore failure is recorded, not fatal.
+- Run 4 (69a7f59): batches 1–2 converged, batch 3 (archive and colour) hit the cap and the tree
+  was restored to batch 2's; batch 4 started clean. The cause of batch 3: the page hid row actions
+  until hover as rule 1 asks, and the model's own check waited for "Archive for Travel plans 2.5.1"
+  without hovering. The supplement now states the evaluator's own sequence for self-checks
+  (hover the title, then the verb), and the cap is 20 (b3d2331). Run 4 was stopped at 42 calls
+  rather than paying for the same failure in every later batch. Run 5 started on b3d2331.
+- Also landed: a `write_files` whose JSON fails only on a backslash escaped one level short is
+  repaired instead of rejected (155f14a).
