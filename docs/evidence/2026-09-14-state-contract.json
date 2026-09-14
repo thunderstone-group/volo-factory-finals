@@ -1,0 +1,456 @@
+{
+  "recorded_at": "2026-09-14T06:28:01+00:00",
+  "purpose": "Rehearse a global state contract for multi-page requirement packages.",
+  "branch": "feat/state-contract",
+  "commit": "482009f5b05eaec7ad6e31975c819cbfb6ed7c82",
+  "model": "deepseek-v4-flash",
+  "gateway": "https://api.arc-bench.com/v1",
+  "price_table_source": "docs/token-accounting-2026-09-14.md",
+  "corpus_clone": "~/projects/arcbench-campaign/upstream/arc-bench",
+  "official_runs_started": 0,
+  "acceptance_isolation": "No corpus test or public specification entered any generation prompt. Suites were run only against a finished application.",
+  "rehearsal_iterations": [
+    {
+      "iteration": "i1",
+      "app": "keep",
+      "usage": {
+        "calls": 33,
+        "tokens": 1051058,
+        "cached_prompt_tokens": 485376,
+        "reasoning_tokens": 46142,
+        "cny": 2.216533
+      },
+      "state_contract": {
+        "audit": {
+          "quoted_literals_declared": 48,
+          "quoted_literals_recovered_mechanically": 0,
+          "seed_sentences_declared": 26,
+          "seed_sentences_unresolved": 0,
+          "seed_rows": 23,
+          "entities": 3
+        },
+        "cost": {
+          "calls": 1,
+          "tokens": 44187
+        }
+      },
+      "batches": {
+        "scheduled": [
+          [
+            "REQ-1.1",
+            "REQ-2.1",
+            "REQ-2.2"
+          ],
+          [
+            "REQ-2.3.1",
+            "REQ-2.4",
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2",
+            "REQ-2.7.1"
+          ],
+          [
+            "REQ-2.7.3"
+          ],
+          [
+            "REQ-2.8.1",
+            "REQ-2.8.3",
+            "REQ-2.3.2",
+            "REQ-2.3.3",
+            "REQ-2.5.2",
+            "REQ-2.5.3"
+          ],
+          [
+            "REQ-2.7.2",
+            "REQ-2.7.4"
+          ],
+          [
+            "REQ-2.7.5"
+          ],
+          [
+            "REQ-2.7.6.1",
+            "REQ-2.7.6.3",
+            "REQ-2.8.2",
+            "REQ-2.5.4",
+            "REQ-2.7.6.2"
+          ],
+          [
+            "REQ-3.1",
+            "REQ-4.1",
+            "REQ-5.1"
+          ],
+          [
+            "REQ-5.2",
+            "REQ-6.1",
+            "REQ-3.2"
+          ],
+          [
+            "REQ-4.2",
+            "REQ-6.2"
+          ]
+        ],
+        "started": [
+          [
+            "REQ-1.1",
+            "REQ-2.1",
+            "REQ-2.2"
+          ]
+        ],
+        "scheduled_count": 10,
+        "started_count": 1
+      },
+      "hosted": null,
+      "repo": null
+    },
+    {
+      "iteration": "i2",
+      "app": "keep",
+      "usage": {
+        "calls": 21,
+        "tokens": 391126,
+        "cached_prompt_tokens": 256512,
+        "reasoning_tokens": 19964,
+        "cny": 0.651235
+      },
+      "state_contract": {
+        "audit": {
+          "quoted_literals_declared": 48,
+          "quoted_literals_recovered_mechanically": 0,
+          "seed_sentences_declared": 26,
+          "seed_sentences_unresolved": 0,
+          "seed_rows": 22,
+          "entities": 2
+        },
+        "cost": {
+          "calls": 1,
+          "tokens": 13685
+        }
+      },
+      "batches": {
+        "scheduled": [
+          [
+            "REQ-1.1",
+            "REQ-2.1",
+            "REQ-2.2"
+          ],
+          [
+            "REQ-2.3.1",
+            "REQ-2.4",
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2",
+            "REQ-2.7.1"
+          ],
+          [
+            "REQ-2.7.3"
+          ],
+          [
+            "REQ-2.8.1",
+            "REQ-2.8.3",
+            "REQ-2.3.2",
+            "REQ-2.3.3",
+            "REQ-2.5.2",
+            "REQ-2.5.3"
+          ],
+          [
+            "REQ-2.7.2",
+            "REQ-2.7.4"
+          ],
+          [
+            "REQ-2.7.5"
+          ],
+          [
+            "REQ-2.7.6.1",
+            "REQ-2.7.6.3",
+            "REQ-2.8.2",
+            "REQ-2.5.4",
+            "REQ-2.7.6.2"
+          ],
+          [
+            "REQ-3.1",
+            "REQ-4.1",
+            "REQ-5.1"
+          ],
+          [
+            "REQ-5.2",
+            "REQ-6.1",
+            "REQ-3.2"
+          ],
+          [
+            "REQ-4.2",
+            "REQ-6.2"
+          ]
+        ],
+        "started": [
+          [
+            "REQ-1.1",
+            "REQ-2.1",
+            "REQ-2.2"
+          ],
+          [
+            "REQ-2.3.1",
+            "REQ-2.4",
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2",
+            "REQ-2.7.1"
+          ]
+        ],
+        "scheduled_count": 10,
+        "started_count": 2
+      },
+      "hosted": null,
+      "repo": null
+    },
+    {
+      "iteration": "i3",
+      "app": "keep",
+      "usage": {
+        "calls": 17,
+        "tokens": 392936,
+        "cached_prompt_tokens": 208896,
+        "reasoning_tokens": 88587,
+        "cny": 1.257952
+      },
+      "state_contract": {
+        "audit": {
+          "quoted_literals_declared": 48,
+          "quoted_literals_recovered_mechanically": 0,
+          "seed_sentences_declared": 26,
+          "seed_sentences_unresolved": 0,
+          "seed_rows": 22,
+          "entities": 2
+        },
+        "cost": {
+          "calls": 1,
+          "tokens": 13638
+        }
+      },
+      "batches": {
+        "scheduled": [
+          [
+            "REQ-1.1",
+            "REQ-2.1",
+            "REQ-2.2"
+          ],
+          [
+            "REQ-2.3.1",
+            "REQ-2.4",
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2",
+            "REQ-2.7.1"
+          ],
+          [
+            "REQ-2.7.3"
+          ],
+          [
+            "REQ-2.8.1",
+            "REQ-2.8.3",
+            "REQ-2.3.2",
+            "REQ-2.3.3",
+            "REQ-2.5.2",
+            "REQ-2.5.3"
+          ],
+          [
+            "REQ-2.7.2",
+            "REQ-2.7.4"
+          ],
+          [
+            "REQ-2.7.5"
+          ],
+          [
+            "REQ-2.7.6.1",
+            "REQ-2.7.6.3",
+            "REQ-2.8.2",
+            "REQ-2.5.4",
+            "REQ-2.7.6.2"
+          ],
+          [
+            "REQ-3.1",
+            "REQ-4.1",
+            "REQ-5.1"
+          ],
+          [
+            "REQ-5.2",
+            "REQ-6.1",
+            "REQ-3.2"
+          ],
+          [
+            "REQ-4.2",
+            "REQ-6.2"
+          ]
+        ],
+        "started": [
+          [
+            "REQ-1.1",
+            "REQ-2.1",
+            "REQ-2.2"
+          ],
+          [
+            "REQ-2.3.1",
+            "REQ-2.4",
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2",
+            "REQ-2.7.1"
+          ]
+        ],
+        "scheduled_count": 10,
+        "started_count": 2
+      },
+      "hosted": null,
+      "repo": null
+    },
+    {
+      "iteration": "i4",
+      "app": "keep",
+      "usage": {
+        "calls": 11,
+        "tokens": 191366,
+        "cached_prompt_tokens": 147712,
+        "reasoning_tokens": 8336,
+        "cny": 0.244048
+      },
+      "state_contract": {
+        "audit": {
+          "quoted_literals_declared": 48,
+          "quoted_literals_recovered_mechanically": 0,
+          "seed_sentences_declared": 26,
+          "seed_sentences_unresolved": 0,
+          "seed_rows": 22,
+          "entities": 2
+        },
+        "cost": {
+          "calls": 1,
+          "tokens": 13677
+        }
+      },
+      "batches": {
+        "scheduled": [
+          [
+            "REQ-1.1",
+            "REQ-2.1"
+          ],
+          [
+            "REQ-2.2",
+            "REQ-2.3.1",
+            "REQ-2.4"
+          ],
+          [
+            "REQ-2.5.1",
+            "REQ-2.6.1",
+            "REQ-2.6.2"
+          ],
+          [
+            "REQ-2.7.1"
+          ],
+          [
+            "REQ-2.7.3"
+          ],
+          [
+            "REQ-2.8.1",
+            "REQ-2.8.3",
+            "REQ-2.3.2"
+          ],
+          [
+            "REQ-2.3.3",
+            "REQ-2.5.2",
+            "REQ-2.5.3"
+          ],
+          [
+            "REQ-2.7.2",
+            "REQ-2.7.4"
+          ],
+          [
+            "REQ-2.7.5"
+          ],
+          [
+            "REQ-2.7.6.1",
+            "REQ-2.7.6.3",
+            "REQ-2.8.2"
+          ],
+          [
+            "REQ-2.5.4",
+            "REQ-2.7.6.2"
+          ],
+          [
+            "REQ-3.1",
+            "REQ-4.1"
+          ],
+          [
+            "REQ-5.1",
+            "REQ-5.2"
+          ],
+          [
+            "REQ-6.1",
+            "REQ-3.2"
+          ],
+          [
+            "REQ-4.2",
+            "REQ-6.2"
+          ]
+        ],
+        "started": [
+          [
+            "REQ-1.1",
+            "REQ-2.1"
+          ]
+        ],
+        "scheduled_count": 15,
+        "started_count": 1
+      },
+      "hosted": null,
+      "repo": null
+    }
+  ],
+  "holdout": [],
+  "ticket_local_gate": {
+    "purpose": "Measure whether the server file's new state hook changes Ticket behaviour.",
+    "method": "One generated Ticket application, gated five times with this branch's server.cjs and five times with main's server.cjs restored byte for byte.",
+    "new_server": {
+      "label": "new-server",
+      "replays": 5,
+      "passed_per_replay": [
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "tests_per_replay": 10,
+      "median_wall_seconds": 15.03,
+      "failing_titles": [
+        "REQ-1.1: successfully register a new account and remain signed in"
+      ]
+    },
+    "old_server": {
+      "label": "old-server",
+      "replays": 5,
+      "passed_per_replay": [
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "tests_per_replay": 10,
+      "median_wall_seconds": 15.32,
+      "failing_titles": [
+        "REQ-1.1: successfully register a new account and remain signed in"
+      ]
+    },
+    "ticket_generation_usage": {
+      "calls": 3,
+      "tokens": 68102,
+      "cached_prompt_tokens": 4096,
+      "reasoning_tokens": 27392,
+      "cny": 0.397544
+    },
+    "contract_extracted_for_ticket": false
+  },
+  "unit_tests": {
+    "command": "python -m unittest discover -s tests",
+    "fixtures": "synthetic"
+  }
+}

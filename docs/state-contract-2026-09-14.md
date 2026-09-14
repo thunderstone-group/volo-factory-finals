@@ -142,11 +142,91 @@ PLACEHOLDER_COST
 
 ## 5. What broke, and why
 
-PLACEHOLDER_BROKE
+Five failures, in the order they were found. Each is a measurement from a real rehearsal, and
+each produced a change that is now covered by a synthetic test.
+
+### 5.1 The first extraction produced zero seed rows from a response that named all of them
+
+The model returned `entities` as a mapping, seed fields inline rather than under `data`, and
+`type` where the schema said `collection`. The reader rejected every row. The content was right
+and only the container was wrong, so `normalize()` now accepts a list, a single item or a mapping
+in every position, and the exact wrong-shaped response is pinned as a synthetic fixture. The
+schema itself is also now embedded in the extraction instruction, which it was not at first.
+
+A related bug in the same reader: a mapping key was merged over the value's own fields, so an
+entity whose *field* was called `name` had its identity overwritten and lost that field. The
+mapping key is now carried separately.
+
+### 5.2 The reconciliation reported rows as missing that were present
+
+A seed sentence often carries two quoted strings, the row's title and a message the requirement
+also specifies. Requiring every quoted value to appear among the seeds reported such a sentence
+unresolved forever. One recognised value is sufficient evidence that the sentence produced a row.
+
+### 5.3 Extraction with default reasoning cost 3.2 times what it needed to
+
+The first extraction ran at the model's default effort and cost 44,187 tokens. Extraction copies
+declared values into a fixed shape; it is not a reasoning task. With reasoning disabled the same
+package costs 13,677 tokens and still resolves all 26 seed sentences.
+
+### 5.4 The batch loop spent its budget on bytes it already had
+
+Iteration i1 used 33 calls and CNY 2.22 without finishing its first batch. The trace shows where:
+
+| Waste | Calls in i1 | Fix |
+|---|---:|---|
+| `read_files` over the 12,000-byte bound, retried with smaller sets still over it | 5 | Harness-owned files answer with their contract, not their bytes; product source is delivered in the request |
+| `node -e` scripts hunting a syntax error in a file the agent had just written | 9 | `node --check` runs at write time and the parser's own diagnosis is returned |
+| Tool calls rejected for argument shape (`{path, content}` instead of `{files: [...]}`; an extra `check_command`) | 2 across i2 and i3 | The write is executed; the intent is unambiguous |
+
+### 5.5 A six-requirement batch could not fit one reply
+
+Iteration i3 lost a batch to a 30 KB `write_files` call that arrived as invalid JSON. Six
+requirements of a large application demand more complete files than one reply can carry.
+Contract batches are now three requirements or 12,000 characters. That is only safe because the
+contract already fixes what the batches share, which is the argument for extracting it first.
+
+### 5.6 One transient gateway 502 discarded eleven paid calls
+
+A rehearsal died on `Gateway HTTP 502` from the gateway's openresty proxy; the same key answered
+normally seconds later. The transport retried 429 only. 502, 503 and 504 come from the proxy, so
+no upstream answer reached us whether or not one was produced, and retrying costs at most a
+duplicate prompt. Request errors are still not retried, and a transport failure of unknown
+outcome is still surfaced rather than silently repeated.
 
 ## 6. Limits of this work
 
-PLACEHOLDER_LIMITS
+**The pass counts measure one generation each, not a distribution.** Generation is stochastic.
+A second run of the same harness on the same package will not produce the same application, and
+these numbers carry no error bar.
+
+**Bookstack is a holdout for the harness, not for the contract's generality.** It was run once,
+untouched, after the Keep rehearsal fixed the process. That tests whether the changes transfer to
+an app they were not tuned on. It does not establish that the extraction handles requirement
+packages written in a different style, and the hidden competition tests are not these six apps.
+
+**No official run was started, so no official score exists for any of this.** Agent verification
+and official benchmark scores remain separate facts.
+
+**The efficiency claim is not made.** The review asked that any claim of improved efficiency be
+compared against the original process across all generation cost. There is no prior multi-batch
+generation on this harness to compare against: before this branch, a package of this size was
+never generated. What is measured is cost and pass rate for this process, and the specific
+per-iteration savings in section 5, each against the iteration that preceded it.
+
+**`ARC_TEST_DATE` is not honoured.** Section 5.9 of the corpus catalogue asks that server-side
+date logic read that variable and that client-side display derive from the browser clock. Keep
+and Bookstack pin no date, so this rehearsal could not exercise it. 12306 and ctrip would.
+
+**Seeding idempotence is per data file, not per process.** A second start against the same data
+file neither duplicates a row nor resurrects a deleted one. A fresh data file re-seeds from
+scratch, which is what the competition runner does and what
+`harness_lab/state_rehearsal.py` does between profiles. There is deliberately no reset endpoint:
+the corpus has none, and the requirements state durability that a restart-reset would contradict.
+
+**The four-worker profile runs on this machine, not the organizers'.** Absolute wall times are
+ours. The corpus catalogue's measurement that artifact capture, not the ten-second budget, is
+what breaks a suite locally is the reason both profiles here disable trace and video.
 
 ## 7. Reproducing
 

@@ -188,6 +188,12 @@ STORE_CONTRACT = """The harness has already written three backend files. Do not 
   backend/state.cjs  the shared persistent store and the startup readiness promise
   backend/server.cjs the static server, SPA fallback and /api/health gate
 
+backend/api.cjs must export `async (req, res) => boolean`. When a request belongs to your API,
+answer it and return true. For every other request return false without touching `res`: the
+server then serves the built frontend and the single-page fallback. A handler that answers
+everything, for example with a trailing `send(res, 404, ...)`, makes the application serve no
+pages at all and fails verification before a single test runs.
+
 In backend/api.cjs use the shared store instead of your own storage:
   const {store} = require('./state.cjs');
   store.list(name[, predicate]) -> array of records      store.get(name, id) -> record or null

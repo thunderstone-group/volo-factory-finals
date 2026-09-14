@@ -638,3 +638,22 @@ class GatewayRetryTests(TempCase):
 
     def test_a_single_attempt_transport_still_makes_one_request(self):
         self.assertEqual(self.transport(502, attempts=1), 1)
+
+
+class ServingDiagnosisTests(TempCase):
+    def test_a_handler_that_never_returns_false_is_named(self):
+        self.workspace.write_files([{'path': 'backend/api.cjs', 'content':
+            "module.exports=async(req,res)=>{res.writeHead(404);res.end();return true;};\n"}])
+        diagnosis = self.workspace.serving_diagnosis()
+        self.assertIn('never returns false', diagnosis)
+        self.assertIn('index.html does not exist', diagnosis)
+
+    def test_a_correct_handler_and_a_built_document_produce_no_diagnosis(self):
+        self.workspace.write_files([
+            {'path': 'backend/api.cjs', 'content': 'module.exports=async()=>{return false;};\n'},
+            {'path': 'frontend/dist/index.html', 'content': '<!doctype html><title>a</title>'}])
+        self.assertEqual(self.workspace.serving_diagnosis(), '')
+
+    def test_the_api_contract_is_stated_to_the_model(self):
+        self.assertIn('return false', state_runtime.STORE_CONTRACT)
+        self.assertIn('async (req, res) => boolean', state_runtime.STORE_CONTRACT)

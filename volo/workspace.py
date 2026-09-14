@@ -539,6 +539,27 @@ class Workspace:
                 break
         return findings[:8]
 
+    def serving_diagnosis(self):
+        """Name the usual reasons `/` does not answer, rather than only that it did not.
+
+        Both were observed on real generations: a frontend build that produced no
+        document, and an API handler that answered every request instead of returning
+        false for the ones the static server should serve.
+        """
+        notes = []
+        if not (self.root / "frontend" / "dist" / "index.html").is_file():
+            notes.append("frontend/dist/index.html does not exist after the build; the build "
+                         "copies frontend/public, so write a complete index.html there")
+        handler = self.root / "backend" / "api.cjs"
+        try:
+            source = handler.read_text(errors="replace")
+        except OSError:
+            source = ""
+        if source and "return false" not in source:
+            notes.append("backend/api.cjs never returns false, so it answers requests the static "
+                         "server should serve; return false for anything that is not your API")
+        return (". " + "; ".join(notes) + ".") if notes else ""
+
     def health_gate(self, url, opener, deadline, process):
         """Wait for /api/health when the application declares startup state.
 
@@ -661,7 +682,8 @@ class Workspace:
                             pass
                         time.sleep(0.1)
                     if not ready:
-                        return result(False, error="Application did not serve HTTP 200 on PORT",
+                        return result(False, error="Application did not serve HTTP 200 on PORT"
+                                      + self.serving_diagnosis(),
                                       server_output=self.trace.redact(server_log.read_text(errors="replace")[-6000:]))
                     if health:
                         steps.append({"output": json.dumps(health, ensure_ascii=False),
