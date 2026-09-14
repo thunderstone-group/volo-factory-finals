@@ -891,3 +891,75 @@ any of this.
   requirements from every list while their files stayed in the tree (they pass officially).
 - Evidence: `runs/2026-09-14-keep-full-5/` (git-ignored) with the app, trace, both scores and
   both Playwright reports.
+
+## 2026-09-15 — Run five: what the new rules caught, and the four that catch the rest
+
+`feat/state-contract`, on the generation at `b3d2331` (25 of 32 under both profiles, 142 calls).
+The attribution is in `docs/keep-attribution-run5-2026-09-15.md`, verbatim. Run 5 adopted the
+other shape the rules permit: row actions `display:none` and revealed on hover, with row-scoped
+names. It worked. The entry page went from 85 visible action controls to 13, from four verb
+buckets holding nineteen controls each to none, and **every group-a failure of run 4 disappeared**.
+Four failures were attributable and each is a rule the check did not yet have.
+
+- **The `aria-modal` exemption was wrong and is gone.** `auditInertness` used to skip any chooser
+  that declared itself modal. Playwright's `getByRole` honours `inert` and `aria-hidden` and
+  ignores `aria-modal`, so the exemption removed the check from exactly the state where the leak
+  happened. The rule now also fails when any text input outside an open chooser is visible, named
+  or not, because the evaluator's last resort for filling a field is `getByRole('textbox').first()`
+  with no name at all. That is REQ-2.7.5, where "Projects" was typed into the banner's search box
+  while the Edit labels dialog was open.
+- **A row title may not be answered only by a hover-only control.** The helpers resolve a row's
+  title through the same role ladder they use for actions, and rung 1 is button. With the row
+  hovered, `"Color for <title>"` beats the row's own title text, and the next re-render hides it
+  for good: REQ-2.8.2. The check compares the controls answering to each seeded title with the row
+  at rest and with it hovered, and fails when hovering is what made one appear. The supplement now
+  says that a hover-revealed action is named by its verb alone, since only one row shows its
+  actions at a time and the verb is already unambiguous.
+- **Every row and composer action must be reachable inside it by the verb the helpers use.** With
+  no `more`, `options` or `menu` control in the composer, `openMoreOptionsForNote` left the
+  composer and clicked the page banner's own "Menu": REQ-2.7.4. The check hovers each seeded row,
+  opens each input group, and fails a verb that resolves only outside the container.
+- **A freshly loaded entry page must carry every control it carried before.** `settings.js` applied
+  its hide after an async fetch and restored synchronously, so a superseded open left the page
+  hidden with nothing open: REQ-4.2. The walk now compares the reloaded entry page against the
+  baseline after every click.
+- **A batch that spends its own call cap gets one more attempt.** Batches 7 and 11 hit the 20-call
+  cap, were rolled back, and three of the seven official failures were their requirements. The
+  retry starts from the restored tree, is capped at 12 calls, and carries the first attempt's last
+  failing check output in its request. `batch_retry` goes on the trace; a second failure records
+  `batch_incomplete` exactly as before. Only the call cap earns a retry: any other failure would
+  spend a second batch's calls on the wall it just hit.
+
+Two supporting changes. The walk now restores the store before every reload, not only at the end,
+so a state is always reached from the seeded rows and a control missing after a reload means
+something. And the container rule is not applied to an input group that lies inside an open
+chooser or wraps one, because the inertness rule governs those; without that, one application's
+search filter dialog rendered inside its banner read as a single container holding the banner's
+search box and the dialog's own buttons.
+
+Measured on `runs/2026-09-14-keep-full-5/app`, fresh data directory, this machine:
+
+| Quantity | Value |
+|---|---|
+| States inspected | 25 |
+| Check wall time | 6727, 6887, 7077 ms over three runs, against 6503 ms for the rules as they stood |
+| Verb collapse, namelessness, form durability | do not fire, correctly |
+| Chooser inertness, name leak | fires once: the search filter dialog leaves `Work` and `Reminders` addressable behind it |
+| Chooser inertness, exposed input | fires four times, including the Edit labels dialog with the banner's `Search` box visible |
+| Row title answered by a hover-only control | fires on every seeded row, naming `Color for <title>` |
+| Verb resolving outside its container | fires twice on hovered rows (`menu`, `labels`) and twice on the composer |
+| Controls a reload does not restore | does not fire |
+
+Two honest limits. The recovery rule cannot catch REQ-4.2 as that defect actually behaves: the
+hide lives in the DOM and a reload rebuilds the page, so only a hide that outlives a reload is
+visible to it. Its fixture is a page that remembers the hide, and the race itself is still not
+reproduced. And the container rule is the one rule here that can fire where no requirement asked
+for the action: a page with a global control answering a verb, and a row that legitimately has no
+such action, is a finding. The composer is checked against the six verbs the published helpers
+actually use on a composer rather than all eight, which removes the noisiest case.
+
+Suite 352, 4 skips, with a local Playwright 1.61.1 and Chromium supplied. Five synthetic fixtures under
+`tests/fixtures/` are hand written and implement no requirement: the hover-rows page that passes
+every rule, and one page each for a modal that is not inert, a hover-only control carrying the row
+title, a verb that resolves outside its row, and controls a reload does not bring back. No
+generation has been run against any of this.

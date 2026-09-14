@@ -679,3 +679,176 @@ one sidebar item, and fails the inertness rule alone.
 
 Nothing here has been through a generation. The next iteration is one Keep run to completion under
 both runner profiles, scored against the same eight attributable specs.
+
+## 10. 2026-09-15, after run five: the four rules the hover shape needed
+
+Section 9's rules went into a generation. Run 5 at `b3d2331` scored 25 of 32 under both profiles,
+and `docs/keep-attribution-run5-2026-09-15.md` attributes every failure. The headline is the
+opposite of section 9's: the rules worked, and the shape they pushed the application into brought
+four new defects, each of which is general.
+
+What they bought, measured on the entry page:
+
+| Quantity | Run 4 | Run 5 |
+|---|---:|---:|
+| Visible action controls | 85 | 13 |
+| Hidden but present controls | 0 | 76 |
+| Visible verb buckets holding more than one control | 4, nineteen controls each | 0 |
+
+Every group-a failure of run 4 is gone. The four that remain are these.
+
+### 10.1 A chooser is inert or it is not a chooser
+
+`auditInertness` exempted any chooser with `role="dialog"` and `aria-modal="true"`. That exemption
+is wrong for this evaluator: Playwright's `getByRole` honours `aria-hidden` and `inert` and ignores
+`aria-modal`, so it removed the check from exactly the state where the leak happened. Measured on
+the generated application with its Edit labels dialog open, `getByRole('textbox')` returns two: the
+dialog's own "Create new label" and the banner's "Search".
+
+The exemption is gone, and a second clause is added. The helper that fills a field ends at
+`getByRole('textbox').first()`, with no name at all, so **any** visible text input outside an open
+chooser is a candidate for text meant for the chooser, whatever it is called. REQ-2.7.5 typed
+"Projects" into the banner's search box that way, and the failure snapshot recorded it.
+
+### 10.2 A row title answered only by a hover-only control is circular
+
+The helpers reach a row by resolving its title through the same ladder they use for actions:
+button, link, menuitem, tab, checkbox, heading, option, then label, placeholder and text. Section
+9's two permitted shapes compose badly. Hide a row's actions until hover, and name them
+`"Color for <title>"`, and the only control answering to the row's title is one that must already
+be visible to be hovered. REQ-2.8.2 hovered the title, pinned the note, and then could never find
+the row again: measured, `getByRole('button', {name: /Meeting agenda 2.8.2/i})` returns 0 from an
+unhovered page and 3 while the row is hovered, the first of which is the colour button.
+
+The check compares the action-role controls answering each seeded title with the row at rest and
+with the row hovered, and fails when hovering is what brought one into the tree. The supplement
+now says the rest: when a row's actions are revealed on hover, name them by the verb alone, since
+only one row's actions are visible at a time and the verb is already unambiguous.
+
+The brief for this round asked for the simpler form, asserting that from an unhovered page nothing
+answers the title at all. Measured, that form does not fire on run 5, because the hover-only
+controls are `display:none` and `getByRole` excludes them; and it would fail a row whose title is
+a permanently visible link or button, which is one of the correct fixes. The comparison above
+fires where the defect is and leaves that shape alone.
+
+### 10.3 An action belongs to the container the evaluator is working in
+
+`openMoreOptionsForNote` hovers the row and then clicks the first control matching `/more/i`,
+`/options/i` or `/menu/i`, wherever it is. With no such control in the composer, REQ-2.7.4 landed
+on the page banner's own "Menu" button, then resolved `/labels/i` to the sidebar's "Edit Labels",
+opened the label manager, and assigned a label to nothing.
+
+The check hovers each seeded row and opens each input group, and fails a verb that resolves only
+outside that container. The container under the mouse is found from `document.querySelectorAll(
+':hover')`, walking out to the first ancestor that holds a control. A group that lies inside an
+open chooser, or that wraps one, is left to the inertness rule instead: run 5 renders its search
+filter dialog inside the banner, so the banner's search box and the dialog's buttons would
+otherwise be read as one container.
+
+This is the one rule here that can fire where no requirement asked for the action, since a page
+with a global control answering a verb and a row that legitimately has no such action is a
+finding. The composer is therefore checked against the six verbs the published helpers actually
+use on a composer, not all eight.
+
+### 10.4 A reloaded page carries what it carried
+
+`settings.js` hand-rolled inertness by hiding every control whose name rivalled its dialog's,
+applied the hide after `await fetch('/api/settings')`, and restored it synchronously. An open
+superseded while its request was in flight left the page hidden with no dialog, and REQ-4.2 never
+recovered. The walk now captures the entry page again after every click and reload and fails on
+controls that did not come back.
+
+It does not catch REQ-4.2 as that defect actually behaves, and it is not claimed to: the hide
+lives in the DOM, so a reload rebuilds the page without it. Only a hide that outlives a reload is
+visible to this rule. Its fixture is a page that remembers the hide across a load, and the race
+itself is still not reproduced.
+
+### 10.5 One retry for a batch that spent its calls
+
+Three of the seven failures were REQ-2.3.3, REQ-2.5.3 and REQ-2.5.4, whose batches hit the 20-call
+cap, were rolled back, and left nothing. `attempt_batch` now gives exactly that failure one more
+attempt, from the restored tree, capped at `BATCH_RETRY_CALL_LIMIT` = 12 calls, with the first
+attempt's last failing check output in its request and `batch_retry` on the trace. A second failure
+records `batch_incomplete` as before. No other failure is retried: it would spend a second batch's
+calls on the wall it just hit.
+
+### 10.6 What the model is told
+
+```
+Six rules the harness checks mechanically, on the entry page and in every
+state one click or one hover away from it. Each one is a failure two generated applications
+actually lost specs to, so none of them is a style preference:
+
+1. At most one control carrying a given action verb is visible at any moment. The evaluator
+   resolves an action by the verb alone, "archive", "pin", "more", "color", matches it as a
+   case-insensitive substring of the accessible name, and takes the first match in DOM order.
+   Nineteen rows each showing "Archive for <title>" are nineteen matches for "archive", so the row
+   acted on is decided by DOM position and not by the name. Render a row's actions only while that
+   row is hovered or focused, and hide them with display:none or visibility:hidden. opacity:0, a
+   transparent overlay and off-screen positioning all stay in the accessibility tree and still
+   match.
+2. A row's own title is answered by the row's text and by nothing else. The evaluator reaches a
+   row by resolving its title through the same ladder it uses for actions, and that ladder tries
+   button, link, menuitem, tab, checkbox and heading before plain text. So when a row's actions
+   are revealed on hover, name them by the verb alone, "Archive", not "Archive for <title>":
+   only one row shows its actions at a time, so the verb is already unambiguous, and a
+   hover-revealed button carrying the title is circular, since the row would have to be hovered
+   already for its own title to be found. Put the title in an action name only where the actions
+   are always visible, and then rule 1 applies to them.
+3. Every input, select, textarea, colour swatch, dialog field, toggle and meter carries an
+   accessible name, through aria-label, <label for> or placeholder, using the requirement's own
+   wording. A control with no name cannot be reached at all: a note body with no label matching
+   the requirement's word for it sends the test's typing into the search box instead.
+4. While a chooser is open, meaning a dialog, menu, listbox or role="group" picker the application
+   opens over the page, put the inert attribute or aria-hidden="true" on everything outside it,
+   and take them off when it closes. aria-modal is not enough on its own: the evaluator resolves
+   controls with getByRole, which honours inert and aria-hidden and ignores aria-modal. Two things
+   go wrong without it. A sidebar item named "Work" is reached before the picker's own checkbox
+   "Work for Sprint goals", because menuitem is two rungs above checkbox. And a visible text input
+   outside the chooser takes the text meant for the chooser, because the evaluator's last resort
+   for filling a field is the first textbox on the page, with no name at all.
+5. Every action a requirement attaches to a row or to the composer is reachable inside that row or
+   composer by the bare verb the evaluator uses: more, options, menu, labels, color, pin, archive,
+   delete. The evaluator hovers the row, or opens the composer, and then clicks the first control
+   matching the verb wherever it is on the page. A composer with no more, options or menu control
+   sends it to the page banner's own "Menu" button, and a row with no labels control sends it to
+   the sidebar's "Edit Labels", which is how one run assigned a label to nothing at all.
+6. Text already typed into a form survives a click on another control in the same form, and
+   whatever hides controls restores them synchronously. When a state change re-renders the form,
+   carry the current values into the new markup, through the value attribute, the textarea body,
+   or by not rebuilding the fields at all. Never apply a hide after an await: an open that is
+   superseded while its request is in flight then leaves the page hidden with nothing open, and a
+   freshly loaded page must always carry every control it carried before.
+
+And two rules about the checks you write, which the harness cannot enforce for you:
+
+7. A self-check for an action on a named row asserts on that row afterwards: it is in the
+   destination list, or it carries the attribute the requirement names. Never assert only that a
+   toast, snackbar or notification appeared. Four of one run's specs passed against a toast while
+   the action had gone to the wrong row.
+8. A self-check reaches a row's action the way the evaluator does: hover the row's title text
+   first (page.getByText(title).first().hover()), then locate the action by its verb. Rule 1 hides
+   the action until then, so a check that waits for an action name without hovering times out
+   against a correct page. One batch of run 5 spent its whole call budget on exactly that.
+```
+
+### 10.7 Measured
+
+On `runs/2026-09-14-keep-full-5/app`, fresh data directory, this machine:
+
+| Quantity | Value |
+|---|---|
+| States inspected | 25 |
+| Check wall time | 6727, 6887, 7077 ms over three runs; 6503 ms for the section 9 rules on the same application |
+| Verb collapse, namelessness, form durability | do not fire, correctly |
+| Chooser name leak | one finding: the search filter dialog leaves `Work` and `Reminders` addressable behind it |
+| Text input exposed behind a chooser | four findings, including the Edit labels dialog with the banner's `Search` visible |
+| Row title answered by a hover-only control | fires on every seeded row, naming `Color for <title>` |
+| Verb resolving outside its container | two findings on hovered rows, `menu` and `labels`; two on the composer |
+| Controls a reload does not restore | does not fire |
+
+The walk also restores the store before every reload now, not only at the end, so each state is
+reached from the seeded rows and a control missing from a reloaded page means something.
+
+Nothing here has been through a generation. The next iteration is one Keep run to completion under
+both runner profiles, scored against the four attributable specs above.

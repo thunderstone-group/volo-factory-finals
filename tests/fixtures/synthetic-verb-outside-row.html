@@ -1,0 +1,22 @@
+<!-- Synthetic fixture, hand written for tests/test_state_contract.py. It is not a
+     generated application. It is REQ-2.7.4 reduced: the row offers no control for the
+     "labels" verb, so a helper that hovers the row and clicks the first control
+     matching /labels/i leaves the row and lands on the sidebar's own item. -->
+<style>
+  .row { padding: 6px; border: 1px solid #ccc; }
+  .row .actions { display: none; }
+  .row:hover .actions, .row:focus-within .actions { display: block; }
+</style>
+
+<nav aria-label="Sidebar">
+  <button type="button" role="menuitem">Edit Labels</button>
+</nav>
+
+<ul>
+  <li class="row" tabindex="0">
+    <div class="title">Opening balance</div>
+    <div class="actions">
+      <button type="button" aria-label="Archive">A</button>
+    </div>
+  </li>
+</ul>

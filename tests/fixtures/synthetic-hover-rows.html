@@ -1,9 +1,14 @@
 <!-- Synthetic fixture, hand written for tests/test_state_contract.py. It is not a
      generated application and it implements no requirement; its rows are named after
      the synthetic contract's seeds so the check's hover pass reaches them. It is the
-     shape the interface rules are meant to accept: row actions that exist only while
-     their row is hovered or focused, a chooser that declares itself modal, and a form
-     whose re-render keeps what was typed. -->
+     shape every interface rule is meant to accept:
+
+       * row actions revealed only on hover, named by their verb alone, so the row's
+         own title is answered by the row's text and by nothing else,
+       * every verb the helpers use for a row action reachable inside the row,
+       * a chooser that makes the rest of the page inert rather than declaring itself
+         modal, so nothing outside it is addressable while it is open,
+       * a composer whose re-render carries the text already typed into it. -->
 <style>
   .row { padding: 6px; border: 1px solid #ccc; }
   .row .actions { display: none; }
@@ -11,50 +16,61 @@
   #categories[hidden] { display: none; }
 </style>
 
-<nav aria-label="Filters">
-  <button type="button" role="menuitem">Utilities</button>
-  <button type="button" role="menuitem">Preferences</button>
-</nav>
+<div id="page">
+  <nav aria-label="Filters">
+    <button type="button" role="menuitem">Utilities</button>
+    <button type="button" role="menuitem">Preferences</button>
+  </nav>
 
-<ul>
-  <li class="row" tabindex="0">
-    <h3>Opening balance</h3>
-    <div class="actions">
-      <button type="button" aria-label="Archive for Opening balance">A</button>
-      <button type="button" aria-label="More options for Opening balance">M</button>
-    </div>
-  </li>
-  <li class="row" tabindex="0">
-    <h3>Monthly rent</h3>
-    <div class="actions">
-      <button type="button" aria-label="Archive for Monthly rent">A</button>
-      <button type="button" aria-label="More options for Monthly rent">M</button>
-    </div>
-  </li>
-  <li class="row" tabindex="0">
-    <h3>Scrap me 2.2</h3>
-    <div class="actions">
-      <button type="button" aria-label="Archive for Scrap me 2.2">A</button>
-      <button type="button" aria-label="More options for Scrap me 2.2">M</button>
-    </div>
-  </li>
-</ul>
+  <ul>
+    <li class="row" tabindex="0">
+      <div class="title">Opening balance</div>
+      <div class="actions">
+        <button type="button" aria-label="More options">M</button>
+        <button type="button" aria-label="Color">C</button>
+        <button type="button" aria-label="Pin">P</button>
+        <button type="button" aria-label="Archive">A</button>
+      </div>
+    </li>
+    <li class="row" tabindex="0">
+      <div class="title">Monthly rent</div>
+      <div class="actions">
+        <button type="button" aria-label="More options">M</button>
+        <button type="button" aria-label="Color">C</button>
+        <button type="button" aria-label="Pin">P</button>
+        <button type="button" aria-label="Archive">A</button>
+      </div>
+    </li>
+    <li class="row" tabindex="0">
+      <div class="title">Scrap me 2.2</div>
+      <div class="actions">
+        <button type="button" aria-label="More options">M</button>
+        <button type="button" aria-label="Color">C</button>
+        <button type="button" aria-label="Pin">P</button>
+        <button type="button" aria-label="Archive">A</button>
+      </div>
+    </li>
+  </ul>
 
-<button type="button" id="open-categories">Edit categories</button>
+  <button type="button" id="open-categories">Edit categories</button>
 
-<div id="categories" role="dialog" aria-modal="true" aria-label="Categories" hidden>
-  <button type="button" aria-label="Utilities for Opening balance">Utilities</button>
-  <button type="button" aria-label="Close categories">Close</button>
+  <div id="composer">
+    <input id="entry-title" aria-label="Title" placeholder="Title">
+    <button type="button" id="pin" aria-label="Pin new entry">Pin</button>
+  </div>
 </div>
 
-<div id="composer">
-  <input id="entry-title" aria-label="Title" placeholder="Title">
-  <button type="button" id="pin" aria-label="Pin new entry">Pin</button>
+<div id="categories" role="dialog" aria-label="Categories" hidden>
+  <button type="button" aria-label="Utilities for Opening balance">Utilities</button>
+  <button type="button" aria-label="Close categories">Close</button>
 </div>
 
 <script>
   document.getElementById('open-categories').addEventListener('click', function () {
     document.getElementById('categories').hidden = false;
+    // What aria-modal only claims: the resolver honours inert, so nothing behind the
+    // chooser answers to a name or is the first textbox on the page.
+    document.getElementById('page').inert = true;
   });
   // The durable re-render: the field is rebuilt, and its current value goes with it.
   function bindPin() {

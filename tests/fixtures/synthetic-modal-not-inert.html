@@ -1,0 +1,23 @@
+<!-- Synthetic fixture, hand written for tests/test_state_contract.py. It is not a
+     generated application. A dialog declares itself modal and the page behind it stays
+     addressable: this is what one generated application did, and with its Edit labels
+     dialog open getByRole('textbox') returned the dialog's own field and the banner's
+     search box. The evaluator's last resort for filling a field is the first textbox on
+     the page, so the text meant for the dialog lands in the search box. -->
+<header>
+  <input id="search" type="search" aria-label="Search" placeholder="Search">
+</header>
+
+<button type="button" id="open-labels">Edit labels</button>
+
+<div id="labels" role="dialog" aria-modal="true" aria-label="Edit labels" hidden>
+  <input id="new-label" aria-label="Create new label" placeholder="Create new label">
+  <button type="button" aria-label="Create">Create</button>
+  <button type="button" aria-label="Done">Done</button>
+</div>
+
+<script>
+  document.getElementById('open-labels').addEventListener('click', function () {
+    document.getElementById('labels').hidden = false;
+  });
+</script>

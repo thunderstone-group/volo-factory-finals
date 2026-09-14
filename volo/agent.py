@@ -415,6 +415,13 @@ def apply_edits(current, items, path=None):
 # and still ends the 36-call one at a little over half its cost.
 BATCH_CALL_LIMIT = 20
 
+# One retry for a batch that ran out of calls, with the tree already restored and the
+# first attempt's last failing check output in the request. Measured on Keep at b3d2331:
+# batches 7 and 11 hit the cap and were rolled back, and three of the run's seven official
+# failures were their requirements. The second attempt starts from a verified tree and
+# knows what the first attempt was stuck on, so it is given less than a first attempt.
+BATCH_RETRY_CALL_LIMIT = 12
+
 
 _INVALID_JSON_ESCAPE = re.compile(r'\\(?!["\\/bfnrtu])')
 
@@ -440,6 +447,14 @@ def tool_arguments(raw):
             raise exc
 
 
+RETRY_BRIEF = (
+    'A previous attempt at this batch ran out of model calls and was rolled back, so the '
+    'product tree is back at the last state that verified and nothing that attempt wrote '
+    'survives. This attempt has ' + str(BATCH_RETRY_CALL_LIMIT) + ' calls. Spend them on the '
+    'batch itself: write every file the batch needs in one call, then verify once. Do not '
+    'read files you are about to rewrite, and do not re-explore the tree.')
+
+
 class BudgetExhausted(RuntimeError):
     """The schedule ended because there was nothing left to spend, not because it finished."""
 
@@ -452,6 +467,10 @@ class Agent:
         self.contract_text = state_contract.document(contract) if contract else None
         self.observed = set()
         self.incomplete = []
+        # Set by run_batch when it stops because the batch spent its own call cap, which
+        # is the one failure attempt_batch retries.
+        self.batch_call_limit_hit = False
+        self.last_batch_failure = None
         # Which batch wrote which checks/*.spec.cjs, so a later batch is answered with
         # what that check covers instead of its bytes, and cannot edit it.
         self.batch_index = 0
@@ -593,23 +612,78 @@ class Agent:
         failure is recorded and the batches after it still get their turn. Run 'keep i5'
         stopped at batch 7 of 15, and its ten unreached requirements were the single
         largest group of official failures.
+
+        A batch that ran out of its own calls gets one more attempt, from the restored
+        tree and carrying what its last check said. In run 5 at b3d2331 two batches hit
+        the cap and were rolled back, and three of the run's seven official failures were
+        requirements those two batches would have delivered.
         """
         try:
             self.run_batch(nodes)
+            return True
         except (RuntimeError, TimeoutError, ValueError) as exc:
-            record = {'requirements': [node['id'] for node in nodes], 'error': str(exc)[:400]}
-            self.incomplete.append(record)
-            self.trace.event('batch_incomplete', **record)
-            print('[volo] batch did not converge: ' + self.trace.redact(str(exc))[:200], flush=True)
-            if isinstance(exc, TimeoutError) or 'budget' in str(exc).lower():
+            if self.ends_the_schedule(exc):
+                self.record_incomplete(nodes, exc)
                 raise BudgetExhausted(str(exc)) from exc
-            # The next batch starts from a tree that verified, not from this one's debris.
+            retry = self.batch_call_limit_hit
+            brief = self.retry_brief() if retry else None
+            print('[volo] batch did not converge: ' + self.trace.redact(str(exc))[:200], flush=True)
+            # The next attempt starts from a tree that verified, not from this one's debris.
+            self.restore_quietly()
+            if not retry:
+                self.record_incomplete(nodes, exc)
+                return False
+            self.trace.event('batch_retry', requirements=[node['id'] for node in nodes],
+                             limit=BATCH_RETRY_CALL_LIMIT, carried_failure=bool(brief))
+            print('[volo] retrying the batch once within '
+                  + str(BATCH_RETRY_CALL_LIMIT) + ' calls', flush=True)
             try:
-                self.restore_verified_tree()
-            except (OSError, ValueError) as restore_error:
-                self.trace.event('restore_failed', error=str(restore_error)[:300])
-            return False
-        return True
+                self.run_batch(nodes, brief=brief or RETRY_BRIEF)
+                return True
+            except (RuntimeError, TimeoutError, ValueError) as second:
+                if self.ends_the_schedule(second):
+                    self.record_incomplete(nodes, second)
+                    raise BudgetExhausted(str(second)) from second
+                print('[volo] the retry did not converge either: '
+                      + self.trace.redact(str(second))[:200], flush=True)
+                self.restore_quietly()
+                self.record_incomplete(nodes, second)
+                return False
+
+    @staticmethod
+    def ends_the_schedule(exc):
+        """A budget that is gone stops the run; any other failure costs one batch."""
+        return isinstance(exc, TimeoutError) or 'budget' in str(exc).lower()
+
+    def record_incomplete(self, nodes, exc):
+        record = {'requirements': [node['id'] for node in nodes], 'error': str(exc)[:400]}
+        self.incomplete.append(record)
+        self.trace.event('batch_incomplete', **record)
+
+    def restore_quietly(self):
+        try:
+            self.restore_verified_tree()
+        except (OSError, ValueError) as restore_error:
+            self.trace.event('restore_failed', error=str(restore_error)[:300])
+
+    def retry_brief(self):
+        """What the first attempt was stuck on, in the second attempt's own request."""
+        failure = self.last_batch_failure if isinstance(self.last_batch_failure, dict) else {}
+        result = failure.get('result')
+        if not isinstance(result, dict):
+            return None
+        parts = []
+        if result.get('error'):
+            parts.append(str(result['error']))
+        for step in reversed(result.get('steps') or []):
+            output = str(step.get('output') or '')
+            if step.get('exit_code') and output:
+                parts.append(output)
+                break
+        detail = self.trace.redact('\n'.join(parts))[-1200:]
+        if not detail.strip():
+            return None
+        return RETRY_BRIEF + '\nThe last failing check output from that attempt:\n' + detail
 
     def restore_verified_tree(self):
         """Put the product tree back to the last verified snapshot, removing files added since.
@@ -1093,7 +1167,9 @@ class Agent:
         return [{"role": "system", "content": system},
                 {"role": "user", "content": self.trace.redact(request)}]
 
-    def run_batch(self, nodes):
+    def run_batch(self, nodes, brief=None):
+        self.batch_call_limit_hit = False
+        self.last_batch_failure = None
         self.workspace.clear_prepared_check_guards()
         self.inline_source = False
         self.source_snapshot_limit = 24000
@@ -1137,6 +1213,8 @@ class Agent:
             system = SYSTEM + CONTRACT_SYSTEM
         messages = [{"role": "system", "content": system},
                     {"role": "user", "content": request}]
+        if brief:
+            messages[1]["content"] += "\n" + brief
         no_action = 0
         consecutive_truncations = 0
         read_only_calls = 0
@@ -1150,9 +1228,12 @@ class Agent:
                 if self.verify_final_edit():
                     return
                 raise
-            if self.contract and self.model.usage.calls - batch_start_calls >= BATCH_CALL_LIMIT:
-                self.trace.event('batch_call_limit', limit=BATCH_CALL_LIMIT,
+            cap = BATCH_RETRY_CALL_LIMIT if brief else BATCH_CALL_LIMIT
+            if self.contract and self.model.usage.calls - batch_start_calls >= cap:
+                self.trace.event('batch_call_limit', limit=cap, retry=bool(brief),
                                  requirements=[node['id'] for node in nodes])
+                self.batch_call_limit_hit = True
+                self.last_batch_failure = last_failure
                 break
             model_messages, projection = project(messages, self.max_context_chars,
                 lambda: self.context_checkpoint(nodes, messages[0]["content"], last_failure))
@@ -1311,6 +1392,7 @@ class Agent:
                 messages[0]['content'] = SYSTEM + CONTRACT_SYSTEM if self.contract_text else SYSTEM
         if self.verify_final_edit():
             return
+        self.last_batch_failure = last_failure
         raise RuntimeError("Batch did not converge within the model call limit")
 
     def install_contract(self):

@@ -1,0 +1,28 @@
+<!-- Synthetic fixture, hand written for tests/test_state_contract.py. It is not a
+     generated application. It is the circularity REQ-2.8.2 died of, reduced: the row
+     reveals its actions on hover and each carries the row's title, so the only control
+     answering to "Opening balance" is one that exists only while the row is hovered.
+     The helpers resolve a row title through the same ladder they use for actions, take
+     the first button, and lose it to the next re-render. -->
+<style>
+  .row { padding: 6px; border: 1px solid #ccc; }
+  .row .actions { display: none; }
+  .row:hover .actions, .row:focus-within .actions { display: block; }
+</style>
+
+<ul>
+  <li class="row" tabindex="0">
+    <div class="title">Opening balance</div>
+    <div class="actions">
+      <button type="button" aria-label="Color for Opening balance">C</button>
+      <button type="button" aria-label="Archive for Opening balance">A</button>
+    </div>
+  </li>
+  <li class="row" tabindex="0">
+    <div class="title">Monthly rent</div>
+    <div class="actions">
+      <button type="button" aria-label="Color for Monthly rent">C</button>
+      <button type="button" aria-label="Archive for Monthly rent">A</button>
+    </div>
+  </li>
+</ul>

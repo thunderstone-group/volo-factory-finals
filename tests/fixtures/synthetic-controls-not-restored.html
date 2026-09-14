@@ -1,0 +1,30 @@
+<!-- Synthetic fixture, hand written for tests/test_state_contract.py. It is not a
+     generated application. One generated application hand-rolled inertness by hiding
+     every control whose name rivalled its dialog's, applied the hide after an await,
+     and restored it synchronously, so an open that was superseded in flight left the
+     page hidden with nothing open. Here the hide is simply remembered, which is the
+     part a reload can still see: the entry page comes back missing controls it had. -->
+<nav aria-label="Sidebar">
+  <button type="button" role="menuitem" id="notes">Notes</button>
+  <button type="button" role="menuitem" id="settings">Settings</button>
+</nav>
+
+<button type="button" id="open">Open settings</button>
+
+<script>
+  function applyHide() {
+    try {
+      if (localStorage.getItem('synthetic-hidden')) {
+        document.getElementById('notes').style.display = 'none';
+        document.getElementById('settings').style.display = 'none';
+      }
+    } catch (error) {
+      // A browser with no storage simply never reproduces the defect.
+    }
+  }
+  document.getElementById('open').addEventListener('click', function () {
+    try { localStorage.setItem('synthetic-hidden', '1'); } catch (error) {}
+    applyHide();
+  });
+  applyHide();
+</script>

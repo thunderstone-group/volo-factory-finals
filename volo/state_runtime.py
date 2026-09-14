@@ -202,6 +202,12 @@ const NAMED_ROLES = ['textbox', 'searchbox', 'combobox', 'spinbutton', 'checkbox
                      'meter', 'progressbar', 'slider'];
 const TEXT_ROLES = ['textbox', 'searchbox', 'spinbutton'];
 const CHOOSER_ROLES = ['dialog', 'listbox', 'menu', 'group'];
+// The bare patterns arc-bench's helpers hand to clickFirstAvailable for an action the
+// requirement attaches to one row or to the composer (helpers.ts:255-300).
+const ROW_VERBS = ['more', 'options', 'menu', 'labels', 'color', 'pin', 'archive', 'delete'];
+// The composer's own subset: the published helpers open a row menu, archive and delete
+// from a row, and only choose a colour, pin, and set labels while creating.
+const COMPOSER_VERBS = ROW_VERBS.filter(verb => verb !== 'archive' && verb !== 'delete');
 
 const CLICK_BUDGET = 60;      // distinct controls clicked from the entry page
 const HOVER_BUDGET = 12;      // seeded row titles hovered
@@ -331,6 +337,7 @@ function snapshotPage(config) {
   }
 
   const choosers = [];
+  const chooserElements = [];
   for (const element of document.querySelectorAll('*')) {
     const role = roleOf(element);
     if (!chooserRoles.includes(role) || !visible(element)) continue;
@@ -339,8 +346,33 @@ function snapshotPage(config) {
       if (node !== element && element.contains(node)) inside.push(index);
     });
     if (!inside.length) continue;
+    chooserElements.push(element);
     choosers.push({role, name: String(labelOf(element) || '').replace(/\s+/g, ' ').trim(),
                    modal: element.getAttribute('aria-modal') === 'true', inside});
+  }
+
+  // The container under the mouse, for the rule that an action the requirement attaches
+  // to a row must be reachable from that row. The deepest hovered element is usually the
+  // row's title text, which holds no controls, so walk out to the first ancestor that
+  // does and stop well short of the page's landmarks.
+  const chain = document.querySelectorAll(':hover');
+  let hoveredRoot = null;
+  if (chain.length) {
+    const bad = 'main, nav, header, aside, body, html, [role="main"], [role="navigation"]';
+    let candidate = chain[chain.length - 1];
+    while (candidate && !candidate.matches(bad)) {
+      if (elements.some(node => candidate !== node && candidate.contains(node))) {
+        hoveredRoot = candidate;
+        break;
+      }
+      candidate = candidate.parentElement;
+    }
+  }
+  const hovered = [];
+  if (hoveredRoot) {
+    elements.forEach((node, index) => {
+      if (hoveredRoot.contains(node)) hovered.push(index);
+    });
   }
 
   const groups = [];
@@ -351,7 +383,14 @@ function snapshotPage(config) {
     if (!root) return;
     let group = roots.get(root);
     if (!group) {
-      group = {inputs: [], buttons: []};
+      // A group that lies inside an open chooser, or that wraps one, is governed by the
+      // inertness rule instead: the question there is what leaks out of the chooser, not
+      // what the container fails to offer. One generated application renders its search
+      // filter dialog inside the banner, so the banner's search box and the dialog's own
+      // buttons would otherwise be read as one container.
+      group = {inputs: [], buttons: [],
+               spansChooser: chooserElements.some(chooser =>
+                 chooser.contains(root) || root.contains(chooser))};
       roots.set(root, group);
       elements.forEach((other, position) => {
         if (other !== root && root.contains(other)
@@ -364,7 +403,7 @@ function snapshotPage(config) {
     group.inputs.push(index);
   });
 
-  return {controls, choosers, groups, url: location.pathname + location.search};
+  return {controls, choosers, groups, hovered, url: location.pathname + location.search};
 }
 
 async function capture(page) {
@@ -388,7 +427,12 @@ async function settle(page, budget = 400) {
   }
 }
 
-async function reload(page) {
+async function reload(page, saved) {
+  // Put the rows back before reloading. The walk reaches a state by clicking the
+  // application's own controls, so one iteration's archive or delete would otherwise
+  // decide what the next iteration sees, and a control missing from a reloaded page
+  // would mean nothing.
+  if (saved) await restoreStore(process.env.FACTORY_BASE_URL, saved);
   await page.goto(process.env.FACTORY_BASE_URL);
   await settle(page);
 }
@@ -460,15 +504,20 @@ function auditInertness(state, before, after, findings) {
     const index = seen.get(key) || 0;
     seen.set(key, index + 1);
     if (index < (baseline.get(key) || 0)) continue;              // was already open
-    if (chooser.role === 'dialog' && chooser.modal) continue;    // the page behind it is inert
+    // aria-modal earns no exemption. Playwright's getByRole honours aria-hidden and
+    // inert and ignores aria-modal, so a page that is modal only by declaration is
+    // still fully addressable: measured with one generated Edit labels dialog open,
+    // getByRole('textbox') returned the in-dialog field and the banner's search box.
     const within = new Set(chooser.inside);
+    const label = chooser.role + ' "' + chooser.name + '"';
+    const outside = after.controls.filter((item, position) => !within.has(position));
+
     const inside = chooser.inside.map(position => after.controls[position].name).filter(Boolean);
-    const outside = after.controls.filter((item, position) => !within.has(position)
-      && ACTION_ROLES.includes(item.role) && item.name.length > 1);
+    const rivals = outside.filter(item => ACTION_ROLES.includes(item.role) && item.name.length > 1);
     const leaks = [];
     for (const name of inside) {
       const lowered = name.toLowerCase();
-      for (const other of outside) {
+      for (const other of rivals) {
         const rival = other.name.toLowerCase();
         if (lowered.includes(rival) || rival.includes(lowered)) {
           leaks.push({inside: name, outside: other.name});
@@ -476,10 +525,87 @@ function auditInertness(state, before, after, findings) {
       }
     }
     if (leaks.length) {
-      findings.leaky.add(chooser.role + '|' + chooser.name,
-                         {state, chooser: chooser.role + ' "' + chooser.name + '"',
-                          count: leaks.length, examples: leaks.slice(0, 4)});
+      findings.leaky.add(key, {state, chooser: label, count: leaks.length,
+                               examples: leaks.slice(0, 4)});
     }
+
+    // The evaluator's last resort for filling a field has no name at all: fillField
+    // ends at getByRole('textbox').first(). Any visible text input outside an open
+    // chooser is therefore a candidate for text meant for the chooser.
+    const exposed = outside
+      .filter(item => TEXT_ROLES.includes(item.role))
+      .map(item => item.name || item.role + ':' + item.tag);
+    if (exposed.length) {
+      findings.exposed.add(key, {state, chooser: label, inputs: [...new Set(exposed)].slice(0, 4)});
+    }
+  }
+}
+
+// RB. A row title must not be answered by a control that exists only while the row is
+// hovered. The published helpers reach a row by resolving its title through the same
+// role ladder they use for actions, and rung 1 is button: with the row hovered, a
+// button named "Color for <title>" beats the row's own title text at rung 10, and the
+// first re-render hides it again. Measured on one generated application: from an
+// unhovered page every action role returns 0 for the title, and while the row is
+// hovered `button` returns three, the first of which is the colour button.
+function auditTitles(title, resting, hovered, findings) {
+  const needle = title.toLowerCase();
+  const answering = snapshot => new Set(snapshot.controls
+    .filter(item => ACTION_ROLES.includes(item.role) && item.name.toLowerCase().includes(needle))
+    .map(item => item.name));
+  const atRest = answering(resting);
+  const appeared = [...answering(hovered)].filter(name => !atRest.has(name));
+  if (appeared.length) {
+    findings.titleControl.add(title, {title, revealed_by_hover: appeared.slice(0, 3),
+                                      answering_at_rest: [...atRest].slice(0, 3)});
+  }
+}
+
+// RC. Every action a requirement attaches to a row or to the composer has to be
+// reachable from inside it by the bare verb the helpers search for. A verb that
+// resolves only outside the container the test is working in is the defect: with no
+// more/options/menu control in the composer, the ladder left it for the page banner.
+function auditContainer(state, snapshot, inside, findings, verbs) {
+  const within = new Set(inside);
+  if (!within.size) return;
+  for (const verb of verbs) {
+    const matches = snapshot.controls
+      .map((item, position) => ({item, position}))
+      .filter(({item}) => ACTION_ROLES.includes(item.role)
+        && item.name.toLowerCase().includes(verb));
+    if (!matches.length) continue;
+    if (matches.some(({position}) => within.has(position))) continue;
+    // Every row shows the same defect, so key it by the verb and the kind of container
+    // and keep the first row as the example.
+    findings.strayVerb.add(verb + '|' + (state.startsWith('after hovering') ? 'row' : state),
+      {state, verb, resolves_to: [...new Set(matches.map(({item}) => item.name))].slice(0, 3)});
+  }
+}
+
+// RD. A control that hides its rivals owns a hide and a restore, and one generated
+// application applied the hide after an async fetch while restoring synchronously. A
+// freshly loaded entry page must carry every control the first load carried.
+function auditRecovery(target, baseline, fresh, findings) {
+  const counts = new Map();
+  for (const item of fresh.controls) {
+    if (!item.name) continue;
+    const key = item.role + '|' + item.name;
+    counts.set(key, (counts.get(key) || 0) + 1);
+  }
+  const missing = [];
+  for (const item of baseline.controls) {
+    if (!item.name) continue;
+    const key = item.role + '|' + item.name;
+    const left = counts.get(key) || 0;
+    if (!left) {
+      if (!missing.includes(item.name)) missing.push(item.name);
+      continue;
+    }
+    counts.set(key, left - 1);
+  }
+  if (missing.length) {
+    findings.lostControl.add(target.name, {after_clicking: target.name,
+                                           missing: missing.slice(0, 6)});
   }
 }
 
@@ -500,9 +626,9 @@ async function readValues(page, names) {
   }, names);
 }
 
-async function probeForm(page, probe, findings, writes) {
+async function probeForm(page, probe, findings, writes, saved) {
   for (const button of probe.buttons.slice(0, BUTTONS_PER_FORM)) {
-    await reload(page);
+    await reload(page, saved);
     if (probe.opener && !await act(page, probe.opener, 'click')) return;
     const markers = new Map();
     let ready = true;
@@ -559,8 +685,9 @@ async function restoreStore(base, saved) {
 test('every state one interaction away is nameable and unambiguous', async (page, assert) => {
   const base = process.env.FACTORY_BASE_URL;
   const started = Date.now();
-  const findings = {nameless: collector(6), ambiguous: collector(8),
-                    leaky: collector(6), volatile: collector(6)};
+  const findings = {nameless: collector(6), ambiguous: collector(8), leaky: collector(6),
+                    exposed: collector(4), titleControl: collector(4), strayVerb: collector(8),
+                    lostControl: collector(4), volatile: collector(6)};
   const writes = [];
   page.on('request', request => {
     const method = request.method().toUpperCase();
@@ -578,7 +705,7 @@ test('every state one interaction away is nameable and unambiguous', async (page
       const key = signature(snapshot, group);
       if (known.has(key) || !group.inputs.length || !group.buttons.length) continue;
       known.add(key);
-      probes.push({state, opener,
+      probes.push({state, opener, signature: key,
                    inputs: group.inputs.map(index => snapshot.controls[index]),
                    buttons: group.buttons.map(index => snapshot.controls[index])});
     }
@@ -604,10 +731,15 @@ test('every state one interaction away is nameable and unambiguous', async (page
       verbs.add(verb);
       targets.push(control);
     }
+    let clicked = null;
     for (const target of targets) {
       if (Date.now() - started > WALL_BUDGET) break;
-      await reload(page);
+      await reload(page, saved);
+      // The page the previous click left behind, reloaded from the seeded rows. Only a
+      // defect can keep a control off it, so this costs one snapshot and no navigation.
+      if (clicked && saved) auditRecovery(clicked, entry, await capture(page), findings);
       if (!await act(page, target, 'click')) continue;
+      clicked = target;
       const state = 'after clicking ' + JSON.stringify(target.name);
       const after = await capture(page);
       visited += 1;
@@ -615,13 +747,21 @@ test('every state one interaction away is nameable and unambiguous', async (page
       auditInertness(state, entry, after, findings);
       collect(state, target, after);
     }
+    if (clicked && saved) {
+      await reload(page, saved);
+      auditRecovery(clicked, entry, await capture(page), findings);
+    }
 
     // Hovering a row is the other permitted shape, and the one the published helpers
     // drive: hoverNamed(title) then clickFirstAvailable(/archive/i).
-    await reload(page);
+    await reload(page, saved);
+    await page.mouse.move(0, 0);
+    await settle(page, 200);
+    const resting = await capture(page);
+    const titles = (vocabulary.titles || []).slice(0, HOVER_BUDGET);
     let hovered = 0;
-    for (const title of vocabulary.titles || []) {
-      if (hovered >= HOVER_BUDGET || Date.now() - started > WALL_BUDGET) break;
+    for (const title of titles) {
+      if (Date.now() - started > WALL_BUDGET) break;
       const locator = page.getByText(title, {exact: false}).first();
       try {
         if (!await locator.count()) continue;
@@ -631,14 +771,26 @@ test('every state one interaction away is nameable and unambiguous', async (page
       }
       await settle(page, 300);
       hovered += 1;
+      const state = 'after hovering ' + JSON.stringify(title);
       const after = await capture(page);
       visited += 1;
-      auditNames('after hovering ' + JSON.stringify(title), after, findings);
+      auditNames(state, after, findings);
+      auditContainer(state, after, after.hovered, findings, ROW_VERBS);
+      auditTitles(title, resting, after, findings);
     }
 
     for (const probe of probes) {
       if (Date.now() - started > WALL_BUDGET) break;
-      await probeForm(page, probe, findings, writes);
+      await reload(page, saved);
+      if (!probe.opener || await act(page, probe.opener, 'click')) {
+        const opened = await capture(page);
+        const group = opened.groups.find(item => signature(opened, item) === probe.signature);
+        if (group && !group.spansChooser) {
+          auditContainer(probe.state, opened, [...group.inputs, ...group.buttons], findings,
+                         COMPOSER_VERBS);
+        }
+      }
+      await probeForm(page, probe, findings, writes, saved);
     }
   } finally {
     await restoreStore(base, saved);
@@ -677,10 +829,44 @@ test('every state one interaction away is nameable and unambiguous', async (page
 
   assert.deepEqual(findings.leaky.items, [],
     'A chooser opened over the page, and a control outside it still answers to a name a control '
-    + 'inside it carries, so the evaluator clicks the page behind the chooser. Make the rest of '
-    + 'the page inert while a chooser is open: either give the chooser role="dialog" with '
-    + 'aria-modal="true", or hide every control outside it that shares a name substring with one '
-    + 'inside it. Leaked: ' + JSON.stringify(findings.leaky.items));
+    + 'inside it carries, so the evaluator clicks the page behind the chooser. While a chooser is '
+    + 'open, put the inert attribute or aria-hidden="true" on everything outside it and take them '
+    + 'off again when it closes. aria-modal is not enough: the evaluator resolves controls with '
+    + 'getByRole, which honours inert and aria-hidden and ignores aria-modal. Leaked: '
+    + JSON.stringify(findings.leaky.items));
+
+  assert.deepEqual(findings.exposed.items, [],
+    'A chooser is open and a text input outside it is still visible. The evaluator fills a field '
+    + 'by name and, when no name matches, falls back to the first textbox on the page, so text '
+    + 'meant for the chooser lands in that input instead. Put the inert attribute or '
+    + 'aria-hidden="true" on everything outside the chooser while it is open. Exposed: '
+    + JSON.stringify(findings.exposed.items));
+
+  assert.deepEqual(findings.titleControl.items, [],
+    'A row title is answered by a control that exists only while the row is hovered. The '
+    + 'evaluator reaches a row by resolving its title through the same role ladder it uses for '
+    + 'actions, and that ladder tries button, link, menuitem, tab, checkbox and heading before '
+    + 'plain text, so with the row hovered it resolves the title to the hover-revealed action '
+    + 'button and not to the title itself. The next re-render hides that button and the row can '
+    + 'never be found again. When a row reveals its actions on hover, name them by their verb '
+    + 'alone: only one row shows its actions at a time, so the verb is already unambiguous, and '
+    + 'the row title then belongs to the row text and to nothing else. Titles answered by a '
+    + 'hover-only control: ' + JSON.stringify(findings.titleControl.items));
+
+  assert.deepEqual(findings.strayVerb.items, [],
+    'An action verb resolves only outside the row or composer the evaluator is working in. It '
+    + 'hovers a row, or opens the composer, and then clicks the first control matching a bare verb '
+    + 'such as "more", "labels" or "color"; with no such control inside, it lands on a page banner '
+    + 'or a sidebar item and acts on something else entirely. Every action a requirement attaches '
+    + 'to a row or to the composer must be reachable inside it by that verb. Resolved outside: '
+    + JSON.stringify(findings.strayVerb.items));
+
+  assert.deepEqual(findings.lostControl.items, [],
+    'A freshly loaded entry page is missing controls it carried before, so a click left the '
+    + 'application in a state a reload does not recover from. Whatever hides controls, for a '
+    + 'dialog or a menu, must restore them synchronously and must not apply the hide after an '
+    + 'await: an open that is superseded while its request is in flight otherwise leaves the page '
+    + 'hidden with nothing open. Missing: ' + JSON.stringify(findings.lostControl.items));
 
   assert.deepEqual(findings.volatile.items, [],
     'Text typed into a form was lost when another control in the same form was clicked. A '
@@ -759,9 +945,9 @@ def install(workspace, contract, observations=None):
         ignore.write_text(existing.rstrip() + "\n" + DATA_DIRECTORY + "/\n")
 
 
-INTERFACE_RULES = """Four rules the harness checks mechanically, on the entry page and in every
-state one click or one hover away from it, because the 2026-09-14 Keep rehearsal lost six of its
-eight attributable failures to the first rule alone, on a page that had no duplicate names at all:
+INTERFACE_RULES = """Six rules the harness checks mechanically, on the entry page and in every
+state one click or one hover away from it. Each one is a failure two generated applications
+actually lost specs to, so none of them is a style preference:
 
 1. At most one control carrying a given action verb is visible at any moment. The evaluator
    resolves an action by the verb alone, "archive", "pin", "more", "color", matches it as a
@@ -770,34 +956,50 @@ eight attributable failures to the first rule alone, on a page that had no dupli
    acted on is decided by DOM position and not by the name. Render a row's actions only while that
    row is hovered or focused, and hide them with display:none or visibility:hidden. opacity:0, a
    transparent overlay and off-screen positioning all stay in the accessibility tree and still
-   match. Keep the row's own title in the name ("Archive for Delete me 2.3.1"): the title is what
-   makes the acted-on row assertable, and the hiding is what makes the verb unambiguous. Both.
-2. Every input, select, textarea, colour swatch, dialog field, toggle and meter carries an
+   match.
+2. A row's own title is answered by the row's text and by nothing else. The evaluator reaches a
+   row by resolving its title through the same ladder it uses for actions, and that ladder tries
+   button, link, menuitem, tab, checkbox and heading before plain text. So when a row's actions
+   are revealed on hover, name them by the verb alone, "Archive", not "Archive for <title>":
+   only one row shows its actions at a time, so the verb is already unambiguous, and a
+   hover-revealed button carrying the title is circular, since the row would have to be hovered
+   already for its own title to be found. Put the title in an action name only where the actions
+   are always visible, and then rule 1 applies to them.
+3. Every input, select, textarea, colour swatch, dialog field, toggle and meter carries an
    accessible name, through aria-label, <label for> or placeholder, using the requirement's own
    wording. A control with no name cannot be reached at all: a note body with no label matching
    the requirement's word for it sends the test's typing into the search box instead.
-3. While a chooser is open, meaning a dialog, menu, listbox or role="group" picker the application
-   opens over the page, nothing outside it may answer to a name something inside it carries. Give
-   the chooser role="dialog" with aria-modal="true", or hide every control outside it whose name
-   shares a substring with one inside it. In the last run a label picker offered a checkbox named
-   "Work for Sprint goals" while the sidebar still offered a menuitem named "Work"; the evaluator
-   reaches menuitem before checkbox, and navigated away instead of ticking the box.
-4. Text already typed into a form survives a click on another control in the same form. When a
-   state change re-renders the form, carry the current values into the new markup, through the
-   value attribute, the textarea body, or by not rebuilding the fields at all. In the last run the
-   composer's pin toggle re-rendered the title input with no value, and the note saved empty.
+4. While a chooser is open, meaning a dialog, menu, listbox or role="group" picker the application
+   opens over the page, put the inert attribute or aria-hidden="true" on everything outside it,
+   and take them off when it closes. aria-modal is not enough on its own: the evaluator resolves
+   controls with getByRole, which honours inert and aria-hidden and ignores aria-modal. Two things
+   go wrong without it. A sidebar item named "Work" is reached before the picker's own checkbox
+   "Work for Sprint goals", because menuitem is two rungs above checkbox. And a visible text input
+   outside the chooser takes the text meant for the chooser, because the evaluator's last resort
+   for filling a field is the first textbox on the page, with no name at all.
+5. Every action a requirement attaches to a row or to the composer is reachable inside that row or
+   composer by the bare verb the evaluator uses: more, options, menu, labels, color, pin, archive,
+   delete. The evaluator hovers the row, or opens the composer, and then clicks the first control
+   matching the verb wherever it is on the page. A composer with no more, options or menu control
+   sends it to the page banner's own "Menu" button, and a row with no labels control sends it to
+   the sidebar's "Edit Labels", which is how one run assigned a label to nothing at all.
+6. Text already typed into a form survives a click on another control in the same form, and
+   whatever hides controls restores them synchronously. When a state change re-renders the form,
+   carry the current values into the new markup, through the value attribute, the textarea body,
+   or by not rebuilding the fields at all. Never apply a hide after an await: an open that is
+   superseded while its request is in flight then leaves the page hidden with nothing open, and a
+   freshly loaded page must always carry every control it carried before.
 
-And one rule about the checks you write, which the harness cannot enforce for you:
+And two rules about the checks you write, which the harness cannot enforce for you:
 
-5. A self-check for an action on a named row asserts on that row afterwards: it is in the
+7. A self-check for an action on a named row asserts on that row afterwards: it is in the
    destination list, or it carries the attribute the requirement names. Never assert only that a
-   toast, snackbar or notification appeared. Four of the last run's specs passed against a toast
-   while the action had gone to the wrong row.
-6. A self-check reaches a row's action the way the evaluator does: hover the row's title text
+   toast, snackbar or notification appeared. Four of one run's specs passed against a toast while
+   the action had gone to the wrong row.
+8. A self-check reaches a row's action the way the evaluator does: hover the row's title text
    first (page.getByText(title).first().hover()), then locate the action by its verb. Rule 1 hides
-   the action until then, so a check that waits for "Archive for <title>" without hovering times
-   out against a correct page. One batch of the last run spent its whole call budget on exactly
-   that."""
+   the action until then, so a check that waits for an action name without hovering times out
+   against a correct page. One batch of run 5 spent its whole call budget on exactly that."""
 
 
 STORE_CONTRACT = """The harness has already written three backend files. Do not rewrite them:
@@ -884,9 +1086,11 @@ HARNESS_SUMMARY = {
     "frontend/package.json": 'Harness-owned. {"scripts":{"build":"node build.cjs"}}',
     "backend/package.json": 'Harness-owned. {"scripts":{"start":"node server.cjs"}}',
     INTERFACE_CHECK_PATH: "Harness-owned. Walks every state one click or one hover from the "
-                          "entry page and asserts the four interface rules in your instructions: "
-                          "one visible control per action verb, a name on every field, an inert "
-                          "page behind an open chooser, and typing that survives a re-render. "
+                          "entry page and asserts the six interface rules in your instructions: "
+                          "one visible control per action verb, a row title answered only by the "
+                          "row's text, a name on every field, an inert page behind an open "
+                          "chooser, every row and composer action reachable inside it, and a "
+                          "form that keeps its text and restores what it hides. "
                           "Do not edit it; satisfy it.",
     "checks/vocabulary.cjs": "Harness-owned data: the words the requirements use.",
     "checks/browser.cjs": "Harness-owned helper. Exports test(name, async (page, assert) => {}). "

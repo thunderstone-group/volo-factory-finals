@@ -1082,6 +1082,7 @@ class InterfaceCheckTests(TempCase):
         output = self.failure(self.run_check())
         self.assertIn('Leaked', output)
         self.assertIn('Utilities for Opening balance', output)
+        self.assertIn('inert', output)
 
     def test_the_synthetic_hover_fixture_passes_every_rule(self):
         # Hover-revealed row actions, a modal chooser, and a re-render that keeps what
@@ -1089,6 +1090,41 @@ class InterfaceCheckTests(TempCase):
         self.build_fixture('synthetic-hover-rows.html')
         result = self.run_check()
         self.assertTrue(result['passed'], str((result['steps'] or [{}])[-1].get('output', '')))
+
+    def test_a_dialog_that_is_modal_only_by_declaration_fails(self):
+        # aria-modal buys nothing from the resolver: with one generated application's
+        # Edit labels dialog open, getByRole('textbox') returned the dialog's own field
+        # and the banner's search box, and the fallback fills the first of them.
+        self.build_fixture('synthetic-modal-not-inert.html')
+        output = self.failure(self.run_check())
+        self.assertIn('a text input outside it is still visible', output)
+        self.assertIn('Search', output)
+        self.assertIn('aria-hidden', output)
+
+    def test_a_row_title_answered_only_by_a_hover_only_control_fails(self):
+        # REQ-2.8.2 reduced: the row reveals its actions on hover and each carries the
+        # title, so the only control answering to the row is one that disappears with
+        # the next re-render.
+        self.build_fixture('synthetic-hover-only-title.html')
+        output = self.failure(self.run_check())
+        self.assertIn('answered by a control that exists only while the row is hovered', output)
+        self.assertIn('Color for Opening balance', output)
+
+    def test_a_verb_that_resolves_outside_the_hovered_row_fails(self):
+        # REQ-2.7.4 reduced: the row has no labels control, so the helper leaves the row
+        # and clicks the sidebar's own item instead.
+        self.build_fixture('synthetic-verb-outside-row.html')
+        output = self.failure(self.run_check())
+        self.assertIn('resolves only outside the row or composer', output)
+        self.assertIn('"verb":"labels"', output.replace(' ', ''))
+        self.assertIn('Edit Labels', output)
+
+    def test_controls_a_click_removed_that_a_reload_does_not_bring_back_fail(self):
+        self.build_fixture('synthetic-controls-not-restored.html')
+        output = self.failure(self.run_check())
+        self.assertIn('missing controls it carried before', output)
+        self.assertIn('Settings', output)
+        self.assertIn('Open settings', output)
 
     def test_typing_lost_to_an_in_form_click_fails(self):
         # REQ-2.8.3, reduced: the composer re-renders on a pin toggle and emits the
@@ -1194,15 +1230,33 @@ module.exports=async(req,res)=>{
     def test_the_rules_are_stated_to_the_model(self):
         rules = state_runtime.STORE_CONTRACT
         self.assertIn('At most one control carrying a given action verb', rules)
-        self.assertIn('Archive for Delete me 2.3.1', rules)
+        self.assertIn('"Archive for <title>"', rules)
         self.assertIn('display:none or visibility:hidden', rules)
         self.assertIn('opacity:0', rules)
         self.assertIn('aria-label', rules)
 
     def test_the_inertness_rule_is_stated_to_the_model(self):
         rules = state_runtime.STORE_CONTRACT
-        self.assertIn('aria-modal="true"', rules)
-        self.assertIn('while a chooser is open', rules.lower())
+        self.assertIn('While a chooser is open', rules)
+        self.assertIn('put the inert attribute or aria-hidden="true" on everything outside it', rules)
+        # aria-modal was the exemption the check used to grant, and the resolver ignores it.
+        self.assertIn('aria-modal is not enough', rules)
+        self.assertIn('the first textbox on the page', rules)
+
+    def test_the_row_title_rule_is_stated_to_the_model(self):
+        rules = state_runtime.STORE_CONTRACT
+        self.assertIn("A row's own title is answered by the row's text and by nothing else", rules)
+        self.assertIn('name them by the verb alone', rules)
+
+    def test_the_container_rule_is_stated_to_the_model(self):
+        rules = state_runtime.STORE_CONTRACT
+        self.assertIn('reachable inside that row or\n   composer by the bare verb', rules)
+        self.assertIn('more, options, menu, labels, color, pin, archive,\n   delete', rules)
+
+    def test_the_restore_rule_is_stated_to_the_model(self):
+        rules = state_runtime.STORE_CONTRACT
+        self.assertIn('whatever hides controls restores them synchronously', rules)
+        self.assertIn('Never apply a hide after an await', rules)
 
     def test_the_form_durability_rule_is_stated_to_the_model(self):
         self.assertIn('survives a click on another control in the same form',
@@ -1263,6 +1317,74 @@ class ScheduleCompletionTests(TempCase):
         # Its requirements are not claimed as completed, but everything else is.
         self.assertNotIn('REQ-2.1', agent.completed)
         self.assertIn('REQ-3.1', agent.completed)
+
+    def retrying_agent(self, attempts):
+        """A fake run_batch that consults `attempts` for each call, in order."""
+        agent = self.agent()
+        self.calls = []
+
+        def run_batch(nodes, brief=None):
+            ids = [node['id'] for node in nodes]
+            self.calls.append({'requirements': ids, 'brief': brief})
+            outcome = attempts.get(tuple(ids), [])
+            index = len([call for call in self.calls if call['requirements'] == ids]) - 1
+            if index < len(outcome) and outcome[index] == 'call_limit':
+                agent.batch_call_limit_hit = True
+                agent.last_batch_failure = {'tool': 'finish', 'result': {
+                    'passed': False, 'error': 'Checks failed',
+                    'steps': [{'exit_code': 1, 'output': 'synthetic: assertion x failed'}]}}
+                raise RuntimeError('Batch did not converge within the model call limit')
+            agent.batch_call_limit_hit = False
+            agent.check_command = ['node', '--test', 'checks/batch.spec.cjs']
+            self.workspace.last_verification = {
+                'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+                'check_command': agent.check_command, 'verification_scope': 'local_checks_only',
+                'acceptance': {}}
+
+        agent.run_batch = run_batch
+        return agent
+
+    def test_a_batch_that_spent_its_calls_is_tried_once_more_with_what_it_was_stuck_on(self):
+        # Run 5 at b3d2331 lost three official specs to two batches that hit the cap and
+        # were rolled back, leaving nothing at all behind.
+        first = tuple(self.scheduled(self.agent())[0])
+        agent = self.retrying_agent({first: ['call_limit']})
+        agent.run_schedule()
+        attempts = [call for call in self.calls if tuple(call['requirements']) == first]
+        self.assertEqual(len(attempts), 2)
+        self.assertIsNone(attempts[0]['brief'])
+        self.assertIn('ran out of model calls', attempts[1]['brief'])
+        self.assertIn('synthetic: assertion x failed', attempts[1]['brief'])
+        self.assertIn('12 calls', attempts[1]['brief'])
+        self.assertEqual(agent.incomplete, [])
+        for requirement in first:
+            self.assertIn(requirement, agent.completed)
+        events = [json.loads(line) for line
+                  in (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+        events = [event for event in events if event['event'] == 'batch_retry']
+        self.assertEqual([event['requirements'] for event in events], [list(first)])
+        self.assertTrue(events[0]['carried_failure'])
+
+    def test_a_batch_that_spends_its_calls_twice_is_recorded_incomplete(self):
+        first = tuple(self.scheduled(self.agent())[0])
+        agent = self.retrying_agent({first: ['call_limit', 'call_limit']})
+        agent.run_schedule()
+        attempts = [call for call in self.calls if tuple(call['requirements']) == first]
+        self.assertEqual(len(attempts), 2)
+        self.assertEqual([record['requirements'] for record in agent.incomplete], [list(first)])
+        for requirement in first:
+            self.assertNotIn(requirement, agent.completed)
+        # The batches after it still get their turn, exactly as before.
+        self.assertIn('REQ-3.1', agent.completed)
+
+    def test_a_batch_that_failed_for_another_reason_is_not_retried(self):
+        # Only the call cap earns a second attempt: any other failure would spend a
+        # second batch's worth of calls on the same wall it just hit.
+        agent = self.agent(failing={'REQ-2.1'})
+        agent.run_schedule()
+        attempted = [ids for ids in self.attempted if 'REQ-2.1' in ids]
+        self.assertEqual(len(attempted), 1)
+        self.assertEqual([record['requirements'] for record in agent.incomplete], attempted)
 
     def test_each_batch_owns_the_checks_it_left_and_locks_the_earlier_ones(self):
         # The batch loop is where a check file gets its owner: written during batch N,
