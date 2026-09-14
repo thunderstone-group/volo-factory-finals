@@ -522,13 +522,24 @@ each rule snapshot and experiment with date and source.
   `authority: diagnostic_only`; the requirement assertions decide, independent acceptance decides
   whenever configured, and operator-supplied required checks keep their authority. Nothing about
   independent acceptance is weakened.
+- Adopted the team lead's classification-independent per-run metric, tokens spent after the last
+  call that produced a verification without producing another. It reproduces their figure for run
+  `8abb7f040604` exactly: last verification at call 8, seven calls after it, 250,609 tokens, 52% of
+  the run. Across the sixteen retained runs only four have any tail at all, and E056's is 402,906
+  tokens, 88% of that run, larger than any single category total in it. The corrected read-only
+  subtotal for `8abb7f040604` is 204,820 over calls 6, 9, 10, 11, 13 and 14; the withdrawn 215,001
+  is not used anywhere in this branch. That run's logout self-check was a genuine product race, not
+  a check defect, and the autopsy says so.
 - Local measurement, gateway only, no official run started and none queued or running: five
   generations on `main` and five on the branch, each replayed by `harness_lab.local_gate` at three
   repetitions. Harness-defect calls fell from 15 to 4 and their cost from CNY 0.7971 to 0.2228.
-  Read-only diagnosis fell from 11 calls to 1, non-applying edits from 3 to 1. Mean cost fell from
-  CNY 0.8516 to 0.6975 and mean calls from 8.4 to 5.2; four of five runs completed on each side.
-  The spread did not narrow: the most expensive run in the measurement is `after 3` at CNY 1.6179,
-  which ended on a gateway transport failure, not on budget.
+  Read-only diagnosis fell from 11 calls to 1, non-applying edits from 3 to 1. On the robust metric
+  the unverified tail fell from 103,587 tokens and CNY 0.1099 to zero: every run on the branch ends
+  on a call that produced a verification. Mean cost fell from CNY 0.8516 to 0.6975 and mean calls
+  from 8.4 to 5.2; four of five runs completed on each side. The spread did not narrow: the most
+  expensive run in the measurement is `after 3` at CNY 1.6179, which ended on a gateway transport
+  failure, not on budget, and whose zero tail is real rather than favourable because that failing
+  call consumed no tokens.
 - Both new mechanisms fired on a real model. `after 3` records `diagnosis_stall_sources` and
   `diagnosis_stall_repair` and then made three product edits instead of more reads; `after 5`
   received the new anchor message and delivered on its very next call. The check-authority change

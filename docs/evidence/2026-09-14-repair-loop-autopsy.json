@@ -19,7 +19,8 @@
    "observation": "the separate reference-image call",
    "no_tool_call": "the gateway returned no executable tool call"
   },
-  "budget_note": "No call is labelled \"budget\". Budget exhaustion terminates a run between calls, so it is a run outcome, not a call category; the runs that ended that way are named in terminal_outcomes."
+  "budget_note": "No call is labelled \"budget\". Budget exhaustion terminates a run between calls, so it is a run outcome, not a call category; the runs that ended that way are named in terminal_outcomes.",
+  "unverified_tail": "Per run: tokens spent after the last call that produced a verification, without producing another. It depends only on which calls ran a real build/start/check cycle, not on how any read or write is classified, so it is the target the diagnosis-stall bound is measured against."
  },
  "terminal_outcomes": {
   "official 8abb7f040604 image-qwen": "budget exhausted one call after a plausible fix, FAILED",
@@ -127,6 +128,13 @@
    "cny": 0.629725,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 3,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "observation": 1,
     "product_assertion": 1,
@@ -141,6 +149,13 @@
    "cny": 0.779834,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 6,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "product_assertion": 4,
     "wrote_no_verification": 1,
@@ -155,6 +170,13 @@
    "cny": 1.072651,
    "harness_defect_calls": 9,
    "harness_defect_cny": 0.478583,
+   "unverified_tail": {
+    "last_verification_call": 8,
+    "calls_after": 7,
+    "tokens_after": 250609,
+    "cny_after": 0.507245,
+    "share_of_run_tokens": 0.5244
+   },
    "categories": {
     "observation": 1,
     "product_assertion": 2,
@@ -173,6 +195,13 @@
    "cny": 0.870779,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 4,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "observation": 1,
     "product_assertion": 2,
@@ -187,6 +216,13 @@
    "cny": 0.899558,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 5,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "observation": 1,
     "product_assertion": 3,
@@ -201,6 +237,13 @@
    "cny": 1.53658,
    "harness_defect_calls": 12,
    "harness_defect_cny": 1.203512,
+   "unverified_tail": {
+    "last_verification_call": 11,
+    "calls_after": 3,
+    "tokens_after": 106738,
+    "cny_after": 0.147109,
+    "share_of_run_tokens": 0.2297
+   },
    "categories": {
     "observation": 1,
     "check_defect": 6,
@@ -217,6 +260,13 @@
    "cny": 1.668221,
    "harness_defect_calls": 2,
    "harness_defect_cny": 0.234396,
+   "unverified_tail": {
+    "last_verification_call": 13,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "observation": 1,
     "product_assertion": 4,
@@ -234,6 +284,13 @@
    "cny": 0.267541,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 1,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "delivered": 1
    }
@@ -246,6 +303,13 @@
    "cny": 0.755362,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 4,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "product_assertion": 2,
     "harness_guard": 1,
@@ -260,6 +324,13 @@
    "cny": 0.760666,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 4,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "observation": 1,
     "product_assertion": 2,
@@ -274,6 +345,13 @@
    "cny": 1.344183,
    "harness_defect_calls": 5,
    "harness_defect_cny": 0.227017,
+   "unverified_tail": {
+    "last_verification_call": 15,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "observation": 1,
     "product_assertion": 7,
@@ -291,6 +369,13 @@
    "cny": 1.413183,
    "harness_defect_calls": 1,
    "harness_defect_cny": 0.030577,
+   "unverified_tail": {
+    "last_verification_call": 17,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "observation": 1,
     "product_assertion": 3,
@@ -307,6 +392,13 @@
    "cny": 0.27338,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": null,
+    "calls_after": 2,
+    "tokens_after": 8613,
+    "cny_after": 0.27338,
+    "share_of_run_tokens": 1.0
+   },
    "categories": {
     "observation": 1,
     "no_tool_call": 1
@@ -320,6 +412,13 @@
    "cny": 0.556664,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 2,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "observation": 1,
     "delivered": 1
@@ -333,6 +432,13 @@
    "cny": 1.24442,
    "harness_defect_calls": 14,
    "harness_defect_cny": 0.569226,
+   "unverified_tail": {
+    "last_verification_call": 2,
+    "calls_after": 15,
+    "tokens_after": 402906,
+    "cny_after": 0.627582,
+    "share_of_run_tokens": 0.8793
+   },
    "categories": {
     "observation": 1,
     "product_assertion": 1,
@@ -349,6 +455,13 @@
    "cny": 0.580838,
    "harness_defect_calls": 0,
    "harness_defect_cny": 0,
+   "unverified_tail": {
+    "last_verification_call": 2,
+    "calls_after": 0,
+    "tokens_after": 0,
+    "cny_after": 0,
+    "share_of_run_tokens": 0.0
+   },
    "categories": {
     "observation": 1,
     "delivered": 1
@@ -444,6 +557,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.28418
   },
   {
@@ -464,6 +578,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.248728
   },
   {
@@ -484,6 +599,7 @@
    "edit_applied": true,
    "category": "delivered",
    "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
    "cny": 0.096817
   },
   {
@@ -504,6 +620,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.231242
   },
   {
@@ -524,6 +641,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.150331
   },
   {
@@ -544,6 +662,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.205511
   },
   {
@@ -564,6 +683,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.085637
   },
   {
@@ -584,6 +704,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.065324
   },
   {
@@ -604,6 +725,7 @@
    "edit_applied": null,
    "category": "delivered",
    "detail": "finish verified the application",
+   "produced_verification": true,
    "cny": 0.041789
   },
   {
@@ -622,6 +744,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.037054
   },
   {
@@ -642,6 +765,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.328097
   },
   {
@@ -662,6 +786,7 @@
    "edit_applied": false,
    "category": "edit_not_applied",
    "detail": "Exact old text must occur exactly once: backend/api.cjs",
+   "produced_verification": false,
    "cny": 0.080242
   },
   {
@@ -682,6 +807,7 @@
    "edit_applied": false,
    "category": "edit_not_applied",
    "detail": "'path'",
+   "produced_verification": false,
    "cny": 0.014867
   },
   {
@@ -702,6 +828,7 @@
    "edit_applied": false,
    "category": "edit_not_applied",
    "detail": "Exact old text must occur exactly once: backend/api.cjs",
+   "produced_verification": false,
    "cny": 0.009133
   },
   {
@@ -722,6 +849,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.079379
   },
   {
@@ -742,6 +870,7 @@
    "edit_applied": false,
    "category": "edit_not_applied",
    "detail": "'path'",
+   "produced_verification": false,
    "cny": 0.008281
   },
   {
@@ -762,6 +891,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.008353
   },
   {
@@ -782,6 +912,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.126254
   },
   {
@@ -802,6 +933,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.017569
   },
   {
@@ -822,6 +954,7 @@
    "edit_applied": null,
    "category": "harness_error",
    "detail": "Harness, credentials and evaluator inputs are protected",
+   "produced_verification": false,
    "cny": 0.084928
   },
   {
@@ -842,6 +975,7 @@
    "edit_applied": null,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.069173
   },
   {
@@ -862,6 +996,7 @@
    "edit_applied": null,
    "category": "ran_check_only",
    "detail": "ran a check outside verification",
+   "produced_verification": false,
    "cny": 0.079301
   },
   {
@@ -882,6 +1017,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.05793
   },
   {
@@ -902,6 +1038,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.07209
   },
   {
@@ -920,6 +1057,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.26664
   },
   {
@@ -940,6 +1078,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.2021
   },
   {
@@ -960,6 +1099,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.214447
   },
   {
@@ -980,6 +1120,7 @@
    "edit_applied": true,
    "category": "delivered",
    "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
    "cny": 0.187592
   },
   {
@@ -998,6 +1139,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.26188
   },
   {
@@ -1018,6 +1160,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.336215
   },
   {
@@ -1038,6 +1181,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.114346
   },
   {
@@ -1058,6 +1202,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.087671
   },
   {
@@ -1078,6 +1223,7 @@
    "edit_applied": true,
    "category": "delivered",
    "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
    "cny": 0.099446
   },
   {
@@ -1096,6 +1242,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.26488
   },
   {
@@ -1116,6 +1263,7 @@
    "edit_applied": null,
    "category": "check_defect",
    "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
    "cny": 0.299796
   },
   {
@@ -1136,6 +1284,7 @@
    "edit_applied": true,
    "category": "check_defect",
    "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
    "cny": 0.157875
   },
   {
@@ -1156,6 +1305,7 @@
    "edit_applied": true,
    "category": "check_defect",
    "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
    "cny": 0.146029
   },
   {
@@ -1176,6 +1326,7 @@
    "edit_applied": true,
    "category": "check_defect",
    "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
    "cny": 0.149222
   },
   {
@@ -1196,6 +1347,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.09882
   },
   {
@@ -1216,6 +1368,7 @@
    "edit_applied": null,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.068188
   },
   {
@@ -1236,6 +1389,7 @@
    "edit_applied": null,
    "category": "check_defect",
    "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
    "cny": 0.08474
   },
   {
@@ -1256,6 +1410,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.046725
   },
   {
@@ -1276,6 +1431,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.032095
   },
   {
@@ -1296,6 +1452,7 @@
    "edit_applied": null,
    "category": "check_defect",
    "detail": "check output shows harness/API misuse inside the run's own check",
+   "produced_verification": true,
    "cny": 0.041101
   },
   {
@@ -1316,6 +1473,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.044223
   },
   {
@@ -1336,6 +1494,7 @@
    "edit_applied": null,
    "category": "harness_error",
    "detail": "Harness, credentials and evaluator inputs are protected",
+   "produced_verification": false,
    "cny": 0.060448
   },
   {
@@ -1356,6 +1515,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.042438
   },
   {
@@ -1374,6 +1534,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.26358
   },
   {
@@ -1394,6 +1555,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.330228
   },
   {
@@ -1414,6 +1576,7 @@
    "edit_applied": false,
    "category": "edit_not_applied",
    "detail": "Exact old text must occur exactly once: frontend/public/index.html",
+   "produced_verification": false,
    "cny": 0.09121
   },
   {
@@ -1434,6 +1597,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.013255
   },
   {
@@ -1454,6 +1618,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.347753
   },
   {
@@ -1474,6 +1639,7 @@
    "edit_applied": null,
    "category": "harness_error",
    "detail": "Source read exceeds 12000 bytes. Use read_file_chunk with character offsets. Requested file sizes: {\"frontend/public/index.html\": 11626, \"checks/requirements.cj",
+   "produced_verification": false,
    "cny": 0.143186
   },
   {
@@ -1494,6 +1660,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.035793
   },
   {
@@ -1514,6 +1681,7 @@
    "edit_applied": null,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.09737
   },
   {
@@ -1534,6 +1702,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.069746
   },
   {
@@ -1554,6 +1723,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.050838
   },
   {
@@ -1574,6 +1744,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.077775
   },
   {
@@ -1594,6 +1765,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.073625
   },
   {
@@ -1614,6 +1786,7 @@
    "edit_applied": null,
    "category": "delivered",
    "detail": "finish verified the application",
+   "produced_verification": true,
    "cny": 0.073862
   },
   {
@@ -1634,6 +1807,7 @@
    "edit_applied": null,
    "category": "delivered",
    "detail": "build_app verified the application",
+   "produced_verification": true,
    "cny": 0.267541
   },
   {
@@ -1654,6 +1828,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.286511
   },
   {
@@ -1674,6 +1849,7 @@
    "edit_applied": false,
    "category": "harness_guard",
    "detail": "self-navigation guard rejected the product source",
+   "produced_verification": true,
    "cny": 0.258352
   },
   {
@@ -1694,6 +1870,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.038026
   },
   {
@@ -1714,6 +1891,7 @@
    "edit_applied": true,
    "category": "delivered",
    "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
    "cny": 0.172473
   },
   {
@@ -1732,6 +1910,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.03102
   },
   {
@@ -1752,6 +1931,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.392507
   },
   {
@@ -1772,6 +1952,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.085462
   },
   {
@@ -1792,6 +1973,7 @@
    "edit_applied": true,
    "category": "delivered",
    "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
    "cny": 0.251677
   },
   {
@@ -1810,6 +1992,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.27368
   },
   {
@@ -1830,6 +2013,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.275858
   },
   {
@@ -1850,6 +2034,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.077284
   },
   {
@@ -1870,6 +2055,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.083028
   },
   {
@@ -1890,6 +2076,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.052073
   },
   {
@@ -1910,6 +2097,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.075482
   },
   {
@@ -1930,6 +2118,7 @@
    "edit_applied": null,
    "category": "harness_error",
    "detail": "Harness, credentials and evaluator inputs are protected",
+   "produced_verification": false,
    "cny": 0.013467
   },
   {
@@ -1950,6 +2139,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.037764
   },
   {
@@ -1970,6 +2160,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.05313
   },
   {
@@ -1990,6 +2181,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.047174
   },
   {
@@ -2010,6 +2202,7 @@
    "edit_applied": null,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.062726
   },
   {
@@ -2030,6 +2223,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.087437
   },
   {
@@ -2050,6 +2244,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.057238
   },
   {
@@ -2070,6 +2265,7 @@
    "edit_applied": true,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.073891
   },
   {
@@ -2090,6 +2286,7 @@
    "edit_applied": true,
    "category": "delivered",
    "detail": "patch_and_verify verified the application",
+   "produced_verification": true,
    "cny": 0.073951
   },
   {
@@ -2108,6 +2305,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.27048
   },
   {
@@ -2128,6 +2326,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.257342
   },
   {
@@ -2148,6 +2347,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.144077
   },
   {
@@ -2168,6 +2368,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.033484
   },
   {
@@ -2188,6 +2389,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.019714
   },
   {
@@ -2208,6 +2410,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.01486
   },
   {
@@ -2228,6 +2431,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.015593
   },
   {
@@ -2248,6 +2452,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.011359
   },
   {
@@ -2268,6 +2473,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.144753
   },
   {
@@ -2288,6 +2494,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.067184
   },
   {
@@ -2308,6 +2515,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.081883
   },
   {
@@ -2328,6 +2536,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.063139
   },
   {
@@ -2348,6 +2557,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.030577
   },
   {
@@ -2368,6 +2578,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.039628
   },
   {
@@ -2388,6 +2599,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.16804
   },
   {
@@ -2408,6 +2620,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.023898
   },
   {
@@ -2428,6 +2641,7 @@
    "edit_applied": null,
    "category": "delivered",
    "detail": "finish verified the application",
+   "produced_verification": true,
    "cny": 0.027172
   },
   {
@@ -2446,6 +2660,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.27338
   },
   {
@@ -2464,6 +2679,7 @@
    "edit_applied": null,
    "category": "no_tool_call",
    "detail": "model returned no tool call",
+   "produced_verification": false,
    "cny": 0.0
   },
   {
@@ -2482,6 +2698,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.27218
   },
   {
@@ -2502,6 +2719,7 @@
    "edit_applied": null,
    "category": "delivered",
    "detail": "build_app verified the application",
+   "produced_verification": true,
    "cny": 0.284484
   },
   {
@@ -2520,6 +2738,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.27528
   },
   {
@@ -2540,6 +2759,7 @@
    "edit_applied": null,
    "category": "product_assertion",
    "detail": "behavioral check exited nonzero",
+   "produced_verification": true,
    "cny": 0.341558
   },
   {
@@ -2560,6 +2780,7 @@
    "edit_applied": null,
    "category": "harness_error",
    "detail": "Source read exceeds 12000 bytes. Use read_file_chunk with character offsets. Requested file sizes: {\"frontend/public/index.html\": 10064, \"backend/api.cjs\": 8035",
+   "produced_verification": false,
    "cny": 0.059979
   },
   {
@@ -2581,6 +2802,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.004858
   },
   {
@@ -2601,6 +2823,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.027462
   },
   {
@@ -2621,6 +2844,7 @@
    "edit_applied": null,
    "category": "harness_error",
    "detail": "Source read exceeds 12000 bytes. Use read_file_chunk with character offsets. Requested file sizes: {\"checks/browser.cjs\": 2643, \"checks/requirements.cjs\": 10091",
+   "produced_verification": false,
    "cny": 0.029295
   },
   {
@@ -2642,6 +2866,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.016903
   },
   {
@@ -2662,6 +2887,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.033678
   },
   {
@@ -2682,6 +2908,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.041967
   },
   {
@@ -2702,6 +2929,7 @@
    "edit_applied": null,
    "category": "harness_error",
    "detail": "Harness, credentials and evaluator inputs are protected",
+   "produced_verification": false,
    "cny": 0.036999
   },
   {
@@ -2722,6 +2950,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.038293
   },
   {
@@ -2742,6 +2971,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.045673
   },
   {
@@ -2762,6 +2992,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.062662
   },
   {
@@ -2782,6 +3013,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.058387
   },
   {
@@ -2802,6 +3034,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.056241
   },
   {
@@ -2822,6 +3055,7 @@
    "edit_applied": null,
    "category": "no_op_diagnosis",
    "detail": "read-only call that neither wrote nor verified",
+   "produced_verification": false,
    "cny": 0.056829
   },
   {
@@ -2842,6 +3076,7 @@
    "edit_applied": true,
    "category": "wrote_no_verification",
    "detail": "wrote files without running a verification",
+   "produced_verification": false,
    "cny": 0.058356
   },
   {
@@ -2860,6 +3095,7 @@
    "edit_applied": null,
    "category": "observation",
    "detail": "reference observation call",
+   "produced_verification": false,
    "cny": 0.27918
   },
   {
@@ -2880,6 +3116,7 @@
    "edit_applied": null,
    "category": "delivered",
    "detail": "build_app verified the application",
+   "produced_verification": true,
    "cny": 0.301658
   }
  ]

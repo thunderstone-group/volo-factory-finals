@@ -25,6 +25,13 @@ No call is labelled `budget`. Budget exhaustion terminates a run *between* calls
 outcome rather than a call category; the three runs that ended that way are named in the evidence
 file under `terminal_outcomes`.
 
+Every category boundary is a judgement about what a call was doing, so the autopsy also carries one
+per-run measure that needs no such judgement: **tokens spent after the last call that produced a
+verification, without producing another.** A verification is a real build, start and check cycle
+reported back to the model, and it is the only event that advances a run. This *unverified tail*
+does not depend on how any read or write is classified, and it is the target the diagnosis-stall
+bound in section 4 is measured against.
+
 ## 2. The table
 
 | Category | Calls | Tokens | CNY | Runs | Attribution |
@@ -59,6 +66,20 @@ A run either converges in three to six calls with no harness defect at all, or i
 of these traps and spends its budget. The four official runs that passed have **zero** calls in
 any defect category. The one that failed has nine.
 
+The classification-independent measure agrees, and in one case is larger than any category total.
+Only four of the sixteen runs have any unverified tail at all.
+
+| Run | Last verification | Calls after | Tokens after | CNY | Share of run |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| archive E056 | call 2 | 15 | 402,906 | 0.6276 | 88% |
+| official `8abb7f040604` | call 8 | 7 | 250,609 | 0.5072 | 52% |
+| local nav-race app1 | call 11 | 3 | 106,738 | 0.1471 | 23% |
+| archive E053 | none | 2 | 8,613 | 0.2734 | 100% |
+| the other twelve runs | — | 0 | 0 | 0.0000 | 0% |
+
+E056 spent 88% of its tokens after its only verification. That is the shape the bound exists to
+stop, and it is visible without agreeing on a single category label.
+
 ## 3. Three mechanical defects, three root causes
 
 **Errors from tools reached the model as bare exception strings.** Calls 4 and 7 of run
@@ -85,9 +106,16 @@ the failing edit by its position in the call. Whitespace-only and CRLF differenc
 by name. Nothing is written when any edit in a batch is rejected, as before.
 
 **Read-only diagnosis was unbounded.** This is the largest of the three: 25 calls and CNY 1.2325.
-E056 made thirteen consecutive read-only calls, calls 3 to 16, and never wrote anything; run
-`8abb7f040604` stalled at calls 9 to 11 and again at 13 to 14; the selfcheck-fix local generation
-stalled at calls 6 to 10.
+E056 made thirteen consecutive read-only calls, calls 3 to 16, and never wrote anything; the
+selfcheck-fix local generation stalled at calls 6 to 10. In run `8abb7f040604` the read-only calls
+that produced no verification are 6, 9, 10, 11, 13 and 14, **204,820 tokens**; the robust statement
+about that run is that **250,609 tokens, 52% of it, were spent after its last verification at call
+8 without producing another**, ending on an unverified fix at call 15. An earlier subtotal of
+215,001 for this run was an arithmetic error and has been withdrawn upstream.
+
+One thing that run is not is a check defect. Its logout self-check was a genuine product race, with
+`POST /api/logout` still pending when the assertion read the page, and the defect detector reports
+nothing across its check steps.
 
 ## 4. The bound on diagnosis stalls
 
@@ -106,6 +134,10 @@ Two fixed values, no configuration knobs. A call *acts* when it writes a file or
   instruction to stop reading, and the counter resets either way.
 
 Any call that writes or runs a check resets the counter to zero.
+
+The bound is measured against the unverified tail, not against the category counts it was derived
+from: the question it has to answer is whether a run still ends with tokens spent after its last
+verification.
 
 ## 5. Check authority: the review's claim held
 
@@ -165,18 +197,18 @@ repetitions. No official run was started and no official run was queued or runni
 Per-call rows are in
 [`evidence/2026-09-14-repair-loop-measurement.json`](evidence/2026-09-14-repair-loop-measurement.json).
 
-| Generation | Calls | Tokens | CNY | Defect calls | Defect CNY | Outcome | Gate |
-| --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| before 1 | 3 | 83,884 | 0.4702 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
-| before 2 | 16 | 479,906 | 0.9910 | 9 | 0.3888 | failed, token budget | 3 of 3 at 10/10 |
-| before 3 | 6 | 203,836 | 0.9520 | 1 | 0.1425 | completed | 3 of 3 at 10/10 |
-| before 4 | 12 | 394,424 | 1.1971 | 5 | 0.2658 | completed | 3 of 3 at 10/10 |
-| before 5 | 5 | 142,895 | 0.6477 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
-| after 1 | 4 | 113,901 | 0.5582 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
-| after 2 | 3 | 83,683 | 0.4598 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
-| after 3 | 12 | 379,596 | 1.6179 | 3 | 0.1353 | **failed, gateway transport error** | 0 of 3 |
-| after 4 | 3 | 77,670 | 0.4177 | 0 | 0.0000 | completed | 3 of 3 at 10/10 |
-| after 5 | 4 | 107,686 | 0.4339 | 1 | 0.0875 | completed | 3 of 3 at 10/10 |
+| Generation | Calls | Tokens | CNY | Defect calls | Defect CNY | Unverified tail | Outcome | Gate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| before 1 | 3 | 83,884 | 0.4702 | 0 | 0.0000 | 0 | completed | 3 of 3 at 10/10 |
+| before 2 | 16 | 479,906 | 0.9910 | 9 | 0.3888 | **103,587, 22%** | failed, token budget | 3 of 3 at 10/10 |
+| before 3 | 6 | 203,836 | 0.9520 | 1 | 0.1425 | 0 | completed | 3 of 3 at 10/10 |
+| before 4 | 12 | 394,424 | 1.1971 | 5 | 0.2658 | 0 | completed | 3 of 3 at 10/10 |
+| before 5 | 5 | 142,895 | 0.6477 | 0 | 0.0000 | 0 | completed | 3 of 3 at 10/10 |
+| after 1 | 4 | 113,901 | 0.5582 | 0 | 0.0000 | 0 | completed | 3 of 3 at 10/10 |
+| after 2 | 3 | 83,683 | 0.4598 | 0 | 0.0000 | 0 | completed | 3 of 3 at 10/10 |
+| after 3 | 12 | 379,596 | 1.6179 | 3 | 0.1353 | 0 | **failed, gateway transport error** | 0 of 3 |
+| after 4 | 3 | 77,670 | 0.4177 | 0 | 0.0000 | 0 | completed | 3 of 3 at 10/10 |
+| after 5 | 4 | 107,686 | 0.4339 | 1 | 0.0875 | 0 | completed | 3 of 3 at 10/10 |
 
 | Quantity | before, n=5 | after, n=5 |
 | --- | ---: | ---: |
@@ -184,6 +216,8 @@ Per-call rows are in
 | CNY, mean | 0.8516 | 0.6975 |
 | Harness-defect calls, total | 15 | 4 |
 | Harness-defect CNY, total | 0.7971 | 0.2228 |
+| **Unverified tail, total tokens** | **103,587** | **0** |
+| **Unverified tail, total CNY** | **0.1099** | **0.0000** |
 | Runs that completed | 4 of 5 | 4 of 5 |
 
 By category, across the five runs of each side:
@@ -195,9 +229,15 @@ By category, across the five runs of each side:
 | `harness_error` | 1 | 0.0853 | 2 | 0.1108 |
 | `product_assertion` | 16 | 2.6636 | 12 | 2.7920 |
 
-**The criterion is met on the harness categories.** Read-only diagnosis falls from 11 calls to 1,
-and non-applying edits from 3 to 1. Product assertions, which are the repair loop working, are
-unchanged in character.
+**The criterion is met on the harness categories, and on the measure that needs no categories.**
+Read-only diagnosis falls from 11 calls to 1 and non-applying edits from 3 to 1. On the robust
+metric, the unverified tail goes from 103,587 tokens and CNY 0.1099 to **zero**: every run on the
+branch ends on a call that produced a verification. Product assertions, which are the repair loop
+working, are unchanged in character.
+
+One caveat on that zero. `after 3` ends with a gateway transport failure that consumed no tokens,
+so its tail is legitimately zero rather than favourably rounded; its last verification is call 11
+and call 12 never reached the model.
 
 **Both new mechanisms fired on a real model.** In `after 3` the trace records
 `diagnosis_stall_sources` after two read-only calls, carrying 11,705 characters of
