@@ -101,6 +101,17 @@ class RequirementSet:
             batches.append(current)
         return batches
 
+    def batch_text(self, nodes):
+        """Plain requirement text for the current batch, for harness-side derivation."""
+        parts = []
+        for node in nodes:
+            parts.extend([str(node.get('name', '')), str(node.get('description', ''))])
+            for scenario in node.get('scenarios') or []:
+                parts.append(str(scenario.get('name', '')))
+                parts.extend(str(step.get('content', '')) for step in scenario.get('steps') or []
+                             if isinstance(step, dict))
+        return '\n'.join(part for part in parts if part)
+
     def batch_prompt(self, nodes):
         ancestors = {p for node in nodes for p in node['parents']} - {str(self.document['id'])}
         inherited = []
@@ -110,11 +121,17 @@ class RequirementSet:
             for child in node.get('children', []) or []:
                 collect(child)
         collect(self.document)
-        return json.dumps({
+        payload = {
             "application": {k: v for k, v in self.document.items() if k != "children"},
             "all_requirements": [{"id": n["id"], "name": n.get("name", ""),
                                   "dependencies": n.get("dependencies", [])} for n in self.nodes],
             "current_batch": nodes,
             "inherited_constraints": inherited,
             "reference_assets": [a for a in self.assets if (self.root / a).stat().st_size > 0],
-        }, ensure_ascii=False, indent=2)
+        }
+        if len(payload["all_requirements"]) == len(nodes):
+            # The batch is the whole schedule; its ids and names are already below.
+            del payload["all_requirements"]
+        # Empty sections state nothing and are not free at the input rate.
+        payload = {key: value for key, value in payload.items() if value or key == "current_batch"}
+        return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
