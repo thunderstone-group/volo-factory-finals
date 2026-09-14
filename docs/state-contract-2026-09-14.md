@@ -17,11 +17,21 @@ prompt; both were used only to score a finished application.
 | `keep` (i5) | 7 of 15 | hosted | 4 | 10 s | **17 of 32** |
 | `keep` (i5) | 7 of 15 | repo | 1 | 60 s | **17 of 32** |
 | `bookstack` (h1) | 8 of 18 | hosted | 4 | 10 s | **11 of 34** |
-| `bookstack` (h2) | 9 of 18 | hosted | 4 | 10 s | **15 of 34** |
+| `bookstack` (h2) | 11 of 18 | hosted | 4 | 10 s | **15 of 34** |
+
+Repeated against the same unchanged bytes, with no generation running:
+
+| Application | Profile | Workers | Replays | Passed | Always failing | Specs that flip between replays |
+|---|---|---:|---:|---|---:|---:|
+| `bookstack` | hosted | 4 | 3 | 15, 13, 18 of 34 | 13 | 13 |
+| `keep` | hosted | 4 | 4 | 17, 17, 17, 17 of 32 | 15 | 0 |
+
+That difference is the result, not the pass counts. `keep` returns the same number and the same failing set every time. `bookstack` moves by five across three replays of identical bytes, and 13 of its specs flip. The hosted runner uses four workers with `fullyParallel` false, so four spec files exercise one backend and one store at once; the corpus keeps that safe by giving every destructive test its own seeded row. The contract reproduces the rows the prose declares, but a generated application also creates entities during a test, and those collide. A pass count that does not reproduce is not a result, so the Bookstack figure is reported as a range.
+
 
 Trace, video and screenshots are off in both profiles. `docs/arc-bench-corpus-2026-09-14.md` measures that artifact capture alone costs the organizers' own reference fourteen of its 135 tests.
 
-`keep` (i5) scores 17 under the hosted profile and 17 under the repository profile, on exactly the same specs, while the suite takes 44.7 s against 560.5 s. Six times the per-test budget and a single worker change nothing, which rules out time pressure as the cause and says the controls those specs look for are absent or carry names the helpers' resolution ladder never matches.
+`keep` (i5) scores 17 under the hosted profile and 17 under the repository profile, on exactly the same specs, while the suite takes 42.9 s against 560.5 s. Six times the per-test budget and a single worker change nothing, which rules out time pressure as the cause and says the controls those specs look for are absent or carry names the helpers' resolution ladder never matches.
 
 ### 1.2 The contract itself
 
@@ -48,11 +58,11 @@ Every one of the 22 identities the Keep requirements name reaches the running ap
 | i4 | 1 of 15 | no checkpoint | 19 | 409,090 | 347,648 | 0.353184 | not scored |
 | i5 | 7 of 15 | failed: Current requirements and workspace checkpoint exceed the context character limit | 50 | 1,295,489 | 917,248 | 1.720258 | 17 of 32 |
 | i6 | 7 of 15 | batch_verified | 50 | 1,244,230 | 940,800 | 1.400703 | not scored |
-| i7 | 6 of 15 | batch_verified | 77 | 2,110,851 | 1,449,984 | 2.650084 | not scored |
+| i7 | 7 of 15 | batch_verified | 105 | 3,039,317 | 2,181,376 | 3.496472 | not scored |
 | bookstack h1 | 8 of 18 | batch_verified | 53 | 1,208,626 | 931,584 | 1.290064 | 11 of 34 |
-| bookstack h2 | 9 of 18 | batch_verified | 69 | 1,646,003 | 1,153,280 | 2.121291 | 15 of 34 |
+| bookstack h2 | 11 of 18 | batch_verified | 103 | 2,677,942 | 1,888,512 | 3.253532 | 15 of 34 |
 
-Rehearsal total CNY 13.661304, plus CNY 0.397544 for the one Ticket generation used to measure the local gate. Prices are the rate table solved in `docs/token-accounting-2026-09-14.md`, applied to the usage each response reported. No official run was started, so no official charge exists for any of this.
+Rehearsal total CNY 15.639933, plus CNY 0.397544 for the one Ticket generation used to measure the local gate. Prices are the rate table solved in `docs/token-accounting-2026-09-14.md`, applied to the usage each response reported. No official run was started, so no official charge exists for any of this.
 
 ### 1.4 What the contract fixed, and what still failed
 
@@ -62,7 +72,7 @@ Every failing spec of a scored run, split by how far generation actually got. A 
 |---|---:|---|---|---|
 | `keep` (i5) | 13 | REQ-2.4, REQ-2.6.2, REQ-2.7.1, REQ-2.8.3 | REQ-2.7.2, REQ-2.7.4, REQ-2.7.5, REQ-2.7.6.1, REQ-2.7.6.2, REQ-2.7.6.3, REQ-3.1, REQ-4.2, REQ-5.1, REQ-5.2 | REQ-2.3.3 |
 | `bookstack` (h1) | 12 | REQ-4.3.1 | REQ-4.5.1, REQ-4.5.2, REQ-5.2.2, REQ-5.4.1, REQ-5.4.2, REQ-5.5.1, REQ-5.5.2, REQ-5.6.1, REQ-6.1.1, REQ-6.1.2, REQ-6.1.3, REQ-6.2.1, REQ-6.3.1, REQ-6.3.2, REQ-7.1, REQ-7.2, REQ-8.1, REQ-8.2, REQ-9.1 | REQ-4.3.2, REQ-4.4.1, REQ-4.4.2 |
-| `bookstack` (h2) | 15 | none | REQ-5.2.2, REQ-5.4.1, REQ-5.4.2, REQ-5.5.1, REQ-5.5.2, REQ-5.6.1, REQ-6.1.1, REQ-6.1.2, REQ-6.1.3, REQ-6.2.1, REQ-6.3.1, REQ-6.3.2, REQ-7.1, REQ-7.2, REQ-8.1, REQ-8.2, REQ-9.1 | REQ-4.5.1, REQ-4.5.2 |
+| `bookstack` (h2) | 20 | REQ-4.3.1, REQ-4.3.2, REQ-4.4.1, REQ-4.4.2, REQ-5.6.1 | REQ-6.1.1, REQ-6.1.2, REQ-6.1.3, REQ-6.2.1, REQ-6.3.1, REQ-6.3.2, REQ-7.1, REQ-7.2, REQ-8.1, REQ-8.2, REQ-9.1 | REQ-5.4.2, REQ-5.5.1, REQ-5.5.2 |
 
 How those specs failed, which is the more informative split:
 
@@ -214,7 +224,7 @@ regions and named `<meter>` controls are all still stated.
 
 ## 4. What the rehearsal cost, and where it went
 
-The rehearsal spent CNY 13.66 across 7 Keep iterations and the holdout. Where it went, and what each fix bought:
+The rehearsal spent CNY 15.64 across 7 Keep iterations and the holdout. Where it went, and what each fix bought:
 
 | Change | Measured effect |
 |---|---|
