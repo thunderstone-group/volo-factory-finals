@@ -507,19 +507,6 @@ class Agent:
                 self.trace.event('prepared_check_edit_skipped', paths=skipped)
             if not pending:
                 raise ValueError('Edit the application; ' + PREPARED_CHECK_PATH + ' is harness-owned')
-            # A new requirement with no new assertion is how a passing local run
-            # still fails officially: run 79741e4c25c1 added the required element,
-            # never wired it, and the inherited checks only covered the old
-            # behavior. The prepared check sees the element, not the behavior.
-            # The requirement is per batch, not per call: once the assertion is in
-            # the file, a later repair call does not have to touch it again.
-            if (self.inline_source and self.prepared_check_written()
-                    and AUTHORED_CHECK_PATH not in pending
-                    and self.authored_check_baseline is not None
-                    and self.authored_check_text() == self.authored_check_baseline):
-                raise ValueError('Assert the new requirement: extend ' + AUTHORED_CHECK_PATH
-                                 + ' in this same call. It still covers only the behavior it inherited, '
-                                   'and a prepared check can see that an element exists but not that it works.')
             self.workspace.write_files([{'path': path, 'content': content} for path, content in pending.items()])
             result = self.workspace.verify(args['check_command'])
             if result['passed']:

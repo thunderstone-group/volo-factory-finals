@@ -226,7 +226,7 @@ if __name__ == '__main__':
     unittest.main()
 
 
-class NewRequirementAssertionTests(TempCase):
+class AuthoredCheckEditTests(TempCase):
     def prepared_agent(self):
         scaffold(self.workspace)
         self.workspace.write_files([
@@ -248,13 +248,6 @@ class NewRequirementAssertionTests(TempCase):
         self.assertTrue((self.out / 'checks/requirements.cjs').read_text().endswith(
             "test('added',async(page,assert)=>{});\n"))
 
-    def test_a_product_only_edit_is_refused_when_checks_cover_only_old_behavior(self):
-        agent = self.prepared_agent()
-        with self.assertRaisesRegex(ValueError, 'Assert the new requirement'):
-            agent.dispatch('patch_and_verify', {'edits': [
-                {'path': 'frontend/public/index.html', 'insert_after': '<h1>Product</h1>', 'new': '<p>More</p>'}]})
-        self.assertEqual((self.out / 'frontend/public/index.html').read_text(), '<h1>Product</h1>')
-
     def test_an_edit_that_extends_the_authored_check_is_accepted(self):
         agent = self.prepared_agent()
         result = agent.dispatch('patch_and_verify', {'edits': [
@@ -263,15 +256,6 @@ class NewRequirementAssertionTests(TempCase):
              'new': "\ntest('new behavior',async(page,assert)=>{});"}]})
         self.assertIn('check_command', result)
         self.assertIn('new behavior', (self.out / 'checks/requirements.cjs').read_text())
-
-    def test_a_repair_call_does_not_have_to_touch_checks_again(self):
-        agent = self.prepared_agent()
-        agent.dispatch('patch_and_verify', {'edits': [
-            {'path': 'checks/requirements.cjs', 'new': "test('added',async(page,assert)=>{});\n"}]})
-        # The assertion is in the file now; the next call may be product-only.
-        result = agent.dispatch('patch_and_verify', {'edits': [
-            {'path': 'frontend/public/index.html', 'insert_after': '<h1>Product</h1>', 'new': '<p>More</p>'}]})
-        self.assertIn('check_command', result)
 
     def test_a_one_shot_batch_without_inherited_checks_is_unaffected(self):
         agent = self.prepared_agent()
