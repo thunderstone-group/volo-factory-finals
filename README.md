@@ -25,7 +25,6 @@ the prior runtime, explicit acceptance and optional lab tools were integrated.
 |---|---|
 | `main.py`, `volo/` | Uploaded agent: requirements, model transport, execution, recovery and optional pinned acceptance |
 | `harness_lab/` | Development experiments: isolated verifier, generic external runner, Pi adapter and model-generated browser probes; excluded from uploads |
-| `arcbench`, `arcbench_cli.py` | Authenticated platform operations; excluded from uploads |
 | `scripts/package.py` | Deterministic upload archive |
 | `scripts/evaluate_candidate.py` | Run a supplied pinned Node acceptance suite against an existing local application, without model calls |
 | `tests/` | Transport, recovery, HTTP, browser and evaluator regressions |
@@ -95,9 +94,11 @@ hashes are not an operating-system sandbox.
 Use [the platform CLI](docs/platform-cli.md) for uploads, statuses, logs and standings:
 
 ```sh
-./arcbench leaderboard --competition ticket-booking --task ticket-booking
-./arcbench status RUN_ID
+arcbench leaderboard --competition ticket-booking --task ticket-booking
+arcbench status RUN_ID
 ```
+
+The client is installed from its own repository; it is not part of this one.
 
 Model calls and official submissions are separate experiment decisions; merging this
 baseline does not start them. The [current architecture proposal](docs/harness-design-2026-09-12.md)

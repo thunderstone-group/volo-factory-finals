@@ -490,3 +490,32 @@ each rule snapshot and experiment with date and source.
 - `111,438` on the four failed edits is unchanged and reproduces exactly, as do calls 4 and 7 being
   the two rejected with the bare `'path'`.
 - Corrected in `docs/selfcheck-deadend-2026-09-14.md` and in the entry above.
+
+
+## 2026-09-14 — The platform CLI leaves this repository
+
+- The website client now lives only in `thunderstone-group/arcbench-cli`, installed as the
+  `arcbench` command. Removed this repository's copy: `arcbench_cli.py`, the `arcbench`
+  wrapper, `tests/test_platform_cli.py` and its `tests/fixtures/real-arcbench-run-status.json`.
+  Nothing in `main.py`, `volo/`, `harness_lab/` or `scripts/` imported or shelled out to any
+  of it, so no behaviour changed; `scripts/package.py` works from an allowlist and never
+  named those files. The upload archive is byte-identical in content to before.
+- `docs/platform-cli.md` shrank from a full manual to a pointer: install line, the shared env
+  file `~/.config/arcbench/volo.env` via `ARCBENCH_ENV_FILE`, the three platform rules that
+  bind this harness, and a typical upload-to-result sequence. The command reference, flags,
+  exit codes and API route table are deliberately not duplicated here; the CLI repository's
+  README owns them, and a second copy would go stale and then mislead.
+- The three rules kept, because they are properties of the platform rather than of the client:
+  the official token count is a usage-meter delta on the shared access key, so runs on one
+  account must not overlap and local gateway traffic must pause while an official run is in
+  flight; never upload while a run from the same submission is pending; the board shows the
+  latest passing run, not the best one.
+- Verified the installed client against the live platform read-only before removing anything:
+  `arcbench --version` reports 0.2.0, and `whoami`, `runs` and
+  `leaderboard --competition ticket-booking --task ticket-booking` all return current data.
+  Note that `leaderboard` requires `--competition`; `--task` alone is rejected by the parser.
+- Unit suite: 190 tests before, 173 after, the difference being exactly the 17 checks that
+  covered the removed client. Both runs green with 11 skipped.
+- Not done here: other branches still carry the old `arcbench_cli.py` and call `./arcbench`
+  from the main checkout. The main checkout is untouched, so those keep working until they
+  rebase onto this change.
