@@ -5,11 +5,38 @@ import base64
 import hashlib
 import io
 import json
+import os
 import re
 import time
 from urllib.parse import unquote, urlsplit
 
 from .trace import atomic_json
+
+VISION_MODEL_VARIABLE = 'FACTORY_VISION_MODEL'
+# Measured in docs/image-ablation-2026-09-14.md: the observation was one kimi-k3 request
+# priced 20/2/100 CNY per million against deepseek-v4-flash's 3/0.1/9, about half the
+# charge of a Ticket Booking run, and the requirement text plus the bundled public
+# specifications already state every label the evaluator asserts. Default off.
+DEFAULT_VISION_MODEL = None
+VISION_OFF_VALUES = frozenset({'', 'off', 'none', 'no', 'false', '0', 'disabled'})
+
+
+def vision_model_name(environ=None):
+    """Select the reference-observation model, or None to skip that call entirely.
+
+    Unset uses DEFAULT_VISION_MODEL. An empty value or one of VISION_OFF_VALUES
+    disables the observation, so the run makes no image request and the agent is
+    told plainly that the binary references have not been inspected. Any other
+    value names a gateway model, so FACTORY_VISION_MODEL=kimi-k3 restores the
+    previous behaviour; nothing validates the name here, so an unsupported one
+    fails at the first request instead of silently degrading.
+    """
+    environ = os.environ if environ is None else environ
+    value = environ.get(VISION_MODEL_VARIABLE)
+    if value is None:
+        return DEFAULT_VISION_MODEL
+    value = value.strip()
+    return None if value.lower() in VISION_OFF_VALUES else value
 
 
 PROMPT = """Inspect the attached product UI reference images. Return concise observations
