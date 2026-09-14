@@ -671,3 +671,27 @@ class DocumentHygieneTests(TempCase):
         self.assertNotIn(state_contract.KEY, text)
         self.assertIn('Trash', text)
         self.assertIn('/api/notes', text)
+
+
+class PromptRuleRetentionTests(TempCase):
+    """The contract supplement adds to the system prompt; it must not replace its rules."""
+
+    def system_prompt(self):
+        from volo.agent import SYSTEM
+        return SYSTEM + CONTRACT_SYSTEM
+
+    def test_the_rules_ticket_depends_on_survive_in_contract_mode(self):
+        prompt = self.system_prompt()
+        for rule in (
+                'never navigate the browser yourself',      # nav-race
+                'history.replaceState',                     # nav-race remedy
+                'accessible name',                          # accessible names
+                'role="alert"',                             # visible validation
+                'meter',                                    # named level indicator
+                'process.env.PORT',                         # runner contract
+        ):
+            self.assertIn(rule, prompt, rule)
+
+    def test_the_supplement_is_additive_not_a_replacement(self):
+        from volo.agent import SYSTEM
+        self.assertTrue(self.system_prompt().startswith(SYSTEM))
