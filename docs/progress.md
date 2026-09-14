@@ -597,3 +597,52 @@ each rule snapshot and experiment with date and source.
 - `python -m unittest discover -s tests -v` reports 232 tests, 0 failures, 11 skipped, against 213
   on `main` at `b00679c`. `tests/test_external_gate.py` flaked twice under heavy concurrent load
   with `[Errno 1] Operation not permitted` and passed on every clean run, including on `main`.
+
+
+## 2026-09-14 — A global state contract before page generation, rehearsed on Keep
+
+- The load-bearing risk for the formal competition is not tool-call batching. Our scheduler gives
+  a later batch only the names and dependencies of earlier ones, while 426 of the published
+  corpus's 460 specs depend on state declared once in requirement prose with no reset API.
+  Independent batches invent conflicting accounts, entities, routes and seeds.
+- `volo/contract.py` extracts a machine-readable contract from the complete package in one model
+  call before any page exists, and every batch receives it verbatim. Quoted literals and seed
+  sentences are recovered from the requirement text without a model and reattached mechanically,
+  so a model that reorganizes them cannot lose a named identity. Keep: 48 literals and 26 seed
+  sentences declared, 22 seed rows accepted, 0 unresolved, 13,631 tokens in one call. Bookstack:
+  38, 29, 32 rows, 0 unresolved, 17,446 tokens.
+- `volo/state_runtime.py` turns those rows into a harness-written startup seeder, applied at most
+  once per data file, and `/api/health` answers ready only after the seed commits. A probe of a
+  generated build served all 22 declared Keep identities, including the three private rows the
+  destructive requirements own, through the model's own request handler.
+- Routing is derived, not configured: the contract runs when `requirements.batches()` returns more
+  than one batch, so Ticket Booking (2 nodes) and the small boards (1 node) take the unchanged
+  path. Measured, not assumed: one Ticket generation gated five times with this branch's server
+  file and five times with main's restored byte for byte gave 9 of 10 in every replay under both,
+  the same failing test, medians 15.03 s and 15.32 s.
+- Best scored applications: Keep 17 of 32 at 7 of 15 batches, Bookstack 15 of 34 at 9 of 18. Both
+  short of the 26 and 28 the review asked for, and both partial: no run implemented its whole
+  schedule, because a batch costs five to thirteen calls and the machine was running several
+  agents' generations at once.
+- The more useful number is how they failed. **Every single failing spec timed out; not one was a
+  failed assertion.** The same application scores identically under the hosted profile (4 workers,
+  10 s) and the repository profile (1 worker, 60 s), on exactly the same fifteen specs, while the
+  suite takes 44.7 s against 560.5 s. Six times the budget changes nothing, so this is not time
+  pressure: the controls those specs look for are absent or carry names the helpers' resolution
+  ladder never matches. No failure was a missing seed row, a renamed field or a value that
+  disagreed. What the contract set out to prevent did not appear; control naming and presence is
+  the next lever.
+- Nine generations, CNY 13.66, plus CNY 0.40 for the Ticket gate. Most of that was spent learning
+  what the batch loop wastes, not on the contract: reads of harness files the agent is told not to
+  modify, scripts hunting a syntax error the parser already knew, a 30 KB tool call that arrived as
+  invalid JSON, extraction at the model's default reasoning effort, and one context-limit death
+  from delivering source without a budget. Each is fixed and each is a synthetic test.
+- One transient `Gateway HTTP 502` from the gateway's own proxy discarded eleven paid calls, so
+  502, 503 and 504 are now retried alongside 429. Request errors are not.
+- None of the rehearsals had `main`'s repair-loop bounds, which landed while they were running and
+  are merged here. The largest single cost in them is a batch repairing itself thirteen calls at a
+  time, which is exactly what that work bounds, so the merged head should beat every number above.
+  Nothing here measures the two together.
+- Detail, per-iteration cost and limits in `docs/state-contract-2026-09-14.md`, raw record in
+  `docs/evidence/2026-09-14-state-contract.json`. No official run was started, and no corpus test
+  or public specification entered any generation prompt.
