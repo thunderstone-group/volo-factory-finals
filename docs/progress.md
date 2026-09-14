@@ -334,3 +334,32 @@ each rule snapshot and experiment with date and source.
   The registration test that timed out in E057 took 2,299 ms. One of two allowed trials
   was used. See `docs/nav-race-2026-09-14.md` and
   `docs/evidence/2026-09-14-nav-race-trial.json`.
+
+## 2026-09-14 — Ablated the reference-image observation; the lever is not there
+
+- Made the observation switchable. `FACTORY_VISION_MODEL` selects the model, an off value
+  removes the call and the agent is told the images were not inspected. `DEFAULT_VISION_MODEL`
+  is unchanged at `kimi-k3`. `Agent.observe_references` holds the branch so the disabled path
+  is testable without a gateway. Tests: 176 passed, 0 failures, 11 environment skips.
+- Ruled `deepseek-v4-flash` out as a cheap observer by measurement, not assumption: the
+  gateway accepts an image payload for it and the model does not see it, replying that the
+  image data is truncated at 209 prompt tokens. `qwen3.6-flash` reads the same screenshot
+  correctly at 1,801 prompt tokens and became variant B.
+- Both variants passed the calibrated local gate 20 of 20 at 10/10 with no self-navigation
+  in product source. Neither gate predicted its official run; both local charges already
+  exceeded the retained run's official CNY 0.629725.
+- Official trials, both allowed ones used. Variant A, observation off, run `d855ead6df43`,
+  10/10 at CNY 0.779834 and 173,870 tokens: it removed CNY 0.284 of `kimi-k3` and added four
+  `deepseek-v4-flash` repair rounds. Variant B, run `8abb7f040604`, exhausted its 450,000-token
+  budget over 15 calls repairing its own logout self-check and never reached the suite; the
+  observation itself cost CNY 0.037054 of that run's 1.072651.
+- Conclusion: the observation is 45% of a passing run's charge and what it buys is a first
+  draft needing one repair instead of five. The default did not move. Both variants remain one
+  environment variable away. See `docs/image-ablation-2026-09-14.md` and
+  `docs/evidence/2026-09-14-image-ablation.json`.
+- Consequence to undo: the Ticket Booking board reflects the most recent passing run, so
+  variant A's run replaced the retained one and VOLO AI moved from rank 2 at efficiency 158.80
+  to rank 4 at 128.23. Restoring it needs one official run on the unchanged default.
+- Local gates must assert `browser_environment.available` first. A variant A generation run
+  without a discoverable Playwright produced HTTP-only self-checks and an application with two
+  `/register` links that failed all ten public tests in 20 of 20 replays; it was discarded.

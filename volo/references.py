@@ -13,13 +13,14 @@ from urllib.parse import unquote, urlsplit
 from .trace import atomic_json
 
 VISION_MODEL_VARIABLE = 'FACTORY_VISION_MODEL'
-# Measured in docs/image-ablation-2026-09-14.md. Removing the observation entirely still
-# scored 10/10 but cost more, because the generation needed four extra repair rounds
-# without it. Keeping it on qwen3.6-flash, priced 1.2/7.2 CNY per million against
-# kimi-k3's 20/100, reads the same screenshots for about a ninth of the charge.
-# deepseek-v4-flash is not a candidate: the gateway accepts an image for it and the
-# model does not see it, answering that the image data is truncated.
-DEFAULT_VISION_MODEL = 'qwen3.6-flash'
+# The default is unchanged. docs/image-ablation-2026-09-14.md measured both cheaper
+# variants: removing the observation still scored 10/10 officially but cost more,
+# because the generation then needed four extra repair rounds, and moving it to
+# qwen3.6-flash passed a 20 of 20 local gate but exhausted its token budget on the one
+# official trial. Neither has official evidence of being cheaper, so both stay behind
+# this switch. deepseek-v4-flash can never be the value: the gateway accepts an image
+# for it and the model does not see it, replying that the image data is truncated.
+DEFAULT_VISION_MODEL = 'kimi-k3'
 VISION_OFF_VALUES = frozenset({'', 'off', 'none', 'no', 'false', '0', 'disabled'})
 
 
