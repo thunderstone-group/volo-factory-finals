@@ -98,10 +98,36 @@ repairing the run's own logout self-check, with a `POST /api/logout` still pendi
 assertion read the page. The observation cost CNY 0.037054 of the run's 1.072651 and returned
 usable text; the other CNY 1.035597 is fourteen `deepseek-v4-flash` repair calls.
 
-This is the dead end the [nav-race writeup](nav-race-2026-09-14.md) already records as unfixed:
-a self-check the run cannot repair consumes the whole budget. It cost that task one local
-generation and it cost this one its second and last official trial. It is not evidence about
-`qwen3.6-flash`, and it is not evidence that `qwen3.6-flash` is safe either.
+**Correction, 2026-09-14.** This section originally attributed the failure to the frozen
+self-check dead end recorded in the [nav-race writeup](nav-race-2026-09-14.md). That was wrong,
+and the `selfcheck-fix` agent caught it while working on that trap. Nothing was frozen in this
+run: the retained trace contains no preserved-self-check event, and the failing logout check was
+genuinely failing, a real product race with `POST /api/logout` still pending when the assertion
+read the page. See [`selfcheck-deadend-2026-09-14.md`](selfcheck-deadend-2026-09-14.md).
+
+Re-reading the trace call by call, the budget went to two things, neither of them a frozen check:
+
+| Where the 477,861 tokens went | Calls | Tokens |
+|---|---:|---:|
+| Reference observation | 1 | 9,698 |
+| First `build_app` | 1 | 45,379 |
+| Edits that never applied | 4 | 111,438 |
+| Read-only diagnosis producing no verification | 6 | 204,820 |
+| A plausible `doSignout` fix applied on the last call, never verified | 1 | 38,031 |
+| `patch_and_verify` that applied and failed verification | 1 | 30,904 |
+| Rounding into the remaining call | 1 | 37,591 |
+
+Two of the four failed edits were rejected with the bare message `'path'`, a `KeyError` leaking
+out of the harness as an error string, which tells the model nothing it can act on. The
+`selfcheck-fix` change makes the harness name the missing keys and recovers those two calls. It
+does not bound the read-only diagnosis stall, which is the larger half at 204,820 tokens.
+
+So this run is not evidence about `qwen3.6-flash` either way, and the reason is a repair-loop
+stall rather than the trap originally named. The subtotal queried here, 215,001 tokens for seven
+read-only diagnosis calls, was an arithmetic error in the correcting report and its author has
+withdrawn it: it matches no subset of the per-call usage. The 204,820 over six calls counted in
+this document is correct, and the classification behind it, with the diagnostic write at call 12
+and the fix at call 15 held apart from the reads, is the one to use.
 
 ## 6. The switch
 

@@ -268,7 +268,8 @@
   "minimax-m3 has no price-table entry and was not considered further.",
   "The absence of deepseek-v4.1-flash is a fact about this gateway on this date.",
   "Four runs are four runs; the variance claim is narrow and predicts no particular next run.",
-  "qwen3.6-flash still has no passing official run; the case for it is arithmetic plus a 20 of 20 local gate."
+  "qwen3.6-flash still has no passing official run; the case for it is arithmetic plus a 20 of 20 local gate.",
+  "The attribution of 8abb7f040604 to the frozen-self-check trap was wrong and has been corrected; its budget went to four edits that never applied and six read-only diagnosis calls."
  ],
  "variance_finding": {
   "claim": "The run-to-run spread of identical code exceeds the observation line item, so a single official trial cannot decide whether the observation pays for itself.",
@@ -307,5 +308,10 @@
   ],
   "implication": "Switching the observer is an input-price change, not a behaviour change: the same three images are read and the same kind of text reaches the same prompt. On the two kimi-k3 runs the switch would have saved CNY 0.247126 and 0.229586 deterministically. The extra observation text, 4,236 tokens against 1,195 to 1,372, adds about CNY 0.009 to the generation prompt.",
   "caveat": "Four runs are four runs. This is not a distribution and predicts no particular next run."
+ },
+ "confirmation_condition": {
+  "requirement": "The qwen3.6-flash default must be confirmed by an official trial.",
+  "scheduling": "No ordering constraint. An observer trial taken before or after the fix/selfcheck-deadend change is equally valid.",
+  "corrected_2026_09_14": "The condition originally required the trial to follow that fix, on the grounds that the trap ended 8abb7f040604. It did not; that run contains no frozen check. The trap was never in the observer's path."
  }
 }

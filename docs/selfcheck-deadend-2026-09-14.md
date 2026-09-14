@@ -66,9 +66,11 @@ the page.
 | 15 | 38,031 | 477,861 | `edit` | applied a plausible fix to `doSignout` |
 
 Budget exhausted one call after the fix, before any verification of it. The waste splits into
-111,438 tokens on four edits that never applied and 215,001 on seven read-only diagnosis calls.
-Four of those calls were lost to a harness defect: a missing key in an edit object raised a bare
-`KeyError` that reached the model as the string `'path'`.
+111,438 tokens on calls 3, 4, 5 and 7, whose edits never applied, and 204,820 on calls 6, 9, 10,
+11, 13 and 14, which read and never verified. Counting call 12's diagnostic write and the
+unverified fix at call 15, 250,609 tokens passed after the last verification without producing
+another one. Two of the four failed edits were lost to a harness defect: a missing key in an edit
+object raised a bare `KeyError` that reached the model as the string `'path'`.
 
 ## 3. The fix
 
@@ -183,6 +185,16 @@ which equals the meter delta exactly. The runner log brackets the window with a 
 05:15:58 UTC and `Meter usage captured: tokens=143279, cost=0.899558 CNY` at 05:22:36 UTC. No run
 on the account was queued or running inside it, and the last local gateway call of this task
 finished before 05:12 UTC; the 20 gate replays make no model calls.
+
+The observation call was verified rather than assumed: `kimi-k3`, 7,349 prompt tokens and 1,149
+completion tokens, with text transcribing real page elements including the 12306 logo, the eight
+primary nav items and the search panel tabs. A model that never receives the images answers at
+about 209 prompt tokens, so this one read them.
+
+**This trial is not the confirmation of the qwen observer default.** It ran agent source `f720337`,
+branched from `b13ee49`, which predates PR #11 and #12. Its observer is `kimi-k3`. The instruction
+to merge `main` before packaging arrived after the trial had already been uploaded and started,
+so the qwen default still needs its own confirmation run.
 
 **This run did not exercise the new guard.** No self-check failed with a locator strict-mode
 violation, so nothing was frozen and nothing was released. It shows that the change does not break

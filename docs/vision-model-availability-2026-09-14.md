@@ -100,11 +100,17 @@ rounds the generation then needs, which is where the threefold cost spread lives
 
 No official trial was spent on this change, by agreement with the team lead, because section 4
 shows a single trial cannot resolve it and a passing run at a high cost would replace the board
-entry. The flip must be confirmed by **the first official trial taken after the frozen-self-check
-fix on `fix/selfcheck-deadend` lands**. That ordering matters: the trap ended `8abb7f040604` at 14
-generation calls, so any observer result taken before the fix is confounded by it. Until that
-trial exists, this default rests on a 20 of 20 local gate and price arithmetic on confirmed rates,
-and on nothing else.
+entry. The flip must still be confirmed by an official trial. Until one exists, this default
+rests on a 20 of 20 local gate and price arithmetic on confirmed rates, and on nothing else.
+
+**Correction, 2026-09-14.** This section originally required that trial to come *after* the
+frozen-self-check fix on `fix/selfcheck-deadend`, on the grounds that the trap had ended
+`8abb7f040604`. It had not. That run contains no frozen check at all; its budget went to four
+edits that never applied and six read-only diagnosis calls, and its failing logout check was a
+genuine product race. The scheduling constraint therefore does not apply: an observer trial taken
+before or after that fix is equally valid, because the trap was never in the observer's path. The
+fix is still worth having on its own merits, and the repair loop is still the dominant cost
+lever, but neither is a precondition for confirming this default.
 
 ## 6. What this does not establish
 
