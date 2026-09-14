@@ -875,3 +875,19 @@ any of this.
   rather than paying for the same failure in every later batch. Run 5 started on b3d2331.
 - Also landed: a `write_files` whose JSON fails only on a backslash escaped one level short is
   repaired instead of rejected (155f14a).
+
+### 2026-09-15, after midnight — run five: every batch ran, 25 of 32 under both profiles
+
+- Run 5 (b3d2331): all 15 batches ran, 142 calls, 3.66 M prompt tokens (2.42 M cached),
+  488 k output tokens, about CNY 8.4 at the gateway's list prices. Hosted profile 25/32, repo
+  profile 25/32, the same seven failures under both. Previous best 19/32 hosted (b8e92a0).
+- Two batches hit the 20-call cap and were rolled back: REQ-2.3.3/2.5.2/2.5.3 (stacked Undo
+  toasts made four buttons named "Undo"; "Delete Note" not found after hover) and
+  REQ-2.5.4/2.7.6.2. Three of those five fail officially; REQ-2.5.2 and REQ-2.7.6.2 pass on
+  features earlier batches had already built. Four implemented requirements fail officially:
+  REQ-2.7.4, 2.7.5, 2.8.2, 4.2 — attribution in progress.
+- Snapshot ordering bug found from this run's events and fixed in 11e21cc: the snapshot's
+  `completed` lagged one batch, so the restore after batch 7 dropped batch 6's three
+  requirements from every list while their files stayed in the tree (they pass officially).
+- Evidence: `runs/2026-09-14-keep-full-5/` (git-ignored) with the app, trace, both scores and
+  both Playwright reports.
