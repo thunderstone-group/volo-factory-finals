@@ -673,3 +673,26 @@ each rule snapshot and experiment with date and source.
   930 s without finishing and was stopped; it is recorded as attempted, never counted, and is the
   first measurement to take next.
 - Merged `origin/main` at b565095. Suite green at 278.
+
+### 2026-09-14, later still — every timed-out Keep spec by the locator it waits on
+
+- Section 1.8 of `docs/state-contract-2026-09-14.md` now names, for all fifteen failures, the
+  locator the spec is pending on and what the page offers instead. Pending locators come from
+  Playwright's own call log; the "page has" column from driving the running application. Re-run at
+  30 s per test and one worker, the seven that print no call log still time out at 30 s, so none of
+  them is a slow page.
+- Three causes, in the order worth attacking: **five specs pick the wrong control** because one
+  accessible name is shared by every row and the helpers take `.first()`; **three specs cannot
+  reach a control that exists** because it has no name matching what the helper searches for (no
+  label or placeholder matches `/note/i` or `/content/i` for the note body, no palette swatch
+  matches `/green/i`, no field matches `/label name/i` in Edit Labels); **seven are screens,
+  controls or behaviour the run never implemented**.
+- The first two groups are eight specs, and both are about names. The contract already carries the
+  requirement's own vocabulary in `exact_texts`; nothing consumes it as a naming rule yet. That is
+  the concrete next change.
+- Ticket: told `ticket-regression` that my gated app fails `REQ-1.1: successfully register a new
+  account and remain signed in` in all ten replays, but **not** on signed-in state — the two other
+  REQ-1.1 tests, which both call `expectSignedIn` after `registerAccount`, pass. It hangs on the
+  first assertion, `getByText('账户信息', {exact: true})`, which the register page never renders;
+  its only heading is `注册旅客账号`. Every other locator in that test resolves, including the
+  `密码强度` meter. So my generation does not reproduce the official signed-in regression.

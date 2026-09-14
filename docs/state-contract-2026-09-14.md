@@ -179,6 +179,47 @@ field, a value that disagreed or a screen a later batch could not reach. Every f
 of time; none failed an assertion. That is what the contract was built to prevent, and it did not
 occur.
 
+### 1.8 Every timed-out Keep spec, by the locator it waits on
+
+All fifteen failures of the scored Keep application, with the locator the spec is pending on and
+what the page offers instead. Pending locators come from Playwright's own call log; the "page has"
+column comes from driving the running application directly. Raw output is in the evidence under
+`spec_locator_probe`; the probe is `probe4.mjs` and the call logs are `calllog/out.txt` and
+`calllog/slow.txt` in the session scratch directory.
+
+Re-run at 30 s per test and one worker, the seven that print no call log still time out at 30 s,
+so none of these is a slow page.
+
+| Spec | Waits on | The page has | Cause |
+|---|---|---|---|
+| REQ-2.3.3 Trash list | `getByText(/Delete me 2.3.3/i)` in Trash | the note was never deleted: 19 buttons named "More options", `.first()` is the "Sprint goals" card's | duplicate name, wrong control |
+| REQ-2.7.1 Assign label | the note in the label-filtered list | the dialog is correct — "Change labels" ×1, checkbox "Work" ×2 — but the menu opened belongs to the first card | duplicate name, wrong control |
+| REQ-2.7.2 Remove label | the note absent from the filtered list | as above | duplicate name, wrong control |
+| REQ-2.7.4 Default label on create | the created note under "Reminders" | the composer's own "More options" is not first among 19 | duplicate name, wrong control |
+| REQ-2.8.3 Pin on create | `/pinned/i` and the new title | `/pin/i` `.first()` is a card's "Pin note", of which there are 18 | duplicate name, wrong control |
+| REQ-2.4 Update Note | `getByText(/Updated editable content…/i)` | **no label or placeholder matches `/note/i` or `/content/i`**, so `fillField` falls through to the bare `textbox` fallback and types into the Search box | missing accessible name |
+| REQ-2.6.2 Colour on create | the created note, after choosing "light green" | "Background options" opens, but the palette exposes **no button whose name matches `/light green/i` or even `/green/i`** — the swatch name list is empty | missing accessible name |
+| REQ-2.7.5 Edit labels | `getByLabel('Work editable')` or `/label name/i` | "Edit Labels" opens with **one unnamed textbox**; zero match either pattern | missing accessible name |
+| REQ-4.2 Detailed settings | `getByRole('button', {name: /save/i})` | after opening Settings: **0 save, 0 cancel, 0 text matching `/bottom/i`** | screen not implemented |
+| REQ-5.1 Toggle views | `getByRole('button', {name: /list view/i})` | **0**; `/grid view/i` is also 0 | control not implemented |
+| REQ-5.2 Grid by default | `getByRole('button', {name: /list view/i})` | **0** | control not implemented |
+| REQ-2.7.6.1 Filter by label | `getByText(/Movie list/i)` to reach count 0 | resolved to 1 element: selecting a label does not filter the list | behaviour not implemented |
+| REQ-2.7.6.2 View all notes | both titles visible after clicking "Notes" | same filter defect | behaviour not implemented |
+| REQ-2.7.6.3 View Reminders | `getByText(/Call dentist existing/i)` | the Reminders filter shows nothing | behaviour not implemented |
+| REQ-3.1 Suggested filters | `getByText(/Call dentist existing/i)` | selecting a suggested filter does not filter | behaviour not implemented |
+
+Rolled up, and this is what the next iteration should attack in order:
+
+| Cause | Specs | What would fix it |
+|---|---:|---|
+| One accessible name shared by every row, resolved with `.first()` | 5 | Reveal a row's actions only on hover or focus, or put the row's title in the name. Both keep the substring match the helpers rely on. |
+| An existing control with no name the helper can reach | 3 | Require every input, swatch and dialog field to carry a name drawn from the requirement's own vocabulary. The contract already holds that vocabulary in `exact_texts`; nothing consumes it as a naming rule yet. |
+| Screen, control or behaviour never implemented | 7 | Finish the schedule. All seven sit in batches the run never reached or only started. |
+
+The first two groups are eight specs on an application that implemented seven of fifteen batches.
+They are also the two the contract could address directly, because both are about names, and names
+are what the contract already carries.
+
 ## 2. The problem this addresses
 
 `volo/requirements.py` schedules a requirement package into batches of at most six nodes or

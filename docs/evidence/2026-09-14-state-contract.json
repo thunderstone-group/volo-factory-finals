@@ -1,8 +1,8 @@
 {
-  "recorded_at": "2026-09-14T07:54:51+00:00",
+  "recorded_at": "2026-09-14T08:11:25+00:00",
   "purpose": "Rehearse a global state contract for multi-page requirement packages.",
   "branch": "feat/state-contract",
-  "commit": "8823b8b6343efdb6033a9bebee7551bdaf997b66",
+  "commit": "16510940f95a8bd339eded548cf6073ef83fd49e",
   "model": "deepseek-v4-flash",
   "gateway": "https://api.arc-bench.com/v1",
   "price_table_source": "docs/token-accounting-2026-09-14.md",
@@ -1575,6 +1575,98 @@
     },
     "leaked": false,
     "conclusion": "No public specification and no corpus test reached any generation prompt. volo/public_specs.py keys its bundle on the requirement fingerprint and its manifest holds one entry, for ticket-booking; the keep and bookstack packages hash to different fingerprints, so the lookup returns None and no public_specs_supplied event is emitted. Independently, no line of either app's published specs appears in any message sent to the gateway."
+  },
+  "spec_locator_probe": {
+    "application": "/private/tmp/claude-501/-Users-e0-7-projects/21a88b56-d9d2-4a88-ae5c-488913ee4196/scratchpad/bigtask-keep/gen-keep-i5-stale",
+    "method": "Playwright call logs from the published keep suite, plus a direct probe of the running application. No gateway call.",
+    "reran_at_30s_one_worker": "the seven specs that print no call log still time out at 30 s",
+    "pending_locators": {
+      "REQ-2.3.3": {
+        "waiting_for": [
+          "getByText(/Delete me 2\\.3\\.3/i).first()"
+        ],
+        "resolved_to": [],
+        "source": "out.txt"
+      },
+      "REQ-2.4": {
+        "waiting_for": [
+          "getByText(/Updated editable content for the note editor\\./i).first()"
+        ],
+        "resolved_to": [],
+        "source": "out.txt"
+      },
+      "REQ-2.7.6.1": {
+        "waiting_for": [
+          "getByText(/Movie\\s+list/i)"
+        ],
+        "resolved_to": [
+          "1 element"
+        ],
+        "source": "out.txt"
+      },
+      "REQ-2.7.6.3": {
+        "waiting_for": [
+          "getByText(/Call dentist existing/i).first()"
+        ],
+        "resolved_to": [],
+        "source": "out.txt"
+      },
+      "REQ-3.1": {
+        "waiting_for": [
+          "getByText(/Call dentist existing/i).first()"
+        ],
+        "resolved_to": [],
+        "source": "out.txt"
+      },
+      "REQ-4.2": {
+        "waiting_for": [
+          "getByRole('button', { name: /save/i }).first()"
+        ],
+        "resolved_to": [],
+        "source": "out.txt"
+      },
+      "REQ-5.1": {
+        "waiting_for": [
+          "getByRole('button', { name: /list view/i }).first()"
+        ],
+        "resolved_to": [],
+        "source": "out.txt"
+      },
+      "REQ-5.2": {
+        "waiting_for": [
+          "getByRole('button', { name: /list view/i }).first()"
+        ],
+        "resolved_to": [],
+        "source": "out.txt"
+      }
+    },
+    "control_counts": {
+      "button /list view/i (REQ-5.1, 5.2)": "0",
+      "button /grid view/i": "0",
+      "button /save/i after opening Settings (REQ-4.2)": "0",
+      "button /cancel/i": "0",
+      "text /bottom/i": "0",
+      "composer /background options/i": "20",
+      "swatch /light green/i (REQ-2.6.1, 2.6.2)": "0",
+      "swatch /green/i": "0",
+      "all swatch names": "[]",
+      "menu entry /change labels/i (REQ-2.7.1, 2.7.2, 2.7.4)": "1",
+      "any /change labels/i": "1",
+      "menu entry /delete note/i (REQ-2.3.1, 2.3.3)": "1",
+      "menu after More options": "[\"Notes\",\"Reminders\",\"Archived\",\"Trash\",\"Edit Labels\",\"Settings\",\"Delete Note\",\"Change labels\"]",
+      "CHECKBOX named Work (setLabel needs .check())": "2",
+      "any checkbox on the page": "3",
+      "input labelled \"Work editable\" (REQ-2.7.5)": "0",
+      "input labelled /label name/i": "0",
+      "placeholder /label name/i": "0",
+      "any textbox in Edit Labels": "1"
+    },
+    "artifacts": {
+      "call_log_hosted": "calllog/out.txt",
+      "call_log_30s": "calllog/slow.txt",
+      "probe_script": "probe4.mjs",
+      "probe_output": "probe-keep-specs.txt"
+    }
   },
   "control_probe": {
     "application": "/private/tmp/claude-501/-Users-e0-7-projects/21a88b56-d9d2-4a88-ae5c-488913ee4196/scratchpad/bigtask-keep/gen-keep-i5-stale",
