@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import time
 from dataclasses import asdict
 
@@ -412,6 +413,30 @@ def apply_edits(current, items, path=None):
 # batch spent 36 without converging, thrashing between its own check and three feature
 # files, because the only bound was the run-wide call budget.
 BATCH_CALL_LIMIT = 16
+
+
+_INVALID_JSON_ESCAPE = re.compile(r'\\(?!["\\/bfnrtu])')
+
+
+def tool_arguments(raw):
+    """Parse a tool call's arguments, repairing the one malformation the model produces.
+
+    A file body carrying CSS such as content:"\\22EF" inside a JS string arrives with a
+    backslash the model escaped one level short, and json.loads rejects the whole call
+    (Keep at ccf0600: one paid 10 KB write discarded). Doubling every backslash that
+    does not start a legal JSON escape restores the intended file byte for byte, since
+    a lone backslash before such a character has no other reading.
+    """
+    try:
+        return json.loads(raw)
+    except ValueError as exc:
+        repaired = _INVALID_JSON_ESCAPE.sub(r'\\\\', raw)
+        if repaired == raw:
+            raise exc
+        try:
+            return json.loads(repaired)
+        except ValueError:
+            raise exc
 
 
 class BudgetExhausted(RuntimeError):
@@ -1175,7 +1200,7 @@ class Agent:
                 try:
                     if name not in {tool['function']['name'] for tool in active_tools}:
                         raise ValueError('Tool was not offered in this execution mode: ' + name)
-                    args = json.loads(call.get("function", {}).get("arguments", "{}"))
+                    args = tool_arguments(call.get("function", {}).get("arguments", "{}"))
                     self.trace.event("tool_start", tool=name, arguments=args)
                     if name == 'read_files' and isinstance(args.get('paths'), list):
                         self.read_paths = list(dict.fromkeys([*self.read_paths, *[

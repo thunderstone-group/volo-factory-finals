@@ -1437,3 +1437,24 @@ class HarnessReadTests(unittest.TestCase):
             'checks/interface.spec.cjs', 'frontend/public/app.js', 'checks/vocabulary.cjs', 'backend/api.cjs'])
         self.assertEqual(set(answer['files']), {'checks/interface.spec.cjs', 'checks/vocabulary.cjs'})
         self.assertEqual(answer['product'], ['frontend/public/app.js', 'backend/api.cjs'])
+
+
+class ToolArgumentRepairTests(unittest.TestCase):
+    """A file body whose backslash the model escaped one level short must not cost the call.
+
+    Synthetic reproduction of the Keep ccf0600 write: CSS content:"\\22EF" inside a JS string.
+    """
+
+    def test_an_invalid_json_escape_is_repaired_to_the_intended_bytes(self):
+        from volo.agent import tool_arguments
+        raw = '{"files":[{"path":"a.js","content":"x = \'.b::before{content:\\"\\22EF\\"}\';"}]}'
+        with self.assertRaises(ValueError):
+            json.loads(raw)
+        args = tool_arguments(raw)
+        self.assertEqual(args['files'][0]['content'], 'x = \'.b::before{content:"\\22EF"}\';')
+
+    def test_valid_arguments_and_truly_broken_json_are_unchanged(self):
+        from volo.agent import tool_arguments
+        self.assertEqual(tool_arguments('{"paths":["a","b"]}'), {'paths': ['a', 'b']})
+        with self.assertRaises(ValueError):
+            tool_arguments('{"paths":[')
