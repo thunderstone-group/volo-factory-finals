@@ -1,4 +1,67 @@
-# ARC continuation handoff — 2026-09-12
+# ARC continuation handoff — 2026-09-14 (supersedes the 09-12 sections below)
+
+Read `docs/campaign-plan-2026-09-14.md` first: organizer rules (two-tier ranking at an
+80% threshold, preliminary on 2026-09-21), the arc-bench-web board state, the strategy
+and the order of work. `docs/progress.md` is the dated development log.
+
+## State at handoff
+
+- `main` = 7e4a053. Today's merged PRs: #5 registration timing, #6 official corpus
+  catalogue, #7 token accounting, #8 nav-race fix (Ticket 10/10 officially), #9/#14/#15/#16
+  docs corrections, #10 image ablation (negative), #11 qwen3.6-flash observer default,
+  #13 self-check guard, #17 small-board token cuts (Smoke -16%, Evolution -54%,
+  officially), #19 repair-loop defects (error formatter, anchor diagnostics, read-only
+  diagnosis bound, captured checks demoted to diagnostic), #20 campaign plan, #22 one
+  browser per self-check run. Suite 238 green.
+- Boards: Smoke and Evolution rows are real-agent rows now (audit rows replaced);
+  Ticket row is rank 7 at 100% / CNY 0.899558 (run e34e78400983). The board takes the
+  latest passing run.
+- Open PRs, deliberately held: #18 (remove the vendored CLI; merge once no agent still
+  shells `./arcbench` from the main checkout) and #21 (state contract for the big board;
+  Keep 17/32, Bookstack up to 18/34, both far above the board's 3.1% / 14.7% but below
+  the 80% tier). Agents `bigtask-keep` (next Keep iteration with the two naming rules)
+  and `early-stall` (hosted early-window stall) were running at handoff.
+- The platform CLI is now the public repo thunderstone-group/arcbench-cli (MIT, 0.2.0,
+  installed via `uv tool`, env via `ARCBENCH_ENV_FILE=~/.config/arcbench/volo.env`,
+  `leaderboard` needs `--competition`). It ships `skills/arcbench/` for external agents.
+
+## Unresolved, in priority order
+
+1. **Hosted early-window stall.** Official Ticket runs today: 10/10 x3, 9/10, 7/10, 8/10.
+   Every failure is a test that started in the first 10 to 17 s of the test phase
+   (timeouts, one `Target crashed`); later tests pass fast; the delivered apps replay
+   10/10 locally 25 of 25. PR #22 (one browser per check run) did not remove it. Agent
+   `early-stall` is building the cross-run timeline; suspects are our process-tree
+   teardown, app cold start and the 3000/3301 proxy. Confirmation needs one official
+   trial in a quiet window.
+2. **Objective function.** GPT-6 review at
+   `~/.codex-jobs/volo-factory/2026-09-14-objective-review/last-message.md`: optimise
+   pass rate / cost under a 95% probability of clearing the threshold; the one change
+   worth making first is the verify evidence interface (per-scenario pass/fail/unknown
+   of real behaviour). Not started.
+3. **Big board.** Keep failures: 5 duplicate-name controls, 3 unnamed controls, 7
+   batches never reached; Bookstack additionally flips under 4 workers (shared store).
+   Naming rules and run-to-completion are being implemented on `feat/state-contract`.
+4. **Evolution dice** fails 1 generation in 4 (adds the element, not the handler);
+   forcing the edit to extend the check prevents it at 3x cost. Decide under the formal
+   rules (one shot, junior tier below every senior).
+5. Ticket results are not a generalisation estimate: `volo/public_specs.py` puts the
+   public Ticket tests into generation context by fingerprint. Keep/Bookstack are clean
+   (verified, zero leakage).
+
+## Discipline learned today (do not relearn)
+
+- Official token count is a usage-meter delta on the shared key: official runs and local
+  gateway generations must never overlap; one scheduler, agents never upload on their
+  own. Contaminated rows were restored once for Smoke (single-call, low variance) only.
+- Never re-run a default package to "restore" a board row on Ticket: each run is a cost
+  draw (0.63 / 0.87 / 0.90 for identical code).
+- Local acceptance: trace and video off, assert browser availability, N replays of one
+  product are not N generations.
+- One sample is not a cause; cross-check numbers between agents (two subtotals were
+  wrong today and caught by recomputation).
+
+# ARC continuation handoff — 2026-09-12 (historical)
 
 ## Latest continuation
 
