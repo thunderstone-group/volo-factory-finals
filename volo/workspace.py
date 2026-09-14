@@ -154,6 +154,111 @@ def failure_signature(text):
     return hashlib.sha256('\n'.join(normalized).encode()).hexdigest()
 
 
+# Run 8abb7f040604 lost four of fifteen calls to edits that never applied. Two were
+# rejected with the message "'path'", a bare KeyError, and two with a path and no count,
+# no line numbers and no current text. Every tool failure now names the tool, what was
+# wrong and what to do next. See docs/repair-loop-autopsy-2026-09-14.md.
+TOOL_GUIDANCE = {
+    'patch_and_verify': 'Nothing was written. Resend every edit of this call, each with path, '
+                        'old and new, using a unique anchor from the current file.',
+    'edit': 'Nothing was written. Resend one edit with path, old and new, using a unique anchor.',
+    'write_files': 'Nothing was written. Resend files as a list of objects with path and content.',
+    'deliver': 'Nothing was written. Resend files as objects with path and content, plus check_command as argv.',
+    'read_files': 'Request fewer or smaller product files, or use read_file_chunk with offsets.',
+    'read_file_chunk': 'Request an existing product file with a nonnegative offset and a limit of 1-8000.',
+    'run': 'Supply argv as a list of strings for an existing directory, without shell operators.',
+    'finish': 'Supply check_command as argv, for example ["node","--test","checks/requirements.cjs"].',
+    'build_app': 'Resend build_app with index_html and checks_js as complete strings.',
+    'list_files': 'Call list_files with no arguments.',
+}
+
+
+def tool_failure(tool, exc, root=None):
+    """One actionable result for every exception a tool can raise.
+
+    A bare exception string is not a message a model can act on: a missing key reached
+    run 8abb7f040604 as the string "'path'" and cost it four calls.
+    """
+    if isinstance(exc, json.JSONDecodeError):
+        detail = ('the arguments were not valid JSON (' + str(exc) + '). Return fewer complete '
+                  'files or edits in valid JSON; do not repeat the same oversized call')
+    elif isinstance(exc, KeyError):
+        missing = ', '.join(repr(arg) if not isinstance(arg, str) else arg for arg in exc.args)
+        detail = 'a required argument was missing: ' + (missing or 'unknown')
+    elif isinstance(exc, TypeError):
+        detail = 'the supplied arguments do not match this tool: ' + str(exc)
+    elif isinstance(exc, FileNotFoundError):
+        name = getattr(exc, 'filename', None) or ''
+        if root is not None and name:
+            try:
+                name = str(Path(name).relative_to(Path(root)))
+            except ValueError:
+                name = Path(name).name
+        detail = 'no such file in the application: ' + str(name)
+    elif isinstance(exc, IsADirectoryError):
+        detail = 'that path is a directory, not a file'
+    elif isinstance(exc, TimeoutError):
+        detail = str(exc) or 'the time budget for this tool is exhausted'
+    elif isinstance(exc, OSError):
+        detail = 'the filesystem refused the operation: ' + (exc.strerror or str(exc))
+    else:
+        detail = str(exc)
+    failure = {'error': tool + ' did not run: ' + detail, 'tool': tool}
+    guidance = TOOL_GUIDANCE.get(tool)
+    if guidance:
+        failure['next'] = guidance
+    return failure
+
+
+def anchor_excerpt(text, start, before=120, after=280):
+    """A bounded window of the real current file, with a marker at the divergence."""
+    head = max(0, start - before)
+    return (('...' if head else '') + text[head:start] + '<<<HERE>>>'
+            + text[start:start + after] + ('...' if start + after < len(text) else ''))
+
+
+def edit_anchor_failure(path, old, current, position=None):
+    """Explain precisely why an exact-text anchor did not apply, with the current text.
+
+    Reports the occurrence count and line numbers when the anchor is ambiguous, and the
+    exact character at which the anchor stops matching the file when it is absent.
+    """
+    label = 'edit ' + str(position) + ' of this call' if position else 'the edit'
+    count = current.count(old)
+    if count > 1:
+        lines, start = [], 0
+        while len(lines) < 6:
+            found = current.find(old, start)
+            if found < 0:
+                break
+            lines.append(current.count('\n', 0, found) + 1)
+            start = found + 1
+        return (label + ' did not apply: its old text occurs ' + str(count) + ' times in ' + path
+                + ', starting at line ' + ', '.join(str(line) for line in lines) + '. Extend old with '
+                'the surrounding lines until exactly one occurrence remains.')
+    low, high = 0, len(old)
+    while low < high:
+        middle = (low + high + 1) // 2
+        if old[:middle] in current:
+            low = middle
+        else:
+            high = middle - 1
+    matched = old[:low]
+    hint = ''
+    if old.strip() and old.strip() in current:
+        hint = ' Only the surrounding whitespace differs; copy the indentation exactly as it appears below.'
+    elif '\r' in current and '\r' not in old:
+        hint = ' The file uses CRLF line endings; the old text does not.'
+    elif not matched:
+        hint = ' No prefix of the old text appears in the file at all; read the file before editing it.'
+    where = current.find(matched) + low if matched else 0
+    return (label + ' did not apply: its old text is not present in ' + path + '. The first '
+            + str(low) + ' of ' + str(len(old)) + ' characters match, then the file has '
+            + json.dumps(current[where:where + 40]) + ' where old has '
+            + json.dumps(old[low:low + 40]) + '.' + hint + ' Current text there: '
+            + anchor_excerpt(current, where))
+
+
 def stop_process(process):
     if process.poll() is None:
         try:
@@ -279,7 +384,10 @@ class Workspace:
         if not isinstance(files, list) or not 1 <= len(files) <= 30:
             raise ValueError("Write 1–30 files per call")
         pending, old = {}, {}
-        for item in files:
+        for position, item in enumerate(files, 1):
+            if not isinstance(item, dict) or not {'path', 'content'} <= set(item):
+                raise ValueError("File " + str(position) + " needs 'path' and 'content'. Received keys: "
+                                 + json.dumps(sorted(item) if isinstance(item, dict) else type(item).__name__))
             path = self.path(item["path"], write=True)
             content = item["content"]
             if not isinstance(content, str) or len(content.encode()) > 250000:
@@ -306,10 +414,12 @@ class Workspace:
         return {"written": written}
 
     def edit(self, path, old, new):
+        if not isinstance(old, str) or not old or not isinstance(new, str):
+            raise ValueError('Supply nonempty old text and replacement text')
         target = self.path(path, write=True)
         content = target.read_text()
-        if not old or content.count(old) != 1:
-            raise ValueError("Exact old text must occur exactly once; read the file again")
+        if content.count(old) != 1:
+            raise ValueError(edit_anchor_failure(path, old, content))
         return self.write_files([{"path": path, "content": content.replace(old, new, 1)}])
 
     def run(self, argv, cwd=".", timeout=90, extra_env=None):
@@ -402,11 +512,14 @@ class Workspace:
         self.captured_failure = None
 
     def capture_failed_prepared_check(self, result):
-        """Retain ambiguous-locator cases as repair evidence, not authority.
+        """Retain ambiguous-locator cases as repair evidence, never as authority.
 
         The model may add diagnostic tests, but changing them cannot erase this
-        observed ambiguity. Unrelated timing assertions are not frozen: E052 showed
-        that those may legitimately need waits. Existing-project tests are unaffected.
+        observed ambiguity from the report. Unrelated timing assertions are not frozen:
+        E052 showed that those may legitimately need waits. Existing-project tests are
+        unaffected. A capture is executed by captured_self_check_diagnosis and cannot
+        fail the run: a defective frozen check must never block a correct product from
+        reaching independent acceptance.
         """
         command = ['node', '--test', '--test-reporter=tap', 'checks/requirements.cjs']
         if (not self.retain_failed_prepared_checks or result.get('passed')
@@ -450,11 +563,12 @@ class Workspace:
         self.trace.event('self_check_failure_preserved', check=check,
                          independently_verified=False)
         return {'argv': check['argv'], 'cases': names, 'independently_verified': False,
-                'instruction': 'These captured locator-ambiguity cases must also pass after repair. '
-                               'Scoping or replacing current assertions cannot remove the captured failure; '
-                               'repair the ambiguous product interface. Other checks may receive legitimate waits. '
-                               'A genuinely incorrect captured check remains a reported limitation, not permission '
-                               'to weaken required product behavior or claim independent acceptance.'}
+                'authority': 'diagnostic_only',
+                'instruction': 'These captured locator-ambiguity cases are retained as evidence and re-run '
+                               'after every repair. Scoping or replacing current assertions cannot erase the '
+                               'captured failure from the report, so repair the ambiguous product interface. '
+                               'They are diagnostic: they do not block verification, and they never mark a '
+                               'requirement verified or replace independent acceptance.'}
 
     def step_defects(self, step):
         """Harness/API misuse inside the run's own check code, read from its real log."""
@@ -508,6 +622,63 @@ class Workspace:
                          'limitation, not evidence that the requirement is satisfied.')}
         self.trace.event('captured_self_check_released', independently_verified=False, **release)
         return release
+
+    def captured_cases_complete(self, check, captured):
+        """Did every captured case actually run, rather than being filtered away?"""
+        try:
+            raw = self.root / check['log']
+            if raw.stat().st_size > 1000000:
+                return False
+            events = [json.loads(line) for line in raw.read_text().splitlines() if line.strip()]
+            names = [event['name'] for event in events
+                     if event.get('type') == 'test:pass' and event.get('kind') in (None, 'test')
+                     and event.get('nesting') == 0 and not event.get('skip') and not event.get('todo')]
+            return sorted(names) == sorted(captured['expected_cases'])
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
+            return False
+
+    def captured_self_check_diagnosis(self, url, steps, executed):
+        """Run the captured ambiguity cases as evidence, never as a verdict.
+
+        The frozen bundle is the run's own check code. It can be wrong, and a wrong one
+        must not stop a correct product from reaching independent acceptance. Its result
+        is reported as a limitation and recorded in the trace; the release rules still
+        drop a capture that a further round cannot converge against.
+        """
+        captured = [check for check in self.required_checks if 'expected_cases' in check]
+        if not captured:
+            return {}, None
+        reports, released = [], None
+        for check in list(captured):
+            run = self.run(check['argv'], '.', 180, {
+                'FACTORY_BASE_URL': url, 'E2E_BASE_URL': url, 'PLAYWRIGHT_BASE_URL': url})
+            steps.append(run)
+            executed.append(check['argv'])
+            failed = run['exit_code'] != 0 or run['timed_out']
+            if not failed and not self.captured_cases_complete(run, check):
+                failed, note = True, 'the captured cases did not all execute'
+            else:
+                note = None
+            report = {'cases': check['expected_cases'],
+                      'status': 'failed' if failed else 'passed',
+                      'authority': 'diagnostic_only'}
+            if note:
+                report['note'] = note
+            if failed:
+                report['output'] = run['output'][-3000:]
+                report['instruction'] = (
+                    'These captured cases still report an ambiguous or unmet interface. They are '
+                    'diagnostic evidence, not a verdict, and they do not block this verification. '
+                    'Repair the ambiguous product interface rather than scoping the assertion away; '
+                    'an unresolved capture is reported as a limitation of this run.')
+                release = self.release_captured_check(check, run)
+                if release:
+                    released = release
+                    report['released'] = release['reason']
+            reports.append(report)
+        self.trace.event('captured_self_check_diagnosis', reports=reports,
+                         independently_verified=False)
+        return {'captured_self_check': reports}, released
 
     def contract_fingerprint(self):
         return hashlib.sha256(json.dumps(self.required_checks, sort_keys=True).encode()).hexdigest()
@@ -624,47 +795,24 @@ class Workspace:
                     if not ready:
                         return result(False, error="Application did not serve HTTP 200 on PORT",
                                       server_output=self.trace.redact(server_log.read_text(errors="replace")[-6000:]))
-                    commands = [*[check['argv'] for check in self.required_checks],
-                                check_command, *self.browser_checks(check_command)]
+                    # A captured self-check is the run's own frozen bytes. It reports an
+                    # observed ambiguity; it does not decide the run. Operator-supplied
+                    # required checks and the requirement assertions keep their authority,
+                    # and independent acceptance decides whenever it is configured.
+                    supplied = [check for check in self.required_checks if 'expected_cases' not in check]
                     executed = []
-                    released = None
+                    diagnosis, released = self.captured_self_check_diagnosis(url, steps, executed)
+                    commands = [*[check['argv'] for check in supplied],
+                                check_command, *self.browser_checks(check_command)]
                     for command in commands:
                         check = self.run(command, ".", 180, {
                             "FACTORY_BASE_URL": url, "E2E_BASE_URL": url, "PLAYWRIGHT_BASE_URL": url})
                         steps.append(check)
                         executed.append(command)
-                        captured = next((fixed for fixed in self.required_checks
-                                         if fixed['argv'] == command and 'expected_cases' in fixed), None)
-                        if captured and (check['exit_code'] != 0 or check['timed_out']):
-                            release = self.release_captured_check(captured, check)
-                            if release:
-                                # The captured check can never pass; continue with the
-                                # remaining checks instead of spending another round on it.
-                                released = release
-                                steps.pop()
-                                executed.pop()
-                                continue
-                        if captured and check['exit_code'] == 0 and not check['timed_out']:
-                            raw = self.root / check['log']
-                            try:
-                                if raw.stat().st_size > 1000000:
-                                    raise ValueError('Captured result is too large')
-                                events = [json.loads(line) for line in raw.read_text().splitlines() if line.strip()]
-                                passed_names = [event['name'] for event in events
-                                                if event.get('type') == 'test:pass' and event.get('kind') in (None, 'test')
-                                                and event.get('nesting') == 0 and not event.get('skip')
-                                                and not event.get('todo')]
-                                complete = sorted(passed_names) == sorted(captured['expected_cases'])
-                            except (OSError, ValueError, KeyError, TypeError, AttributeError):
-                                complete = False
-                            if not complete:
-                                return result(False, error='Captured ambiguity cases did not all execute',
-                                              check_command=check_command, executed_checks=executed,
-                                              application_url=url, **extra(released))
                         if check["exit_code"] != 0 or check["timed_out"]:
                             defects = self.step_defects(check)
                             return result(False, check_command=check_command, executed_checks=executed,
-                                          application_url=url, **extra(released),
+                                          application_url=url, **diagnosis, **extra(released),
                                           **({'defective_check': {'findings': defects,
                                                                   'instruction': DEFECTIVE_CHECK_INSTRUCTION}}
                                              if defects else {}))
@@ -679,15 +827,15 @@ class Workspace:
                             steps.append({'output': json.dumps(acceptance, ensure_ascii=False),
                                           'exit_code': 1, 'timed_out': acceptance.get('timed_out', False)})
                         verified = result(acceptance['passed'], check_command=check_command,
-                                          executed_checks=commands, application_url=url, acceptance=acceptance,
-                                          **extra(released),
+                                          executed_checks=executed, application_url=url, acceptance=acceptance,
+                                          **diagnosis, **extra(released),
                                           **({'error': 'Independent acceptance did not pass'} if not acceptance['passed'] else {}))
                         if acceptance['status'] in ('error', 'unverified'):
                             raise AcceptanceUnavailable('Independent acceptance is unavailable or incomplete; '
                                                         'stopping instead of asking the model to repair its evaluator')
                         return verified
                     return result(True, check_command=check_command, executed_checks=executed,
-                                  application_url=url, **extra(released))
+                                  application_url=url, **diagnosis, **extra(released))
                 finally:
                     stop_process(process)
                     text = self.trace.redact(server_log.read_text(errors="replace"))

@@ -86,13 +86,15 @@ two runs of the unchanged default.
 Generation cost across the four runs is 0.345545, 0.604138, 0.779833 and 1.035597, a threefold
 spread driven by how many repair rounds the run needs. That, not the observer, is the cost.
 
-This is why the default moves on price arithmetic instead of on a trial. Changing the observer
-from `kimi-k3` to `qwen3.6-flash` is an input-price change, not a behaviour change: the same
-three images are read and the same kind of text reaches the same generation prompt. On the two
-`kimi-k3` runs it would have saved CNY 0.247126 and 0.229586, every time, with no effect on the
-repair loop that produces the variance. The one thing it does change is the size of the
-observation text, 4,236 tokens against `kimi-k3`'s 1,195 to 1,372, which adds roughly 3,000
-prompt tokens to the generation call, about CNY 0.009 at the cache-miss rate.
+This is why the default moves on price arithmetic instead of on a trial, and the size of the
+claim has to match the evidence. What is measured is that the observation call itself costs
+**CNY 0.23 to 0.25 less** per run: on the two `kimi-k3` runs, switching to `qwen3.6-flash` would
+have saved CNY 0.247126 and 0.229586. **The end-to-end effect is unmeasured.** The observation
+text grew from about 1,300 tokens to 4,236, so the model, the content and the length of the
+observation all changed at once; it is not an input-price change with everything downstream held
+fixed. The extra roughly 3,000 prompt tokens on the generation call are about CNY 0.009 at the
+cache-miss rate, but nothing here bounds the effect of a different observation on how many repair
+rounds the generation then needs, which is where the threefold cost spread lives.
 
 ## 5. Confirmation condition
 

@@ -17,6 +17,9 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
   the `FACTORY_VISION_MODEL` switch and which gateway models actually read an image.
 - `docs/selfcheck-deadend-2026-09-14.md`: why a run can spend its whole budget repairing its own
   check, the two autopsies, and the rules that bound it.
+- `docs/repair-loop-autopsy-2026-09-14.md`: every model call of every retained run labelled by
+  failure source, the three mechanical defects that cost CNY 2.74 across sixteen runs, and why a
+  captured self-check is diagnostic rather than authoritative.
 - `docs/harness-consolidation-2026-09-12.md`: integration decisions and validation boundaries.
 - `docs/harness-design-2026-09-12.md`: pinned-source comparison and proposed next experiments.
 - `docs/strategy.md`: verified competition facts, design choices and next experiments.
@@ -32,7 +35,8 @@ when integrating independent work; remove completed worktrees after retaining th
 unversioned evidence. Read live Git state instead of assuming a historical document
 names the current branch or candidate.
 
-Self-checks are diagnostic. Only an explicitly supplied calibrated acceptance suite
+Self-checks are diagnostic, including a captured self-check: it reports an observed ambiguity and
+never decides a verification. Only an explicitly supplied calibrated acceptance suite
 may populate `verified_requirements`; official scores remain a separate result.
 The model-generated browser probe stays opt-in in `harness_lab/` and never becomes a
 default second model call. Do not merge a new experiment by silently enabling it.
