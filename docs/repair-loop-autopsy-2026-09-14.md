@@ -190,3 +190,10 @@ reports `failed`, and `verified_requirements` stays empty.
   for and the one that would tell us whether the remaining CNY 5.13 is reducible.
 - Sixteen runs across four agent revisions are not a controlled sample. The concentration of
   defect spend in four runs is a description of these traces, not a rate.
+- **Removing the capture's authority gives something up.** A run can now complete with a real,
+  unresolved interface ambiguity that a frozen check correctly identified, because the model
+  scoped its live assertion away and nothing blocks it. The ambiguity is reported in
+  `captured_self_check` and in the trace, and it never marks a requirement verified, but the
+  official evaluator, not the harness, is what will find it. The alternative was worse: a frozen
+  bundle that is itself wrong could stop a correct product from being delivered at all, which is
+  what the nav-race dead end actually did.
