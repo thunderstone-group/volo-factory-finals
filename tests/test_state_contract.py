@@ -657,3 +657,17 @@ class ServingDiagnosisTests(TempCase):
     def test_the_api_contract_is_stated_to_the_model(self):
         self.assertIn('return false', state_runtime.STORE_CONTRACT)
         self.assertIn('async (req, res) => boolean', state_runtime.STORE_CONTRACT)
+
+
+class DocumentHygieneTests(TempCase):
+    def test_the_internal_mapping_sentinel_never_reaches_a_batch(self):
+        contract = state_contract.normalize({
+            'navigation': {'Trash': {'from': 'home', 'control': 'link'}},
+            'api': {'/api/notes': {'method': 'GET'}},
+            'entities': {'note': {'title': 'string'}},
+            'seeds': [{'id': 'a', 'type': 'note', 'title': 'A'}]})
+        text = state_contract.document(state_contract.reconcile(
+            contract, {'quoted_literals': [], 'declared_seed_sentences': []}))
+        self.assertNotIn(state_contract.KEY, text)
+        self.assertIn('Trash', text)
+        self.assertIn('/api/notes', text)

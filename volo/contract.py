@@ -302,8 +302,18 @@ def normalize(value):
         items = _listify(contract[key])
         contract[key] = [item if isinstance(item, str) else json.dumps(item, ensure_ascii=False)
                          for item in items]
-    contract["navigation"] = [item for item in _listify(contract["navigation"]) if isinstance(item, dict)]
-    contract["api"] = [item for item in _listify(contract["api"]) if isinstance(item, dict)]
+    def entry(item):
+        # The mapping-key sentinel is an internal carrier; batches read this document,
+        # so present it as the entry's name.
+        if KEY not in item:
+            return item
+        value = {key: field for key, field in item.items() if key != KEY}
+        value.setdefault("name", item[KEY])
+        return value
+
+    contract["navigation"] = [entry(item) for item in _listify(contract["navigation"])
+                              if isinstance(item, dict)]
+    contract["api"] = [entry(item) for item in _listify(contract["api"]) if isinstance(item, dict)]
 
     seeds, ids = [], set()
     for index, seed in enumerate(_listify(contract["seeds"])):
