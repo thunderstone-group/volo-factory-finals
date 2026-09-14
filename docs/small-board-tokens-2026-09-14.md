@@ -218,13 +218,21 @@ day. Their meter deltas do not agree with that at all.
 | `e96528d0c088` | smoke counter | 1,495 | 6,526 | 5,031 | 0.030322 |
 | `75d87d03568f` | smoke dice | 1,486 | 56,328 | 54,842 | 0.181991 |
 
-Nothing of this task's was running: the generation driver was idle and both runs made exactly one
-model call each. The residual is other use of the shared key inside the run windows. It is worth
+| `34a7c84cc9d2` | smoke counter, re-run | 4,000 | 39,802 | 35,802 | 0.133409 |
+
+Nothing of this task's was running: the generation driver was idle and the first two runs made
+exactly one model call each. The residual is other use of the shared key inside the run windows. It is worth
 being precise about the rule this exposes: the meter charges a run for **any** use of the key in
 its window, so a teammate's *local* generation contaminates an official run exactly as another
 official run would. The Evolution board was therefore left on its clean rows from `39b447342506`
-rather than re-validated during the contamination, and the per-task Smoke rows now carry the two
-inflated numbers until they can be re-run in a quiet window.
+rather than re-validated during the contamination.
+
+One attempt to restore the Smoke rows made it worse and was the last official run of this task: the
+re-run needed two model calls for 4,000 captured tokens and was metered at 39,802. So the per-task
+Smoke rows now read 39,802 and 56,328 tokens for an agent whose own usage was about 1,500 and 4,000.
+They need one clean re-run each, which is worth perhaps ten minutes on a quiet key, and the
+metering-site session has expired, so `arcbench balance` returns 401 and nobody can currently see
+whether the key is quiet before spending a run.
 
 ## Cost of the work
 
