@@ -1029,3 +1029,17 @@ generation has been run against any of this.
   uploading again, the wall-clock delivery path is being exercised end to end with a real
   seven-minute local generation, not only with the synthetic test.
 - Bundle: `runs/2026-09-15-official-keep-1c2af08cf3cc/`.
+
+### 2026-09-15, 05:44 — third official Keep run: on the board at 59.4%
+
+- Run `762faa0bd756` (submission `672b777e6cbe`, package 875fbaa): **19/32, 59.4%**, 100
+  minutes, 4.51 M metered tokens, CNY 9.68. VOLO AI is rank 4 on Keep behind 100%, 62.5%
+  and 59.4%. The delivery path held: the wall clock ended the schedule, the verified snapshot
+  was delivered, exit 0, tests ran. Timed-out tests under the hosted 10-second budget:
+  2.3.3, 2.4, 2.7.1, 2.7.2 among the thirteen failures; REQ-2.6.1 failed on an empty
+  screenshot clip; the rest are unreached requirements.
+- Three official runs tonight cost CNY 27.3 in total; the first two scored 0 on delivery-path
+  bugs that are now fixed and covered by a real wall-clock run locally.
+- Next lever: RE (one 12-call retry of a capped batch, 7db22d7) and RF/RG are on
+  feat/state-contract but not on the upload branch; a full local Keep generation on
+  feat/state-contract head is the gate before they go up.
