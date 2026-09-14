@@ -1,8 +1,8 @@
 {
-  "recorded_at": "2026-09-14T07:32:43+00:00",
+  "recorded_at": "2026-09-14T07:54:51+00:00",
   "purpose": "Rehearse a global state contract for multi-page requirement packages.",
   "branch": "feat/state-contract",
-  "commit": "04c4d29ecb6b172d3a017f4d6c3282d54c1b4c2f",
+  "commit": "8823b8b6343efdb6033a9bebee7551bdaf997b66",
   "model": "deepseek-v4-flash",
   "gateway": "https://api.arc-bench.com/v1",
   "price_table_source": "docs/token-accounting-2026-09-14.md",
@@ -1487,7 +1487,226 @@
         43.3,
         43.4
       ]
-    }
+    },
+    "_abandoned": [
+      {
+        "file": "rep-bookstack-h2-repo-1.json",
+        "profile": "repo",
+        "workers": 1,
+        "wall_seconds": 930.6,
+        "outcome": "no report produced"
+      }
+    ]
+  },
+  "public_spec_leakage": {
+    "corpus_test_lines_searched": 159,
+    "public_specs_manifest": [
+      {
+        "requirement_fingerprint": "a22b340306d19d379acd689eb6abae5b5b99dbbef7c872874486fba818468dfe",
+        "source": "https://arc-bench.com/api/requirements/ticket-booking--ticket-booking/tests?catalog=competition",
+        "files": {
+          "ticket-booking--ticket-booking/REQ-1.1-user-registration.spec.ts": "effc7a98a0da5f18f95aa3c188bafb7264ccc089e6e9fc319f529b410f83d2b3",
+          "ticket-booking--ticket-booking/REQ-1.2-user-login.spec.ts": "701eb9af146a1cf6d650ff3df7de48e4e6da978f244dc8963708dadf72b2daab",
+          "ticket-booking--ticket-booking/support/e2e.ts": "ca5eaacd8bc4477d93ed45b0f46fe86cdb26b5ed7cc4e9816fd324f592c40795"
+        }
+      }
+    ],
+    "runs": {
+      "gen-keep-i1": {
+        "requests_sent": 34,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      },
+      "gen-keep-i2": {
+        "requests_sent": 22,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      },
+      "gen-keep-i3": {
+        "requests_sent": 18,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      },
+      "gen-keep-i4": {
+        "requests_sent": 20,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      },
+      "gen-keep-i5-stale": {
+        "requests_sent": 50,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      },
+      "gen-keep-i6-truncated": {
+        "requests_sent": 51,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      },
+      "gen-keep-i7": {
+        "requests_sent": 106,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      },
+      "gen-bookstack-h1-truncated": {
+        "requests_sent": 54,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      },
+      "gen-bookstack-h2": {
+        "requests_sent": 104,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      },
+      "gen-ticket": {
+        "requests_sent": 3,
+        "public_specs_supplied_events": 0,
+        "corpus_test_lines_in_prompts": 0
+      }
+    },
+    "fingerprints": {
+      "keep": {
+        "requirement_fingerprint": "cbc9dfa4779c2e086c93f10306809de357d847f25f46706ba226b0377cf42ad3",
+        "load_public_specs": null
+      },
+      "bookstack": {
+        "requirement_fingerprint": "2cef30f1dff8c6bdfe8ccdb8bffee910b161d1c603b4e1a5781dfefeda82a1d0",
+        "load_public_specs": null
+      }
+    },
+    "leaked": false,
+    "conclusion": "No public specification and no corpus test reached any generation prompt. volo/public_specs.py keys its bundle on the requirement fingerprint and its manifest holds one entry, for ticket-booking; the keep and bookstack packages hash to different fingerprints, so the lookup returns None and no public_specs_supplied event is emitted. Independently, no line of either app's published specs appears in any message sent to the gateway."
+  },
+  "control_probe": {
+    "application": "/private/tmp/claude-501/-Users-e0-7-projects/21a88b56-d9d2-4a88-ae5c-488913ee4196/scratchpad/bigtask-keep/gen-keep-i5-stale",
+    "method": "Playwright against the running generated application, offline, no gateway call.",
+    "home_accessible_names": {
+      "button": [
+        "Toggle sidebar",
+        "Take a note...",
+        "Unpin note",
+        "Background options",
+        "Archive",
+        "More options",
+        "Pin note"
+      ],
+      "link": [],
+      "checkbox": [],
+      "menuitem": [
+        "Notes",
+        "Reminders",
+        "Archived",
+        "Trash",
+        "Edit Labels",
+        "Settings"
+      ],
+      "tab": [],
+      "heading": [
+        "PINNED",
+        "OTHERS"
+      ],
+      "textbox": [
+        "Search"
+      ],
+      "option": [],
+      "searchbox": [],
+      "dialog": []
+    },
+    "helper_resolution": {
+      "openComposer /take a note/i": "/take a note/i",
+      "openTrash /^trash$/i": "/^trash$/i",
+      "openArchive /^archived?$/i": "/^archived?$/i",
+      "openSidebar /main menu|menu|sidebar/i": "/sidebar/i",
+      "settings /settings/i": "/settings/i",
+      "view toggle /list view|grid view/i": "NOT FOUND",
+      "label Work": "/Work/i",
+      "label Reminders": "/Reminders/i",
+      "notes nav /notes/i": "/notes/i"
+    },
+    "button_name_counts": {
+      "Toggle sidebar": 1,
+      "Take a note...": 1,
+      "Unpin note": 1,
+      "Background options": 19,
+      "Archive": 19,
+      "More options": 19,
+      "Pin note": 18
+    },
+    "first_match_lands_on": [
+      [
+        "/more/i",
+        "{\"name\":\"More options\",\"cardText\":\"Sprint goals📌🎨📥⋮\"}"
+      ],
+      [
+        "/^delete$/i",
+        "{\"error\":\"TimeoutError: locator.evaluate: Timeout 30000ms exceeded.\\nCall log:\\n\\u001b[2m  - wait\"}"
+      ]
+    ],
+    "placeholders_matching_note": "[]"
+  },
+  "bookstack_instability": {
+    "replays": 3,
+    "self_checked": 20,
+    "attempted": 23,
+    "always_failing": [
+      "REQ-4.3.1",
+      "REQ-5.6.1",
+      "REQ-6.1.1",
+      "REQ-6.1.2",
+      "REQ-6.1.3",
+      "REQ-6.2.1",
+      "REQ-6.3.1",
+      "REQ-6.3.2",
+      "REQ-7.1",
+      "REQ-7.2",
+      "REQ-8.1",
+      "REQ-8.2",
+      "REQ-9.1"
+    ],
+    "always_failing_never_reached": [
+      "REQ-6.1.1",
+      "REQ-6.1.2",
+      "REQ-6.1.3",
+      "REQ-6.2.1",
+      "REQ-6.3.1",
+      "REQ-6.3.2",
+      "REQ-7.1",
+      "REQ-7.2",
+      "REQ-8.1",
+      "REQ-8.2",
+      "REQ-9.1"
+    ],
+    "always_failing_self_checked": [
+      "REQ-4.3.1",
+      "REQ-5.6.1"
+    ],
+    "flipping_between_replays": [
+      "REQ-2.2",
+      "REQ-4.1",
+      "REQ-4.2.1",
+      "REQ-4.3.2",
+      "REQ-4.4.1",
+      "REQ-4.4.2",
+      "REQ-4.5.1",
+      "REQ-4.5.2",
+      "REQ-5.1",
+      "REQ-5.2.2",
+      "REQ-5.4.2",
+      "REQ-5.5.1",
+      "REQ-5.5.2"
+    ],
+    "flipping_and_self_checked": [
+      "REQ-2.2",
+      "REQ-4.1",
+      "REQ-4.2.1",
+      "REQ-4.3.2",
+      "REQ-4.4.1",
+      "REQ-4.4.2",
+      "REQ-4.5.1",
+      "REQ-4.5.2",
+      "REQ-5.1",
+      "REQ-5.2.2"
+    ],
+    "flipping_and_never_reached": []
   },
   "seed_delivery_probe": {
     "probe": "Seeded identities reach the running application through model-authored code",

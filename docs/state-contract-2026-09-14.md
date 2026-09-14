@@ -94,6 +94,91 @@ One generated Ticket application, gated five times with this branch's server fil
 The two are identical. That application passes 9 of its 10 public tests, which is a property of that generation, not of the change: both servers agree exactly, replay after replay. Ticket also confirms the routing rule directly, because no contract was extracted for it at all.
 
 
+### 1.6 No public specification or corpus test reached a generation prompt
+
+`volo/public_specs.py` can put published tests into the generation context, so this was checked
+rather than assumed, three independent ways, over all ten retained traces. The script is recorded
+in the evidence as `public_spec_leakage`.
+
+| Check | Result |
+|---|---|
+| `public_specs_supplied` events across all ten generations | **0** |
+| Exact lines from the `keep` and `bookstack` published specs found in any message sent to the gateway (159 distinct lines searched) | **0** |
+| `load_public_specs()` replayed against each package's fingerprint | returns `None` for both |
+
+The mechanism that excluded them is the fingerprint binding, not luck. The manifest holds exactly
+one entry, for `ticket-booking--ticket-booking`, keyed to requirement fingerprint `a22b340306d1…`.
+Keep hashes to `cbc9dfa4779c…` and Bookstack to `2cef30f1dff8…`, so the lookup finds no entry and
+returns `None`; the event that would announce a bundle is never emitted. The one marker that did
+appear in prompts, `@playwright/test`, comes from the harness's own system prompt telling the model
+*not* to use that runner.
+
+So the Keep and Bookstack figures are not contaminated as generalization estimates. The generation
+side saw requirement prose and reference filenames only.
+
+### 1.7 Cause analysis: what the next iteration should target
+
+Grouped by cause rather than by requirement, because the same defect produces many failures.
+Probe scripts and raw output are in the evidence record.
+
+**Cause 1 — one accessible name shared by every row, resolved to the wrong one. Keep, 5 specs.**
+The generated Keep application renders each note's actions as always-visible buttons, so the home
+page carries **19 buttons named "More options", 19 "Background options", 19 "Archive" and 18 "Pin
+note"**. The published helpers resolve a control by role and name and then take `.first()`
+(`keep/tests/helpers.ts` `firstVisible`), so `deleteNote(page, 'Delete me 2.3.3')` hovers the right
+note and then clicks the *first* "More options" on the page, which belongs to "Sprint goals". A
+probe confirms it directly: the element `.first()` picks for `/more/i` and for
+`/background options/i` both sit in the "Sprint goals" card. Every test that names a specific note
+then acts on a different note, the expected outcome never arrives, and the spec times out. This is
+REQ-2.3.3, REQ-2.6.2, REQ-2.7.1, REQ-2.7.2 and REQ-2.8.3.
+
+*Fix to try:* render a row's actions only while that row is hovered or focused, or give each one a
+name that includes its row ("More options for Delete me 2.3.3"). The helpers match names as
+case-insensitive substrings, so a name that contains the row title still matches `/more/i` while
+becoming unique.
+
+**Cause 2 — a required field with no name the helper can reach. Keep, 1 spec.**
+`REQ-2.4` fills the note body with `fillField(page, [/note/i, /content/i], …)`. The application
+exposes **no placeholder or label matching either pattern** (the probe returns an empty list), so
+the helper falls through to its bare `getByRole('textbox')` fallback and types the note body into
+the search box.
+
+*Fix to try:* the contract already carries the requirement's exact copy; the generator should also
+be required to give every input an accessible name drawn from the requirement's own vocabulary.
+
+**Cause 3 — the requirement was never implemented. Keep 10 of 15, Bookstack 11 of 23.**
+The largest single group, and not a defect: the run stopped before its schedule did. Keep never
+reached REQ-2.7.2, 2.7.4, 2.7.5, 2.7.6.1, 2.7.6.2, 2.7.6.3, 3.1, 4.2, 5.1 and 5.2. Bookstack never
+reached REQ-6.1.1 through 9.1. A probe of the Keep application finds no list/grid toggle at all,
+which is REQ-5.1 and REQ-5.2 exactly.
+
+**Cause 4 — implemented behaviour that interferes under four workers. Bookstack, 13 specs.**
+Replayed three times against identical bytes on an idle machine, Bookstack returns 15, 13 and 18,
+and **13 specs flip between replays. Ten of them are requirements the run implemented and
+self-checked and the other three are requirements whose batch it had started; not one is a
+requirement it never reached.** The hosted runner uses four workers with
+`fullyParallel` false, so four spec files drive one backend and one store at once. The corpus keeps
+that safe by giving every destructive test its own seeded row, and the contract does reproduce the
+rows the prose declares — but a Bookstack test also *creates* shelves, books and pages as it runs,
+and those collide across workers. Keep shows none of this: four replays, 17 every time, same
+failing set, because its mutating tests act on rows that already exist.
+
+*Fix to try:* the contract knows which requirements mutate which collection (`mutated_by`). A
+generated write path could namespace rows it creates by the requirement that created them, which
+is the same convention the corpus uses for seeds. The direct control — replaying Bookstack at one
+worker — did not finish in the time available and is the first measurement to take next.
+
+**Cause 5 — self-checked and still wrong. Keep 4 specs, Bookstack 2 specs.**
+REQ-2.4, REQ-2.6.2, REQ-2.7.1 and REQ-2.8.3 on Keep, REQ-4.3.1 and REQ-5.6.1 on Bookstack, passed
+the agent's own behavioural check and then failed the official spec every time. Causes 1 and 2
+explain the Keep four. The agent's checks use the names it chose itself, so they cannot catch a
+name that is ambiguous to a resolver walking a fixed ladder.
+
+**Not a cause: the seeded state.** No failure in any scored run was a missing seed row, a renamed
+field, a value that disagreed or a screen a later batch could not reach. Every failing spec ran out
+of time; none failed an assertion. That is what the contract was built to prevent, and it did not
+occur.
+
 ## 2. The problem this addresses
 
 `volo/requirements.py` schedules a requirement package into batches of at most six nodes or

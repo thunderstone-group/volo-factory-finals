@@ -646,3 +646,30 @@ each rule snapshot and experiment with date and source.
 - Detail, per-iteration cost and limits in `docs/state-contract-2026-09-14.md`, raw record in
   `docs/evidence/2026-09-14-state-contract.json`. No official run was started, and no corpus test
   or public specification entered any generation prompt.
+
+### 2026-09-14, later — leakage check and per-cause failure analysis
+
+- **No public specification and no corpus test reached any generation prompt.** Checked three ways
+  over all ten retained traces: zero `public_specs_supplied` events; zero of 159 exact lines from
+  the published `keep` and `bookstack` specs present in any message sent to the gateway; and
+  `load_public_specs()` returns `None` for both packages. The mechanism is the fingerprint binding
+  in `volo/public_specs.py`: its manifest holds one entry, for `ticket-booking--ticket-booking` at
+  fingerprint `a22b340306d1…`, while Keep hashes to `cbc9dfa4779c…` and Bookstack to `2cef30f1dff8…`.
+  The one apparent marker, `@playwright/test`, comes from our own system prompt telling the model
+  not to use that runner. Script and per-run counts are in the evidence file under
+  `public_spec_leakage`. The Keep and Bookstack numbers are therefore not contaminated.
+- Failures grouped by cause, in `docs/state-contract-2026-09-14.md` section 1.7. The dominant Keep
+  defect is one accessible name shared by every row: the home page carries **19 buttons named
+  "More options", 19 "Background options", 19 "Archive"**, all permanently visible, and the
+  published helpers take `.first()`. A probe confirms the element `.first()` resolves for `/more/i`
+  sits in the "Sprint goals" card, so a test naming any other note acts on the wrong one and times
+  out. Second defect: no placeholder or label matches `/note/i` or `/content/i`, so REQ-2.4 types
+  the note body into the search box through the helper's bare `textbox` fallback.
+- Bookstack's instability is in implemented behaviour, not missing behaviour: of the 13 specs that
+  flip between replays, ten were self-checked and three had their batch started; **none is a
+  requirement the run never reached.** Keep, whose mutating tests act on rows that already exist,
+  is stable at 17 across four replays. The reading is that four workers share one store while a
+  Bookstack test creates entities as it runs. The direct control, replaying at one worker, ran
+  930 s without finishing and was stopped; it is recorded as attempted, never counted, and is the
+  first measurement to take next.
+- Merged `origin/main` at b565095. Suite green at 278.
