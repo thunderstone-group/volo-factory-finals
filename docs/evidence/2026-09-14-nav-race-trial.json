@@ -1,0 +1,291 @@
+{
+  "observed_at": "2026-09-14T03:24:33.912570+00:00",
+  "change": {
+    "branch": "fix/nav-race",
+    "commit": "ccc3eb98bfb22611aba4c39640f1ede3ac5851f6",
+    "summary": "Generation prompts forbid browser self-navigation after a submit or sign-out; verification rejects it statically in authored product source before any build.",
+    "measurement_source": "docs/registration-timing-2026-09-14.md"
+  },
+  "unit_tests": {
+    "ran": 169,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 11,
+    "duration_seconds": 51.818,
+    "command": "python -m unittest discover -s tests -v",
+    "baseline_on_main": 163,
+    "skip_reasons": [
+      "Installed browser configuration required",
+      "Installed Chrome/Playwright required",
+      "Installed Playwright and Chromium required",
+      "Provide an installed Playwright module and Chromium for real browser checks (x4)",
+      "Set HARNESS_TEST_IMAGE to a local Node/Python image (x4)"
+    ],
+    "note": "Skips need machine-local browser/image environment variables; they are the same 11 as on main."
+  },
+  "local_generation": {
+    "model": "deepseek-v4-flash",
+    "gateway": "https://api.arc-bench.com/v1",
+    "requirements": "runs/e012-ticket-cli/artifact.zip template/requirements (Ticket Booking)",
+    "attempts": 2,
+    "first_attempt": {
+      "status": "failed",
+      "reason": "Observed model token budget exhausted",
+      "detail": "The model wrote assert(locator).toBeVisible() in its own checks. A captured locator-ambiguity check froze those bytes, so the TypeError could never be repaired.",
+      "self_navigation_findings_in_product_source": 0
+    },
+    "adjustment": "SMALL_SYSTEM now states that assert is node:assert/strict, not Playwright expect.",
+    "second_attempt": {
+      "status": "completed",
+      "self_checked_requirements": [
+        "REQ-1",
+        "REQ-2"
+      ],
+      "model_calls": 13,
+      "prompt_tokens": 353065,
+      "completion_tokens": 83078,
+      "self_navigation_findings_in_product_source": 0
+    }
+  },
+  "local_gate": {
+    "mode": "host (application in a 1 CPU / 256 MB container behind the volo launcher, Playwright 1.57.0 and Google Chrome on macOS)",
+    "playwright_settings": {
+      "workers": 4,
+      "fullyParallel": false,
+      "timeout_ms": 10000,
+      "expect_timeout_ms": 10000,
+      "retries": 0,
+      "trace": "off",
+      "video": "off",
+      "screenshot": "off"
+    },
+    "public_tests": "runs/20260912-objective-review/public-tests (unchanged bytes)",
+    "repetitions": 20,
+    "runs_with_10_of_10": 20,
+    "failed_tests": [],
+    "suite_wall_seconds_median": 5.405,
+    "test_duration_ms_min_median_max": {
+      "REQ-1.1: successfully register a new account and remain signed in": [
+        591,
+        634,
+        720
+      ],
+      "REQ-1.1: reject a duplicate username without creating a signed-in session": [
+        702,
+        737,
+        823
+      ],
+      "REQ-1.1: reject duplicate email with a different username": [
+        697,
+        733,
+        789
+      ],
+      "REQ-1.1: reject mismatched passwords without creating a signed-in session": [
+        405,
+        428,
+        463
+      ],
+      "REQ-1.1: reject missing required registration values before creating a session": [
+        691,
+        712,
+        786
+      ],
+      "REQ-1.1: reject malformed username, email, or password without signing in": [
+        916,
+        951,
+        1264
+      ],
+      "REQ-1.2: sign in with a valid username and password": [
+        737,
+        767,
+        981
+      ],
+      "REQ-1.2: sign in with a case-insensitive email and password": [
+        577,
+        597,
+        708
+      ],
+      "REQ-1.2: reject wrong password and incomplete credentials with the same generic error": [
+        824,
+        846,
+        892
+      ],
+      "REQ-1.2: reject an unknown account and stay logged out": [
+        786,
+        821,
+        891
+      ]
+    }
+  },
+  "official_trial": {
+    "run_id": "01b06fb30564",
+    "url": "https://arc-bench.com/runs/01b06fb30564",
+    "submission_id": "9c2951993e9a",
+    "display_name": "volo-ticket-nav-race-2026-09-14-ccc3eb9",
+    "model": "deepseek-v4-flash",
+    "status": "PASSED",
+    "score": 100.0,
+    "passed_count": 10,
+    "failed_count": 0,
+    "token_count": 72854,
+    "cost": 0.629725,
+    "cost_currency": "CNY",
+    "run_duration_seconds": 279,
+    "feature_implementation_rate": 100.0,
+    "started_at": "2026-09-14T03:15:43.900414",
+    "finished_at": "2026-09-14T03:20:55.639306",
+    "tests": [
+      {
+        "name": "REQ-1.1: successfully register a new account and remain signed in",
+        "status": "passed",
+        "duration_ms": 2299
+      },
+      {
+        "name": "REQ-1.1: reject a duplicate username without creating a signed-in session",
+        "status": "passed",
+        "duration_ms": 2383
+      },
+      {
+        "name": "REQ-1.1: reject duplicate email with a different username",
+        "status": "passed",
+        "duration_ms": 2301
+      },
+      {
+        "name": "REQ-1.1: reject mismatched passwords without creating a signed-in session",
+        "status": "passed",
+        "duration_ms": 1295
+      },
+      {
+        "name": "REQ-1.1: reject missing required registration values before creating a session",
+        "status": "passed",
+        "duration_ms": 1707
+      },
+      {
+        "name": "REQ-1.1: reject malformed username, email, or password without signing in",
+        "status": "passed",
+        "duration_ms": 1478
+      },
+      {
+        "name": "REQ-1.2: sign in with a valid username and password",
+        "status": "passed",
+        "duration_ms": 2902
+      },
+      {
+        "name": "REQ-1.2: sign in with a case-insensitive email and password",
+        "status": "passed",
+        "duration_ms": 1511
+      },
+      {
+        "name": "REQ-1.2: reject wrong password and incomplete credentials with the same generic error",
+        "status": "passed",
+        "duration_ms": 2781
+      },
+      {
+        "name": "REQ-1.2: reject an unknown account and stay logged out",
+        "status": "passed",
+        "duration_ms": 2594
+      }
+    ],
+    "hosted_product_source": {
+      "file": "frontend/public/index.html",
+      "sha256": "91c533107560b51c2160c51429c5c5f6e0d1b607bc63d898b312e52b941c0bc5",
+      "self_navigation_findings": 0,
+      "observed": [
+        "history.pushState({}, '', path)",
+        "history.replaceState({}, '', path)",
+        "location.pathname read"
+      ]
+    },
+    "trials_used": 1,
+    "trials_allowed": 2
+  },
+  "previous_official_run": {
+    "run_id": "a129e387e562",
+    "passed_count": 9,
+    "failed_count": 1,
+    "failed_test": "REQ-1.1: successfully register a new account and remain signed in",
+    "failed_duration_ms": 10013,
+    "token_count": 555255,
+    "cost_cny": 0.668715,
+    "run_duration_seconds": 212
+  },
+  "leaderboard_after": {
+    "task": "ticket-booking",
+    "rows": [
+      {
+        "rank": 1,
+        "username": "你也秃对不队",
+        "model_name": "deepseek-v4-flash",
+        "track": "ticket-booking",
+        "avg_pass_rate": 80.0,
+        "avg_feature_implementation_rate": 0.0,
+        "total_token_millions": 0.0,
+        "total_token_cost": 2.4e-05,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 3333333.3333,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 2,
+        "submission_count": 12,
+        "task_id": "ticket-booking",
+        "task_title": "火车票预订演示系统",
+        "is_complete": true
+      },
+      {
+        "rank": 2,
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "track": "ticket-booking",
+        "avg_pass_rate": 100.0,
+        "avg_feature_implementation_rate": 100.0,
+        "total_token_millions": 0.073,
+        "total_token_cost": 0.629725,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 158.7995,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 279,
+        "submission_count": 68,
+        "task_id": "ticket-booking",
+        "task_title": "火车票预订演示系统",
+        "is_complete": true
+      },
+      {
+        "rank": 3,
+        "username": "李尧",
+        "model_name": "deepseek-v4-flash",
+        "track": "ticket-booking",
+        "avg_pass_rate": 90.0,
+        "avg_feature_implementation_rate": 50.0,
+        "total_token_millions": 0.176,
+        "total_token_cost": 0.609147,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": 147.7476,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": true,
+        "seniority_label": "senior",
+        "avg_runtime_seconds": 441,
+        "submission_count": 22,
+        "task_id": "ticket-booking",
+        "task_title": "火车票预订演示系统",
+        "is_complete": true
+      }
+    ],
+    "note": "Ordered by cost efficiency. Rank 1 is another team at 80% pass with a near-zero token cost."
+  },
+  "package": {
+    "sha256": "c5ae671d79029ddc6309ba49b84e20096f0d6c5205b0794f33e9254130c86c3e",
+    "entries": 19,
+    "contains_credentials_or_session": false,
+    "excluded": [
+      "arcbench CLI and its session",
+      "tests/",
+      "harness_lab/",
+      "lab/",
+      "docs/",
+      "runs/"
+    ]
+  }
+}

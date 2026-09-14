@@ -313,3 +313,24 @@ each rule snapshot and experiment with date and source.
   no cleanup errors. The earlier zero-delay instrumentation race was corrected without
   changing the measured public-helper sequence. This is one scenario, not a full
   public-suite replay or official score. See `docs/logout-calibration-2026-09-12.md`.
+
+## 2026-09-14 — Forbid browser self-navigation in generated applications
+
+- Acted on the registration-timing finding: the generation prompts now forbid assigning
+  `window.location`, calling `location.assign/replace/reload`, emitting a meta refresh or
+  letting a native form navigate after a submit or sign-out, and require an in-place
+  re-render with `history.replaceState` plus `pushState`/`popstate` routing.
+- `Workspace.verify` now rejects those patterns statically in product source the run
+  authored, before dependency installation, reporting file and line into the existing
+  bounded repair path. Reads of `location.pathname` and `history.*` calls stay allowed.
+  New deterministic tests: 169 passed, 0 failures, 11 environment skips.
+- Local gate before uploading: one Ticket Booking application generated through the
+  organizer gateway with `deepseek-v4-flash` contained no forbidden pattern and replayed
+  the unchanged public tests 20 times with 10/10 every time, median suite wall 5.41 s.
+  A first generation attempt was discarded after it lost its token budget to a frozen
+  self-check that called `assert(locator).toBeVisible()`; the prepared-bundle prompt now
+  states that `assert` is `node:assert/strict`.
+- Official run `01b06fb30564` passed 10/10 at 100%, CNY 0.629725, 72,854 tokens, 279 s.
+  The registration test that timed out in E057 took 2,299 ms. One of two allowed trials
+  was used. See `docs/nav-race-2026-09-14.md` and
+  `docs/evidence/2026-09-14-nav-race-trial.json`.

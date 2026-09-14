@@ -46,6 +46,10 @@ new errors and do not rely only on color, browser-native popups or console messa
 Preserve headings observed in reference images;
 written functional requirements override conflicting screenshot defaults or out-of-scope features.
 Handle negative cases and recovery, not just a successful demo.
+After a form submission or sign-out, never navigate the browser yourself: no assignment to
+window.location or location.href, no location.assign/replace/reload, no <meta http-equiv="refresh">
+and no native form navigation. Re-render the affected view in place, update the URL with
+history.replaceState, and route in-app links with a click handler plus history.pushState and popstate.
 
 Write executable behavioral checks under checks/ for the current requirements. Checks must
 exercise the real implementation, assert outcomes, exit nonzero on failure, and use the running
@@ -104,7 +108,8 @@ HTML. A data-testid attribute does not create an id. Do not reference /app.js or
 checks_js: executable assertions for required behavior, using this supplied helper:
 const {test,assert}=require('./browser.cjs');
 test('requirement',async(page)=>{ /* page is already on the home page; use Playwright + assert */ });
-Always await asynchronous Playwright results BEFORE passing them to assert.
+assert is node:assert/strict, never Playwright expect: await Playwright results such as
+isVisible(), textContent() or count() and pass those values to assert.ok/equal/match.
 If the provided browser is unavailable, use node:test and HTTP checks at FACTORY_BASE_URL instead.
 Optional api_js: CommonJS async(req,res)=>boolean exported with module.exports; handle an API
 request and return true, otherwise false. Only supply it when actual backend business logic is needed.
@@ -117,11 +122,17 @@ for a subsequent repair pass. Include negative cases stated by the requirements.
 
 BOUNDED_SYSTEM = SMALL_SYSTEM + """
 The supplied runtime also supports multi-route and stateful applications. Implement the
-specified routes inside index_html using location.pathname and navigation; extensionless
+specified routes inside index_html by reading location.pathname; extensionless
 routes receive that document. Put required server-side validation, persistent data and
 session behavior in api_js. Node standard libraries are available there. Use complete valid
 fixtures for successful API calls and isolate the single invalid condition in negative checks.
 
+Never navigate the browser from your own code. After a form submission or sign-out do not assign
+window.location or location.href, call location.assign/replace/reload, emit <meta http-equiv="refresh">
+or let a native form navigate: call preventDefault, then render the destination route in place and set
+its URL with history.replaceState. A requirement to return to / after submitting means exactly that.
+Route in-app links with a click handler, history.pushState and a popstate handler. Direct entry to a
+route such as /register or /login must still render that route from location.pathname.
 Use one accessible name from each set of permitted aliases and one control per action.
 Use permitted English navigation names consistently when multilingual alternatives are offered.
 Keep primary navigation links unique. The prepared browser checks reject repeated links to a non-home primary destination,
