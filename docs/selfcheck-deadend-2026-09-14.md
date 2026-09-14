@@ -184,6 +184,16 @@ which equals the meter delta exactly. The runner log brackets the window with a 
 on the account was queued or running inside it, and the last local gateway call of this task
 finished before 05:12 UTC; the 20 gate replays make no model calls.
 
+The observation call was verified rather than assumed: `kimi-k3`, 7,349 prompt tokens and 1,149
+completion tokens, with text transcribing real page elements including the 12306 logo, the eight
+primary nav items and the search panel tabs. A model that never receives the images answers at
+about 209 prompt tokens, so this one read them.
+
+**This trial is not the confirmation of the qwen observer default.** It ran agent source `f720337`,
+branched from `b13ee49`, which predates PR #11 and #12. Its observer is `kimi-k3`. The instruction
+to merge `main` before packaging arrived after the trial had already been uploaded and started,
+so the qwen default still needs its own confirmation run.
+
 **This run did not exercise the new guard.** No self-check failed with a locator strict-mode
 violation, so nothing was frozen and nothing was released. It shows that the change does not break
 a healthy run and that the released path is not on the default path. The guard firing on a real
