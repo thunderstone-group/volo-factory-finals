@@ -281,8 +281,7 @@ def edit_span(current, item):
     # `old` keeps the spelling this harness and the general `edit` tool already use.
     # Renaming it to `replace` was tried and measured worse: the evolution board
     # went from one model call per task to three to twenty-six.
-    replace = item.get('old') if item.get('old') is not None else item.get('replace')
-    after = item.get('insert_after')
+    replace, after = item.get('old'), item.get('insert_after')
     if not isinstance(new, str):
         raise ValueError('Provide the inserted or replacing text in new')
     for value in (replace, after):
@@ -464,8 +463,9 @@ class Agent:
                 raise ValueError('Provide 1-20 exact edits')
             grouped, skipped = {}, []
             for item in edits:
-                if not isinstance(item, dict) or 'path' not in item:
-                    # Run 8abb spent two of fifteen calls on a KeyError reported as "'path'".
+                # Run 8abb spent two of fifteen calls on a KeyError reported as "'path'".
+                # Every rejection here names what the edit needs and what it carried.
+                if not isinstance(item, dict) or 'path' not in item or 'new' not in item:
                     raise ValueError("Each edit needs 'path' and 'new', plus 'insert_after' or 'old'. "
                                      "Received keys: "
                                      + json.dumps(sorted(item) if isinstance(item, dict) else type(item).__name__))
@@ -473,7 +473,13 @@ class Agent:
                 if self.prepared_check_written() and path == PREPARED_CHECK_PATH:
                     skipped.append(path)
                     continue
-                self.workspace.path(path, write=True)
+                target = self.workspace.path(path, write=True)
+                empty = target.is_file() and not target.read_text()
+                if not {'insert_after', 'old'} & set(item) and not empty:
+                    raise ValueError("Each edit needs 'insert_after' or 'old', unless the file exists and "
+                                     'is empty. Received keys: ' + json.dumps(sorted(item)))
+                if not target.is_file():
+                    raise ValueError('Edit a file that exists; %s does not' % path)
                 grouped.setdefault(path, []).append(item)
             pending = {}
             for path, items in grouped.items():

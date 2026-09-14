@@ -92,7 +92,7 @@ class RecoveryTests(TempCase):
         self.workspace.write_files(GREETING_FILES)
         self.workspace.edit('backend/server.cjs', "s.end('hello')", "s.end('wrong')")
         result, _, _ = self.execute([response([('patch_and_verify', {
-            'edits': [{'path': 'checks/greeting.cjs', 'replace': GREETING_FILES[-1]['content'],
+            'edits': [{'path': 'checks/greeting.cjs', 'old': GREETING_FILES[-1]['content'],
                        'new': 'process.exit(0)'}],
             'check_command': ['node', 'checks/greeting.cjs'],
         })])])

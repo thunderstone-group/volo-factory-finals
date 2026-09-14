@@ -191,7 +191,7 @@ class AcceptanceTests(TempCase):
     def test_no_contract_means_no_independent_verification_claim(self):
         self.workspace.write_files(GREETING_FILES)
         finished = response([('patch_and_verify', {'edits': [
-            {'path': 'checks/greeting.cjs', 'replace': "'hello'", 'new': "'hello'"}],
+            {'path': 'checks/greeting.cjs', 'old': "'hello'", 'new': "'hello'"}],
             'check_command': ['node', 'checks/greeting.cjs']})])
         with FakeGateway([finished]) as gateway:
             result = Agent(RequirementSet.load(self.req), Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace),
@@ -203,7 +203,7 @@ class AcceptanceTests(TempCase):
     def test_resumed_self_check_cannot_bypass_new_contract_in_same_workspace(self):
         self.workspace.write_files(GREETING_FILES)
         finish = response([('patch_and_verify', {'edits': [
-            {'path': 'checks/greeting.cjs', 'replace': "'hello'", 'new': "'hello'"}],
+            {'path': 'checks/greeting.cjs', 'old': "'hello'", 'new': "'hello'"}],
             'check_command': ['node', 'checks/greeting.cjs']})])
         with FakeGateway([finish]) as gateway:
             model = Model(gateway.url, 'synthetic-key', 'synthetic-model', self.trace)
