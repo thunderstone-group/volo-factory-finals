@@ -148,7 +148,6 @@ module.exports = {ready, store, seed, dataFile: file};
 """
 
 
-
 def seed_module(contract) -> str:
     """Write `backend/seed.cjs` from the contract. Deterministic, no model call."""
     from .contract import collections as contract_collections
@@ -166,21 +165,165 @@ def seed_module(contract) -> str:
             "module.exports = " + json.dumps(payload, ensure_ascii=False, indent=1) + ";\n")
 
 
-def contract_files(contract):
-    """The three harness-owned files a contract-driven application starts from."""
+INTERFACE_CHECK_PATH = "checks/interface.spec.cjs"
+
+# Written by the harness, from the contract, never by the model. It encodes the two
+# defects the 2026-09-14 Keep rehearsal actually died of, both measured:
+#
+#   * five specs picked the wrong control because nineteen rows each rendered a button
+#     named "More options" and the published helpers resolve a name and take .first(),
+#   * three specs could not reach a control that existed because nothing about it
+#     matched the pattern the helper searches for.
+#
+# Ambiguity and namelessness fail. A name that matches no requirement text is reported
+# and not failed: it is a soft signal, and failing a run on it would buy exactly the
+# repair loop this branch spent CNY 13 learning to avoid.
+INTERFACE_CHECK = r"""const {test, assert} = require('./browser.cjs');
+const vocabulary = require('./vocabulary.cjs');
+
+const ACTION_ROLES = ['button', 'link', 'menuitem', 'tab', 'option', 'checkbox', 'radio'];
+const NAMED_ROLES = ['textbox', 'searchbox', 'combobox', 'spinbutton', 'checkbox', 'radio',
+                     'meter', 'progressbar', 'slider'];
+
+function normalize(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim();
+}
+
+async function describe(page, roles) {
+  const found = [];
+  for (const role of roles) {
+    const rows = await page.getByRole(role).evaluateAll((list, role) => list
+      .filter(el => {
+        const box = el.getBoundingClientRect();
+        const style = getComputedStyle(el);
+        return box.width > 0 && box.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+      })
+      .map(el => {
+        const id = el.getAttribute('id');
+        const labelled = el.getAttribute('aria-labelledby');
+        const target = labelled ? document.getElementById(labelled.split(/\s+/)[0]) : null;
+        const label = id ? document.querySelector('label[for="' + CSS.escape(id) + '"]') : null;
+        const name = el.getAttribute('aria-label')
+          || (target ? target.textContent : '')
+          || (label ? label.textContent : '')
+          || el.getAttribute('title')
+          || el.getAttribute('placeholder')
+          || (el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'TEXTAREA'
+              ? '' : el.textContent);
+        return {role, name: String(name || '').replace(/\s+/g, ' ').trim(),
+                tag: el.tagName.toLowerCase()};
+      }), role);
+    found.push(...rows);
+  }
+  return found;
+}
+
+test('every visible control carries a name, and no two share one', async (page) => {
+  const actions = await describe(page, ACTION_ROLES);
+  const named = await describe(page, NAMED_ROLES);
+
+  // 1. Ambiguity. Two visible controls with the same accessible name make the
+  //    published helpers' name-then-.first() resolution pick an arbitrary one.
+  const seen = new Map();
+  for (const item of actions) {
+    if (!item.name) continue;
+    const key = item.name.toLowerCase();
+    seen.set(key, (seen.get(key) || 0) + 1);
+  }
+  const ambiguous = [...seen.entries()].filter(([, count]) => count > 1)
+    .map(([name, count]) => ({name, count}));
+  assert.deepEqual(ambiguous, [],
+    'Two or more visible controls share one accessible name, so a test that asks for that name '
+    + 'by role gets an arbitrary one. Scope each row\'s actions to the row: reveal them only while '
+    + 'the row is hovered or focused, or put the row\'s own title in the name '
+    + '("More options for <title>"), which still matches a substring search. Duplicates: '
+    + JSON.stringify(ambiguous));
+
+  // 2. Namelessness. A control a resolver cannot address does not exist to the evaluator.
+  const unnamed = named.filter(item => !item.name).map(item => item.role + ':' + item.tag);
+  assert.deepEqual(unnamed, [],
+    'Visible controls have no accessible name. Give each one an aria-label, a <label for>, or a '
+    + 'placeholder, using the wording the requirements use. Unnamed: ' + JSON.stringify(unnamed));
+
+  // 3. Vocabulary. Reported, never failed: a name outside the requirement's own words is a
+  //    smell, not a defect, and this check must not start a repair loop over a smell.
+  if (vocabulary.terms.length) {
+    const outside = [...new Set([...actions, ...named].map(item => item.name).filter(Boolean))]
+      .filter(name => !vocabulary.matches(name));
+    if (outside.length) {
+      console.log('[interface] names matching no requirement text (reported, not failed): '
+        + JSON.stringify(outside));
+    }
+  }
+});
+"""
+
+
+def vocabulary_module(contract, observations=None):
+    """The words the requirements actually use, for the reported vocabulary check."""
+    terms = []
+    for entry in contract.get("exact_texts", []):
+        terms.extend(entry.get("texts", []))
+    for item in contract.get("navigation", []):
+        if isinstance(item, dict) and item.get("name"):
+            terms.append(str(item["name"]))
+    for entity in contract.get("entities", []):
+        if isinstance(entity, dict):
+            terms.append(str(entity.get("name", "")))
+            for field in entity.get("fields", []) or []:
+                terms.append(str(field.get("name", "")))
+    for seed in contract.get("seeds", []):
+        for value in seed.get("data", {}).values():
+            if isinstance(value, str):
+                terms.append(value)
+    # A reference observation is sometimes the only place a required heading appears: the
+    # Ticket register page's "账户信息" is named by the image and by no requirement sentence.
+    for text in observations or []:
+        terms.append(str(text))
+    terms = sorted({term.strip() for term in terms if term and term.strip()})
+    return ("'use strict';\n"
+            "// Generated from the global state contract. The words the requirements use.\n"
+            "const terms = " + json.dumps(terms, ensure_ascii=False, indent=1) + ";\n"
+            "const lowered = terms.map(t => t.toLowerCase());\n"
+            "function matches(name) {\n"
+            "  const value = String(name || '').toLowerCase().trim();\n"
+            "  if (!value) return false;\n"
+            "  return lowered.some(term => term.includes(value) || value.includes(term));\n"
+            "}\n"
+            "module.exports = {terms, matches};\n")
+
+
+def contract_files(contract, observations=None):
+    """The harness-owned files a contract-driven application starts from."""
     return [
         {"path": "backend/seed.cjs", "content": seed_module(contract)},
         {"path": "backend/state.cjs", "content": STATE},
         {"path": "backend/server.cjs", "content": SERVER},
+        {"path": "checks/vocabulary.cjs", "content": vocabulary_module(contract, observations)},
+        {"path": INTERFACE_CHECK_PATH, "content": INTERFACE_CHECK},
     ]
 
 
-def install(workspace, contract):
-    workspace.write_files(contract_files(contract))
+def install(workspace, contract, observations=None):
+    workspace.write_files(contract_files(contract, observations))
     ignore = workspace.root / ".gitignore"
     existing = ignore.read_text() if ignore.exists() else ""
     if DATA_DIRECTORY + "/" not in existing.splitlines():
         ignore.write_text(existing.rstrip() + "\n" + DATA_DIRECTORY + "/\n")
+
+
+INTERFACE_RULES = """Two rules the harness checks mechanically, because the 2026-09-14 Keep
+rehearsal lost eight of fifteen specs to them:
+
+1. No two controls visible at the same time may share an accessible name. A list renders one
+   "More options" per row; a test that asks for that name by role gets an arbitrary one. Either
+   reveal a row's actions only while the row is hovered or focused, or put the row's own title in
+   the name: "More options for Delete me 2.3.1". A name containing the title still matches a
+   substring search for "more".
+2. Every input, select, textarea, colour swatch, dialog field, toggle and meter carries an
+   accessible name, through aria-label, <label for> or placeholder, using the requirement's own
+   wording. A control with no name cannot be reached at all: a note body with no label matching
+   the requirement's word for it sends the test's typing into the search box instead."""
 
 
 STORE_CONTRACT = """The harness has already written three backend files. Do not rewrite them:
@@ -203,11 +346,14 @@ In backend/api.cjs use the shared store instead of your own storage:
 Every mutation is written to disk immediately, so a value survives a reload and a restart.
 Collection names come from the contract. Never seed rows yourself and never keep product
 state in a module-level variable, a global, or browser storage: the evaluator reloads the
-page and expects the server to remember. /api/health is already served; do not redefine it."""
+page and expects the server to remember. /api/health is already served; do not redefine it.
+
+""" + INTERFACE_RULES
 
 
 HARNESS_OWNED = ("backend/seed.cjs", "backend/state.cjs", "backend/server.cjs",
-                 "frontend/build.cjs", "frontend/package.json", "backend/package.json")
+                 "frontend/build.cjs", "frontend/package.json", "backend/package.json",
+                 INTERFACE_CHECK_PATH, "checks/vocabulary.cjs")
 
 CHECKED_SOURCE = (".js", ".cjs", ".mjs")
 
@@ -263,6 +409,10 @@ HARNESS_SUMMARY = {
     "frontend/build.cjs": "Harness-owned. Copies frontend/public to frontend/dist.",
     "frontend/package.json": 'Harness-owned. {"scripts":{"build":"node build.cjs"}}',
     "backend/package.json": 'Harness-owned. {"scripts":{"start":"node server.cjs"}}',
+    INTERFACE_CHECK_PATH: "Harness-owned. Asserts that no two visible controls share an "
+                          "accessible name and that every input, swatch, field, toggle and meter "
+                          "has one. Do not edit it; satisfy it.",
+    "checks/vocabulary.cjs": "Harness-owned data: the words the requirements use.",
     "checks/browser.cjs": "Harness-owned helper. Exports test(name, async (page, assert) => {}). "
                           "`page` is a Playwright page already on the entry URL; `assert` is "
                           "node:assert/strict. Await Playwright results and pass the values to "
@@ -284,3 +434,5 @@ def harness_read(paths):
             "note": "These files are managed by the harness and were not returned verbatim. "
                     "Do not modify them. Implement your requirements in backend/api.cjs, "
                     "frontend/public/* and checks/*.spec.cjs."}
+
+

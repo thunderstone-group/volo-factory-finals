@@ -6,6 +6,7 @@ application; they are not evidence about generated product quality, which only a
 official run measures.
 """
 import json
+import os
 import time
 import unittest
 from pathlib import Path
@@ -736,3 +737,234 @@ class SourceBudgetTests(TempCase):
 
 def requirements_nodes(agent):
     return agent.requirements.nodes[:1]
+
+
+class VocabularyModuleTests(TempCase):
+    def contract(self):
+        requirements = synthetic_requirements(self)
+        return state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+
+    def test_the_vocabulary_carries_requirement_words_and_observed_headings(self):
+        source = state_runtime.vocabulary_module(self.contract(), ['Synthetic', 'Heading'])
+        self.assertIn('"Entry removed."', source)   # an exact_texts string
+        self.assertIn('"Opening balance"', source)  # a seed value
+        self.assertIn('"Preferences"', source)      # a navigation name
+        self.assertIn('"Heading"', source)          # observed only in a reference image
+        self.assertIn('module.exports = {terms, matches}', source)
+
+    def test_an_empty_contract_produces_a_loadable_module(self):
+        source = state_runtime.vocabulary_module({})
+        self.assertIn('const terms = []', source)
+
+
+@unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE')
+                     and os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
+                     'Provide an installed Playwright module and Chromium for real browser checks')
+class InterfaceCheckTests(TempCase):
+    """The harness-owned check that encodes the two defects the rehearsal measured."""
+
+    def enable_installed_browser(self):
+        module = os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']
+        executable = os.environ['FACTORY_TEST_CHROMIUM_EXECUTABLE']
+        wrapper = self.base / 'real-browser.cjs'
+        wrapper.write_text('const pw=require(' + json.dumps(module) + ');'
+            'module.exports={chromium:{launch:()=>pw.chromium.launch({headless:true,executablePath:'
+            + json.dumps(executable) + '})}};')
+        self.workspace.runtime_env['FACTORY_PLAYWRIGHT_MODULE'] = str(wrapper)
+
+    def build(self, body):
+        self.enable_installed_browser()
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        scaffold(self.workspace)
+        state_runtime.install(self.workspace, contract)
+        self.workspace.write_files([
+            {'path': 'frontend/public/index.html',
+             'content': '<!doctype html><title>L</title><main>' + body + '</main>'},
+            {'path': 'backend/api.cjs', 'content': 'module.exports=async()=>{return false;};\n'}])
+        return contract
+
+    def run_check(self):
+        self.workspace.deadline = time.monotonic() + 90
+        return self.workspace.verify(['node', '--test', state_runtime.INTERFACE_CHECK_PATH])
+
+    def test_two_visible_controls_sharing_a_name_fail(self):
+        # Exactly the Keep defect: one "More options" per row, nineteen of them.
+        rows = ''.join(f'<li>Row {index}<button aria-label="More options">x</button></li>'
+                       for index in range(3))
+        self.build(f'<ul>{rows}</ul>')
+        result = self.run_check()
+        self.assertFalse(result['passed'])
+        output = str((result['steps'] or [{}])[-1].get('output', ''))
+        self.assertIn('share one accessible name', output)
+        self.assertIn('more options', output.lower())
+
+    def test_row_scoped_names_pass(self):
+        rows = ''.join(f'<li>Row {index}<button aria-label="More options for Row {index}">x</button></li>'
+                       for index in range(3))
+        self.build(f'<ul>{rows}</ul>')
+        self.assertTrue(self.run_check()['passed'])
+
+    def test_actions_hidden_until_hover_pass(self):
+        # The other permitted shape: the actions exist but only one is ever visible.
+        rows = ''.join(f'<li>Row {index}'
+                       f'<button aria-label="More options" style="display:none">x</button></li>'
+                       for index in range(3))
+        self.build(f'<ul>{rows}</ul>')
+        self.assertTrue(self.run_check()['passed'])
+
+    def test_an_unnamed_input_fails(self):
+        self.build('<form><input type="text"></form>')
+        result = self.run_check()
+        self.assertFalse(result['passed'])
+        self.assertIn('no accessible name', str((result['steps'] or [{}])[-1].get('output', '')))
+
+    def test_a_named_input_passes(self):
+        self.build('<form><label for="a">Title</label><input id="a" type="text"></form>')
+        self.assertTrue(self.run_check()['passed'])
+
+    def test_an_unnamed_meter_fails(self):
+        self.build('<meter min="0" max="4" value="1"></meter>')
+        self.assertFalse(self.run_check()['passed'])
+
+    def test_a_name_outside_the_vocabulary_is_reported_and_not_failed(self):
+        # A soft signal must never start a repair loop; it is printed, not asserted.
+        self.build('<button aria-label="Frobnicate">x</button>')
+        result = self.run_check()
+        self.assertTrue(result['passed'], result.get('error'))
+        output = ''.join(str(step.get('output', '')) for step in result['steps'])
+        self.assertIn('matching no requirement text', output)
+        self.assertIn('Frobnicate', output)
+
+    def test_the_rules_are_stated_to_the_model(self):
+        self.assertIn('No two controls visible at the same time', state_runtime.STORE_CONTRACT)
+        self.assertIn('More options for Delete me 2.3.1', state_runtime.STORE_CONTRACT)
+        self.assertIn('aria-label', state_runtime.STORE_CONTRACT)
+
+
+class ScheduleCompletionTests(TempCase):
+    """A batch that cannot converge must not cost the batches after it their turn."""
+
+    def agent(self, failing=()):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, FakeModel('{}'), self.workspace, Runtime(self.trace),
+                      contract=contract)
+        agent.install_contract()
+        self.attempted = []
+
+        def run_batch(nodes):
+            ids = [node['id'] for node in nodes]
+            self.attempted.append(ids)
+            if any(item in failing for item in ids):
+                raise RuntimeError('synthetic: batch did not converge')
+            agent.check_command = ['node', '--test', 'checks/batch.spec.cjs']
+            self.workspace.last_verification = {
+                'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+                'check_command': agent.check_command, 'verification_scope': 'local_checks_only',
+                'acceptance': {}}
+
+        agent.run_batch = run_batch
+        return agent
+
+    def scheduled(self, agent):
+        return [[node['id'] for node in batch] for batch in agent.schedule()]
+
+    def test_a_batch_that_does_not_converge_does_not_end_the_schedule(self):
+        agent = self.agent(failing={'REQ-2.1'})
+        agent.run_schedule()
+        self.assertEqual(self.attempted, self.scheduled(agent))
+        self.assertEqual([record['requirements'] for record in agent.incomplete],
+                         [batch for batch in self.scheduled(agent) if 'REQ-2.1' in batch])
+        # Its requirements are not claimed as completed, but everything else is.
+        self.assertNotIn('REQ-2.1', agent.completed)
+        self.assertIn('REQ-3.1', agent.completed)
+
+    def test_budget_exhaustion_stops_the_schedule_and_is_recorded(self):
+        agent = self.agent(failing={'REQ-2.2'})
+
+        def run_batch(nodes):
+            self.attempted.append([node['id'] for node in nodes])
+            raise RuntimeError('Model call budget exhausted')
+
+        agent.run_batch = run_batch
+        agent.run_schedule()
+        self.assertEqual(len(self.attempted), 1, 'the schedule stops at the first exhaustion')
+        events = [json.loads(line) for line in
+                  (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+        self.assertTrue(any(event['event'] == 'schedule_stopped_on_budget' for event in events))
+
+    def test_a_wall_clock_timeout_also_stops_the_schedule(self):
+        agent = self.agent()
+
+        def run_batch(nodes):
+            self.attempted.append([node['id'] for node in nodes])
+            raise TimeoutError('Agent wall-time budget exhausted')
+
+        agent.run_batch = run_batch
+        agent.run_schedule()
+        self.assertEqual(len(self.attempted), 1)
+
+    def test_a_package_without_a_contract_still_fails_fast(self):
+        requirements = RequirementSet.load(self.req)
+        agent = Agent(requirements, FakeModel('{}'), self.workspace, Runtime(self.trace))
+
+        def run_batch(nodes):
+            raise RuntimeError('synthetic failure')
+
+        agent.run_batch = run_batch
+        with self.assertRaisesRegex(RuntimeError, 'synthetic failure'):
+            agent.run_schedule()
+
+
+@unittest.skipUnless(__import__('shutil').which('node'), 'node is required')
+class SnapshotDeliveryTests(TempCase):
+    """Exhaustion delivers the best tree that verified, not whatever was half-written."""
+
+    def agent(self):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, FakeModel('{}'), self.workspace, Runtime(self.trace),
+                      contract=contract)
+        agent.install_contract()
+        return agent
+
+    def test_a_verified_tree_is_snapshotted_and_restored_over_a_broken_one(self):
+        agent = self.agent()
+        self.workspace.write_files([
+            {'path': 'frontend/public/index.html', 'content': '<!doctype html><title>good</title>'},
+            {'path': 'backend/api.cjs', 'content': '// good\nmodule.exports=async()=>false;\n'}])
+        self.workspace.last_verification = {
+            'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+            'check_command': ['node', '--test', 'checks/a.spec.cjs'], 'acceptance': {}}
+        self.assertTrue(agent.snapshot_product())
+
+        # A later batch half-writes the application and never verifies.
+        self.workspace.write_files([{'path': 'backend/api.cjs', 'content': '// broken'}])
+        self.assertTrue(agent.deliver_best_snapshot())
+        self.assertIn('// good', (self.workspace.root / 'backend' / 'api.cjs').read_text())
+        self.assertEqual(agent.check_command, ['node', '--test', 'checks/a.spec.cjs'])
+
+    def test_nothing_is_restored_when_the_tree_already_matches_a_verification(self):
+        agent = self.agent()
+        self.workspace.write_files([{'path': 'backend/api.cjs', 'content': '// current\n'}])
+        self.workspace.last_verification = {
+            'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+            'check_command': ['node', '--test', 'checks/a.spec.cjs'], 'acceptance': {}}
+        agent.snapshot_product()
+        self.assertFalse(agent.deliver_best_snapshot())
+        self.assertIn('// current', (self.workspace.root / 'backend' / 'api.cjs').read_text())
+
+    def test_an_unverified_tree_is_never_snapshotted(self):
+        agent = self.agent()
+        self.workspace.last_verification = None
+        self.assertFalse(agent.snapshot_product())
+        self.assertFalse(agent.snapshot_path().exists())

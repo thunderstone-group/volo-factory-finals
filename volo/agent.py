@@ -396,12 +396,18 @@ def apply_edits(current, items, path=None):
     return ''.join(result)
 
 
+class BudgetExhausted(RuntimeError):
+    """The schedule ended because there was nothing left to spend, not because it finished."""
+
+
 class Agent:
     def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
                  token_budget=450000, max_context_chars=120000, references=None, contract=None):
         self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
         self.contract = contract
         self.contract_text = state_contract.document(contract) if contract else None
+        self.observed = set()
+        self.incomplete = []
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
         self.max_context_chars = max_context_chars
@@ -461,6 +467,120 @@ class Agent:
                 'Too large to include: ' + ', '.join(omitted)
                 + '. Read a section with read_file_chunk if you must change it.')
         return kept
+
+    def observed_texts(self):
+        """Strings a reference observation transcribed, for the reported vocabulary.
+
+        Sometimes the only place a required string appears: the Ticket register page's
+        exact heading is named by its reference image and by no requirement sentence.
+        """
+        texts = []
+        for item in (self.reference_context or {}).get('observations') or []:
+            value = item.get('text') if isinstance(item, dict) else item
+            if isinstance(value, str):
+                texts.extend(part.strip(' .,:;"\'()[]') for part in value.split())
+        return [text for text in texts if len(text) > 1][:4000]
+
+    def attempt_batch(self, nodes):
+        """Implement one batch. True when it verified, False when it did not.
+
+        A batch that exhausts the call, token or time budget ends the schedule; any other
+        failure is recorded and the batches after it still get their turn. Run 'keep i5'
+        stopped at batch 7 of 15, and its ten unreached requirements were the single
+        largest group of official failures.
+        """
+        try:
+            self.run_batch(nodes)
+        except (RuntimeError, TimeoutError, ValueError) as exc:
+            record = {'requirements': [node['id'] for node in nodes], 'error': str(exc)[:400]}
+            self.incomplete.append(record)
+            self.trace.event('batch_incomplete', **record)
+            print('[volo] batch did not converge: ' + self.trace.redact(str(exc))[:200], flush=True)
+            if isinstance(exc, TimeoutError) or 'budget' in str(exc).lower():
+                raise BudgetExhausted(str(exc)) from exc
+            return False
+        self.snapshot_product()
+        return True
+
+    def snapshot_path(self):
+        return self.trace.directory / 'snapshot.json'
+
+    def snapshot_product(self):
+        """Keep a copy of the last tree that verified, so exhaustion still delivers one."""
+        source = self.workspace.last_verification
+        if not source or not source.get('passed'):
+            return False
+        files = {}
+        for item in self.workspace.list_files()['files']:
+            name = item['path']
+            if not name.startswith(('frontend/public/', 'backend/', 'checks/')):
+                continue
+            try:
+                files[name] = self.workspace.path(name).read_text()
+            except (OSError, UnicodeError, ValueError):
+                return False
+        atomic_json(self.snapshot_path(), {'source_fingerprint': source['source_fingerprint'],
+                                           'check_command': source['check_command'],
+                                           'completed': list(self.completed), 'files': files})
+        self.trace.event('product_snapshot', source_fingerprint=source['source_fingerprint'],
+                         files=sorted(files), completed=list(self.completed))
+        return True
+
+    def deliver_best_snapshot(self):
+        """If the tree no longer matches a verification, restore the last one that did."""
+        path = self.snapshot_path()
+        if not path.is_file():
+            return False
+        current = self.workspace.fingerprint()
+        if current == (self.workspace.last_verification or {}).get('source_fingerprint'):
+            return False
+        state = json.loads(path.read_text())
+        if state['source_fingerprint'] == current:
+            return False
+        self.workspace.write_files([{'path': name, 'content': content}
+                                    for name, content in state['files'].items()])
+        self.check_command = state['check_command']
+        self.completed = list(state['completed'])
+        self.trace.event('restored_product_snapshot',
+                         source_fingerprint=state['source_fingerprint'], completed=self.completed)
+        print('[volo] restored the last verified snapshot', flush=True)
+        return True
+
+    def run_schedule(self):
+        """Give every batch its first implementation; stop only when the budget is gone."""
+        try:
+            for batch in self.schedule():
+                nodes = [node for node in batch if node["id"] not in self.completed]
+                if not nodes:
+                    continue
+                self.trace.event("batch_started", requirements=[node["id"] for node in nodes])
+                print("[volo] implementing " + ", ".join(node["id"] for node in nodes), flush=True)
+                self.workspace.acceptance_requirement_ids = [*self.completed, *[node['id'] for node in nodes]]
+                if self.contract:
+                    if not self.attempt_batch(nodes):
+                        continue
+                else:
+                    self.run_batch(nodes)
+                for node in nodes:
+                    self.completed.append(node["id"])
+                    self.runtime.emit("mark_implementation_done", node["id"], "Implementation built and started")
+                    verified = (self.workspace.last_verification or {}).get('acceptance', {}).get('verified_requirements', [])
+                    if node['id'] in verified:
+                        self.runtime.emit('mark_test_passed', node['id'],
+                                          'Pinned external acceptance passed; official evaluation is pending')
+                self.trace.event('self_checks_completed', requirements=[node['id'] for node in nodes],
+                                 source_fingerprint=self.workspace.fingerprint(),
+                                 verification_scope=self.workspace.last_verification['verification_scope'])
+                self.runtime.commit("Implement and verify " + ", ".join(node["id"] for node in nodes))
+                self.checkpoint("batch_verified")
+        except BudgetExhausted as exhausted:
+            self.trace.event('schedule_stopped_on_budget', reason=str(exhausted)[:300],
+                             completed=list(self.completed),
+                             remaining=[item for record in self.incomplete
+                                        for item in record['requirements']])
+            print('[volo] budget exhausted; delivering the best verified snapshot', flush=True)
+        if self.incomplete:
+            self.deliver_best_snapshot()
 
     def contract_section(self):
         """The state contract, verbatim, in every batch request."""
@@ -804,6 +924,12 @@ class Agent:
         self.inline_source = False
         self.source_snapshot_limit = 24000
         self.reference_context = self.observe_references(nodes)
+        if self.contract:
+            # Observations arrive per batch, after the contract was installed. Refresh the
+            # reported vocabulary so a heading named only by a reference image counts.
+            self.observed.update(self.observed_texts())
+            self.workspace.write_files([{'path': 'checks/vocabulary.cjs',
+                'content': state_runtime.vocabulary_module(self.contract, sorted(self.observed))}])
         prompt_size = len(self.requirements.batch_prompt(nodes))
         small = len(nodes) <= 3 and prompt_size <= SMALL_BATCH_CHARS
         bounded = len(nodes) <= 3 and prompt_size <= BOUNDED_BATCH_CHARS
@@ -1018,7 +1144,7 @@ class Agent:
             return
         if not self.workspace.list_files()['files']:
             scaffold(self.workspace)
-        state_runtime.install(self.workspace, self.contract)
+        state_runtime.install(self.workspace, self.contract, self.observed_texts())
         state_contract.save(self.contract, self.trace.directory)
         self.trace.event('state_contract_installed', **self.contract.get('audit', {}),
                          collections=state_contract.collections(self.contract))
@@ -1029,26 +1155,7 @@ class Agent:
         self.workspace.acceptance_requirement_ids = list(self.completed)
         self.runtime.emit("mark_run_started", "VOLO Factory: requirement-driven generation")
         try:
-            for batch in self.schedule():
-                nodes = [node for node in batch if node["id"] not in self.completed]
-                if not nodes:
-                    continue
-                self.trace.event("batch_started", requirements=[node["id"] for node in nodes])
-                print("[volo] implementing " + ", ".join(node["id"] for node in nodes), flush=True)
-                self.workspace.acceptance_requirement_ids = [*self.completed, *[node['id'] for node in nodes]]
-                self.run_batch(nodes)
-                for node in nodes:
-                    self.completed.append(node["id"])
-                    self.runtime.emit("mark_implementation_done", node["id"], "Implementation built and started")
-                    verified = (self.workspace.last_verification or {}).get('acceptance', {}).get('verified_requirements', [])
-                    if node['id'] in verified:
-                        self.runtime.emit('mark_test_passed', node['id'],
-                                          'Pinned external acceptance passed; official evaluation is pending')
-                self.trace.event('self_checks_completed', requirements=[node['id'] for node in nodes],
-                                 source_fingerprint=self.workspace.fingerprint(),
-                                 verification_scope=self.workspace.last_verification['verification_scope'])
-                self.runtime.commit("Implement and verify " + ", ".join(node["id"] for node in nodes))
-                self.checkpoint("batch_verified")
+            self.run_schedule()
             if self.check_command is None:
                 raise RuntimeError("No behavioral check command was recorded")
             # A new/changed acceptance contract cannot inherit a previous self-check
@@ -1069,6 +1176,8 @@ class Agent:
             self.runtime.emit("mark_run_completed", "Build, startup and agent checks passed; ready for official evaluation")
             acceptance = self.workspace.last_verification.get('acceptance', {})
             return {"status": "completed", "self_checked_requirements": self.completed,
+                    "incomplete_requirements": [item for record in self.incomplete
+                                                for item in record['requirements']],
                     "verified_requirements": acceptance.get('verified_requirements', []),
                     "independent_acceptance": acceptance.get('status', 'not_configured'),
                     "verification_scope": self.workspace.last_verification['verification_scope'],

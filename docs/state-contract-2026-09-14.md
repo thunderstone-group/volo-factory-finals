@@ -220,6 +220,37 @@ The first two groups are eight specs on an application that implemented seven of
 They are also the two the contract could address directly, because both are about names, and names
 are what the contract already carries.
 
+### 1.9 The Ticket heading: the observation supplied it and the model dropped it anyway
+
+The Ticket application this branch generated, the one used for the local gate, fails
+`REQ-1.1: successfully register a new account and remain signed in` in all ten replays. Not on
+signed-in state: the other two REQ-1.1 tests each call `expectSignedIn` after `registerAccount`
+and both pass. It hangs on the test's first assertion,
+
+```ts
+await expect(page.getByText('账户信息', { exact: true }).first()).toBeVisible();
+```
+
+Every other locator in that test resolves, including the `密码强度` meter and all three
+comboboxes with their expected defaults. The register page's only heading is `注册旅客账号`, and a
+text-node walk finds no node containing 账户 or 信息 at all.
+
+What makes this worth recording is the chain behind it:
+
+| Step | Observed |
+|---|---|
+| Was the reference observation enabled for that run? | **Yes**, `vision_model: qwen3.6-flash`, observation started and completed in 20.8 s |
+| Did the observation transcribe the heading? | **Yes**: *"A centered modal-style form titled \"Account Information\" (账户信息)"* |
+| Did that reach the generation prompt? | **Yes** |
+| Does the requirement prose name it? | **No** — zero occurrences of 账户信息 in `requirements.yaml` |
+| Did the generated page render it? | **No** |
+
+So the image was read, the string was transcribed, the prompt already carries the rule to preserve
+headings observed in reference images, the model received all of it, and still did not render the
+string. This is prompt adherence at generation time, not a gap in observation. It is also the
+clearest case for the vocabulary the interface check now reports against including observed
+headings and not only requirement prose: for this string the image is the *only* source.
+
 ## 2. The problem this addresses
 
 `volo/requirements.py` schedules a requirement package into batches of at most six nodes or
@@ -491,3 +522,42 @@ python harness_lab/state_rehearsal.py --app keep --app-dir /tmp/keep-app \
 `harness_lab/state_rehearsal.py` starts the application itself on a fresh data directory,
 waits for `/api/health`, and writes its four-worker Playwright config into the session scratch
 directory. The corpus clone is never modified.
+
+## 8. What this branch now does about all three
+
+Added after the failure analysis, before the next generation, so the next iteration tests the
+fixes rather than re-rolling the same application.
+
+**Row-scoped actions.** `checks/interface.spec.cjs` is harness-owned, written from the contract,
+and runs with every batch because `discovered_check_command()` already collects every
+`checks/*.spec.*`. It fails when two controls visible at the same moment share an accessible name,
+naming the duplicates and their counts. Both permitted shapes pass: actions revealed only on hover
+or focus, and actions whose names carry the row's own title. The contract supplement states the
+rule to the model in the same words.
+
+**Naming rule.** The same check fails when a visible input, select, textarea, meter, progressbar,
+slider, checkbox or radio has no accessible name through `aria-label`, `aria-labelledby`,
+`<label for>`, `title` or `placeholder`. It also reports, without failing, every name that matches
+no requirement text, against a `checks/vocabulary.cjs` the harness generates from the contract's
+`exact_texts`, navigation names, entity and field names, seeded values, and the strings a reference
+observation transcribed. That last source matters: section 1.9 is a required heading the image
+names and the requirement prose does not.
+
+The asymmetry is deliberate. Ambiguity and namelessness are unambiguous defects and fail.
+A name outside the requirement's vocabulary is a smell, and failing a run on a smell buys exactly
+the repair loop section 5 shows costing CNY 2.22 in a single iteration.
+
+**The schedule runs to the end.** `run_schedule()` gives every batch its first implementation. A
+batch that cannot converge is recorded in `batch_incomplete` and the batches after it still get
+their turn; only exhausting the call, token or wall-clock budget stops the schedule, under
+`schedule_stopped_on_budget`. After every verified batch the product tree is snapshotted, and if
+the run ends with the tree in a state no verification matches, the last verified snapshot is
+restored before delivery. `incomplete_requirements` is reported alongside `self_checked_requirements`.
+
+The motivation is measured, not theoretical: run `keep i5` stopped at batch 7 of 15, and its ten
+unreached requirements were the single largest group of official failures, larger than both name
+defects combined.
+
+None of this has been through a generation yet. The next iteration is one Keep run to completion,
+replayed under both runner profiles, then one Bookstack run with the one-worker control finished.
+
