@@ -2255,7 +2255,26 @@
     "note": null,
     "cumulative_tokens": 143279
    }
-  ]
+  ],
+  "reference_observation": {
+   "model": "kimi-k3",
+   "prompt_tokens": 7349,
+   "completion_tokens": 1149,
+   "total_tokens": 8498,
+   "images_actually_read": true,
+   "evidence_that_images_were_read": "The prompt is 7,349 tokens, not the ~209 a model returns when it never received the images, and the text transcribes real page elements.",
+   "text_first_lines": [
+    "# reference/homepage.png",
+    "**Layout:** Top header (logo + search bar + utility links), blue primary nav bar, large hero carousel with an overlaid ticket-search form on the left, icon shortcut row below, then a 2×2 grid of promotional cards. Blue/white theme with an orange CTA button.",
+    "**Header:**",
+    "- Logo: 中国铁路12306 / 12306 CHINA RAILWAY",
+    "- Search placeholder: 搜索车票、餐饮、常旅客、相关规章",
+    "- Utility links: 无障碍 | 敬老版 | English | 我的12306 | 登录 注册",
+    "**Main nav:** 首页, 车票 ▾, 团购服务 ▾, 会员服务 ▾, 站车服务 ▾, 商旅服务 ▾, 出行指南 ▾, 信息查询 ▾",
+    "**Search panel (left tabs):** 车票, 常用查询, 订餐"
+   ],
+   "note": "This trial ran agent source f720337, branched from b13ee49, which predates the observer flip in PR #11/#12. Its observer is kimi-k3, not qwen3.6-flash, so this run is NOT the confirmation trial for the qwen default."
+  }
  },
  "unit_tests": {
   "command": "python -m unittest discover -s tests -v",
