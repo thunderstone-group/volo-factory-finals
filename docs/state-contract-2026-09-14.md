@@ -320,6 +320,12 @@ scratch, which is what the competition runner does and what
 `harness_lab/state_rehearsal.py` does between profiles. There is deliberately no reset endpoint:
 the corpus has none, and the requirements state durability that a restart-reset would contradict.
 
+**The obvious control on Bookstack's instability was not run.** Replaying it at one worker would
+say directly whether four-way concurrency is the cause, rather than leaving that an inference from
+how the corpus seeds one private row per destructive test. The repository profile takes 60 s per
+failing spec, and with about twenty of them the replay did not finish inside the time available.
+It is the first measurement to take next.
+
 **No scored run had the repair bounds this branch now carries.** The rehearsals ran before
 `main`'s repair-loop work was merged in, and the largest single cost in them is a batch repairing
 itself: one Keep batch spent thirteen calls applying one edit at a time. That work bounds exactly
