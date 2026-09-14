@@ -76,6 +76,84 @@ def self_navigation_findings(path, source, limit=5):
     return findings
 
 
+# A self-check that fails because the check itself misuses an API is not product
+# evidence. Freezing such a check, or repairing the product against it, can never
+# converge: the nav-race first generation lost 450,000 tokens to a frozen check that
+# called assert(locator).toBeVisible(), where assert is node:assert/strict.
+# See docs/selfcheck-deadend-2026-09-14.md.
+CHECK_DEFECT = re.compile(
+    r"is not a function"
+    r"|Cannot read properties of (?:undefined|null) \(reading '(?:to[A-Z]\w*|not|resolves|rejects|and)'\)"
+    r"|(?:undefined|null) is not an object \(evaluating '[^']*\.to[A-Z]"
+    r"|Cannot find module"
+    r"|ERR_MODULE_NOT_FOUND|ERR_REQUIRE_ESM"
+    r"|\bis not defined\b"
+    r"|Unexpected (?:token|identifier|end of input)")
+# Ports, ids and timings differ between rounds; the failure identity does not.
+FAILURE_NOISE = re.compile(r"https?://[^\s\"',]+|\d+")
+
+
+def check_events(text):
+    """Yield (case name, error message) for both TAP and the captured JSON reporter."""
+    name = None
+    for raw in text.splitlines():
+        stripped = raw.strip()
+        if stripped.startswith('# Subtest: '):
+            name = stripped[len('# Subtest: '):].strip()
+            continue
+        if stripped.startswith('{') and '"error"' in stripped:
+            try:
+                event = json.loads(stripped)
+            except ValueError:
+                continue
+            if isinstance(event, dict) and isinstance(event.get('error'), str):
+                yield str(event.get('name') or name or ''), event['error']
+            continue
+        yield name, stripped
+
+
+def check_defect_findings(text, limit=3):
+    """Report harness/API misuse inside the run's own checks, not product failures.
+
+    A JavaScript error raised by the product is reported by the prepared wrapper as
+    "Browser JavaScript errors"; those lines, and the serialized page state appended
+    to every failure, are excluded so that product text can never be read as a defect.
+    """
+    findings = []
+    for name, message in check_events(text):
+        message = message.split('Browser state:')[0]
+        if 'Browser JavaScript errors' in message or '"visible_text"' in message:
+            continue
+        match = CHECK_DEFECT.search(message)
+        if match:
+            findings.append({'case': (name or '')[:200], 'signature': match.group(0)[:120],
+                             'error': message.strip()[:300]})
+            if len(findings) >= limit:
+                break
+    return findings
+
+
+DEFECTIVE_CHECK_INSTRUCTION = (
+    'This failure is a defect in your own check code, not evidence about the product. '
+    'It was not frozen as a required check. Fix or delete the offending check before '
+    'repairing the application. checks/browser.cjs exports node:assert/strict as assert; '
+    'it is not Playwright expect, so assert(locator).toBeVisible() is invalid. '
+    'Assert with assert.ok(await locator.isVisible()) or await locator.waitFor().')
+
+
+def failure_signature(text):
+    """Identify a check failure across rounds, ignoring ports, ids and durations."""
+    cases = []
+    for name, message in check_events(text):
+        message = message.split('Browser state:')[0].strip()
+        if message and name is not None:
+            cases.append((name or '') + ' => ' + message[:200])
+    if not cases:
+        cases = [text.strip()[-2000:]]
+    normalized = sorted({FAILURE_NOISE.sub('#', case) for case in cases})
+    return hashlib.sha256('\n'.join(normalized).encode()).hexdigest()
+
+
 def stop_process(process):
     if process.poll() is None:
         try:
@@ -110,6 +188,8 @@ class Workspace:
         self.last_verification_attempt = None
         self.required_checks = []
         self.retain_failed_prepared_checks = False
+        self.released_self_check = False
+        self.captured_failure = None
         self.authored = set()
         self.acceptance_suite = None
         self.acceptance_requirement_ids = None
@@ -318,6 +398,8 @@ class Workspace:
         self.required_checks = [check for check in self.required_checks
                                 if check.get('kind') != 'captured_self_check']
         self.retain_failed_prepared_checks = False
+        self.released_self_check = False
+        self.captured_failure = None
 
     def capture_failed_prepared_check(self, result):
         """Retain ambiguous-locator cases as repair evidence, not authority.
@@ -328,6 +410,7 @@ class Workspace:
         """
         command = ['node', '--test', '--test-reporter=tap', 'checks/requirements.cjs']
         if (not self.retain_failed_prepared_checks or result.get('passed')
+                or result.get('defective_check') or self.released_self_check
                 or command not in result.get('executed_checks', [])
                 or any(check.get('kind') == 'captured_self_check' for check in self.required_checks)):
             return None
@@ -373,6 +456,62 @@ class Workspace:
                                'A genuinely incorrect captured check remains a reported limitation, not permission '
                                'to weaken required product behavior or claim independent acceptance.'}
 
+    def step_defects(self, step):
+        """Harness/API misuse inside the run's own check code, read from its real log."""
+        if not isinstance(step, dict) or not step.get('log'):
+            return []
+        path = self.root / step['log']
+        try:
+            if path.stat().st_size > 1000000:
+                return []
+            return check_defect_findings(path.read_text(errors='replace'))
+        except OSError:
+            return []
+
+    def release_captured_check(self, captured, step):
+        """Stop repairing against a captured check that cannot pass.
+
+        Two fixed rules, no configuration. A captured check whose failure is a defect
+        in the check code is released at once. Otherwise it is released after the
+        second consecutive round with the identical failure signature over changed
+        product source, because further repair against it cannot converge. Release is
+        recorded as a limitation; it never marks the requirement verified.
+        """
+        try:
+            text = (self.root / step['log']).read_text(errors='replace')[-400000:]
+        except (OSError, KeyError, TypeError):
+            text = ''
+        defects = check_defect_findings(text)
+        reason = None
+        if defects:
+            reason = 'defective_check'
+        else:
+            signature = failure_signature(text)
+            fingerprint = self.fingerprint()
+            previous = self.captured_failure
+            if (previous and previous['signature'] == signature
+                    and previous['source_fingerprint'] != fingerprint):
+                reason = 'no_progress'
+            self.captured_failure = {'signature': signature, 'source_fingerprint': fingerprint}
+        if not reason:
+            return None
+        self.required_checks = [fixed for fixed in self.required_checks if fixed is not captured]
+        self.released_self_check = True
+        self.captured_failure = None
+        release = {'reason': reason, 'cases': captured.get('expected_cases', []), 'defects': defects,
+                   'instruction': (
+                       'The previously captured self-check cases were released and are no longer required: '
+                       + ('the check code itself is defective. ' if reason == 'defective_check' else
+                          'two consecutive repairs of changed product source produced the identical failure. ')
+                       + 'Rewrite or delete that check, then verify the application normally. '
+                         'Do not weaken required product behavior; a released capture is a reported '
+                         'limitation, not evidence that the requirement is satisfied.')}
+        self.trace.event('captured_self_check_released', independently_verified=False, **release)
+        return release
+
+    def contract_fingerprint(self):
+        return hashlib.sha256(json.dumps(self.required_checks, sort_keys=True).encode()).hexdigest()
+
     def self_navigation_guard(self):
         """Reject browser self-navigation in product code this run authored.
 
@@ -404,7 +543,7 @@ class Workspace:
                         or hashlib.sha256(path.read_bytes()).hexdigest() != expected):
                     self.last_verification = None
                     raise ValueError('A fixed acceptance check was removed or changed: ' + name)
-        contract = hashlib.sha256(json.dumps(self.required_checks, sort_keys=True).encode()).hexdigest()
+        contract = self.contract_fingerprint()
         if (self.acceptance_suite is None and self.last_verification and self.last_verification.get("check_command") == check_command
                 and self.last_verification.get("source_fingerprint") == self.fingerprint()
                 and self.last_verification.get('acceptance_fingerprint') == contract):
@@ -415,7 +554,8 @@ class Workspace:
             acceptance = extra.pop('acceptance', {'status': 'not_run' if self.acceptance_suite else 'not_configured',
                                                   'passed': False, 'verified_requirements': []})
             value = {"passed": ok, "steps": steps, "check_command": check_command,
-                     'acceptance_fingerprint': contract,
+                     'acceptance_fingerprint': self.contract_fingerprint(),
+                     'browser_available': bool(self.browser.get('available')),
                      "source_fingerprint": self.fingerprint(), "official_evaluation": "pending",
                      "verification_scope": "independent_acceptance" if acceptance['passed'] else "local_checks_only",
                      "requirements_verified": bool(acceptance['passed']),
@@ -426,6 +566,8 @@ class Workspace:
             atomic_json(self.trace.directory / "verification.json", value)
             self.trace.event("verification", **value)
             return value
+        def extra(release):
+            return {'released_self_check': release} if release else {}
         try:
             findings = self.self_navigation_guard()
             if findings:
@@ -485,6 +627,7 @@ class Workspace:
                     commands = [*[check['argv'] for check in self.required_checks],
                                 check_command, *self.browser_checks(check_command)]
                     executed = []
+                    released = None
                     for command in commands:
                         check = self.run(command, ".", 180, {
                             "FACTORY_BASE_URL": url, "E2E_BASE_URL": url, "PLAYWRIGHT_BASE_URL": url})
@@ -492,6 +635,15 @@ class Workspace:
                         executed.append(command)
                         captured = next((fixed for fixed in self.required_checks
                                          if fixed['argv'] == command and 'expected_cases' in fixed), None)
+                        if captured and (check['exit_code'] != 0 or check['timed_out']):
+                            release = self.release_captured_check(captured, check)
+                            if release:
+                                # The captured check can never pass; continue with the
+                                # remaining checks instead of spending another round on it.
+                                released = release
+                                steps.pop()
+                                executed.pop()
+                                continue
                         if captured and check['exit_code'] == 0 and not check['timed_out']:
                             raw = self.root / check['log']
                             try:
@@ -508,10 +660,14 @@ class Workspace:
                             if not complete:
                                 return result(False, error='Captured ambiguity cases did not all execute',
                                               check_command=check_command, executed_checks=executed,
-                                              application_url=url)
+                                              application_url=url, **extra(released))
                         if check["exit_code"] != 0 or check["timed_out"]:
+                            defects = self.step_defects(check)
                             return result(False, check_command=check_command, executed_checks=executed,
-                                          application_url=url)
+                                          application_url=url, **extra(released),
+                                          **({'defective_check': {'findings': defects,
+                                                                  'instruction': DEFECTIVE_CHECK_INSTRUCTION}}
+                                             if defects else {}))
                     if self.acceptance_suite is not None:
                         scope = (self.acceptance_requirement_ids if self.acceptance_requirement_ids is not None
                                  else self.acceptance_suite.requirement_ids)
@@ -524,13 +680,14 @@ class Workspace:
                                           'exit_code': 1, 'timed_out': acceptance.get('timed_out', False)})
                         verified = result(acceptance['passed'], check_command=check_command,
                                           executed_checks=commands, application_url=url, acceptance=acceptance,
+                                          **extra(released),
                                           **({'error': 'Independent acceptance did not pass'} if not acceptance['passed'] else {}))
                         if acceptance['status'] in ('error', 'unverified'):
                             raise AcceptanceUnavailable('Independent acceptance is unavailable or incomplete; '
                                                         'stopping instead of asking the model to repair its evaluator')
                         return verified
-                    return result(True, check_command=check_command, executed_checks=commands,
-                                  application_url=url)
+                    return result(True, check_command=check_command, executed_checks=executed,
+                                  application_url=url, **extra(released))
                 finally:
                     stop_process(process)
                     text = self.trace.redact(server_log.read_text(errors="replace"))
