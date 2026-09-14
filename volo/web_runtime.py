@@ -12,10 +12,31 @@ const path = require('node:path');
 const base = path.resolve(__dirname, '../frontend/dist');
 const api = require('./api.cjs');
 if(typeof api !== 'function') throw new Error('backend/api.cjs must export a request handler function');
+// Optional harness-managed shared state (volo/state_runtime.py). When backend/state.cjs is
+// absent this block is inert and the server behaves exactly as it did before.
+let state = null;
+try { if (require('node:fs').existsSync(path.join(__dirname, 'state.cjs'))) state = require('./state.cjs'); }
+catch (error) { state = {ready: Promise.reject(error)}; }
+if (state) state.ready.catch(() => {});
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8',
   '.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml'};
 http.createServer(async (req,res) => {
   try {
+    if (state) {
+      const route = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+      if (route === '/api/health') {
+        try { await state.ready; }
+        catch (error) {
+          res.writeHead(503, {'content-type':'application/json'});
+          res.end(JSON.stringify({code:503,message:'Backend not ready',error:String(error && error.message || error)}));
+          return;
+        }
+        res.writeHead(200, {'content-type':'application/json'});
+        res.end(JSON.stringify({code:200,message:'Backend Ready'}));
+        return;
+      }
+      await state.ready;
+    }
     if (await api(req,res) || res.writableEnded) return;
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
     let file = path.resolve(base, '.' + pathname);

@@ -10,6 +10,7 @@ import sys
 import time
 from pathlib import Path
 
+from volo import contract as state_contract
 from volo.agent import Agent
 from volo.acceptance import AcceptanceSuite
 from volo.model import Model
@@ -36,6 +37,8 @@ def main():
     if args.inspect:
         print(json.dumps({"fingerprint": requirements.fingerprint,
                           "batches": [[n["id"] for n in b] for b in requirements.batches()],
+                          "state_contract": len(requirements.batches()) > 1,
+                          "seed_sentences": state_contract.seed_sentences(requirements.document),
                           "assets": requirements.assets}, ensure_ascii=False, indent=2))
         return 0
     key = os.getenv("OPENAI_API_KEY")
@@ -84,9 +87,19 @@ def main():
                     model=model_name, vision_model=vision_name, max_calls=args.max_calls, token_budget=args.token_budget,
                     timeout_seconds=args.timeout)
         try:
+            # A package that does not fit one batch is implemented by several batches that
+            # cannot see each other's code. Fix the shared state once, before any page is
+            # generated. A single-batch package has no cross-batch state to reconcile and
+            # takes exactly the path it took before.
+            contract = None
+            if len(requirements.batches()) > 1:
+                contract = state_contract.extract(requirements, client, trace)
+                print("[volo] state contract: "
+                      + json.dumps(contract['audit'], ensure_ascii=False)
+                      + " cost=" + json.dumps(contract['cost']), flush=True)
             result = Agent(requirements, client, workspace, runtime,
                            max_calls=args.max_calls, token_budget=args.token_budget,
-                           references=references).run()
+                           references=references, contract=contract).run()
             print(json.dumps(result, ensure_ascii=False), flush=True)
             return 0
         except Exception as exc:

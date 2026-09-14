@@ -27,6 +27,10 @@ from .trace import Trace, atomic_json
 
 EXCLUDED = {".git", ".arc", ".factory", "node_modules", "dist", "build", "__pycache__", ".venv"}
 PROTECTED = {".git", ".arc", ".factory", ".volo", "requirements"}
+# Rows the running application writes are runtime state, not product source. Keeping
+# them out of the fingerprint stops a check that mutates seeded data from invalidating
+# the verification it just passed. harness_lab/local_gate.py already stages it this way.
+RUNTIME_STATE = "backend/data"
 
 
 def normalize_check_command(command):
@@ -225,9 +229,11 @@ class Workspace:
 
     def files(self):
         result = []
+        state = (self.root / RUNTIME_STATE).resolve()
         for directory, dirs, files in os.walk(self.root):
             dirs[:] = sorted(d for d in dirs if d not in EXCLUDED and d != "requirements"
-                             and not (Path(directory) / d).is_symlink())
+                             and not (Path(directory) / d).is_symlink()
+                             and (Path(directory) / d).resolve() != state)
             for name in sorted(files):
                 path = Path(directory) / name
                 if name.startswith(".env") or path.is_symlink():
@@ -533,6 +539,35 @@ class Workspace:
                 break
         return findings[:8]
 
+    def health_gate(self, url, opener, deadline, process):
+        """Wait for /api/health when the application declares startup state.
+
+        An application that seeds at startup must not answer ready before the seed
+        commits: the evaluator polls this path and a premature 200 puts the first
+        test in front of an empty store. Applications without backend/state.cjs are
+        unaffected; this returns None for them and the caller proceeds unchanged.
+        """
+        if not (self.root / "backend" / "state.cjs").is_file():
+            return None
+        target = url.rstrip("/") + "/api/health"
+        last = "no response"
+        while time.monotonic() < deadline and process.poll() is None:
+            try:
+                with opener.open(target, timeout=2) as response:
+                    body = response.read(2048).decode("utf-8", errors="replace")
+                    if response.status == 200:
+                        return {"ready": True, "path": "/api/health", "body": body[:400]}
+                    last = f"HTTP {response.status}: {body[:200]}"
+            except urllib.error.HTTPError as exc:
+                last = f"HTTP {exc.code}: " + exc.read(512).decode("utf-8", errors="replace")[:200]
+            except (OSError, urllib.error.URLError, ValueError) as exc:
+                last = str(exc)[:200]
+            time.sleep(0.1)
+        return {"ready": False, "path": "/api/health", "last_response": last,
+                "error": "Startup seeding never reported ready at /api/health: " + last
+                         + ". /api/health must answer 200 only after the seed transaction "
+                           "commits, and 503 while it is pending or has failed."}
+
     def verify(self, check_command):
         """Verify the actual current tree, never a model's claimed test result."""
         check_command = normalize_check_command(check_command)
@@ -610,8 +645,12 @@ class Workspace:
                                            env=tool_environment({**self.runtime_env, "PORT": str(port)}), start_new_session=True)
                 try:
                     end = min(time.monotonic() + 30, self.deadline)
-                    ready = False
                     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+                    health = self.health_gate(url, opener, end, process)
+                    if health and not health["ready"]:
+                        return result(False, error=health["error"], startup_health=health,
+                                      server_output=self.trace.redact(server_log.read_text(errors="replace")[-6000:]))
+                    ready = False
                     while time.monotonic() < end and process.poll() is None:
                         try:
                             with opener.open(url, timeout=1) as response:
@@ -624,6 +663,9 @@ class Workspace:
                     if not ready:
                         return result(False, error="Application did not serve HTTP 200 on PORT",
                                       server_output=self.trace.redact(server_log.read_text(errors="replace")[-6000:]))
+                    if health:
+                        steps.append({"output": json.dumps(health, ensure_ascii=False),
+                                      "exit_code": 0, "timed_out": False})
                     commands = [*[check['argv'] for check in self.required_checks],
                                 check_command, *self.browser_checks(check_command)]
                     executed = []
