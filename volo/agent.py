@@ -301,7 +301,7 @@ def edit_span(current, item):
     if after is not None:
         end = locate(current, after, 'insert_after') + len(after)
         return end, end, new
-    start = locate(current, replace, 'replace')
+    start = locate(current, replace, 'old')
     return start, start + len(replace), new
 
 
@@ -460,7 +460,12 @@ class Agent:
         if name == 'patch_and_verify':
             edits = args['edits']
             if not isinstance(edits, list) or not 1 <= len(edits) <= 20:
-                raise ValueError('Provide 1-20 exact edits')
+                # An empty list here was a real loop: one local run returned it four
+                # times in a row. Say what a usable edit looks like, not just a count.
+                raise ValueError('Provide 1-20 edits. Each is {"path","new"} with "insert_after" '
+                                 'to add text after a unique anchor, or "old" to replace unique text. '
+                                 'Return the smallest edit that implements the requirement, '
+                                 'plus the assertion for it.')
             grouped, skipped = {}, []
             for item in edits:
                 # Run 8abb spent two of fifteen calls on a KeyError reported as "'path'".
@@ -491,6 +496,16 @@ class Agent:
                 self.trace.event('prepared_check_edit_skipped', paths=skipped)
             if not pending:
                 raise ValueError('Edit the application; ' + PREPARED_CHECK_PATH + ' is harness-owned')
+            # A new requirement with no new assertion is how a passing local run
+            # still fails officially: run 79741e4c25c1 added the required element,
+            # never wired it, and the inherited checks only covered the old
+            # behavior. The prepared check sees the element, not the behavior.
+            if (self.inline_source and self.prepared_check_written()
+                    and AUTHORED_CHECK_PATH not in pending
+                    and (self.workspace.root / AUTHORED_CHECK_PATH).is_file()):
+                raise ValueError('Assert the new requirement: extend ' + AUTHORED_CHECK_PATH
+                                 + ' in this same call. It currently covers only the existing behavior, '
+                                   'and a prepared check can see that an element exists but not that it works.')
             self.workspace.write_files([{'path': path, 'content': content} for path, content in pending.items()])
             result = self.workspace.verify(args['check_command'])
             if result['passed']:

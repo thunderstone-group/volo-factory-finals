@@ -223,3 +223,39 @@ class PreparedModeTests(TempCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class NewRequirementAssertionTests(TempCase):
+    def prepared_agent(self):
+        scaffold(self.workspace)
+        self.workspace.write_files([
+            {'path': 'frontend/public/index.html', 'content': '<h1>Product</h1>'},
+            {'path': PREPARED_CHECK_PATH, 'content': prepared_check('none')},
+            {'path': 'checks/requirements.cjs', 'content': "const {test}=require('./browser.cjs');\n"}])
+        agent = Agent(RequirementSet.load(self.req), None, self.workspace, None)
+        agent.prepared_checks = True
+        agent.inline_source = True
+        return agent
+
+    def test_a_product_only_edit_is_refused_when_checks_cover_only_old_behavior(self):
+        agent = self.prepared_agent()
+        with self.assertRaisesRegex(ValueError, 'Assert the new requirement'):
+            agent.dispatch('patch_and_verify', {'edits': [
+                {'path': 'frontend/public/index.html', 'insert_after': '<h1>Product</h1>', 'new': '<p>More</p>'}]})
+        self.assertEqual((self.out / 'frontend/public/index.html').read_text(), '<h1>Product</h1>')
+
+    def test_an_edit_that_extends_the_authored_check_is_accepted(self):
+        agent = self.prepared_agent()
+        result = agent.dispatch('patch_and_verify', {'edits': [
+            {'path': 'frontend/public/index.html', 'insert_after': '<h1>Product</h1>', 'new': '<p>More</p>'},
+            {'path': 'checks/requirements.cjs', 'insert_after': "require('./browser.cjs');",
+             'new': "\ntest('new behavior',async(page,assert)=>{});"}]})
+        self.assertIn('check_command', result)
+        self.assertIn('new behavior', (self.out / 'checks/requirements.cjs').read_text())
+
+    def test_a_one_shot_batch_without_inherited_checks_is_unaffected(self):
+        agent = self.prepared_agent()
+        agent.inline_source = False
+        result = agent.dispatch('patch_and_verify', {'edits': [
+            {'path': 'frontend/public/index.html', 'insert_after': '<h1>Product</h1>', 'new': '<p>More</p>'}]})
+        self.assertIn('check_command', result)
