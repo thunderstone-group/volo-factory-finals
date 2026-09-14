@@ -217,13 +217,16 @@ def anchor_excerpt(text, start, before=120, after=280):
             + text[start:start + after] + ('...' if start + after < len(text) else ''))
 
 
-def edit_anchor_failure(path, old, current, position=None):
+def edit_anchor_failure(path, old, current, position=None, field='old'):
     """Explain precisely why an exact-text anchor did not apply, with the current text.
 
     Reports the occurrence count and line numbers when the anchor is ambiguous, and the
     exact character at which the anchor stops matching the file when it is absent.
+    `field` names which anchor was supplied, so an insert_after and a replacement are
+    not reported as the same thing.
     """
     label = 'edit ' + str(position) + ' of this call' if position else 'the edit'
+    label += ': its ' + field
     count = current.count(old)
     if count > 1:
         lines, start = [], 0
@@ -233,8 +236,8 @@ def edit_anchor_failure(path, old, current, position=None):
                 break
             lines.append(current.count('\n', 0, found) + 1)
             start = found + 1
-        return (label + ' did not apply: its old text occurs ' + str(count) + ' times in ' + path
-                + ', starting at line ' + ', '.join(str(line) for line in lines) + '. Extend old with '
+        return (label + ' text did not apply: it occurs ' + str(count) + ' times in ' + path
+                + ', starting at line ' + ', '.join(str(line) for line in lines) + '. Extend ' + field + ' with '
                 'the surrounding lines until exactly one occurrence remains.')
     low, high = 0, len(old)
     while low < high:
@@ -252,9 +255,9 @@ def edit_anchor_failure(path, old, current, position=None):
     elif not matched:
         hint = ' No prefix of the old text appears in the file at all; read the file before editing it.'
     where = current.find(matched) + low if matched else 0
-    return (label + ' did not apply: its old text is not present in ' + path + '. The first '
+    return (label + ' text did not apply: it is not present in ' + path + '. The first '
             + str(low) + ' of ' + str(len(old)) + ' characters match, then the file has '
-            + json.dumps(current[where:where + 40]) + ' where old has '
+            + json.dumps(current[where:where + 40]) + ' where ' + field + ' has '
             + json.dumps(old[low:low + 40]) + '.' + hint + ' Current text there: '
             + anchor_excerpt(current, where))
 

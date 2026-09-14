@@ -185,8 +185,15 @@ still reports the ambiguity, and a configured acceptance contract decides the ru
 contract: after the model scopes its own assertion away the run proceeds, the capture still
 reports `failed`, and `verified_requirements` stays empty.
 
-`python -m unittest discover -s tests -v` reports **209 tests, 0 failures, 11 skipped**, against
-190 on `main`. The 11 skips are the same machine-local browser and Docker cases that skip on main.
+`python -m unittest discover -s tests -v` reports **232 tests, 0 failures, 11 skipped**, against
+213 on `main` at `b00679c`. The 11 skips are the same machine-local browser and Docker cases that
+skip on main.
+
+The merge with `main` brought in the anchored edit protocol of PR #17, which adds `insert_after`
+beside `old` and applies a call's edits per file through `apply_edits`. That protocol is kept
+whole; its `locate` now raises through `edit_anchor_failure`, so both anchor kinds report the
+occurrence count and line numbers when ambiguous, and where the anchor stops matching plus a marked
+window of the real file when absent. `tests/test_edit_protocol.py` asserts the richer contract.
 
 ## 7. Local measurement: five generations before, five after
 
