@@ -130,9 +130,9 @@ class VisionSwitchTests(unittest.TestCase):
     runs is a cost decision. Nothing here calls a gateway.
     """
 
-    def test_unset_variable_leaves_the_priced_observation_off(self):
-        self.assertIsNone(vision_model_name({}))
-        self.assertIsNone(DEFAULT_VISION_MODEL)
+    def test_unset_variable_uses_the_cheap_observation_model(self):
+        self.assertEqual(vision_model_name({}), DEFAULT_VISION_MODEL)
+        self.assertEqual(DEFAULT_VISION_MODEL, 'qwen3.6-flash')
 
     def test_naming_kimi_restores_the_previous_observation_behaviour(self):
         self.assertEqual(vision_model_name({'FACTORY_VISION_MODEL': 'kimi-k3'}), 'kimi-k3')
