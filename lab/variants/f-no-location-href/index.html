@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>火车票预订演示系统</title>
+<style>
+  * { box-sizing: border-box; font-family: "PingFang SC","Microsoft YaHei",system-ui,sans-serif; }
+  body { margin:0; background:#f4f6f8; color:#222; }
+  .topbar { background:#0b5ed7; color:#fff; padding:12px 24px; display:flex; justify-content:space-between; align-items:center; }
+  .topbar .brand { font-weight:700; font-size:18px; }
+  .topbar nav a { color:#fff; text-decoration:none; margin-left:18px; padding:6px 10px; border-radius:4px; }
+  .topbar nav a:hover { background:rgba(255,255,255,.15); }
+  .topbar .user-name { font-weight:600; }
+  .container { max-width:720px; margin:32px auto; background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,.08); overflow:hidden; }
+  .card-head { background:linear-gradient(135deg,#0b5ed7,#3f8cff); color:#fff; padding:18px 24px; font-size:20px; font-weight:700; }
+  .card-body { padding:24px; }
+  .field { margin-bottom:16px; }
+  .field label { display:block; font-weight:600; margin-bottom:6px; }
+  .field .req { color:#e02424; }
+  .field input, .field select { width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; }
+  .btn { width:100%; padding:12px; background:#f97316; color:#fff; border:none; border-radius:6px; font-size:16px; font-weight:700; cursor:pointer; }
+  .btn:hover { background:#ea6a0d; }
+  .terms label { display:flex; align-items:flex-start; gap:8px; font-size:13px; }
+  .alert { display:none; background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; padding:10px 12px; border-radius:6px; margin-bottom:16px; }
+  .alert.show { display:block; }
+  .strength-wrap { display:flex; align-items:center; gap:6px; margin-top:6px; }
+  .strength-seg { width:26px; height:6px; border-radius:3px; background:#d8dee6; }
+  meter { height:16px; width:80px; margin-left:auto; }
+  .home-intro { padding:40px 24px; text-align:center; color:#0b5ed7; }
+  .home-intro h1 { margin-bottom:12px; }
+  .home-intro p { color:#475569; }
+  .form-row { display:flex; gap:10px; }
+  .form-row .code { flex:0 0 130px; }
+  .form-row .phone { flex:1; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function(){
+  const app = document.getElementById('app');
+  let currentUser = null;
+
+  async function getSession() {
+    try {
+      const res = await fetch('/api/session', {credentials:'include'});
+      if (res.ok) { const d = await res.json(); return d.username || null; }
+    } catch(e){}
+    return null;
+  }
+
+  function alertEl() {
+    return '<div id="formAlert" class="alert" role="alert"></div>';
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('formAlert');
+    if (el) { el.textContent = msg; el.classList.add('show'); }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function renderTopbar() {
+    let nav;
+    if (currentUser) {
+      nav = '<span class="user-name">' + escapeHtml(currentUser) + '</span>'
+        + '<a href="/logout" aria-label="退出登录" onclick="return window.__app.signOut(event)">退出登录</a>';
+    } else {
+      nav = '<a href="/register">Register</a><a href="/login">登录</a>';
+    }
+    return '<div class="topbar"><div class="brand">中国铁路12306 · 火车票预订演示系统</div><nav>' + nav + '</nav></div>';
+  }
+
+  function renderHome() {
+    app.innerHTML = renderTopbar() + '<div class="home-intro"><h1>火车票预订演示系统</h1><p>查询车次并预订火车票的演示网站。请先注册或登录。</p></div>';
+  }
+
+  function renderLogin() {
+    app.innerHTML = renderTopbar() + '<div class="container"><div class="card-head">欢迎登录</div><div class="card-body">'
+      + alertEl()
+      + '<form id="loginForm" novalidate>'
+      + '<div class="field"><label for="loginIdentifier">用户名或邮箱</label><input type="text" id="loginIdentifier" name="identifier" autocomplete="username"></div>'
+      + '<div class="field"><label for="loginPassword">密码</label><input type="password" id="loginPassword" name="password" autocomplete="current-password"></div>'
+      + '<button type="submit" class="btn">登录</button>'
+      + '</form></div></div>';
+    document.getElementById('loginForm').addEventListener('submit', submitLogin);
+  }
+
+  async function submitLogin(ev) {
+    ev.preventDefault();
+    const identifier = document.getElementById('loginIdentifier').value;
+    const password = document.getElementById('loginPassword').value;
+    const res = await fetch('/api/login', {
+      method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
+      body: JSON.stringify({identifier, password})
+    });
+    const data = await res.json().catch(()=>({}));
+    if (res.ok) {
+      currentUser = data.username;
+      goHome();
+    } else {
+      showError(data.error || '登录失败');
+    }
+  }
+
+  function renderRegister() {
+    app.innerHTML = renderTopbar() + '<div class="container"><div class="card-head">账户信息</div><div class="card-body">'
+      + alertEl()
+      + '<form id="regForm" novalidate>'
+      + '<div class="field"><label for="username">用户名 <span class="req">*</span></label><input type="text" id="username" name="username" autocomplete="username"></div>'
+      + '<div class="field"><label for="regPassword">登录密码 <span class="req">*</span></label><input type="password" id="regPassword" name="password" autocomplete="new-password">'
+      + '<div class="strength-wrap"><span class="strength-seg"></span><span class="strength-seg"></span><span class="strength-seg"></span>'
+      + '<meter id="pw-meter" name="password-strength" aria-label="密码强度" data-testid="password-strength" min="0" max="3" value="0"></meter></div></div>'
+      + '<div class="field"><label for="confirmPassword">确认密码 <span class="req">*</span></label><input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password"></div>'
+      + '<div class="field"><label for="documentType">证件类型 <span class="req">*</span></label><select id="documentType" name="documentType">'
+      + '<option value="">请选择证件类型</option><option value="居民身份证">居民身份证</option><option value="护照">护照</option>'
+      + '<option value="港澳居民来往内地通行证">港澳居民来往内地通行证</option><option value="台湾居民来往大陆通行证">台湾居民来往大陆通行证</option>'
+      + '<option value="外国人永久居留身份证">外国人永久居留身份证</option></select></div>'
+      + '<div class="field"><label for="name">姓名 <span class="req">*</span></label><input type="text" id="name" name="name"></div>'
+      + '<div class="field"><label for="documentNumber">证件号码 <span class="req">*</span></label><input type="text" id="documentNumber" name="documentNumber"></div>'
+      + '<div class="field"><label for="discountType">优惠（待）类型 <span class="req">*</span></label><select id="discountType" name="discountType">'
+      + '<option value="">请选择乘客类型</option><option value="成人">成人</option><option value="儿童">儿童</option><option value="学生">学生</option>'
+      + '<option value="残疾军人">残疾军人</option><option value="其他优惠类型">其他优惠类型</option></select></div>'
+      + '<div class="field"><label for="email">邮箱</label><input type="email" id="email" name="email"></div>'
+      + '<div class="field"><label for="countryCode">国家/地区代码 <span class="req">*</span></label><div class="form-row">'
+      + '<div class="code"><select id="countryCode" name="countryCode"><option value="+86" selected>+86</option><option value="+84">+84</option><option value="+1">+1</option><option value="+852">+852</option></select></div>'
+      + '<div class="phone"><label for="mobileNumber">手机号 <span class="req">*</span></label><input type="text" id="mobileNumber" name="mobileNumber"></div>'
+      + '</div></div>'
+      + '<div class="field terms"><label for="agreeTerms"><input type="checkbox" id="agreeTerms" name="agreeTerms" value="on"> 我已阅读并同意《服务条款》和《隐私政策》</label></div>'
+      + '<button type="submit" class="btn">下一步</button>'
+      + '</form></div></div>';
+    document.getElementById('regForm').addEventListener('submit', submitRegister);
+    document.getElementById('regPassword').addEventListener('input', updateStrength);
+  }
+
+  function updateStrength() {
+    const val = document.getElementById('regPassword').value;
+    const meter = document.getElementById('pw-meter');
+    if (!meter) return;
+    let s = 0;
+    if (val.length >= 12) s++;
+    if (/[a-z]/.test(val) && /[A-Z]/.test(val)) s++;
+    if (/[0-9]/.test(val) && /[^A-Za-z0-9]/.test(val)) s++;
+    meter.value = s;
+    meter.setAttribute('value', String(s));
+    const segs = document.querySelectorAll('.strength-seg');
+    const colors = ['#e74c3c','#f39c12','#2ecc71'];
+    for (let i=0;i<segs.length;i++){
+      segs[i].style.background = i < s ? colors[s-1] : '#d8dee6';
+    }
+  }
+
+  async function submitRegister(ev) {
+    ev.preventDefault();
+    const form = document.getElementById('regForm');
+    const fd = new FormData(form);
+    const payload = {};
+    fd.forEach(function(v,k){ payload[k]=v; });
+    const res = await fetch('/api/register', {
+      method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(()=>({}));
+    if (res.ok) {
+      currentUser = data.username;
+      goHome();
+    } else {
+      showError(data.error || '注册失败');
+    }
+  }
+
+  async function signOut(ev) {
+    ev.preventDefault();
+    try { await fetch('/api/logout', {method:'POST', credentials:'include'}); } catch(e){}
+    currentUser = null;
+    goHome();
+  }
+
+  function goHome() {
+    history.replaceState(null, '', '/');
+    renderHome();
+  }
+
+  window.__app = { signOut: signOut };
+
+  async function boot() {
+    currentUser = await getSession();
+    const path = location.pathname;
+    if (path === '/register') renderRegister();
+    else if (path === '/login') renderLogin();
+    else renderHome();
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>
