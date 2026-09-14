@@ -384,6 +384,18 @@ class Agent:
                    + ('\nRead-only public acceptance specifications:\n' + json.dumps(self.public_specs, ensure_ascii=False)
                       if self.public_specs else ''))
 
+    def observe_references(self, nodes):
+        """Read referenced images, or state plainly that no observer was configured.
+
+        With the reference observation switched off the run makes no image request at
+        all; the agent is told the binary references were not inspected so it cannot
+        claim to have matched them.
+        """
+        if self.references is None:
+            return {'unavailable': 'No reference observer configured; binary images have not been inspected'}
+        return self.references.observe(self.requirements, nodes,
+                                       deadline=self.workspace.deadline, guard_budget=self.guard_budget)
+
     def context_checkpoint(self, nodes, system, last_failure):
         attempt = self.workspace.last_verification_attempt
         verification = None
@@ -415,9 +427,7 @@ class Agent:
         self.workspace.clear_prepared_check_guards()
         self.inline_source = False
         self.source_snapshot_limit = 24000
-        self.reference_context = (self.references.observe(self.requirements, nodes,
-            deadline=self.workspace.deadline, guard_budget=self.guard_budget) if self.references else
-            {'unavailable': 'No reference observer configured; binary images have not been inspected'})
+        self.reference_context = self.observe_references(nodes)
         small = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 3500
         bounded = len(nodes) <= 3 and len(self.requirements.batch_prompt(nodes)) <= 16000
         self.model.thinking = "disabled" if small else "enabled"

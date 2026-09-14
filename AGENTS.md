@@ -11,6 +11,8 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
 - `volo/`: requirement scheduling, model transport, workspace tools, verification and agent loop.
 - `harness_lab/`: opt-in developer evaluation and Pi/model-browser probes; see its README.
 - `tests/`: deterministic transport, recovery and execution tests. These are not evidence of model quality.
+- `docs/image-ablation-2026-09-14.md`: whether the reference-image observation pays for itself,
+  the `FACTORY_VISION_MODEL` switch and which gateway models actually read an image.
 - `docs/harness-consolidation-2026-09-12.md`: integration decisions and validation boundaries.
 - `docs/harness-design-2026-09-12.md`: pinned-source comparison and proposed next experiments.
 - `docs/strategy.md`: verified competition facts, design choices and next experiments.
