@@ -105,8 +105,17 @@ class Model:
                     continue
                 raise ModelError(f"Gateway HTTP {exc.code}: {self.trace.redact(detail)}") from exc
             except (OSError, ValueError) as exc:
-                # A transport failure can have consumed tokens. Do not silently retry it.
-                self.trace.event("model_transport_uncertain", error=str(exc))
+                # A transport failure can have consumed tokens, so it is recorded, never
+                # hidden. It is retried once all the same: 2026-09-15, a Bookstack batch
+                # eight calls in was lost to one TLS EOF, and a duplicate prompt costs
+                # less than any batch.
+                self.trace.event("model_transport_uncertain", error=str(exc), attempt=attempt + 1)
+                if isinstance(exc, OSError) and attempt < self.max_attempts - 1 and (
+                        remaining_seconds is None or remaining_seconds > 10):
+                    time.sleep(2)
+                    if remaining_seconds is not None:
+                        remaining_seconds -= time.monotonic() - started
+                    continue
                 raise ModelError("Model request failed; gateway usage may have been consumed") from exc
             usage = result.get("usage")
             if isinstance(usage, dict) and usage.get("prompt_tokens") is not None and usage.get("completion_tokens") is not None:

@@ -5,6 +5,7 @@ tests validate that named state survives the extraction and reaches the running
 application; they are not evidence about generated product quality, which only an
 official run measures.
 """
+import io
 import json
 import os
 import time
@@ -816,6 +817,27 @@ class GatewayRetryTests(TempCase):
 
     def test_a_single_attempt_transport_still_makes_one_request(self):
         self.assertEqual(self.transport(502, attempts=1), 1)
+
+    def test_a_connection_level_failure_is_retried_and_recorded(self):
+        # 2026-09-15: one TLS EOF ("EOF occurred in violation of protocol") lost a Bookstack
+        # batch eight calls in. Synthetic: the first attempt raises the same URLError, the
+        # second answers; the uncertain attempt is still on the trace.
+        import urllib.request
+        from urllib.error import URLError
+        from volo.model import Model
+        model = Model("https://gateway.example/v1", "synthetic-test-key", "test", self.trace)
+        answer = io.BytesIO(json.dumps({"choices": [{"message": {"role": "assistant", "content": "ok"},
+                                                    "finish_reason": "stop"}],
+                                        "usage": {"prompt_tokens": 1, "completion_tokens": 1}}).encode())
+        answer.__enter__ = lambda *a: answer
+        answer.__exit__ = lambda *a: False
+        with patch("urllib.request.urlopen", side_effect=[URLError("EOF occurred in violation of protocol"), answer]) as request, \
+                patch("time.sleep"):
+            message, reason = model.complete([{"role": "user", "content": "synthetic"}], [])
+        self.assertEqual(request.call_count, 2)
+        self.assertEqual(message["content"], "ok")
+        events = [json.loads(line) for line in (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+        self.assertTrue(any(e['event'] == 'model_transport_uncertain' for e in events))
 
 
 class ServingDiagnosisTests(TempCase):
