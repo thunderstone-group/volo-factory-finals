@@ -1181,3 +1181,21 @@ generation has been run against any of this.
   replays); evidence goes to `runs/2026-09-15-keep-full-7/` when archived. Bar: ≥ 26/32 and
   ≤ CNY 12, worst hosted replay counts. The ARC-template official Keep run (plan step 2) is
   sequenced after it so its cost column is not polluted by our local calls.
+
+## 2026-09-15, 14:43 — Keep run 7 on 03152c0: 22/32, CNY 12.03, budget-stopped at batch 12
+
+- 186 calls, 5.19 M prompt (3.82 M cached) / 0.84 M completion tokens, CNY 12.03 (stopped on
+  `FACTORY_COST_BUDGET_CNY`), 129 min of which 93 min waiting on the model (34 s per call).
+- Batches 1–7 completed (20/5/15/18/6/15/4 calls); batches 8–12 each hit the 20-call cap
+  without converging (8: 2.7.2+2.7.4; 9: 2.7.5; 10: 2.7.6.1+2.7.6.3+2.8.2; 11: 2.5.4+2.7.6.2;
+  12: 3.1+4.1 on the cost budget); 13–15 never started. Delivered the last verified snapshot.
+- Score: hosted 22/32, repo 22/32, hosted replays 22/32 ×2, identical failure set every time:
+  2.5.3, 2.5.4, 2.7.1, 2.7.2, 2.7.4, 2.7.5, 2.7.6.2, 4.1, 4.2, 6.1. Two are self-check-green
+  official-red (2.5.3 batch 7, 2.7.1 batch 4); the rest belong to capped or unstarted batches.
+- Bar (≥ 26/32, ≤ CNY 12) not met; worse than run 5 (25/32, CNY 8.4) on the same requirements.
+  Trajectory facts pending attribution: the self-check suite runs every prior batch's spec on
+  each verification (12 s healthy; five 71 s runs in batch 10 where a change broke hover on all
+  rows and every earlier regression check timed out); repeated `consecutive_read_only` stalls on
+  `checks/browser.cjs` / `reset.cjs`; a model-authored `checks/tmp-debug.spec.cjs` in the suite.
+- Evidence: `runs/2026-09-15-keep-full-7/` (git-ignored). Attribution assigned; no rule change
+  until it lands.
