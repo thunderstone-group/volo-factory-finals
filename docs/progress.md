@@ -1199,3 +1199,17 @@ generation has been run against any of this.
   `checks/browser.cjs` / `reset.cjs`; a model-authored `checks/tmp-debug.spec.cjs` in the suite.
 - Evidence: `runs/2026-09-15-keep-full-7/` (git-ignored). Attribution assigned; no rule change
   until it lands.
+
+## 2026-09-15, 16:15 — F1–F6 landed (3b4831b…83b7d83), Keep run 8 started
+
+- Six fixes from the run 7 attribution, each with its own commit and offline or real-link
+  acceptance: failure digest in front of the truncated output (34/34 failures of
+  command-0113 in 3.9 KB), salvage on the failure-set difference over the window (batch 11
+  replay keeps the batch), one execution per check file with `--test-concurrency=1` (run 7
+  delivery: 66 → 31 instances, 3 → 0 false failures), one-off debug checks not recorded,
+  `checks/` out of the stall-repair candidates (74.6 KB → 40.1 KB), row-action verb must not
+  be extended by a navigation item's name. Suite 457 green, 48 skips, re-run by the main session.
+- Keep run 8 started 16:15 on 83b7d83, same script as run 7; evidence to
+  `runs/2026-09-15-keep-full-8/`. Bar unchanged: ≥ 26/32, ≤ CNY 12.
+- Parallel: official baselines (13 runs), one-shot Keep experiment (`~/projects/oneshot-lab`),
+  check compiler on `feat/ts-kernel` (codex), Prime Agent adapter.
