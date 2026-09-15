@@ -86,3 +86,18 @@ such number.
   the tokens, not from a better general agent.
 - The senior threshold (80%) sits above every general baseline in the paper and just below
   ARC's own numbers on the four hardest apps.
+
+## Addendum 13:40 — the paper's suite and the repository's suite are two different sets
+
+Neither is a subset of the other: Keep has more tests in the paper (45 vs 32), BookStack fewer
+(30 vs 34), the other four fewer. The requirement graphs differ too (paper Keep 35 nodes vs repo
+32; 12306 142 vs 117), and tests hang off requirement nodes. The paper describes construction
+only as "one hand-written GUI test per leaf scenario" (`arc-paper.txt:644-647`) with no mention
+of curation or the 80 cap on 12306/Ctrip, and publishes no dataset version (no DOI, hash or
+artifact; only the project site, `arc-paper.txt:1254`). In the repository the counts have been
+constant since the first commit d50b782 (2026-07-20); the five commits touching `tests/` are
+in-place rewrites, none adds or removes cases. 12306 has 117 spec files but 135 `test(` calls;
+README counts files. Actual total is 478.
+
+Usable from the paper: the ordering between baselines and the "bigger app, lower pass rate"
+trend. Not usable: the absolute numbers as target lines on the competition suites.
