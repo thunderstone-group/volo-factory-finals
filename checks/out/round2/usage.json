@@ -166,5 +166,59 @@
     "accounting": "reserved",
     "error": "TypeError: fetch failed",
     "elapsedMs": 171
+  },
+  {
+    "model": "deepseek-v4-flash",
+    "label": "keep-attempt-1",
+    "startedAt": "2026-09-15T10:48:03.011Z",
+    "requestSha256": "1223ade0fbd7310a21afb8994d1073be210160a2f5c9d64dfb5eadd7f788b88b",
+    "reservedCny": 0.27549,
+    "chargedCny": 0.077196,
+    "accounting": "usage",
+    "parameters": {
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "httpStatus": 200,
+    "elapsedMs": 20434,
+    "usage": {
+      "completion_tokens": 3998,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 13738,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 17736
+    }
+  },
+  {
+    "model": "deepseek-v4-flash",
+    "label": "keep-attempt-2",
+    "startedAt": "2026-09-15T10:48:23.511Z",
+    "requestSha256": "3ab176ca989d73bbd46423d2dbe193bf40195f66b7836b865042cdef813eec7c",
+    "reservedCny": 0.266052,
+    "chargedCny": 0.0182112,
+    "accounting": "usage",
+    "parameters": {
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "httpStatus": 200,
+    "elapsedMs": 7967,
+    "usage": {
+      "completion_tokens": 1201,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 12861,
+      "prompt_tokens_details": {
+        "cached_tokens": 10752
+      },
+      "total_tokens": 14062
+    }
   }
 ]
