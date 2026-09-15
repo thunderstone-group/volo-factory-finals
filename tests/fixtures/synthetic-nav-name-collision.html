@@ -1,0 +1,84 @@
+<!-- Synthetic fixture, hand written for tests/test_overlay_rules.py. It is not a
+     generated application and it implements no requirement. It is synthetic-hover-rows.html
+     with one change: the sidebar carries an "Archived" destination beside the row action
+     named "Archive". That is the Keep run 7 defect. archiveNote searches an unanchored
+     /archive/i and reaches the row button, which is intended; openArchive searches the
+     anchored /^archived?$/i, which "Archive" also satisfies, and the role ladder puts
+     button above link, so the click meant for the destination archives a second row. -->
+<style>
+  .row { padding: 6px; border: 1px solid #ccc; }
+  .row .actions { display: none; }
+  .row:hover .actions, .row:focus-within .actions { display: block; }
+  #categories[hidden] { display: none; }
+</style>
+
+<div id="page">
+  <nav aria-label="Filters">
+    <button type="button" role="menuitem">Utilities</button>
+    <button type="button" role="menuitem">Preferences</button>
+    <button type="button" role="menuitem">Archived</button>
+  </nav>
+
+  <ul>
+    <li class="row" tabindex="0">
+      <div class="title">Opening balance</div>
+      <div class="actions">
+        <button type="button" aria-label="More options">M</button>
+        <button type="button" aria-label="Color">C</button>
+        <button type="button" aria-label="Pin">P</button>
+        <button type="button" aria-label="Archive">A</button>
+      </div>
+    </li>
+    <li class="row" tabindex="0">
+      <div class="title">Monthly rent</div>
+      <div class="actions">
+        <button type="button" aria-label="More options">M</button>
+        <button type="button" aria-label="Color">C</button>
+        <button type="button" aria-label="Pin">P</button>
+        <button type="button" aria-label="Archive">A</button>
+      </div>
+    </li>
+    <li class="row" tabindex="0">
+      <div class="title">Scrap me 2.2</div>
+      <div class="actions">
+        <button type="button" aria-label="More options">M</button>
+        <button type="button" aria-label="Color">C</button>
+        <button type="button" aria-label="Pin">P</button>
+        <button type="button" aria-label="Archive">A</button>
+      </div>
+    </li>
+  </ul>
+
+  <button type="button" id="open-categories">Edit categories</button>
+
+  <div id="composer">
+    <input id="entry-title" aria-label="Title" placeholder="Title">
+    <button type="button" id="pin" aria-label="Pin new entry">Pin</button>
+  </div>
+</div>
+
+<div id="categories" role="dialog" aria-label="Categories" hidden>
+  <button type="button" aria-label="Utilities for Opening balance">Utilities</button>
+  <button type="button" aria-label="Close categories">Close</button>
+</div>
+
+<script>
+  document.getElementById('open-categories').addEventListener('click', function () {
+    document.getElementById('categories').hidden = false;
+    // What aria-modal only claims: the resolver honours inert, so nothing behind the
+    // chooser answers to a name or is the first textbox on the page.
+    document.getElementById('page').inert = true;
+  });
+  // The durable re-render: the field is rebuilt, and its current value goes with it.
+  function bindPin() {
+    document.getElementById('pin').addEventListener('click', function () {
+      var composer = document.getElementById('composer');
+      var value = document.getElementById('entry-title').value;
+      composer.innerHTML = '<input id="entry-title" aria-label="Title" placeholder="Title" value="'
+        + value.replace(/"/g, '&quot;') + '">'
+        + '<button type="button" id="pin" aria-label="Pin new entry">Pin</button>';
+      bindPin();
+    });
+  }
+  bindPin();
+</script>

@@ -135,6 +135,16 @@ class RuleTextConsistencyTests(unittest.TestCase):
                       state_runtime.INTERFACE_RULES)
         self.assertIn('vocabulary.actions', state_runtime.INTERFACE_CHECK)
 
+    def test_both_messages_forbid_a_verb_a_destination_name_extends(self):
+        # Run 7's rule said "bare verb" without this, and the generated Keep named its
+        # row action "Archive" beside a sidebar "Archived".
+        for source in (state_runtime.INTERFACE_CHECK, state_runtime.INTERFACE_RULES):
+            self.assertIn('Archive note', source)
+            self.assertIn('/^archived?$/i', source)
+        self.assertIn("navigation item's name extends", state_runtime.INTERFACE_RULES)
+        self.assertIn('Rename the action, never the destination',
+                      state_runtime.INTERFACE_RULES)
+
 
 class OverlayLifecycleCheckTests(InterfaceCheckCase):
     """The same machinery as InterfaceCheckTests, against the overlay fixtures."""
@@ -173,6 +183,27 @@ class OverlayLifecycleCheckTests(InterfaceCheckCase):
 
     def test_a_verb_no_requirement_declares_is_not_a_finding(self):
         self.build_fixture('synthetic-stray-verb-undeclared.html',
+                           declares='An entry can be archived from its own row.')
+        result = self.run_check()
+        self.assertTrue(result['passed'], str((result['steps'] or [{}])[-1].get('output', '')))
+
+    def test_a_bare_verb_a_destination_name_extends_fails(self):
+        # REQ-2.5.3 reduced. The page is synthetic-hover-rows.html with one destination
+        # added: the sidebar's "Archived" and the row's "Archive" both answer the
+        # anchored pattern the evaluator opens the archive list with, and button
+        # outranks link, so the navigation click archives another row instead.
+        self.build_fixture('synthetic-nav-name-collision.html',
+                           declares='An entry can be archived from its own row.')
+        output = self.failure(self.run_check())
+        self.assertIn('a navigation item', output)
+        self.assertIn('"action":"Archive"', output.replace(' ', ''))
+        self.assertIn('"navigation":"Archived"', output.replace(' ', ''))
+        self.assertIn('Archive note', output)
+
+    def test_the_same_page_passes_once_the_action_says_what_it_acts_on(self):
+        # The repair the message asks for, and the proof that a bare verb no
+        # destination extends is still fine: "Pin" is untouched in this page.
+        self.build_fixture('synthetic-nav-name-repaired.html',
                            declares='An entry can be archived from its own row.')
         result = self.run_check()
         self.assertTrue(result['passed'], str((result['steps'] or [{}])[-1].get('output', '')))

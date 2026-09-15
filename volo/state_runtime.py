@@ -366,7 +366,12 @@ function snapshotPage(config) {
       continue;
     }
     elements.push(element);
-    controls.push({role, name: nameOf(element), tag: element.tagName.toLowerCase()});
+    // Whether this control is a navigation item. The published helpers reach a sidebar
+    // destination with an anchored pattern and a row action with an unanchored one, so
+    // a row action whose name the anchored pattern also matches steals the sidebar's
+    // click; naming that collision needs to know which controls are navigation.
+    controls.push({role, name: nameOf(element), tag: element.tagName.toLowerCase(),
+                   nav: !!element.closest('nav, [role="navigation"], aside, [role="complementary"]')});
   }
 
   const choosers = [];
@@ -536,6 +541,29 @@ function auditNames(state, snapshot, findings) {
     if (names.length > 1) {
       findings.ambiguous.add(verb, {state, verb, count: names.length,
                                     examples: [...new Set(names)].slice(0, 3)});
+    }
+  }
+
+  // RE. A row action named with a bare verb that a navigation item's name extends.
+  // Keep run 7 lost REQ-2.5.3 and, by contagion, REQ-2.7.1 to exactly one instance:
+  // the row button was named "Archive" and the sidebar link "Archived". archiveNote
+  // searches an unanchored /archive/i and is happy either way, but openArchive searches
+  // the anchored /^archived?$/i, which "Archive" also satisfies, and the helper's role
+  // ladder puts button above link. So the click that should have opened the archive
+  // list archived a second row instead, and the row it archived was another spec's
+  // fixture. A name that is not an anchored prefix of any navigation item is free of it.
+  const navigation = snapshot.controls.filter(item => item.nav && item.name);
+  for (const item of snapshot.controls) {
+    if (item.nav || !ACTION_ROLES.includes(item.role) || !item.name) continue;
+    const bare = normalize(item.name);
+    if (!bare) continue;
+    const pattern = new RegExp('^' + bare.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                               + '(?:d|ed|s)?$', 'i');
+    for (const destination of navigation) {
+      if (!pattern.test(normalize(destination.name))) continue;
+      findings.navCollision.add(bare.toLowerCase() + '|' + destination.name.toLowerCase(),
+        {state, action: item.name, navigation: destination.name, role: item.role});
+      break;
     }
   }
 }
@@ -953,7 +981,8 @@ test('every state one interaction away is nameable and unambiguous', async (page
   const started = Date.now();
   const findings = {nameless: collector(6), ambiguous: collector(8), leaky: collector(6),
                     exposed: collector(4), titleControl: collector(4), strayVerb: collector(8),
-                    lostControl: collector(4), overlayLeak: collector(4), volatile: collector(6)};
+                    navCollision: collector(4), lostControl: collector(4),
+                    overlayLeak: collector(4), volatile: collector(6)};
   const writes = [];
   page.on('request', request => {
     const method = request.method().toUpperCase();
@@ -1104,7 +1133,9 @@ test('every state one interaction away is nameable and unambiguous', async (page
     + 'opacity or off-screen positioning, which stay in the accessibility tree), and name each '
     + 'revealed action by its verb alone: "Archive", never "Archive for <title>". Only one row '
     + 'shows its actions at a time, so the bare verb is already unambiguous there, and a '
-    + 'hover-revealed name carrying the row title also breaks the row lookup. Where a row\'s '
+    + 'hover-revealed name carrying the row title also breaks the row lookup. The one bare verb '
+    + 'to avoid is a word a navigation item\'s name extends: with an "Archived" destination in '
+    + 'the sidebar, name the row action "Archive note", not "Archive". Where a row\'s '
     + 'actions are always visible a row-scoped name is allowed, and this rule still applies to '
     + 'it. At most one control per action verb may be visible at any moment. '
     + 'Ambiguous: ' + JSON.stringify(findings.ambiguous.items));
@@ -1134,7 +1165,8 @@ test('every state one interaction away is nameable and unambiguous', async (page
     + 'plain text, so with the row hovered it resolves the title to the hover-revealed action '
     + 'button and not to the title itself. The next re-render hides that button and the row can '
     + 'never be found again. When a row reveals its actions on hover, name them by their verb '
-    + 'alone: only one row shows its actions at a time, so the verb is already unambiguous, and '
+    + 'alone, or by the verb and what it acts on where a navigation item\'s name would extend '
+    + 'the bare verb: only one row shows its actions at a time, so the verb is unambiguous, and '
     + 'the row title then belongs to the row text and to nothing else. Titles answered by a '
     + 'hover-only control: ' + JSON.stringify(findings.titleControl.items));
 
@@ -1145,6 +1177,18 @@ test('every state one interaction away is nameable and unambiguous', async (page
     + 'or a sidebar item and acts on something else entirely. Every action a requirement attaches '
     + 'to a row or to the composer must be reachable inside it by that verb. Resolved outside: '
     + JSON.stringify(findings.strayVerb.items));
+
+  assert.deepEqual(findings.navCollision.items, [],
+    'A row action is named with a word that a navigation item\'s name extends, so the '
+    + 'evaluator clicks the row action when it means to open the destination. It reaches a '
+    + 'sidebar destination with an anchored pattern, /^archived?$/i for the archive list, and '
+    + 'a row action with an unanchored one, /archive/i; a button named "Archive" satisfies '
+    + 'both, and the role ladder tries button before link, so the row button wins and the '
+    + 'page never navigates. The row it acts on is whichever one is hovered, which in one run '
+    + 'was another test\'s fixture. Keep the verb and add the object: "Archive note", '
+    + '"Archive for <title>", "Move to archive". Do not rename the navigation item, which the '
+    + 'requirements name, and do not scope the selector. Colliding: '
+    + JSON.stringify(findings.navCollision.items));
 
   assert.deepEqual(findings.lostControl.items, [],
     'A freshly loaded entry page is missing controls it carried before, so a click left the '
@@ -1330,6 +1374,15 @@ actually lost specs to, so none of them is a style preference:
    already for its own title to be found. A row-scoped name is not forbidden in itself, because
    the evaluator searches the bare verb and "Archive for Sprint goals" still matches "archive".
    It is only safe where a row's actions are always visible, and rule 1 then applies to them.
+   The bare verb has one restriction, and one run lost two specs to it: it must not be a word
+   that a navigation item's name extends. The evaluator opens a destination with an anchored
+   pattern, /^archived?$/i for the archive list, and acts on a row with an unanchored one,
+   /archive/i. A row button named "Archive" matches both, and the role ladder tries button
+   before link, so while a row is hovered the click meant for the sidebar's "Archived" hits
+   that button and archives another row instead of navigating. Where a destination's name
+   extends the verb, name the row action for what it acts on: "Archive note", "Archive for
+   <title>", "Move to archive". Rename the action, never the destination: the destination's
+   name is the requirement's own word.
 3. Every input, select, textarea, colour swatch, dialog field, toggle and meter carries an
    accessible name, through aria-label, <label for> or placeholder, using the requirement's own
    wording. A control with no name cannot be reached at all: a note body with no label matching
