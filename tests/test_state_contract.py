@@ -1801,6 +1801,28 @@ class BatchSalvageTests(TempCase):
         self.assertEqual(agent.batches[1]['status'], 'incomplete')
         self.assertTrue(self.events('restored_product_snapshot'))
 
+    def test_a_rollback_returns_checks_to_the_snapshot_state(self):
+        """Not only the product tree: an unverified check left behind runs forever.
+
+        Run 7 quarantined checks/batch-8.spec.cjs and saw it recreated in batches 9, 10
+        and 11, four copies under .factory/unverified. Two mechanisms put checks/ back:
+        quarantine reverts an edited check to its verified text and moves a created one
+        aside, and restore_verified_tree removes anything under checks/ the snapshot does
+        not have and rewrites the rest. This pins both.
+        """
+        agent = self.capped_second_batch(self.agent(passing=False))
+        # A file quarantine cannot see, because the batch wrote it after being capped.
+        agent.quarantine_batch_checks = lambda state: {}
+        agent.run_schedule()
+        snapshot = json.loads(agent.snapshot_path().read_text())['files']
+        tree = {item['path']: self.workspace.path(item['path']).read_text()
+                for item in self.workspace.list_files()['files']
+                if item['path'].startswith('checks/')}
+        self.assertEqual(tree, {name: text for name, text in snapshot.items()
+                                if name.startswith('checks/')})
+        self.assertIn('checks/batch-1.spec.cjs', tree)
+        self.assertNotIn('checks/batch-2.spec.cjs', tree)
+
     def test_a_batch_that_wrote_no_product_file_just_restores(self):
         agent = self.capped_second_batch(self.agent(), product=False)
         agent.run_schedule()

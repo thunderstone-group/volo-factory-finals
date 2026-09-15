@@ -13,7 +13,8 @@ from .context import excerpt, project, size
 from .model import GatewayRefused, ModelError
 from .trace import atomic_json
 from .web_runtime import scaffold, implement, prepared_check, API_STUB, SERVER, BUILD, BROWSER_CHECK
-from .workspace import edit_anchor_failure, normalize_check_command, tool_failure
+from .workspace import (REQUIRE_CALL, TEST_REGISTRATION, edit_anchor_failure,
+                        normalize_check_command, tool_failure)
 
 
 SYSTEM = """You are VOLO Factory, an autonomous software engineer inside a competition sandbox.
@@ -429,6 +430,42 @@ BATCH_ENTRY_LIMIT = 3
 # product work survives: out of checks/, so the bundle is the one that was passing before
 # the batch started, and on disk, so the batch's next entry can be handed their text.
 QUARANTINE_DIRECTORY = 'unverified'
+# A check written to look at the page once is not a regression check. Run 7's batch 1
+# wrote checks/tmp-debug.spec.cjs, which prints the header HTML and the role counts and
+# then asserts true; regression_checks_recorded made it permanent, so it ran in every
+# later verification and put 1.2 KB of markup into the tail of the output the model
+# could still see. Its name says what it is, and a file that asserts nothing says it too.
+ONE_OFF_CHECK_NAME = re.compile(r'(?:^|[-_.])(?:tmp|temp|debug|scratch|probe|sandbox)(?:[-_.]|$)',
+                                re.IGNORECASE)
+ASSERTION_ARGUMENT = re.compile(r'(?<![\w$.])assert(?:\.\w+)?\s*\(\s*([^,)]*)')
+# A wait on a locator throws when it times out, so it asserts as much as assert.ok does.
+BEHAVIOURAL_WAIT = re.compile(r'(?<![\w$])(?:expect\s*\(|\.waitFor(?:Function|URL|Selector|Request|Response)?\s*\()')
+LITERAL_ARGUMENT = re.compile(r"""^\s*(?:true|false|[01]|![01]|'[^']*'|"[^"]*"|`[^`]*`)\s*$""")
+
+
+def asserts_something(source):
+    """True when a check file makes at least one claim about the application."""
+    if BEHAVIOURAL_WAIT.search(source):
+        return True
+    return any(argument.strip() and not LITERAL_ARGUMENT.match(argument)
+               for argument in ASSERTION_ARGUMENT.findall(source))
+
+
+def is_regression_check(path, source):
+    """Whether a check file this batch left behind belongs in the permanent suite.
+
+    Three shapes are not regression checks: a file whose name says it was written to
+    look at something once, a file that registers tests and asserts nothing in any of
+    them, and an aggregate entrypoint, which registers no test of its own and exists to
+    require the files that do. The last one is why run 7 could not update all.spec.cjs:
+    it was locked at batch 1 and still required batches 1-3 at batch 12.
+    """
+    if ONE_OFF_CHECK_NAME.search(path.rsplit('/', 1)[-1]):
+        return False
+    if TEST_REGISTRATION.search(source):
+        return asserts_something(source)
+    return not REQUIRE_CALL.search(source)
+
 
 # Files a generated web application keeps its own source in.
 SOURCE_SUFFIXES = ('.js', '.cjs', '.mjs', '.jsx', '.ts', '.tsx', '.html', '.css', '.vue', '.svelte')
@@ -690,18 +727,28 @@ class Agent:
         """
         if not self.contract:
             return []
-        recorded = []
+        recorded, skipped = [], []
         for item in self.workspace.list_files()['files']:
             path = item['path']
             if (not path.startswith('checks/') or not path.endswith('.spec.cjs')
                     or path in state_runtime.HARNESS_OWNED or path in self.regression_checks):
                 continue
+            try:
+                source = self.workspace.path(path).read_text()
+            except (OSError, UnicodeError, ValueError):
+                source = ''
+            if not is_regression_check(path, source):
+                # Left in the tree and still runnable, but not locked and not summarised
+                # as covering anything: the model may delete it or rewrite it freely.
+                skipped.append(path)
+                continue
             self.regression_checks[path] = {'batch': self.batch_index,
                                             'requirements': list(requirements)}
             recorded.append(path)
-        if recorded:
+        if recorded or skipped:
             self.trace.event('regression_checks_recorded', batch=self.batch_index,
-                             requirements=list(requirements), paths=recorded)
+                             requirements=list(requirements), paths=recorded,
+                             not_regression_checks=skipped)
         return recorded
 
     def write_guarded(self, args):
