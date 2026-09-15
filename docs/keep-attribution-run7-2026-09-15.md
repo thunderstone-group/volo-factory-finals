@@ -222,3 +222,21 @@ call), not 93; 129 − 110.3 = 18.5 min matches the 18.2 min of verification.
    and the batch kept.
 3. **Bare-verb naming collides with the official sidebar pattern.** Probe reproduced the
    mis-click; `store.json` timestamps pin the contagion.
+   Smallest change: the rule becomes "bare verb, but never one that is an anchored prefix of a
+   navigation item's name" — `Archive` is forbidden while the sidebar has `Archived`;
+   `Archive note` or `Archive for X` are fine. Test: change one `aria-label` in the delivered
+   app and rerun official `REQ-2.5.3.spec.ts` and `REQ-2.7.1.spec.ts`, expect both green.
+4. **The stall-repair channel is dead after batch 4.** `source_snapshot`'s 20-file / 48 KB cap
+   counts the model's own 34.5 KB of `checks/*.cjs`, hence 26 consecutive
+   `bounded_repair_unavailable` (last success t=2145). Smallest change: exclude `checks/` from
+   the candidate set, keep `backend/` and `frontend/public/`. Test: recompute the candidate set
+   on the delivered snapshot, expect ≈ 8 files / 40 KB, inside the cap.
+5. **The gate loop pays its cost without its benefit in one run.** Every batch `entries = 1`, no
+   round-robin re-entry, batches 13–15 never started. Smallest change: first pass gets 12 calls
+   per batch instead of 20 and the saving funds re-entry; or when half the budget is spent,
+   force "unstarted batches only". Test: offline replay of this run's `state_batching` and
+   per-batch costs, check whether CNY 12 covers a first pass over all 15 batches.
+
+Analysis scripts and the `openArchive` mis-click probe are archived under
+`runs/2026-09-15-keep-full-7/attribution/` (`probe/probe.cjs`). Not established: which endpoint
+batch 8's own test hit for a 404; the file was overwritten by batch 10 before quarantine.
