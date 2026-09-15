@@ -1,3 +1,53 @@
+# ARC continuation handoff — 2026-09-15 evening (supersedes the sections below)
+
+Read `docs/progress.md` (dated, append-only, today's entries from 12:26 on), then
+`docs/minimal-loop-2026-09-15.md`, `docs/baselines-survey-2026-09-15.md`,
+`docs/corpus-taxonomy-2026-09-15.md`, `docs/keep-attribution-run7-2026-09-15.md`,
+`docs/ts-kernel-design-review-gpt6-2026-09-15.md`, `docs/checks-calibration-2026-09-15.md`.
+
+## Where things stand (19:30)
+
+- **Preliminary entry = the one-shot package**: `~/projects/oneshot-lab/arc-package/`
+  (`main.py` + `dialect.md` + `requirements.txt`, deepseek-v4-flash, one chat call, file-block
+  output, streaming, one continuation on an unclosed block, no tools, no self-checks, no
+  repair). Local Keep: 27/32, 29/32, 27/32 hosted at CNY 0.88–0.96 each; two earlier runs died
+  on JSON parsing before the file-block format. Failures cluster in the label dialog
+  (2.7.1/2.7.2/2.7.4/2.7.5). **Not yet run officially.** Next: package acceptance (agent
+  `oneshot-keep` was rerunning flash-3/5 and the package) → `arcbench upload` + `run --task
+  arc-bench-web--keep` once → if hosted machine confirms ≥ 26/32, that is the Keep row.
+- **Design card ablation negative** (23/32 twice); dropped. Kimi one-shot 19/32; qwen3.8-max
+  returns empty on long streams.
+- **Batch-loop harness (feat/state-contract, 83b7d83) frozen**: runs 5/7/8 = 25/22/20 at CNY
+  8.4/12.0/10.7. F1–F6 landed with passing acceptance; the line still regressed. Evidence
+  `runs/2026-09-14-keep-full-5`, `-7`, `2026-09-15-keep-full-8`. PR #21 open, unmerged.
+- **Check compiler (feat/ts-kernel `checks/`, 9b6f3a4) parked**: two calibration rounds,
+  best is qwen with 0 false passes but 24/32 unknown. Research task; resume after 09-21.
+- **Prime Agent baseline closed**: bare 6/32, with dialect 18–22/32 at CNY 1.2–3; kernel/gate
+  add nothing here; flash context verified ≥ 338k (845k accepted), TPM cap 1M shared.
+- **Official baselines done** (`runs/2026-09-15-baselines-2/`): organizers' arc template and
+  the codex template both failed to deliver an app on Keep; ticket 0–9/10; demo boards pass at
+  CNY 2–14 per run. Our small-board rows were overwritten by these runs (restore = rerun the
+  09-12 dev35 packages, a few CNY, only if the rows matter).
+- **Gateway balance CNY ≈ 70** (from 186 at 14:43). Reserve for: one official Keep run, then
+  one-shot on Bookstack and prestashop (CNY 1–2 each). Ask the organizer for a top-up with the
+  spend ledger. Never run a context probe again (11.5 CNY).
+
+## Next, in order
+
+1. Package acceptance result → official Keep run of the one-shot package → record.
+2. One-shot on Bookstack and prestashop locally (partition into 2–3 generation calls if a
+   single call cannot cover 86 requirements); this decides whether the minimal line
+   generalises to big apps.
+3. Only then: a bounded repair step for the label dialog, verdict source = structural checks
+   (the naming/hover audits in `volo/state_runtime.py` still work) or the parked compiler if it
+   calibrates.
+4. Merge nothing to `main` until an official run confirms a package.
+
+## Discipline
+
+Balance before any run; one scheduler per key for official runs; never upload from an agent;
+official-fail → local-pass is the only calibration hard rule; one sample is not a cause.
+
 # ARC continuation handoff — 2026-09-15 noon (supersedes the sections below)
 
 Read `docs/prime-transfer-2026-09-15.md` (the plan: three parallel tracks, decided with the team
