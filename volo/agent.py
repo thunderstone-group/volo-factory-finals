@@ -1374,19 +1374,25 @@ class Agent:
                 if (self.requirements.root / asset).stat().st_size]
 
     def source_snapshot(self):
-        """Include only a bounded set of product code, never state or protected files."""
+        """Include only a bounded set of product code, never state or protected files.
+
+        In a contract run the whole of checks/ is out, not just the harness's own files.
+        The bounded-repair channel this feeds returns nothing at all above twenty
+        candidate files or 48 KB, and in run 7 the candidates reached 21 files and about
+        75 KB with 34.5 KB of that the model's own checks/*.cjs, which it may not edit in
+        a contract batch anyway. The channel's last success was batch 4; the twenty-six
+        stall repairs after it all ended bounded_repair_unavailable, and the model spent
+        the room re-reading checks/browser.cjs twenty-seven times instead. Outside a
+        contract run the same paths hold the model's own code and still count.
+        """
         candidates = []
-        # In a contract run these paths are written by the harness and the model may not
-        # edit them, and every caller drops them again. Counting their bytes only shrinks
-        # the room left for the product's own source: checks/interface.spec.cjs alone is
-        # 20 KB of it. Outside a contract run the same paths hold the model's own code.
         harness_owned = state_runtime.HARNESS_OWNED if self.contract else ()
         for item in self.workspace.list_files()['files']:
             name = item['path']
             if not (name.endswith(('.js', '.cjs', '.mjs', '.jsx', '.ts', '.tsx', '.html', '.css', '.vue', '.svelte'))
                     or name.rsplit('/', 1)[-1] in ('package.json', 'DESIGN.md')):
                 continue
-            if name in harness_owned:
+            if name in harness_owned or (self.contract and name.startswith('checks/')):
                 continue
             try:
                 self.workspace.path(name)
