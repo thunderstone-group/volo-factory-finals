@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import json
 
-from .web_runtime import SERVER
+from .web_runtime import OVERLAY_PATH, OVERLAY_URL, SERVER
 
 DATA_DIRECTORY = "backend/data"
 
@@ -202,25 +202,45 @@ const NAMED_ROLES = ['textbox', 'searchbox', 'combobox', 'spinbutton', 'checkbox
                      'meter', 'progressbar', 'slider'];
 const TEXT_ROLES = ['textbox', 'searchbox', 'spinbutton'];
 const CHOOSER_ROLES = ['dialog', 'listbox', 'menu', 'group'];
-// The bare patterns arc-bench's helpers hand to clickFirstAvailable for an action the
-// requirement attaches to one row or to the composer (helpers.ts:255-300).
-const ROW_VERBS = ['more', 'options', 'menu', 'labels', 'color', 'pin', 'archive', 'delete'];
+// The bare patterns arc-bench's helpers hand to clickFirstAvailable, grouped the way the
+// helpers group them (helpers.ts:255-300): one action, several spellings, and the group is
+// satisfied when any one of them resolves inside the container.
+const VERB_GROUPS = [{action: 'menu', patterns: ['more', 'options', 'menu']},
+                     {action: 'labels', patterns: ['labels']},
+                     {action: 'color', patterns: ['color', 'colour']},
+                     {action: 'pin', patterns: ['pin']},
+                     {action: 'archive', patterns: ['archive']},
+                     {action: 'delete', patterns: ['delete']}];
+// Only the actions the contract's own words declare. A fixed list of eight verbs reported
+// every row of every application, whether or not a requirement asked for that action on
+// that entity, and a gate that demands work no requirement asked for is a gate that gets
+// wrong behaviour built into the product. `vocabulary.actions` is written from the
+// requirement text the contract preserved; an application that predates it is checked
+// with the whole list, exactly as before.
+const DECLARED = new Set(Array.isArray(vocabulary.actions) ? vocabulary.actions
+                                                           : VERB_GROUPS.map(group => group.action));
+const ROW_GROUPS = VERB_GROUPS.filter(group => DECLARED.has(group.action));
 // The composer's own subset: the published helpers open a row menu, archive and delete
 // from a row, and only choose a colour, pin, and set labels while creating.
-const COMPOSER_VERBS = ROW_VERBS.filter(verb => verb !== 'archive' && verb !== 'delete');
+const COMPOSER_GROUPS = ROW_GROUPS.filter(group => group.action !== 'archive'
+                                                   && group.action !== 'delete');
 
 const CLICK_BUDGET = 60;      // distinct controls clicked from the entry page
 const HOVER_BUDGET = 12;      // seeded row titles hovered
 const FORM_BUDGET = 6;        // distinct input groups probed for durability
 const BUTTONS_PER_FORM = 6;
-const WALL_BUDGET = 25000;    // ms for the whole walk, whatever the application's size
+const OVERLAY_BUDGET = 4;     // distinct dialog-opening controls whose lifecycle is driven
+const OVERLAY_WALL = 13000;   // ms for the whole overlay phase
+const WALL_BUDGET = 36000;    // ms for the whole walk, whatever the application's size
 
 function normalize(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
 }
 
-// The row titles the contract seeds. A row action's name is required to carry its row's
-// title, so the title is exactly the part of the name the evaluator never searches for.
+// The row titles the contract seeds. A row-scoped name such as "Archive for Sprint goals"
+// is allowed wherever a row's actions are always visible, and the title is exactly the part
+// of such a name the evaluator never searches for, so it is stripped before two names are
+// compared.
 const TITLE_PATTERNS = (vocabulary.titles || [])
   .map(title => normalize(title))
   .filter(title => title.length >= 3)
@@ -327,11 +347,24 @@ function snapshotPage(config) {
 
   const elements = [];
   const controls = [];
+  // Present in the document and not reachable: display:none, visibility:hidden, inert or
+  // aria-hidden. The overlay rule needs these, because a control an overlay hid and never
+  // put back is still in the document, while one a navigation legitimately replaced is not.
+  const hidden = [];
+  const hiddenSeen = new Set();
   for (const element of document.querySelectorAll('*')) {
     const role = roleOf(element);
     if (!role) continue;
     if (!actionRoles.includes(role) && !namedRoles.includes(role)) continue;
-    if (!visible(element)) continue;
+    if (!visible(element)) {
+      const name = nameOf(element);
+      const key = role + '|' + name;
+      if (name && !hiddenSeen.has(key)) {
+        hiddenSeen.add(key);
+        hidden.push({role, name});
+      }
+      continue;
+    }
     elements.push(element);
     controls.push({role, name: nameOf(element), tag: element.tagName.toLowerCase()});
   }
@@ -403,7 +436,8 @@ function snapshotPage(config) {
     group.inputs.push(index);
   });
 
-  return {controls, choosers, groups, hovered, url: location.pathname + location.search};
+  return {controls, choosers, groups, hovered, hidden,
+          url: location.pathname + location.search};
 }
 
 async function capture(page) {
@@ -447,6 +481,20 @@ async function act(page, control, action) {
     if (!await locator.count()) return false;
     await locator[action]({timeout: 1500});
     await settle(page, 400);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+// A click that does not wait for the page to settle. The overlay defect needs the second
+// interaction to arrive while the first one's request is still in flight, which is exactly
+// what `act` is careful to avoid everywhere else.
+async function actNow(page, control) {
+  try {
+    const locator = locate(page, control);
+    if (!await locator.count()) return false;
+    await locator.click({timeout: 1500, force: true, noWaitAfter: true});
     return true;
   } catch (error) {
     return false;
@@ -529,9 +577,16 @@ function auditInertness(state, before, after, findings) {
                                examples: leaks.slice(0, 4)});
     }
 
+    // Only a dialog owns the page. An inline colour palette, a dropdown menu and a
+    // listbox are opened over live content on purpose, and asking every one of them to
+    // make the whole page inert is asking for behaviour no requirement wants. A name
+    // that collides across the boundary is still a defect above, because its repair is
+    // a rename and not an inert attribute.
+    if (chooser.role !== 'dialog' && !chooser.modal) continue;
+
     // The evaluator's last resort for filling a field has no name at all: fillField
     // ends at getByRole('textbox').first(). Any visible text input outside an open
-    // chooser is therefore a candidate for text meant for the chooser.
+    // dialog is therefore a candidate for text meant for the dialog.
     const exposed = outside
       .filter(item => TEXT_ROLES.includes(item.role))
       .map(item => item.name || item.role + ':' + item.tag);
@@ -565,20 +620,23 @@ function auditTitles(title, resting, hovered, findings) {
 // reachable from inside it by the bare verb the helpers search for. A verb that
 // resolves only outside the container the test is working in is the defect: with no
 // more/options/menu control in the composer, the ladder left it for the page banner.
-function auditContainer(state, snapshot, inside, findings, verbs) {
+// Only actions the contract declares are checked, and only where the page already
+// carries that verb somewhere: an action no requirement mentions is never a finding.
+function auditContainer(state, snapshot, inside, findings, groups) {
   const within = new Set(inside);
   if (!within.size) return;
-  for (const verb of verbs) {
+  for (const group of groups) {
     const matches = snapshot.controls
       .map((item, position) => ({item, position}))
       .filter(({item}) => ACTION_ROLES.includes(item.role)
-        && item.name.toLowerCase().includes(verb));
+        && group.patterns.some(pattern => item.name.toLowerCase().includes(pattern)));
     if (!matches.length) continue;
     if (matches.some(({position}) => within.has(position))) continue;
-    // Every row shows the same defect, so key it by the verb and the kind of container
+    // Every row shows the same defect, so key it by the action and the kind of container
     // and keep the first row as the example.
-    findings.strayVerb.add(verb + '|' + (state.startsWith('after hovering') ? 'row' : state),
-      {state, verb, resolves_to: [...new Set(matches.map(({item}) => item.name))].slice(0, 3)});
+    findings.strayVerb.add(group.action + '|' + (state.startsWith('after hovering') ? 'row' : state),
+      {state, verb: group.action, patterns: group.patterns,
+       resolves_to: [...new Set(matches.map(({item}) => item.name))].slice(0, 3)});
   }
 }
 
@@ -606,6 +664,214 @@ function auditRecovery(target, baseline, fresh, findings) {
   if (missing.length) {
     findings.lostControl.add(target.name, {after_clicking: target.name,
                                            missing: missing.slice(0, 6)});
+  }
+}
+
+// RE. An overlay owns a lifecycle, and the run-5 Keep generation owned only half of one:
+// its settings dialog was created after an awaited fetch and hid the controls outside it
+// on that async path, while both of its restores were synchronous. An open superseded
+// before its own fetch resolved left the page with every control named like the dialog's
+// hidden and no dialog to close, and `clickNamed(/^settings$/i)` then blocked forever.
+//
+// The old recovery rule could not see it, because it reloaded the page between the click
+// and the assertion and a reload repairs exactly this. So drive the lifecycle on one page:
+// open and close, open and close again, supersede an open with a second one, and interrupt
+// an open with the application's next control. After every one of those, with nothing left
+// open, every control the entry page carried must still be reachable.
+const CLOSE_EXACT = /^(close|cancel|done|dismiss|back|ok|×|x)$/i;
+const CLOSE_LOOSE = /close|cancel|dismiss|done/i;
+
+// The dialogs open now that were not open at rest. A non-modal menu or palette is not one:
+// it does not own the page, and the application is free to leave it open.
+function modalChoosers(snapshot, baseline) {
+  const before = new Map();
+  for (const chooser of (baseline ? baseline.choosers : [])) {
+    if (chooser.role !== 'dialog' && !chooser.modal) continue;
+    const key = chooser.role + '|' + chooser.name.toLowerCase();
+    before.set(key, (before.get(key) || 0) + 1);
+  }
+  const open = [];
+  const seen = new Map();
+  for (const chooser of snapshot.choosers) {
+    if (chooser.role !== 'dialog' && !chooser.modal) continue;
+    const key = chooser.role + '|' + chooser.name.toLowerCase();
+    const index = seen.get(key) || 0;
+    seen.set(key, index + 1);
+    if (index < (before.get(key) || 0)) continue;
+    open.push(chooser);
+  }
+  return open;
+}
+
+function closersIn(snapshot, chooser) {
+  const inside = chooser.inside.map(position => snapshot.controls[position])
+    .filter(item => item && ACTION_ROLES.includes(item.role) && item.name);
+  return [...inside.filter(item => CLOSE_EXACT.test(item.name)),
+          ...inside.filter(item => !CLOSE_EXACT.test(item.name) && CLOSE_LOOSE.test(item.name))];
+}
+
+// Put the page back to nothing-open, using the controls the application itself offers.
+// Whatever this cannot close, the evaluator cannot close either.
+async function dismissOverlays(page, baseline, closers) {
+  let snapshot = await capture(page);
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const open = modalChoosers(snapshot, baseline);
+    if (!open.length) return snapshot;
+    let acted = false;
+    const candidates = [...closers];
+    for (const chooser of open) candidates.push(...closersIn(snapshot, chooser));
+    for (const control of candidates) {
+      if (await act(page, control, 'click')) { acted = true; break; }
+    }
+    if (!acted) {
+      try { await page.keyboard.press('Escape'); } catch (error) { /* no focus, no Escape */ }
+      await settle(page, 300);
+    }
+    snapshot = await capture(page);
+  }
+  return snapshot;
+}
+
+function auditOverlay(phase, opener, baseline, after, findings) {
+  const stuck = modalChoosers(after, baseline);
+  if (stuck.length) {
+    findings.overlayLeak.add(opener.name + '|stuck',
+      {control: opener.name, phase,
+       still_open: [...new Set(stuck.map(item => item.name || item.role))].slice(0, 3)});
+    return;
+  }
+  const reachable = new Set(after.controls.filter(item => item.name)
+    .map(item => item.role + '|' + item.name));
+  const unreachable = new Set(after.hidden.map(item => item.role + '|' + item.name));
+  const lost = [];
+  for (const item of baseline.controls) {
+    if (!item.name) continue;
+    const key = item.role + '|' + item.name;
+    // Still in the document but no longer reachable. A control a navigation replaced
+    // outright is in neither set, and is not this rule's business.
+    if (reachable.has(key) || !unreachable.has(key)) continue;
+    if (!lost.includes(item.name)) lost.push(item.name);
+  }
+  if (lost.length) {
+    findings.overlayLeak.add(opener.name + '|hidden',
+      {control: opener.name, phase, hidden_with_nothing_open: lost.slice(0, 6)});
+  }
+}
+
+// The same overlay open twice at once. Late work that never asked whether its open was
+// still the current one builds a second copy on top of the first, and the evaluator then
+// resolves that overlay's own buttons to two controls and clicks the covered one.
+function auditOverlayOpen(phase, opener, baseline, snapshot, findings) {
+  const counts = new Map();
+  for (const chooser of modalChoosers(snapshot, baseline)) {
+    const key = (chooser.name || chooser.role).toLowerCase();
+    counts.set(key, (counts.get(key) || 0) + 1);
+  }
+  const doubled = [...counts].filter(([, count]) => count > 1).map(([name]) => name);
+  if (doubled.length) {
+    findings.overlayLeak.add(opener.name + '|double',
+      {control: opener.name, phase, opened_on_top_of_itself: doubled.slice(0, 3)});
+  }
+}
+
+// The race needs the second interaction to arrive while the first one's request is
+// still in flight, and on a developer machine a local request resolves between two
+// Playwright clicks. So hold the application's own API responses back for the length of
+// the probe rather than clicking faster: the hosted runner is slow, and the official
+// failure this reproduces was latency-dependent, not click-speed-dependent.
+async function withSlowApi(page, action) {
+  let routed = false;
+  try {
+    await page.route('**/api/**', async route => {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      try { await route.continue(); } catch (error) { /* the page went away */ }
+    });
+    routed = true;
+  } catch (error) {
+    // A runner without request interception simply probes at full speed.
+  }
+  try {
+    await action();
+  } finally {
+    if (routed) {
+      try { await page.unroute('**/api/**'); } catch (error) { /* already gone */ }
+    }
+  }
+}
+
+function otherControl(entry, opener, openers) {
+  const alternative = openers.find(item => item.name !== opener.name);
+  if (alternative) return alternative;
+  return entry.controls.find(item => ACTION_ROLES.includes(item.role) && item.name
+    && item.name !== opener.name && verbOf(item.name) !== verbOf(opener.name)) || null;
+}
+
+async function settled(page, saved) {
+  await reload(page, saved);
+  await page.mouse.move(0, 0);
+  await settle(page, 200);
+}
+
+async function probeOverlays(page, entry, openers, findings, saved, deadline) {
+  let driven = 0;
+  for (const opener of openers) {
+    if (Date.now() > deadline) return;
+    // How this overlay opens and closes, on a page nothing else has touched.
+    await settled(page, saved);
+    const baseline = await capture(page);
+    if (!await act(page, opener, 'click')) continue;
+    const opened = await capture(page);
+    const open = modalChoosers(opened, baseline);
+    if (!open.length) continue;
+    const closers = [];
+    for (const chooser of open) closers.push(...closersIn(opened, chooser));
+    let after = await dismissOverlays(page, baseline, closers);
+    // Nothing is asserted about an overlay this check could not close: the finding would
+    // be about the closing, and a check that cannot drive a control says nothing about it.
+    if (modalChoosers(after, baseline).length) continue;
+    driven += 1;
+    auditOverlay('opened and closed once', opener, baseline, after, findings);
+
+    // Again, on the same page. A restore that only half happens shows on the second
+    // cycle, and a reload between the two would repair it before it could be seen.
+    if (await act(page, opener, 'click')) {
+      after = await dismissOverlays(page, baseline, closers);
+      auditOverlay('opened and closed twice without reloading', opener, baseline, after, findings);
+    }
+
+    // Supersede the open before its own work finishes. This is the run-5 defect exactly.
+    if (Date.now() > deadline) return;
+    await settled(page, saved);
+    await withSlowApi(page, async () => {
+      await actNow(page, opener);
+      await actNow(page, opener);
+      // A real wait, not settle: settle returns as soon as the document stops changing,
+      // which is immediately, and the held-back response has not landed yet.
+      await page.waitForTimeout(1200);
+      await settle(page, 400);
+    });
+    const superseded = 'opened twice before the first open finished';
+    auditOverlayOpen(superseded, opener, baseline, await capture(page), findings);
+    after = await dismissOverlays(page, baseline, closers);
+    auditOverlay(superseded, opener, baseline, after, findings);
+
+    // Interrupt the open with whatever the application offers next. Two openers are
+    // enough: the interruption is by another overlay opener wherever the application has
+    // one, so repeating it for every opener buys the same evidence twice.
+    if (Date.now() > deadline || driven >= 2) continue;
+    const other = otherControl(entry, opener, openers);
+    if (!other) continue;
+    await settled(page, saved);
+    await withSlowApi(page, async () => {
+      await actNow(page, opener);
+      await actNow(page, other);
+      await page.waitForTimeout(1200);
+      await settle(page, 400);
+    });
+    const interrupted = 'interrupted by ' + JSON.stringify(other.name);
+    auditOverlayOpen(interrupted, opener, baseline, await capture(page), findings);
+    after = await dismissOverlays(page, baseline, closers);
+    auditOverlay(interrupted, opener, baseline, after, findings);
   }
 }
 
@@ -687,7 +953,7 @@ test('every state one interaction away is nameable and unambiguous', async (page
   const started = Date.now();
   const findings = {nameless: collector(6), ambiguous: collector(8), leaky: collector(6),
                     exposed: collector(4), titleControl: collector(4), strayVerb: collector(8),
-                    lostControl: collector(4), volatile: collector(6)};
+                    lostControl: collector(4), overlayLeak: collector(4), volatile: collector(6)};
   const writes = [];
   page.on('request', request => {
     const method = request.method().toUpperCase();
@@ -696,6 +962,7 @@ test('every state one interaction away is nameable and unambiguous', async (page
   const saved = await snapshotStore(base);
   const probes = [];
   const known = new Set();
+  const openers = [];
   let entry = null;
   let visited = 0;
 
@@ -745,6 +1012,11 @@ test('every state one interaction away is nameable and unambiguous', async (page
       visited += 1;
       auditNames(state, after, findings);
       auditInertness(state, entry, after, findings);
+      // A control that opens a dialog owns an overlay lifecycle, which the walk drives
+      // on one page once the cheap audits are done.
+      if (openers.length < OVERLAY_BUDGET && modalChoosers(after, entry).length) {
+        openers.push(target);
+      }
       collect(state, target, after);
     }
     if (clicked && saved) {
@@ -775,8 +1047,13 @@ test('every state one interaction away is nameable and unambiguous', async (page
       const after = await capture(page);
       visited += 1;
       auditNames(state, after, findings);
-      auditContainer(state, after, after.hovered, findings, ROW_VERBS);
+      auditContainer(state, after, after.hovered, findings, ROW_GROUPS);
       auditTitles(title, resting, after, findings);
+    }
+
+    if (openers.length && Date.now() - started < WALL_BUDGET) {
+      await probeOverlays(page, entry, openers, findings, saved,
+                          Math.min(started + WALL_BUDGET, Date.now() + OVERLAY_WALL));
     }
 
     for (const probe of probes) {
@@ -787,7 +1064,7 @@ test('every state one interaction away is nameable and unambiguous', async (page
         const group = opened.groups.find(item => signature(opened, item) === probe.signature);
         if (group && !group.spansChooser) {
           auditContainer(probe.state, opened, [...group.inputs, ...group.buttons], findings,
-                         COMPOSER_VERBS);
+                         COMPOSER_GROUPS);
         }
       }
       await probeForm(page, probe, findings, writes, saved);
@@ -797,7 +1074,8 @@ test('every state one interaction away is nameable and unambiguous', async (page
   }
 
   console.log('[interface] ' + visited + ' states inspected, ' + probes.length
-    + ' input groups probed, ' + Math.round(Date.now() - started) + ' ms');
+    + ' input groups probed, ' + openers.length + ' overlays driven, '
+    + Math.round(Date.now() - started) + ' ms');
 
   // Vocabulary. Reported, never failed: a name outside the requirement's own words is a
   // smell, not a defect, and this check must not start a repair loop over a smell.
@@ -823,23 +1101,30 @@ test('every state one interaction away is nameable and unambiguous', async (page
     + 'name. Putting the row title in the name does not fix this on its own: nineteen buttons '
     + 'named "Archive for <title>" are nineteen matches for "archive". Reveal a row\'s actions '
     + 'only while that row is hovered or focused, with display:none or visibility:hidden (never '
-    + 'opacity or off-screen positioning, which stay in the accessibility tree), and keep the row '
-    + 'title in the name. At most one control per action verb may be visible at any moment. '
+    + 'opacity or off-screen positioning, which stay in the accessibility tree), and name each '
+    + 'revealed action by its verb alone: "Archive", never "Archive for <title>". Only one row '
+    + 'shows its actions at a time, so the bare verb is already unambiguous there, and a '
+    + 'hover-revealed name carrying the row title also breaks the row lookup. Where a row\'s '
+    + 'actions are always visible a row-scoped name is allowed, and this rule still applies to '
+    + 'it. At most one control per action verb may be visible at any moment. '
     + 'Ambiguous: ' + JSON.stringify(findings.ambiguous.items));
 
   assert.deepEqual(findings.leaky.items, [],
     'A chooser opened over the page, and a control outside it still answers to a name a control '
-    + 'inside it carries, so the evaluator clicks the page behind the chooser. While a chooser is '
-    + 'open, put the inert attribute or aria-hidden="true" on everything outside it and take them '
-    + 'off again when it closes. aria-modal is not enough: the evaluator resolves controls with '
-    + 'getByRole, which honours inert and aria-hidden and ignores aria-modal. Leaked: '
-    + JSON.stringify(findings.leaky.items));
+    + 'inside it carries, so the evaluator clicks the page behind the chooser. It resolves a name '
+    + 'as a case-insensitive substring and walks button, link, menuitem, tab, checkbox before '
+    + 'anything else, so the outside control usually wins. Give the two controls names that do '
+    + 'not contain one another. For a dialog, also put the inert attribute or aria-hidden="true" '
+    + 'on everything outside it and take them off again when it closes; aria-modal is not enough, '
+    + 'because the evaluator resolves controls with getByRole, which honours inert and aria-hidden '
+    + 'and ignores aria-modal. An inline picker that is not a dialog does not have to make the '
+    + 'page inert: rename instead. Leaked: ' + JSON.stringify(findings.leaky.items));
 
   assert.deepEqual(findings.exposed.items, [],
-    'A chooser is open and a text input outside it is still visible. The evaluator fills a field '
+    'A dialog is open and a text input outside it is still visible. The evaluator fills a field '
     + 'by name and, when no name matches, falls back to the first textbox on the page, so text '
-    + 'meant for the chooser lands in that input instead. Put the inert attribute or '
-    + 'aria-hidden="true" on everything outside the chooser while it is open. Exposed: '
+    + 'meant for the dialog lands in that input instead. Put the inert attribute or '
+    + 'aria-hidden="true" on everything outside the dialog while it is open. Exposed: '
     + JSON.stringify(findings.exposed.items));
 
   assert.deepEqual(findings.titleControl.items, [],
@@ -868,6 +1153,20 @@ test('every state one interaction away is nameable and unambiguous', async (page
     + 'await: an open that is superseded while its request is in flight otherwise leaves the page '
     + 'hidden with nothing open. Missing: ' + JSON.stringify(findings.lostControl.items));
 
+  assert.deepEqual(findings.overlayLeak.items, [],
+    'An overlay left the page in a state it cannot be driven out of. After a dialog is '
+    + 'opened and closed, opened again and closed, superseded by a second open, or '
+    + 'interrupted by another control, the page must carry every control it carried before '
+    + 'and no dialog may be left open. Do not hand-roll this: open every dialog, menu, '
+    + 'palette and settings panel with the harness-owned openOverlay(id, render) from '
+    + '/factory/overlay.js and close it with closeOverlay(id). It gives the open a sequence '
+    + 'number, so late work checks handle.isCurrent() before touching the DOM; it makes the '
+    + 'rest of the page inert on the same synchronous path that creates the overlay, and '
+    + 'restores it on every close path. The defect this catches is a hide applied after an '
+    + 'await with a restore that runs synchronously: an open superseded while its request is '
+    + 'in flight leaves the page hidden with nothing open. Leaked: '
+    + JSON.stringify(findings.overlayLeak.items));
+
   assert.deepEqual(findings.volatile.items, [],
     'Text typed into a form was lost when another control in the same form was clicked. A '
     + 're-render must carry the current field values into the new markup, through the value '
@@ -878,7 +1177,67 @@ test('every state one interaction away is nameable and unambiguous', async (page
 """
 
 
-def vocabulary_module(contract, observations=None):
+# The generic actions the published helpers reach for by a bare verb, and the words in
+# requirement prose that declare one. The interface check asks that a declared action be
+# reachable inside the row or composer the requirement attaches it to; an action nothing
+# declares is never checked, so a page that simply has no colour picker is not told to
+# grow one because some banner control happens to contain the word.
+ACTION_WORDS = {
+    "menu": ("more option", "more action", "overflow menu", "options menu", "context menu",
+             "row menu", "dropdown menu", "kebab menu", "three-dot menu", "menu button",
+             "menu item", "opens a menu", "open the menu"),
+    "labels": ("label",),
+    "color": ("color", "colour"),
+    "pin": ("pin",),
+    "archive": ("archive",),
+    "delete": ("delete", "trash"),
+}
+
+
+def contract_prose(contract, observations=None):
+    """Every string in the contract that came from requirement prose.
+
+    Schema-side values are left out on purpose: `navigation[].control` says "menuitem"
+    for any sidebar entry, which would declare a row menu in every application that has
+    a sidebar. Only words the requirements themselves used may declare an action.
+    """
+    parts = []
+    app = contract.get("app") or {}
+    if isinstance(app, dict):
+        parts.extend(str(app.get(key, "")) for key in ("name", "summary"))
+    for entry in contract.get("exact_texts", []) or []:
+        parts.extend(str(value) for value in (entry or {}).get("texts", []) or [])
+    for item in contract.get("navigation", []) or []:
+        if isinstance(item, dict):
+            parts.extend(str(item.get(key, "")) for key in ("name", "screen", "from"))
+    for entity in contract.get("entities", []) or []:
+        if not isinstance(entity, dict):
+            continue
+        parts.append(str(entity.get("name", "")))
+        for field in entity.get("fields", []) or []:
+            if isinstance(field, dict):
+                parts.extend(str(field.get(key, "")) for key in ("name", "notes"))
+    for seed in contract.get("seeds", []) or []:
+        for value in (seed or {}).get("data", {}).values():
+            if isinstance(value, str):
+                parts.append(value)
+    for key in ("persistence", "conventions", "unresolved_seed_sentences"):
+        parts.extend(str(value) for value in contract.get(key, []) or [])
+    for item in contract.get("api", []) or []:
+        if isinstance(item, dict):
+            parts.extend(str(item.get(key, "")) for key in ("purpose", "path"))
+    parts.extend(str(value) for value in observations or [])
+    return " \n".join(part for part in parts if part)
+
+
+def declared_actions(contract, observations=None, requirement_text=None):
+    """Which generic row or composer actions the requirements actually ask for."""
+    prose = (contract_prose(contract, observations) + " \n" + (requirement_text or "")).lower()
+    return [action for action, words in sorted(ACTION_WORDS.items())
+            if any(word in prose for word in words)]
+
+
+def vocabulary_module(contract, observations=None, requirement_text=None):
     """The words the requirements actually use, for the reported vocabulary check."""
     terms = []
     for entry in contract.get("exact_texts", []):
@@ -899,9 +1258,10 @@ def vocabulary_module(contract, observations=None):
     # Ticket register page's "账户信息" is named by the image and by no requirement sentence.
     for text in observations or []:
         terms.append(str(text))
-    # The seeded row titles, on their own. A row action is required to carry its row's
-    # title, so the title is exactly the part of an action name the evaluator never
-    # searches for, and the interface check strips it before comparing two names.
+    # The seeded row titles, on their own. A row-scoped action name is allowed where a
+    # row's actions are always visible, and the title is the part of such a name the
+    # evaluator never searches for, so the interface check strips it before comparing
+    # two names.
     titles = []
     for seed in contract.get("seeds", []):
         for value in seed.get("data", {}).values():
@@ -917,35 +1277,39 @@ def vocabulary_module(contract, observations=None):
             "const terms = " + json.dumps(terms, ensure_ascii=False, indent=1) + ";\n"
             "// The row titles the contract seeds, longest first.\n"
             "const titles = " + json.dumps(titles, ensure_ascii=False, indent=1) + ";\n"
+            "// The generic actions the requirements declare, for the container rule.\n"
+            "const actions = " + json.dumps(declared_actions(contract, observations,
+                                                             requirement_text)) + ";\n"
             "const lowered = terms.map(t => t.toLowerCase());\n"
             "function matches(name) {\n"
             "  const value = String(name || '').toLowerCase().trim();\n"
             "  if (!value) return false;\n"
             "  return lowered.some(term => term.includes(value) || value.includes(term));\n"
             "}\n"
-            "module.exports = {terms, titles, matches};\n")
+            "module.exports = {terms, titles, actions, matches};\n")
 
 
-def contract_files(contract, observations=None):
+def contract_files(contract, observations=None, requirement_text=None):
     """The harness-owned files a contract-driven application starts from."""
     return [
         {"path": "backend/seed.cjs", "content": seed_module(contract)},
         {"path": "backend/state.cjs", "content": STATE},
         {"path": "backend/server.cjs", "content": SERVER},
-        {"path": "checks/vocabulary.cjs", "content": vocabulary_module(contract, observations)},
+        {"path": "checks/vocabulary.cjs",
+         "content": vocabulary_module(contract, observations, requirement_text)},
         {"path": INTERFACE_CHECK_PATH, "content": INTERFACE_CHECK},
     ]
 
 
-def install(workspace, contract, observations=None):
-    workspace.write_files(contract_files(contract, observations))
+def install(workspace, contract, observations=None, requirement_text=None):
+    workspace.write_files(contract_files(contract, observations, requirement_text))
     ignore = workspace.root / ".gitignore"
     existing = ignore.read_text() if ignore.exists() else ""
     if DATA_DIRECTORY + "/" not in existing.splitlines():
         ignore.write_text(existing.rstrip() + "\n" + DATA_DIRECTORY + "/\n")
 
 
-INTERFACE_RULES = """Six rules the harness checks mechanically, on the entry page and in every
+INTERFACE_RULES = """Seven rules the harness checks mechanically, on the entry page and in every
 state one click or one hover away from it. Each one is a failure two generated applications
 actually lost specs to, so none of them is a style preference:
 
@@ -963,49 +1327,78 @@ actually lost specs to, so none of them is a style preference:
    are revealed on hover, name them by the verb alone, "Archive", not "Archive for <title>":
    only one row shows its actions at a time, so the verb is already unambiguous, and a
    hover-revealed button carrying the title is circular, since the row would have to be hovered
-   already for its own title to be found. Put the title in an action name only where the actions
-   are always visible, and then rule 1 applies to them.
+   already for its own title to be found. A row-scoped name is not forbidden in itself, because
+   the evaluator searches the bare verb and "Archive for Sprint goals" still matches "archive".
+   It is only safe where a row's actions are always visible, and rule 1 then applies to them.
 3. Every input, select, textarea, colour swatch, dialog field, toggle and meter carries an
    accessible name, through aria-label, <label for> or placeholder, using the requirement's own
    wording. A control with no name cannot be reached at all: a note body with no label matching
    the requirement's word for it sends the test's typing into the search box instead.
-4. While a chooser is open, meaning a dialog, menu, listbox or role="group" picker the application
-   opens over the page, put the inert attribute or aria-hidden="true" on everything outside it,
-   and take them off when it closes. aria-modal is not enough on its own: the evaluator resolves
+4. While a dialog is open, meaning a role="dialog" element or anything that declares
+   aria-modal="true", put the inert attribute or aria-hidden="true" on everything outside it, and
+   take them off when it closes. aria-modal is not enough on its own: the evaluator resolves
    controls with getByRole, which honours inert and aria-hidden and ignores aria-modal. Two things
-   go wrong without it. A sidebar item named "Work" is reached before the picker's own checkbox
+   go wrong without it. A sidebar item named "Work" is reached before the dialog's own checkbox
    "Work for Sprint goals", because menuitem is two rungs above checkbox. And a visible text input
-   outside the chooser takes the text meant for the chooser, because the evaluator's last resort
-   for filling a field is the first textbox on the page, with no name at all.
-5. Every action a requirement attaches to a row or to the composer is reachable inside that row or
-   composer by the bare verb the evaluator uses: more, options, menu, labels, color, pin, archive,
-   delete. The evaluator hovers the row, or opens the composer, and then clicks the first control
-   matching the verb wherever it is on the page. A composer with no more, options or menu control
-   sends it to the page banner's own "Menu" button, and a row with no labels control sends it to
-   the sidebar's "Edit Labels", which is how one run assigned a label to nothing at all.
+   outside the dialog takes the text meant for it, because the evaluator's last resort for filling
+   a field is the first textbox on the page, with no name at all. Rule 7 does all of this for you.
+   An inline colour palette, a dropdown menu or a listbox that is not a dialog is opened over live
+   content on purpose and must not make the page inert. What still applies to it is naming: no
+   control outside it may answer to a name a control inside it carries, because the evaluator
+   matches a name as a substring and reaches the outside control first. Rename, do not hide.
+5. Every action your requirements actually ask for on a row or in the composer is reachable
+   inside that row or composer by the bare verb the evaluator uses: more, options or menu for a
+   menu, then labels, color, pin, archive, delete. The evaluator hovers the row, or opens the
+   composer, and then clicks the first control matching the verb wherever it is on the page. A
+   composer with no more, options or menu control sends it to the page banner's own "Menu"
+   button, and a row with no labels control sends it to the sidebar's "Edit Labels", which is how
+   one run assigned a label to nothing at all. Only the actions your own requirements name are
+   checked, so an application whose requirements never mention archiving is never asked to grow
+   an archive control.
 6. Text already typed into a form survives a click on another control in the same form, and
    whatever hides controls restores them synchronously. When a state change re-renders the form,
    carry the current values into the new markup, through the value attribute, the textarea body,
-   or by not rebuilding the fields at all. Never apply a hide after an await: an open that is
-   superseded while its request is in flight then leaves the page hidden with nothing open, and a
-   freshly loaded page must always carry every control it carried before.
+   or by not rebuilding the fields at all. Never apply a hide after an await, and let rule 7 own
+   the hiding for you. A freshly loaded page must always carry every control it carried before.
+
+7. Every dialog, menu, palette and settings panel is opened through the harness-owned overlay
+   module. Load it once, first, in frontend/public/index.html:
+     <script src="/factory/overlay.js"></script>
+   and then, wherever you would have written your own open, hide, restore and close:
+     const handle = openOverlay('settings', container => container.appendChild(spinner()));
+     const saved = await fetch('/api/settings').then(response => response.json());
+     if (!handle.isCurrent()) return;         // a newer open, or a close, superseded this one
+     handle.container.appendChild(settingsDialog(saved, () => closeOverlay('settings')));
+   openOverlay(id, render) puts the container in the document and makes the rest of the page
+   inert before it returns, on the same synchronous path, so an open whose request never
+   resolves cannot leave the page hidden with nothing open. closeOverlay(id), handle.close(),
+   the Escape key, a second openOverlay with the same id, and product code that removes the
+   container all run the one cleanup, which restores the page exactly once. Pass
+   {modal: false} as a third argument for a menu or palette that must not make the page inert.
+   Never hand-roll a hide and a restore around an await. That is the exact defect this
+   replaces: a run lost a spec to a settings dialog that hid its rivals after an awaited
+   fetch and restored them synchronously, so an open superseded before its fetch resolved
+   left the page hidden with no dialog to close. The harness drives every dialog-opening
+   control on one page, without reloading, and fails a run that leaves an overlay open on top
+   of itself, leaves one open after a close, or leaves a control hidden with nothing open.
 
 And two rules about the checks you write, which the harness cannot enforce for you:
 
-7. A self-check for an action on a named row asserts on that row afterwards: it is in the
+8. A self-check for an action on a named row asserts on that row afterwards: it is in the
    destination list, or it carries the attribute the requirement names. Never assert only that a
    toast, snackbar or notification appeared. Four of one run's specs passed against a toast while
    the action had gone to the wrong row.
-8. A self-check reaches a row's action the way the evaluator does: hover the row's title text
+9. A self-check reaches a row's action the way the evaluator does: hover the row's title text
    first (page.getByText(title).first().hover()), then locate the action by its verb. Rule 1 hides
    the action until then, so a check that waits for an action name without hovering times out
    against a correct page. One batch of run 5 spent its whole call budget on exactly that."""
 
 
-STORE_CONTRACT = """The harness has already written three backend files. Do not rewrite them:
+STORE_CONTRACT = """The harness has already written these files. Do not rewrite them:
   backend/seed.cjs   the rows the requirements declare as already existing at startup
   backend/state.cjs  the shared persistent store and the startup readiness promise
   backend/server.cjs the static server, SPA fallback and /api/health gate
+  frontend/public/factory/overlay.js  the overlay lifecycle, described in rule 7 below
 
 backend/api.cjs must export `async (req, res) => boolean`. When a request belongs to your API,
 answer it and return true. For every other request return false without touching `res`: the
@@ -1029,7 +1422,7 @@ page and expects the server to remember. /api/health is already served; do not r
 
 HARNESS_OWNED = ("backend/seed.cjs", "backend/state.cjs", "backend/server.cjs",
                  "frontend/build.cjs", "frontend/package.json", "backend/package.json",
-                 INTERFACE_CHECK_PATH, "checks/vocabulary.cjs")
+                 OVERLAY_PATH, INTERFACE_CHECK_PATH, "checks/vocabulary.cjs")
 
 CHECKED_SOURCE = (".js", ".cjs", ".mjs")
 
@@ -1086,13 +1479,19 @@ HARNESS_SUMMARY = {
     "frontend/package.json": 'Harness-owned. {"scripts":{"build":"node build.cjs"}}',
     "backend/package.json": 'Harness-owned. {"scripts":{"start":"node server.cjs"}}',
     INTERFACE_CHECK_PATH: "Harness-owned. Walks every state one click or one hover from the "
-                          "entry page and asserts the six interface rules in your instructions: "
-                          "one visible control per action verb, a row title answered only by the "
-                          "row's text, a name on every field, an inert page behind an open "
-                          "chooser, every row and composer action reachable inside it, and a "
-                          "form that keeps its text and restores what it hides. "
-                          "Do not edit it; satisfy it.",
+                          "entry page, drives every dialog-opening control's overlay lifecycle "
+                          "on one page, and asserts the seven interface rules in your "
+                          "instructions: one visible control per action verb, a row title "
+                          "answered only by the row's text, a name on every field, an inert "
+                          "page behind an open dialog, every declared row and composer action "
+                          "reachable inside it, a form that keeps its text, and overlays opened "
+                          "through /factory/overlay.js. Do not edit it; satisfy it.",
     "checks/vocabulary.cjs": "Harness-owned data: the words the requirements use.",
+    OVERLAY_PATH: "Harness-owned. The build emits it; it is served at " + OVERLAY_URL
+                  + " and defines openOverlay(id, render) and closeOverlay(id) on window, "
+                    "with the open sequence, the inertness and the cleanup described in your "
+                    "instructions. Load it from index.html with a <script src> tag and use it "
+                    "for every dialog, menu, palette and settings panel. Do not write this path.",
     "checks/browser.cjs": "Harness-owned helper. Exports test(name, async (page, assert) => {}). "
                           "`page` is a Playwright page already on the entry URL; `assert` is "
                           "node:assert/strict. Await Playwright results and pass the values to "
