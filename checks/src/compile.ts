@@ -135,7 +135,7 @@ THEN allows ONLY expectText and expectAbsent; names must come from THEN sentence
 Names are arrays of one to three regex TEXT STRINGS, case-insensitive at runtime. Encode source words literally (escape punctuation, replace whitespace with \s+); optional paired ^ and $ anchors are allowed. No regex wildcards, alternatives or lookarounds. Never provide role, via, exact, within, CSS or selector objects. All click/hover/check/expectText use the fixed named ladder; fill uses the unchanged fillField helper; expectAbsent is getByText(...).toHaveCount(0). No extra sleeps, polls or auto-repairs.
 Both apps are fresh browser contexts against one seeded server; cannot rely on other scenarios. Preserve the full scenario denominator with explicit unknowns. Schema and source-grounding validation are enforced.
 `;
-export async function compileRound2(requirements:string,contract:string,out:string,ledgerPath:string,model:string) {
+export async function compileRound2(requirements:string,contract:string,out:string,ledgerPath:string,model:string,responses?:string[]) {
  if(!['qwen3.8-max','deepseek-v4-flash'].includes(model))throw Error('Round two only supports the two requested models');
  const requirementText=readFileSync(requirements,'utf8'),contractText=readFileSync(contract,'utf8');
  const root=parse(requirementText) as Requirement,contractData=JSON.parse(contractText),rows=scenarios(root),app=inputApp(root.name);
@@ -147,7 +147,7 @@ export async function compileRound2(requirements:string,contract:string,out:stri
  let assigned=rows;
  for(let attempt=0;attempt<2&&assigned.length;attempt++) {
   const user=JSON.stringify({...context,assigned:assigned.map(r=>({...r,grounding:grounding(r,requirementText,contractData),previousValidationError:errors[r.scenario]}))});
-  const response=await modelCall({model,system,user,ledgerPath,out,label:`${app}-attempt-${attempt+1}`,budget:5,maxTokens:12000});
+  const response=responses?responses[attempt]??'{}':await modelCall({model,system,user,ledgerPath,out,label:`${app}-attempt-${attempt+1}`,budget:5,maxTokens:12000});
   let candidates:any[]=[];
   try {const parsed=JSON.parse(response.replace(/^```(?:json)?\s*|\s*```$/g,''));if(!Array.isArray(parsed.checks))throw Error('Missing checks array');candidates=parsed.checks;}
   catch(error){for(const r of assigned)errors[r.scenario]=String(error);}

@@ -26,7 +26,7 @@ export const round2ChecksSchema=z.array(round2CheckSchema);
 export type ScenarioSource={scenario:string;requirement:string;title:string;group:string;source:unknown};
 const escape=(s:string)=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/\s+/g,'\\s+');
 const quoted=(s:string)=>[...s.matchAll(/["“]([^"”\n]+)["”]|`([^`\n]+)`/g)].map(m=>m[1]??m[2]);
-const normalize=(s:string)=>s.toLowerCase().replace(/\s+/g,' ').trim();
+const normalize=(s:string)=>s.toLowerCase().replace(/\\s\+|\s+/g,' ').trim();
 const lexical=(s:string):string[]=>normalize(s).match(/[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*/gu)??[];
 const verbs=['open','click','view','enter','close','delete','undo','archive','unarchive','choose','select','clear','edit','save','pin','unpin','search','toggle','collapse','expand','cancel','confirm','login','log in','favorite','unfavorite','restore'];
 export function sentenceTexts(row:ScenarioSource,keyword:string):string[] {
@@ -78,7 +78,8 @@ export function groundedCheckSchema(row:ScenarioSource,requirementsText:string,c
    for(const name of s.name)if(!sourcePhrase(name,[requirementsText]))issue(`GIVEN navigation name absent from requirements: ${name}`);
    const key=s.name.join('|').toLowerCase();if(navigationNames.has(key))issue('Repeated navigation is not a minimal preparation path');navigationNames.add(key);
   }
-  if(c.when.length!==g.whenSentences.length)issue('Exactly one WHEN group per original sentence; do not split comma/AND clauses');
+  const observationOnly=g.whenSentences.every(s=>/^(?:View\b|Open the application entry URL|The user opens the application URL|The system finishes the post-login navigation)/i.test(s));
+  if(c.when.length!==g.whenSentences.length&&!(c.when.length===0&&observationOnly))issue('Exactly one WHEN group per original sentence; do not split comma/AND clauses');
   c.when.forEach((group,i)=>{
    if(group.sentence!==i)issue('WHEN sentence order or index changed');
    const sentence=g.whenSentences[i]??'';
