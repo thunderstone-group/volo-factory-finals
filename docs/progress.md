@@ -1213,3 +1213,20 @@ generation has been run against any of this.
   `runs/2026-09-15-keep-full-8/`. Bar unchanged: ≥ 26/32, ≤ CNY 12.
 - Parallel: official baselines (13 runs), one-shot Keep experiment (`~/projects/oneshot-lab`),
   check compiler on `feat/ts-kernel` (codex), Prime Agent adapter.
+
+## 2026-09-15, 16:30 — Prime Agent adapter, first two Keep runs (`~/projects/prime-agent-lab/`)
+
+- Prime Agent (PrimeIntellect-ai/prime-agent 0.9.4, MIT) is the `pi` harness rebranded
+  (`@earendil-works/pi-*`), TypeScript. Gateway works through a custom `models.json` provider
+  (`openai-completions`, no source change); headless via `--mode json`. Adapter follows the
+  octos reference layout: `main.py`, `prime_agent_driver.py`, `prompts.py` (requirement +
+  app-neutral DOM conventions, no test source), `arcbench_agent_runtime/` copied.
+- keep-1: 17/32 hosted, 49 calls, CNY 1.15 by price list. keep-2: 22/32 hosted, 15/32 repo,
+  75 calls, CNY 1.23. Both stopped early: the model never ends a turn on its own, the adapter's
+  per-turn wall clock killed turn 1, and keep-2 was stopped on a contaminated balance delta.
+  Failures are whole feature groups that never got a turn.
+- Shape versus run 5 (25/32, CNY 8.4): output tokens 37 k vs 488 k, cache reads 4.8 M vs
+  2.4 M, cost per passing test 0.056 vs 0.336. Kernel calls track model calls 1:1 (plain tool
+  loop, median 395 chars of Python); the gate never fired because all turns ended in tool use.
+  Worse: the app degrades under the sequential repo profile (820 s, two 60 s timeouts).
+- keep-3 requested: explicit turn-termination protocol, soft caps instead of kills, CNY 6.
