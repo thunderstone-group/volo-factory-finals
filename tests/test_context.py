@@ -106,7 +106,8 @@ class ContextRepairTests(TempCase):
             result = agent.run()
         self.assertEqual(result['status'], 'completed')
         self.assertEqual(len(gateway.requests), 1)
-        self.assertEqual(agent.check_command, ['node', '--test', 'checks/greeting.test.cjs'])
+        self.assertEqual(agent.check_command,
+                         ['node', '--test', '--test-concurrency=1', 'checks/greeting.test.cjs'])
         self.assertTrue(self.workspace.last_verification['passed'])
 
     def test_successful_read_survives_an_oversized_reasoning_exchange(self):

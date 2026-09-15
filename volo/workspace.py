@@ -299,6 +299,74 @@ def tool_environment(extra=None):
     return env
 
 
+# One entrypoint per check file, and the model's own aggregate entrypoints on top of
+# them. Run 7's suite ran 66 test instances for 23 unique tests: `all.spec.cjs` required
+# batches 1-3, `run-all.spec.cjs` required batches 1-4 plus the interface check plus a
+# debug probe, and `discovered_check_command` passed all of them, aggregates and leaves
+# alike, as separate argv. run-all.spec.cjs even carries the comment "argv parallelism
+# races the shared store, so I require serially": the model wrote the guard and the
+# harness went around it.
+REQUIRE_CALL = re.compile(r"""require\(\s*['"]([^'"]+)['"]\s*\)""")
+TEST_REGISTRATION = re.compile(r"(?<![\w$.])(?:test|it|describe|suite)\s*\(")
+
+
+def check_requires(name, source, names):
+    """The check files one check file pulls in, by their workspace path."""
+    base = name.rsplit('/', 1)[0]
+    found = []
+    for target in REQUIRE_CALL.findall(source):
+        if not target.startswith('.'):
+            continue
+        parts = []
+        for part in (base + '/' + target).split('/'):
+            if part in ('', '.'):
+                continue
+            if part == '..':
+                if parts:
+                    parts.pop()
+                continue
+            parts.append(part)
+        resolved = '/'.join(parts)
+        for candidate in (resolved, resolved + '.cjs', resolved + '.js', resolved + '.mjs'):
+            if candidate in names and candidate != name and candidate not in found:
+                found.append(candidate)
+                break
+    return found
+
+
+def check_bundle_entrypoints(sources):
+    """Which of the discovered check files to run, so nothing runs twice.
+
+    A file another check file requires is already covered by it and is not passed
+    again. What is left are the entrypoints; an aggregate entrypoint that registers no
+    test of its own and covers nothing another entrypoint does not is dropped as well,
+    which is how a stale `all.spec.cjs` stops re-running batches 1-3 next to the
+    `run-all.spec.cjs` that already has them.
+    """
+    names = list(sources)
+    direct = {name: check_requires(name, sources[name], set(names)) for name in names}
+
+    def covered(name, seen=None):
+        seen = set() if seen is None else seen
+        for target in direct[name]:
+            if target in seen:
+                continue
+            seen.add(target)
+            covered(target, seen)
+        return seen
+
+    reach = {name: covered(name) for name in names}
+    required = {target for name in names for target in direct[name]}
+    roots = [name for name in names if name not in required]
+    kept = []
+    for name in roots:
+        aggregate = reach[name] and not TEST_REGISTRATION.search(sources[name])
+        if aggregate and any(other != name and reach[name] <= reach[other] for other in roots):
+            continue
+        kept.append(name)
+    return kept or names
+
+
 class Workspace:
     def __init__(self, root: Path, requirements: Path, trace: Trace, deadline: float):
         self.root, self.requirements = root.resolve(), requirements.resolve()
@@ -524,17 +592,34 @@ class Workspace:
         return result
 
     def browser_checks(self, check_command):
-        """Find standalone browser checks written by this agent, not evaluator files."""
+        """Find standalone browser checks written by this agent, not evaluator files.
+
+        Standalone means the check command does not already cover it. Being named in
+        the argv is one way; being required by a file that is named there is the other,
+        and it became the common one when the command started passing aggregate
+        entrypoints instead of every file under them.
+        """
         if not self.browser.get("available"):
             return []
-        checks = []
+        sources = {}
         for path in self.files():
             relative = str(path.relative_to(self.root))
-            if (not relative.startswith('checks/') or relative in check_command
-                    or path.suffix not in ('.js', '.cjs', '.mjs')
-                    or not any(marker in path.name for marker in ('.spec.', '.test.'))):
+            if relative.startswith('checks/') and path.suffix in ('.js', '.cjs', '.mjs'):
+                sources[relative] = path.read_text(errors='replace')
+        covered = set()
+        pending = [name for name in check_command if name in sources]
+        while pending:
+            name = pending.pop()
+            for target in check_requires(name, sources[name], set(sources)):
+                if target not in covered:
+                    covered.add(target)
+                    pending.append(target)
+        checks = []
+        for relative, source in sources.items():
+            if (relative in check_command or relative in covered
+                    or not any(marker in relative.rsplit('/', 1)[-1]
+                               for marker in ('.spec.', '.test.'))):
                 continue
-            source = path.read_text(errors='replace')
             if 'FACTORY_PLAYWRIGHT_MODULE' in source and '@playwright/test' not in source:
                 checks.append(['node', relative])
         return checks
@@ -548,14 +633,22 @@ class Workspace:
                     return None
             except (OSError, ValueError, AttributeError):
                 return None
-        checks = []
+        sources = {}
         for path in self.files():
             name = str(path.relative_to(self.root))
             if (not name.startswith('checks/') or path.suffix not in ('.js', '.cjs', '.mjs')
                     or not any(marker in path.name for marker in ('.test.', '.spec.'))):
                 continue
-            checks.append(name)
-        return ['node', '--test', *checks] if checks else None
+            try:
+                sources[name] = path.read_text(errors='replace')
+            except OSError:
+                sources[name] = ''
+        checks = check_bundle_entrypoints(sources) if sources else []
+        # node --test gives each argv file its own process and runs them in parallel by
+        # default, against one persistent store seeded once per run. Serial file
+        # execution is what makes a second verification of an unchanged tree report the
+        # same result as the first.
+        return ['node', '--test', '--test-concurrency=1', *checks] if checks else None
 
     def clear_prepared_check_guards(self):
         """A new requirement batch may intentionally change previous behavior."""
