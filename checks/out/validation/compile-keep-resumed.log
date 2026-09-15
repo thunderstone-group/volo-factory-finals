@@ -1,0 +1,16 @@
+
+> arcbench-scenario-checks@0.1.0 compile
+> node --import tsx src/compile.ts --requirements ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/requirements/requirements.yaml --contract ~/projects/volo-factory/runs/2026-09-15-keep-full-7/app/.factory/state-contract.json --out out/keep --ledger out/usage.json
+
+keep REQ-1: 1 checks; CNY 0.059592
+keep REQ-2: 3 checks; CNY 0.204841
+keep REQ-2.3: 3 checks; CNY 0.288620
+keep REQ-2.5: 4 checks; CNY 0.350088
+keep REQ-2.6: 2 checks; CNY 0.396802
+keep REQ-2.7: 5 checks; CNY 0.536126
+keep REQ-2.7.6: 3 checks; CNY 0.575784
+keep REQ-2.8: 3 checks; CNY 0.640204
+keep REQ-3: 2 checks; CNY 0.708051
+keep REQ-4: 2 checks; CNY 0.749263
+keep REQ-5: 2 checks; CNY 0.801869
+keep REQ-6: 2 checks; CNY 0.833166

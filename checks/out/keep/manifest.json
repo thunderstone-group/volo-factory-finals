@@ -1,0 +1,17 @@
+{
+  "app": "keep",
+  "scenarios": 32,
+  "groups": 12,
+  "model": "deepseek-v4-flash",
+  "requirements": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/requirements/requirements.yaml",
+  "contract": "~/projects/volo-factory/runs/2026-09-15-keep-full-7/app/.factory/state-contract.json",
+  "requirementsSha256": "0ee5e976f513ba19dff5348d0eb4813bcc3c1d4229ed28b3beb2cb51af90ea0e",
+  "contractSha256": "9784f4e9336a0707b902fa343cd2a9f7adc8e45e741712e8937320aeb94ea201",
+  "checksSha256": "70f611302aef13554abeeffae3623a463d81369871d8fae1a58bda1cfa32fb6c",
+  "compiledAt": "2026-09-15T08:48:56.171Z",
+  "compilerInputs": [
+    "requirements",
+    "contract"
+  ],
+  "calibrated": false
+}
