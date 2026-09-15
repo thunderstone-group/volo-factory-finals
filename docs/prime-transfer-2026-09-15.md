@@ -71,3 +71,32 @@ ranked by cost, so this does not change rank.
    same Keep requirements, same rules, one local run each way; continue only if model calls halve
    with no drop in pass rate. Exploratory; the team lead wants heavy discussion during it. Not on the
    critical path for 09-21 unless it beats track 2 on the same local Keep bar.
+
+## 12:47 — track 3 re-scoped after measuring run 5 (team lead agreed)
+
+Facts from `runs/2026-09-14-keep-full-5/app/.factory/events.jsonl`:
+
+- Calls are bimodal. Eleven healthy batches took 3–9 requests (median 6) with 0–5 reads each;
+  batches 6, 7, 11, 12 took 21/21/21/17 requests with 22/21/26/8 reads — 80 of the 142 requests.
+  The reads in those batches are the model gathering evidence for why its own check fails; a
+  single tool changes the round-trip count, not the diagnosis.
+- Cost is output-dominated: output 488 k tokens ≈ CNY 4.4 (52%), uncached input 1.24 M ≈ 3.7
+  (44%), cached input 2.42 M ≈ 0.24 (3%). Re-sending context per round trip is nearly free;
+  halving calls without halving output tokens barely moves cost, and large `run_code` outputs
+  would raise uncached input.
+- Run 5 is not the ablation baseline: the empty-source bug (batches 11–15) and the rollback
+  policy are already fixed on this branch; run 7 is the control.
+
+Decisions:
+
+1. Metric for track 3 is no longer "calls halve": it is the p90 request count of repair-loop
+   batches and output tokens per run, at equal pass rate.
+2. Order: run 7 score → a deterministic failure-evidence digest in the failure feedback (failing
+   locator, assertion, page snapshot, relevant source lines — the harness already has them), which
+   targets the repair loops directly → then a minimal `run_code` ablation: one stateless Node
+   subprocess call with the six-function SDK, output capped at 12 KB, added beside the existing
+   tools, one local Keep run each way.
+3. No persistent kernel and no mode rewrite unless the minimal version shows the model composing
+   operations on its own. Reasons: cross-call state is a new bug class, free-form code has more
+   ways to be rejected than the twelve tool-call shapes already seen, and a resident Node process
+   competes with the browser and backend for the hosted container's single core.
