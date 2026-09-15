@@ -94,3 +94,9 @@ export async function fillField(scope: Scope, labelOrPlaceholder: Match, value: 
 }
 
 export { firstVisible, namedLocators, resolveNamed, toPatterns };
+
+// Same Keep helper as upstream; no added waits or text-only shortcut.
+export async function hoverNamed(scope: Scope, value: Match): Promise<void> {
+  const locator = await resolveNamed(scope, value);
+  await locator.hover();
+}

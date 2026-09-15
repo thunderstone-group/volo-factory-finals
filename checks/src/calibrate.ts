@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 import { checksSchema, flatten, type Check, type Result } from './steps.js';
-import { run, reportRows, withApp, playwright, writeConfig, sha } from './run.js';
+import { run, reportRows, withApp, playwright, writeConfig, sha, loadChecks } from './run.js';
 
 export function officialMap(checks:Check[],official:any):Map<string,'pass'|'fail'> {
  const map=new Map<string,'pass'|'fail'>();
@@ -36,7 +36,7 @@ export function officialMap(checks:Check[],official:any):Map<string,'pass'|'fail
  if(used.size!==(rows?rows.length:official.failed_titles.length))throw Error('Unmapped official results');
  return map;
 }
-export function calibration(checks:Check[],results:Result[],official:any) {
+export function calibration(checks:Check[],results:Result[],official:any,excludeUnknown=false) {
  const map=officialMap(checks,official);
  if(results.length!==checks.length||new Set(results.map(r=>r.scenario)).size!==checks.length)throw Error('Local result denominator mismatch');
  const matrix={pass:{pass:0,fail:0},fail:{pass:0,fail:0},unknown:{pass:0,fail:0}};
@@ -48,12 +48,13 @@ export function calibration(checks:Check[],results:Result[],official:any) {
   if(r.status==='fail'&&verdict==='pass')falseFails.push(r.scenario);
  }
  const officialPass=matrix.pass.pass+matrix.fail.pass+matrix.unknown.pass;
- const recall=officialPass?matrix.pass.pass/officialPass:null;
+ const recallDenominator=officialPass-(excludeUnknown?matrix.unknown.pass:0);
+ const recall=recallDenominator?matrix.pass.pass/recallDenominator:null;
  const unknown=results.filter(r=>r.status==='unknown').map(r=>{
   const c=checks.find(c=>c.scenario===r.scenario)!;
   return {scenario:c.scenario,requirement:c.requirement,title:c.title,category:c.category,reasons:flatten([...c.given,...c.when,...c.then]).filter(s=>s.op==='unknown'),error:r.error};
  });
- return {denominator:checks.length,matrix,officialPassRecall:recall,falsePasses,falseFails,unknownCount:unknown.length,unknown,
+ return {...(excludeUnknown?{recallPolicy:'exclude-unknown',recallDenominator,officialPassCount:officialPass,fullDenominatorRecall:officialPass?matrix.pass.pass/officialPass:null,coverage:(checks.length-matrix.unknown.pass-matrix.unknown.fail)/checks.length}:{}),denominator:checks.length,matrix,officialPassRecall:recall,falsePasses,falseFails,unknownCount:unknown.length,unknown,
   accepted:falsePasses.length===0&&recall!==null&&recall>=0.85,
   interpretation:'Diagnostic calibration only; matching failure status does not establish matching failure cause.'};
 }
@@ -75,13 +76,13 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
  const {values}=parseArgs({options:{'app-dir':{type:'string'},checks:{type:'string'},official:{type:'string'},'official-tests':{type:'string'},out:{type:'string'}}});
  if(!values['app-dir']||!values.checks||!values.out)throw Error('Required: --app-dir --checks --out and --official or --official-tests');
  const out=resolve(values.out);mkdirSync(out,{recursive:true});
- const checkText=readFileSync(values.checks,'utf8'),checks=checksSchema.parse(JSON.parse(checkText));
+ const checkText=readFileSync(values.checks,'utf8'),{checks,round2}=loadChecks(checkText);
  // Freeze first; only this calibration module reads official reports/tests.
  writeFileSync(resolve(out,'frozen-checks-sha256.txt'),sha(checkText)+'\n');
  const results=await run(resolve(values['app-dir']),resolve(values.checks),out);
  const official=values.official?JSON.parse(readFileSync(values.official,'utf8')):values['official-tests']?await scoreOfficial(resolve(values['app-dir']),resolve(values['official-tests']),resolve(out,'official')):undefined;
  if(!official)throw Error('Missing official evidence');
- const summary=calibration(checks,results,official);
+ const summary=calibration(checks,results,official,!!round2);
  writeFileSync(resolve(out,'calibration.json'),JSON.stringify({...summary,checksSha256:sha(checkText),officialSha256:sha(JSON.stringify(official))},null,2)+'\n');
  writeFileSync(resolve(out,'calibration.md'),markdown(summary));console.log(markdown(summary));
 }

@@ -6,14 +6,20 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 import { createHash } from 'node:crypto';
 import { checksSchema, resultSchema, emptyResolver, type Check, type Result } from './steps.js';
+import { round2ChecksSchema, normalizeRound2, type Round2Check } from './round2-schema.js';
 
 export const sourceDir=dirname(fileURLToPath(import.meta.url));
 const packageDir=resolve(sourceDir,'..');
 export const sha=(text:string)=>createHash('sha256').update(text).digest('hex');
-export function renderSpec(checks:Check[], resultDir:string):string {
+export function loadChecks(text:string):{checks:Check[];round2?:Round2Check[]} {
+ const data=JSON.parse(text);
+ if(Array.isArray(data)&&data[0]?.version===2){const round2=round2ChecksSchema.parse(data);return {checks:round2.map(normalizeRound2),round2};}
+ return {checks:checksSchema.parse(data)};
+}
+export function renderSpec(checks:Check[], resultDir:string,round2?:Round2Check[]):string {
  if(new Set(checks.map(c=>c.requirement)).size!==1) throw Error('A spec must contain exactly one requirement');
- return `import { test, expect } from ${JSON.stringify(join(packageDir,'node_modules/@playwright/test/index.mjs'))};\nimport { executeCheck } from ${JSON.stringify(join(sourceDir,'execute.ts'))};\n`+
- checks.map(c=>`test(${JSON.stringify(c.scenario)}, async ({ page }) => {\n const result = await executeCheck(page, ${JSON.stringify(c)}, ${JSON.stringify(join(resultDir,`${c.scenario.replace(/[^\w.-]/g,'_')}.json`))});\n test.skip(result.status === 'unknown', result.error ?? 'unknown');\n expect(result.status, result.error ?? undefined).toBe('pass');\n});`).join('\n')+'\n';
+ return `import { test, expect } from ${JSON.stringify(join(packageDir,'node_modules/@playwright/test/index.mjs'))};\nimport { ${round2?'executeRound2Check as executeCheck':'executeCheck'} } from ${JSON.stringify(join(sourceDir,round2?'execute-round2.ts':'execute.ts'))};\n`+
+ checks.map(c=>`test(${JSON.stringify(c.scenario)}, async ({ page }) => {\n const result = await executeCheck(page, ${JSON.stringify(round2?.find(r=>r.scenario===c.scenario)??c)}, ${JSON.stringify(join(resultDir,`${c.scenario.replace(/[^\w.-]/g,'_')}.json`))});\n test.skip(result.status === 'unknown', result.error ?? 'unknown');\n expect(result.status, result.error ?? undefined).toBe('pass');\n});`).join('\n')+'\n';
 }
 export async function freePort():Promise<number> {
  return new Promise((accept,reject)=>{const server=createServer();server.on('error',reject);server.listen(0,'127.0.0.1',()=>{const address=server.address();if(!address||typeof address==='string')return reject(Error('No TCP port'));server.close(()=>accept(address.port));});});
@@ -55,10 +61,10 @@ export async function withApp<T>(appDir:string,out:string,fn:(url:string)=>Promi
   return await fn(url);
  } finally {await stop(proc);closeSync(log);}
 }
-export function writeConfig(out:string,testDir:string,url:string,modules=join(packageDir,'node_modules')) {
+export function writeConfig(out:string,testDir:string,url:string,modules=join(packageDir,'node_modules'),round2=false) {
  const config=resolve(out,'config.ts');
  writeFileSync(config,`import { defineConfig, devices } from ${JSON.stringify(join(modules,'@playwright/test/index.mjs'))};
-export default defineConfig({testDir:${JSON.stringify(testDir)},timeout:10000,expect:{timeout:10000},workers:4,fullyParallel:false,retries:0,reporter:[['list'],['json',{outputFile:${JSON.stringify(resolve(out,'playwright.json'))}}]],outputDir:${JSON.stringify(resolve(out,'artifacts'))},use:{baseURL:${JSON.stringify(url)},trace:'off',video:'off',screenshot:'off'},projects:[{name:'chromium',use:{...devices['Desktop Chrome']}}]});\n`);
+export default defineConfig({testDir:${JSON.stringify(testDir)},timeout:10000,${round2?'':'expect:{timeout:10000},'}workers:4,fullyParallel:false,retries:0,reporter:[['list'],['json',{outputFile:${JSON.stringify(resolve(out,'playwright.json'))}}]],outputDir:${JSON.stringify(resolve(out,'artifacts'))},use:{baseURL:${JSON.stringify(url)},trace:'off',video:'off',screenshot:'off'},projects:[{name:'chromium',use:{...devices['Desktop Chrome']}}]});\n`);
  return config;
 }
 export async function playwright(config:string,modules=join(packageDir,'node_modules')):Promise<number> {
@@ -86,7 +92,7 @@ export function mergeResults(checks:Check[],parts:Map<string,Result>,report:any)
  });
 }
 export async function run(appDir:string,checksFile:string,out:string):Promise<Result[]> {
- const text=readFileSync(checksFile,'utf8'),checks=checksSchema.parse(JSON.parse(text));
+ const text=readFileSync(checksFile,'utf8'),{checks,round2}=loadChecks(text);
  if(!checks.length||new Set(checks.map(c=>c.scenario)).size!==checks.length) throw Error('Empty/duplicate checks');
  mkdirSync(out,{recursive:true});
  // Never retain previous verdicts when the current invocation fails to start.
@@ -94,8 +100,9 @@ export async function run(appDir:string,checksFile:string,out:string):Promise<Re
  return withApp(appDir,out,async url=>{
   const specDir=resolve(out,'specs'),resultDir=resolve(out,'results-parts');
   mkdirSync(specDir,{recursive:true});mkdirSync(resultDir,{recursive:true});
-  for(const req of new Set(checks.map(c=>c.requirement)))writeFileSync(join(specDir,`${req.replace(/[^\w.-]/g,'_')}.spec.ts`),renderSpec(checks.filter(c=>c.requirement===req),resultDir));
-  const code=await playwright(writeConfig(out,specDir,url));
+  for(const req of new Set(checks.map(c=>c.requirement)))writeFileSync(join(specDir,`${req.replace(/[^\w.-]/g,'_')}.spec.ts`),renderSpec(checks.filter(c=>c.requirement===req),resultDir,round2));
+  if(round2){const file=resolve(out,'run-environment.json');const env=JSON.parse(readFileSync(file,'utf8'));writeFileSync(file,JSON.stringify({...env,profile:'round2',expectTimeoutMs:5000,actionTimeoutMs:0},null,2)+'\n');}
+  const code=await playwright(writeConfig(out,specDir,url,join(packageDir,'node_modules'),!!round2));
   const reportFile=resolve(out,'playwright.json');
   if(!existsSync(reportFile))throw Error(`Playwright exited ${code} without report`);
   const parts=new Map<string,Result>();
