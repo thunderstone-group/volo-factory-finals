@@ -1230,3 +1230,14 @@ generation has been run against any of this.
   loop, median 395 chars of Python); the gate never fired because all turns ended in tool use.
   Worse: the app degrades under the sequential repo profile (820 s, two 60 s timeouts).
 - keep-3 requested: explicit turn-termination protocol, soft caps instead of kills, CNY 6.
+
+## 2026-09-15, 18:36 — Keep run 8 on 83b7d83: 20/32 hosted, CNY 10.74; fallback line frozen
+
+- 175 calls, 15/15 batches started (7 completed, 8 salvaged), ended by gateway non-response,
+  delivered the last verified snapshot. Hosted 20/32 (fails 2.3.1, 2.4, 2.7.2, 2.7.4, 2.7.5,
+  2.7.6.1–3, 4.2, 5.1, 5.2, 6.2). Third consecutive regression on this line (25 → 22 → 20)
+  while F1–F6 all passed their own acceptance.
+- Decision (main session): stop investing in the batch loop. The preliminary entry is the
+  one-shot package (`~/projects/oneshot-lab/arc-package`, flash + dialect card, 27–29/32 at
+  under CNY 1 locally) once one official Keep run confirms it on the hosted machine. This branch
+  stays as evidence; PR #21 stays open unmerged.
