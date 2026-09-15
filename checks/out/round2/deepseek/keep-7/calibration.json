@@ -1,0 +1,210 @@
+{
+  "recallPolicy": "exclude-unknown",
+  "recallDenominator": 13,
+  "officialPassCount": 22,
+  "fullDenominatorRecall": 0.3181818181818182,
+  "coverage": 0.625,
+  "denominator": 32,
+  "matrix": {
+    "pass": {
+      "pass": 7,
+      "fail": 2
+    },
+    "fail": {
+      "pass": 6,
+      "fail": 5
+    },
+    "unknown": {
+      "pass": 9,
+      "fail": 3
+    }
+  },
+  "officialPassRecall": 0.5384615384615384,
+  "falsePasses": [
+    "REQ-2.7.6.2#1",
+    "REQ-6.1#1"
+  ],
+  "falseFails": [
+    "REQ-1.1#1",
+    "REQ-2.3.1#1",
+    "REQ-2.3.2#1",
+    "REQ-2.4#1",
+    "REQ-2.5.2#1",
+    "REQ-2.8.2#1"
+  ],
+  "unknownCount": 12,
+  "unknown": [
+    {
+      "scenario": "REQ-2.2#1",
+      "requirement": "REQ-2.2",
+      "title": "Create Note",
+      "category": "read-list",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: New\\\\s+note\",\n    \"path\": []\n  }\n]"
+        }
+      ],
+      "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: New\\\\s+note\",\n    \"path\": []\n  }\n]"
+    },
+    {
+      "scenario": "REQ-2.3.3#1",
+      "requirement": "REQ-2.3.3",
+      "title": "Trash list",
+      "category": "read-list",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Trash\",\n    \"path\": []\n  }\n]"
+        }
+      ],
+      "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Trash\",\n    \"path\": []\n  }\n]"
+    },
+    {
+      "scenario": "REQ-2.5.3#1",
+      "requirement": "REQ-2.5.3",
+      "title": "Show archived notes",
+      "category": "read-list",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Archived\",\n    \"path\": []\n  }\n]"
+        }
+      ],
+      "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Archived\",\n    \"path\": []\n  }\n]"
+    },
+    {
+      "scenario": "REQ-2.6.1#1",
+      "requirement": "REQ-2.6.1",
+      "title": "Change note color",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "The requirement asserts a background color change, which cannot be verified with text presence or absence."
+        }
+      ],
+      "error": "ambiguous-assertion: The requirement asserts a background color change, which cannot be verified with text presence or absence."
+    },
+    {
+      "scenario": "REQ-2.6.2#1",
+      "requirement": "REQ-2.6.2",
+      "title": "Choose note color when created",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "The requirement asserts the note is saved with a selected color, which cannot be verified with text presence or absence."
+        }
+      ],
+      "error": "ambiguous-assertion: The requirement asserts the note is saved with a selected color, which cannot be verified with text presence or absence."
+    },
+    {
+      "scenario": "REQ-2.7.4#1",
+      "requirement": "REQ-2.7.4",
+      "title": "Assign default label when creating note",
+      "category": "read-list",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: New\\\\s+note\",\n    \"path\": []\n  }\n]"
+        }
+      ],
+      "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: New\\\\s+note\",\n    \"path\": []\n  }\n]"
+    },
+    {
+      "scenario": "REQ-2.7.5#1",
+      "requirement": "REQ-2.7.5",
+      "title": "Edit labels",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "The workflow requires clicking Edit Labels, changing a label name, and saving, which exceeds the two-step limit per sentence."
+        }
+      ],
+      "error": "unsupported: The workflow requires clicking Edit Labels, changing a label name, and saving, which exceeds the two-step limit per sentence."
+    },
+    {
+      "scenario": "REQ-2.8.3#1",
+      "requirement": "REQ-2.8.3",
+      "title": "Pin note when creating it",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "The workflow requires entering title, entering content, clicking pin, and closing the editor, which exceeds the two-step limit per sentence."
+        }
+      ],
+      "error": "unsupported: The workflow requires entering title, entering content, clicking pin, and closing the editor, which exceeds the two-step limit per sentence."
+    },
+    {
+      "scenario": "REQ-3.1#1",
+      "requirement": "REQ-3.1",
+      "title": "Initial suggested filters",
+      "category": "search-filter-sort",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "The suggested filter to choose is not specified, so the expected filtered results cannot be determined."
+        }
+      ],
+      "error": "ambiguous-assertion: The suggested filter to choose is not specified, so the expected filtered results cannot be determined."
+    },
+    {
+      "scenario": "REQ-5.1#1",
+      "requirement": "REQ-5.1",
+      "title": "Toggle between list and grid views",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "The requirement asserts a view mode change, which cannot be verified with text presence or absence."
+        }
+      ],
+      "error": "ambiguous-assertion: The requirement asserts a view mode change, which cannot be verified with text presence or absence."
+    },
+    {
+      "scenario": "REQ-5.2#1",
+      "requirement": "REQ-5.2",
+      "title": "Grid View by default",
+      "category": "navigation",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "The requirement asserts the default view mode, which cannot be verified with text presence or absence."
+        }
+      ],
+      "error": "ambiguous-assertion: The requirement asserts the default view mode, which cannot be verified with text presence or absence."
+    },
+    {
+      "scenario": "REQ-6.2#1",
+      "requirement": "REQ-6.2",
+      "title": "Collapsible Sidebar",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "The requirement asserts the sidebar collapses and expands, which cannot be verified with text presence or absence."
+        }
+      ],
+      "error": "ambiguous-assertion: The requirement asserts the sidebar collapses and expands, which cannot be verified with text presence or absence."
+    }
+  ],
+  "accepted": false,
+  "interpretation": "Diagnostic calibration only; matching failure status does not establish matching failure cause.",
+  "checksSha256": "dbf82be42141128f7c81add3b5bb3af17537dd811bef164fac2b67d482e88b3a",
+  "officialSha256": "a7ce2eceec3d46410ce17cbac5e2cbe0cfb89ce891c0a1ab4d6314119ac8e004"
+}

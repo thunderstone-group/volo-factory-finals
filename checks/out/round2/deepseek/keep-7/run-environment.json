@@ -1,0 +1,16 @@
+{
+  "application": "~/projects/volo-factory/runs/2026-09-15-keep-full-7/app",
+  "node": "v22.22.0",
+  "baseURL": "http://127.0.0.1:64859",
+  "workers": 4,
+  "testTimeoutMs": 10000,
+  "expectTimeoutMs": 5000,
+  "trace": "off",
+  "video": "off",
+  "seedRestores": 1,
+  "seedSha256": "72f445d9da9bba3801c665d9b48ca26a8fa86641cfbcf3cda88b485a1a500047",
+  "dataStrategy": "fresh APP_DATA_DIR then one whole-suite snapshot restore",
+  "startedAt": "2026-09-15T10:50:22.037Z",
+  "profile": "round2",
+  "actionTimeoutMs": 0
+}

@@ -1,0 +1,398 @@
+
+> arcbench-scenario-checks@0.1.0 calibrate
+> node --import tsx src/calibrate.ts --app-dir ~/projects/volo-factory/runs/2026-09-15-keep-full-7/app --checks out/round2/deepseek/keep/checks.json --official out/keep-7/official-summary.json --out out/round2/deepseek/keep-7
+
+
+Running 32 tests using 4 workers
+
+(node:61291) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61292) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61293) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61294) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -   2 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.2.spec.ts:3:1 › REQ-2.2#1
+  ✓   3 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.1.spec.ts:3:1 › REQ-2.1#1 (144ms)
+  -   6 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.3.3.spec.ts:3:1 › REQ-2.3.3#1
+  ✘   4 [chromium] › out/round2/deepseek/keep-7/specs/REQ-1.1.spec.ts:3:1 › REQ-1.1#1 (5.2s)
+(node:61395) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   7 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.4.spec.ts:3:1 › REQ-2.4#1 (5.1s)
+(node:61396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.5.1.spec.ts:3:1 › REQ-2.5.1#1 (100ms)
+  -  10 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.5.3.spec.ts:3:1 › REQ-2.5.3#1
+  ✘   1 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.3.1.spec.ts:3:1 › REQ-2.3.1#1 (10.0s)
+  ✘   5 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.3.2.spec.ts:3:1 › REQ-2.3.2#1 (10.0s)
+(node:61496) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61497) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  12 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.6.1.spec.ts:3:1 › REQ-2.6.1#1
+  -  13 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.6.2.spec.ts:3:1 › REQ-2.6.2#1
+  ✘  11 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.5.4.spec.ts:3:1 › REQ-2.5.4#1 (10.0s)
+  ✘   9 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.5.2.spec.ts:3:1 › REQ-2.5.2#1 (10.0s)
+(node:61600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61601) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  17 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.4.spec.ts:3:1 › REQ-2.7.4#1
+  -  18 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.5.spec.ts:3:1 › REQ-2.7.5#1
+  ✓  16 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.3.spec.ts:3:1 › REQ-2.7.3#1 (85ms)
+  ✓  19 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.6.2.spec.ts:3:1 › REQ-2.7.6.2#1 (123ms)
+  ✓  20 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.6.1.spec.ts:3:1 › REQ-2.7.6.1#1 (127ms)
+  ✓  22 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.8.1.spec.ts:3:1 › REQ-2.8.1#1 (78ms)
+  ✓  21 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.6.3.spec.ts:3:1 › REQ-2.7.6.3#1 (84ms)
+  -  24 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.8.3.spec.ts:3:1 › REQ-2.8.3#1
+  -  25 [chromium] › out/round2/deepseek/keep-7/specs/REQ-3.1.spec.ts:3:1 › REQ-3.1#1
+  ✓  26 [chromium] › out/round2/deepseek/keep-7/specs/REQ-3.2.spec.ts:3:1 › REQ-3.2#1 (96ms)
+  ✘  14 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.1.spec.ts:3:1 › REQ-2.7.1#1 (10.0s)
+  ✘  15 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.2.spec.ts:3:1 › REQ-2.7.2#1 (10.0s)
+(node:61692) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61693) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  29 [chromium] › out/round2/deepseek/keep-7/specs/REQ-5.1.spec.ts:3:1 › REQ-5.1#1
+  -  30 [chromium] › out/round2/deepseek/keep-7/specs/REQ-5.2.spec.ts:3:1 › REQ-5.2#1
+  ✓  31 [chromium] › out/round2/deepseek/keep-7/specs/REQ-6.1.spec.ts:3:1 › REQ-6.1#1 (66ms)
+  -  32 [chromium] › out/round2/deepseek/keep-7/specs/REQ-6.2.spec.ts:3:1 › REQ-6.2#1
+  ✘  23 [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.8.2.spec.ts:3:1 › REQ-2.8.2#1 (10.0s)
+  ✘  27 [chromium] › out/round2/deepseek/keep-7/specs/REQ-4.1.spec.ts:3:1 › REQ-4.1#1 (10.0s)
+  ✘  28 [chromium] › out/round2/deepseek/keep-7/specs/REQ-4.2.spec.ts:3:1 › REQ-4.2#1 (10.0s)
+
+
+  1) [chromium] › out/round2/deepseek/keep-7/specs/REQ-1.1.spec.ts:3:1 › REQ-1.1#1 ─────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: /Home/i }).first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for getByRole('button', { name: /Home/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-1.1#1","requirement":"REQ-1.1","title":"Enter Website","category":"navigation","rationale":"Open the application entry URL and verify the home page is displayed.","status":"compiled","given":[{"op":"open"}],"when":[],"then":[{"op":"expectText","name":["Home"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-1.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-1.1.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-1.1-REQ-1-1-1-chromium/error-context.md
+
+  2) [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.3.1.spec.ts:3:1 › REQ-2.3.1#1 ─────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Delete\s+Note/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-2.3.1#1","requirement":"REQ-2.3.1","title":"Delete","category":"delete","rationale":"Delete a note via hover, More options, and Delete Note, then verify removal.","status":"compiled","given":[{"op":"open"}],"when":[{"sentence":0,"steps":[{"op":"hover","name":["Delete\\s+me\\s+2\\.3\\.1"]},{"op":"click","name":["Delete\\s+Note"]}]}],"then":[{"op":"expectAbsent","name":["Delete\\s+me\\s+2\\.3\\.1"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.3.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.3.1.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-2.3.1-REQ-2-3-1-1-chromium/error-context.md
+
+  3) [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.3.2.spec.ts:3:1 › REQ-2.3.2#1 ─────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Undo/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-2.3.2#1","requirement":"REQ-2.3.2","title":"Notification and Undo","category":"state-toggle","rationale":"Undo a deletion and verify the note is restored with an Action undone notification.","status":"compiled","given":[{"op":"open"}],"when":[{"sentence":0,"steps":[{"op":"click","name":["Undo"]}]}],"then":[{"op":"expectText","name":["Action\\s+undone"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.3.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.3.2.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-2.3.2-REQ-2-3-2-1-chromium/error-context.md
+
+  4) [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.4.spec.ts:3:1 › REQ-2.4#1 ─────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: /Updated\s+content/i }).first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for getByRole('button', { name: /Updated\s+content/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-2.4#1","requirement":"REQ-2.4","title":"Update Note","category":"edit","rationale":"Open a note, edit its content, close the editor, and verify the updated content is saved.","status":"compiled","given":[{"op":"open"}],"when":[{"sentence":0,"steps":[{"op":"click","name":["Project\\s+ideas"]},{"op":"fill","name":["content"],"value":"Updated content"}]}],"then":[{"op":"expectText","name":["Updated\\s+content"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.4_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.4.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-2.4-REQ-2-4-1-chromium/error-context.md
+
+  5) [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.5.2.spec.ts:3:1 › REQ-2.5.2#1 ─────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Undo/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-2.5.2#1","requirement":"REQ-2.5.2","title":"Archive Undo","category":"state-toggle","rationale":"Click Undo in the archive notification and verify the note returns to the main list.","status":"compiled","given":[{"op":"open"},{"op":"click","name":["Archive"]}],"when":[{"sentence":0,"steps":[{"op":"click","name":["Undo"]}]}],"then":[{"op":"expectText","name":["Travel\\s+plans\\s+2\\.5\\.2"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.5.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.5.2.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-2.5.2-REQ-2-5-2-1-chromium/error-context.md
+
+  6) [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.5.4.spec.ts:3:1 › REQ-2.5.4#1 ─────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Unarchive/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-2.5.4#1","requirement":"REQ-2.5.4","title":"Unarchive","category":"state-toggle","rationale":"Click Unarchive on an archived note and verify it is removed from the archived list.","status":"compiled","given":[{"op":"open"},{"op":"click","name":["Archived"]}],"when":[{"sentence":0,"steps":[{"op":"click","name":["Unarchive"]}]}],"then":[{"op":"expectAbsent","name":["Travel\\s+plans\\s+2\\.5\\.4"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.5.4_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.5.4.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-2.5.4-REQ-2-5-4-1-chromium/error-context.md
+
+  7) [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.1.spec.ts:3:1 › REQ-2.7.1#1 ─────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Change\s+labels/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-2.7.1#1","requirement":"REQ-2.7.1","title":"Assign label to a note","category":"edit","rationale":"Assign a label to a note via More options and Change labels, then verify the label is displayed.","status":"compiled","given":[{"op":"open"}],"when":[{"sentence":0,"steps":[{"op":"click","name":["Change\\s+labels"]},{"op":"click","name":["Work"]}]}],"then":[{"op":"expectText","name":["Work"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.7.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.7.1.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-2.7.1-REQ-2-7-1-1-chromium/error-context.md
+
+  8) [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.2.spec.ts:3:1 › REQ-2.7.2#1 ─────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Change\s+labels/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-2.7.2#1","requirement":"REQ-2.7.2","title":"Remove label from a note","category":"edit","rationale":"Remove a label from a note via More options and Change labels, then verify the label is removed.","status":"compiled","given":[{"op":"open"}],"when":[{"sentence":0,"steps":[{"op":"click","name":["Change\\s+labels"]},{"op":"click","name":["Work"]}]}],"then":[{"op":"expectAbsent","name":["Work"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.7.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.7.2.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-2.7.2-REQ-2-7-2-1-chromium/error-context.md
+
+  9) [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.8.2.spec.ts:3:1 › REQ-2.8.2#1 ─────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Unpin/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-2.8.2#1","requirement":"REQ-2.8.2","title":"Unpin note","category":"state-toggle","rationale":"Click the unpin button on the pinned note and verify it is removed from the pinned section.","status":"compiled","given":[{"op":"open"}],"when":[{"sentence":0,"steps":[{"op":"click","name":["Unpin"]}]}],"then":[{"op":"expectText","name":["Meeting\\s+agenda\\s+2\\.8\\.2"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.8.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.8.2.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-2.8.2-REQ-2-8-2-1-chromium/error-context.md
+
+  10) [chromium] › out/round2/deepseek/keep-7/specs/REQ-4.1.spec.ts:3:1 › REQ-4.1#1 ────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Settings/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-4.1#1","requirement":"REQ-4.1","title":"Setting options list","category":"navigation","rationale":"Click the settings icon and verify the settings options list is displayed.","status":"compiled","given":[{"op":"open"}],"when":[{"sentence":0,"steps":[{"op":"click","name":["Settings"]}]}],"then":[{"op":"expectText","name":["Settings"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-4.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-4.1.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-4.1-REQ-4-1-1-chromium/error-context.md
+
+  11) [chromium] › out/round2/deepseek/keep-7/specs/REQ-4.2.spec.ts:3:1 › REQ-4.2#1 ────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Settings/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"version":2,"scenario":"REQ-4.2#1","requirement":"REQ-4.2","title":"Detailed settings","category":"navigation","rationale":"Click Settings and verify the detailed settings page is displayed.","status":"compiled","given":[{"op":"open"},{"op":"click","name":["Settings"]}],"when":[{"sentence":0,"steps":[{"op":"click","name":["Settings"]}]}],"then":[{"op":"expectText","name":["Settings"]}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-4.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-4.2.spec.ts:6:51
+
+    Error Context: out/round2/deepseek/keep-7/artifacts/REQ-4.2-REQ-4-2-1-chromium/error-context.md
+
+  11 failed
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-1.1.spec.ts:3:1 › REQ-1.1#1 ──────────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.3.1.spec.ts:3:1 › REQ-2.3.1#1 ──────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.3.2.spec.ts:3:1 › REQ-2.3.2#1 ──────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.4.spec.ts:3:1 › REQ-2.4#1 ──────────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.5.2.spec.ts:3:1 › REQ-2.5.2#1 ──────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.5.4.spec.ts:3:1 › REQ-2.5.4#1 ──────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.1.spec.ts:3:1 › REQ-2.7.1#1 ──────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.7.2.spec.ts:3:1 › REQ-2.7.2#1 ──────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-2.8.2.spec.ts:3:1 › REQ-2.8.2#1 ──────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-4.1.spec.ts:3:1 › REQ-4.1#1 ──────────────────
+    [chromium] › out/round2/deepseek/keep-7/specs/REQ-4.2.spec.ts:3:1 › REQ-4.2#1 ──────────────────
+  12 skipped
+  9 passed (31.4s)
+| Local \ Official | pass | fail |
+|---|---:|---:|
+| pass | 7 | 2 |
+| fail | 6 | 5 |
+| unknown | 9 | 3 |
+
+Denominator: 32; official-pass recall: 53.8%; false passes: 2; unknown: 12; acceptance: FAIL.
+
+- REQ-2.2#1 (read-list) Create Note: unsupported: Schema/source validation failed: [
+  {
+    "code": "custom",
+    "message": "THEN name absent from THEN/literals: New\\s+note",
+    "path": []
+  }
+]
+- REQ-2.3.3#1 (read-list) Trash list: unsupported: Schema/source validation failed: [
+  {
+    "code": "custom",
+    "message": "Click must name an original verb or quoted literal: Trash",
+    "path": []
+  }
+]
+- REQ-2.5.3#1 (read-list) Show archived notes: unsupported: Schema/source validation failed: [
+  {
+    "code": "custom",
+    "message": "Click must name an original verb or quoted literal: Archived",
+    "path": []
+  }
+]
+- REQ-2.6.1#1 (edit) Change note color: ambiguous-assertion: The requirement asserts a background color change, which cannot be verified with text presence or absence.
+- REQ-2.6.2#1 (create) Choose note color when created: ambiguous-assertion: The requirement asserts the note is saved with a selected color, which cannot be verified with text presence or absence.
+- REQ-2.7.4#1 (read-list) Assign default label when creating note: unsupported: Schema/source validation failed: [
+  {
+    "code": "custom",
+    "message": "THEN name absent from THEN/literals: New\\s+note",
+    "path": []
+  }
+]
+- REQ-2.7.5#1 (edit) Edit labels: unsupported: The workflow requires clicking Edit Labels, changing a label name, and saving, which exceeds the two-step limit per sentence.
+- REQ-2.8.3#1 (create) Pin note when creating it: unsupported: The workflow requires entering title, entering content, clicking pin, and closing the editor, which exceeds the two-step limit per sentence.
+- REQ-3.1#1 (search-filter-sort) Initial suggested filters: ambiguous-assertion: The suggested filter to choose is not specified, so the expected filtered results cannot be determined.
+- REQ-5.1#1 (state-toggle) Toggle between list and grid views: ambiguous-assertion: The requirement asserts a view mode change, which cannot be verified with text presence or absence.
+- REQ-5.2#1 (navigation) Grid View by default: ambiguous-assertion: The requirement asserts the default view mode, which cannot be verified with text presence or absence.
+- REQ-6.2#1 (state-toggle) Collapsible Sidebar: ambiguous-assertion: The requirement asserts the sidebar collapses and expands, which cannot be verified with text presence or absence.
+

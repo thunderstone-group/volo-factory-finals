@@ -1,0 +1,700 @@
+[
+  {
+    "scenario": "REQ-1.1#1",
+    "requirement": "REQ-1.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "0",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            {
+              "regex": "Home",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Home/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Home/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Home/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-1.1#1\",\"requirement\":\"REQ-1.1\",\"title\":\"Enter Website\",\"category\":\"navigation\",\"rationale\":\"Open the application entry URL and verify the home page is displayed.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[],\"then\":[{\"op\":\"expectText\",\"name\":[\"Home\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-1.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-1.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.1#1",
+    "requirement": "REQ-2.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Groceries/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.2#1",
+    "requirement": "REQ-2.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: New\\\\s+note\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: New\\\\s+note\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-2.3.1#1",
+    "requirement": "REQ-2.3.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.1",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Delete\\s+Note",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Delete\\s+Note/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Delete\\s+Note/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.3.1#1\",\"requirement\":\"REQ-2.3.1\",\"title\":\"Delete\",\"category\":\"delete\",\"rationale\":\"Delete a note via hover, More options, and Delete Note, then verify removal.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"hover\",\"name\":[\"Delete\\\\s+me\\\\s+2\\\\.3\\\\.1\"]},{\"op\":\"click\",\"name\":[\"Delete\\\\s+Note\"]}]}],\"then\":[{\"op\":\"expectAbsent\",\"name\":[\"Delete\\\\s+me\\\\s+2\\\\.3\\\\.1\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.3.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.3.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.3.2#1",
+    "requirement": "REQ-2.3.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Undo",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Undo/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Undo/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.3.2#1\",\"requirement\":\"REQ-2.3.2\",\"title\":\"Notification and Undo\",\"category\":\"state-toggle\",\"rationale\":\"Undo a deletion and verify the note is restored with an Action undone notification.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Undo\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Action\\\\s+undone\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.3.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.3.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.3.3#1",
+    "requirement": "REQ-2.3.3",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Trash\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Trash\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-2.4#1",
+    "requirement": "REQ-2.4",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "0",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            {
+              "regex": "Updated\\s+content",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Updated\\s+content/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Updated\\s+content/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Updated\\s+content/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.4#1\",\"requirement\":\"REQ-2.4\",\"title\":\"Update Note\",\"category\":\"edit\",\"rationale\":\"Open a note, edit its content, close the editor, and verify the updated content is saved.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Project\\\\s+ideas\"]},{\"op\":\"fill\",\"name\":[\"content\"],\"value\":\"Updated content\"}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Updated\\\\s+content\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.4_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.4.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.5.1#1",
+    "requirement": "REQ-2.5.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Travel\\s+plans\\s+2\\.5\\.1/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.5.2#1",
+    "requirement": "REQ-2.5.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Undo",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Undo/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Undo/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.5.2#1\",\"requirement\":\"REQ-2.5.2\",\"title\":\"Archive Undo\",\"category\":\"state-toggle\",\"rationale\":\"Click Undo in the archive notification and verify the note returns to the main list.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"},{\"op\":\"click\",\"name\":[\"Archive\"]}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Undo\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Travel\\\\s+plans\\\\s+2\\\\.5\\\\.2\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.5.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.5.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.5.3#1",
+    "requirement": "REQ-2.5.3",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Archived\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Archived\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-2.5.4#1",
+    "requirement": "REQ-2.5.4",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Unarchive",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Unarchive/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Unarchive/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.5.4#1\",\"requirement\":\"REQ-2.5.4\",\"title\":\"Unarchive\",\"category\":\"state-toggle\",\"rationale\":\"Click Unarchive on an archived note and verify it is removed from the archived list.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"},{\"op\":\"click\",\"name\":[\"Archived\"]}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Unarchive\"]}]}],\"then\":[{\"op\":\"expectAbsent\",\"name\":[\"Travel\\\\s+plans\\\\s+2\\\\.5\\\\.4\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.5.4_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.5.4.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.6.1#1",
+    "requirement": "REQ-2.6.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "The requirement asserts a background color change, which cannot be verified with text presence or absence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: The requirement asserts a background color change, which cannot be verified with text presence or absence."
+  },
+  {
+    "scenario": "REQ-2.6.2#1",
+    "requirement": "REQ-2.6.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "The requirement asserts the note is saved with a selected color, which cannot be verified with text presence or absence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: The requirement asserts the note is saved with a selected color, which cannot be verified with text presence or absence."
+  },
+  {
+    "scenario": "REQ-2.7.1#1",
+    "requirement": "REQ-2.7.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Change\\s+labels",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Change\\s+labels/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Change\\s+labels/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.7.1#1\",\"requirement\":\"REQ-2.7.1\",\"title\":\"Assign label to a note\",\"category\":\"edit\",\"rationale\":\"Assign a label to a note via More options and Change labels, then verify the label is displayed.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Change\\\\s+labels\"]},{\"op\":\"click\",\"name\":[\"Work\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Work\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.7.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.7.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.7.2#1",
+    "requirement": "REQ-2.7.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Change\\s+labels",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Change\\s+labels/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Change\\s+labels/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.7.2#1\",\"requirement\":\"REQ-2.7.2\",\"title\":\"Remove label from a note\",\"category\":\"edit\",\"rationale\":\"Remove a label from a note via More options and Change labels, then verify the label is removed.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Change\\\\s+labels\"]},{\"op\":\"click\",\"name\":[\"Work\"]}]}],\"then\":[{\"op\":\"expectAbsent\",\"name\":[\"Work\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.7.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.7.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.7.3#1",
+    "requirement": "REQ-2.7.3",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Reminders/i",
+      "rungHit": "link",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.4#1",
+    "requirement": "REQ-2.7.4",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: New\\\\s+note\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: New\\\\s+note\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-2.7.5#1",
+    "requirement": "REQ-2.7.5",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "The workflow requires clicking Edit Labels, changing a label name, and saving, which exceeds the two-step limit per sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: The workflow requires clicking Edit Labels, changing a label name, and saving, which exceeds the two-step limit per sentence."
+  },
+  {
+    "scenario": "REQ-2.7.6.1#1",
+    "requirement": "REQ-2.7.6.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie\\s+list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.6.2#1",
+    "requirement": "REQ-2.7.6.2",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie\\s+list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.6.3#1",
+    "requirement": "REQ-2.7.6.3",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie\\s+list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.8.1#1",
+    "requirement": "REQ-2.8.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Meeting\\s+agenda\\s+2\\.8\\.1/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.8.2#1",
+    "requirement": "REQ-2.8.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Unpin",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Unpin/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Unpin/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.8.2#1\",\"requirement\":\"REQ-2.8.2\",\"title\":\"Unpin note\",\"category\":\"state-toggle\",\"rationale\":\"Click the unpin button on the pinned note and verify it is removed from the pinned section.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Unpin\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Meeting\\\\s+agenda\\\\s+2\\\\.8\\\\.2\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-2.8.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-2.8.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.8.3#1",
+    "requirement": "REQ-2.8.3",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "The workflow requires entering title, entering content, clicking pin, and closing the editor, which exceeds the two-step limit per sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: The workflow requires entering title, entering content, clicking pin, and closing the editor, which exceeds the two-step limit per sentence."
+  },
+  {
+    "scenario": "REQ-3.1#1",
+    "requirement": "REQ-3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "The suggested filter to choose is not specified, so the expected filtered results cannot be determined."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: The suggested filter to choose is not specified, so the expected filtered results cannot be determined."
+  },
+  {
+    "scenario": "REQ-3.2#1",
+    "requirement": "REQ-3.2",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Study\\s+schedule/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-4.1#1",
+    "requirement": "REQ-4.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Settings",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Settings/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Settings/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-4.1#1\",\"requirement\":\"REQ-4.1\",\"title\":\"Setting options list\",\"category\":\"navigation\",\"rationale\":\"Click the settings icon and verify the settings options list is displayed.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Settings\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Settings\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-4.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-4.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-4.2#1",
+    "requirement": "REQ-4.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "given",
+      "index": "1",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Settings",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Settings/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Settings/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-4.2#1\",\"requirement\":\"REQ-4.2\",\"title\":\"Detailed settings\",\"category\":\"navigation\",\"rationale\":\"Click Settings and verify the detailed settings page is displayed.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"},{\"op\":\"click\",\"name\":[\"Settings\"]}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Settings\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Settings\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/results-parts/REQ-4.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/keep-7/specs/REQ-4.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-5.1#1",
+    "requirement": "REQ-5.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "The requirement asserts a view mode change, which cannot be verified with text presence or absence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: The requirement asserts a view mode change, which cannot be verified with text presence or absence."
+  },
+  {
+    "scenario": "REQ-5.2#1",
+    "requirement": "REQ-5.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "The requirement asserts the default view mode, which cannot be verified with text presence or absence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: The requirement asserts the default view mode, which cannot be verified with text presence or absence."
+  },
+  {
+    "scenario": "REQ-6.1#1",
+    "requirement": "REQ-6.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Notes/i",
+      "rungHit": "link",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-6.2#1",
+    "requirement": "REQ-6.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "The requirement asserts the sidebar collapses and expands, which cannot be verified with text presence or absence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: The requirement asserts the sidebar collapses and expands, which cannot be verified with text presence or absence."
+  }
+]
