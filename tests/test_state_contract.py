@@ -1812,6 +1812,13 @@ class BudgetDefaultTests(unittest.TestCase):
         self.assertEqual((args.max_calls, args.token_budget, args.timeout),
                          tuple(entry.LARGE_BUDGET[k] for k in ('max_calls', 'token_budget', 'timeout')))
 
+    def test_the_large_defaults_let_the_loop_end_on_tokens_rather_than_the_clock(self):
+        # Run 762faa0bd756 lost a batch to our own 45-minute clock while the platform
+        # waited for the container without a timeout. The clock is now a safety net.
+        import main as entry
+        self.assertEqual(entry.LARGE_BUDGET,
+                         {'max_calls': 320, 'token_budget': 10000000, 'timeout': 10800})
+
     def test_a_single_batch_package_keeps_the_small_defaults(self):
         import argparse
         import main as entry

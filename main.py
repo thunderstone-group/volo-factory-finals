@@ -21,14 +21,16 @@ from volo.workspace import Workspace
 
 
 # A single-batch package (Smoke, Ticket) fits the small budget. A multi-batch package
-# takes the contract path, and Keep at b3d2331 needed 142 calls and 4.1 M tokens over
-# 83 minutes for 15 batches; the hosted runner's own limit on generation time is not
-# a container limit (run 3313c37b801c: "Waiting for container to exit without timeout"),
-# and the hosted machine ran 1.4 calls a minute against 1.7 here, so 100 minutes covers
-# the schedule; the last verified snapshot is delivered when the clock runs out anyway.
+# takes the contract path and works until every batch is verified or the tokens are gone.
+# The wall clock is a safety net, not the terminal condition: run 762faa0bd756 scored
+# 19/32 because our own 45-minute clock ended a batch while the platform waits for the
+# container "without timeout", and the same code with every batch run scored 25/32 here.
+# The hosted machine makes 1.4-2 calls a minute, and the Keep board's 100% row spent
+# 9038 seconds and 28.8 M tokens, so three hours and 10 M tokens leave the schedule, its
+# re-entries and the final verification room to finish before anything cuts them off.
 # Explicit flags and FACTORY_* env win.
 SMALL_BUDGET = {"max_calls": 32, "token_budget": 450000, "timeout": 1200}
-LARGE_BUDGET = {"max_calls": 200, "token_budget": 6500000, "timeout": 6000}
+LARGE_BUDGET = {"max_calls": 320, "token_budget": 10000000, "timeout": 10800}
 
 
 def apply_budget_defaults(args, requirements):
