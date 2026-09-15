@@ -752,8 +752,11 @@ class Agent:
         request has to say plainly which entry this is, whether the tree still holds the
         previous entry's work, and which of its own checks were taken out of the tree.
         """
+        # enter_batch adds this entry's calls to the record only after it returns, so the
+        # count the brief reports is taken from where the entry started.
+        spent = self.model.usage.calls - state.get('entry_started_calls', self.model.usage.calls)
         head = ('This is entry %d of %d for this batch. The previous entry spent %d model calls '
-                'and did not converge. ' % (state['entries'] + 1, BATCH_ENTRY_LIMIT, state['calls']))
+                'and did not converge. ' % (state['entries'] + 1, BATCH_ENTRY_LIMIT, spent))
         head += SALVAGED_BRIEF if state.get('outcome') == 'salvaged' else RESTORED_BRIEF
         brief = head + '\n' + RETRY_BRIEF
         detail = self.last_failure_output()
@@ -1088,7 +1091,7 @@ class Agent:
         ids = [node['id'] for node in nodes]
         self.batch_index = state['index']
         state['entries'] += 1
-        started = self.model.usage.calls
+        state['entry_started_calls'] = started = self.model.usage.calls
         self.trace.event('batch_started', requirements=ids, batch=state['id'],
                          entry=state['entries'], entry_limit=BATCH_ENTRY_LIMIT)
         print('[volo] implementing ' + ', '.join(ids)

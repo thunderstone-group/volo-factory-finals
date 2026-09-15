@@ -1605,13 +1605,15 @@ class BatchSalvageTests(TempCase):
         contract = state_contract.reconcile(
             state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
             state_contract.evidence(requirements))
-        agent = Agent(requirements, FakeModel('{}'), self.workspace, Runtime(self.trace),
-                      contract=contract)
+        model = FakeModel('{}')
+        agent = Agent(requirements, model, self.workspace, Runtime(self.trace), contract=contract)
         agent.install_contract()
         self.bundles, self.briefs, self.passing = [], [], passing
+        self.calls_at_bundle = []
 
         def verify(check_command):
             self.bundles.append(list(check_command))
+            self.calls_at_bundle.append(model.usage.calls)
             value = {'passed': self.passing, 'steps': [], 'check_command': list(check_command),
                      'source_fingerprint': self.workspace.fingerprint(),
                      'verification_scope': 'local_checks_only', 'acceptance': {},
@@ -1648,6 +1650,7 @@ class BatchSalvageTests(TempCase):
             if ids != capped:
                 return verified(schedule.index(ids) + 1)
             self.entries += 1
+            agent.model.usage.calls += 20  # the entry spent its whole cap
             if product:
                 self.workspace.write_files([
                     {'path': 'frontend/public/features/ledger.js',
@@ -1700,11 +1703,18 @@ class BatchSalvageTests(TempCase):
         self.assertIn('frontend/public/features/ledger.js',
                       json.loads(agent.snapshot_path().read_text())['files'])
 
-    def test_the_salvage_spends_no_model_call_and_obeys_the_deadline(self):
+    def test_the_salvage_spends_no_model_call(self):
+        # The entries themselves spend twenty calls each; the bundle that decides whether
+        # their work survives must add nothing to that.
+        agent = self.capped_second_batch(self.agent())
+        agent.run_schedule()
+        self.assertEqual(self.bundles and agent.model.usage.calls, self.calls_at_bundle[-1])
+        self.assertEqual(agent.model.usage.calls, 60, 'three entries of twenty calls, no more')
+
+    def test_the_salvage_obeys_the_deadline(self):
         agent = self.capped_second_batch(self.agent())
         self.workspace.deadline = time.monotonic() - 1
         agent.run_schedule()
-        self.assertEqual(agent.model.usage.calls, 0)
         self.assertEqual(self.bundles, [], 'a deadline that has passed runs no bundle')
         self.assertEqual(self.events('batch_salvage')[0]['reason'], 'deadline')
         self.assertFalse(self.workspace.path('frontend/public/features/ledger.js').exists())
@@ -1740,6 +1750,8 @@ class BatchSalvageTests(TempCase):
         self.assertIn('synthetic: ledger assertion failed', briefs[1])
         self.assertIn('checks/batch-2.spec.cjs', briefs[1])
         self.assertIn('entry 1: an unverified check', briefs[1])
+        # What the entry before it spent, not what the batch has spent in total.
+        self.assertIn('spent 20 model calls', briefs[2])
         self.assertIn('entry 3 of 3', briefs[2])
 
     def test_a_run_that_ends_after_a_salvage_still_delivers(self):
@@ -1755,6 +1767,7 @@ class BatchSalvageTests(TempCase):
         self.assertEqual(statuses['batch-1'], 'completed')
         self.assertEqual(statuses['batch-2'], 'salvaged')
         self.assertEqual([item['entries'] for item in result['batches']][:2], [1, 3])
+        self.assertEqual(result['batches'][1]['calls'], 60, 'three entries of twenty calls')
         self.assertEqual(result['batches'][1]['quarantined_checks'], ['checks/batch-2.spec.cjs'])
         self.assertTrue(self.workspace.path('frontend/public/features/ledger.js').exists())
         checkpoint = json.loads((self.trace.directory / 'checkpoint.json').read_text())
