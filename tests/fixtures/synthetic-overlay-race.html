@@ -1,0 +1,75 @@
+<!-- Synthetic fixture, hand written for tests/test_overlay_rules.py. It is not a
+     generated application. It is REQ-4.2 of the 2026-09-14 Keep rehearsal reduced to
+     its mechanism: the dialog is created after an awaited request and hides the
+     controls outside it on that async path, while both restores are synchronous. An
+     open superseded before its own request resolves therefore builds a second dialog
+     on top of the first, and the page can no longer be driven out of it. -->
+<nav aria-label="Sidebar">
+  <button type="button" role="menuitem" aria-label="Entries">Entries</button>
+  <button type="button" role="menuitem" aria-label="Preferences">Preferences</button>
+</nav>
+
+<script>
+  (function () {
+    function restore() {
+      var hidden = document.querySelectorAll('[data-preferences-hidden]');
+      for (var index = 0; index < hidden.length; index += 1) {
+        hidden[index].removeAttribute('data-preferences-hidden');
+        hidden[index].style.display = '';
+      }
+    }
+
+    function closeDialog() {
+      restore();
+      var open = document.getElementById('preferences-dialog');
+      if (open) open.remove();
+    }
+
+    // The hand-rolled inertness: every control whose name rivals the dialog's is hidden.
+    function hideOutside(dialog) {
+      var rivals = ['preferences', 'cancel'];
+      var nodes = document.querySelectorAll('button, [aria-label]');
+      for (var index = 0; index < nodes.length; index += 1) {
+        var node = nodes[index];
+        if (dialog.contains(node)) continue;
+        if (node.closest('.preferences-backdrop')) continue;   // never hide another copy
+        var name = (node.getAttribute('aria-label') || node.textContent || '').trim().toLowerCase();
+        var hit = false;
+        for (var rival = 0; rival < rivals.length; rival += 1) {
+          if (name.indexOf(rivals[rival]) !== -1) hit = true;
+        }
+        if (!hit) continue;
+        node.setAttribute('data-preferences-hidden', '1');
+        node.style.display = 'none';
+      }
+    }
+
+    function openDialog() {
+      closeDialog();                              // the restore, synchronously
+      fetch('/api/health').then(function () {     // and the hide, an await later
+        var backdrop = document.createElement('div');
+        backdrop.id = 'preferences-dialog';
+        backdrop.className = 'preferences-backdrop';
+        var dialog = document.createElement('div');
+        dialog.setAttribute('role', 'dialog');
+        dialog.setAttribute('aria-modal', 'true');
+        dialog.setAttribute('aria-label', 'Preferences');
+        var cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.setAttribute('aria-label', 'Cancel');
+        cancel.textContent = 'Cancel';
+        cancel.addEventListener('click', closeDialog);
+        dialog.appendChild(cancel);
+        backdrop.appendChild(dialog);
+        document.body.appendChild(backdrop);
+        hideOutside(dialog);
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      if (!event.target || !event.target.closest) return;
+      var opener = event.target.closest('[aria-label="Preferences"]');
+      if (opener && !opener.closest('#preferences-dialog')) openDialog();
+    });
+  })();
+</script>

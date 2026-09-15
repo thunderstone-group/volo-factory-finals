@@ -1,0 +1,20 @@
+<!-- Synthetic fixture, hand written for tests/test_overlay_rules.py. It is not a
+     generated application. The shape the rules prescribe for a row whose actions are
+     revealed on hover: the action carries the bare verb, so the row's own title is
+     answered by the row's text and by nothing else. -->
+<style>
+  .row { padding: 6px; border: 1px solid #ccc; }
+  .row .actions { display: none; }
+  .row:hover .actions, .row:focus-within .actions { display: block; }
+</style>
+
+<ul>
+  <li class="row" tabindex="0">
+    <div class="title">Opening balance</div>
+    <div class="actions"><button type="button" aria-label="Archive">A</button></div>
+  </li>
+  <li class="row" tabindex="0">
+    <div class="title">Monthly rent</div>
+    <div class="actions"><button type="button" aria-label="Archive">A</button></div>
+  </li>
+</ul>

@@ -1,0 +1,40 @@
+<!-- Synthetic fixture, hand written for tests/test_overlay_rules.py. It is not a
+     generated application. It is synthetic-overlay-race.html rewritten on the
+     harness-owned overlay module: the container exists and the page is inert before
+     openOverlay returns, the late continuation asks isCurrent() before touching the
+     DOM, and one cleanup serves every close path. -->
+<script src="/factory/overlay.js"></script>
+
+<nav aria-label="Sidebar">
+  <button type="button" role="menuitem" aria-label="Entries">Entries</button>
+  <button type="button" role="menuitem" aria-label="Preferences">Preferences</button>
+</nav>
+
+<script>
+  (function () {
+    function render(container) {
+      var dialog = document.createElement('div');
+      dialog.setAttribute('role', 'dialog');
+      dialog.setAttribute('aria-modal', 'true');
+      dialog.setAttribute('aria-label', 'Preferences');
+      var cancel = document.createElement('button');
+      cancel.type = 'button';
+      cancel.setAttribute('aria-label', 'Cancel');
+      cancel.textContent = 'Cancel';
+      cancel.addEventListener('click', function () { closeOverlay('preferences'); });
+      dialog.appendChild(cancel);
+      container.appendChild(dialog);
+    }
+
+    document.addEventListener('click', function (event) {
+      if (!event.target || !event.target.closest) return;
+      var opener = event.target.closest('[aria-label="Preferences"]');
+      if (!opener || opener.closest('[data-factory-overlay]')) return;
+      var handle = openOverlay('preferences');
+      fetch('/api/health').then(function () {
+        if (!handle.isCurrent()) return;
+        render(handle.container);
+      });
+    });
+  })();
+</script>

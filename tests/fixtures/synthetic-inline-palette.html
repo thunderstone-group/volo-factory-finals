@@ -1,0 +1,21 @@
+<!-- Synthetic fixture, hand written for tests/test_overlay_rules.py. It is not a
+     generated application. An inline colour palette opens as a non-modal role="group"
+     and the page behind it stays live, which is what an inline picker is for. Nothing
+     inside it shares a name with anything outside it, so no control is ambiguous, and
+     the rule that makes a page inert applies to dialogs and not to this. -->
+<header>
+  <input id="search" type="search" aria-label="Search" placeholder="Search">
+</header>
+
+<button type="button" id="open-palette" aria-label="Entry colour">Colour</button>
+
+<div id="palette" role="group" aria-label="Palette" style="display:none">
+  <button type="button" aria-label="Teal">T</button>
+  <button type="button" aria-label="Amber">A</button>
+</div>
+
+<script>
+  document.getElementById('open-palette').addEventListener('click', function () {
+    document.getElementById('palette').style.display = 'block';
+  });
+</script>

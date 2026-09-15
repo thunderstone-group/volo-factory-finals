@@ -1017,7 +1017,7 @@ class VocabularyModuleTests(TempCase):
         self.assertIn('"Opening balance"', source)  # a seed value
         self.assertIn('"Preferences"', source)      # a navigation name
         self.assertIn('"Heading"', source)          # observed only in a reference image
-        self.assertIn('module.exports = {terms, titles, matches}', source)
+        self.assertIn('module.exports = {terms, titles, actions, matches}', source)
 
     def test_an_empty_contract_produces_a_loadable_module(self):
         source = state_runtime.vocabulary_module({})
@@ -1039,8 +1039,12 @@ class VocabularyModuleTests(TempCase):
 @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE')
                      and os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
                      'Provide an installed Playwright module and Chromium for real browser checks')
-class InterfaceCheckTests(TempCase):
-    """The harness-owned check that encodes the two defects the rehearsal measured."""
+class InterfaceCheckCase(TempCase):
+    """Serve one synthetic page and run the harness-owned interface check against it.
+
+    Carries no tests of its own: tests/test_overlay_rules.py drives the same machinery
+    for the overlay lifecycle and the rules that were narrowed on 2026-09-15.
+    """
 
     def enable_installed_browser(self):
         module = os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']
@@ -1051,31 +1055,37 @@ class InterfaceCheckTests(TempCase):
             + json.dumps(executable) + '})}};')
         self.workspace.runtime_env['FACTORY_PLAYWRIGHT_MODULE'] = str(wrapper)
 
-    def build(self, body):
+    def build(self, body, declares=None):
+        """`declares` is a synthetic requirement sentence. The container rule checks only
+        the actions the requirements name, so a fixture that exercises it has to say so."""
         self.enable_installed_browser()
         requirements = synthetic_requirements(self)
         contract = state_contract.reconcile(
             state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
             state_contract.evidence(requirements))
         scaffold(self.workspace)
-        state_runtime.install(self.workspace, contract)
+        state_runtime.install(self.workspace, contract, requirement_text=declares)
         self.workspace.write_files([
             {'path': 'frontend/public/index.html',
              'content': '<!doctype html><title>L</title><main>' + body + '</main>'},
             {'path': 'backend/api.cjs', 'content': 'module.exports=async()=>{return false;};\n'}])
         return contract
 
-    def build_fixture(self, name):
+    def build_fixture(self, name, declares=None):
         """Serve a hand-written synthetic page from tests/fixtures/."""
-        return self.build((ROOT / 'tests' / 'fixtures' / name).read_text())
+        return self.build((ROOT / 'tests' / 'fixtures' / name).read_text(), declares)
 
     def failure(self, result):
         self.assertFalse(result['passed'], 'the check passed and was expected to fail')
         return str((result['steps'] or [{}])[-1].get('output', ''))
 
     def run_check(self):
-        self.workspace.deadline = time.monotonic() + 90
+        self.workspace.deadline = time.monotonic() + 120
         return self.workspace.verify(['node', '--test', state_runtime.INTERFACE_CHECK_PATH])
+
+
+class InterfaceCheckTests(InterfaceCheckCase):
+    """The harness-owned check that encodes the two defects the rehearsal measured."""
 
     def test_two_visible_controls_sharing_a_name_fail(self):
         # Exactly the Keep defect: one "More options" per row, nineteen of them.
@@ -1130,12 +1140,16 @@ class InterfaceCheckTests(TempCase):
         self.assertIn('after clicking', output)
         self.assertIn('Show entries', output)
 
-    def test_a_chooser_that_leaves_a_matching_name_behind_it_fails(self):
+    def test_a_picker_that_leaves_a_matching_name_beside_it_fails(self):
+        # An inline role="group" picker does not own the page and is not asked to make it
+        # inert, but the name collision is still the defect: the sidebar's "Utilities" and
+        # the picker's "Utilities for Opening balance" answer one search, and the helpers
+        # reach menuitem before checkbox. The repair the message asks for is a rename.
         self.build_fixture('synthetic-leaky-chooser.html')
         output = self.failure(self.run_check())
         self.assertIn('Leaked', output)
         self.assertIn('Utilities for Opening balance', output)
-        self.assertIn('inert', output)
+        self.assertIn('Rename, do not hide', state_runtime.INTERFACE_RULES)
 
     def test_the_synthetic_hover_fixture_passes_every_rule(self):
         # Hover-revealed row actions, a modal chooser, and a re-render that keeps what
@@ -1166,7 +1180,8 @@ class InterfaceCheckTests(TempCase):
     def test_a_verb_that_resolves_outside_the_hovered_row_fails(self):
         # REQ-2.7.4 reduced: the row has no labels control, so the helper leaves the row
         # and clicks the sidebar's own item instead.
-        self.build_fixture('synthetic-verb-outside-row.html')
+        self.build_fixture('synthetic-verb-outside-row.html',
+                           declares='Change labels on an entry from its own row.')
         output = self.failure(self.run_check())
         self.assertIn('resolves only outside the row or composer', output)
         self.assertIn('"verb":"labels"', output.replace(' ', ''))
@@ -1290,7 +1305,7 @@ module.exports=async(req,res)=>{
 
     def test_the_inertness_rule_is_stated_to_the_model(self):
         rules = state_runtime.STORE_CONTRACT
-        self.assertIn('While a chooser is open', rules)
+        self.assertIn('While a dialog is open', rules)
         self.assertIn('put the inert attribute or aria-hidden="true" on everything outside it', rules)
         # aria-modal was the exemption the check used to grant, and the resolver ignores it.
         self.assertIn('aria-modal is not enough', rules)
@@ -1303,8 +1318,8 @@ module.exports=async(req,res)=>{
 
     def test_the_container_rule_is_stated_to_the_model(self):
         rules = state_runtime.STORE_CONTRACT
-        self.assertIn('reachable inside that row or\n   composer by the bare verb', rules)
-        self.assertIn('more, options, menu, labels, color, pin, archive,\n   delete', rules)
+        self.assertIn('reachable\n   inside that row or composer by the bare verb', rules)
+        self.assertIn('more, options or menu for a\n   menu, then labels, color, pin, archive, delete', rules)
 
     def test_the_restore_rule_is_stated_to_the_model(self):
         rules = state_runtime.STORE_CONTRACT

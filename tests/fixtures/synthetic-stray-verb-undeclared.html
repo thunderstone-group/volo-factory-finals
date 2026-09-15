@@ -1,0 +1,21 @@
+<!-- Synthetic fixture, hand written for tests/test_overlay_rules.py. It is not a
+     generated application. The row offers the one action the requirements name, and
+     the banner carries a control whose name contains a second verb the requirements
+     never mention. A fixed list of eight verbs reported that banner control on every
+     row; a rule that checks only declared actions reports nothing. -->
+<style>
+  .row { padding: 6px; border: 1px solid #ccc; }
+  .row .actions { display: none; }
+  .row:hover .actions, .row:focus-within .actions { display: block; }
+</style>
+
+<header>
+  <button type="button" aria-label="Pin">P</button>
+</header>
+
+<ul>
+  <li class="row" tabindex="0">
+    <div class="title">Opening balance</div>
+    <div class="actions"><button type="button" aria-label="Archive">A</button></div>
+  </li>
+</ul>
