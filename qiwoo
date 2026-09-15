@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+"""Standalone forum CLI; deliberately absent from the competition package."""
+import sys
+
+sys.dont_write_bytecode = True
+
+from tools.qiwoo_cli.cli import main
+
+if __name__ == "__main__":
+    raise SystemExit(main())
