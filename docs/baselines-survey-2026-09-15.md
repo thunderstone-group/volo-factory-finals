@@ -101,3 +101,29 @@ README counts files. Actual total is 478.
 
 Usable from the paper: the ordering between baselines and the "bigger app, lower pass rate"
 trend. Not usable: the absolute numbers as target lines on the competition suites.
+
+## Addendum 14:10 — the platform ships Claude Code, Codex and Octos templates as built-ins
+
+`~/projects/arcbench-campaign/upstream/platform-templates-2026-09-15/` holds the platform's
+built-in agent snapshots: `arc`, `blank`, `claude_code`, `codex`, `octos`. So the earlier
+sentence "no mainstream harness is evaluated" needs precision: the organizers provide harness
+adapters, but the board carries only `username` and `model_name`, so whether anyone has scored
+them on the six tasks is not observable. The `ARC` account has demo-board rows only.
+
+- `claude_code`: `claude-agent-sdk`, `ClaudeSDKClient` with tools Read/Glob/Grep/Edit/Write/Bash,
+  `permission_mode=acceptEdits`, `max_turns=60`, one direct ROOT-child subtree per query, skills
+  copied to `.claude/skills/`. It maps `OPENAI_BASE_URL` → `ANTHROPIC_BASE_URL` and the key →
+  `ANTHROPIC_AUTH_TOKEN`. **The gateway does not serve `/v1/messages`**: probed 14:06 with both
+  header styles, answer `proxy_error: dsl provider no match (provider=taotoken api=claude.messages)`.
+  On the shared key this template cannot run at all.
+- `codex`: `openai-codex` SDK, `thread_start(sandbox=full_access, approval_mode=deny_all,
+  model=$MODEL)`, one `thread.run` per ROOT child, skills in `.codex/skills/`, OpenAI-compatible
+  base URL. Runnable on the gateway; not yet run by us.
+- `octos`: third-party agent (octos-org/octos) adapter, downloads a Linux binary at run time;
+  its README documents the runner contract from the private repo `code-philia/arc-bench-website`
+  (not resolvable on GitHub) and a tutorial site (arc-bench-tutorial.vercel.app, reachable).
+
+Sub-agents: nothing in the rules mentions them. The organizers' own `arc` template is built on
+`deepagents` and explicitly disables its general-purpose sub-agent
+(`arc/agents/runtime/factory.py:295`); the Claude Code and Codex templates run one module per
+turn sequentially. Container facts that bound any parallelism: 1 CPU, 2 GiB, one shared store.
