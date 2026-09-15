@@ -1,0 +1,432 @@
+{
+  "recallPolicy": "exclude-unknown",
+  "recallDenominator": 5,
+  "officialPassCount": 11,
+  "fullDenominatorRecall": 0,
+  "coverage": 0.17647058823529413,
+  "denominator": 34,
+  "matrix": {
+    "pass": {
+      "pass": 0,
+      "fail": 1
+    },
+    "fail": {
+      "pass": 5,
+      "fail": 0
+    },
+    "unknown": {
+      "pass": 6,
+      "fail": 22
+    }
+  },
+  "officialPassRecall": 0,
+  "falsePasses": [
+    "REQ-4.2.1#1"
+  ],
+  "falseFails": [
+    "REQ-1.1#1",
+    "REQ-2.1#1",
+    "REQ-4.1#1",
+    "REQ-5.1#1",
+    "REQ-5.2.1#1"
+  ],
+  "unknownCount": 28,
+  "unknown": [
+    {
+      "scenario": "REQ-1.2#1",
+      "requirement": "REQ-1.2",
+      "title": "Back to Homepage from Other Pages",
+      "category": "read-list",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: BookStack logo\",\n    \"path\": []\n  }\n]"
+        }
+      ],
+      "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: BookStack logo\",\n    \"path\": []\n  }\n]"
+    },
+    {
+      "scenario": "REQ-2.2#1",
+      "requirement": "REQ-2.2",
+      "title": "Log In Successfully",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Single WHEN sentence contains four distinct operations exceeding the two-step maximum."
+        }
+      ],
+      "error": "unsupported: Single WHEN sentence contains four distinct operations exceeding the two-step maximum."
+    },
+    {
+      "scenario": "REQ-3.1#1",
+      "requirement": "REQ-3.1",
+      "title": "Enter Authenticated Homepage",
+      "category": "read-list",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot reach authenticated homepage because login workflow exceeds the two-step WHEN cap."
+        }
+      ],
+      "error": "no-preparation-path: Cannot reach authenticated homepage because login workflow exceeds the two-step WHEN cap."
+    },
+    {
+      "scenario": "REQ-4.3.1#1",
+      "requirement": "REQ-4.3.1",
+      "title": "Create Shelf",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+        }
+      ],
+      "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+    },
+    {
+      "scenario": "REQ-4.3.2#1",
+      "requirement": "REQ-4.3.2",
+      "title": "Cancel Creation",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot navigate to shelf creation page within allowed GIVEN steps."
+        }
+      ],
+      "error": "no-preparation-path: Cannot navigate to shelf creation page within allowed GIVEN steps."
+    },
+    {
+      "scenario": "REQ-4.4.1#1",
+      "requirement": "REQ-4.4.1",
+      "title": "Confirm Delete Shelf",
+      "category": "delete",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+        }
+      ],
+      "error": "unsupported: Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+    },
+    {
+      "scenario": "REQ-4.4.2#1",
+      "requirement": "REQ-4.4.2",
+      "title": "Cancel Delete Shelf",
+      "category": "delete",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+    },
+    {
+      "scenario": "REQ-4.5.1#1",
+      "requirement": "REQ-4.5.1",
+      "title": "Save Shelf Edits",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Edit workflow requires more than two operations in a single WHEN sentence."
+        }
+      ],
+      "error": "unsupported: Edit workflow requires more than two operations in a single WHEN sentence."
+    },
+    {
+      "scenario": "REQ-4.5.2#1",
+      "requirement": "REQ-4.5.2",
+      "title": "Cancel Shelf Edits",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare shelf edit page state within allowed GIVEN navigation."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare shelf edit page state within allowed GIVEN navigation."
+    },
+    {
+      "scenario": "REQ-5.2.2#1",
+      "requirement": "REQ-5.2.2",
+      "title": "Enter Book Details Page through Shelf Details Page",
+      "category": "navigation",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot reach the required shelf details page containing Book 5.2.2 within the allowed GIVEN operations (one open plus minimum clicks)."
+        }
+      ],
+      "error": "no-preparation-path: Cannot reach the required shelf details page containing Book 5.2.2 within the allowed GIVEN operations (one open plus minimum clicks)."
+    },
+    {
+      "scenario": "REQ-5.3.1#1",
+      "requirement": "REQ-5.3.1",
+      "title": "Fill out and Save Book",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+        }
+      ],
+      "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+    },
+    {
+      "scenario": "REQ-5.3.2#1",
+      "requirement": "REQ-5.3.2",
+      "title": "Cancel Creating Book",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot navigate to create new book page within allowed GIVEN steps."
+        }
+      ],
+      "error": "no-preparation-path: Cannot navigate to create new book page within allowed GIVEN steps."
+    },
+    {
+      "scenario": "REQ-5.4.1#1",
+      "requirement": "REQ-5.4.1",
+      "title": "Save Book Edits",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Edit workflow requires more than two operations in a single WHEN sentence."
+        }
+      ],
+      "error": "unsupported: Edit workflow requires more than two operations in a single WHEN sentence."
+    },
+    {
+      "scenario": "REQ-5.4.2#1",
+      "requirement": "REQ-5.4.2",
+      "title": "Cancel Book Edits",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare book edit page state within allowed GIVEN navigation."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare book edit page state within allowed GIVEN navigation."
+    },
+    {
+      "scenario": "REQ-5.5.1#1",
+      "requirement": "REQ-5.5.1",
+      "title": "Confirm Delete Book",
+      "category": "delete",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+        }
+      ],
+      "error": "unsupported: Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+    },
+    {
+      "scenario": "REQ-5.5.2#1",
+      "requirement": "REQ-5.5.2",
+      "title": "Cancel Delete Book",
+      "category": "delete",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+    },
+    {
+      "scenario": "REQ-5.6.1#1",
+      "requirement": "REQ-5.6.1",
+      "title": "Fill out and Save Book with Shelf",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+        }
+      ],
+      "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+    },
+    {
+      "scenario": "REQ-6.1.1#1",
+      "requirement": "REQ-6.1.1",
+      "title": "Save Page",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+        }
+      ],
+      "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+    },
+    {
+      "scenario": "REQ-6.1.2#1",
+      "requirement": "REQ-6.1.2",
+      "title": "Save Draft",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Draft save requires filling content and clicking an unnamed save draft control, ambiguous within 2 steps."
+        }
+      ],
+      "error": "unsupported: Draft save requires filling content and clicking an unnamed save draft control, ambiguous within 2 steps."
+    },
+    {
+      "scenario": "REQ-6.1.3#1",
+      "requirement": "REQ-6.1.3",
+      "title": "Delete Draft",
+      "category": "delete",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Delete draft workflow requires more than two operations in a single WHEN sentence."
+        }
+      ],
+      "error": "unsupported: Delete draft workflow requires more than two operations in a single WHEN sentence."
+    },
+    {
+      "scenario": "REQ-6.2.1#1",
+      "requirement": "REQ-6.2.1",
+      "title": "Create Chapter",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+        }
+      ],
+      "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+    },
+    {
+      "scenario": "REQ-6.3.1#1",
+      "requirement": "REQ-6.3.1",
+      "title": "Enter Page Reading Page",
+      "category": "navigation",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare a page list view within allowed GIVEN navigation without prior creation workflows."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare a page list view within allowed GIVEN navigation without prior creation workflows."
+    },
+    {
+      "scenario": "REQ-6.3.2#1",
+      "requirement": "REQ-6.3.2",
+      "title": "Redirect to Page Edit Page",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare page reading page state within allowed GIVEN navigation."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare page reading page state within allowed GIVEN navigation."
+    },
+    {
+      "scenario": "REQ-7.1#1",
+      "requirement": "REQ-7.1",
+      "title": "Add to Recently Viewed",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "WHEN sentence provides multiple alternative navigation targets that cannot be resolved to a single executable path."
+        }
+      ],
+      "error": "ambiguous-assertion: WHEN sentence provides multiple alternative navigation targets that cannot be resolved to a single executable path."
+    },
+    {
+      "scenario": "REQ-7.2#1",
+      "requirement": "REQ-7.2",
+      "title": "Quick Navigation from Recently Viewed",
+      "category": "navigation",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot seed My Recently Viewed list within allowed GIVEN navigation."
+        }
+      ],
+      "error": "no-preparation-path: Cannot seed My Recently Viewed list within allowed GIVEN navigation."
+    },
+    {
+      "scenario": "REQ-8.1#1",
+      "requirement": "REQ-8.1",
+      "title": "Favorite Items",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot reach a supported content view to favorite without authentication and prior navigation exceeding limits."
+        }
+      ],
+      "error": "no-preparation-path: Cannot reach a supported content view to favorite without authentication and prior navigation exceeding limits."
+    },
+    {
+      "scenario": "REQ-8.2#1",
+      "requirement": "REQ-8.2",
+      "title": "Quick Navigation from Favorites",
+      "category": "navigation",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot seed My Most Viewed Favorites list within allowed GIVEN navigation."
+        }
+      ],
+      "error": "no-preparation-path: Cannot seed My Most Viewed Favorites list within allowed GIVEN navigation."
+    },
+    {
+      "scenario": "REQ-9.1#1",
+      "requirement": "REQ-9.1",
+      "title": "Quick Navigation from Recently Updated",
+      "category": "navigation",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot seed Recently Updated Pages list within allowed GIVEN navigation."
+        }
+      ],
+      "error": "no-preparation-path: Cannot seed Recently Updated Pages list within allowed GIVEN navigation."
+    }
+  ],
+  "accepted": false,
+  "interpretation": "Diagnostic calibration only; matching failure status does not establish matching failure cause.",
+  "checksSha256": "928df27924ec946c9963753c1892c79d0e5de90bd66f04b91422da3b06bd3e2b",
+  "officialSha256": "61d45d805b49b2c21cb7bf3f8907c7a323bc6f07c6d54ca92902c30d0127ba3f"
+}

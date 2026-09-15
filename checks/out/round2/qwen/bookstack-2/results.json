@@ -1,0 +1,772 @@
+[
+  {
+    "scenario": "REQ-1.1#1",
+    "requirement": "REQ-1.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "0",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            {
+              "regex": "homepage",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/homepage/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /homepage/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /homepage/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-1.1#1\",\"requirement\":\"REQ-1.1\",\"title\":\"Open Homepage\",\"category\":\"navigation\",\"rationale\":\"GIVEN opens the app; WHEN is a pure view with no actions; THEN asserts homepage text.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[],\"then\":[{\"op\":\"expectText\",\"name\":[\"homepage\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/results-parts/REQ-1.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/specs/REQ-1.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-1.2#1",
+    "requirement": "REQ-1.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: BookStack logo\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: BookStack logo\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-2.1#1",
+    "requirement": "REQ-2.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "0",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            {
+              "regex": "login\\s+form\\s+page",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/login\\s+form\\s+page/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /login\\s+form\\s+page/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /login\\s+form\\s+page/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.1#1\",\"requirement\":\"REQ-2.1\",\"title\":\"Enter Login Page\",\"category\":\"navigation\",\"rationale\":\"GIVEN opens homepage; WHEN clicks Login; THEN asserts login form page text.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Login\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"login\\\\s+form\\\\s+page\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/results-parts/REQ-2.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/specs/REQ-2.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.2#1",
+    "requirement": "REQ-2.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Single WHEN sentence contains four distinct operations exceeding the two-step maximum."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Single WHEN sentence contains four distinct operations exceeding the two-step maximum."
+  },
+  {
+    "scenario": "REQ-3.1#1",
+    "requirement": "REQ-3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot reach authenticated homepage because login workflow exceeds the two-step WHEN cap."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot reach authenticated homepage because login workflow exceeds the two-step WHEN cap."
+  },
+  {
+    "scenario": "REQ-4.1#1",
+    "requirement": "REQ-4.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "0",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            {
+              "regex": "shelf\\s+list\\s+page",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/shelf\\s+list\\s+page/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /shelf\\s+list\\s+page/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /shelf\\s+list\\s+page/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-4.1#1\",\"requirement\":\"REQ-4.1\",\"title\":\"View Shelf List\",\"category\":\"navigation\",\"rationale\":\"GIVEN opens homepage; WHEN clicks Shelves; THEN asserts shelf list page.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Shelves\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"shelf\\\\s+list\\\\s+page\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/results-parts/REQ-4.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/specs/REQ-4.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-4.2.1#1",
+    "requirement": "REQ-4.2.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Shelf 4\\.2\\.1/i",
+      "rungHit": "heading",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-4.3.1#1",
+    "requirement": "REQ-4.3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "scenario": "REQ-4.3.2#1",
+    "requirement": "REQ-4.3.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot navigate to shelf creation page within allowed GIVEN steps."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot navigate to shelf creation page within allowed GIVEN steps."
+  },
+  {
+    "scenario": "REQ-4.4.1#1",
+    "requirement": "REQ-4.4.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+  },
+  {
+    "scenario": "REQ-4.4.2#1",
+    "requirement": "REQ-4.4.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+  },
+  {
+    "scenario": "REQ-4.5.1#1",
+    "requirement": "REQ-4.5.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Edit workflow requires more than two operations in a single WHEN sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Edit workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "scenario": "REQ-4.5.2#1",
+    "requirement": "REQ-4.5.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare shelf edit page state within allowed GIVEN navigation."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare shelf edit page state within allowed GIVEN navigation."
+  },
+  {
+    "scenario": "REQ-5.1#1",
+    "requirement": "REQ-5.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "0",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            {
+              "regex": "books\\s+list\\s+page",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/books\\s+list\\s+page/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /books\\s+list\\s+page/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /books\\s+list\\s+page/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-5.1#1\",\"requirement\":\"REQ-5.1\",\"title\":\"View Books List\",\"category\":\"navigation\",\"rationale\":\"GIVEN opens homepage; WHEN clicks Books; THEN asserts books list page.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Books\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"books\\\\s+list\\\\s+page\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/results-parts/REQ-5.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/specs/REQ-5.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-5.2.1#1",
+    "requirement": "REQ-5.2.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Book 5\\.2\\.1",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Book 5\\.2\\.1/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Book 5\\.2\\.1/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-5.2.1#1\",\"requirement\":\"REQ-5.2.1\",\"title\":\"Enter Book Details Page through Book List Page\",\"category\":\"navigation\",\"rationale\":\"GIVEN requires books list page; open then click Books. WHEN clicks the seeded book name. THEN asserts the book name is visible on the details page.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"},{\"op\":\"click\",\"name\":[\"Books\"]}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Book 5\\\\.2\\\\.1\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Book 5\\\\.2\\\\.1\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/results-parts/REQ-5.2.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/bookstack-2/specs/REQ-5.2.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-5.2.2#1",
+    "requirement": "REQ-5.2.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot reach the required shelf details page containing Book 5.2.2 within the allowed GIVEN operations (one open plus minimum clicks)."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot reach the required shelf details page containing Book 5.2.2 within the allowed GIVEN operations (one open plus minimum clicks)."
+  },
+  {
+    "scenario": "REQ-5.3.1#1",
+    "requirement": "REQ-5.3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "scenario": "REQ-5.3.2#1",
+    "requirement": "REQ-5.3.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot navigate to create new book page within allowed GIVEN steps."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot navigate to create new book page within allowed GIVEN steps."
+  },
+  {
+    "scenario": "REQ-5.4.1#1",
+    "requirement": "REQ-5.4.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Edit workflow requires more than two operations in a single WHEN sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Edit workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "scenario": "REQ-5.4.2#1",
+    "requirement": "REQ-5.4.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare book edit page state within allowed GIVEN navigation."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare book edit page state within allowed GIVEN navigation."
+  },
+  {
+    "scenario": "REQ-5.5.1#1",
+    "requirement": "REQ-5.5.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+  },
+  {
+    "scenario": "REQ-5.5.2#1",
+    "requirement": "REQ-5.5.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+  },
+  {
+    "scenario": "REQ-5.6.1#1",
+    "requirement": "REQ-5.6.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "scenario": "REQ-6.1.1#1",
+    "requirement": "REQ-6.1.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "scenario": "REQ-6.1.2#1",
+    "requirement": "REQ-6.1.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Draft save requires filling content and clicking an unnamed save draft control, ambiguous within 2 steps."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Draft save requires filling content and clicking an unnamed save draft control, ambiguous within 2 steps."
+  },
+  {
+    "scenario": "REQ-6.1.3#1",
+    "requirement": "REQ-6.1.3",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Delete draft workflow requires more than two operations in a single WHEN sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Delete draft workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "scenario": "REQ-6.2.1#1",
+    "requirement": "REQ-6.2.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "scenario": "REQ-6.3.1#1",
+    "requirement": "REQ-6.3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare a page list view within allowed GIVEN navigation without prior creation workflows."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare a page list view within allowed GIVEN navigation without prior creation workflows."
+  },
+  {
+    "scenario": "REQ-6.3.2#1",
+    "requirement": "REQ-6.3.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare page reading page state within allowed GIVEN navigation."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare page reading page state within allowed GIVEN navigation."
+  },
+  {
+    "scenario": "REQ-7.1#1",
+    "requirement": "REQ-7.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "WHEN sentence provides multiple alternative navigation targets that cannot be resolved to a single executable path."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: WHEN sentence provides multiple alternative navigation targets that cannot be resolved to a single executable path."
+  },
+  {
+    "scenario": "REQ-7.2#1",
+    "requirement": "REQ-7.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot seed My Recently Viewed list within allowed GIVEN navigation."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot seed My Recently Viewed list within allowed GIVEN navigation."
+  },
+  {
+    "scenario": "REQ-8.1#1",
+    "requirement": "REQ-8.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot reach a supported content view to favorite without authentication and prior navigation exceeding limits."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot reach a supported content view to favorite without authentication and prior navigation exceeding limits."
+  },
+  {
+    "scenario": "REQ-8.2#1",
+    "requirement": "REQ-8.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot seed My Most Viewed Favorites list within allowed GIVEN navigation."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot seed My Most Viewed Favorites list within allowed GIVEN navigation."
+  },
+  {
+    "scenario": "REQ-9.1#1",
+    "requirement": "REQ-9.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot seed Recently Updated Pages list within allowed GIVEN navigation."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot seed Recently Updated Pages list within allowed GIVEN navigation."
+  }
+]
