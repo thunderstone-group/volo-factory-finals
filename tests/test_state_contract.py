@@ -121,10 +121,14 @@ class FakeModel:
         self.thinking = None
 
     def complete(self, messages, tools, **kwargs):
+        from volo.model import call_cost
         self.requests.append(messages)
         self.usage.calls += 1
         self.usage.prompt_tokens += self.prompt_tokens
         self.usage.completion_tokens += self.completion_tokens
+        # Priced the way the transport prices a real response, so a test that spends
+        # this model's calls also spends this run's money.
+        self.usage.cost_cny += call_cost(self.model, self.prompt_tokens, 0, self.completion_tokens)
         return {"role": "assistant", "content": self.content}, "stop"
 
 
@@ -929,7 +933,8 @@ class SourceBudgetTests(TempCase):
             {'path': f'frontend/public/part{index}.js', 'content': f'// part {index}\n' + 'x'.ljust(30000, 'y') + '\n'}
             for index in range(6)]})
         self.assertGreater(sum(len(p.read_text()) for p in
-                               (self.workspace.root / 'frontend' / 'public').iterdir()), 150000)
+                               (self.workspace.root / 'frontend' / 'public').iterdir()
+                               if p.is_file()), 150000)
         source = agent.contract_source()
         self.assertLessEqual(sum(len(v) for v in source.values()),
                              agent.source_budget() + 400)
@@ -937,6 +942,53 @@ class SourceBudgetTests(TempCase):
         checkpoint = agent.context_checkpoint(requirements_nodes(agent), 'system', None)
         from volo.context import size
         self.assertLess(size(checkpoint), agent.max_context_chars)
+
+    def test_a_tree_of_many_files_still_carries_source_nearest_to_the_batch(self):
+        # Run 5, batches 11 to 15: 52 requests carried an empty product source while the
+        # tree held the whole application, because contract_source selected from
+        # source_snapshot, which returns nothing once more than twenty files are
+        # candidates. Batch 11 was one of the two that then hit the call cap.
+        agent = self.agent()
+        touches = state_contract.requirement_state(agent.contract)
+        nodes = next(batch for batch in agent.schedule()
+                     if any(touches.get(node['id']) for node in batch))
+        touched = sorted({name for node in nodes for name in touches.get(node['id'], ())})
+        self.assertTrue(touched, 'the fixture needs a batch that touches a collection')
+        owned = ['frontend/public/features/%s.js' % name for name in touched[:2]]
+        others = ['frontend/public/features/page-%02d.js' % index for index in range(28)]
+        written = [{'path': path, 'content': '// %s\n' % path + 'x' * 2000}
+                   for path in owned + others]
+        for start in range(0, len(written), 15):
+            agent.dispatch('write_files', {'files': written[start:start + 15]})
+        self.assertGreater(len(self.workspace.list_files()['files']), 20,
+                           'more candidates than the snapshot bound the old path gave up at')
+        source = agent.contract_source(nodes)
+        self.assertNotEqual(source, {}, 'a tree with product files never summarises to nothing')
+        for path in owned:
+            self.assertIn(path, source, 'the batch owns this file by name')
+        self.assertGreater(len([path for path in source if path in others]), 1)
+        self.assertLessEqual(sum(len(value) for key, value in source.items()
+                                 if key != '_omitted_from_this_listing'), agent.source_budget())
+        # Everything that did not fit is named, so the model can read a part of it.
+        listing = source['_omitted_from_this_listing']
+        omitted = [path for path in others if path not in source]
+        self.assertTrue(omitted)
+        self.assertIn(omitted[0], listing)
+        self.assertIn('read_file_chunk', listing)
+
+    def test_the_harness_and_earlier_checks_are_excluded_before_the_budget_is_spent(self):
+        # The old order filtered them out after selection, so their bytes could crowd
+        # out product source that the model is actually allowed to edit.
+        agent = self.agent()
+        agent.dispatch('write_files', {'files': [
+            {'path': 'checks/batch-1.spec.cjs', 'content': '// earlier check\n' + 'y' * 5000},
+            {'path': 'frontend/public/app.js', 'content': '// product\n'}]})
+        source = agent.editable_product_source()
+        self.assertIn('frontend/public/app.js', source)
+        self.assertNotIn('checks/batch-1.spec.cjs', source)
+        self.assertNotIn(state_runtime.INTERFACE_CHECK_PATH, source)
+        for path in state_runtime.HARNESS_OWNED:
+            self.assertNotIn(path, source)
 
     def test_earlier_batches_checks_are_not_re_delivered(self):
         agent = self.agent()
@@ -965,7 +1017,7 @@ class VocabularyModuleTests(TempCase):
         self.assertIn('"Opening balance"', source)  # a seed value
         self.assertIn('"Preferences"', source)      # a navigation name
         self.assertIn('"Heading"', source)          # observed only in a reference image
-        self.assertIn('module.exports = {terms, titles, matches}', source)
+        self.assertIn('module.exports = {terms, titles, actions, matches}', source)
 
     def test_an_empty_contract_produces_a_loadable_module(self):
         source = state_runtime.vocabulary_module({})
@@ -987,8 +1039,12 @@ class VocabularyModuleTests(TempCase):
 @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE')
                      and os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
                      'Provide an installed Playwright module and Chromium for real browser checks')
-class InterfaceCheckTests(TempCase):
-    """The harness-owned check that encodes the two defects the rehearsal measured."""
+class InterfaceCheckCase(TempCase):
+    """Serve one synthetic page and run the harness-owned interface check against it.
+
+    Carries no tests of its own: tests/test_overlay_rules.py drives the same machinery
+    for the overlay lifecycle and the rules that were narrowed on 2026-09-15.
+    """
 
     def enable_installed_browser(self):
         module = os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']
@@ -999,31 +1055,37 @@ class InterfaceCheckTests(TempCase):
             + json.dumps(executable) + '})}};')
         self.workspace.runtime_env['FACTORY_PLAYWRIGHT_MODULE'] = str(wrapper)
 
-    def build(self, body):
+    def build(self, body, declares=None):
+        """`declares` is a synthetic requirement sentence. The container rule checks only
+        the actions the requirements name, so a fixture that exercises it has to say so."""
         self.enable_installed_browser()
         requirements = synthetic_requirements(self)
         contract = state_contract.reconcile(
             state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
             state_contract.evidence(requirements))
         scaffold(self.workspace)
-        state_runtime.install(self.workspace, contract)
+        state_runtime.install(self.workspace, contract, requirement_text=declares)
         self.workspace.write_files([
             {'path': 'frontend/public/index.html',
              'content': '<!doctype html><title>L</title><main>' + body + '</main>'},
             {'path': 'backend/api.cjs', 'content': 'module.exports=async()=>{return false;};\n'}])
         return contract
 
-    def build_fixture(self, name):
+    def build_fixture(self, name, declares=None):
         """Serve a hand-written synthetic page from tests/fixtures/."""
-        return self.build((ROOT / 'tests' / 'fixtures' / name).read_text())
+        return self.build((ROOT / 'tests' / 'fixtures' / name).read_text(), declares)
 
     def failure(self, result):
         self.assertFalse(result['passed'], 'the check passed and was expected to fail')
         return str((result['steps'] or [{}])[-1].get('output', ''))
 
     def run_check(self):
-        self.workspace.deadline = time.monotonic() + 90
+        self.workspace.deadline = time.monotonic() + 120
         return self.workspace.verify(['node', '--test', state_runtime.INTERFACE_CHECK_PATH])
+
+
+class InterfaceCheckTests(InterfaceCheckCase):
+    """The harness-owned check that encodes the two defects the rehearsal measured."""
 
     def test_two_visible_controls_sharing_a_name_fail(self):
         # Exactly the Keep defect: one "More options" per row, nineteen of them.
@@ -1078,12 +1140,15 @@ class InterfaceCheckTests(TempCase):
         self.assertIn('after clicking', output)
         self.assertIn('Show entries', output)
 
-    def test_a_chooser_that_leaves_a_matching_name_behind_it_fails(self):
+    def test_a_picker_that_leaves_a_matching_name_beside_it_fails(self):
+        # An inline role="group" picker does not own the page, so it is not asked to make
+        # the page inert. The defect is still caught, by the rule that owns it: the
+        # sidebar's "Utilities" and the picker's "Utilities for Opening balance" are two
+        # visible controls answering one search, and the helpers reach menuitem first.
         self.build_fixture('synthetic-leaky-chooser.html')
         output = self.failure(self.run_check())
-        self.assertIn('Leaked', output)
+        self.assertIn('same action verb', output)
         self.assertIn('Utilities for Opening balance', output)
-        self.assertIn('inert', output)
 
     def test_the_synthetic_hover_fixture_passes_every_rule(self):
         # Hover-revealed row actions, a modal chooser, and a re-render that keeps what
@@ -1114,7 +1179,8 @@ class InterfaceCheckTests(TempCase):
     def test_a_verb_that_resolves_outside_the_hovered_row_fails(self):
         # REQ-2.7.4 reduced: the row has no labels control, so the helper leaves the row
         # and clicks the sidebar's own item instead.
-        self.build_fixture('synthetic-verb-outside-row.html')
+        self.build_fixture('synthetic-verb-outside-row.html',
+                           declares='Change labels on an entry from its own row.')
         output = self.failure(self.run_check())
         self.assertIn('resolves only outside the row or composer', output)
         self.assertIn('"verb":"labels"', output.replace(' ', ''))
@@ -1770,9 +1836,11 @@ class BatchSalvageTests(TempCase):
         self.assertEqual(result['batches'][1]['calls'], 60, 'three entries of twenty calls')
         self.assertEqual(result['batches'][1]['quarantined_checks'], ['checks/batch-2.spec.cjs'])
         self.assertTrue(self.workspace.path('frontend/public/features/ledger.js').exists())
+        self.assertIn('cost_cny', result['usage'], 'the run reports what it spent in CNY')
         checkpoint = json.loads((self.trace.directory / 'checkpoint.json').read_text())
         self.assertEqual(checkpoint['batches'][1]['status'], 'salvaged')
         self.assertEqual(checkpoint['loop']['ended_by'], 'entries_exhausted')
+        self.assertIn('cost_cny', checkpoint['usage'])
 
 
 class LoopTerminationTests(TempCase):
@@ -1804,6 +1872,29 @@ class LoopTerminationTests(TempCase):
         self.assertEqual(len(self.attempted), 1)
         self.assertEqual(agent.loop['ended_by'], 'token_budget')
         self.assertEqual(agent.loop['passes'], 1)
+
+    def test_a_run_out_of_money_reports_the_cost_budget(self):
+        agent = self.agent(RuntimeError('Model cost budget exhausted'))
+        agent.run_schedule()
+        self.assertEqual(len(self.attempted), 1)
+        self.assertEqual(agent.loop['ended_by'], 'cost_budget')
+
+    def test_money_is_the_terminal_condition_and_tokens_are_the_safety_net(self):
+        # The board ranks score against cost, and a token ceiling cannot express that:
+        # the same tokens cost between CNY 3 and CNY 100 a million by model and cache.
+        agent = self.agent(RuntimeError('unused'))
+        agent.max_calls, agent.token_budget, agent.cost_budget = 10 ** 6, 10 ** 9, 2.0
+        agent.model.usage.cost_cny = 1.999
+        agent.guard_budget()
+        agent.model.usage.cost_cny = 2.0
+        with self.assertRaisesRegex(RuntimeError, 'cost budget'):
+            agent.guard_budget()
+        # The token ceiling still stops a gateway that misreports what it charges.
+        agent.model.usage.cost_cny = 0.0
+        agent.token_budget = 10
+        agent.model.usage.prompt_tokens = 11
+        with self.assertRaisesRegex(RuntimeError, 'token budget'):
+            agent.guard_budget()
 
     def test_a_run_out_of_calls_reports_the_call_budget(self):
         agent = self.agent(RuntimeError('Model call budget exhausted'))
@@ -2098,12 +2189,27 @@ class BudgetDefaultTests(unittest.TestCase):
         self.assertEqual((args.max_calls, args.token_budget, args.timeout),
                          tuple(entry.LARGE_BUDGET[k] for k in ('max_calls', 'token_budget', 'timeout')))
 
-    def test_the_large_defaults_let_the_loop_end_on_tokens_rather_than_the_clock(self):
-        # Run 762faa0bd756 lost a batch to our own 45-minute clock while the platform
-        # waited for the container without a timeout. The clock is now a safety net.
+    def test_the_large_defaults_let_the_loop_end_on_money_rather_than_the_clock(self):
+        # Run 762faa0bd756 ran its full 100-minute clock and still ended mid-batch with
+        # one pass over the schedule. The clock and the token count are now safety nets
+        # under a budget in CNY, which is what the board actually ranks against.
         import main as entry
-        self.assertEqual(entry.LARGE_BUDGET,
-                         {'max_calls': 320, 'token_budget': 10000000, 'timeout': 10800})
+        self.assertEqual(entry.LARGE_BUDGET, {'max_calls': 320, 'token_budget': 10000000,
+                                              'timeout': 10800, 'cost_budget_cny': 12.0})
+        self.assertEqual(entry.SMALL_BUDGET, {'max_calls': 32, 'token_budget': 450000,
+                                              'timeout': 1200, 'cost_budget_cny': 0.6})
+
+    def test_the_cost_budget_is_read_from_the_environment_as_a_decimal(self):
+        import argparse
+        import main as entry
+        args = argparse.Namespace(max_calls=None, token_budget=None, timeout=None,
+                                  cost_budget_cny=None)
+        with patch.dict(os.environ, {'FACTORY_COST_BUDGET_CNY': '7.5'}):
+            self.clean()
+            os.environ['FACTORY_COST_BUDGET_CNY'] = '7.5'
+            entry.apply_budget_defaults(args, self.Package(4))
+        self.assertEqual(args.cost_budget_cny, 7.5)
+        self.assertEqual(args.max_calls, entry.LARGE_BUDGET['max_calls'])
 
     def test_a_single_batch_package_keeps_the_small_defaults(self):
         import argparse
