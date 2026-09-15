@@ -1017,7 +1017,7 @@ class VocabularyModuleTests(TempCase):
         self.assertIn('"Opening balance"', source)  # a seed value
         self.assertIn('"Preferences"', source)      # a navigation name
         self.assertIn('"Heading"', source)          # observed only in a reference image
-        self.assertIn('module.exports = {terms, titles, actions, matches}', source)
+        self.assertIn('module.exports = {terms, titles, matches}', source)
 
     def test_an_empty_contract_produces_a_loadable_module(self):
         source = state_runtime.vocabulary_module({})
@@ -1039,12 +1039,8 @@ class VocabularyModuleTests(TempCase):
 @unittest.skipUnless(os.getenv('FACTORY_TEST_PLAYWRIGHT_MODULE')
                      and os.getenv('FACTORY_TEST_CHROMIUM_EXECUTABLE'),
                      'Provide an installed Playwright module and Chromium for real browser checks')
-class InterfaceCheckCase(TempCase):
-    """Serve one synthetic page and run the harness-owned interface check against it.
-
-    Carries no tests of its own: tests/test_overlay_rules.py drives the same machinery
-    for the overlay lifecycle and the rules that were narrowed on 2026-09-15.
-    """
+class InterfaceCheckTests(TempCase):
+    """The harness-owned check that encodes the two defects the rehearsal measured."""
 
     def enable_installed_browser(self):
         module = os.environ['FACTORY_TEST_PLAYWRIGHT_MODULE']
@@ -1055,37 +1051,31 @@ class InterfaceCheckCase(TempCase):
             + json.dumps(executable) + '})}};')
         self.workspace.runtime_env['FACTORY_PLAYWRIGHT_MODULE'] = str(wrapper)
 
-    def build(self, body, declares=None):
-        """`declares` is a synthetic requirement sentence. The container rule checks only
-        the actions the requirements name, so a fixture that exercises it has to say so."""
+    def build(self, body):
         self.enable_installed_browser()
         requirements = synthetic_requirements(self)
         contract = state_contract.reconcile(
             state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
             state_contract.evidence(requirements))
         scaffold(self.workspace)
-        state_runtime.install(self.workspace, contract, requirement_text=declares)
+        state_runtime.install(self.workspace, contract)
         self.workspace.write_files([
             {'path': 'frontend/public/index.html',
              'content': '<!doctype html><title>L</title><main>' + body + '</main>'},
             {'path': 'backend/api.cjs', 'content': 'module.exports=async()=>{return false;};\n'}])
         return contract
 
-    def build_fixture(self, name, declares=None):
+    def build_fixture(self, name):
         """Serve a hand-written synthetic page from tests/fixtures/."""
-        return self.build((ROOT / 'tests' / 'fixtures' / name).read_text(), declares)
+        return self.build((ROOT / 'tests' / 'fixtures' / name).read_text())
 
     def failure(self, result):
         self.assertFalse(result['passed'], 'the check passed and was expected to fail')
         return str((result['steps'] or [{}])[-1].get('output', ''))
 
     def run_check(self):
-        self.workspace.deadline = time.monotonic() + 120
+        self.workspace.deadline = time.monotonic() + 90
         return self.workspace.verify(['node', '--test', state_runtime.INTERFACE_CHECK_PATH])
-
-
-class InterfaceCheckTests(InterfaceCheckCase):
-    """The harness-owned check that encodes the two defects the rehearsal measured."""
 
     def test_two_visible_controls_sharing_a_name_fail(self):
         # Exactly the Keep defect: one "More options" per row, nineteen of them.
@@ -1140,15 +1130,12 @@ class InterfaceCheckTests(InterfaceCheckCase):
         self.assertIn('after clicking', output)
         self.assertIn('Show entries', output)
 
-    def test_a_picker_that_leaves_a_matching_name_beside_it_fails(self):
-        # An inline role="group" picker does not own the page, so it is not asked to make
-        # the page inert. The defect is still caught, by the rule that owns it: the
-        # sidebar's "Utilities" and the picker's "Utilities for Opening balance" are two
-        # visible controls answering one search, and the helpers reach menuitem first.
+    def test_a_chooser_that_leaves_a_matching_name_behind_it_fails(self):
         self.build_fixture('synthetic-leaky-chooser.html')
         output = self.failure(self.run_check())
-        self.assertIn('same action verb', output)
+        self.assertIn('Leaked', output)
         self.assertIn('Utilities for Opening balance', output)
+        self.assertIn('inert', output)
 
     def test_the_synthetic_hover_fixture_passes_every_rule(self):
         # Hover-revealed row actions, a modal chooser, and a re-render that keeps what
@@ -1179,8 +1166,7 @@ class InterfaceCheckTests(InterfaceCheckCase):
     def test_a_verb_that_resolves_outside_the_hovered_row_fails(self):
         # REQ-2.7.4 reduced: the row has no labels control, so the helper leaves the row
         # and clicks the sidebar's own item instead.
-        self.build_fixture('synthetic-verb-outside-row.html',
-                           declares='Change labels on an entry from its own row.')
+        self.build_fixture('synthetic-verb-outside-row.html')
         output = self.failure(self.run_check())
         self.assertIn('resolves only outside the row or composer', output)
         self.assertIn('"verb":"labels"', output.replace(' ', ''))
