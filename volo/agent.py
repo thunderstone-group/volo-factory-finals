@@ -9,6 +9,7 @@ from dataclasses import asdict
 from . import contract as state_contract
 from . import state_runtime
 from .context import excerpt, project, size
+from .model import GatewayRefused, ModelError
 from .trace import atomic_json
 from .web_runtime import scaffold, implement, prepared_check, API_STUB, SERVER, BUILD, BROWSER_CHECK
 from .workspace import edit_anchor_failure, normalize_check_command, tool_failure
@@ -434,6 +435,11 @@ SOURCE_SUFFIXES = ('.js', '.cjs', '.mjs', '.jsx', '.ts', '.tsx', '.html', '.css'
 # How many omitted files the source listing names one by one before it counts the rest.
 OMITTED_NAMES = 20
 
+# Entries that may end with the gateway answering nothing before the schedule gives up
+# on it. One silent entry is a bad minute; three in a row, with no response in any of
+# them, is a gateway that is not going to answer this run either.
+GATEWAY_FAILURE_LIMIT = 3
+
 
 def source_distance(path, content, keywords):
     """0 when the path names something this batch owns, 1 when its text does, else 2."""
@@ -494,8 +500,8 @@ RESTORED_BRIEF = (
 FINAL_VERIFY_GRACE = 300
 
 
-class BudgetExhausted(RuntimeError):
-    """The schedule ended because there was nothing left to spend, not because it finished."""
+class ScheduleStopped(RuntimeError):
+    """The schedule ended because it cannot continue, not because it finished."""
 
     def __init__(self, message, reason='call_budget'):
         super().__init__(message)
@@ -534,6 +540,8 @@ class Agent:
         # it has had, what they cost and whether its last failure was salvaged.
         self.batches = []
         self.loop = {'passes': 0, 'ended_by': 'complete'}
+        # Consecutive entries that spent calls and received no response at all.
+        self.gateway_failures = 0
         self.regression_checks = {}
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
@@ -753,18 +761,41 @@ class Agent:
         What the failed entry wrote is not thrown away on sight: whatever of it still
         passes the checks the package had before the batch started is kept, and the batch
         comes back to it in a later pass knowing what it was stuck on.
+
+        A gateway that refuses the run, or one that answers nothing at all three entries
+        running, is not a batch that failed to converge and no re-entry can fix it.
         """
+        answered = self.model.usage.responses
         try:
             self.run_batch(nodes, brief=state.get('brief'))
+            self.gateway_failures = 0
             return True
         except (RuntimeError, TimeoutError, ValueError) as exc:
+            if isinstance(exc, GatewayRefused):
+                self.record_incomplete(nodes, exc, state)
+                self.trace.event('gateway_refused', reason=exc.reason, batch=state['id'],
+                                 error=self.trace.redact(str(exc))[:300])
+                print('[volo] the gateway refused this run (' + exc.reason
+                      + '); no later call can succeed', flush=True)
+                raise ScheduleStopped(str(exc), reason=exc.reason) from exc
             if self.ends_the_schedule(exc):
                 self.record_incomplete(nodes, exc, state)
-                raise BudgetExhausted(str(exc), reason=budget_reason(exc)) from exc
+                raise ScheduleStopped(str(exc), reason=budget_reason(exc)) from exc
+            # An entry that spent calls and received nothing is evidence about the
+            # gateway; anything else, including a transport error that still got an
+            # answer earlier in the entry, is evidence about the batch.
+            unanswered = isinstance(exc, ModelError) and self.model.usage.responses == answered
+            self.gateway_failures = self.gateway_failures + 1 if unanswered else 0
             print('[volo] batch did not converge: ' + self.trace.redact(str(exc))[:200], flush=True)
             self.salvage_or_restore(state)
             state['brief'] = self.retry_brief(state)
             self.record_incomplete(nodes, exc, state)
+            if self.gateway_failures >= GATEWAY_FAILURE_LIMIT:
+                self.trace.event('gateway_unanswered', entries=self.gateway_failures,
+                                 error=self.trace.redact(str(exc))[:300])
+                print('[volo] ' + str(self.gateway_failures) + ' entries in a row got no '
+                      'answer from the gateway', flush=True)
+                raise ScheduleStopped(str(exc), reason='gateway') from exc
             return False
 
     @staticmethod
@@ -1139,13 +1170,14 @@ class Agent:
                           + ', '.join(state['id'] for state in pending), flush=True)
                 for state in pending:
                     self.enter_batch(state)
-        except BudgetExhausted as exhausted:
-            self.loop['ended_by'] = exhausted.reason
-            self.trace.event('schedule_stopped_on_budget', reason=str(exhausted)[:300],
-                             ended_by=exhausted.reason, completed=list(self.completed),
+        except ScheduleStopped as stopped:
+            self.loop['ended_by'] = stopped.reason
+            self.trace.event('schedule_stopped_on_budget', reason=str(stopped)[:300],
+                             ended_by=stopped.reason, completed=list(self.completed),
                              remaining=[item for record in self.incomplete
                                         for item in record['requirements']])
-            print('[volo] budget exhausted; delivering the best verified snapshot', flush=True)
+            print('[volo] stopped on ' + stopped.reason
+                  + '; delivering the best verified snapshot', flush=True)
         else:
             if any(state['status'] != 'completed' for state in self.batches):
                 self.loop['ended_by'] = 'entries_exhausted'

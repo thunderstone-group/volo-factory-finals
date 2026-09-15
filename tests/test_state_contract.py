@@ -1907,6 +1907,85 @@ class LoopTerminationTests(TempCase):
         agent.run_schedule()
         self.assertEqual(agent.loop['ended_by'], 'deadline')
 
+    def test_a_refused_gateway_ends_the_schedule_at_the_first_batch(self):
+        # Keep run 7: the key's balance ran out after nine calls and the loop read each
+        # HTTP 402 as one batch failing to converge, so it walked thirteen batches
+        # through three entries each, thirty-nine attempts, before it delivered.
+        self.refusal_ends_the_schedule('billing')
+
+    def test_a_rejected_key_ends_the_schedule_the_same_way(self):
+        self.refusal_ends_the_schedule('auth')
+
+    def refusal_ends_the_schedule(self, reason):
+        from volo.model import GatewayRefused
+        agent = self.agent(GatewayRefused('Gateway HTTP 402: exhausted', reason))
+        agent.run_schedule()
+        self.assertEqual(len(self.attempted), 1, 'no later call can succeed, so none is made')
+        self.assertEqual(agent.loop['ended_by'], reason)
+        self.assertEqual(agent.loop['passes'], 1)
+        self.assertEqual(sum(state['entries'] for state in agent.batches), 1)
+        events = [json.loads(line) for line in
+                  (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+        refused = [event for event in events if event['event'] == 'gateway_refused']
+        self.assertEqual([event['reason'] for event in refused], [reason])
+
+    def test_three_unanswered_entries_in_a_row_end_the_schedule(self):
+        from volo.agent import GATEWAY_FAILURE_LIMIT
+        from volo.model import ModelError
+        agent = self.agent(ModelError('Model request failed; gateway usage may have been consumed'))
+        agent.run_schedule()
+        self.assertEqual(len(self.attempted), GATEWAY_FAILURE_LIMIT)
+        self.assertEqual(agent.loop['ended_by'], 'gateway')
+        events = [json.loads(line) for line in
+                  (self.trace.directory / 'events.jsonl').read_text().splitlines()]
+        self.assertTrue(any(event['event'] == 'gateway_unanswered' for event in events))
+
+    def test_a_transport_failure_that_still_got_an_answer_is_a_batch_failure(self):
+        # A batch that talked to the gateway and then lost one request is a batch
+        # problem. Only entries that spent calls and heard nothing count against it.
+        from volo.model import ModelError
+        agent = self.agent(ModelError('Model request failed; gateway usage may have been consumed'))
+        answered = []
+
+        def run_batch(nodes, brief=None):
+            self.attempted.append([node['id'] for node in nodes])
+            answered.append(1)
+            agent.model.usage.responses += 1
+            raise ModelError('Gateway retry limit reached')
+
+        agent.run_batch = run_batch
+        agent.run_schedule()
+        self.assertEqual(agent.loop['ended_by'], 'entries_exhausted')
+        self.assertEqual(agent.gateway_failures, 0)
+        self.assertGreater(len(self.attempted), 3, 'every batch still got its entries')
+
+    def test_a_run_refused_part_way_through_still_delivers_what_verified(self):
+        from volo.model import GatewayRefused
+        agent = self.agent(GatewayRefused('Gateway HTTP 402: exhausted', 'billing'))
+        first = [node['id'] for node in list(agent.schedule())[0]]
+
+        def run_batch(nodes, brief=None):
+            ids = [node['id'] for node in nodes]
+            self.attempted.append(ids)
+            if ids != first:
+                raise GatewayRefused('Gateway HTTP 402: exhausted', 'billing')
+            self.workspace.write_files([{'path': 'frontend/public/features/home.js',
+                                         'content': '// verified\n'}])
+            agent.check_command = ['node', '--test', 'checks/batch-1.spec.cjs']
+            self.workspace.last_verification = {
+                'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+                'check_command': agent.check_command,
+                'verification_scope': 'local_checks_only', 'acceptance': {}}
+
+        agent.run_batch = run_batch
+        result = agent.run()
+        self.assertEqual(result['status'], 'completed')
+        self.assertEqual(result['loop']['ended_by'], 'billing')
+        self.assertIn(first[0], result['self_checked_requirements'])
+        self.assertEqual(result['batches'][0]['status'], 'completed')
+        self.assertEqual(self.workspace.path('frontend/public/features/home.js').read_text(),
+                         '// verified\n')
+
     def test_a_schedule_that_finishes_reports_complete(self):
         agent = self.agent(RuntimeError('unused'))
 

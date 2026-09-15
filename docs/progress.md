@@ -1124,3 +1124,37 @@ generation has been run against any of this.
   before tokens in `guard_budget`, `ended_by: cost_budget`, the decimal environment
   override, a 30-file tree that still carries the batch's own files plus others and names
   the rest, and the exclusion order.
+
+### 2026-09-15, midday — a gateway that says no ends the run, it does not fail a batch
+
+- Local Keep run 7 (head 4131da4) met the shared key's balance running out. From 10:48:18
+  the gateway answered `HTTP 402 {"error":{"code":"insufficient_balance","type":"billing_error"}}`
+  to everything, and the loop read each refusal as one batch failing to converge: thirteen
+  batches, three entries each, 39 attempts and about twenty minutes spent asking a gateway
+  that had already said no. It did deliver (`fresh_verification`, five requirements, 53 calls,
+  CNY 1.30 on the new meter), which is the loop working; the waste is that it kept going.
+- `volo/model.py` now separates a refusal from a failure. `GatewayRefused` carries a reason:
+  `billing` for HTTP 402 or an error object whose own `code`/`type` names
+  `insufficient_balance` or `billing`, `auth` for 401 and 403. Only the error object's code
+  and type are read, never the whole payload, so a generated application that talks about
+  billing cannot look like an exhausted key. A gateway that answers 200 with an error object
+  is treated the same. A refusal is raised at once and never retried.
+- `volo/agent.py` stops the schedule on a refusal the way it stops on an exhausted budget:
+  the batch is recorded incomplete, `gateway_refused` goes on the trace, and the run goes
+  straight to delivery. `ended_by` gains `billing`, `auth` and `gateway`, and the exception
+  that carries all of this is now named `ScheduleStopped` rather than `BudgetExhausted`.
+- A gateway that answers nothing also ends the loop, but only on evidence: three consecutive
+  entries that spent calls and received no response at all (`GATEWAY_FAILURE_LIMIT`), traced
+  as `gateway_unanswered`. `Usage` gained `responses`, the count of requests that came back
+  with something to read, so "spent a call" and "got an answer" are now distinguishable; an
+  entry that heard from the gateway and then lost one request resets the streak and stays an
+  ordinary batch failure.
+- Delivery is unchanged and needs no gateway: the final verification runs locally, so a run
+  refused part way through still delivers the last verified tree and exits 0. The one case
+  that still exits 1 is a refusal before any batch has verified, where there is nothing to
+  deliver and no check command was ever recorded.
+- Tests: 411 before, 420 after (the branch baseline moved with the overlay work). New: the four refusal shapes in the transport including the
+  200-with-error body and the negative case, billing and auth each ending the schedule at the
+  first batch with one entry spent, three unanswered entries ending it as `gateway`, a
+  transport failure that did get an answer staying a batch failure, and a run refused part
+  way through still delivering what verified.

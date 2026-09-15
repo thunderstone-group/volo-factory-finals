@@ -14,6 +14,52 @@ class ModelError(RuntimeError):
     pass
 
 
+class GatewayRefused(ModelError):
+    """The gateway will not serve this run at all, so no later call can succeed.
+
+    Keep run 7 learned the difference the expensive way. The shared key's balance ran
+    out after nine calls, the gateway answered HTTP 402 insufficient_balance to
+    everything after that, and the schedule read each refusal as one batch failing to
+    converge: thirteen batches, three entries each, thirty-nine attempts and twenty
+    minutes spent asking a gateway that had already said no. A refusal is a fact about
+    the run, not about the batch.
+    """
+
+    def __init__(self, message, reason):
+        super().__init__(message)
+        self.reason = reason
+
+
+def error_fields(body):
+    """The code and type an error body names, lowercased, or the body if it is not JSON."""
+    try:
+        error = json.loads(body).get('error')
+    except (AttributeError, TypeError, ValueError):
+        return [str(body or '').lower()]
+    if isinstance(error, str):
+        return [error.lower()]
+    if not isinstance(error, dict):
+        return []
+    return [str(error.get(name) or '').lower() for name in ('code', 'type')]
+
+
+def refusal_reason(status, body):
+    """Why the gateway refuses this run, or None when a later call might still work.
+
+    Only the error object's own code and type are read, never the whole payload: a
+    generated application may legitimately talk about billing, and that must not look
+    like an exhausted key.
+    """
+    if status in (401, 403):
+        return 'auth'
+    if status == 402:
+        return 'billing'
+    for value in error_fields(body):
+        if 'insufficient_balance' in value or 'billing' in value:
+            return 'billing'
+    return None
+
+
 # CNY per million tokens, by gateway model id: uncached input, cached input, output.
 # A run is charged money, not tokens, and the three rates differ by two orders of
 # magnitude between models and by thirty between a cache hit and a miss: run 5 of the
@@ -60,6 +106,9 @@ class Usage:
     cached_prompt_tokens: int = 0
     missing_usage_calls: int = 0
     cost_cny: float = 0.0
+    # Requests that came back with something to read. `calls` counts attempts, which is
+    # what the budget spends; the difference between the two is what the gateway ate.
+    responses: int = 0
 
     @property
     def total_tokens(self):
@@ -129,6 +178,12 @@ class Model:
             except urllib.error.HTTPError as exc:
                 detail = exc.read(4096).decode(errors="replace")
                 self.trace.event("model_http_error", status=exc.code, detail=detail)
+                # An exhausted balance or a rejected key is answered identically to every
+                # later call, so it is raised as a refusal and never retried.
+                reason = refusal_reason(exc.code, detail)
+                if reason:
+                    raise GatewayRefused(
+                        f"Gateway HTTP {exc.code}: {self.trace.redact(detail)}", reason) from exc
                 # 502/503/504 come from the gateway's own proxy, which means no upstream
                 # answer reached us whether or not one was produced. A run that
                 # implements a large package makes tens of calls, so losing all of them
@@ -159,6 +214,13 @@ class Model:
                         remaining_seconds -= time.monotonic() - started
                     continue
                 raise ModelError("Model request failed; gateway usage may have been consumed") from exc
+            # Some gateways answer 200 with an error object instead of a status code.
+            if isinstance(result, dict) and isinstance(result.get("error"), (dict, str)):
+                reason = refusal_reason(200, json.dumps({"error": result["error"]}))
+                if reason:
+                    raise GatewayRefused("Gateway refused the request: " + self.trace.redact(
+                        json.dumps(result["error"], ensure_ascii=False))[:400], reason)
+            self.usage.responses += 1
             usage = result.get("usage")
             if isinstance(usage, dict) and usage.get("prompt_tokens") is not None and usage.get("completion_tokens") is not None:
                 cached = int((usage.get("prompt_tokens_details") or {}).get("cached_tokens", 0))

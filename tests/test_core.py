@@ -200,13 +200,24 @@ class WorkspaceTests(TempCase):
 
 class FakeGateway:
     """Synthetic protocol fixture, not a real provider response."""
-    def __init__(self, responses):
+    def __init__(self, responses, *, status=200, body=None):
         self.requests = []
         self.responses = list(responses)
+        # A gateway that answers every request with one status and one body, for the
+        # refusals that are not a completion at all.
+        self.status, self.body = status, body
         owner = self
         class Handler(BaseHTTPRequestHandler):
             def do_POST(self):
                 owner.requests.append(json.loads(self.rfile.read(int(self.headers["Content-Length"]))))
+                if owner.status != 200 or owner.body is not None:
+                    payload = (owner.body or '').encode()
+                    self.send_response(owner.status)
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(payload)))
+                    self.end_headers()
+                    self.wfile.write(payload)
+                    return
                 if not owner.responses:
                     self.send_error(500)
                     return
@@ -461,6 +472,50 @@ assert.ok(await page.getByRole('link',{name:'Details',exact:true}).isVisible());
             self.assertEqual(model.usage.missing_usage_calls, 1)
             self.assertEqual(model.usage.cost_cny, 0.0,
                              'a response with no usage cannot be priced, only counted')
+
+    def test_an_exhausted_balance_is_a_refusal_and_is_never_retried(self):
+        # Keep run 7, 2026-09-15 10:48: the shared key ran out after nine calls and the
+        # gateway answered this to everything after it.
+        from volo.model import GatewayRefused
+        body = json.dumps({'error': {'code': 'insufficient_balance', 'type': 'billing_error',
+                                     'message': 'access key balance is exhausted'}})
+        with FakeGateway([], status=402, body=body) as server:
+            model = Model(server.url, "synthetic-test-key", "deepseek-v4-flash", self.trace)
+            with self.assertRaises(GatewayRefused) as raised:
+                model.complete([], [])
+            self.assertEqual(raised.exception.reason, 'billing')
+            self.assertEqual(model.usage.calls, 1, 'a refusal is answered once, not three times')
+            self.assertEqual(model.usage.responses, 0)
+
+    def test_a_rejected_key_is_a_refusal(self):
+        from volo.model import GatewayRefused
+        for status in (401, 403):
+            with FakeGateway([], status=status, body='{"error":{"message":"no"}}') as server:
+                model = Model(server.url, "synthetic-test-key", "test", self.trace)
+                with self.assertRaises(GatewayRefused) as raised:
+                    model.complete([], [])
+                self.assertEqual(raised.exception.reason, 'auth')
+
+    def test_a_billing_error_answered_with_status_200_is_still_a_refusal(self):
+        from volo.model import GatewayRefused
+        with FakeGateway([{'error': {'code': 'insufficient_balance', 'type': 'billing_error'}}]) as server:
+            model = Model(server.url, "synthetic-test-key", "test", self.trace)
+            with self.assertRaises(GatewayRefused) as raised:
+                model.complete([], [])
+            self.assertEqual(raised.exception.reason, 'billing')
+
+    def test_an_ordinary_gateway_failure_is_not_a_refusal(self):
+        from volo.model import GatewayRefused, refusal_reason
+        # A generated application may legitimately talk about billing; only the error
+        # object's own code and type are read.
+        self.assertIsNone(refusal_reason(200, json.dumps(
+            {'choices': [{'message': {'content': 'the billing page lists insufficient_balance'}}]})))
+        self.assertIsNone(refusal_reason(500, '{"error":{"code":"internal","type":"server"}}'))
+        with FakeGateway([], status=500, body='{"error":{"code":"internal"}}') as server:
+            model = Model(server.url, "synthetic-test-key", "test", self.trace)
+            with self.assertRaises(ModelError) as raised:
+                model.complete([], [])
+            self.assertNotIsInstance(raised.exception, GatewayRefused)
 
     def test_the_cost_meter_reproduces_the_retained_run(self):
         # Keep rehearsal run 5 (2026-09-14) on deepseek-v4-flash, from its own
