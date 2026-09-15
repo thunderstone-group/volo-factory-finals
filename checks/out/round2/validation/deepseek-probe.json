@@ -1,0 +1,23 @@
+{
+  "purpose": "Diagnose whether stalled compiler calls are a model-service outage or input-size issue",
+  "request": {
+    "model": "deepseek-v4-flash",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply OK."
+      }
+    ],
+    "thinking": {
+      "type": "disabled"
+    },
+    "max_tokens": 16,
+    "temperature": 0
+  },
+  "startedAt": "2026-09-15T10:32:05.248Z",
+  "reservedCny": 0.1,
+  "chargedCny": 0.1,
+  "accounting": "reserved",
+  "error": "TypeError: fetch failed",
+  "elapsedMs": 171
+}

@@ -90,5 +90,81 @@
       },
       "total_tokens": 16368
     }
+  },
+  {
+    "model": "deepseek-v4-flash",
+    "label": "keep-attempt-1",
+    "startedAt": "2026-09-15T10:16:34.993Z",
+    "requestSha256": "a8ab8de8f2711d200a33231498f531850cdfe97aa081548728b72f2ae313f631",
+    "reservedCny": 0.557367,
+    "chargedCny": 0.557367,
+    "accounting": "reserved",
+    "parameters": {
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "error": "TimeoutError: The operation was aborted due to timeout",
+    "elapsedMs": 180004
+  },
+  {
+    "model": "deepseek-v4-flash",
+    "label": "keep-attempt-1",
+    "startedAt": "2026-09-15T10:26:33.088Z",
+    "requestSha256": "1223ade0fbd7310a21afb8994d1073be210160a2f5c9d64dfb5eadd7f788b88b",
+    "reservedCny": 0.27549,
+    "chargedCny": 0.27549,
+    "accounting": "reserved",
+    "parameters": {
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "httpStatus": 400,
+    "elapsedMs": 167224
+  },
+  {
+    "model": "deepseek-v4-flash",
+    "label": "bookstack-attempt-1",
+    "startedAt": "2026-09-15T10:33:02.455Z",
+    "requestSha256": "f03cd8b274f3671d8f6e8c1a72f1f02eba877c27901a2396ae4fe1e3028bb544",
+    "reservedCny": 0.305055,
+    "chargedCny": 0,
+    "accounting": "not-sent",
+    "parameters": {
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "error": "ECONNRESET",
+    "elapsedMs": 223,
+    "errorStage": "before-secure-TLS",
+    "annotation": "The retained stack trace confirms disconnection before TLS establishment; no HTTP model request was sent."
+  },
+  {
+    "model": "deepseek-v4-flash",
+    "label": "diagnostic-connection-probe",
+    "source": "validation/deepseek-probe.json",
+    "purpose": "Diagnose whether stalled compiler calls are a model-service outage or input-size issue",
+    "request": {
+      "model": "deepseek-v4-flash",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply OK."
+        }
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "max_tokens": 16,
+      "temperature": 0
+    },
+    "startedAt": "2026-09-15T10:32:05.248Z",
+    "reservedCny": 0.1,
+    "chargedCny": 0.1,
+    "accounting": "reserved",
+    "error": "TypeError: fetch failed",
+    "elapsedMs": 171
   }
 ]

@@ -1,0 +1,28 @@
+
+> arcbench-scenario-checks@0.1.0 compile
+> node --import tsx src/compile.ts --round2 --model deepseek-v4-flash --requirements ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/requirements/requirements.yaml --contract ~/projects/volo-factory/runs/2026-09-15-bookstack-2/app/.factory/state-contract.json --out out/round2/deepseek/bookstack --ledger out/round2/usage.json
+
+node:internal/deps/undici/undici:14902
+      Error.captureStackTrace(err);
+            ^
+
+TypeError: fetch failed
+    at node:internal/deps/undici/undici:14902:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async modelCall (~/projects/volo-factory-worktrees/ts-kernel/checks/src/model-call.ts:22:16)
+    at async compileRound2 (~/projects/volo-factory-worktrees/ts-kernel/checks/src/compile.ts:151:53)
+    at async <anonymous> (~/projects/volo-factory-worktrees/ts-kernel/checks/src/compile.ts:175:19) {
+  [cause]: Error: Client network socket disconnected before secure TLS connection was established
+      at TLSSocket.onConnectEnd (node:_tls_wrap:1750:19)
+      at TLSSocket.emit (node:events:531:35)
+      at endReadableNT (node:internal/streams/readable:1698:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'ECONNRESET',
+    path: undefined,
+    host: 'api.arc-bench.com',
+    port: 443,
+    localAddress: null
+  }
+}
+
+Node.js v22.22.0
