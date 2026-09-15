@@ -8,3 +8,4 @@ dist/
 runs/
 .DS_Store
 node_modules/
+harness_lab/rows.json
