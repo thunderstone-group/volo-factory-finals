@@ -1,0 +1,3 @@
+{"sample":"keep-5","denominator":32,"matrix":{"pass":{"pass":4,"fail":1},"fail":{"pass":16,"fail":6},"unknown":{"pass":5,"fail":0}},"recall":0.16,"falsePasses":["REQ-2.8.2#1"],"unknown":5,"accepted":false}
+{"sample":"keep-7","denominator":32,"matrix":{"pass":{"pass":11,"fail":2},"fail":{"pass":7,"fail":7},"unknown":{"pass":4,"fail":1}},"recall":0.5,"falsePasses":["REQ-2.7.2#1","REQ-2.7.6.2#1"],"unknown":5,"accepted":false}
+{"sample":"bookstack-2","denominator":34,"matrix":{"pass":{"pass":7,"fail":3},"fail":{"pass":4,"fail":20},"unknown":{"pass":0,"fail":0}},"recall":0.6363636363636364,"falsePasses":["REQ-4.2.1#1","REQ-4.3.2#1","REQ-4.5.2#1"],"unknown":0,"accepted":false}

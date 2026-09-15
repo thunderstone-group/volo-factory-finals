@@ -1,0 +1,29 @@
+{
+  "app": "keep",
+  "profile": "hosted",
+  "workers": 4,
+  "test_timeout_ms": 10000,
+  "expect_timeout_ms": 10000,
+  "trace": "off",
+  "video": "off",
+  "application": "/private/tmp/claude-501/-Users-e0-7-projects/b98aaf0e-55e6-4470-8d5d-fac874f593fb/scratchpad/keep-full-5/app",
+  "readiness": {
+    "health": 0.364,
+    "root": 0.366,
+    "health_last": "<urlopen error [Errno 61] Connection refused>"
+  },
+  "wall_seconds": 22.5,
+  "exit_code": 1,
+  "total": 32,
+  "passed": 25,
+  "failed": 7,
+  "failed_titles": [
+    "REQ-2.3.3: Trash list",
+    "REQ-2.5.3: Show archived notes",
+    "REQ-2.5.4: Unarchive",
+    "REQ-2.7.4: Assign default label when creating note",
+    "REQ-2.7.5: Edit labels",
+    "REQ-2.8.2: Unpin note",
+    "REQ-4.2: Detailed settings"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "booksCandidates": [
+    {
+      "text": "BookStack",
+      "href": "/"
+    },
+    {
+      "text": "Books",
+      "href": "/books"
+    }
+  ],
+  "booksUnanchored": {
+    "query": "getByRole('link', { name: /Books/i }).first()",
+    "count": 1,
+    "html": "<a class=\"brand\" data-route=\"/\" href=\"/\">BookStack</a>"
+  },
+  "booksAnchored": {
+    "query": "getByRole('link', { name: /^Books$/i }).first()",
+    "count": 1,
+    "html": "<a class=\"nav-link\" data-route=\"/books\" href=\"/books\">Books</a>"
+  },
+  "deleteButton": {
+    "query": "getByRole('button', { name: /Delete/i })",
+    "count": 0,
+    "html": null
+  },
+  "deleteLink": {
+    "query": "getByRole('link', { name: /^Delete$/i })",
+    "count": 1,
+    "html": "<a class=\"action-link\" data-route=\"/shelves/shelf-4-4-2/delete\" href=\"/shelves/shelf-4-4-2/delete\">Delete</a>"
+  },
+  "deleteLadder": {
+    "query": "getByRole('link', { name: /Delete/i }).first()",
+    "count": 1,
+    "html": "<a class=\"action-link\" data-route=\"/shelves/shelf-4-4-2/delete\" href=\"/shelves/shelf-4-4-2/delete\">Delete</a>"
+  }
+}
