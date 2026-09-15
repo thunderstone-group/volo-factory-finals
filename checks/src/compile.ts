@@ -17,6 +17,12 @@ export function scenarios(root: Requirement) {
  }
  visit(root,[]); return rows;
 }
+export function inputApp(name: string): 'keep' | 'bookstack' {
+ const names:Record<string,'keep'|'bookstack'>={'keep':'keep','bookstack':'bookstack','bookstack knowledge base system':'bookstack'};
+ const app=names[name.trim().toLowerCase()];
+ if(!app)throw Error(`Unsupported application name: ${name}`);
+ return app;
+}
 const sha = (s: string) => createHash('sha256').update(s).digest('hex');
 export function validateCoverage(value: unknown, expected: ReturnType<typeof scenarios>): Check[] {
  const checks=checksSchema.parse(value);
@@ -51,7 +57,7 @@ Checks contain scenario,requirement,title,category,rationale,given:Step[],when:S
 export async function compile(requirements: string, contract: string, out: string, ledgerPath: string) {
  const requirementText=readFileSync(requirements,'utf8'), contractText=readFileSync(contract,'utf8');
  const root=parse(requirementText) as Requirement, rows=scenarios(root);
- const app=root.name.toLowerCase();
+ const app=inputApp(root.name);
  const expected=app==='keep'?32:app==='bookstack'?34:undefined;
  if(!expected || rows.length!==expected) throw Error(`Unsupported app or wrong denominator: ${app} ${rows.length}`);
  mkdirSync(out,{recursive:true}); mkdirSync(dirname(ledgerPath),{recursive:true});

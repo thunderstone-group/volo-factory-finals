@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { firstVisible, namedLocators, resolveNamed, fillField, toPatterns } from '../src/ladder.js';
 import { checksSchema, resultSchema, emptyResolver, type Check, type Result } from '../src/steps.js';
-import { scenarios, validateCoverage } from '../src/compile.js';
+import { inputApp, scenarios, validateCoverage } from '../src/compile.js';
 import { renderSpec, mergeResults } from '../src/run.js';
 import { calibration, officialMap } from '../src/calibrate.js';
 
@@ -51,6 +51,11 @@ describe('official Keep ladder semantics',()=>{
  });
 });
 describe('schema and fixed scene denominator',()=>{
+ it('recognizes the real Bookstack requirement root title',()=>{
+  expect(inputApp('BookStack Knowledge Base System')).toBe('bookstack');
+  expect(inputApp('Keep')).toBe('keep');
+  expect(()=>inputApp('Different application')).toThrow('Unsupported application');
+ });
  it('enumerates sibling scenarios without deduplicating requirement IDs',()=>{
   const rows=scenarios({id:'ROOT',name:'Keep',type:'FOLDER',children:[{id:'REQ-1',name:'Home',type:'ATOMIC',scenarios:[{name:'A',steps:[]},{name:'B',steps:[]}]}]});
   expect(rows.map(r=>r.scenario)).toEqual(['REQ-1#1','REQ-1#2']);

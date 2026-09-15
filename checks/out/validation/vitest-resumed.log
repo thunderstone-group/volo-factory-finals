@@ -1,0 +1,14 @@
+
+> arcbench-scenario-checks@0.1.0 test
+> vitest run --pool=threads
+
+
+ RUN  v3.2.7 ~/projects/volo-factory-worktrees/ts-kernel/checks
+
+ ✓ tests/kernel.test.ts (18 tests) 145ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  16:49:50
+   Duration  325ms (transform 50ms, setup 0ms, collect 73ms, tests 145ms, environment 0ms, prepare 28ms)
+
