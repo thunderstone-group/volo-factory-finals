@@ -1,0 +1,750 @@
+[
+  {
+    "scenario": "REQ-1.1#1",
+    "requirement": "REQ-1.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/BookStack/i",
+      "rungHit": "link",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-1.2#1",
+    "requirement": "REQ-1.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "Click name 'BookStack logo' is not a bare action verb or quoted literal; cannot compile."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: Click name 'BookStack logo' is not a bare action verb or quoted literal; cannot compile."
+  },
+  {
+    "scenario": "REQ-2.1#1",
+    "requirement": "REQ-2.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Login/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.2#1",
+    "requirement": "REQ-2.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires fill email, fill password, check Remember Me, and click Login, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires fill email, fill password, check Remember Me, and click Login, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-3.1#1",
+    "requirement": "REQ-3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence describes system navigation, not user actions; no valid steps."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence describes system navigation, not user actions; no valid steps."
+  },
+  {
+    "scenario": "REQ-4.1#1",
+    "requirement": "REQ-4.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Shelf\\s+4\\.1/i",
+      "rungHit": "link",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-4.2.1#1",
+    "requirement": "REQ-4.2.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "0",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            {
+              "regex": "Shelf\\s+4\\.2\\.1",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Shelf\\s+4\\.2\\.1/i",
+      "rungHit": "link",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: /Shelf\\s+4\\.2\\.1/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: /Shelf\\s+4\\.2\\.1/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-4.2.1#1\",\"requirement\":\"REQ-4.2.1\",\"title\":\"Enter Shelf Details Page\",\"category\":\"navigation\",\"rationale\":\"Click shelf item in list opens details.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"},{\"op\":\"click\",\"name\":[\"Shelves\"]}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Shelf\\\\s+4\\\\.2\\\\.1\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Shelf\\\\s+4\\\\.2\\\\.1\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/bookstack-2/results-parts/REQ-4.2.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/bookstack-2/specs/REQ-4.2.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-4.3.1#1",
+    "requirement": "REQ-4.3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires click New Shelf, fill information, and click Save Shelf, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires click New Shelf, fill information, and click Save Shelf, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-4.3.2#1",
+    "requirement": "REQ-4.3.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+4\\\\.3\\\\.2\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+4\\\\.3\\\\.2\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-4.4.1#1",
+    "requirement": "REQ-4.4.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires click Delete and confirm deletion, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires click Delete and confirm deletion, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-4.4.2#1",
+    "requirement": "REQ-4.4.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+4\\\\.4\\\\.2\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+4\\\\.4\\\\.2\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-4.5.1#1",
+    "requirement": "REQ-4.5.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires click Edit, update information, and click Save Shelf, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires click Edit, update information, and click Save Shelf, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-4.5.2#1",
+    "requirement": "REQ-4.5.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+4\\\\.5\\\\.2\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+4\\\\.5\\\\.2\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-5.1#1",
+    "requirement": "REQ-5.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "0",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            {
+              "regex": "Book\\s+5\\.1",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Book\\s+5\\.1/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Book\\s+5\\.1/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Book\\s+5\\.1/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-5.1#1\",\"requirement\":\"REQ-5.1\",\"title\":\"View Books List\",\"category\":\"navigation\",\"rationale\":\"Click Books in nav bar displays book list.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Books\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Book\\\\s+5\\\\.1\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/bookstack-2/results-parts/REQ-5.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/bookstack-2/specs/REQ-5.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-5.2.1#1",
+    "requirement": "REQ-5.2.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Book\\s+5\\.2\\.1",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Book\\s+5\\.2\\.1/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Book\\s+5\\.2\\.1/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-5.2.1#1\",\"requirement\":\"REQ-5.2.1\",\"title\":\"Enter Book Details Page through Book List Page\",\"category\":\"navigation\",\"rationale\":\"Click book card in list opens details.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"},{\"op\":\"click\",\"name\":[\"Books\"]}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Book\\\\s+5\\\\.2\\\\.1\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Book\\\\s+5\\\\.2\\\\.1\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/bookstack-2/results-parts/REQ-5.2.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/bookstack-2/specs/REQ-5.2.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-5.2.2#1",
+    "requirement": "REQ-5.2.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+5\\\\.2\\\\.2\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+5\\\\.2\\\\.2\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-5.3.1#1",
+    "requirement": "REQ-5.3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires click Create New Book, fill information, and click Save Book, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires click Create New Book, fill information, and click Save Book, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-5.3.2#1",
+    "requirement": "REQ-5.3.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "given",
+      "index": "2",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Create\\s+New\\s+Book",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Create\\s+New\\s+Book/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Create\\s+New\\s+Book/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-5.3.2#1\",\"requirement\":\"REQ-5.3.2\",\"title\":\"Cancel Creating Book\",\"category\":\"navigation\",\"rationale\":\"Cancel from create book page returns to previous page.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"},{\"op\":\"click\",\"name\":[\"Books\"]},{\"op\":\"click\",\"name\":[\"Create\\\\s+New\\\\s+Book\"]}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Cancel\"]}]}],\"then\":[{\"op\":\"expectText\",\"name\":[\"Book\\\\s+5\\\\.1\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/bookstack-2/results-parts/REQ-5.3.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/deepseek/bookstack-2/specs/REQ-5.3.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-5.4.1#1",
+    "requirement": "REQ-5.4.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires click Edit, update information, and click Save Book, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires click Edit, update information, and click Save Book, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-5.4.2#1",
+    "requirement": "REQ-5.4.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+5\\\\.4\\\\.2\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+5\\\\.4\\\\.2\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-5.5.1#1",
+    "requirement": "REQ-5.5.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires click Delete and confirm deletion, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires click Delete and confirm deletion, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-5.5.2#1",
+    "requirement": "REQ-5.5.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+5\\\\.5\\\\.2\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+5\\\\.5\\\\.2\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-5.6.1#1",
+    "requirement": "REQ-5.6.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires click Create New Book, fill information, and click Save Book, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires click Create New Book, fill information, and click Save Book, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-6.1.1#1",
+    "requirement": "REQ-6.1.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires click New Page, fill information, and click Save Page, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires click New Page, fill information, and click Save Page, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-6.1.2#1",
+    "requirement": "REQ-6.1.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires fill content and save draft, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires fill content and save draft, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-6.1.3#1",
+    "requirement": "REQ-6.1.3",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires open actions, click Delete Draft, and confirm, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires open actions, click Delete Draft, and confirm, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-6.2.1#1",
+    "requirement": "REQ-6.2.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN sentence requires click New Chapter, fill information, and click Save Chapter, exceeding two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN sentence requires click New Chapter, fill information, and click Save Chapter, exceeding two-step limit."
+  },
+  {
+    "scenario": "REQ-6.3.1#1",
+    "requirement": "REQ-6.3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+6\\\\.3\\\\.1\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+6\\\\.3\\\\.1\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-6.3.2#1",
+    "requirement": "REQ-6.3.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+6\\\\.3\\\\.2\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Page\\\\s+6\\\\.3\\\\.2\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+6\\\\.3\\\\.2\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Page\\\\s+6\\\\.3\\\\.2\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-7.1#1",
+    "requirement": "REQ-7.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+7\\\\.1\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"Exactly one WHEN group per original sentence; do not split comma/AND clauses\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+7\\\\.1\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"Exactly one WHEN group per original sentence; do not split comma/AND clauses\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-7.2#1",
+    "requirement": "REQ-7.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare homepage with recently viewed item without forbidden setup mutations."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare homepage with recently viewed item without forbidden setup mutations."
+  },
+  {
+    "scenario": "REQ-8.1#1",
+    "requirement": "REQ-8.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+8\\\\.1\",\n    \"path\": []\n  }\n]"
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+8\\\\.1\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "scenario": "REQ-8.2#1",
+    "requirement": "REQ-8.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare homepage with favorite item without forbidden setup mutations."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare homepage with favorite item without forbidden setup mutations."
+  },
+  {
+    "scenario": "REQ-9.1#1",
+    "requirement": "REQ-9.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare homepage with recently updated item without forbidden setup mutations."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare homepage with recently updated item without forbidden setup mutations."
+  }
+]
