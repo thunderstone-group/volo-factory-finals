@@ -123,3 +123,102 @@ the harness ruled `bundle_failed`, discarding `view-all-notes.js` and the fixed 
 delivered snapshot fails its own suite too (`command-0168.log`, 5 failures);
 `delivered_verified_snapshot` only checks for an exception and `fresh_verification_error` is
 the empty string.
+
+## 5. Official failures 2.5.3 and 2.7.1: one cause
+
+Both are `Test timeout of 10000ms exceeded`; the locator was reconstructed from
+`error-context.md`, `score-hosted/data/store.json` and the worker timeline.
+
+**REQ-2.5.3 Show archived notes — group a.** Stops after `h.openArchive(page)` at
+`expectNoteVisible` waiting on `getByText(/Travel plans 2\.5\.3/i).first()`. `archiveNote`
+hovers the title and clicks `/archive/i`: success (`status: Note archived`). The mouse stays over
+the list, so another card's row actions are revealed. `openArchive` then runs
+`clickFirstAvailable([[/^archived?$/i, /^archive$/i]])`, and `helpers.ts:89` ranks `button`
+before `link`. The delivered app names the row action bare `Archive`, which the anchored
+`/^archived?$/i` matches, so the button rung returns first and the sidebar `Archived` link (also
+count 1) is never reached: the test archives a second note and the page stays on the unfiltered
+list. Reproduced with a probe on the delivered app:
+
+```
+BEFORE hover: {"button":0,"link":1}
+AFTER hover title, /archive/i buttons: {"button":1}
+openArchive resolve: button count 1 visible true | link count 1
+WOULD CLICK: <button type="button" aria-label="Archive" class="action-btn archive-btn">📥</button>
+```
+
+The model's own check (`batch-7.spec.cjs:60`) pins the role: `getByRole('link', { name:
+'Archived' })`. Self-check green, official red: the check pins the role, the helper guesses it.
+
+**REQ-2.7.1 Assign label to a note — group d, caused by 2.5.3's a.** Stops at
+`hoverNamed(page, ['Team retro add label'])`, all ten rungs count 0. The note was archived 70 ms
+before the test began, by 2.5.3's mis-click:
+
+| Time | Event |
+|---|---|
+| 06:34:56.862 | 2.5.3 starts on worker 2 |
+| 06:34:57.005 | `note-travel-plans-253` → archived (archiveNote, intended) |
+| 06:34:57.063 | `note-team-retro-add-label` → archived (openArchive's mis-click) |
+| 06:34:57.133 | 2.7.1 starts on worker 1; fixture gone |
+
+`labelAddTitle` is referenced only by `REQ-2.7.1.spec.ts`.
+
+| Group | Count | Specs |
+|---|---:|---|
+| a — generic pattern picks the wrong control | 1 | 2.5.3 |
+| d — shared-store interference, caused by a | 1 | 2.7.1 |
+| batch rolled back, not delivered | 6 | 2.5.4, 2.7.2, 2.7.4, 2.7.5, 2.7.6.2, 4.1 |
+| batch never started | 2 | 4.2, 6.1 |
+
+## 6. Against run 5
+
+| Quantity | Run 5 `b3d2331` | Run 7 `03152c0` |
+|---|---:|---:|
+| Hosted | 25/32 | 22/32 |
+| Batches | 15/15 | 12, 7 completed |
+| Calls | 142 | 186 |
+| Prompt / completion tokens | 3.66 M / 488 k | 5.19 M / 845 k |
+| Cost | CNY 8.4 | CNY 12.03 |
+| Capped batches | 3 | 5 |
+| Verifications | 28 | 46 |
+
+Of the extra CNY 3.6, 3.17 is output tokens. Batches 8–12: 102 calls, CNY 5.61 (47%), zero
+requirements delivered; batches 1–7: 82 calls, CNY 6.37, 52.0 min model wait, 7.2 min
+verification; batches 8–12: 57.9 min model wait, 11.1 min verification.
+
+Mechanism by mechanism:
+
+- **Hover-action rule `32740e2` backfired, hardest evidence.** It changed row actions to bare
+  verbs ("the evaluator searches bare verbs; `Archive for Sprint goals` also matches"). True for
+  `archiveNote`'s unanchored `/archive/i`, false for the sidebar helper's anchored
+  `/^archived?$/i`. Run 5 wrote `'Archive for ' + note.title` (`coloring.js:154`), which the
+  anchored pattern cannot match, so the sidebar link always won. `Trash` is unaffected because no
+  row button is named Trash. Cost: 2.5.3 plus 2.7.1 by contagion.
+- **Gate loop `6448d12`: cost realised, benefit not.** It replaced "one cheap 12-call retry of a
+  capped batch" with "≤ 3 entries per batch, each a full 20 calls, round-robin". Every batch in
+  this run has `entries = 1`: the CNY 12 budget ended the run before the first pass finished, so
+  the second round never happened. Net: a stuck batch went from ≤ 32 calls to 20 then abandoned,
+  and batches 13–15 never started, whereas run 5 ran them. 4.2 and 6.1 have no code at all.
+- **CNY budget `c0ca9cc` is correct** (stopped at 12.03) and exposed the two above.
+- Overlay primitive, rule narrowing, read caps: no adverse trace; the interface rule reported
+  real findings in batches 9 and 12.
+
+Correction to the earlier note: model wait is 110.3 min (paired request→response, 35.8 s per
+call), not 93; 129 − 110.3 = 18.5 min matches the 18.2 min of verification.
+
+## 7. Root causes, ranked, with the smallest change that tests each
+
+1. **Failure feedback truncated to hide the failures.** `agent.py:1779` `excerpt(output, 5000)`
+   keeps head 1/3 + tail 2/3; TAP spreads failures through the middle. 20 of 26 failed
+   verifications showed zero failures; batch 10's five 71 s runs showed 1 of 34, and not the
+   regression. 40 `run` calls re-reading logs are the direct corroboration. Smallest change:
+   extract every `^not ok` line with its `error:` block into a failure digest placed before
+   `check_output`; keep the raw truncation. Test: run the extractor offline on
+   `command-0113.log`, expect all 34 failures present at bounded length.
+2. **Self-check suite not idempotent; false failures trigger wrong rollbacks.** Six requirements
+   fail locally in the second half and pass officially; batch 11's salvage failed only on those
+   and the fixed 2.7.6.2 was discarded. Smallest change: salvage judges the set difference only
+   (new failures = `bundle_failed`; a test failing both before and after the batch is no reason
+   to drop product code). Test: replay `command-0153` / `command-0155`, expect empty difference
+   and the batch kept.
+3. **Bare-verb naming collides with the official sidebar pattern.** Probe reproduced the
+   mis-click; `store.json` timestamps pin the contagion.
