@@ -1,0 +1,640 @@
+[
+  {
+    "scenario": "REQ-1.1#1",
+    "requirement": "REQ-1.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Sprint goals/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.1#1",
+    "requirement": "REQ-2.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Groceries/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.2#1",
+    "requirement": "REQ-2.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Single WHEN sentence contains click, fill title, fill content, and close actions exceeding the two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Single WHEN sentence contains click, fill title, fill content, and close actions exceeding the two-step limit."
+  },
+  {
+    "scenario": "REQ-2.3.1#1",
+    "requirement": "REQ-2.3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "WHEN requires hover, click More options, and click Delete Note in one sentence, exceeding the 2-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: WHEN requires hover, click More options, and click Delete Note in one sentence, exceeding the 2-step limit."
+  },
+  {
+    "scenario": "REQ-2.3.2#1",
+    "requirement": "REQ-2.3.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare deleted-note state in GIVEN without performing delete operations."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare deleted-note state in GIVEN without performing delete operations."
+  },
+  {
+    "scenario": "REQ-2.3.3#1",
+    "requirement": "REQ-2.3.3",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Delete me 2\\.3\\.3/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.4#1",
+    "requirement": "REQ-2.4",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Single WHEN sentence contains open, edit, and close actions exceeding the two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Single WHEN sentence contains open, edit, and close actions exceeding the two-step limit."
+  },
+  {
+    "scenario": "REQ-2.5.1#1",
+    "requirement": "REQ-2.5.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "Cannot assert note moved to archive list using only expectText or expectAbsent on the current page."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: Cannot assert note moved to archive list using only expectText or expectAbsent on the current page."
+  },
+  {
+    "scenario": "REQ-2.5.2#1",
+    "requirement": "REQ-2.5.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare archive notification state in GIVEN without performing archive operations."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare archive notification state in GIVEN without performing archive operations."
+  },
+  {
+    "scenario": "REQ-2.5.3#1",
+    "requirement": "REQ-2.5.3",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Travel plans 2\\.5\\.3/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.5.4#1",
+    "requirement": "REQ-2.5.4",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0.0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "Unarchive",
+              "flags": "i"
+            }
+          ]
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Unarchive/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Unarchive/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"version\":2,\"scenario\":\"REQ-2.5.4#1\",\"requirement\":\"REQ-2.5.4\",\"title\":\"Unarchive\",\"category\":\"state-toggle\",\"rationale\":\"GIVEN requires viewing archived notes list; navigate there then click Unarchive and verify note removed from archived list.\",\"status\":\"compiled\",\"given\":[{\"op\":\"open\"},{\"op\":\"click\",\"name\":[\"Archived\"]}],\"when\":[{\"sentence\":0,\"steps\":[{\"op\":\"click\",\"name\":[\"Unarchive\"]}]}],\"then\":[{\"op\":\"expectAbsent\",\"name\":[\"Travel plans 2\\\\.5\\\\.4\"]}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/keep-5/results-parts/REQ-2.5.4_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/round2/qwen/keep-5/specs/REQ-2.5.4.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.6.1#1",
+    "requirement": "REQ-2.6.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "Color change is a visual style property that cannot be verified with expectText or expectAbsent."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: Color change is a visual style property that cannot be verified with expectText or expectAbsent."
+  },
+  {
+    "scenario": "REQ-2.6.2#1",
+    "requirement": "REQ-2.6.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Single WHEN sentence contains multiple actions exceeding the two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Single WHEN sentence contains multiple actions exceeding the two-step limit."
+  },
+  {
+    "scenario": "REQ-2.7.1#1",
+    "requirement": "REQ-2.7.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+  },
+  {
+    "scenario": "REQ-2.7.2#1",
+    "requirement": "REQ-2.7.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+  },
+  {
+    "scenario": "REQ-2.7.3#1",
+    "requirement": "REQ-2.7.3",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Reminders/i",
+      "rungHit": "menuitem",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.4#1",
+    "requirement": "REQ-2.7.4",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+  },
+  {
+    "scenario": "REQ-2.7.5#1",
+    "requirement": "REQ-2.7.5",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+  },
+  {
+    "scenario": "REQ-2.7.6.1#1",
+    "requirement": "REQ-2.7.6.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.6.2#1",
+    "requirement": "REQ-2.7.6.2",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.6.3#1",
+    "requirement": "REQ-2.7.6.3",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.8.1#1",
+    "requirement": "REQ-2.8.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "Pin state and pinned section placement are visual properties not verifiable with expectText or expectAbsent."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: Pin state and pinned section placement are visual properties not verifiable with expectText or expectAbsent."
+  },
+  {
+    "scenario": "REQ-2.8.2#1",
+    "requirement": "REQ-2.8.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare pinned note state in GIVEN without performing pin operations."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare pinned note state in GIVEN without performing pin operations."
+  },
+  {
+    "scenario": "REQ-2.8.3#1",
+    "requirement": "REQ-2.8.3",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+  },
+  {
+    "scenario": "REQ-3.1#1",
+    "requirement": "REQ-3.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "No specific filter name or expected result text available for expectText assertion."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: No specific filter name or expected result text available for expectText assertion."
+  },
+  {
+    "scenario": "REQ-3.2#1",
+    "requirement": "REQ-3.2",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Study schedule/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-4.1#1",
+    "requirement": "REQ-4.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "No specific settings option text available for expectText assertion."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: No specific settings option text available for expectText assertion."
+  },
+  {
+    "scenario": "REQ-4.2#1",
+    "requirement": "REQ-4.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "no-preparation-path",
+        "detail": "Cannot prepare settings dropdown open state in GIVEN without a click."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "no-preparation-path: Cannot prepare settings dropdown open state in GIVEN without a click."
+  },
+  {
+    "scenario": "REQ-5.1#1",
+    "requirement": "REQ-5.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "View mode switching is a layout property not verifiable with expectText or expectAbsent."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: View mode switching is a layout property not verifiable with expectText or expectAbsent."
+  },
+  {
+    "scenario": "REQ-5.2#1",
+    "requirement": "REQ-5.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "Grid view default and toolbar toggle visibility are layout properties not verifiable with expectText or expectAbsent."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: Grid view default and toolbar toggle visibility are layout properties not verifiable with expectText or expectAbsent."
+  },
+  {
+    "scenario": "REQ-6.1#1",
+    "requirement": "REQ-6.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "Sidebar styling and icon consistency are visual properties not verifiable with expectText or expectAbsent."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: Sidebar styling and icon consistency are visual properties not verifiable with expectText or expectAbsent."
+  },
+  {
+    "scenario": "REQ-6.2#1",
+    "requirement": "REQ-6.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "compile",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "Sidebar collapse and expand states are layout properties not verifiable with expectText or expectAbsent."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: Sidebar collapse and expand states are layout properties not verifiable with expectText or expectAbsent."
+  }
+]
