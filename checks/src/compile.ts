@@ -6,6 +6,8 @@ import { parseArgs } from 'node:util';
 import { parse } from 'yaml';
 import { z } from 'zod';
 import { checksSchema, flatten, type Check } from './steps.js';
+import { round2ChecksSchema, groundedCheckSchema, grounding, type Round2Check } from './round2-schema.js';
+import { modelCall } from './model-call.js';
 
 type Requirement = { id: string; name: string; type: string; description?: string; dependencies?: string[]; children?: Requirement[]; scenarios?: {name: string; steps: unknown[]}[] };
 export function scenarios(root: Requirement) {
@@ -124,8 +126,51 @@ export async function compile(requirements: string, contract: string, out: strin
  writeFileSync(resolve(out,'manifest.json'),JSON.stringify({app,scenarios:rows.length,groups:groups.length,model,requirements:resolve(requirements),contract:resolve(contract),requirementsSha256:sha(requirementText),contractSha256:sha(contractText),checksSha256:sha(json),compiledAt:new Date().toISOString(),compilerInputs:['requirements','contract'],calibrated:false},null,2)+'\n');
  return checks;
 }
+export const round2SystemPrompt = String.raw`Compile GIVEN/WHEN/THEN into a deliberately literal, minimal Playwright check. Treat only requirements and the supplied contract as evidence. Never read or infer official tests or historical verdicts.
+Output {"checks":[...]} with exactly one Check per assigned scenario, preserving identity/title. Set version=2. A compiled Check has status=compiled, given, when, then. An unknown Check has status=unknown, reason (unsupported/no-preparation-path/ambiguous-assertion), detail and NO executable phases. Keep rationale/detail concise.
+GIVEN allows exactly one open first, followed only by the MINIMUM clicks needed to reach the page described by GIVEN. Names must appear in the original requirements. No expect, hover, fill, check, press, setup mutations, login preparation, extra navigation, reload or waits. Never prepare deleted/archived/pinned state through forbidden operations. If that prerequisite cannot be reached, return no-preparation-path. Do not visit an extra page to help selectors settle.
+WHEN is grouped by the original supplied sentence indices. Each sentence allows AT MOST TWO steps, selected ONLY from hover, click, fill, check, press. Never split comma-separated clauses, AND clauses or actions into invented sentences. No open here: entry navigation is the GIVEN open. Pure view/open scenarios may have zero WHEN actions. Do NOT omit requested actions to fit the cap: create/login/edit workflows that require more than two operations must be unknown (unsupported). Do not move WHEN work into GIVEN or THEN.
+A hover names a seed row TITLE, but runtime always resolves it through hoverNamed/resolveNamed; NEVER request via:text. Click names must be bare action verbs literally present in that WHEN sentence or quoted/backticked literals from the original requirements. No synonyms or invented action names. fill takes one named field and one string value; no multi-field packed actions. check takes name and checked boolean. press takes one key.
+THEN allows ONLY expectText and expectAbsent; names must come from THEN sentences or quoted/backticked requirement literals. Prefer one direct visible-text assertion when it expresses the scenario. No additional readiness assertions, no expects before THEN, no navigation in THEN. Do not turn style, color, count or state requirements into unrelated text assertions; mark unknown if text presence/absence cannot express them. No expectCount/expectState/capture/compare/if/try or custom code anywhere.
+Names are arrays of one to three regex TEXT STRINGS, case-insensitive at runtime. Encode source words literally (escape punctuation, replace whitespace with \s+); optional paired ^ and $ anchors are allowed. No regex wildcards, alternatives or lookarounds. Never provide role, via, exact, within, CSS or selector objects. All click/hover/check/expectText use the fixed named ladder; fill uses the unchanged fillField helper; expectAbsent is getByText(...).toHaveCount(0). No extra sleeps, polls or auto-repairs.
+Both apps are fresh browser contexts against one seeded server; cannot rely on other scenarios. Preserve the full scenario denominator with explicit unknowns. Schema and source-grounding validation are enforced.
+`;
+export async function compileRound2(requirements:string,contract:string,out:string,ledgerPath:string,model:string) {
+ if(!['qwen3.8-max','deepseek-v4-flash'].includes(model))throw Error('Round two only supports the two requested models');
+ const requirementText=readFileSync(requirements,'utf8'),contractText=readFileSync(contract,'utf8');
+ const root=parse(requirementText) as Requirement,contractData=JSON.parse(contractText),rows=scenarios(root),app=inputApp(root.name);
+ if(rows.length!==(app==='keep'?32:34))throw Error('Wrong scenario denominator');
+ mkdirSync(out,{recursive:true});
+ const system=round2SystemPrompt+JSON.stringify(z.toJSONSchema(round2ChecksSchema));
+ const context={requirements:root,contract:contractData};
+ const accepted=new Map<string,Round2Check>(),errors:Record<string,string>={};
+ let assigned=rows;
+ for(let attempt=0;attempt<2&&assigned.length;attempt++) {
+  const user=JSON.stringify({...context,assigned:assigned.map(r=>({...r,grounding:grounding(r,requirementText,contractData),previousValidationError:errors[r.scenario]}))});
+  const response=await modelCall({model,system,user,ledgerPath,out,label:`${app}-attempt-${attempt+1}`,budget:5,maxTokens:12000});
+  let candidates:any[]=[];
+  try {const parsed=JSON.parse(response.replace(/^```(?:json)?\s*|\s*```$/g,''));if(!Array.isArray(parsed.checks))throw Error('Missing checks array');candidates=parsed.checks;}
+  catch(error){for(const r of assigned)errors[r.scenario]=String(error);}
+  const pending:typeof rows=[];
+  for(const row of assigned) {
+   const matches=candidates.filter(c=>c?.scenario===row.scenario);
+   const validated=matches.length===1?groundedCheckSchema(row,requirementText,contractData).safeParse(matches[0]):null;
+   if(validated?.success)accepted.set(row.scenario,validated.data);
+   else {errors[row.scenario]=validated&&!validated.success?validated.error.message.slice(0,3000):errors[row.scenario]??'Missing/duplicate scenario';pending.push(row);}
+  }
+  writeFileSync(resolve(out,`validation-${attempt+1}.json`),JSON.stringify({accepted:[...accepted.keys()],pending:pending.map(r=>r.scenario),errors},null,2)+'\n');
+  assigned=pending;
+ }
+ for(const row of assigned)accepted.set(row.scenario,{version:2,status:'unknown',scenario:row.scenario,requirement:row.requirement,title:row.title,category:'read-list',rationale:'Compiler output failed source/schema validation twice.',reason:'unsupported',detail:`Schema/source validation failed: ${errors[row.scenario]}`});
+ const checks=round2ChecksSchema.parse(rows.map(r=>accepted.get(r.scenario))),json=JSON.stringify(checks,null,2)+'\n';
+ writeFileSync(resolve(out,'checks.json'),json);
+ writeFileSync(resolve(out,'manifest.json'),JSON.stringify({version:2,app,model,scenarios:rows.length,requirementsSha256:sha(requirementText),contractSha256:sha(contractText),checksSha256:sha(json),compiledAt:new Date().toISOString(),compilerInputs:['requirements','contract'],unknown:checks.filter(c=>c.status==='unknown').length,recallPolicy:'exclude-unknown'},null,2)+'\n');
+ console.log(`${model} ${app}: ${checks.length} scenarios; ${checks.filter(c=>c.status==='unknown').length} unknown`);
+ return checks;
+}
 if(process.argv[1] && import.meta.url===pathToFileURL(resolve(process.argv[1])).href) {
- const {values}=parseArgs({options:{requirements:{type:'string'},contract:{type:'string'},out:{type:'string'},ledger:{type:'string'}}});
+ const {values}=parseArgs({options:{requirements:{type:'string'},contract:{type:'string'},out:{type:'string'},ledger:{type:'string'},round2:{type:'boolean'},model:{type:'string'}}});
  if(!values.requirements||!values.contract||!values.out) throw Error('Required: --requirements --contract --out [--ledger]');
- await compile(values.requirements,values.contract,resolve(values.out),resolve(values.ledger??'out/usage.json'));
+ if(values.round2)await compileRound2(values.requirements,values.contract,resolve(values.out),resolve(values.ledger??'out/round2/usage.json'),values.model??'qwen3.8-max');
+ else await compile(values.requirements,values.contract,resolve(values.out),resolve(values.ledger??'out/usage.json'));
 }
