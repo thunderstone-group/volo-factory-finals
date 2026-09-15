@@ -1,0 +1,7 @@
+
+> arcbench-scenario-checks@0.1.0 compile
+> node --import tsx src/compile.ts --round2 --model deepseek-v4-flash --requirements ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/requirements/requirements.yaml --contract ~/projects/volo-factory/runs/2026-09-15-bookstack-2/app/.factory/state-contract.json --out out/round2/deepseek/bookstack --ledger out/round2/usage.json
+
+bookstack-attempt-1: CNY 0.120753; cumulative 2.523557
+bookstack-attempt-2: CNY 0.058394; cumulative 2.581951
+deepseek-v4-flash bookstack: 34 scenarios; 27 unknown
