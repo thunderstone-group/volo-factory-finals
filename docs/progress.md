@@ -1066,12 +1066,16 @@ generation has been run against any of this.
   whether its work survived, and carries the quarantined check back as text so its assertions
   are not rewritten from nothing.
 - The large default budget is 320 calls, 10 M tokens and three hours (was 200 / 6.5 M /
-  100 minutes). Evidence: official run `762faa0bd756` scored 19/32 because our own 45-minute
-  clock ended a batch whose work was then rolled back, while the same code scored 25/32
-  locally with all fifteen batches run; the platform waits for the container without a
-  timeout; the hosted machine makes 1.4–2 calls a minute; the Keep board's 100% row ran
-  9038 s and 28.8 M tokens. The clock is now a safety net, and the expected terminal
-  condition of a large run is the token budget or completion.
+  100 minutes). Evidence: the platform waits for the container without a timeout; the hosted
+  machine makes 1.4–2 calls a minute, so 320 calls need up to 230 minutes; the Keep board's
+  100% row ran 9038 s and 28.8 M tokens. The clock is a safety net, not the terminal
+  condition.
+- Correction to the brief this work started from and to the message of commit af21ad2: the
+  45-minute run was `3313c37b801c`, not `762faa0bd756`. The 19/32 run used its full 100
+  minutes and still ended mid-batch, because one pass over the schedule was all it was
+  allowed. "Remove the 45 minutes and 19 becomes 25" is therefore not a counterfactual this
+  change can claim. What it can claim is that a rolled-back batch delivered nothing and that
+  the schedule stopped with budget still in hand.
 - The result JSON and `.factory/checkpoint.json` gained `batches`
   (`{id, requirements, status: completed|salvaged|incomplete, entries, calls,
   quarantined_checks}`) and `loop` (`{passes, ended_by: complete|token_budget|call_budget|
@@ -1082,3 +1086,41 @@ generation has been run against any of this.
   the quarantine move and the events, no model call and the deadline respected, a run with an
   effectively infinite deadline ending on `token_budget`, a run delivering after a salvage,
   and the large budget values.
+
+### 2026-09-15, midday — the budget became money, and the source summary came back
+
+- **Cost meter.** `volo/model.py` gained a price table in CNY per million tokens keyed by
+  gateway model id (`deepseek-v4-flash` 3 / 0.1 / 9, `deepseek-v4-pro` 9 / 0.3 / 27,
+  `kimi-k3` 20 / 2 / 100, `qwen3.6-flash` 1.2 / 1.2 / 7.2 with no cache tier, unknown id
+  charged as v4-pro), and `Usage` gained `cost_cny`. Every priced response is charged at its
+  own model's rates, so the reference observer sharing the `Usage` object is billed as the
+  cheap vision model rather than as the coding model. A response with no usage block is
+  counted in `missing_usage_calls` and priced at nothing, as before.
+- The terminal condition of a run is now the money. `guard_budget` raises "Model cost budget
+  exhausted" first, then the token ceiling, which stays as a safety net for a gateway that
+  misreports its prices or its cache. `ended_by` gained `cost_budget`. Defaults: LARGE
+  CNY 12.0 with 10 M tokens behind it, SMALL CNY 0.6 with 450 k, both overridable by
+  `--cost-budget-cny` and `FACTORY_COST_BUDGET_CNY`. CNY 12 comes from the board: at the
+  6.03 points of the row above us, 26/32 must stay under CNY 13.47 and 28/32 under
+  CNY 14.51. Run 5 spent CNY 8.36 for fifteen batches, so 12 leaves room for the re-entries
+  without crossing the line that makes a better score worth less.
+- The meter is calibrated against a retained run rather than against a formula: run 5's own
+  checkpoint (3,660,768 prompt tokens, 2,420,224 of them cached, 488,148 completion, on
+  `deepseek-v4-flash`) prices at CNY 8.357 against the CNY 8.4 charged, 0.5% apart, and a
+  test pins that within 5%.
+- **The product source summary is no longer emptied by a large tree.** `contract_source`
+  used to select from `source_snapshot`, which returns `None` outright once more than twenty
+  files are candidates, and it dropped harness files only afterwards. Verified in run 5's
+  trace before changing anything: batches 11 to 15 sent 52 requests carrying
+  `Current product source ...:\n{}` while the tree held the whole application (first at
+  `runs/2026-09-14-keep-full-5/app/.factory/events.jsonl` line 622), and batch 11 was one of
+  the two batches that hit the call cap. Now the harness files and earlier batches' checks
+  are excluded first, and what remains is offered nearest-first — path names one of this
+  batch's contract collections, then body mentions one, then the rest, each group smallest
+  first — up to `source_budget()`, with every omitted file named with its size and a pointer
+  to `read_file_chunk`. A tree with product files in it never summarises to nothing again.
+- Tests: 380 before, 388 after. New: the run-5 cost reproduction, per-model rates including
+  the cache tier and the unknown-id fallback, transport accumulation across calls, cost
+  before tokens in `guard_budget`, `ended_by: cost_budget`, the decimal environment
+  override, a 30-file tree that still carries the batch's own files plus others and names
+  the rest, and the exclusion order.

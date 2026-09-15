@@ -428,6 +428,23 @@ BATCH_ENTRY_LIMIT = 3
 # the batch started, and on disk, so the batch's next entry can be handed their text.
 QUARANTINE_DIRECTORY = 'unverified'
 
+# Files a generated web application keeps its own source in.
+SOURCE_SUFFIXES = ('.js', '.cjs', '.mjs', '.jsx', '.ts', '.tsx', '.html', '.css', '.vue', '.svelte')
+
+# How many omitted files the source listing names one by one before it counts the rest.
+OMITTED_NAMES = 20
+
+
+def source_distance(path, content, keywords):
+    """0 when the path names something this batch owns, 1 when its text does, else 2."""
+    if not keywords:
+        return 2
+    lowered = path.lower()
+    if any(word in lowered for word in keywords):
+        return 0
+    body = content.lower()
+    return 1 if any(word in body for word in keywords) else 2
+
 # How much of one quarantined check the next entry is shown. Enough for a batch check of
 # the size these runs write, and bounded so a runaway file cannot crowd out the request.
 QUARANTINE_BRIEF_CHARS = 4000
@@ -490,6 +507,8 @@ def budget_reason(exc):
     text = str(exc).lower()
     if isinstance(exc, TimeoutError) or 'wall-time' in text or 'deadline' in text:
         return 'deadline'
+    if 'cost' in text:
+        return 'cost_budget'
     if 'token' in text:
         return 'token_budget'
     return 'call_budget'
@@ -497,7 +516,8 @@ def budget_reason(exc):
 
 class Agent:
     def __init__(self, requirements, model, workspace, runtime, *, max_calls=32,
-                 token_budget=450000, max_context_chars=120000, references=None, contract=None):
+                 token_budget=450000, cost_budget=0.6, max_context_chars=120000,
+                 references=None, contract=None):
         self.requirements, self.model, self.workspace, self.runtime = requirements, model, workspace, runtime
         self.contract = contract
         self.contract_text = state_contract.document(contract) if contract else None
@@ -517,6 +537,7 @@ class Agent:
         self.regression_checks = {}
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
+        self.cost_budget = cost_budget
         self.max_context_chars = max_context_chars
         self.state_path = self.trace.directory / "checkpoint.json"
         self.completed = []
@@ -541,37 +562,88 @@ class Agent:
         fixed = len(self.contract_text or '') + len(self.requirements.batch_prompt(self.requirements.nodes[:1]))
         return max(8000, min(48000, self.max_context_chars // 2 - fixed))
 
-    def contract_source(self):
-        """Product source the model edits, bounded, without the files it must not touch.
+    def editable_product_source(self):
+        """Every file a contract batch may rewrite, by path, with its current text.
 
-        Earlier batches' checks are excluded: each batch writes a new check file, so
-        their text is context the model pays for and never edits.
+        Harness files, earlier batches' checks, runtime data and untouched scaffold are
+        all excluded here rather than after the selection: they are not editable in a
+        contract batch, and their bytes are exactly what the summary exists to keep out.
         """
-        previous = self.source_snapshot_limit
-        self.source_snapshot_limit = 200000
-        try:
-            source = self.source_snapshot() or {}
-        finally:
-            self.source_snapshot_limit = previous
-        source = {path: content for path, content in source.items()
-                  if path not in state_runtime.HARNESS_OWNED
-                  and not path.startswith('checks/')
-                  and content != KNOWN_RUNTIME.get(path)}
-        budget = self.source_budget()
-        if sum(len(content) for content in source.values()) <= budget:
-            return source
-        # Deliver the largest files that fit, newest first, and name the rest so the
-        # model reads only what it actually needs.
-        kept, used = {}, 0
-        for path, content in sorted(source.items(), key=lambda item: len(item[1])):
-            if used + len(content) > budget:
+        source = {}
+        for item in self.workspace.list_files()['files']:
+            name = item['path']
+            if (name in state_runtime.HARNESS_OWNED or name.startswith('checks/')
+                    or name.startswith('backend/data/')
+                    or any(part.startswith('.') for part in name.split('/'))):
                 continue
-            kept[path] = content
-            used += len(content)
-        omitted = sorted(set(source) - set(kept))
+            if not (name.endswith(SOURCE_SUFFIXES)
+                    or name.rsplit('/', 1)[-1] in ('package.json', 'DESIGN.md')):
+                continue
+            try:
+                text = self.workspace.path(name).read_text()
+            except (OSError, UnicodeError, ValueError):
+                continue
+            if text == KNOWN_RUNTIME.get(name) or not text.strip():
+                continue
+            source[name] = text
+        return source
+
+    def batch_keywords(self, nodes):
+        """What this batch is about, in words a file path or a file body can carry.
+
+        The contract already says which collections each requirement touches, and a
+        generated application names its files after them, so the collection names are
+        the one relevance signal available before a single file is read.
+        """
+        if not self.contract:
+            return set()
+        touches = state_contract.requirement_state(self.contract)
+        words = set()
+        for node in nodes or ():
+            for name in touches.get(node.get('id'), ()):
+                lowered = str(name).lower()
+                words.add(lowered)
+                if lowered.endswith('s'):
+                    words.add(lowered[:-1])
+        return {word for word in words if len(word) > 2}
+
+    def contract_source(self, nodes=()):
+        """Product source the model edits, nearest to this batch first, bounded.
+
+        What survives the exclusions is offered nearest first: the files whose path
+        names one of this batch's collections, then the files whose text mentions one,
+        then the rest, each group smallest first, until the request's source budget is
+        full. Every file left out is named with its size so the model can ask for the
+        part of it that it needs instead of guessing.
+
+        Run 5 asked for this by losing it. This method used to select from
+        `source_snapshot`, which returns nothing at all once the tree holds more than
+        twenty candidate files, and it filtered the harness files out only afterwards.
+        From batch 11 on, 52 requests carried an empty product source while the tree
+        held the whole application, and batch 11 was one of the two that hit the call
+        cap. A tree with product files in it never summarises to nothing again.
+        """
+        source = self.editable_product_source()
+        if not source:
+            return {}
+        budget = self.source_budget()
+        keywords = self.batch_keywords(nodes)
+        order = sorted(source, key=lambda path: (source_distance(path, source[path], keywords),
+                                                 len(source[path]), path))
+        kept, used = {}, 0
+        for path in order:
+            if used + len(source[path]) > budget:
+                continue
+            kept[path] = source[path]
+            used += len(source[path])
+        omitted = [path for path in order if path not in kept]
         if omitted:
+            named = ', '.join('%s (%d bytes)' % (path, len(source[path]))
+                              for path in omitted[:OMITTED_NAMES])
+            if len(omitted) > OMITTED_NAMES:
+                named += ' and %d more' % (len(omitted) - OMITTED_NAMES)
             kept['_omitted_from_this_listing'] = (
-                'Too large to include: ' + ', '.join(omitted)
+                'In the tree but not included here: ' + named
                 + '. Read a section with read_file_chunk if you must change it.')
         return kept
 
@@ -1046,10 +1118,10 @@ class Agent:
 
         The first pass gives every batch one entry. After it, every batch that has not
         verified is entered again in schedule order, round robin, so no batch takes a
-        second entry before another has had its first. Run 762faa0bd756 delivered a
-        restored snapshot the moment one pass ended, and the batch that was mid-flight
-        when our own clock ran out lost its feature; the budget, not a single pass, is
-        what a run is now allowed to spend.
+        second entry before another has had its first. Run 762faa0bd756 spent its whole
+        hundred minutes, delivered a restored snapshot the moment one pass ended, and
+        scored 19/32: one pass was all it was allowed, whatever budget was left. The
+        budget, not a single pass, is what a run may now spend.
         """
         self.batches = self.batch_states()
         self.loop = {'passes': 0, 'ended_by': 'complete'}
@@ -1261,6 +1333,12 @@ class Agent:
     def guard_budget(self):
         if self.model.usage.calls >= self.max_calls:
             raise RuntimeError("Model call budget exhausted")
+        # Money is the real ceiling: the board ranks score against cost, and the same
+        # token count costs between CNY 3 and CNY 100 a million depending on the model
+        # and on whether the prompt was cached. The token budget stays underneath it as
+        # a safety net for a gateway that misreports its prices or its cache.
+        if self.model.usage.cost_cny >= self.cost_budget:
+            raise RuntimeError("Model cost budget exhausted")
         if self.model.usage.total_tokens >= self.token_budget:
             raise RuntimeError("Observed model token budget exhausted")
         if time.monotonic() >= self.workspace.deadline:
@@ -1440,7 +1518,7 @@ class Agent:
                    + self.requirements.batch_prompt(nodes)]
         if self.contract_text:
             request.append('Current product source (harness-owned runtime files omitted):\n'
-                           + json.dumps(self.contract_source(), ensure_ascii=False))
+                           + json.dumps(self.contract_source(nodes), ensure_ascii=False))
         if files['files']:
             request.append("Current application files:\n" + json.dumps(files))
         if self.inline_source:

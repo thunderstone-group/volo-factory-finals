@@ -14,6 +14,44 @@ class ModelError(RuntimeError):
     pass
 
 
+# CNY per million tokens, by gateway model id: uncached input, cached input, output.
+# A run is charged money, not tokens, and the three rates differ by two orders of
+# magnitude between models and by thirty between a cache hit and a miss: run 5 of the
+# Keep rehearsal read 3.66 M input tokens of which 2.42 M were cached, and cost CNY 8.4
+# rather than the CNY 11 the same tokens would have cost uncached. A token ceiling
+# cannot express that, so the terminal condition is the cost.
+PRICES = {
+    'deepseek-v4-flash': (3.0, 0.1, 9.0),
+    'deepseek-v4-pro': (9.0, 0.3, 27.0),
+    'kimi-k3': (20.0, 2.0, 100.0),
+    'qwen3.6-flash': (1.2, 1.2, 7.2),
+}
+
+# An id the table does not name is charged at the dearest general model we are
+# configured to call, so an unrecognised model can never spend more than the budget
+# believes it has.
+UNKNOWN_MODEL_PRICE = PRICES['deepseek-v4-pro']
+
+
+def price_of(model):
+    """The three rates for one gateway model id."""
+    return PRICES.get(str(model or '').strip().lower(), UNKNOWN_MODEL_PRICE)
+
+
+def call_cost(model, prompt_tokens, cached_tokens, completion_tokens):
+    """CNY for one response, from the token counts the gateway reported for it.
+
+    `prompt_tokens` is the whole prompt including the cached part, which is how both
+    DeepSeek and the organizer's gateway report it, so the uncached part is the
+    difference. A gateway that reports more cached tokens than prompt tokens is charged
+    as if none were cached rather than credited.
+    """
+    miss, hit, output = price_of(model)
+    cached = max(0, min(int(cached_tokens), int(prompt_tokens)))
+    uncached = int(prompt_tokens) - cached
+    return (uncached * miss + cached * hit + int(completion_tokens) * output) / 1000000
+
+
 @dataclass
 class Usage:
     calls: int = 0
@@ -21,6 +59,7 @@ class Usage:
     completion_tokens: int = 0
     cached_prompt_tokens: int = 0
     missing_usage_calls: int = 0
+    cost_cny: float = 0.0
 
     @property
     def total_tokens(self):
@@ -122,10 +161,17 @@ class Model:
                 raise ModelError("Model request failed; gateway usage may have been consumed") from exc
             usage = result.get("usage")
             if isinstance(usage, dict) and usage.get("prompt_tokens") is not None and usage.get("completion_tokens") is not None:
+                cached = int((usage.get("prompt_tokens_details") or {}).get("cached_tokens", 0))
                 self.usage.prompt_tokens += int(usage["prompt_tokens"])
                 self.usage.completion_tokens += int(usage["completion_tokens"])
-                self.usage.cached_prompt_tokens += int((usage.get("prompt_tokens_details") or {}).get("cached_tokens", 0))
+                self.usage.cached_prompt_tokens += cached
+                # Each response is priced at its own model's rates: the reference
+                # observer shares this Usage object but is a different, cheaper model.
+                self.usage.cost_cny = round(self.usage.cost_cny + call_cost(
+                    self.model, usage["prompt_tokens"], cached, usage["completion_tokens"]), 6)
             else:
+                # A response with no usage is still a real charge; it cannot be priced,
+                # so the count of them is what the run reports instead.
                 self.usage.missing_usage_calls += 1
             self.trace.event("model_response", response=result,
                              latency_seconds=round(time.monotonic() - started, 3))

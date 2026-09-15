@@ -459,6 +459,44 @@ assert.ok(await page.getByRole('link',{name:'Details',exact:true}).isVisible());
             model = Model(server.url, "synthetic-test-key", "test", self.trace)
             model.complete([], [])
             self.assertEqual(model.usage.missing_usage_calls, 1)
+            self.assertEqual(model.usage.cost_cny, 0.0,
+                             'a response with no usage cannot be priced, only counted')
+
+    def test_the_cost_meter_reproduces_the_retained_run(self):
+        # Keep rehearsal run 5 (2026-09-14) on deepseek-v4-flash, from its own
+        # checkpoint: 3,660,768 prompt tokens of which 2,420,224 were cached, and
+        # 488,148 completion tokens. The organizers charged CNY 8.4 for it.
+        from volo.model import call_cost
+        cost = call_cost('deepseek-v4-flash', 3660768, 2420224, 488148)
+        self.assertAlmostEqual(cost, 8.4, delta=8.4 * 0.05)
+
+    def test_each_model_is_charged_at_its_own_rates(self):
+        from volo.model import call_cost, price_of, PRICES
+        # One million uncached input tokens and nothing else, per model.
+        self.assertAlmostEqual(call_cost('deepseek-v4-flash', 1000000, 0, 0), 3.0)
+        self.assertAlmostEqual(call_cost('kimi-k3', 1000000, 0, 0), 20.0)
+        self.assertAlmostEqual(call_cost('qwen3.6-flash', 0, 0, 1000000), 7.2)
+        # A cache hit on the flash model is thirty times cheaper than a miss.
+        self.assertAlmostEqual(call_cost('deepseek-v4-flash', 1000000, 1000000, 0), 0.1)
+        # An id the table does not name is charged as the dearest general model.
+        self.assertEqual(price_of('some-unreleased-model'), PRICES['deepseek-v4-pro'])
+        self.assertAlmostEqual(call_cost('some-unreleased-model', 1000000, 0, 0), 9.0)
+        # A gateway that reports more cached tokens than prompt tokens is not credited.
+        self.assertAlmostEqual(call_cost('deepseek-v4-flash', 1000, 9999, 0), 0.0001)
+
+    def test_the_transport_accumulates_the_cost_of_every_priced_response(self):
+        payload = response([])
+        payload['usage'] = {'prompt_tokens': 1000000, 'completion_tokens': 100000,
+                            'total_tokens': 1100000,
+                            'prompt_tokens_details': {'cached_tokens': 800000}}
+        with FakeGateway([payload, json.loads(json.dumps(payload))]) as server:
+            model = Model(server.url, "synthetic-test-key", "deepseek-v4-flash", self.trace)
+            model.complete([], [])
+            one = (200000 * 3.0 + 800000 * 0.1 + 100000 * 9.0) / 1000000
+            self.assertAlmostEqual(model.usage.cost_cny, one, places=6)
+            model.complete([], [])
+            self.assertAlmostEqual(model.usage.cost_cny, one * 2, places=6)
+            self.assertEqual(model.usage.cached_prompt_tokens, 1600000)
 
     def test_thinking_effort_and_actual_truncated_usage(self):
         fixture = json.loads((ROOT / 'tests/fixtures/real-deepseek-truncated-metadata.json').read_text())

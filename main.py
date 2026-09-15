@@ -21,25 +21,36 @@ from volo.workspace import Workspace
 
 
 # A single-batch package (Smoke, Ticket) fits the small budget. A multi-batch package
-# takes the contract path and works until every batch is verified or the tokens are gone.
-# The wall clock is a safety net, not the terminal condition: run 762faa0bd756 scored
-# 19/32 because our own 45-minute clock ended a batch while the platform waits for the
-# container "without timeout", and the same code with every batch run scored 25/32 here.
-# The hosted machine makes 1.4-2 calls a minute, and the Keep board's 100% row spent
-# 9038 seconds and 28.8 M tokens, so three hours and 10 M tokens leave the schedule, its
-# re-entries and the final verification room to finish before anything cuts them off.
+# takes the contract path and works until every batch is verified or the money is gone.
+#
+# Money is the terminal condition because the board ranks score against cost: at 6.03
+# points, the row above us, a 26/32 run has to stay under CNY 13.47 and a 28/32 run
+# under CNY 14.51. CNY 12 leaves that margin and is half again what run 5 spent for
+# fifteen batches (CNY 8.36 at 142 calls). The token ceiling stays underneath as a
+# safety net only: the same 12 M tokens cost CNY 8 on deepseek-v4-flash and CNY 24 on a
+# dearer model, so it cannot express the limit that matters.
+#
+# The wall clock is a safety net too. Run 3313c37b801c died on our own 45-minute clock;
+# run 762faa0bd756 ran the full 100 minutes and still ended mid-batch, because one pass
+# over the schedule was all it was allowed. The platform waits for the container
+# "without timeout" and the hosted machine makes 1.4-2 calls a minute, so 320 calls need
+# up to 230 minutes and three hours is the right guard.
 # Explicit flags and FACTORY_* env win.
-SMALL_BUDGET = {"max_calls": 32, "token_budget": 450000, "timeout": 1200}
-LARGE_BUDGET = {"max_calls": 320, "token_budget": 10000000, "timeout": 10800}
+SMALL_BUDGET = {"max_calls": 32, "token_budget": 450000, "timeout": 1200, "cost_budget_cny": 0.6}
+LARGE_BUDGET = {"max_calls": 320, "token_budget": 10000000, "timeout": 10800, "cost_budget_cny": 12.0}
+
+BUDGET_ENV = {"max_calls": "FACTORY_MAX_CALLS", "token_budget": "FACTORY_TOKEN_BUDGET",
+              "timeout": "FACTORY_TIMEOUT", "cost_budget_cny": "FACTORY_COST_BUDGET_CNY"}
 
 
 def apply_budget_defaults(args, requirements):
     large = len(requirements.batches()) > 1
-    env = {"max_calls": "FACTORY_MAX_CALLS", "token_budget": "FACTORY_TOKEN_BUDGET", "timeout": "FACTORY_TIMEOUT"}
-    for name, variable in env.items():
-        if getattr(args, name) is None:
+    defaults = LARGE_BUDGET if large else SMALL_BUDGET
+    for name, variable in BUDGET_ENV.items():
+        if getattr(args, name, None) is None:
             value = os.getenv(variable)
-            setattr(args, name, int(value) if value else (LARGE_BUDGET if large else SMALL_BUDGET)[name])
+            read = float if name == "cost_budget_cny" else int
+            setattr(args, name, read(value) if value else defaults[name])
     return large
 
 
@@ -51,11 +62,13 @@ def main():
     parser.add_argument("--max-calls", type=int, default=None)
     parser.add_argument("--token-budget", type=int, default=None)
     parser.add_argument("--timeout", type=int, default=None)
+    parser.add_argument("--cost-budget-cny", type=float, default=None,
+                        help="CNY this run may spend at the gateway's published rates")
     parser.add_argument('--acceptance-contract', type=Path,
                         help='Reviewed external acceptance manifest; never discovered from generated files')
     args = parser.parse_args()
     apply_budget_defaults(args, RequirementSet.load(args.requirement_path))
-    if min(args.max_calls, args.token_budget, args.timeout) <= 0:
+    if min(args.max_calls, args.token_budget, args.timeout, args.cost_budget_cny) <= 0:
         parser.error("Budgets must be positive")
     requirements = RequirementSet.load(args.requirement_path)
     if args.inspect:
@@ -109,7 +122,7 @@ def main():
         workspace.acceptance_suite = acceptance
         trace.event("run_started", requirement_fingerprint=requirements.fingerprint,
                     model=model_name, vision_model=vision_name, max_calls=args.max_calls, token_budget=args.token_budget,
-                    timeout_seconds=args.timeout)
+                    timeout_seconds=args.timeout, cost_budget_cny=args.cost_budget_cny)
         try:
             # A package that does not fit one batch is implemented by several batches that
             # cannot see each other's code. Fix the shared state once, before any page is
@@ -123,6 +136,7 @@ def main():
                       + " cost=" + json.dumps(contract['cost']), flush=True)
             result = Agent(requirements, client, workspace, runtime,
                            max_calls=args.max_calls, token_budget=args.token_budget,
+                           cost_budget=args.cost_budget_cny,
                            references=references, contract=contract).run()
             print(json.dumps(result, ensure_ascii=False), flush=True)
             return 0
