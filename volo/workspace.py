@@ -19,6 +19,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from . import tap
 from .acceptance import AcceptanceUnavailable, REPORTER
 from .environment import discover_playwright
 from .launcher import install as install_launcher
@@ -305,6 +306,10 @@ class Workspace:
         self.counter = 0
         self.last_verification = None
         self.last_verification_attempt = None
+        # One entry per verification, in order: the names of the checks that failed in
+        # it. The salvage decision needs to know what was already failing before a batch
+        # touched anything, and nothing else keeps that.
+        self.verification_failures = []
         self.required_checks = []
         self.retain_failed_prepared_checks = False
         self.released_self_check = False
@@ -831,6 +836,8 @@ class Workspace:
                      "requirements_verified": bool(acceptance['passed']),
                      'acceptance': acceptance, **extra}
             self.last_verification_attempt = value
+            self.verification_failures.append(sorted(
+                {name for step in steps for name in tap.failure_names(step.get("output", ""))}))
             if ok:
                 self.last_verification = value
             atomic_json(self.trace.directory / "verification.json", value)

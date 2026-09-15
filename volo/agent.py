@@ -979,8 +979,17 @@ class Agent:
         are only untrustworthy where its own unverified checks said so, so those are moved
         aside and the bundle that was passing before the batch started is run once over
         the tree it left. Passing, the tree is kept and snapshotted and the batch is still
-        entered again later; failing, it is rolled back exactly as before. No model call is
-        spent here, and a deadline that has already passed skips straight to the rollback.
+        entered again later. No model call is spent here, and a deadline that has already
+        passed skips straight to the rollback.
+
+        Failing is not on its own a reason to roll back. The self-check suite is not
+        idempotent, so the bundle fails checks that have nothing to do with the batch:
+        Keep run 7's batch 11 fixed REQ-2.7.6.2, its salvage run failed only 2.5.1 twice
+        and 2.3.3, all three of them already failing earlier in the same entry, and the
+        fix was discarded with the rest. What decides now is the difference against
+        `salvage_baseline`: a check that has failed since before the entry began is not
+        evidence that the entry broke it. A run that names no failing check at all never
+        reached its checks, and rolls back as before.
         """
         state['quarantined'] = {}
         if not self.contract:
@@ -1005,15 +1014,40 @@ class Agent:
         command = self.workspace.discovered_check_command()
         if not command:
             return rolled_back('no_check_bundle', quarantined=sorted(quarantined))
+        baseline = self.salvage_baseline(state)
         try:
             result = self.workspace.verify(command)
         except (OSError, ValueError, TimeoutError) as exc:
             return rolled_back('verification_error', quarantined=sorted(quarantined),
                                error=self.trace.redact(str(exc))[:300])
-        if not result.get('passed'):
+        failures = set(self.workspace.verification_failures[-1]
+                       if self.workspace.verification_failures else ())
+        regressions = sorted(failures - baseline)
+        if not result.get('passed') and (regressions or not failures):
+            # Failing with no named failure means the bundle never reached its checks:
+            # a build error, a server that did not start, a defective check file. That
+            # is not a difference this batch can be cleared of.
             return rolled_back('bundle_failed', quarantined=sorted(quarantined),
-                               check_command=command,
+                               check_command=command, regressions=regressions,
+                               baseline=sorted(baseline),
                                error=self.trace.redact(str(result.get('error', '')))[:300])
+        if not result.get('passed'):
+            # Every check still failing here was failing before this batch wrote a line.
+            # Keep 11 was discarded on exactly this: its salvage failed 2.5.1 twice and
+            # 2.3.3, none of them its own, none of them new, and the fixed 2.7.6.2 went
+            # with it. Nothing here says the tree verified, so the batch's requirements
+            # are not marked complete; the tree is snapshotted anyway, because it is now
+            # the best one the run has and delivery restores from the snapshot.
+            self.check_command = command
+            self.snapshot_product(self.workspace.fingerprint())
+            self.trace.event('batch_salvage', batch=state['id'], outcome='kept_no_regression',
+                             kept=kept, quarantined=sorted(quarantined), check_command=command,
+                             pre_existing=sorted(failures), baseline=sorted(baseline))
+            state['status'] = 'salvaged'
+            state['outcome'] = 'kept_no_regression'
+            print('[volo] kept ' + str(len(kept)) + ' file(s) from the batch; the checks that '
+                  'still fail were already failing before it started', flush=True)
+            return 'salvaged'
         self.check_command = result['check_command']
         self.snapshot_product()
         state['status'] = 'salvaged'
@@ -1024,6 +1058,25 @@ class Agent:
         print('[volo] kept ' + str(len(kept)) + ' file(s) from the batch; the package still '
               'passes its checks without the batch check', flush=True)
         return 'salvaged'
+
+    def salvage_baseline(self, state):
+        """Checks that were already failing when this entry could not have caused it.
+
+        Everything this entry's own verifications reported, plus the verification that
+        ran before the entry started. The self-check suite is not idempotent: run 7's
+        2.5.1 failed at this batch's first two verifications, passed at the next four
+        and failed again in the salvage run, and treating that as a regression threw
+        away a batch's product code. A check that has failed once on this entry's watch
+        is not evidence that this entry broke it.
+        """
+        history = self.workspace.verification_failures
+        start = state.get('verifications_before')
+        if start is None:
+            start = max(0, len(history) - 1)
+        baseline = set()
+        for names in history[max(0, start - 1):]:
+            baseline.update(names)
+        return baseline
 
     def verified_snapshot_is_current(self):
         """True when the product tree equals the last snapshot taken after a passing verification."""
@@ -1094,8 +1147,16 @@ class Agent:
     def snapshot_path(self):
         return self.trace.directory / 'snapshot.json'
 
-    def snapshot_product(self):
-        """Keep a copy of the last tree that verified, so exhaustion still delivers one."""
+    def snapshot_product(self, fingerprint=None):
+        """Keep a copy of the best tree the run has, so exhaustion still delivers one.
+
+        Normally that is the last tree that verified. `fingerprint` names the current
+        tree instead, for the one case where a tree is kept without a verification of
+        its own: a capped batch whose salvage run failed nothing it had not already
+        been failing before the batch began. Its files are better than the pre-batch
+        snapshot and nothing else in the run will preserve them; the final delivery
+        path needs the snapshot to equal the tree or it refuses to deliver at all.
+        """
         source = self.workspace.last_verification
         if not source or not source.get('passed'):
             return False
@@ -1116,9 +1177,10 @@ class Agent:
                 continue
         # The last verification may have run a one-off diagnostic (run 3313c37b801c restored
         # `node checks/diag-color.cjs` as its check); the authored bundle is the check.
-        atomic_json(self.snapshot_path(), {'source_fingerprint': source['source_fingerprint'],
+        atomic_json(self.snapshot_path(), {'source_fingerprint': fingerprint or source['source_fingerprint'],
                                            'check_command': (self.workspace.discovered_check_command()
                                                              or source['check_command']),
+                                           'verified': fingerprint is None,
                                            'completed': list(self.completed), 'files': files})
         self.trace.event('product_snapshot', source_fingerprint=source['source_fingerprint'],
                          files=sorted(files), completed=list(self.completed))
@@ -1196,6 +1258,9 @@ class Agent:
         ids = [node['id'] for node in nodes]
         self.batch_index = state['index']
         state['entries'] += 1
+        # Where this entry starts in the verification history, so salvage can tell a
+        # check this batch broke from one that was already failing when it began.
+        state['verifications_before'] = len(self.workspace.verification_failures)
         state['entry_started_calls'] = started = self.model.usage.calls
         self.trace.event('batch_started', requirements=ids, batch=state['id'],
                          entry=state['entries'], entry_limit=BATCH_ENTRY_LIMIT)

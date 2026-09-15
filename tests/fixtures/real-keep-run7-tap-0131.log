@@ -1,0 +1,502 @@
+TAP version 13
+# Subtest: GET / returns HTTP 200 (home page is served)
+ok 1 - GET / returns HTTP 200 (home page is served)
+  ---
+  duration_ms: 45.343125
+  type: 'test'
+  ...
+# Subtest: GET /api/notes returns seeded notes with pinned flag
+ok 2 - GET /api/notes returns seeded notes with pinned flag
+  ---
+  duration_ms: 1.975667
+  type: 'test'
+  ...
+# Subtest: GET /api/labels returns an array
+ok 3 - GET /api/labels returns an array
+  ---
+  duration_ms: 0.790208
+  type: 'test'
+  ...
+# Subtest: home page shows notes with pinned separated from regular (browser)
+ok 4 - home page shows notes with pinned separated from regular (browser)
+  ---
+  duration_ms: 1041.949375
+  type: 'test'
+  ...
+# Subtest: list/grid toggle switches rendering without navigating (browser)
+ok 5 - list/grid toggle switches rendering without navigating (browser)
+  ---
+  duration_ms: 758.745584
+  type: 'test'
+  ...
+# Subtest: REQ-2.2 create a note from the Take a note form
+ok 6 - REQ-2.2 create a note from the Take a note form
+  ---
+  duration_ms: 251.547708
+  type: 'test'
+  ...
+# Subtest: REQ-2.4 update an existing note content
+ok 7 - REQ-2.4 update an existing note content
+  ---
+  duration_ms: 267.663167
+  type: 'test'
+  ...
+# Subtest: REQ-2.3.1 delete a note via More options
+ok 8 - REQ-2.3.1 delete a note via More options
+  ---
+  duration_ms: 286.701625
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.1 archive a note via the archive button with Undo
+ok 9 - REQ-2.5.1 archive a note via the archive button with Undo
+  ---
+  duration_ms: 261.865958
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.1 change an existing note color to light green
+ok 10 - REQ-2.6.1 change an existing note color to light green
+  ---
+  duration_ms: 271.2095
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.2 choose a color when creating a note
+ok 11 - REQ-2.6.2 choose a color when creating a note
+  ---
+  duration_ms: 264.5675
+  type: 'test'
+  ...
+# Subtest: REQ-2.7.1 assign a label to a note
+ok 12 - REQ-2.7.1 assign a label to a note
+  ---
+  duration_ms: 907.804375
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.1 archive a note via the archive button with Undo
+ok 13 - REQ-2.5.1 archive a note via the archive button with Undo
+  ---
+  duration_ms: 783.903833
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.1 change an existing note color to light green
+ok 14 - REQ-2.6.1 change an existing note color to light green
+  ---
+  duration_ms: 783.49625
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.2 choose a color when creating a note
+ok 15 - REQ-2.6.2 choose a color when creating a note
+  ---
+  duration_ms: 787.712
+  type: 'test'
+  ...
+# Subtest: GET / returns HTTP 200 (home page is served)
+ok 16 - GET / returns HTTP 200 (home page is served)
+  ---
+  duration_ms: 20.107333
+  type: 'test'
+  ...
+# Subtest: GET /api/notes returns seeded notes with pinned flag
+ok 17 - GET /api/notes returns seeded notes with pinned flag
+  ---
+  duration_ms: 17.406458
+  type: 'test'
+  ...
+# Subtest: GET /api/labels returns an array
+ok 18 - GET /api/labels returns an array
+  ---
+  duration_ms: 1.901042
+  type: 'test'
+  ...
+# Subtest: home page shows notes with pinned separated from regular (browser)
+ok 19 - home page shows notes with pinned separated from regular (browser)
+  ---
+  duration_ms: 975.310042
+  type: 'test'
+  ...
+# Subtest: list/grid toggle switches rendering without navigating (browser)
+ok 20 - list/grid toggle switches rendering without navigating (browser)
+  ---
+  duration_ms: 801.114542
+  type: 'test'
+  ...
+# Subtest: REQ-2.2 create a note from the Take a note form
+ok 21 - REQ-2.2 create a note from the Take a note form
+  ---
+  duration_ms: 803.887334
+  type: 'test'
+  ...
+# Subtest: REQ-2.4 update an existing note content
+ok 22 - REQ-2.4 update an existing note content
+  ---
+  duration_ms: 231.353959
+  type: 'test'
+  ...
+# Subtest: REQ-2.3.1 delete a note via More options
+ok 23 - REQ-2.3.1 delete a note via More options
+  ---
+  duration_ms: 291.288417
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.1 archive a note via the archive button with Undo
+not ok 24 - REQ-2.5.1 archive a note via the archive button with Undo
+  ---
+  duration_ms: 5317.811333
+  type: 'test'
+  location: '/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/browser.cjs:4:12'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for getByText('Travel plans 2.5.1').first() to be detached
+        14 × locator resolved to visible <div class="note-title">Travel plans 2.5.1</div>
+    
+    Browser state: {"url":"http://127.0.0.1:62663/","visible_text":"💡\nKeep\nGrid view\nList view\nNotes\n💡\nWork\n🔔\nReminders\nWork editable\nArchived\nTrash\nTake a note...\nPINNED\nSprint goals\nPin on create mu29shw3\nPinned from creation\nPin on create mu29shvy\nPinned from creation\nPin on create mu29psld\nPinned from creation\nPin on create mu29psir\nPinned from creation\nPin on create mu29kp9a\nPinned from creation\nPin on create mu29kp8l\nPinned from creation\nPin on create mu299qvk\nPinned from creation\nPin on create mu299qvq\nPinned from creation\nPin on create mu293q5g\nPinned from creation\nPin on create mu293q2o\nPinned from creation\nPin on create mu28w6ej\nPinned from creation\nPin on create mu28agii\nPinned from creation\nPin on create mu28ac8v\nPinned from creation\nPin on create mu282lmw\nPinned from creation\nPin on create mu282idm\nPinned from creation\nOTHERS\nTeam retro add label\nTravel plans 2.5.4\nGarden tasks existing\nTravel plans 2.5.3\nTravel plans 2.5.1\nTravel plans 2.5.2\n📌\n⋮\n📥\n🎨\nProject ideas\nInitial editable content\nDelete me 2.3.2\nDelete me 2.3.1\nGroceries\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nMeeting agenda 2.8.2\nCall dentist existing\nReminders\nMovie list\nDesign review\nWork\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nRemove label 1789450360502\nx\nRemove label 1789450348028\nx\nWork\nBatch4 colored note\nbatch4 color content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nRemove label 1789450013316\nx\nWork\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nMeeting agenda 2.8.1\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\n","pending_requests":[],"page_errors":[]}
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    /private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/batch-2.spec.cjs:53:15
+    async TestContext.<anonymous> (/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/browser.cjs:17:7)
+  ...
+# Subtest: REQ-2.6.1 change an existing note color to light green
+ok 25 - REQ-2.6.1 change an existing note color to light green
+  ---
+  duration_ms: 250.213583
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.2 choose a color when creating a note
+ok 26 - REQ-2.6.2 choose a color when creating a note
+  ---
+  duration_ms: 255.601209
+  type: 'test'
+  ...
+# Subtest: REQ-2.7.1 assign a label to a note
+ok 27 - REQ-2.7.1 assign a label to a note
+  ---
+  duration_ms: 864.453291
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.1 archive a note via the archive button with Undo
+ok 28 - REQ-2.5.1 archive a note via the archive button with Undo
+  ---
+  duration_ms: 1328.224875
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.1 change an existing note color to light green
+ok 29 - REQ-2.6.1 change an existing note color to light green
+  ---
+  duration_ms: 855.145541
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.2 choose a color when creating a note
+ok 30 - REQ-2.6.2 choose a color when creating a note
+  ---
+  duration_ms: 789.82675
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.1 archive a note shows notification with Undo and moves it to the archive list
+ok 31 - REQ-2.5.1 archive a note shows notification with Undo and moves it to the archive list
+  ---
+  duration_ms: 1447.657416
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.1 change an existing note color to light green
+ok 32 - REQ-2.6.1 change an existing note color to light green
+  ---
+  duration_ms: 812.057917
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.2 choose a color when creating a note
+ok 33 - REQ-2.6.2 choose a color when creating a note
+  ---
+  duration_ms: 829.862334
+  type: 'test'
+  ...
+# Subtest: REQ-2.7.3 default label Reminders is in the label list with its own icon
+ok 34 - REQ-2.7.3 default label Reminders is in the label list with its own icon
+  ---
+  duration_ms: 1068.335
+  type: 'test'
+  ...
+# Subtest: REQ-2.8.1 pin an existing note moves it to the pinned section
+not ok 35 - REQ-2.8.1 pin an existing note moves it to the pinned section
+  ---
+  duration_ms: 1037.839625
+  type: 'test'
+  location: '/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/batch-6.spec.cjs:55:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/batch-6.spec.cjs:63:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: REQ-2.8.3 pin a note when creating it
+not ok 36 - REQ-2.8.3 pin a note when creating it
+  ---
+  duration_ms: 665.381
+  type: 'test'
+  location: '/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/batch-6.spec.cjs:69:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    created note exists exactly once
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/batch-6.spec.cjs:82:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: REQ-2.3.2 delete notification with Undo restores the note
+ok 37 - REQ-2.3.2 delete notification with Undo restores the note
+  ---
+  duration_ms: 722.484458
+  type: 'test'
+  ...
+# Subtest: REQ-2.3.3 Trash list shows deleted notes and empties trash
+not ok 38 - REQ-2.3.3 Trash list shows deleted notes and empties trash
+  ---
+  duration_ms: 5704.74675
+  type: 'test'
+  location: '/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/browser.cjs:4:12'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for getByText('Delete me 2.3.3').first() to be visible
+    
+    Browser state: {"url":"http://127.0.0.1:62663/","visible_text":"💡\nKeep\nGrid view\nList view\nNotes\n💡\nWork\n🔔\nReminders\nWork editable\nArchived\nTrash\nTake a note...\nPINNED\nSprint goals\nPin on create mu29shw3\nPinned from creation\nPin on create mu29shvy\nPinned from creation\nPin on create mu29psld\nPinned from creation\nPin on create mu29psir\nPinned from creation\nPin on create mu29kp9a\nPinned from creation\nPin on create mu29kp8l\nPinned from creation\nPin on create mu299qvk\nPinned from creation\nPin on create mu299qvq\nPinned from creation\nPin on create mu293q5g\nPinned from creation\nPin on create mu293q2o\nPinned from creation\nPin on create mu28w6ej\nPinned from creation\nPin on create mu28agii\nPinned from creation\nPin on create mu28ac8v\nPinned from creation\nPin on create mu282lmw\nPinned from creation\nPin on create mu282idm\nPinned from creation\nOTHERS\nTravel plans 2.5.2\nTeam retro add label\nGarden tasks existing\nTravel plans 2.5.1\nTravel plans 2.5.4\nProject ideas\nInitial editable content\nTravel plans 2.5.3\nDelete me 2.3.2\nDelete me 2.3.1\nGroceries\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nMeeting agenda 2.8.2\nCall dentist existing\nReminders\nMovie list\nDesign review\nWork\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nRemove label 1789450360502\nx\nRemove label 1789450348028\nx\nWork\nBatch4 colored note\nbatch4 color content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nRemove label 1789450013316\nx\nWork\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nMeeting agenda 2.8.1\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nBatch3 colored note\nbatch3 color content\nBatch4 colored note\nbatch4 color content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\nBatch3 colored note\nbatch3 color content\nColored new note\ncolored content\nAuto created note\nAuto created content\nBatch4 colored note\nbatch4 color content\nBatch3 colo","pending_requests":[],"page_errors":[]}
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    /private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/batch-7.spec.cjs:19:51
+    async TestContext.<anonymous> (/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/browser.cjs:17:7)
+  ...
+# Subtest: REQ-2.3.3 deleted notes older than seven days are auto-purged
+ok 39 - REQ-2.3.3 deleted notes older than seven days are auto-purged
+  ---
+  duration_ms: 148.921416
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.3 Archived view shows archived notes
+ok 40 - REQ-2.5.3 Archived view shows archived notes
+  ---
+  duration_ms: 304.596209
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.2 Archive notification Undo restores the note
+ok 41 - REQ-2.5.2 Archive notification Undo restores the note
+  ---
+  duration_ms: 307.079417
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.4: Unarchive removes note from archived list and restores it to main list
+not ok 42 - REQ-2.5.4: Unarchive removes note from archived list and restores it to main list
+  ---
+  duration_ms: 30966.784625
+  type: 'test'
+  location: '/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/batch-8.spec.cjs:31:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByText('Travel plans 2.5.4').first() to be visible
+    
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    TestContext.<anonymous> (/private/tmp/claude-501/-Users-e0-7-projects/b6937271-0436-4602-9e6d-0d2be52fb3c4/scratchpad/keep-full-7/app/checks/batch-8.spec.cjs:44:56)
+  ...
+# Subtest: REQ-2.7.6.2: Notes link returns from label filter to the full notes list
+ok 43 - REQ-2.7.6.2: Notes link returns from label filter to the full notes list
+  ---
+  duration_ms: 720.727583
+  type: 'test'
+  ...
+# [interface] 19 states inspected, 0 input groups probed, 0 overlays driven, 2137 ms
+# [interface] names matching no requirement text (reported, not failed): ["Search"]
+# Subtest: every state one interaction away is nameable and unambiguous
+ok 44 - every state one interaction away is nameable and unambiguous
+  ---
+  duration_ms: 2854.129542
+  type: 'test'
+  ...
+# Subtest: REQ-2.8.1 pin an existing note moves it to the pinned section
+ok 45 - REQ-2.8.1 pin an existing note moves it to the pinned section
+  ---
+  duration_ms: 1148.060458
+  type: 'test'
+  ...
+# Subtest: REQ-2.8.3 pin a note when creating it
+ok 46 - REQ-2.8.3 pin a note when creating it
+  ---
+  duration_ms: 698.406333
+  type: 'test'
+  ...
+# Subtest: REQ-2.3.2 delete notification with Undo restores the note
+ok 47 - REQ-2.3.2 delete notification with Undo restores the note
+  ---
+  duration_ms: 720.055708
+  type: 'test'
+  ...
+# Subtest: GET / returns HTTP 200 (home page is served)
+ok 48 - GET / returns HTTP 200 (home page is served)
+  ---
+  duration_ms: 42.843667
+  type: 'test'
+  ...
+# Subtest: GET /api/notes returns seeded notes with pinned flag
+ok 49 - GET /api/notes returns seeded notes with pinned flag
+  ---
+  duration_ms: 1.813667
+  type: 'test'
+  ...
+# Subtest: GET /api/labels returns an array
+ok 50 - GET /api/labels returns an array
+  ---
+  duration_ms: 0.815791
+  type: 'test'
+  ...
+# Subtest: home page shows notes with pinned separated from regular (browser)
+ok 51 - home page shows notes with pinned separated from regular (browser)
+  ---
+  duration_ms: 1005.933041
+  type: 'test'
+  ...
+# Subtest: list/grid toggle switches rendering without navigating (browser)
+ok 52 - list/grid toggle switches rendering without navigating (browser)
+  ---
+  duration_ms: 750.543875
+  type: 'test'
+  ...
+# Subtest: REQ-2.2 create a note from the Take a note form
+ok 53 - REQ-2.2 create a note from the Take a note form
+  ---
+  duration_ms: 279.926042
+  type: 'test'
+  ...
+# Subtest: REQ-2.4 update an existing note content
+ok 54 - REQ-2.4 update an existing note content
+  ---
+  duration_ms: 275.3055
+  type: 'test'
+  ...
+# Subtest: REQ-2.3.1 delete a note via More options
+ok 55 - REQ-2.3.1 delete a note via More options
+  ---
+  duration_ms: 286.810833
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.1 archive a note via the archive button with Undo
+ok 56 - REQ-2.5.1 archive a note via the archive button with Undo
+  ---
+  duration_ms: 261.554875
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.1 change an existing note color to light green
+ok 57 - REQ-2.6.1 change an existing note color to light green
+  ---
+  duration_ms: 269.002416
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.2 choose a color when creating a note
+ok 58 - REQ-2.6.2 choose a color when creating a note
+  ---
+  duration_ms: 274.359625
+  type: 'test'
+  ...
+# Subtest: REQ-2.7.1 assign a label to a note
+ok 59 - REQ-2.7.1 assign a label to a note
+  ---
+  duration_ms: 900.253875
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.1 archive a note via the archive button with Undo
+ok 60 - REQ-2.5.1 archive a note via the archive button with Undo
+  ---
+  duration_ms: 802.2555
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.1 change an existing note color to light green
+ok 61 - REQ-2.6.1 change an existing note color to light green
+  ---
+  duration_ms: 765.291125
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.2 choose a color when creating a note
+ok 62 - REQ-2.6.2 choose a color when creating a note
+  ---
+  duration_ms: 813.25775
+  type: 'test'
+  ...
+# Subtest: REQ-2.5.1 archive a note shows notification with Undo and moves it to the archive list
+ok 63 - REQ-2.5.1 archive a note shows notification with Undo and moves it to the archive list
+  ---
+  duration_ms: 763.561042
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.1 change an existing note color to light green
+ok 64 - REQ-2.6.1 change an existing note color to light green
+  ---
+  duration_ms: 749.414125
+  type: 'test'
+  ...
+# Subtest: REQ-2.6.2 choose a color when creating a note
+ok 65 - REQ-2.6.2 choose a color when creating a note
+  ---
+  duration_ms: 787.618708
+  type: 'test'
+  ...
+# [interface] 19 states inspected, 0 input groups probed, 0 overlays driven, 2130 ms
+# [interface] names matching no requirement text (reported, not failed): ["Search"]
+# Subtest: every state one interaction away is nameable and unambiguous
+ok 66 - every state one interaction away is nameable and unambiguous
+  ---
+  duration_ms: 2255.502042
+  type: 'test'
+  ...
+# HEADER_BEGIN
+# <header><div class="brand"><span class="bulb">💡</span><span>Keep</span></div><div role="search" class="search-wrap"><input type="text" class="search" placeholder="Search" aria-label="Search"></div><div class="tools"><button type="button" class="view-btn active">Grid view</button><button type="button" class="view-btn">List view</button></div></header><div class="layout"><nav class="sidebar" aria-label="Sidebar"><a class="nav-item active" href="/">Notes<span class="nav-icon">💡</span></a><a class="nav-item" href="/">Work</a><a class="nav-item" href="/"><span class="nav-icon">🔔</span>Reminders</a><a class="nav-item" href="/">Work editable</a><a class="nav-item nav-arch-link" href="/">Archived</a><a class="nav-item nav-trash-link" href="/">Trash</a></nav><main class="main"><div class="composer">Take a note...</div><section><h2 class="section-head">Pinned</h2><div class="grid"><div class="note" data-id="note-sprint-goals"><div class="note-title">Sprint goals</div><button type="button" class="pin-btn" aria-label="Pin">📌</button><button type="button" class="more-btn" aria-label="More options">⋮</button><button type="button" class="action-btn archive-btn" aria-label="Archive">📥</button
+# HEADER_END
+# roles searchbox= 0 search= 1 placeholder= 1 aria= 1
+# Subtest: debug page
+ok 67 - debug page
+  ---
+  duration_ms: 149.507875
+  type: 'test'
+  ...
+# HEADER_BEGIN
+# <header><div class="brand"><span class="bulb">💡</span><span>Keep</span></div><div role="search" class="search-wrap"><input type="text" class="search" placeholder="Search" aria-label="Search"></div><div class="tools"><button type="button" class="view-btn active">Grid view</button><button type="button" class="view-btn">List view</button></div></header><div class="layout"><nav class="sidebar" aria-label="Sidebar"><a class="nav-item active" href="/">Notes<span class="nav-icon">💡</span></a><a class="nav-item" href="/">Work</a><a class="nav-item" href="/"><span class="nav-icon">🔔</span>Reminders</a><a class="nav-item" href="/">Work editable</a><a class="nav-item nav-arch-link" href="/">Archived</a><a class="nav-item nav-trash-link" href="/">Trash</a></nav><main class="main"><div class="composer">Take a note...</div><section><h2 class="section-head">Pinned</h2><div class="grid"><div class="note" data-id="note-sprint-goals"><div class="note-title">Sprint goals</div><button type="button" class="pin-btn" aria-label="Pin">📌</button><button type="button" class="more-btn" aria-label="More options">⋮</button><button type="button" class="action-btn archive-btn" aria-label="Archive">📥</button
+# HEADER_END
+# roles searchbox= 0 search= 1 placeholder= 1 aria= 1
+# Subtest: debug page
+ok 68 - debug page
+  ---
+  duration_ms: 718.9965
+  type: 'test'
+  ...
+1..68
+# tests 68
+# suites 0
+# pass 63
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 31900.896084
