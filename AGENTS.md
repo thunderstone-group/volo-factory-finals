@@ -28,8 +28,9 @@ Do not use or extend the previous smoke submission. It is not a baseline for thi
 - `docs/harness-design-2026-09-12.md`: pinned-source comparison and proposed next experiments.
 - `docs/strategy.md`: verified competition facts, design choices and next experiments.
 - `scripts/package.py`: reproducible upload ZIP; excludes credentials, tests and development artifacts.
-- `arcbench` / `arcbench_cli.py`: local website API client for uploads, runs, logs and results;
-  separate from the uploaded agent. See `docs/platform-cli.md`.
+- `docs/platform-cli.md`: how to install and configure the separate `arcbench` platform
+  client, and the platform rules that bind this harness. The client is not in this
+  repository; it lives in thunderstone-group/arcbench-cli.
 
 ## Rules
 

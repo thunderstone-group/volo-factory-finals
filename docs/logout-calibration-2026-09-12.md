@@ -62,7 +62,7 @@ There is no new reason from this experiment to enable an additional model by def
 
 ## Reproduction
 
-Use the four source files returned by `./arcbench source 5618708b9481` for
+Use the four source files returned by `arcbench source 5618708b9481` for
 `frontend/public/index.html`, `backend/api.cjs`, `backend/server.cjs`, and
 `checks/requirements.cjs`, saved as `index.html`, `api.cjs`, `server.cjs` and
 `requirements.cjs` in a private source directory. Then run:
