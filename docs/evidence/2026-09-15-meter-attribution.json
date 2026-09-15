@@ -1,0 +1,146 @@
+{
+  "captured_at": "2026-09-15T03:30:00Z",
+  "account": "VOLO AI",
+  "runs_started_local": "2026-09-15 10:14:34-10:15:18 (UTC+8), all seven concurrent",
+  "runs": [
+    {
+      "run_id": "f079898ea278",
+      "task": "bookstack",
+      "submission": "672b777e6cbe",
+      "passed": 9,
+      "failed": 25,
+      "platform_tokens": 30050676,
+      "platform_cost_cny": 37.190881,
+      "duration_s": 2777,
+      "finished_at": "2026-09-15T03:02:29Z"
+    },
+    {
+      "run_id": "332541babb5d",
+      "task": "stackoverflow",
+      "submission": "672b777e6cbe",
+      "passed": 11,
+      "failed": 55,
+      "platform_tokens": 30124871,
+      "platform_cost_cny": 37.663134,
+      "duration_s": 2837,
+      "finished_at": "2026-09-15T03:05:03Z"
+    },
+    {
+      "run_id": "b0ff49104419",
+      "task": "prestashop",
+      "submission": "672b777e6cbe",
+      "passed": 13,
+      "failed": 73,
+      "platform_tokens": 30124871,
+      "platform_cost_cny": 37.663134,
+      "duration_s": 2832,
+      "finished_at": "2026-09-15T03:05:49Z"
+    },
+    {
+      "run_id": "abb087c9b2ad",
+      "task": "12306",
+      "submission": "672b777e6cbe",
+      "passed": 0,
+      "failed": 135,
+      "platform_tokens": 30124871,
+      "platform_cost_cny": 37.663134,
+      "duration_s": 2954,
+      "finished_at": "2026-09-15T03:04:23Z"
+    },
+    {
+      "run_id": "a9696c7ee767",
+      "task": "ctrip",
+      "submission": "672b777e6cbe",
+      "passed": 0,
+      "failed": 125,
+      "platform_tokens": 30124871,
+      "platform_cost_cny": 37.663134,
+      "duration_s": 2941,
+      "finished_at": "2026-09-15T03:04:14Z"
+    },
+    {
+      "run_id": "d130ad13f228",
+      "task": "keep",
+      "submission": "68d7d015431f",
+      "passed": 0,
+      "failed": 0,
+      "platform_tokens": 29910448,
+      "platform_cost_cny": 36.452976,
+      "duration_s": 2738,
+      "finished_at": "2026-09-15T03:01:16Z"
+    },
+    {
+      "run_id": "2c8302b9bef9",
+      "task": "bookstack",
+      "submission": "68d7d015431f",
+      "passed": 0,
+      "failed": 0,
+      "platform_tokens": 29910448,
+      "platform_cost_cny": 36.452976,
+      "duration_s": 2726,
+      "finished_at": "2026-09-15T03:01:10Z"
+    }
+  ],
+  "sum_of_platform_cost_cny": 260.75,
+  "meter_hourly_rows_utc": [
+    {
+      "dimensions": {
+        "bucket": "2026-09-15T02:00:00+00:00",
+        "model": "deepseek-v4-flash"
+      },
+      "measures": {
+        "amount": "35.183570",
+        "cached_tokens": 22435328,
+        "completion_tokens": 2157007,
+        "prompt_tokens": 26944316,
+        "quantity": 29101323,
+        "usage_event_count": 1040
+      }
+    },
+    {
+      "dimensions": {
+        "bucket": "2026-09-15T02:00:00+00:00",
+        "model": "qwen3.6-flash"
+      },
+      "measures": {
+        "amount": "0.810799",
+        "cached_tokens": 0,
+        "completion_tokens": 94171,
+        "prompt_tokens": 110643,
+        "quantity": 204814,
+        "usage_event_count": 38
+      }
+    },
+    {
+      "dimensions": {
+        "bucket": "2026-09-15T03:00:00+00:00",
+        "model": "deepseek-v4-flash"
+      },
+      "measures": {
+        "amount": "1.634097",
+        "cached_tokens": 577280,
+        "completion_tokens": 146976,
+        "prompt_tokens": 661808,
+        "quantity": 808784,
+        "usage_event_count": 19
+      }
+    },
+    {
+      "dimensions": {
+        "bucket": "2026-09-15T03:00:00+00:00",
+        "model": "qwen3.6-flash"
+      },
+      "measures": {
+        "amount": "0.034668",
+        "cached_tokens": 0,
+        "completion_tokens": 3788,
+        "prompt_tokens": 6162,
+        "quantity": 9950,
+        "usage_event_count": 1
+      }
+    }
+  ],
+  "meter_total_cny_02_to_04_utc": 37.66,
+  "meter_total_tokens_02_to_04_utc": 30124871,
+  "gateway_402_first_seen_local": "2026-09-15 10:48:18 (UTC+8), local generation log; balance -1.353979 CNY at 11:05"
+}
