@@ -1,0 +1,2013 @@
+{
+  "config": {
+    "argv": [
+      "~/.nvm/versions/node/v22.22.0/bin/node",
+      "~/projects/arcbench-campaign/upstream/arc-bench/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/config-bookstack-hosted.ts"
+    ],
+    "configFile": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/config-bookstack-hosted.ts",
+    "rootDir": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 10000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/report-bookstack-hosted.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "REQ-1.1.spec.ts",
+      "file": "REQ-1.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-1.1: Open Homepage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 227,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.270Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a7b8e3b7ae99911946cc-2735e5d501df448f68ce",
+          "file": "REQ-1.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-1.2.spec.ts",
+      "file": "REQ-1.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-1.2: Back to Homepage from Other Pages",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 318,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.279Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b2b9c9c004eb7688a9e6-8a6df0a7f1aa8555da96",
+          "file": "REQ-1.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-2.1.spec.ts",
+      "file": "REQ-2.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-2.1: Enter Login Page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 286,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.271Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "903f386c94ab6e7e763f-446ebb47262881a5bdad",
+          "file": "REQ-2.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-2.2.spec.ts",
+      "file": "REQ-2.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-2.2: Log In Successfully",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 343,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.271Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcc76bf73e172b9e647c-dab2dd65c89d75be5d5d",
+          "file": "REQ-2.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-3.1.spec.ts",
+      "file": "REQ-3.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-3.1: Enter Authenticated Homepage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 165,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.817Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "514aa3b4d4039f149fbd-b60e5360dabf5761981d",
+          "file": "REQ-3.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-4.1.spec.ts",
+      "file": "REQ-4.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-4.1: View Shelf List",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 89,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.876Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de6caa8a5418b7d7e7a3-c05dfc639b6f7406fd41",
+          "file": "REQ-4.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-4.2.1.spec.ts",
+      "file": "REQ-4.2.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-4.2.1: Enter Shelf Details Page",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "timedOut",
+                  "duration": 10014,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Shelf\\s+4\\.2\\.1/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openShelfDetails (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:188:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-4.2.1.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.907Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-4.2.1-REQ-4-2-1-Enter-Shelf-Details-Page-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "161472c1072b94c22436-8b482d23677528a5cf33",
+          "file": "REQ-4.2.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-4.3.1.spec.ts",
+      "file": "REQ-4.3.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-4.3.1: Create Shelf",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "timedOut",
+                  "duration": 10008,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /New Shelf/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-4.3.1.spec.ts:9:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.935Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-4.3.1-REQ-4-3-1-Create-Shelf-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e182992be669491731da-d2f410a56679584254d3",
+          "file": "REQ-4.3.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-4.3.2.spec.ts",
+      "file": "REQ-4.3.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-4.3.2: Cancel Creation",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "timedOut",
+                  "duration": 10007,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Shelf\\s+4\\.3\\.2/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openShelfDetails (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:188:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-4.3.2.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.972Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-4.3.2-REQ-4-3-2-Cancel-Creation-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e4a80b73cfebc723178f-d4fa35cde68207abc908",
+          "file": "REQ-4.3.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-4.4.1.spec.ts",
+      "file": "REQ-4.4.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-4.4.1: Confirm Delete Shelf",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10010,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Shelf\\s+4\\.4\\.1/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openShelfDetails (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:188:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-4.4.1.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:40.988Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-4.4.1-REQ-4-4-1-Confirm-Delete-Shelf-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "c15a69d21e51c04704c3-f4fd279773a7a0832816",
+          "file": "REQ-4.4.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-4.4.2.spec.ts",
+      "file": "REQ-4.4.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-4.4.2: Cancel Delete Shelf",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 236,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:51.278Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2d613ac5259fa498c1dc-d5f4f3a12b13c5c55540",
+          "file": "REQ-4.4.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-4.5.1.spec.ts",
+      "file": "REQ-4.5.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-4.5.1: Save Shelf Edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 264,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:51.276Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fd937caedc15cc9fd00c-f54c6e70a96b7273b2bf",
+          "file": "REQ-4.5.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-4.5.2.spec.ts",
+      "file": "REQ-4.5.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-4.5.2: Cancel Shelf Edits",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 2,
+                  "status": "timedOut",
+                  "duration": 10010,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^Edit$/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-4.5.2.spec.ts:9:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:51.306Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-4.5.2-REQ-4-5-2-Cancel-Shelf-Edits-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "60eb352b293dd09f476f-beeebb40d2d1346a4ada",
+          "file": "REQ-4.5.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.1.spec.ts",
+      "file": "REQ-5.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.1: View Books List",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:51.299Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "284c5566ac8985c9ad6c-03b86e06e1da033df6f1",
+          "file": "REQ-5.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.2.1.spec.ts",
+      "file": "REQ-5.2.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.2.1: Enter Book Details Page through Book List Page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 110,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:51.587Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "641c3f53d64d50120fb3-0cf33f79abd7fd2ae166",
+          "file": "REQ-5.2.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.2.2.spec.ts",
+      "file": "REQ-5.2.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.2.2: Enter Book Details Page through Shelf Details Page",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 3,
+                  "status": "timedOut",
+                  "duration": 10009,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Shelf\\s+5\\.2\\.2/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at openShelfDetails (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:188:3)\n    at Object.openBookDetailsFromShelf (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:202:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-5.2.2.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:51.653Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-5.2.2-REQ-5-2-2-Enter--c57f6--through-Shelf-Details-Page-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0136829d92b176f483ab-1480717c985115c77726",
+          "file": "REQ-5.2.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.3.1.spec.ts",
+      "file": "REQ-5.3.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.3.1: Fill out and Save Book",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "timedOut",
+                  "duration": 10006,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Create New Book/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openBookCreationFromList (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:208:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-5.3.1.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:51.682Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-5.3.1-REQ-5-3-1-Fill-out-and-Save-Book-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "c676d43c4e52096cd584-967a902e40e00dc859d0",
+          "file": "REQ-5.3.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.3.2.spec.ts",
+      "file": "REQ-5.3.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.3.2: Cancel Creating Book",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10008,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Create New Book/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openBookCreationFromList (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:208:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-5.3.2.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:38:51.703Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-5.3.2-REQ-5-3-2-Cancel-Creating-Book-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "221a81884f1ebaf8e189-0f63e5087ae335a5ec88",
+          "file": "REQ-5.3.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.4.1.spec.ts",
+      "file": "REQ-5.4.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.4.1: Save Book Edits",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 2,
+                  "status": "timedOut",
+                  "duration": 10008,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^Edit$/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-5.4.1.spec.ts:9:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:01.713Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-5.4.1-REQ-5-4-1-Save-Book-Edits-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "329928fbac5cea39111c-afb267f21c349d8cd47a",
+          "file": "REQ-5.4.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.4.2.spec.ts",
+      "file": "REQ-5.4.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.4.2: Cancel Book Edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 197,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:01.954Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bdec390007c080fc0ae4-565239f728cdb37cdcbf",
+          "file": "REQ-5.4.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.5.1.spec.ts",
+      "file": "REQ-5.5.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.5.1: Confirm Delete Book",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "timedOut",
+                  "duration": 10009,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^Delete$/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-5.5.1.spec.ts:9:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:01.981Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-5.5.1-REQ-5-5-1-Confirm-Delete-Book-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0ded912b8a60c0568aa8-0f6a37283e23262a5c9a",
+          "file": "REQ-5.5.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.5.2.spec.ts",
+      "file": "REQ-5.5.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.5.2: Cancel Delete Book",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10009,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^Delete$/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-5.5.2.spec.ts:9:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:01.999Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-5.5.2-REQ-5-5-2-Cancel-Delete-Book-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "d4923fa61fa20af9275b-b42862ec1595893b72ea",
+          "file": "REQ-5.5.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-5.6.1.spec.ts",
+      "file": "REQ-5.6.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5.6.1: Fill out and Save Book with Shelf",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 3,
+                  "status": "timedOut",
+                  "duration": 10010,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Shelf\\s+5\\.6\\.1/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at openShelfDetails (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:188:3)\n    at Object.openBookCreationFromShelf (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:212:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-5.6.1.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:02.253Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-5.6.1-REQ-5-6-1-Fill-out-and-Save-Book-with-Shelf-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "cd5f7442105cc89ad9d5-171c39f8d3e9c48b81d2",
+          "file": "REQ-5.6.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-6.1.1.spec.ts",
+      "file": "REQ-6.1.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-6.1.1: Save Page",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 2,
+                  "status": "timedOut",
+                  "duration": 10011,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /New Page/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openPageEditor (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:244:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-6.1.1.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:12.146Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-6.1.1-REQ-6-1-1-Save-Page-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "c2df4ff5d4d2ee81825c-afa86863e370b670d862",
+          "file": "REQ-6.1.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-6.1.2.spec.ts",
+      "file": "REQ-6.1.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-6.1.2: Save Draft",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 1,
+                  "status": "timedOut",
+                  "duration": 10010,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /New Page/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openPageEditor (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:244:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-6.1.2.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:12.374Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-6.1.2-REQ-6-1-2-Save-Draft-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "c08b92986f0d5d8926d2-b9a80933699b1c34b2df",
+          "file": "REQ-6.1.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-6.1.3.spec.ts",
+      "file": "REQ-6.1.3.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-6.1.3: Delete Draft",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 14,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10008,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Draft\\s+6\\.1\\.3/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openDraftPageEditor (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:249:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-6.1.3.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:12.385Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-6.1.3-REQ-6-1-3-Delete-Draft-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "da5c81f3741021ee448d-b07d352adc7f170398f9",
+          "file": "REQ-6.1.3.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-6.2.1.spec.ts",
+      "file": "REQ-6.2.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-6.2.1: Create Chapter",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 15,
+                  "parallelIndex": 3,
+                  "status": "timedOut",
+                  "duration": 10015,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /New Chapter/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openChapterCreation (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:264:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-6.2.1.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:12.570Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-6.2.1-REQ-6-2-1-Create-Chapter-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "d63dd5277cb67724bd40-9e085d29bac317f0dbb8",
+          "file": "REQ-6.2.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-6.3.1.spec.ts",
+      "file": "REQ-6.3.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-6.3.1: Enter Page Reading Page",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 16,
+                  "parallelIndex": 2,
+                  "status": "timedOut",
+                  "duration": 10012,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Page\\s+6\\.3\\.1/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openPageReading (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:274:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-6.3.1.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:22.582Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-6.3.1-REQ-6-3-1-Enter-Page-Reading-Page-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fce4615919234071bb06-0772ab8695514b02a6d0",
+          "file": "REQ-6.3.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-6.3.2.spec.ts",
+      "file": "REQ-6.3.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-6.3.2: Redirect to Page Edit Page",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 18,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10009,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Page\\s+6\\.3\\.2/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openPageReading (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:274:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-6.3.2.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:22.780Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-6.3.2-REQ-6-3-2-Redirect-to-Page-Edit-Page-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "01f6fe1e0f49b4a60c57-3f4601aeb0a6eee0c468",
+          "file": "REQ-6.3.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-7.1.spec.ts",
+      "file": "REQ-7.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-7.1: Add to Recently Viewed",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 17,
+                  "parallelIndex": 1,
+                  "status": "timedOut",
+                  "duration": 10009,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 27,
+                        "line": 137
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: /My\\s+Recently\\s+Viewed/i }).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: /My\\s+Recently\\s+Viewed/i }).first()\u001b[22m\n\n\n   at helpers.ts:137\n\n  135 |       page.getByPlaceholder(name),\n  136 |     ]);\n> 137 |     await expect(locator).toBeVisible();\n      |                           ^\n  138 |   }\n  139 | }\n  140 |\n    at Object.expectTextsVisible (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:137:27)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-7.1.spec.ts:10:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:22.776Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-7.1-REQ-7-1-Add-to-Recently-Viewed-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "3e555ff8125373696c08-cb6bf7118112e881fc90",
+          "file": "REQ-7.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-7.2.spec.ts",
+      "file": "REQ-7.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-7.2: Quick Navigation from Recently Viewed",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 3,
+                  "status": "timedOut",
+                  "duration": 10011,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/Shelf\\s+7\\.2/i).first()\u001b[22m\n\u001b[2m    - locator resolved to <h1>Shelf 7.2</h1>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not stable\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-7.2.spec.ts:10:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:22.995Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-7.2-REQ-7-2-Quick-Navigation-from-Recently-Viewed-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "4584923e89d6398ed6eb-32b2ea68be8247261882",
+          "file": "REQ-7.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-8.1.spec.ts",
+      "file": "REQ-8.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-8.1: Favorite Items",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 20,
+                  "parallelIndex": 2,
+                  "status": "timedOut",
+                  "duration": 10008,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^Favorite$/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-8.1.spec.ts:9:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:33.008Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-8.1-REQ-8-1-Favorite-Items-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "c6ebf0de0a530ee2db2a-a82579f9f402a500bc5b",
+          "file": "REQ-8.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-8.2.spec.ts",
+      "file": "REQ-8.2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-8.2: Quick Navigation from Favorites",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 22,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10007,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^Favorite$/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-8.2.spec.ts:9:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:33.179Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-8.2-REQ-8-2-Quick-Navigation-from-Favorites-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6b82cc3723ce738fbe69-c0d7030898038b1f71dc",
+          "file": "REQ-8.2.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "REQ-9.1.spec.ts",
+      "file": "REQ-9.1.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-9.1: Quick Navigation from Recently Updated",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 21,
+                  "parallelIndex": 1,
+                  "status": "timedOut",
+                  "duration": 10008,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts",
+                        "column": 17,
+                        "line": 122
+                      },
+                      "message": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /New Page/i }).first()\u001b[22m\n\n\n   at helpers.ts:122\n\n  120 |     page.getByText(name),\n  121 |   ]);\n> 122 |   await locator.click();\n      |                 ^\n  123 | }\n  124 |\n  125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)\n    at Object.openPageEditor (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:244:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-9.1.spec.ts:8:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-15T08:39:33.173Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-9.1-REQ-9-1-Quick-Navigation-from-Recently-Updated-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "cd17f0bc5642ed41f690-acfd332b31706640fef3",
+          "file": "REQ-9.1.spec.ts",
+          "line": 7,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-15T08:38:39.973Z",
+    "duration": 63340.901,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 23,
+    "flaky": 0
+  }
+}

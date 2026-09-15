@@ -1,0 +1,199 @@
+
+> build
+> node build.cjs
+
+[rehearsal] bookstack / hosted -> http://127.0.0.1:62985
+(node:55196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55195) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55198) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55197) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55557) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55558) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55559) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55560) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55817) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55818) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55819) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55821) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56017) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56018) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56023) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56272) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56273) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56274) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56279) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56494) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56517) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56518) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+sible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('heading', { name: /My\s+Recently\s+Viewed/i }).first()
+
+
+       at helpers.ts:137
+
+      135 |       page.getByPlaceholder(name),
+      136 |     ]);
+    > 137 |     await expect(locator).toBeVisible();
+          |                           ^
+      138 |   }
+      139 | }
+      140 |
+        at Object.expectTextsVisible (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:137:27)
+        at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-7.1.spec.ts:10:3
+
+    Error Context: ../../../volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-7.1-REQ-7-1-Add-to-Recently-Viewed-chromium/error-context.md
+
+  20) [chromium] › arc-bench/webapp/bookstack/tests/REQ-7.2.spec.ts:7:5 › REQ-7.2: Quick Navigation from Recently Viewed 
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/Shelf\s+7\.2/i).first()
+        - locator resolved to <h1>Shelf 7.2</h1>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is not stable
+      - retrying click action
+        - waiting for element to be visible, enabled and stable
+      - element was detached from the DOM, retrying
+
+
+       at helpers.ts:122
+
+      120 |     page.getByText(name),
+      121 |   ]);
+    > 122 |   await locator.click();
+          |                 ^
+      123 | }
+      124 |
+      125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+        at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)
+        at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-7.2.spec.ts:10:3
+
+    Error Context: ../../../volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-7.2-REQ-7-2-Quick-Navigation-from-Recently-Viewed-chromium/error-context.md
+
+  21) [chromium] › arc-bench/webapp/bookstack/tests/REQ-8.1.spec.ts:7:5 › REQ-8.1: Favorite Items ──
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /^Favorite$/i }).first()
+
+
+       at helpers.ts:122
+
+      120 |     page.getByText(name),
+      121 |   ]);
+    > 122 |   await locator.click();
+          |                 ^
+      123 | }
+      124 |
+      125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+        at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)
+        at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-8.1.spec.ts:9:3
+
+    Error Context: ../../../volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-8.1-REQ-8-1-Favorite-Items-chromium/error-context.md
+
+  22) [chromium] › arc-bench/webapp/bookstack/tests/REQ-8.2.spec.ts:7:5 › REQ-8.2: Quick Navigation from Favorites 
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /^Favorite$/i }).first()
+
+
+       at helpers.ts:122
+
+      120 |     page.getByText(name),
+      121 |   ]);
+    > 122 |   await locator.click();
+          |                 ^
+      123 | }
+      124 |
+      125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+        at Object.clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)
+        at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-8.2.spec.ts:9:3
+
+    Error Context: ../../../volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-8.2-REQ-8-2-Quick-Navigation-from-Favorites-chromium/error-context.md
+
+  23) [chromium] › arc-bench/webapp/bookstack/tests/REQ-9.1.spec.ts:7:5 › REQ-9.1: Quick Navigation from Recently Updated 
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /New Page/i }).first()
+
+
+       at helpers.ts:122
+
+      120 |     page.getByText(name),
+      121 |   ]);
+    > 122 |   await locator.click();
+          |                 ^
+      123 | }
+      124 |
+      125 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+        at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:122:17)
+        at Object.openPageEditor (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/helpers.ts:244:3)
+        at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/tests/REQ-9.1.spec.ts:8:3
+
+    Error Context: ../../../volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/official/artifacts/REQ-9.1-REQ-9-1-Quick-Navigation-from-Recently-Updated-chromium/error-context.md
+
+  23 failed
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-4.2.1.spec.ts:7:5 › REQ-4.2.1: Enter Shelf Details Page 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-4.3.1.spec.ts:7:5 › REQ-4.3.1: Create Shelf ──
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-4.3.2.spec.ts:7:5 › REQ-4.3.2: Cancel Creation 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-4.4.1.spec.ts:7:5 › REQ-4.4.1: Confirm Delete Shelf 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-4.5.2.spec.ts:7:5 › REQ-4.5.2: Cancel Shelf Edits 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-5.2.2.spec.ts:7:5 › REQ-5.2.2: Enter Book Details Page through Shelf Details Page 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-5.3.1.spec.ts:7:5 › REQ-5.3.1: Fill out and Save Book 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-5.3.2.spec.ts:7:5 › REQ-5.3.2: Cancel Creating Book 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-5.4.1.spec.ts:7:5 › REQ-5.4.1: Save Book Edits 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-5.5.1.spec.ts:7:5 › REQ-5.5.1: Confirm Delete Book 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-5.5.2.spec.ts:7:5 › REQ-5.5.2: Cancel Delete Book 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-5.6.1.spec.ts:7:5 › REQ-5.6.1: Fill out and Save Book with Shelf 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-6.1.1.spec.ts:7:5 › REQ-6.1.1: Save Page ─────
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-6.1.2.spec.ts:7:5 › REQ-6.1.2: Save Draft ────
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-6.1.3.spec.ts:7:5 › REQ-6.1.3: Delete Draft ──
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-6.2.1.spec.ts:7:5 › REQ-6.2.1: Create Chapter 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-6.3.1.spec.ts:7:5 › REQ-6.3.1: Enter Page Reading Page 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-6.3.2.spec.ts:7:5 › REQ-6.3.2: Redirect to Page Edit Page 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-7.1.spec.ts:7:5 › REQ-7.1: Add to Recently Viewed 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-7.2.spec.ts:7:5 › REQ-7.2: Quick Navigation from Recently Viewed 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-8.1.spec.ts:7:5 › REQ-8.1: Favorite Items ────
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-8.2.spec.ts:7:5 › REQ-8.2: Quick Navigation from Favorites 
+    [chromium] › arc-bench/webapp/bookstack/tests/REQ-9.1.spec.ts:7:5 › REQ-9.1: Quick Navigation from Recently Updated 
+  11 passed (1.1m)
+[rehearsal] {"app": "bookstack", "profile": "hosted", "workers": 4, "test_timeout_ms": 10000, "expect_timeout_ms": 10000, "trace": "off", "video": "off", "application": "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-official/app", "readiness": {"health": 0.387, "root": 0.388, "health_last": "<urlopen error [Errno 61] Connection refused>"}, "wall_seconds": 64.2, "exit_code": 1, "total": 34, "passed": 11, "failed": 23, "failed_titles": ["REQ-4.2.1: Enter Shelf Details Page", "REQ-4.3.1: Create Shelf", "REQ-4.3.2: Cancel Creation", "REQ-4.4.1: Confirm Delete Shelf", "REQ-4.5.2: Cancel Shelf Edits", "REQ-5.2.2: Enter Book Details Page through Shelf Details Page", "REQ-5.3.1: Fill out and Save Book", "REQ-5.3.2: Cancel Creating Book", "REQ-5.4.1: Save Book Edits", "REQ-5.5.1: Confirm Delete Book", "REQ-5.5.2: Cancel Delete Book", "REQ-5.6.1: Fill out and Save Book with Shelf", "REQ-6.1.1: Save Page", "REQ-6.1.2: Save Draft", "REQ-6.1.3: Delete Draft", "REQ-6.2.1: Create Chapter", "REQ-6.3.1: Enter Page Reading Page", "REQ-6.3.2: Redirect to Page Edit Page", "REQ-7.1: Add to Recently Viewed", "REQ-7.2: Quick Navigation from Recently Viewed", "REQ-8.1: Favorite Items", "REQ-8.2: Quick Navigation from Favorites", "REQ-9.1: Quick Navigation from Recently Updated"]}
