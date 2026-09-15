@@ -5,9 +5,32 @@ The objective is repeatable correctness on new requirements and subsequent chang
 Official evaluation establishes competition performance; local checks establish only
 what they actually exercise.
 
-## Development baseline
+## Current ARC project — 2026-09-16
 
-Version **0.7.0.dev35** is the latest consolidated agent. Its E057 official Ticket Booking
+VOLO is the single main project. One-shot is an implementation inside it, not a
+parallel harness project. The independent forum command also lives here but never
+ships in the competition archive. The existing reusable `arcbench-cli` repository
+remains the sole platform client; do not vendor a second copy into VOLO.
+
+| Active entry | Purpose |
+|---|---|
+| `oneshot/main.py` | Versioned one-shot candidate, bounded requests and staged delivery |
+| `scripts/package_oneshot.py` | Candidate ZIP plus source/package SHA-256 manifest |
+| `qiwoo`, `tools/qiwoo_cli/` | Separate forum reader and local drafts; live login/publishing unfinished |
+| installed `arcbench` | Platform operations, maintained in `thunderstone-group/arcbench-cli` |
+| `docs/SESSION_HANDOFF.md` | Continuation and verification boundaries |
+
+Build the candidate with `python3 scripts/package_oneshot.py`; output is
+`oneshot/dist/oneshot.zip`. See [one-shot](docs/oneshot.md), [forum CLI](docs/forum-cli.md),
+and [workspace cleanup](docs/workspace-consolidation-2026-09-16.md).
+The original `oneshot-lab` directory remains an untouched recovery source, not the
+active development entry. Original root `main.py`, `volo/`, `harness_lab/` and
+`scripts/package.py` are a frozen legacy baseline. Do not mistake that older archive
+for the new candidate or claim improved scores from deterministic tests.
+
+## Historical multi-round baseline (frozen)
+
+Version **0.7.0.dev35** was the dated consolidated agent. Its E057 official Ticket Booking
 run scored **9/10**, **CNY 0.668715**, **212 seconds**, and reached **rank 1** in the
 September 12, 18:08 Taipei snapshot. One registration test still times out. The new
 bounded repair branch did not execute in that run, so its model convergence remains
@@ -19,7 +42,7 @@ come from the platform CLI; [experiments](docs/experiments.md) preserves dated r
 The earlier [consolidation review](docs/harness-consolidation-2026-09-12.md) records how
 the prior runtime, explicit acceptance and optional lab tools were integrated.
 
-## Repository map
+## Legacy baseline map
 
 | Location | Responsibility |
 |---|---|
@@ -33,7 +56,7 @@ the prior runtime, explicit acceptance and optional lab tools were integrated.
 `AGENTS.md` maps development work. Keep the main checkout on `main`; create each new
 branch in `../volo-factory-worktrees/` from current `main`, and merge through a PR.
 
-## Run the competition agent
+## Run the legacy baseline explicitly
 
 ```sh
 python3 -m venv .venv
@@ -69,7 +92,7 @@ completion. Without a manifest, `verified_requirements` stays empty and
 `independent_acceptance` is `not_configured`. Even a supplied suite proves only its
 calibrated cases; official evaluation remains separate.
 
-## Validate and package
+## Validate and package the legacy baseline
 
 ```sh
 .venv/bin/python -m unittest discover -s tests -v

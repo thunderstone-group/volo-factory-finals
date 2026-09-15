@@ -3,7 +3,24 @@
 This is a new competition agent for the GOSIM Software Factory 2026 hackathon.
 Do not use or extend the previous smoke submission. It is not a baseline for this implementation.
 
-## Map
+## Current project boundary
+
+`volo-factory` is the only main ARC project. Active one-shot work belongs under
+`oneshot/`, its tests under `tests_oneshot/`, and its packaging entry is
+`scripts/package_oneshot.py`. `oneshot-lab` is an untouched import/recovery source,
+not a parallel active project. `qiwoo` / `tools/qiwoo_cli/` are independent development
+operations, never agent-package dependencies; tests live under `tests_forum/`.
+Use the existing standalone `arcbench-cli` as the only platform client. Do not revive
+the removed `arcbench_cli.py` or create a second forum repository by default.
+
+Root `main.py`, `volo/`, `harness_lab/`, and `scripts/package.py` are frozen legacy
+components, not the current one-shot candidate. Changes to their role must be explicit.
+Read `docs/oneshot.md`, `docs/forum-cli.md` and the current handoff before experiments.
+Run the relevant deterministic suites; a sandbox-denied integration test is not a pass
+and must not be rerun by broadening permissions. Keep one-shot packaging allowlisted.
+No generation/behavior/score improvement is proved by mock tests or successful packaging.
+
+## Historical and reference map
 
 - `docs/campaign-plan-2026-09-14.md`: competition rules as stated by the organizers, the arc-bench-web board state, the objective-driven generalisation strategy and the order of work up to the 2026-09-21 preliminary.
 - `docs/SESSION_HANDOFF.md`: current continuation entrypoint, retained run evidence and unresolved work.

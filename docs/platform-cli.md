@@ -52,9 +52,9 @@ is started, including from the website.
 ## Typical sequence
 
 ```sh
-.venv/bin/python scripts/package.py             # dist/volo-factory.zip
-arcbench upload dist/volo-factory.zip --competition ticket-booking --name volo-vN
-arcbench run SUBMISSION_ID --task ticket-booking--ticket-booking
+.venv/bin/python scripts/package_oneshot.py     # oneshot/dist/oneshot.zip
+arcbench upload oneshot/dist/oneshot.zip --competition arc-bench-lite --name volo-oneshot-vN
+arcbench run SUBMISSION_ID --task arc-bench-lite--keep
 arcbench wait RUN_ID --interval 20 --timeout 3600
 arcbench logs RUN_ID --tail 40
 ```

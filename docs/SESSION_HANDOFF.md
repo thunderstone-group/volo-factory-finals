@@ -1,3 +1,45 @@
+# Current handoff — 2026-09-16
+
+The sole main project is `volo-factory`. Do not resume development from the retired
+`ts-kernel`, state-contract, upload or small-public-acceptance worktrees. Their code
+is retained under `archive/2026-09-16/*` tags; private hashed source/run archives and
+Git bundles are in `runs/workspace-archive-20260916/` in the main checkout.
+
+## Active work
+
+- One-shot: `oneshot/`; build with `scripts/package_oneshot.py`. Import and candidate
+  provenance are separate. 25 mock/file regressions passed and two builds matched.
+  See `docs/oneshot.md` for the hash and the unvalidated loopback/runtime boundaries.
+- Forum: standalone `qiwoo` command in this repo. 44 synthetic regressions passed.
+  Reading contracts, browser-session handoff and real publishing are NOT yet validated;
+  `publish` is explicitly disabled. See `docs/forum-cli.md`.
+- ARC CLI: use the existing `arcbench-cli` repo, not a vendored client. Launch preflight
+  hardening is being reviewed separately; inspect that repo's live main/PR state before
+  assuming the installed command includes it. Main VOLO now removes the duplicate CLI
+  while preserving `chore/cli-reference` ancestry.
+
+No new paid ARC model experiment, upload or formal competition run was made here.
+Next quality work is a fixed-package Keep/Bookstack Lite baseline, not a restoration
+of the old costly repair loop. Follow the current official worker, memory and timeout
+settings and keep independently generated failures/costs in the record.
+
+## Cleanup / remaining bounds
+
+Five old worktrees were archived and removed; 23 already-merged remote branches were
+pruned with exact leases. A stale nine-hour read-only poll was stopped only after all
+13 awaited runs were confirmed terminal. PR #21 is closed with archive references.
+Two older pi-harness records remain PENDING (`c5608657cdd0`, `a6d5b8635598`): their
+cancellation was blocked before execution. No historical score or run record was deleted.
+The Docker daemon was unavailable, so containers/images are not certified clean.
+The original dirty `oneshot-lab` remains untouched as a recovery source. No unknown
+remote VM or unrelated project was modified. See the cleanup report for provenance.
+
+The root multi-round runtime is retained as a frozen historical baseline. Old status,
+rank, balance and active-work recommendations below are dated history, not live state.
+Read Git and platform state before acting.
+
+---
+
 # ARC continuation handoff — 2026-09-14 evening (supersedes the sections below)
 
 Read `docs/campaign-plan-2026-09-14.md` first: organizer rules (two-tier ranking at an
