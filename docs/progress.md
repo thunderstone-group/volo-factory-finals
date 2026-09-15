@@ -1213,3 +1213,17 @@ generation has been run against any of this.
 - Fallback line continues on `feat/state-contract`: fixes F1–F6 from the run 7 attribution in
   flight (agent `harness-fix-run7`), Keep run 8 on that head afterwards.
 - Also in flight: Prime Agent adapter trial (agent `prime-adapter`, `~/projects/prime-agent-lab/`).
+
+## 2026-09-15, 18:17 — One-shot Keep: flash 27/32 and 29/32 at under CNY 1 (`~/projects/oneshot-lab`)
+
+- One chat-completions call, no tools, no self-checks, no repair. Input = requirements.yaml +
+  a 59-line dialect card distilled from the corpus doc and the three attributions (no test
+  source) + the delivery contract. deepseek-v4-flash: run 1 hosted 27/32 (repo 27), CNY 0.94;
+  run 2 hosted **29/32** (repo 27), CNY 0.88. kimi-k3: 19/32, CNY 0.40. Failures cluster in the
+  label dialog (2.7.1/2.7.2/2.7.4/2.7.5) plus one of 2.3.3 / 2.6.1.
+- Design card (one extra planning call, then generation constrained to it): 23/32 twice, repo
+  5 and 7 (backend dies under the sequential suite). Ablation negative; dropped.
+- Against everything else today: fallback run 5 25/32 at CNY 8.4, run 7 22/32 at 12.0, Prime
+  best 22/32 at 1.2, board leader 100% at 16.58 (efficiency 6.03); 29/32 at 0.88 is 103.
+- Next: three more flash runs for variance; package as an ARC submission for one official Keep
+  run; targeted repair of the label dialog once the check compiler calibrates.
