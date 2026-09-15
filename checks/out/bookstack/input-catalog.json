@@ -1,0 +1,213 @@
+{
+  "app": "bookstack",
+  "requirements": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/requirements/requirements.yaml",
+  "contract": "~/projects/volo-factory/runs/2026-09-15-bookstack-2/app/.factory/state-contract.json",
+  "requirementsSha256": "be5041fd2f6a75993b23905f2a307ef3625238abe4bd168b38b05e51d8b2f646",
+  "contractSha256": "4c5c1093a86a2f98ff45ddb897a25b57618d377db0d1a689b0ae2d8aa7d783fe",
+  "scenarios": [
+    {
+      "scenario": "REQ-1.1#1",
+      "requirement": "REQ-1.1",
+      "title": "Open Homepage",
+      "group": "REQ-1"
+    },
+    {
+      "scenario": "REQ-1.2#1",
+      "requirement": "REQ-1.2",
+      "title": "Back to Homepage from Other Pages",
+      "group": "REQ-1"
+    },
+    {
+      "scenario": "REQ-2.1#1",
+      "requirement": "REQ-2.1",
+      "title": "Enter Login Page",
+      "group": "REQ-2"
+    },
+    {
+      "scenario": "REQ-2.2#1",
+      "requirement": "REQ-2.2",
+      "title": "Log In Successfully",
+      "group": "REQ-2"
+    },
+    {
+      "scenario": "REQ-3.1#1",
+      "requirement": "REQ-3.1",
+      "title": "Enter Authenticated Homepage",
+      "group": "REQ-3"
+    },
+    {
+      "scenario": "REQ-4.1#1",
+      "requirement": "REQ-4.1",
+      "title": "View Shelf List",
+      "group": "REQ-4"
+    },
+    {
+      "scenario": "REQ-4.2.1#1",
+      "requirement": "REQ-4.2.1",
+      "title": "Enter Shelf Details Page",
+      "group": "REQ-4.2"
+    },
+    {
+      "scenario": "REQ-4.3.1#1",
+      "requirement": "REQ-4.3.1",
+      "title": "Create Shelf",
+      "group": "REQ-4.3"
+    },
+    {
+      "scenario": "REQ-4.3.2#1",
+      "requirement": "REQ-4.3.2",
+      "title": "Cancel Creation",
+      "group": "REQ-4.3"
+    },
+    {
+      "scenario": "REQ-4.4.1#1",
+      "requirement": "REQ-4.4.1",
+      "title": "Confirm Delete Shelf",
+      "group": "REQ-4.4"
+    },
+    {
+      "scenario": "REQ-4.4.2#1",
+      "requirement": "REQ-4.4.2",
+      "title": "Cancel Delete Shelf",
+      "group": "REQ-4.4"
+    },
+    {
+      "scenario": "REQ-4.5.1#1",
+      "requirement": "REQ-4.5.1",
+      "title": "Save Shelf Edits",
+      "group": "REQ-4.5"
+    },
+    {
+      "scenario": "REQ-4.5.2#1",
+      "requirement": "REQ-4.5.2",
+      "title": "Cancel Shelf Edits",
+      "group": "REQ-4.5"
+    },
+    {
+      "scenario": "REQ-5.1#1",
+      "requirement": "REQ-5.1",
+      "title": "View Books List",
+      "group": "REQ-5"
+    },
+    {
+      "scenario": "REQ-5.2.1#1",
+      "requirement": "REQ-5.2.1",
+      "title": "Enter Book Details Page through Book List Page",
+      "group": "REQ-5.2"
+    },
+    {
+      "scenario": "REQ-5.2.2#1",
+      "requirement": "REQ-5.2.2",
+      "title": "Enter Book Details Page through Shelf Details Page",
+      "group": "REQ-5.2"
+    },
+    {
+      "scenario": "REQ-5.3.1#1",
+      "requirement": "REQ-5.3.1",
+      "title": "Fill out and Save Book",
+      "group": "REQ-5.3"
+    },
+    {
+      "scenario": "REQ-5.3.2#1",
+      "requirement": "REQ-5.3.2",
+      "title": "Cancel Creating Book",
+      "group": "REQ-5.3"
+    },
+    {
+      "scenario": "REQ-5.4.1#1",
+      "requirement": "REQ-5.4.1",
+      "title": "Save Book Edits",
+      "group": "REQ-5.4"
+    },
+    {
+      "scenario": "REQ-5.4.2#1",
+      "requirement": "REQ-5.4.2",
+      "title": "Cancel Book Edits",
+      "group": "REQ-5.4"
+    },
+    {
+      "scenario": "REQ-5.5.1#1",
+      "requirement": "REQ-5.5.1",
+      "title": "Confirm Delete Book",
+      "group": "REQ-5.5"
+    },
+    {
+      "scenario": "REQ-5.5.2#1",
+      "requirement": "REQ-5.5.2",
+      "title": "Cancel Delete Book",
+      "group": "REQ-5.5"
+    },
+    {
+      "scenario": "REQ-5.6.1#1",
+      "requirement": "REQ-5.6.1",
+      "title": "Fill out and Save Book with Shelf",
+      "group": "REQ-5.6"
+    },
+    {
+      "scenario": "REQ-6.1.1#1",
+      "requirement": "REQ-6.1.1",
+      "title": "Save Page",
+      "group": "REQ-6.1"
+    },
+    {
+      "scenario": "REQ-6.1.2#1",
+      "requirement": "REQ-6.1.2",
+      "title": "Save Draft",
+      "group": "REQ-6.1"
+    },
+    {
+      "scenario": "REQ-6.1.3#1",
+      "requirement": "REQ-6.1.3",
+      "title": "Delete Draft",
+      "group": "REQ-6.1"
+    },
+    {
+      "scenario": "REQ-6.2.1#1",
+      "requirement": "REQ-6.2.1",
+      "title": "Create Chapter",
+      "group": "REQ-6.2"
+    },
+    {
+      "scenario": "REQ-6.3.1#1",
+      "requirement": "REQ-6.3.1",
+      "title": "Enter Page Reading Page",
+      "group": "REQ-6.3"
+    },
+    {
+      "scenario": "REQ-6.3.2#1",
+      "requirement": "REQ-6.3.2",
+      "title": "Redirect to Page Edit Page",
+      "group": "REQ-6.3"
+    },
+    {
+      "scenario": "REQ-7.1#1",
+      "requirement": "REQ-7.1",
+      "title": "Add to Recently Viewed",
+      "group": "REQ-7"
+    },
+    {
+      "scenario": "REQ-7.2#1",
+      "requirement": "REQ-7.2",
+      "title": "Quick Navigation from Recently Viewed",
+      "group": "REQ-7"
+    },
+    {
+      "scenario": "REQ-8.1#1",
+      "requirement": "REQ-8.1",
+      "title": "Favorite Items",
+      "group": "REQ-8"
+    },
+    {
+      "scenario": "REQ-8.2#1",
+      "requirement": "REQ-8.2",
+      "title": "Quick Navigation from Favorites",
+      "group": "REQ-8"
+    },
+    {
+      "scenario": "REQ-9.1#1",
+      "requirement": "REQ-9.1",
+      "title": "Quick Navigation from Recently Updated",
+      "group": "REQ-9"
+    }
+  ]
+}

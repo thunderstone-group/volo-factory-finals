@@ -1,0 +1,201 @@
+{
+  "app": "keep",
+  "requirements": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/requirements/requirements.yaml",
+  "contract": "~/projects/volo-factory/runs/2026-09-15-keep-full-7/app/.factory/state-contract.json",
+  "requirementsSha256": "0ee5e976f513ba19dff5348d0eb4813bcc3c1d4229ed28b3beb2cb51af90ea0e",
+  "contractSha256": "9784f4e9336a0707b902fa343cd2a9f7adc8e45e741712e8937320aeb94ea201",
+  "scenarios": [
+    {
+      "scenario": "REQ-1.1#1",
+      "requirement": "REQ-1.1",
+      "title": "Enter Website",
+      "group": "REQ-1"
+    },
+    {
+      "scenario": "REQ-2.1#1",
+      "requirement": "REQ-2.1",
+      "title": "Note Listing",
+      "group": "REQ-2"
+    },
+    {
+      "scenario": "REQ-2.2#1",
+      "requirement": "REQ-2.2",
+      "title": "Create Note",
+      "group": "REQ-2"
+    },
+    {
+      "scenario": "REQ-2.3.1#1",
+      "requirement": "REQ-2.3.1",
+      "title": "Delete",
+      "group": "REQ-2.3"
+    },
+    {
+      "scenario": "REQ-2.3.2#1",
+      "requirement": "REQ-2.3.2",
+      "title": "Notification and Undo",
+      "group": "REQ-2.3"
+    },
+    {
+      "scenario": "REQ-2.3.3#1",
+      "requirement": "REQ-2.3.3",
+      "title": "Trash list",
+      "group": "REQ-2.3"
+    },
+    {
+      "scenario": "REQ-2.4#1",
+      "requirement": "REQ-2.4",
+      "title": "Update Note",
+      "group": "REQ-2"
+    },
+    {
+      "scenario": "REQ-2.5.1#1",
+      "requirement": "REQ-2.5.1",
+      "title": "Archive",
+      "group": "REQ-2.5"
+    },
+    {
+      "scenario": "REQ-2.5.2#1",
+      "requirement": "REQ-2.5.2",
+      "title": "Archive Undo",
+      "group": "REQ-2.5"
+    },
+    {
+      "scenario": "REQ-2.5.3#1",
+      "requirement": "REQ-2.5.3",
+      "title": "Show archived notes",
+      "group": "REQ-2.5"
+    },
+    {
+      "scenario": "REQ-2.5.4#1",
+      "requirement": "REQ-2.5.4",
+      "title": "Unarchive",
+      "group": "REQ-2.5"
+    },
+    {
+      "scenario": "REQ-2.6.1#1",
+      "requirement": "REQ-2.6.1",
+      "title": "Change note color",
+      "group": "REQ-2.6"
+    },
+    {
+      "scenario": "REQ-2.6.2#1",
+      "requirement": "REQ-2.6.2",
+      "title": "Choose note color when created",
+      "group": "REQ-2.6"
+    },
+    {
+      "scenario": "REQ-2.7.1#1",
+      "requirement": "REQ-2.7.1",
+      "title": "Assign label to a note",
+      "group": "REQ-2.7"
+    },
+    {
+      "scenario": "REQ-2.7.2#1",
+      "requirement": "REQ-2.7.2",
+      "title": "Remove label from a note",
+      "group": "REQ-2.7"
+    },
+    {
+      "scenario": "REQ-2.7.3#1",
+      "requirement": "REQ-2.7.3",
+      "title": "Default label",
+      "group": "REQ-2.7"
+    },
+    {
+      "scenario": "REQ-2.7.4#1",
+      "requirement": "REQ-2.7.4",
+      "title": "Assign default label when creating note",
+      "group": "REQ-2.7"
+    },
+    {
+      "scenario": "REQ-2.7.5#1",
+      "requirement": "REQ-2.7.5",
+      "title": "Edit labels",
+      "group": "REQ-2.7"
+    },
+    {
+      "scenario": "REQ-2.7.6.1#1",
+      "requirement": "REQ-2.7.6.1",
+      "title": "View list filtered by label",
+      "group": "REQ-2.7.6"
+    },
+    {
+      "scenario": "REQ-2.7.6.2#1",
+      "requirement": "REQ-2.7.6.2",
+      "title": "View all notes",
+      "group": "REQ-2.7.6"
+    },
+    {
+      "scenario": "REQ-2.7.6.3#1",
+      "requirement": "REQ-2.7.6.3",
+      "title": "View Reminders",
+      "group": "REQ-2.7.6"
+    },
+    {
+      "scenario": "REQ-2.8.1#1",
+      "requirement": "REQ-2.8.1",
+      "title": "Pin note",
+      "group": "REQ-2.8"
+    },
+    {
+      "scenario": "REQ-2.8.2#1",
+      "requirement": "REQ-2.8.2",
+      "title": "Unpin note",
+      "group": "REQ-2.8"
+    },
+    {
+      "scenario": "REQ-2.8.3#1",
+      "requirement": "REQ-2.8.3",
+      "title": "Pin note when creating it",
+      "group": "REQ-2.8"
+    },
+    {
+      "scenario": "REQ-3.1#1",
+      "requirement": "REQ-3.1",
+      "title": "Initial suggested filters",
+      "group": "REQ-3"
+    },
+    {
+      "scenario": "REQ-3.2#1",
+      "requirement": "REQ-3.2",
+      "title": "Search by keyword",
+      "group": "REQ-3"
+    },
+    {
+      "scenario": "REQ-4.1#1",
+      "requirement": "REQ-4.1",
+      "title": "Setting options list",
+      "group": "REQ-4"
+    },
+    {
+      "scenario": "REQ-4.2#1",
+      "requirement": "REQ-4.2",
+      "title": "Detailed settings",
+      "group": "REQ-4"
+    },
+    {
+      "scenario": "REQ-5.1#1",
+      "requirement": "REQ-5.1",
+      "title": "Toggle between list and grid views",
+      "group": "REQ-5"
+    },
+    {
+      "scenario": "REQ-5.2#1",
+      "requirement": "REQ-5.2",
+      "title": "Grid View by default",
+      "group": "REQ-5"
+    },
+    {
+      "scenario": "REQ-6.1#1",
+      "requirement": "REQ-6.1",
+      "title": "Items and styling",
+      "group": "REQ-6"
+    },
+    {
+      "scenario": "REQ-6.2#1",
+      "requirement": "REQ-6.2",
+      "title": "Collapsible Sidebar",
+      "group": "REQ-6"
+    }
+  ]
+}

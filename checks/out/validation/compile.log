@@ -1,0 +1,14 @@
+
+> arcbench-scenario-checks@0.1.0 compile
+> node --import tsx src/compile.ts --requirements ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/requirements/requirements.yaml --contract ~/projects/volo-factory/runs/2026-09-15-keep-full-7/app/.factory/state-contract.json --out out/keep --ledger out/usage.json
+
+~/projects/volo-factory-worktrees/ts-kernel/checks/src/compile.ts:89
+    throw Error(`Gateway unavailable (${code??'transport failure'}); no transport retry`);
+          ^
+
+Error: Gateway unavailable (ENOTFOUND); no transport retry
+    at compile (~/projects/volo-factory-worktrees/ts-kernel/checks/src/compile.ts:89:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async <anonymous> (~/projects/volo-factory-worktrees/ts-kernel/checks/src/compile.ts:123:2)
+
+Node.js v22.22.0

@@ -1,0 +1,12 @@
+
+> build
+> node build.cjs
+
+Traceback (most recent call last):
+  File "~/projects/volo-factory-worktrees/ts-kernel/harness_lab/state_rehearsal.py", line 238, in <module>
+    raise SystemExit(main(sys.argv[1:]))
+  File "~/projects/volo-factory-worktrees/ts-kernel/harness_lab/state_rehearsal.py", line 189, in main
+    port = free_port()
+  File "~/projects/volo-factory-worktrees/ts-kernel/harness_lab/state_rehearsal.py", line 92, in free_port
+    listener.bind(("127.0.0.1", 0))
+PermissionError: [Errno 1] Operation not permitted

@@ -1,0 +1,28 @@
+[
+  {
+    "app": "keep",
+    "group": "REQ-1",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "c8fe627543ea4fdf88470986615a7e95211dc6444efbcc10469798e0c9e823dd",
+    "started": "2026-09-15T08:16:27.790Z",
+    "reservedCny": 0.236703,
+    "chargedCny": 0,
+    "accounting": "not-sent",
+    "transportError": "ENOTFOUND",
+    "annotation": "DNS failure observed before HTTP request; recorded after error-handler implementation"
+  },
+  {
+    "app": "keep",
+    "group": "REQ-1",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "c8fe627543ea4fdf88470986615a7e95211dc6444efbcc10469798e0c9e823dd",
+    "started": "2026-09-15T08:24:20.452Z",
+    "reservedCny": 0.236703,
+    "chargedCny": 0,
+    "accounting": "not-sent",
+    "elapsedMs": 17,
+    "transportError": "ENOTFOUND"
+  }
+]
