@@ -1292,7 +1292,7 @@ class ScheduleCompletionTests(TempCase):
         agent.install_contract()
         self.attempted = []
 
-        def run_batch(nodes):
+        def run_batch(nodes, brief=None):
             ids = [node['id'] for node in nodes]
             self.attempted.append(ids)
             if any(item in failing for item in ids):
@@ -1312,12 +1312,51 @@ class ScheduleCompletionTests(TempCase):
     def test_a_batch_that_does_not_converge_does_not_end_the_schedule(self):
         agent = self.agent(failing={'REQ-2.1'})
         agent.run_schedule()
-        self.assertEqual(self.attempted, self.scheduled(agent))
-        self.assertEqual([record['requirements'] for record in agent.incomplete],
-                         [batch for batch in self.scheduled(agent) if 'REQ-2.1' in batch])
+        scheduled = self.scheduled(agent)
+        failing = [batch for batch in scheduled if 'REQ-2.1' in batch]
+        # Every batch is entered once in the first pass, in schedule order.
+        self.assertEqual(self.attempted[:len(scheduled)], scheduled)
+        self.assertEqual([record['requirements'] for record in agent.incomplete], failing)
         # Its requirements are not claimed as completed, but everything else is.
         self.assertNotIn('REQ-2.1', agent.completed)
         self.assertIn('REQ-3.1', agent.completed)
+
+    def test_every_incomplete_batch_takes_its_next_entry_before_any_takes_another(self):
+        # Round robin, not depth first: a batch that is stuck comes back only after the
+        # batches after it have had their turn, so it returns to a tree they moved on.
+        from volo.agent import BATCH_ENTRY_LIMIT
+        agent = self.agent(failing={'REQ-2.1', 'REQ-3.1'})
+        agent.run_schedule()
+        scheduled = self.scheduled(agent)
+        stuck = [batch for batch in scheduled if 'REQ-2.1' in batch or 'REQ-3.1' in batch]
+        self.assertEqual(len(stuck), 2, 'the fixture needs two batches that never converge')
+        passes = [self.attempted[:len(scheduled)],
+                  self.attempted[len(scheduled):len(scheduled) + 2],
+                  self.attempted[len(scheduled) + 2:]]
+        self.assertEqual(passes[0], scheduled)
+        self.assertEqual(passes[1], stuck)
+        self.assertEqual(passes[2], stuck)
+        self.assertEqual(agent.loop['passes'], BATCH_ENTRY_LIMIT)
+        self.assertEqual(agent.loop['ended_by'], 'entries_exhausted')
+        entries = {state['id']: state['entries'] for state in agent.batches}
+        for state in agent.batches:
+            expected = BATCH_ENTRY_LIMIT if state['requirements'] in stuck else 1
+            self.assertEqual(entries[state['id']], expected, state['id'])
+            self.assertEqual(state['status'],
+                             'incomplete' if state['requirements'] in stuck else 'completed')
+
+    def test_a_batch_that_converges_on_a_later_entry_is_completed_and_not_entered_again(self):
+        first = tuple(self.scheduled(self.agent())[0])
+        agent = self.retrying_agent({first: ['call_limit', 'call_limit']})
+        agent.run_schedule()
+        attempts = [call for call in self.calls if tuple(call['requirements']) == first]
+        self.assertEqual(len(attempts), 3, 'two failed entries, then the third converges')
+        self.assertEqual(agent.incomplete, [])
+        self.assertEqual(agent.loop['ended_by'], 'complete')
+        for requirement in first:
+            self.assertIn(requirement, agent.completed)
+        state = next(item for item in agent.batches if tuple(item['requirements']) == first)
+        self.assertEqual((state['status'], state['entries']), ('completed', 3))
 
     def retrying_agent(self, attempts):
         """A fake run_batch that consults `attempts` for each call, in order."""
@@ -1345,7 +1384,7 @@ class ScheduleCompletionTests(TempCase):
         agent.run_batch = run_batch
         return agent
 
-    def test_a_batch_that_spent_its_calls_is_tried_once_more_with_what_it_was_stuck_on(self):
+    def test_a_re_entry_is_told_which_entry_it_is_and_what_it_was_stuck_on(self):
         # Run 5 at b3d2331 lost three official specs to two batches that hit the cap and
         # were rolled back, leaving nothing at all behind.
         first = tuple(self.scheduled(self.agent())[0])
@@ -1354,38 +1393,39 @@ class ScheduleCompletionTests(TempCase):
         attempts = [call for call in self.calls if tuple(call['requirements']) == first]
         self.assertEqual(len(attempts), 2)
         self.assertIsNone(attempts[0]['brief'])
-        self.assertIn('ran out of model calls', attempts[1]['brief'])
+        self.assertIn('entry 2 of 3', attempts[1]['brief'])
+        self.assertIn('did not converge', attempts[1]['brief'])
+        self.assertIn('rolled back', attempts[1]['brief'])
         self.assertIn('synthetic: assertion x failed', attempts[1]['brief'])
-        self.assertIn('12 calls', attempts[1]['brief'])
         self.assertEqual(agent.incomplete, [])
         for requirement in first:
             self.assertIn(requirement, agent.completed)
         events = [json.loads(line) for line
                   in (self.trace.directory / 'events.jsonl').read_text().splitlines()]
-        events = [event for event in events if event['event'] == 'batch_retry']
-        self.assertEqual([event['requirements'] for event in events], [list(first)])
-        self.assertTrue(events[0]['carried_failure'])
+        started = [event for event in events
+                   if event['event'] == 'batch_started' and event['requirements'] == list(first)]
+        self.assertEqual([event['entry'] for event in started], [1, 2])
 
-    def test_a_batch_that_spends_its_calls_twice_is_recorded_incomplete(self):
+    def test_a_batch_that_spends_every_entry_is_recorded_incomplete_once(self):
+        from volo.agent import BATCH_ENTRY_LIMIT
         first = tuple(self.scheduled(self.agent())[0])
-        agent = self.retrying_agent({first: ['call_limit', 'call_limit']})
+        agent = self.retrying_agent({first: ['call_limit'] * BATCH_ENTRY_LIMIT})
         agent.run_schedule()
         attempts = [call for call in self.calls if tuple(call['requirements']) == first]
-        self.assertEqual(len(attempts), 2)
+        self.assertEqual(len(attempts), BATCH_ENTRY_LIMIT)
         self.assertEqual([record['requirements'] for record in agent.incomplete], [list(first)])
         for requirement in first:
             self.assertNotIn(requirement, agent.completed)
         # The batches after it still get their turn, exactly as before.
         self.assertIn('REQ-3.1', agent.completed)
 
-    def test_a_batch_that_failed_for_another_reason_is_not_retried(self):
-        # Only the call cap earns a second attempt: any other failure would spend a
-        # second batch's worth of calls on the same wall it just hit.
+    def test_no_batch_is_entered_more_than_the_entry_limit(self):
+        from volo.agent import BATCH_ENTRY_LIMIT
         agent = self.agent(failing={'REQ-2.1'})
         agent.run_schedule()
         attempted = [ids for ids in self.attempted if 'REQ-2.1' in ids]
-        self.assertEqual(len(attempted), 1)
-        self.assertEqual([record['requirements'] for record in agent.incomplete], attempted)
+        self.assertEqual(len(attempted), BATCH_ENTRY_LIMIT)
+        self.assertEqual([record['requirements'] for record in agent.incomplete], attempted[:1])
 
     def test_each_batch_owns_the_checks_it_left_and_locks_the_earlier_ones(self):
         # The batch loop is where a check file gets its owner: written during batch N,
@@ -1393,7 +1433,7 @@ class ScheduleCompletionTests(TempCase):
         agent = self.agent()
         written = []
 
-        def run_batch(nodes):
+        def run_batch(nodes, brief=None):
             path = 'checks/batch-%d.spec.cjs' % agent.batch_index
             written.append(path)
             agent.dispatch('write_files', {'files': [{'path': path, 'content': '// synthetic\n'}]})
@@ -1420,7 +1460,7 @@ class ScheduleCompletionTests(TempCase):
         agent = self.agent()
         first = self.scheduled(agent)[0]
 
-        def run_batch(nodes):
+        def run_batch(nodes, brief=None):
             ids = [node['id'] for node in nodes]
             self.attempted.append(ids)
             if ids == first:
@@ -1442,6 +1482,11 @@ class ScheduleCompletionTests(TempCase):
         (self.workspace.root / 'backend' / '.volo' / 'launcher.cjs').write_text('// synthetic launcher\n')
         (self.workspace.root / 'backend' / 'data').mkdir(parents=True, exist_ok=True)
         (self.workspace.root / 'backend' / 'data' / 'store.json').write_text('{}')
+        # The batch wrote product files, so its tree is offered to the bundle first. Here
+        # the bundle rejects it, which is the case that still rolls back.
+        self.workspace.verify = lambda command: {'passed': False, 'steps': [],
+                                                 'check_command': command,
+                                                 'error': 'synthetic: the bundle failed'}
         agent.run_schedule()
         self.assertEqual(self.workspace.path('frontend/public/features/home.js').read_text(),
                          '// verified\n')
@@ -1512,7 +1557,7 @@ class ScheduleCompletionTests(TempCase):
     def test_budget_exhaustion_stops_the_schedule_and_is_recorded(self):
         agent = self.agent(failing={'REQ-2.2'})
 
-        def run_batch(nodes):
+        def run_batch(nodes, brief=None):
             self.attempted.append([node['id'] for node in nodes])
             raise RuntimeError('Model call budget exhausted')
 
@@ -1526,7 +1571,7 @@ class ScheduleCompletionTests(TempCase):
     def test_a_wall_clock_timeout_also_stops_the_schedule(self):
         agent = self.agent()
 
-        def run_batch(nodes):
+        def run_batch(nodes, brief=None):
             self.attempted.append([node['id'] for node in nodes])
             raise TimeoutError('Agent wall-time budget exhausted')
 
@@ -1538,12 +1583,240 @@ class ScheduleCompletionTests(TempCase):
         requirements = RequirementSet.load(self.req)
         agent = Agent(requirements, FakeModel('{}'), self.workspace, Runtime(self.trace))
 
-        def run_batch(nodes):
+        def run_batch(nodes, brief=None):
             raise RuntimeError('synthetic failure')
 
         agent.run_batch = run_batch
         with self.assertRaisesRegex(RuntimeError, 'synthetic failure'):
             agent.run_schedule()
+
+
+class BatchSalvageTests(TempCase):
+    """A batch that runs out of calls keeps the work the package still passes with.
+
+    Official Keep run 762faa0bd756 scored 19/32 and run 5 at b3d2331 scored 25/32: in both,
+    a batch that hit the twenty-call cap was rolled back whole, and three of run 5's seven
+    failures were requirements of two such batches. Everything here is synthetic: no model
+    call, and the check bundle is a fake that answers pass or fail on demand.
+    """
+
+    def agent(self, passing=True):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, FakeModel('{}'), self.workspace, Runtime(self.trace),
+                      contract=contract)
+        agent.install_contract()
+        self.bundles, self.briefs, self.passing = [], [], passing
+
+        def verify(check_command):
+            self.bundles.append(list(check_command))
+            value = {'passed': self.passing, 'steps': [], 'check_command': list(check_command),
+                     'source_fingerprint': self.workspace.fingerprint(),
+                     'verification_scope': 'local_checks_only', 'acceptance': {},
+                     'error': '' if self.passing else 'synthetic: the bundle failed'}
+            if self.passing:
+                self.workspace.last_verification = value
+            return value
+
+        self.workspace.verify = verify
+        return agent
+
+    def scheduled(self, agent):
+        return [[node['id'] for node in batch] for batch in agent.schedule()]
+
+    def capped_second_batch(self, agent, product=True):
+        """Every batch verifies except the second, which writes and then spends its calls."""
+        schedule = self.scheduled(agent)
+        capped = schedule[1]
+        self.entries = 0
+
+        def verified(index):
+            self.workspace.write_files([
+                {'path': 'frontend/public/features/page-%d.js' % index, 'content': '// verified\n'},
+                {'path': 'checks/batch-%d.spec.cjs' % index, 'content': '// batch %d check\n' % index}])
+            agent.check_command = ['node', '--test', 'checks/batch-%d.spec.cjs' % index]
+            self.workspace.last_verification = {
+                'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+                'check_command': agent.check_command,
+                'verification_scope': 'local_checks_only', 'acceptance': {}}
+
+        def run_batch(nodes, brief=None):
+            ids = [node['id'] for node in nodes]
+            self.briefs.append({'requirements': ids, 'brief': brief})
+            if ids != capped:
+                return verified(schedule.index(ids) + 1)
+            self.entries += 1
+            if product:
+                self.workspace.write_files([
+                    {'path': 'frontend/public/features/ledger.js',
+                     'content': '// entry %d, half done\n' % self.entries},
+                    {'path': 'checks/batch-2.spec.cjs',
+                     'content': '// entry %d: an unverified check\n' % self.entries}])
+            agent.batch_call_limit_hit = True
+            agent.last_batch_failure = {'tool': 'finish', 'result': {
+                'passed': False, 'error': 'Checks failed',
+                'steps': [{'exit_code': 1, 'output': 'synthetic: ledger assertion failed'}]}}
+            raise RuntimeError('Batch did not converge within the model call limit')
+
+        agent.run_batch = run_batch
+        self.capped = capped
+        return agent
+
+    def capped_briefs(self):
+        return [item['brief'] for item in self.briefs if item['requirements'] == self.capped]
+
+    def events(self, name):
+        lines = (self.trace.directory / 'events.jsonl').read_text().splitlines()
+        return [event for event in (json.loads(line) for line in lines) if event['event'] == name]
+
+    def test_a_capped_batch_keeps_its_tree_when_the_bundle_still_passes(self):
+        agent = self.capped_second_batch(self.agent())
+        agent.run_schedule()
+        # The product file the capped batch wrote is still there, and the check it wrote
+        # to describe it is not: nothing ever agreed with that check.
+        self.assertTrue(self.workspace.path('frontend/public/features/ledger.js').exists())
+        self.assertFalse(self.workspace.path('checks/batch-2.spec.cjs').exists())
+        self.assertEqual(self.workspace.path('frontend/public/features/page-1.js').read_text(),
+                         '// verified\n')
+        quarantine = self.trace.directory / 'unverified' / 'batch-2' / 'batch-2.spec.cjs'
+        self.assertIn('an unverified check', quarantine.read_text())
+        # The bundle it was measured against is the one that was passing before it began.
+        self.assertNotIn('checks/batch-2.spec.cjs', self.bundles[0])
+        self.assertIn('checks/batch-1.spec.cjs', self.bundles[0])
+        self.assertIn(state_runtime.INTERFACE_CHECK_PATH, self.bundles[0])
+        salvage = self.events('batch_salvage')
+        self.assertEqual(salvage[0]['outcome'], 'salvaged')
+        self.assertEqual(salvage[0]['kept'], ['frontend/public/features/ledger.js'])
+        self.assertEqual(salvage[0]['quarantined'], ['checks/batch-2.spec.cjs'])
+        self.assertEqual(self.events('batch_checks_quarantined')[0]['paths'],
+                         ['checks/batch-2.spec.cjs'])
+        # Salvaged is not delivered: the batch stays incomplete and is entered again.
+        state = agent.batches[1]
+        self.assertEqual((state['status'], state['entries']), ('salvaged', 3))
+        for requirement in state['requirements']:
+            self.assertNotIn(requirement, agent.completed)
+        self.assertIn('frontend/public/features/ledger.js',
+                      json.loads(agent.snapshot_path().read_text())['files'])
+
+    def test_the_salvage_spends_no_model_call_and_obeys_the_deadline(self):
+        agent = self.capped_second_batch(self.agent())
+        self.workspace.deadline = time.monotonic() - 1
+        agent.run_schedule()
+        self.assertEqual(agent.model.usage.calls, 0)
+        self.assertEqual(self.bundles, [], 'a deadline that has passed runs no bundle')
+        self.assertEqual(self.events('batch_salvage')[0]['reason'], 'deadline')
+        self.assertFalse(self.workspace.path('frontend/public/features/ledger.js').exists())
+
+    def test_a_capped_batch_is_rolled_back_when_the_bundle_fails(self):
+        agent = self.capped_second_batch(self.agent(passing=False))
+        agent.run_schedule()
+        self.assertFalse(self.workspace.path('frontend/public/features/ledger.js').exists())
+        self.assertFalse(self.workspace.path('checks/batch-2.spec.cjs').exists())
+        self.assertEqual(self.workspace.path('frontend/public/features/page-1.js').read_text(),
+                         '// verified\n')
+        self.assertEqual(self.workspace.path('checks/batch-1.spec.cjs').read_text(),
+                         '// batch 1 check\n')
+        salvage = self.events('batch_salvage')
+        self.assertEqual(salvage[0]['outcome'], 'restored')
+        self.assertEqual(salvage[0]['reason'], 'bundle_failed')
+        self.assertEqual(agent.batches[1]['status'], 'incomplete')
+        self.assertTrue(self.events('restored_product_snapshot'))
+
+    def test_a_batch_that_wrote_no_product_file_just_restores(self):
+        agent = self.capped_second_batch(self.agent(), product=False)
+        agent.run_schedule()
+        self.assertEqual(self.bundles, [])
+        self.assertEqual(self.events('batch_salvage')[0]['reason'], 'no_product_files_written')
+
+    def test_the_next_entry_is_told_the_tree_was_kept_and_is_given_its_own_check_back(self):
+        agent = self.capped_second_batch(self.agent())
+        agent.run_schedule()
+        briefs = self.capped_briefs()
+        self.assertIsNone(briefs[0], 'a first entry is not briefed about itself')
+        self.assertIn('entry 2 of 3', briefs[1])
+        self.assertIn('still in the tree', briefs[1])
+        self.assertIn('synthetic: ledger assertion failed', briefs[1])
+        self.assertIn('checks/batch-2.spec.cjs', briefs[1])
+        self.assertIn('entry 1: an unverified check', briefs[1])
+        self.assertIn('entry 3 of 3', briefs[2])
+
+    def test_a_run_that_ends_after_a_salvage_still_delivers(self):
+        # Run 3313c37b801c exited 1 with nine requirements verified and delivered nothing.
+        # A salvaged tree has just passed the bundle, so it is deliverable as it stands.
+        agent = self.capped_second_batch(self.agent())
+        result = agent.run()
+        self.assertEqual(result['status'], 'completed')
+        self.assertIn(result['delivery'], ('fresh_verification', 'last_verified_snapshot'))
+        self.assertEqual(result['loop']['ended_by'], 'entries_exhausted')
+        self.assertEqual(result['loop']['passes'], 3)
+        statuses = {item['id']: item['status'] for item in result['batches']}
+        self.assertEqual(statuses['batch-1'], 'completed')
+        self.assertEqual(statuses['batch-2'], 'salvaged')
+        self.assertEqual([item['entries'] for item in result['batches']][:2], [1, 3])
+        self.assertEqual(result['batches'][1]['quarantined_checks'], ['checks/batch-2.spec.cjs'])
+        self.assertTrue(self.workspace.path('frontend/public/features/ledger.js').exists())
+        checkpoint = json.loads((self.trace.directory / 'checkpoint.json').read_text())
+        self.assertEqual(checkpoint['batches'][1]['status'], 'salvaged')
+        self.assertEqual(checkpoint['loop']['ended_by'], 'entries_exhausted')
+
+
+class LoopTerminationTests(TempCase):
+    """Which budget ended the run is reported, and the wall clock is no longer the one."""
+
+    def agent(self, error):
+        requirements = synthetic_requirements(self)
+        contract = state_contract.reconcile(
+            state_contract.normalize(json.loads(SYNTHETIC_RESPONSE)),
+            state_contract.evidence(requirements))
+        agent = Agent(requirements, FakeModel('{}'), self.workspace, Runtime(self.trace),
+                      contract=contract)
+        agent.install_contract()
+        # Nothing here may end on the clock: the platform waits for the container without
+        # a timeout, and run 762faa0bd756 lost a batch to our own forty-five minutes.
+        self.workspace.deadline = time.monotonic() + 10 ** 6
+        self.attempted = []
+
+        def run_batch(nodes, brief=None):
+            self.attempted.append([node['id'] for node in nodes])
+            raise error
+
+        agent.run_batch = run_batch
+        return agent
+
+    def test_a_run_out_of_tokens_reports_the_token_budget(self):
+        agent = self.agent(RuntimeError('Observed model token budget exhausted'))
+        agent.run_schedule()
+        self.assertEqual(len(self.attempted), 1)
+        self.assertEqual(agent.loop['ended_by'], 'token_budget')
+        self.assertEqual(agent.loop['passes'], 1)
+
+    def test_a_run_out_of_calls_reports_the_call_budget(self):
+        agent = self.agent(RuntimeError('Model call budget exhausted'))
+        agent.run_schedule()
+        self.assertEqual(agent.loop['ended_by'], 'call_budget')
+
+    def test_the_wall_clock_is_still_reported_when_it_is_what_stopped_the_run(self):
+        agent = self.agent(TimeoutError('Agent wall-time budget exhausted'))
+        agent.run_schedule()
+        self.assertEqual(agent.loop['ended_by'], 'deadline')
+
+    def test_a_schedule_that_finishes_reports_complete(self):
+        agent = self.agent(RuntimeError('unused'))
+
+        def run_batch(nodes, brief=None):
+            self.attempted.append([node['id'] for node in nodes])
+            agent.check_command = ['node', '--test', 'checks/batch.spec.cjs']
+            self.workspace.last_verification = {
+                'passed': True, 'source_fingerprint': self.workspace.fingerprint(),
+                'check_command': agent.check_command,
+                'verification_scope': 'local_checks_only', 'acceptance': {}}
+
+        agent.run_batch = run_batch
+        agent.run_schedule()
+        self.assertEqual(agent.loop, {'passes': 1, 'ended_by': 'complete'})
+        self.assertTrue(all(state['status'] == 'completed' for state in agent.batches))
 
 
 @unittest.skipUnless(__import__('shutil').which('node'), 'node is required')

@@ -415,12 +415,22 @@ def apply_edits(current, items, path=None):
 # and still ends the 36-call one at a little over half its cost.
 BATCH_CALL_LIMIT = 20
 
-# One retry for a batch that ran out of calls, with the tree already restored and the
-# first attempt's last failing check output in the request. Measured on Keep at b3d2331:
-# batches 7 and 11 hit the cap and were rolled back, and three of the run's seven official
-# failures were their requirements. The second attempt starts from a verified tree and
-# knows what the first attempt was stuck on, so it is given less than a first attempt.
-BATCH_RETRY_CALL_LIMIT = 12
+# Entries one batch may be given over the whole run: one in the first pass and two
+# re-entries. Keep at b3d2331 gave a capped batch one immediate retry from a restored
+# tree, and three of run 5's seven official failures were requirements of the two batches
+# whose retries also ran out. A re-entry is now taken only after every other incomplete
+# batch has had its next entry, so a batch that is stuck comes back to a tree the batches
+# after it have moved forward, with the same twenty calls a first entry gets.
+BATCH_ENTRY_LIMIT = 3
+
+# Where a failed batch's own check files are kept while the bundle decides whether its
+# product work survives: out of checks/, so the bundle is the one that was passing before
+# the batch started, and on disk, so the batch's next entry can be handed their text.
+QUARANTINE_DIRECTORY = 'unverified'
+
+# How much of one quarantined check the next entry is shown. Enough for a batch check of
+# the size these runs write, and bounded so a runaway file cannot crowd out the request.
+QUARANTINE_BRIEF_CHARS = 4000
 
 
 _INVALID_JSON_ESCAPE = re.compile(r'\\(?!["\\/bfnrtu])')
@@ -448,11 +458,19 @@ def tool_arguments(raw):
 
 
 RETRY_BRIEF = (
-    'A previous attempt at this batch ran out of model calls and was rolled back, so the '
-    'product tree is back at the last state that verified and nothing that attempt wrote '
-    'survives. This attempt has ' + str(BATCH_RETRY_CALL_LIMIT) + ' calls. Spend them on the '
-    'batch itself: write every file the batch needs in one call, then verify once. Do not '
-    'read files you are about to rewrite, and do not re-explore the tree.')
+    'Spend this entry on the batch itself: write every file the batch needs in one call, '
+    'then verify once. Do not read files you are about to rewrite, and do not re-explore '
+    'the tree.')
+
+# What the tree looks like at the start of a re-entry, in the model's own request.
+SALVAGED_BRIEF = (
+    'The product files that attempt wrote are still in the tree: they were kept because '
+    'the rest of the package still passed its checks with them in place. The checks that '
+    'attempt wrote were removed, because nothing ever agreed with them. Read the tree as '
+    'work in progress: finish it, or replace the parts of it that are wrong.')
+RESTORED_BRIEF = (
+    'The product tree was rolled back to the last state that verified, so nothing that '
+    'attempt wrote survives.')
 
 
 # Seconds the final verification may run past the agent's own wall clock.
@@ -461,6 +479,20 @@ FINAL_VERIFY_GRACE = 300
 
 class BudgetExhausted(RuntimeError):
     """The schedule ended because there was nothing left to spend, not because it finished."""
+
+    def __init__(self, message, reason='call_budget'):
+        super().__init__(message)
+        self.reason = reason
+
+
+def budget_reason(exc):
+    """Which budget ended the run, named the way the result reports it."""
+    text = str(exc).lower()
+    if isinstance(exc, TimeoutError) or 'wall-time' in text or 'deadline' in text:
+        return 'deadline'
+    if 'token' in text:
+        return 'token_budget'
+    return 'call_budget'
 
 
 class Agent:
@@ -478,6 +510,10 @@ class Agent:
         # Which batch wrote which checks/*.spec.cjs, so a later batch is answered with
         # what that check covers instead of its bytes, and cannot edit it.
         self.batch_index = 0
+        # One record per scheduled batch, built by run_schedule, carrying how many entries
+        # it has had, what they cost and whether its last failure was salvaged.
+        self.batches = []
+        self.loop = {'passes': 0, 'ended_by': 'complete'}
         self.regression_checks = {}
         self.trace = workspace.trace
         self.max_calls, self.token_budget = max_calls, token_budget
@@ -634,60 +670,51 @@ class Agent:
         return state_runtime.REGRESSION_EDIT_REFUSAL.format(
             path=path, current=self.current_check_path())
 
-    def attempt_batch(self, nodes):
-        """Implement one batch. True when it verified, False when it did not.
+    def attempt_batch(self, nodes, state):
+        """Give this batch one entry. True when it verified, False when it did not.
 
         A batch that exhausts the call, token or time budget ends the schedule; any other
         failure is recorded and the batches after it still get their turn. Run 'keep i5'
         stopped at batch 7 of 15, and its ten unreached requirements were the single
         largest group of official failures.
 
-        A batch that ran out of its own calls gets one more attempt, from the restored
-        tree and carrying what its last check said. In run 5 at b3d2331 two batches hit
-        the cap and were rolled back, and three of the run's seven official failures were
-        requirements those two batches would have delivered.
+        What the failed entry wrote is not thrown away on sight: whatever of it still
+        passes the checks the package had before the batch started is kept, and the batch
+        comes back to it in a later pass knowing what it was stuck on.
         """
         try:
-            self.run_batch(nodes)
+            self.run_batch(nodes, brief=state.get('brief'))
             return True
         except (RuntimeError, TimeoutError, ValueError) as exc:
             if self.ends_the_schedule(exc):
-                self.record_incomplete(nodes, exc)
-                raise BudgetExhausted(str(exc)) from exc
-            retry = self.batch_call_limit_hit
-            brief = self.retry_brief() if retry else None
+                self.record_incomplete(nodes, exc, state)
+                raise BudgetExhausted(str(exc), reason=budget_reason(exc)) from exc
             print('[volo] batch did not converge: ' + self.trace.redact(str(exc))[:200], flush=True)
-            # The next attempt starts from a tree that verified, not from this one's debris.
-            self.restore_quietly()
-            if not retry:
-                self.record_incomplete(nodes, exc)
-                return False
-            self.trace.event('batch_retry', requirements=[node['id'] for node in nodes],
-                             limit=BATCH_RETRY_CALL_LIMIT, carried_failure=bool(brief))
-            print('[volo] retrying the batch once within '
-                  + str(BATCH_RETRY_CALL_LIMIT) + ' calls', flush=True)
-            try:
-                self.run_batch(nodes, brief=brief or RETRY_BRIEF)
-                return True
-            except (RuntimeError, TimeoutError, ValueError) as second:
-                if self.ends_the_schedule(second):
-                    self.record_incomplete(nodes, second)
-                    raise BudgetExhausted(str(second)) from second
-                print('[volo] the retry did not converge either: '
-                      + self.trace.redact(str(second))[:200], flush=True)
-                self.restore_quietly()
-                self.record_incomplete(nodes, second)
-                return False
+            self.salvage_or_restore(state)
+            state['brief'] = self.retry_brief(state)
+            self.record_incomplete(nodes, exc, state)
+            return False
 
     @staticmethod
     def ends_the_schedule(exc):
         """A budget that is gone stops the run; any other failure costs one batch."""
         return isinstance(exc, TimeoutError) or 'budget' in str(exc).lower()
 
-    def record_incomplete(self, nodes, exc):
+    def record_incomplete(self, nodes, exc, state=None):
+        """Record this batch as not delivered, replacing what an earlier entry recorded."""
         record = {'requirements': [node['id'] for node in nodes], 'error': str(exc)[:400]}
+        if state is not None:
+            record['batch'] = state['id']
+        self.incomplete = [item for item in self.incomplete
+                           if item['requirements'] != record['requirements']]
         self.incomplete.append(record)
         self.trace.event('batch_incomplete', **record)
+
+    def clear_incomplete(self, state):
+        """Forget an earlier entry's failure once the batch has verified."""
+        self.incomplete = [item for item in self.incomplete
+                           if item.get('batch') != state['id']
+                           and item['requirements'] != state['requirements']]
 
     def restore_quietly(self):
         try:
@@ -718,8 +745,31 @@ class Agent:
             self.trace.event('cleared_unverified_product', paths=sorted(removed))
         return removed
 
-    def retry_brief(self):
-        """What the first attempt was stuck on, in the second attempt's own request."""
+    def retry_brief(self, state):
+        """What the last entry did, what it was stuck on, and what it left behind.
+
+        The batch comes back after every other incomplete batch has had its turn, so the
+        request has to say plainly which entry this is, whether the tree still holds the
+        previous entry's work, and which of its own checks were taken out of the tree.
+        """
+        head = ('This is entry %d of %d for this batch. The previous entry spent %d model calls '
+                'and did not converge. ' % (state['entries'] + 1, BATCH_ENTRY_LIMIT, state['calls']))
+        head += SALVAGED_BRIEF if state.get('outcome') == 'salvaged' else RESTORED_BRIEF
+        brief = head + '\n' + RETRY_BRIEF
+        detail = self.last_failure_output()
+        if detail:
+            brief += '\nThe last failing check output from that entry:\n' + detail
+        quarantined = state.get('quarantined') or {}
+        if quarantined:
+            brief += ('\nThe checks that entry wrote were moved out of the tree. They are not '
+                      'running and nothing has verified them; reuse what is right in them and '
+                      'write the batch check again yourself:\n')
+            for path in sorted(quarantined):
+                brief += '\n' + path + ':\n' + self.trace.redact(quarantined[path])[:QUARANTINE_BRIEF_CHARS]
+        return brief
+
+    def last_failure_output(self):
+        """The last failing check output of the entry that just ended, bounded."""
         failure = self.last_batch_failure if isinstance(self.last_batch_failure, dict) else {}
         result = failure.get('result')
         if not isinstance(result, dict):
@@ -733,9 +783,140 @@ class Agent:
                 parts.append(output)
                 break
         detail = self.trace.redact('\n'.join(parts))[-1200:]
-        if not detail.strip():
-            return None
-        return RETRY_BRIEF + '\nThe last failing check output from that attempt:\n' + detail
+        return detail if detail.strip() else None
+
+    def snapshot_files(self):
+        """The product tree as the last passing verification left it, by path."""
+        path = self.snapshot_path()
+        if not path.is_file():
+            return {}
+        try:
+            return json.loads(path.read_text()).get('files') or {}
+        except (OSError, ValueError):
+            return {}
+
+    def unsnapshotted_product_files(self):
+        """Product files the tree holds that the last verified snapshot does not.
+
+        The snapshot is the tree as it stood when this batch started, so anything new or
+        changed under frontend/public/ or backend/ that is not runtime data, a harness
+        file or the empty API stub is this batch's own work.
+        """
+        known = self.snapshot_files()
+        changed = []
+        for item in self.workspace.list_files()['files']:
+            name = item['path']
+            if (not name.startswith(('frontend/public/', 'backend/'))
+                    or name in state_runtime.HARNESS_OWNED or name.startswith('backend/data/')
+                    or any(part.startswith('.') for part in name.split('/'))):
+                continue
+            try:
+                text = self.workspace.path(name).read_text()
+            except (OSError, UnicodeError, ValueError):
+                continue
+            if (text == known.get(name) or text == KNOWN_RUNTIME.get(name)
+                    or text == API_STUB or not text.strip()):
+                continue
+            changed.append(name)
+        return sorted(changed)
+
+    def quarantine_batch_checks(self, state):
+        """Take this batch's own check files out of the tree, keeping their text.
+
+        A failed batch's checks are the one part of its work nothing has agreed with:
+        they describe code that never verified. Moved aside, what is left in checks/ is
+        exactly the bundle that was passing before this batch started. A check the batch
+        edited rather than created goes back to its verified text instead of vanishing.
+        """
+        known = self.snapshot_files()
+        # A pinned acceptance file is the one thing in checks/ that may never move: the
+        # workspace refuses to verify anything once one of them is missing or changed.
+        pinned = {name for check in self.workspace.required_checks for name in check['files']}
+        directory = self.trace.directory / QUARANTINE_DIRECTORY / state['id']
+        moved, reverted = {}, []
+        for item in self.workspace.list_files()['files']:
+            name = item['path']
+            if (not name.startswith('checks/') or name in state_runtime.HARNESS_OWNED
+                    or name in pinned or any(part.startswith('.') for part in name.split('/'))):
+                continue
+            try:
+                text = self.workspace.path(name).read_text()
+            except (OSError, UnicodeError, ValueError):
+                continue
+            if text == known.get(name) or text == KNOWN_RUNTIME.get(name):
+                continue
+            try:
+                if name in known:
+                    self.workspace.write_files([{'path': name, 'content': known[name]}])
+                    reverted.append(name)
+                else:
+                    self.workspace.path(name).unlink()
+            except (OSError, ValueError):
+                continue
+            target = directory / name[len('checks/'):]
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(text)
+            moved[name] = text
+        if moved:
+            state['quarantined'] = dict(moved)
+            self.trace.event('batch_checks_quarantined', batch=state['id'], paths=sorted(moved),
+                             reverted=sorted(reverted),
+                             directory=str(directory.relative_to(self.workspace.root)))
+        return moved
+
+    def salvage_or_restore(self, state):
+        """Keep a failed batch's product work when the package still passes without its checks.
+
+        A batch that ran out of calls used to be rolled back whole, and three of run 5's
+        seven official failures were requirements of two such batches. Its product files
+        are only untrustworthy where its own unverified checks said so, so those are moved
+        aside and the bundle that was passing before the batch started is run once over
+        the tree it left. Passing, the tree is kept and snapshotted and the batch is still
+        entered again later; failing, it is rolled back exactly as before. No model call is
+        spent here, and a deadline that has already passed skips straight to the rollback.
+        """
+        state['quarantined'] = {}
+        if not self.contract:
+            self.restore_quietly()
+            state['outcome'] = 'restored'
+            return 'restored'
+
+        def rolled_back(reason, **fields):
+            self.restore_quietly()
+            state['quarantined'] = {}
+            state['outcome'] = 'restored'
+            self.trace.event('batch_salvage', batch=state['id'], outcome='restored',
+                             reason=reason, **fields)
+            return 'restored'
+
+        kept = self.unsnapshotted_product_files()
+        if not kept:
+            return rolled_back('no_product_files_written')
+        if time.monotonic() >= self.workspace.deadline:
+            return rolled_back('deadline')
+        quarantined = self.quarantine_batch_checks(state)
+        command = self.workspace.discovered_check_command()
+        if not command:
+            return rolled_back('no_check_bundle', quarantined=sorted(quarantined))
+        try:
+            result = self.workspace.verify(command)
+        except (OSError, ValueError, TimeoutError) as exc:
+            return rolled_back('verification_error', quarantined=sorted(quarantined),
+                               error=self.trace.redact(str(exc))[:300])
+        if not result.get('passed'):
+            return rolled_back('bundle_failed', quarantined=sorted(quarantined),
+                               check_command=command,
+                               error=self.trace.redact(str(result.get('error', '')))[:300])
+        self.check_command = result['check_command']
+        self.snapshot_product()
+        state['status'] = 'salvaged'
+        state['outcome'] = 'salvaged'
+        self.trace.event('batch_salvage', batch=state['id'], outcome='salvaged',
+                         kept=kept, quarantined=sorted(quarantined), check_command=command,
+                         source_fingerprint=result['source_fingerprint'])
+        print('[volo] kept ' + str(len(kept)) + ' file(s) from the batch; the package still '
+              'passes its checks without the batch check', flush=True)
+        return 'salvaged'
 
     def verified_snapshot_is_current(self):
         """True when the product tree equals the last snapshot taken after a passing verification."""
@@ -843,48 +1024,106 @@ class Agent:
             return False
         return self.restore_verified_tree()
 
+    def batch_states(self):
+        """One record per scheduled batch, in schedule order, carrying its own history."""
+        return [{'id': 'batch-%d' % index, 'index': index, 'nodes': list(batch),
+                 'requirements': [node['id'] for node in batch], 'status': 'incomplete',
+                 'entries': 0, 'calls': 0, 'brief': None, 'outcome': None, 'quarantined': {}}
+                for index, batch in enumerate(self.schedule(), start=1)]
+
+    def batch_summaries(self):
+        """How far each batch got and what it cost, for the result and the checkpoint."""
+        return [{'id': state['id'], 'requirements': list(state['requirements']),
+                 'status': state['status'], 'entries': state['entries'], 'calls': state['calls'],
+                 'quarantined_checks': sorted(state['quarantined'])}
+                for state in self.batches]
+
     def run_schedule(self):
-        """Give every batch its first implementation; stop only when the budget is gone."""
+        """Work every batch until it verifies, its entries run out or the budget is gone.
+
+        The first pass gives every batch one entry. After it, every batch that has not
+        verified is entered again in schedule order, round robin, so no batch takes a
+        second entry before another has had its first. Run 762faa0bd756 delivered a
+        restored snapshot the moment one pass ended, and the batch that was mid-flight
+        when our own clock ran out lost its feature; the budget, not a single pass, is
+        what a run is now allowed to spend.
+        """
+        self.batches = self.batch_states()
+        self.loop = {'passes': 0, 'ended_by': 'complete'}
         try:
-            for batch in self.schedule():
-                nodes = [node for node in batch if node["id"] not in self.completed]
-                if not nodes:
-                    continue
-                self.batch_index += 1
-                self.trace.event("batch_started", requirements=[node["id"] for node in nodes])
-                print("[volo] implementing " + ", ".join(node["id"] for node in nodes), flush=True)
-                self.workspace.acceptance_requirement_ids = [*self.completed, *[node['id'] for node in nodes]]
-                if self.contract:
-                    if not self.attempt_batch(nodes):
-                        continue
-                else:
-                    self.run_batch(nodes)
-                self.record_batch_checks([node["id"] for node in nodes])
-                for node in nodes:
-                    self.completed.append(node["id"])
-                    self.runtime.emit("mark_implementation_done", node["id"], "Implementation built and started")
-                    verified = (self.workspace.last_verification or {}).get('acceptance', {}).get('verified_requirements', [])
-                    if node['id'] in verified:
-                        self.runtime.emit('mark_test_passed', node['id'],
-                                          'Pinned external acceptance passed; official evaluation is pending')
-                if self.contract:
-                    # After `completed` carries this batch: run keep at b3d2331 snapshotted
-                    # before it, and a later restore dropped batch 6's three requirements
-                    # from every list while their files stayed in the tree.
-                    self.snapshot_product()
-                self.trace.event('self_checks_completed', requirements=[node['id'] for node in nodes],
-                                 source_fingerprint=self.workspace.fingerprint(),
-                                 verification_scope=self.workspace.last_verification['verification_scope'])
-                self.runtime.commit("Implement and verify " + ", ".join(node["id"] for node in nodes))
-                self.checkpoint("batch_verified")
+            while True:
+                pending = [state for state in self.batches if state['status'] != 'completed'
+                           and state['entries'] < BATCH_ENTRY_LIMIT]
+                if not pending:
+                    break
+                self.loop['passes'] += 1
+                if self.loop['passes'] > 1:
+                    self.trace.event('schedule_pass', pass_number=self.loop['passes'],
+                                     batches=[state['id'] for state in pending])
+                    print('[volo] pass ' + str(self.loop['passes']) + ': re-entering '
+                          + ', '.join(state['id'] for state in pending), flush=True)
+                for state in pending:
+                    self.enter_batch(state)
         except BudgetExhausted as exhausted:
+            self.loop['ended_by'] = exhausted.reason
             self.trace.event('schedule_stopped_on_budget', reason=str(exhausted)[:300],
-                             completed=list(self.completed),
+                             ended_by=exhausted.reason, completed=list(self.completed),
                              remaining=[item for record in self.incomplete
                                         for item in record['requirements']])
             print('[volo] budget exhausted; delivering the best verified snapshot', flush=True)
+        else:
+            if any(state['status'] != 'completed' for state in self.batches):
+                self.loop['ended_by'] = 'entries_exhausted'
+        self.trace.event('schedule_finished', passes=self.loop['passes'],
+                         ended_by=self.loop['ended_by'], batches=self.batch_summaries())
         if self.incomplete:
             self.deliver_best_snapshot()
+
+    def enter_batch(self, state):
+        """One entry into one batch: implement it, and record what the entry cost."""
+        nodes = [node for node in state['nodes'] if node['id'] not in self.completed]
+        if not nodes:
+            state['status'] = 'completed'
+            return
+        ids = [node['id'] for node in nodes]
+        self.batch_index = state['index']
+        state['entries'] += 1
+        started = self.model.usage.calls
+        self.trace.event('batch_started', requirements=ids, batch=state['id'],
+                         entry=state['entries'], entry_limit=BATCH_ENTRY_LIMIT)
+        print('[volo] implementing ' + ', '.join(ids)
+              + ('' if state['entries'] == 1 else
+                 ' (entry %d of %d)' % (state['entries'], BATCH_ENTRY_LIMIT)), flush=True)
+        self.workspace.acceptance_requirement_ids = [*self.completed, *ids]
+        try:
+            if self.contract:
+                if not self.attempt_batch(nodes, state):
+                    return
+            else:
+                self.run_batch(nodes)
+        finally:
+            state['calls'] += self.model.usage.calls - started
+        self.record_batch_checks(ids)
+        for node in nodes:
+            self.completed.append(node['id'])
+            self.runtime.emit("mark_implementation_done", node["id"], "Implementation built and started")
+            verified = (self.workspace.last_verification or {}).get('acceptance', {}).get('verified_requirements', [])
+            if node['id'] in verified:
+                self.runtime.emit('mark_test_passed', node['id'],
+                                  'Pinned external acceptance passed; official evaluation is pending')
+        if self.contract:
+            # After `completed` carries this batch: run keep at b3d2331 snapshotted
+            # before it, and a later restore dropped batch 6's three requirements
+            # from every list while their files stayed in the tree.
+            self.snapshot_product()
+        self.trace.event('self_checks_completed', requirements=ids, batch=state['id'],
+                         source_fingerprint=self.workspace.fingerprint(),
+                         verification_scope=self.workspace.last_verification['verification_scope'])
+        self.runtime.commit("Implement and verify " + ", ".join(ids))
+        state['status'] = 'completed'
+        state['brief'], state['quarantined'], state['outcome'] = None, {}, 'completed'
+        self.clear_incomplete(state)
+        self.checkpoint("batch_verified")
 
     def contract_section(self):
         """The state contract, verbatim, in every batch request."""
@@ -995,6 +1234,9 @@ class Agent:
             "check_command": self.check_command, "model": self.model.model,
             "verification_scope": (self.workspace.last_verification or {}).get(
                 "verification_scope", "local_checks_only"),
+            # What each batch has had and what it left behind, so a re-entry's brief can
+            # say which entry it is and which of its checks are out of the tree.
+            "batches": self.batch_summaries(), "loop": dict(self.loop),
             "usage": asdict(self.model.usage),
         })
 
@@ -1316,9 +1558,10 @@ class Agent:
                 if self.verify_final_edit():
                     return
                 raise
-            cap = BATCH_RETRY_CALL_LIMIT if brief else BATCH_CALL_LIMIT
-            if self.contract and self.model.usage.calls - batch_start_calls >= cap:
-                self.trace.event('batch_call_limit', limit=cap, retry=bool(brief),
+            # Every entry into a batch gets the same cap: a re-entry is a fresh attempt
+            # at the batch, not a short repair of the attempt before it.
+            if self.contract and self.model.usage.calls - batch_start_calls >= BATCH_CALL_LIMIT:
+                self.trace.event('batch_call_limit', limit=BATCH_CALL_LIMIT, re_entry=bool(brief),
                                  requirements=[node['id'] for node in nodes])
                 self.batch_call_limit_hit = True
                 self.last_batch_failure = last_failure
@@ -1552,6 +1795,7 @@ class Agent:
             acceptance = latest.get('acceptance', {}) or {}
             return {"status": "completed", "self_checked_requirements": self.completed,
                     "delivery": delivery,
+                    "batches": self.batch_summaries(), "loop": dict(self.loop),
                     "incomplete_requirements": [item for record in self.incomplete
                                                 for item in record['requirements']],
                     "verified_requirements": acceptance.get('verified_requirements', []),
