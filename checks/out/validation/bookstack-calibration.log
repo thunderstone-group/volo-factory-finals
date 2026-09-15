@@ -1,0 +1,742 @@
+
+> arcbench-scenario-checks@0.1.0 calibrate
+> node --import tsx src/calibrate.ts --app-dir ~/projects/volo-factory/runs/2026-09-15-bookstack-2/app --checks out/bookstack/checks.json --official out/bookstack-official/official-score.json --out out/bookstack-2
+
+
+Running 34 tests using 4 workers
+
+(node:8345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8346) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8343) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8344) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [chromium] › out/bookstack-2/specs/REQ-1.1.spec.ts:3:1 › REQ-1.1#1 (296ms)
+  ✓   2 [chromium] › out/bookstack-2/specs/REQ-2.1.spec.ts:3:1 › REQ-2.1#1 (356ms)
+  ✓   4 [chromium] › out/bookstack-2/specs/REQ-1.2.spec.ts:3:1 › REQ-1.2#1 (376ms)
+  ✓   1 [chromium] › out/bookstack-2/specs/REQ-2.2.spec.ts:3:1 › REQ-2.2#1 (453ms)
+  ✓   6 [chromium] › out/bookstack-2/specs/REQ-4.1.spec.ts:3:1 › REQ-4.1#1 (138ms)
+  ✓   7 [chromium] › out/bookstack-2/specs/REQ-4.2.1.spec.ts:3:1 › REQ-4.2.1#1 (139ms)
+  ✓   5 [chromium] › out/bookstack-2/specs/REQ-3.1.spec.ts:3:1 › REQ-3.1#1 (214ms)
+  ✓   9 [chromium] › out/bookstack-2/specs/REQ-4.3.2.spec.ts:3:1 › REQ-4.3.2#1 (279ms)
+  ✓  12 [chromium] › out/bookstack-2/specs/REQ-4.5.1.spec.ts:3:1 › REQ-4.5.1#1 (307ms)
+  ✓  13 [chromium] › out/bookstack-2/specs/REQ-4.5.2.spec.ts:3:1 › REQ-4.5.2#1 (296ms)
+  ✘   8 [chromium] › out/bookstack-2/specs/REQ-4.3.1.spec.ts:3:1 › REQ-4.3.1#1 (10.0s)
+  ✘  10 [chromium] › out/bookstack-2/specs/REQ-4.4.1.spec.ts:3:1 › REQ-4.4.1#1 (10.0s)
+  ✘  11 [chromium] › out/bookstack-2/specs/REQ-4.4.2.spec.ts:3:1 › REQ-4.4.2#1 (10.0s)
+(node:8616) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8618) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8617) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  14 [chromium] › out/bookstack-2/specs/REQ-5.1.spec.ts:3:1 › REQ-5.1#1 (10.0s)
+(node:8653) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  15 [chromium] › out/bookstack-2/specs/REQ-5.2.1.spec.ts:3:1 › REQ-5.2.1#1 (10.0s)
+  ✘  17 [chromium] › out/bookstack-2/specs/REQ-5.2.2.spec.ts:3:1 › REQ-5.2.2#1 (10.0s)
+  ✘  16 [chromium] › out/bookstack-2/specs/REQ-5.3.1.spec.ts:3:1 › REQ-5.3.1#1 (10.0s)
+(node:9838) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9839) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  18 [chromium] › out/bookstack-2/specs/REQ-5.3.2.spec.ts:3:1 › REQ-5.3.2#1 (10.0s)
+(node:9864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  19 [chromium] › out/bookstack-2/specs/REQ-5.4.1.spec.ts:3:1 › REQ-5.4.1#1 (10.0s)
+  ✘  21 [chromium] › out/bookstack-2/specs/REQ-5.4.2.spec.ts:3:1 › REQ-5.4.2#1 (10.0s)
+  ✘  20 [chromium] › out/bookstack-2/specs/REQ-5.5.1.spec.ts:3:1 › REQ-5.5.1#1 (10.0s)
+(node:10240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10242) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  22 [chromium] › out/bookstack-2/specs/REQ-5.5.2.spec.ts:3:1 › REQ-5.5.2#1 (10.0s)
+(node:10258) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  24 [chromium] › out/bookstack-2/specs/REQ-6.1.2.spec.ts:3:1 › REQ-6.1.2#1 (10.0s)
+  ✘  23 [chromium] › out/bookstack-2/specs/REQ-5.6.1.spec.ts:3:1 › REQ-5.6.1#1 (10.0s)
+  ✘  25 [chromium] › out/bookstack-2/specs/REQ-6.1.1.spec.ts:3:1 › REQ-6.1.1#1 (10.0s)
+(node:10503) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10502) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10501) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  26 [chromium] › out/bookstack-2/specs/REQ-6.1.3.spec.ts:3:1 › REQ-6.1.3#1 (10.0s)
+(node:10526) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  30 [chromium] › out/bookstack-2/specs/REQ-7.1.spec.ts:3:1 › REQ-7.1#1 (138ms)
+(node:10535) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  31 [chromium] › out/bookstack-2/specs/REQ-7.2.spec.ts:3:1 › REQ-7.2#1 (127ms)
+(node:10577) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  27 [chromium] › out/bookstack-2/specs/REQ-6.3.2.spec.ts:3:1 › REQ-6.3.2#1 (10.0s)
+  ✘  29 [chromium] › out/bookstack-2/specs/REQ-6.2.1.spec.ts:3:1 › REQ-6.2.1#1 (10.0s)
+  ✘  28 [chromium] › out/bookstack-2/specs/REQ-6.3.1.spec.ts:3:1 › REQ-6.3.1#1 (10.0s)
+(node:10718) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10719) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  32 [chromium] › out/bookstack-2/specs/REQ-8.1.spec.ts:3:1 › REQ-8.1#1 (10.0s)
+  ✘  34 [chromium] › out/bookstack-2/specs/REQ-9.1.spec.ts:3:1 › REQ-9.1#1 (10.0s)
+  ✘  33 [chromium] › out/bookstack-2/specs/REQ-8.2.spec.ts:3:1 › REQ-8.2#1 (10.0s)
+
+
+  1) [chromium] › out/bookstack-2/specs/REQ-4.3.1.spec.ts:3:1 › REQ-4.3.1#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Shelf\s+4\.3\.1\s+Created\s+by\s+Automated\s+Check/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Shelf\s+4\.3\.1\s+Created\s+by\s+Automated\s+Check/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-4.3.1#1","requirement":"REQ-4.3.1","title":"Create Shelf","category":"create","rationale":"Creates a new shelf from an existing shelf's action panel. Preparation logs in if the Login control is visible, navigates through the global navigation to the seeded shelf details, opens the New Shelf form, binds a unique shelf name, fills the required Name field, saves, and then navigates to the shelf list to confirm the new shelf is displayed.","given":[{"op":"open"},{"op":"if","target":{"name":["Login"],"via":"ladder"},"state":"visible","then":[{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login"],"via":"ladder"}}],"else":[]},{"op":"click","target":{"name":["Shelves"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 4.3.1"],"via":"text"}},{"op":"click","target":{"name":["Shelf 4.3.1"],"via":"ladder"}},{"op":"click","target":{"name":["New Shelf"],"via":"ladder"}},{"op":"bind","variable":"shelfName","value":"Shelf 4.3.1 Created by Automated Check","source":"Unique scenario-derived name that avoids collision with the seeded exact shelf names."},{"op":"fill","target":{"name":["Name"],"via":"field"},"value":{"variable":"shelfName"}}],"when":[{"op":"click","target":{"name":["Save Shelf"],"via":"ladder"}}],"then":[{"op":"click","target":{"name":["Shelves"],"via":"ladder"}},{"op":"expectText","target":{"name":["${shelfName}"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-4.3.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-4.3.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-4.3.1-REQ-4-3-1-1-chromium/error-context.md
+
+  2) [chromium] › out/bookstack-2/specs/REQ-4.4.1.spec.ts:3:1 › REQ-4.4.1#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Delete/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-4.4.1#1","requirement":"REQ-4.4.1","title":"Confirm Delete Shelf","category":"delete","rationale":"Uses the seeded deletable shelf 'Shelf 4.4.1'. From a fresh browser context, open the homepage, navigate via the global Shelves link to the shelf list, open Shelf 4.4.1 details, then use Delete and Confirm to perform the deletion. The subsequent absence of the shelf while another seeded shelf is visible confirms the shelf list is shown and the shelf was removed.","given":[{"op":"open"},{"op":"click","target":{"name":["Shelves"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 4.4.1"],"via":"text"}},{"op":"click","target":{"name":["Shelf 4.4.1"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 4.4.1"],"via":"text"}}],"when":[{"op":"click","target":{"name":[{"regex":"Delete","flags":"i"}],"via":"role","role":"button"}},{"op":"click","target":{"name":[{"regex":"Confirm","flags":"i"}],"via":"role","role":"button"}}],"then":[{"op":"expectAbsent","target":{"name":["Shelf 4.4.1"],"via":"text"}},{"op":"expectText","target":{"name":["Shelf 4.4.2"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-4.4.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-4.4.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-4.4.1-REQ-4-4-1-1-chromium/error-context.md
+
+  3) [chromium] › out/bookstack-2/specs/REQ-4.4.2.spec.ts:3:1 › REQ-4.4.2#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Delete/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-4.4.2#1","requirement":"REQ-4.4.2","title":"Cancel Delete Shelf","category":"delete","rationale":"Uses the seeded deletable shelf 'Shelf 4.4.2'. From a fresh browser context, open the homepage, navigate to the shelf list, open Shelf 4.4.2 details, and proceed to the delete confirmation page. Clicking Cancel should return to the shelf details page without deleting, leaving the shelf name visible and the confirmation action absent.","given":[{"op":"open"},{"op":"click","target":{"name":["Shelves"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 4.4.2"],"via":"text"}},{"op":"click","target":{"name":["Shelf 4.4.2"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 4.4.2"],"via":"text"}},{"op":"click","target":{"name":[{"regex":"Delete","flags":"i"}],"via":"role","role":"button"}}],"when":[{"op":"click","target":{"name":[{"regex":"Cancel","flags":"i"}],"via":"role","role":"button"}}],"then":[{"op":"expectAbsent","target":{"name":[{"regex":"Confirm","flags":"i"}],"via":"role","role":"button"}},{"op":"expectText","target":{"name":["Shelf 4.4.2"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-4.4.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-4.4.2.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-4.4.2-REQ-4-4-2-1-chromium/error-context.md
+
+  4) [chromium] › out/bookstack-2/specs/REQ-5.1.spec.ts:3:1 › REQ-5.1#1 ────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Book\s+5\.1/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Book\s+5\.1/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.1#1","requirement":"REQ-5.1","title":"View Books List","category":"read-list","rationale":"Open the homepage to show the global navigation bar, then click the Books link to navigate to the books list page. The seeded book 'Book 5.1' should appear as a card, and the 'Create New Book' button confirms the action panel is present.","given":[{"op":"open"}],"when":[{"op":"click","target":{"name":["Books"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["Book 5.1"],"via":"text"}},{"op":"expectText","target":{"name":["Create New Book"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.1-REQ-5-1-1-chromium/error-context.md
+
+  5) [chromium] › out/bookstack-2/specs/REQ-5.2.1.spec.ts:3:1 › REQ-5.2.1#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Book\s+5\.2\.1/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Book\s+5\.2\.1/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.2.1#1","requirement":"REQ-5.2.1","title":"Enter Book Details Page through Book List Page","category":"navigation","rationale":"Open the application, use the global navigation bar to reach the books list, and click the seeded book card. The route is inferred from the navigation table: Book list -> book card -> book details. Assertions confirm the clicked book name and details-page controls are visible.","given":[{"op":"open"},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"expectText","target":{"name":["Book 5.2.1"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Book 5.2.1"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["Book 5.2.1"],"via":"text"}},{"op":"expectText","target":{"name":["Edit"],"via":"text"}},{"op":"expectText","target":{"name":["New Page"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.2.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.2.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.2.1-REQ-5-2-1-1-chromium/error-context.md
+
+  6) [chromium] › out/bookstack-2/specs/REQ-5.2.2.spec.ts:3:1 › REQ-5.2.2#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Book\s+5\.2\.2/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Book\s+5\.2\.2/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.2.2#1","requirement":"REQ-5.2.2","title":"Enter Book Details Page through Shelf Details Page","category":"navigation","rationale":"Open the application, use the global navigation bar to reach the shelves list, and open the seeded shelf that contains the seeded book. The route follows the navigation table: Shelves -> shelf item -> book item on shelf details -> book details. Assertions confirm the book name and a details-page control are visible.","given":[{"op":"open"},{"op":"click","target":{"name":["Shelves"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 5.2.2"],"via":"text"}},{"op":"click","target":{"name":["Shelf 5.2.2"],"via":"ladder"}},{"op":"expectText","target":{"name":["Book 5.2.2"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Book 5.2.2"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["Book 5.2.2"],"via":"text"}},{"op":"expectText","target":{"name":["Edit"],"via":"text"}},{"op":"expectText","target":{"name":["New Page"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.2.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.2.2.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.2.2-REQ-5-2-2-1-chromium/error-context.md
+
+  7) [chromium] › out/bookstack-2/specs/REQ-5.3.1.spec.ts:3:1 › REQ-5.3.1#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Create\s+New\s+Book/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.3.1#1","requirement":"REQ-5.3.1","title":"Fill out and Save Book","category":"create","rationale":"Creation requires an authenticated session based on the user seed (REQ-2.2). Starting from a fresh context, log in, open the Books list from the global navigation, open the create-book form, fill a unique generated name, and save; the resulting book details page is verified by the book name being visible.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login"],"via":"role","role":"button"}},{"op":"expectText","target":{"name":["BookStack User"],"via":"text"}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"bind","variable":"bookName","value":"Book REQ-5.3.1 Created","source":"Unique scenario-derived book name; not present in any seed so it can be uniquely asserted after creation."},{"op":"click","target":{"name":["Create New Book"],"via":"ladder"}},{"op":"fill","target":{"name":["Name","Book Name"],"via":"field"},"value":{"variable":"bookName"}}],"when":[{"op":"click","target":{"name":["Save Book"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["${bookName}"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.3.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.3.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.3.1-REQ-5-3-1-1-chromium/error-context.md
+
+  8) [chromium] › out/bookstack-2/specs/REQ-5.3.2.spec.ts:3:1 › REQ-5.3.2#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Create\s+New\s+Book/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.3.2#1","requirement":"REQ-5.3.2","title":"Cancel Creating Book","category":"create","rationale":"The cancel flow requires reaching the create-new-book page. After logging in and opening the Books list, the form is opened and a unique name is entered so cancellation can be proven by the book not appearing afterwards; clicking Cancel should return to the books list with no new book created.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login"],"via":"role","role":"button"}},{"op":"expectText","target":{"name":["BookStack User"],"via":"text"}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"bind","variable":"bookName","value":"Book REQ-5.3.2 Cancelled","source":"Unique scenario-derived book name; not present in any seed so absence after cancellation proves no book was created."},{"op":"click","target":{"name":["Create New Book"],"via":"ladder"}},{"op":"fill","target":{"name":["Name","Book Name"],"via":"field"},"value":{"variable":"bookName"}}],"when":[{"op":"click","target":{"name":["Cancel"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["Create New Book"],"via":"text"}},{"op":"expectAbsent","target":{"name":["${bookName}"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.3.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.3.2.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.3.2-REQ-5-3-2-1-chromium/error-context.md
+
+  9) [chromium] › out/bookstack-2/specs/REQ-5.4.1.spec.ts:3:1 › REQ-5.4.1#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/^(?:Book\s+5\.4\.1)$/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.4.1#1","requirement":"REQ-5.4.1","title":"Save Book Edits","category":"edit","rationale":"Seed provides editable book Book 5.4.1 with initial description and tags. Editing requires an authenticated session and the action panel is available to the logged-in user, so log in with the verified seed account, then navigate via Books to Book 5.4.1. Open the edit form, change the name to a unique generated value, and save. The returned details page showing the updated name proves the edit was persisted and the user returned to the details page. UI routes follow the contract navigation entries.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"fill","target":{"name":["email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login"],"via":"role","role":"button"}},{"op":"expectText","target":{"name":["BookStack User"],"via":"text"}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"click","target":{"name":["Book 5.4.1"],"via":"text","exact":true}},{"op":"expectText","target":{"name":["Book 5.4.1"],"via":"text","exact":true}},{"op":"expectText","target":{"name":["Edit"],"via":"ladder"}}],"when":[{"op":"bind","variable":"editedName","value":"Book 5.4.1 Edited","source":"Unique scenario-derived name; avoids collisions and provides a visible value that can confirm the saved edit on the details page."},{"op":"click","target":{"name":["Edit"],"via":"ladder"}},{"op":"fill","target":{"name":["name"],"via":"field"},"value":{"variable":"editedName"}},{"op":"click","target":{"name":["Save Book"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["${editedName}"],"via":"text","exact":true}},{"op":"expectText","target":{"name":["Edit"],"via":"ladder"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.4.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.4.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.4.1-REQ-5-4-1-1-chromium/error-context.md
+
+  10) [chromium] › out/bookstack-2/specs/REQ-5.4.2.spec.ts:3:1 › REQ-5.4.2#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/^(?:Book\s+5\.4\.2)$/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.4.2#1","requirement":"REQ-5.4.2","title":"Cancel Book Edits","category":"edit","rationale":"Seed provides editable book Book 5.4.2 with valid initial description and tags. Authenticate as the seed user and navigate to Book 5.4.2 details, then open Edit to reach the edit page. Modify the name field to a generated value and click Cancel; because nothing is saved, the returned details page must still show the original name and must not contain the cancelled name. This verifies the cancel flow returns to details without applying edits.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"fill","target":{"name":["email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login"],"via":"role","role":"button"}},{"op":"expectText","target":{"name":["BookStack User"],"via":"text"}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"click","target":{"name":["Book 5.4.2"],"via":"text","exact":true}},{"op":"expectText","target":{"name":["Book 5.4.2"],"via":"text","exact":true}},{"op":"click","target":{"name":["Edit"],"via":"ladder"}},{"op":"expectState","target":{"name":["name"],"via":"field"},"state":"editable","value":true}],"when":[{"op":"bind","variable":"cancelledName","value":"Book 5.4.2 Cancelled","source":"Unique generated name used only to demonstrate that cancelling discards edits; it must not appear after returning to the details page."},{"op":"fill","target":{"name":["name"],"via":"field"},"value":{"variable":"cancelledName"}},{"op":"click","target":{"name":["Cancel"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["Book 5.4.2"],"via":"text","exact":true}},{"op":"expectAbsent","target":{"name":["${cancelledName}"],"via":"text","exact":true}},{"op":"expectText","target":{"name":["Initial description"],"via":"text","exact":true}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.4.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.4.2.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.4.2-REQ-5-4-2-1-chromium/error-context.md
+
+  11) [chromium] › out/bookstack-2/specs/REQ-5.5.1.spec.ts:3:1 › REQ-5.5.1#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Book\s+5\.5\.1/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Book\s+5\.5\.1/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.5.1#1","requirement":"REQ-5.5.1","title":"Confirm Delete Book","category":"delete","rationale":"This check verifies the book deletion flow. Since deleting a book requires an authenticated session and the action panel, the given phase logs in with the seeded BookStack user, navigates to the books list via the global Books link, opens the seeded deletable book 'Book 5.5.1', and clicks Delete to reach the confirmation page. The when phase confirms the deletion. The then phase asserts that the book is removed from the list and the books list page is shown.","given":[{"op":"open"},{"op":"click","target":{"name":["Login","Log in"],"via":"ladder"}},{"op":"fill","target":{"name":["Email","email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password","password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login","Log in"],"via":"ladder"}},{"op":"expectText","target":{"name":["BookStack User"],"via":"ladder"}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"expectText","target":{"name":["Book 5.5.1"],"via":"text"}},{"op":"click","target":{"name":["Book 5.5.1"],"via":"ladder"}},{"op":"expectText","target":{"name":["Book 5.5.1"],"via":"ladder"}}],"when":[{"op":"click","target":{"name":["Delete"],"via":"ladder"}},{"op":"click","target":{"name":["Confirm","Yes","Delete"],"via":"ladder"}}],"then":[{"op":"expectAbsent","target":{"name":["Book 5.5.1"],"via":"text"}},{"op":"expectText","target":{"name":["Books"],"via":"role","role":"heading"}},{"op":"expectText","target":{"name":["Book 5.5.2"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.5.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.5.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.5.1-REQ-5-5-1-1-chromium/error-context.md
+
+  12) [chromium] › out/bookstack-2/specs/REQ-5.5.2.spec.ts:3:1 › REQ-5.5.2#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Book\s+5\.5\.2/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Book\s+5\.5\.2/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.5.2#1","requirement":"REQ-5.5.2","title":"Cancel Delete Book","category":"delete","rationale":"This check verifies that cancelling the book deletion keeps the book intact. The given phase logs in with the seeded BookStack user, navigates to the books list, opens the seeded book 'Book 5.5.2', and clicks Delete to reach the delete confirmation page. The when phase clicks Cancel. The then phase confirms the user returns to the book details page with the book still present, and then verifies the book remains in the books list.","given":[{"op":"open"},{"op":"click","target":{"name":["Login","Log in"],"via":"ladder"}},{"op":"fill","target":{"name":["Email","email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password","password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login","Log in"],"via":"ladder"}},{"op":"expectText","target":{"name":["BookStack User"],"via":"ladder"}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"expectText","target":{"name":["Book 5.5.2"],"via":"text"}},{"op":"click","target":{"name":["Book 5.5.2"],"via":"ladder"}},{"op":"expectText","target":{"name":["Book 5.5.2"],"via":"ladder"}},{"op":"click","target":{"name":["Delete"],"via":"ladder"}}],"when":[{"op":"click","target":{"name":["Cancel"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["Book 5.5.2"],"via":"ladder"}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"expectText","target":{"name":["Books"],"via":"role","role":"heading"}},{"op":"expectText","target":{"name":["Book 5.5.2"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.5.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.5.2.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.5.2-REQ-5-5-2-1-chromium/error-context.md
+
+  13) [chromium] › out/bookstack-2/specs/REQ-5.6.1.spec.ts:3:1 › REQ-5.6.1#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('heading', { name: /Shelf\s+5\.6\.1/i }).first()
+        - locator resolved to <h1>Book from Shelf 5.6.1 - Assigned</h1>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is not stable
+      - retrying click action
+        - waiting for element to be visible, enabled and stable
+      - element was detached from the DOM, retrying
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.6.1#1","requirement":"REQ-5.6.1","title":"Fill out and Save Book with Shelf","category":"create","rationale":"The scenario creates a new book from the shelf details page via the action panel. Preparation requires authenticating with the seeded user to access creation actions, then navigating to the shelf details for the seeded 'Shelf 5.6.1'. The create flow uses the 'Create New Book' button, fills the required name field, and saves. Verification checks the created book name appears on its details page and also on the shelf details page to confirm association.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"]}},{"op":"fill","target":{"name":["email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login"]}},{"op":"click","target":{"name":["Shelves"]}},{"op":"click","target":{"name":["Shelf 5.6.1"]}}],"when":[{"op":"bind","variable":"newBookName","value":"Book from Shelf 5.6.1 - Assigned","source":"Unique scenario-derived book name to avoid collision with existing book seeds."},{"op":"click","target":{"name":["Create New Book"]}},{"op":"fill","target":{"name":["name"],"via":"field"},"value":{"variable":"newBookName"}},{"op":"click","target":{"name":["Save Book"]}}],"then":[{"op":"expectText","target":{"name":["${newBookName}"],"via":"text"}},{"op":"click","target":{"name":["Shelves"]}},{"op":"click","target":{"name":["Shelf 5.6.1"]}},{"op":"expectText","target":{"name":["${newBookName}"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-5.6.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-5.6.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-5.6.1-REQ-5-6-1-1-chromium/error-context.md
+
+  14) [chromium] › out/bookstack-2/specs/REQ-6.1.1.spec.ts:3:1 › REQ-6.1.1#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: /Book\s+6\.1\.1/i }).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('button', { name: /Book\s+6\.1\.1/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-6.1.1#1","requirement":"REQ-6.1.1","title":"Save Page","category":"create","rationale":"Prepares authenticated session, navigates to seeded Book 6.1.1, opens the New Page flow, creates a page with a unique name, saves it, and verifies the page appears on the returned book details page. No other scenario data is used.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"]}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"check","target":{"name":["Remember Me"]},"checked":true},{"op":"click","target":{"name":["Login"]}},{"op":"expectText","target":{"name":["BookStack User"]}},{"op":"click","target":{"name":["Books"]}},{"op":"expectText","target":{"name":["Book 6.1.1"]}},{"op":"click","target":{"name":["Book 6.1.1"]}}],"when":[{"op":"click","target":{"name":["New Page"]}},{"op":"bind","variable":"pageName","value":"Page 6.1.1-created","source":"Unique scenario-derived name to avoid collisions across parallel workers."},{"op":"fill","target":{"name":["Name"],"via":"field"},"value":{"variable":"pageName"}},{"op":"fill","target":{"name":["Content"],"via":"field"},"value":"Content for page 6.1.1"},{"op":"click","target":{"name":["Save Page"]}}],"then":[{"op":"expectFeedback","kind":"success"},{"op":"expectText","target":{"name":["Book 6.1.1"]}},{"op":"expectText","target":{"name":["${pageName}"]}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-6.1.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-6.1.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-6.1.1-REQ-6-1-1-1-chromium/error-context.md
+
+  15) [chromium] › out/bookstack-2/specs/REQ-6.1.2.spec.ts:3:1 › REQ-6.1.2#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Book\s+6\.1\.2/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-6.1.2#1","requirement":"REQ-6.1.2","title":"Save Draft","category":"create","rationale":"Authenticates, navigates to seeded Book 6.1.2, enters the New Page flow, fills and saves a draft, then returns home and confirms the draft appears under My Recent Drafts. Relies only on seeds for Book 6.1.2 and the shared user.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"]}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"check","target":{"name":["Remember Me"]},"checked":true},{"op":"click","target":{"name":["Login"]}},{"op":"expectText","target":{"name":["BookStack User"]}},{"op":"click","target":{"name":["Books"]}},{"op":"click","target":{"name":["Book 6.1.2"]}}],"when":[{"op":"click","target":{"name":["New Page"]}},{"op":"bind","variable":"draftName","value":"Draft 6.1.2-created","source":"Unique scenario-derived name to avoid collisions across parallel workers."},{"op":"fill","target":{"name":["Name"],"via":"field"},"value":{"variable":"draftName"}},{"op":"fill","target":{"name":["Content"],"via":"field"},"value":"Draft content for 6.1.2"},{"op":"click","target":{"name":["Save Draft"]}}],"then":[{"op":"expectFeedback","kind":"success"},{"op":"click","target":{"name":["BookStack"]}},{"op":"expectText","target":{"name":["My Recent Drafts"]}},{"op":"expectText","target":{"name":["${draftName}"]}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-6.1.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-6.1.2.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-6.1.2-REQ-6-1-2-1-chromium/error-context.md
+
+  16) [chromium] › out/bookstack-2/specs/REQ-6.1.3.spec.ts:3:1 › REQ-6.1.3#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Book\s+6\.1\.3/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-6.1.3#1","requirement":"REQ-6.1.3","title":"Delete Draft","category":"delete","rationale":"Authenticates, navigates to seeded Book 6.1.3 which contains draft Draft 6.1.3, opens the draft and, if needed, clicks Edit to reach the page edit screen, deletes and confirms draft deletion, then verifies the draft is removed from the book details page. Uses only seeds for Book 6.1.3, Draft 6.1.3, and the shared user.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"]}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"check","target":{"name":["Remember Me"]},"checked":true},{"op":"click","target":{"name":["Login"]}},{"op":"expectText","target":{"name":["BookStack User"]}},{"op":"click","target":{"name":["Books"]}},{"op":"click","target":{"name":["Book 6.1.3"]}},{"op":"expectText","target":{"name":["Draft 6.1.3"]}},{"op":"click","target":{"name":["Draft 6.1.3"]}},{"op":"try","steps":[{"op":"click","target":{"name":["Edit"]}}],"fallback":[]}],"when":[{"op":"click","target":{"name":["Delete Draft"]}},{"op":"click","target":{"name":["Confirm"]}}],"then":[{"op":"expectFeedback","kind":"success"},{"op":"expectText","target":{"name":["Book 6.1.3"]}},{"op":"expectAbsent","target":{"name":["Draft 6.1.3"]}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-6.1.3_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-6.1.3.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-6.1.3-REQ-6-1-3-1-chromium/error-context.md
+
+  17) [chromium] › out/bookstack-2/specs/REQ-6.2.1.spec.ts:3:1 › REQ-6.2.1#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Book\s+6\.2\.1/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-6.2.1#1","requirement":"REQ-6.2.1","title":"Create Chapter","category":"create","rationale":"The seeded server contains Book 6.2.1. Because chapter creation requires an authenticated session, the shared BookStack User is logged in through the visible login flow. The user then navigates via the global Books nav to the book details page, opens New Chapter, fills the required name with a unique scenario-derived value, saves, and asserts the new chapter name is visible, confirming the chapter was created for the current book.","given":[{"op":"open"},{"op":"click","target":{"name":["Login","Log In"],"via":"ladder"}},{"op":"fill","target":{"name":["email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login","Log In"],"via":"ladder"}},{"op":"expectText","target":{"name":["BookStack User"],"via":"ladder"}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"click","target":{"name":["Book 6.2.1"],"via":"ladder"}}],"when":[{"op":"bind","variable":"chapterName","value":"Chapter 6.2.1 Generated","source":"Unique scenario-derived chapter name avoids collisions with any existing chapters and is a valid chapter name."},{"op":"click","target":{"name":["New Chapter"],"via":"ladder"}},{"op":"fill","target":{"name":["Name"],"via":"field"},"value":{"variable":"chapterName"}},{"op":"click","target":{"name":["Save Chapter"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["${chapterName}"],"via":"ladder"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-6.2.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-6.2.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-6.2.1-REQ-6-2-1-1-chromium/error-context.md
+
+  18) [chromium] › out/bookstack-2/specs/REQ-6.3.1.spec.ts:3:1 › REQ-6.3.1#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /^(?:Page\s+6\.3\.1)$/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-6.3.1#1","requirement":"REQ-6.3.1","title":"Enter Page Reading Page","category":"navigation","rationale":"Seeded book 'Book 6.3.1' contains readable page 'Page 6.3.1'. Preparation logs in with the seed account, uses the Books navigation link to reach the book list, opens the seeded book, and then clicks the page entry. Route is inferred from the navigation contract: homepage -> Login -> Books -> book card -> page entry.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder","exact":true}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login"],"via":"ladder","exact":true}},{"op":"expectText","target":{"name":["BookStack User"],"via":"text"}},{"op":"click","target":{"name":["Books"],"via":"ladder","exact":true}},{"op":"click","target":{"name":["Book 6.3.1"],"via":"ladder","exact":true}},{"op":"expectText","target":{"name":["Book 6.3.1"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Page 6.3.1"],"via":"ladder","exact":true}}],"then":[{"op":"expectText","target":{"name":["Page 6.3.1"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-6.3.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-6.3.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-6.3.1-REQ-6-3-1-1-chromium/error-context.md
+
+  19) [chromium] › out/bookstack-2/specs/REQ-6.3.2.spec.ts:3:1 › REQ-6.3.2#1 ───────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /^(?:Page\s+6\.3\.2)$/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-6.3.2#1","requirement":"REQ-6.3.2","title":"Redirect to Page Edit Page","category":"navigation","rationale":"Seeded book 'Book 6.3.2' contains editable page 'Page 6.3.2'. Preparation logs in with the seed account, navigates through Books and Book 6.3.2 to the page reading page, then clicks the Edit action. The resulting edit form should contain the page name. Route is inferred from the navigation contract: homepage -> Login -> Books -> book card -> page entry -> Edit.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder","exact":true}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login"],"via":"ladder","exact":true}},{"op":"expectText","target":{"name":["BookStack User"],"via":"text"}},{"op":"click","target":{"name":["Books"],"via":"ladder","exact":true}},{"op":"click","target":{"name":["Book 6.3.2"],"via":"ladder","exact":true}},{"op":"expectText","target":{"name":["Book 6.3.2"],"via":"text"}},{"op":"click","target":{"name":["Page 6.3.2"],"via":"ladder","exact":true}}],"when":[{"op":"click","target":{"name":["Edit"],"via":"ladder","exact":true}}],"then":[{"op":"expectField","target":{"name":["Name"],"via":"field"},"value":"Page 6.3.2"},{"op":"expectText","target":{"name":["Save Page"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-6.3.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-6.3.2.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-6.3.2-REQ-6-3-2-1-chromium/error-context.md
+
+  20) [chromium] › out/bookstack-2/specs/REQ-7.1.spec.ts:3:1 › REQ-7.1#1 ───────────────────────────
+
+    Error: Unbound variable email
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-7.1#1","requirement":"REQ-7.1","title":"Add to Recently Viewed","category":"navigation","rationale":"Verify that opening a shelf details page records it in My Recently Viewed on the authenticated homepage. Seed Shelf 7.1 is provided; use the global nav to navigate to shelves, open the seeded shelf, then return to the homepage and assert the item appears. Preparation requires login with the seeded account since recently-viewed is user-specific and dashboard-only. The UI route is: open homepage -> Login -> Shelves (global nav) -> Shelf 7.1 -> BookStack logo (homepage). No APIs or URLs beyond the entry page are used.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"fill","target":{"name":["email"],"via":"field"},"value":{"variable":"email"}},{"op":"fill","target":{"name":["password"],"via":"field"},"value":"Password123!"},{"op":"check","target":{"name":["Remember Me"],"via":"ladder"},"checked":true},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"expectText","target":{"name":["BookStack User"],"via":"ladder"}},{"op":"bind","variable":"email","value":"bookstack_user@example.com","source":"Seed user from REQ-2.2 provides this verified email."}],"when":[{"op":"click","target":{"name":["Shelves"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 7.1"],"via":"ladder"}},{"op":"click","target":{"name":["Shelf 7.1"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 7.1"],"via":"ladder"}},{"op":"click","target":{"name":["BookStack logo"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["My Recently Viewed"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 7.1"],"via":"ladder"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-7.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-7.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-7.1-REQ-7-1-1-chromium/error-context.md
+
+  21) [chromium] › out/bookstack-2/specs/REQ-7.2.spec.ts:3:1 › REQ-7.2#1 ───────────────────────────
+
+    Error: Unbound variable email
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-7.2#1","requirement":"REQ-7.2","title":"Quick Navigation from Recently Viewed","category":"navigation","rationale":"Verify that clicking a shelf listed under My Recently Viewed navigates to that shelf's details page. The seeded shelf Shelf 7.2 is used. Because recently-viewed entries only appear after viewing the item in the same authenticated session, this scenario must first open Shelf 7.2, which records it, then return to the homepage and click the entry. Preparation: login with seeded account to make dashboard lists visible. Route: homepage -> Login -> Shelves -> Shelf 7.2 -> BookStack logo -> click My Recently Viewed item.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"fill","target":{"name":["email"],"via":"field"},"value":{"variable":"email"}},{"op":"fill","target":{"name":["password"],"via":"field"},"value":"Password123!"},{"op":"check","target":{"name":["Remember Me"],"via":"ladder"},"checked":true},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"expectText","target":{"name":["BookStack User"],"via":"ladder"}},{"op":"click","target":{"name":["Shelves"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 7.2"],"via":"ladder"}},{"op":"click","target":{"name":["Shelf 7.2"],"via":"ladder"}},{"op":"expectText","target":{"name":["Shelf 7.2"],"via":"ladder"}},{"op":"click","target":{"name":["BookStack logo"],"via":"ladder"}},{"op":"expectText","target":{"name":["My Recently Viewed"],"via":"ladder"}},{"op":"bind","variable":"email","value":"bookstack_user@example.com","source":"Seed user from REQ-2.2 provides the verified login email."}],"when":[{"op":"click","target":{"name":["Shelf 7.2"],"via":"ladder","within":{"name":["My Recently Viewed"],"via":"ladder"}}}],"then":[{"op":"expectText","target":{"name":["Shelf 7.2"],"via":"ladder"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-7.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-7.2.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-7.2-REQ-7-2-1-chromium/error-context.md
+
+  22) [chromium] › out/bookstack-2/specs/REQ-8.1.spec.ts:3:1 › REQ-8.1#1 ───────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/Book\s+8\.1/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-8.1#1","requirement":"REQ-8.1","title":"Favorite Items","category":"state-toggle","rationale":"Favorites require an authenticated session, so prepare by logging in with the seeded user. Navigate to the seeded Book 8.1 via the Books list, then use the Favorite action on the book details page. Verify the action toggles to Unfavorite and that the book appears in the My Most Viewed Favorites dashboard section after returning home.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"check","target":{"name":["Remember Me"],"via":"ladder"},"checked":true,"clickFallback":true},{"op":"click","target":{"name":["Login"],"via":"role","role":"button","exact":true}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"click","target":{"name":["Book 8.1"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Favorite"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["Unfavorite"],"via":"ladder"}},{"op":"click","target":{"name":["BookStack logo"],"via":"ladder"}},{"op":"expectText","target":{"name":["My Most Viewed Favorites"],"via":"text"}},{"op":"expectText","target":{"name":["Book 8.1"],"via":"text","within":{"name":["My Most Viewed Favorites"],"via":"text"}}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-8.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-8.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-8.1-REQ-8-1-1-chromium/error-context.md
+
+  23) [chromium] › out/bookstack-2/specs/REQ-8.2.spec.ts:3:1 › REQ-8.2#1 ───────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/Book\s+8\.2/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-8.2#1","requirement":"REQ-8.2","title":"Quick Navigation from Favorites","category":"navigation","rationale":"To provide the seeded Book 8.2 as a favorite item on the dashboard, log in, open Book 8.2 from the books list, and favorite it. Return to the homepage, click its entry under My Most Viewed Favorites, and confirm the application navigates to the book's details page by checking the page contains the book title and the favorite state button.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder"}},{"op":"fill","target":{"name":["Email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["Password"],"via":"field"},"value":"Password123!"},{"op":"check","target":{"name":["Remember Me"],"via":"ladder"},"checked":true,"clickFallback":true},{"op":"click","target":{"name":["Login"],"via":"role","role":"button","exact":true}},{"op":"click","target":{"name":["Books"],"via":"ladder"}},{"op":"click","target":{"name":["Book 8.2"],"via":"text"}},{"op":"click","target":{"name":["Favorite"],"via":"ladder"}},{"op":"click","target":{"name":["BookStack logo"],"via":"ladder"}},{"op":"expectText","target":{"name":["My Most Viewed Favorites"],"via":"text"}},{"op":"expectText","target":{"name":["Book 8.2"],"via":"text","within":{"name":["My Most Viewed Favorites"],"via":"text"}}}],"when":[{"op":"click","target":{"name":["Book 8.2"],"via":"text","within":{"name":["My Most Viewed Favorites"],"via":"text"}}}],"then":[{"op":"expectAbsent","target":{"name":["My Most Viewed Favorites"],"via":"text"}},{"op":"expectText","target":{"name":["Book 8.2"],"via":"text"}},{"op":"expectText","target":{"name":["Unfavorite"],"via":"ladder"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-8.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-8.2.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-8.2-REQ-8-2-1-chromium/error-context.md
+
+  24) [chromium] › out/bookstack-2/specs/REQ-9.1.spec.ts:3:1 › REQ-9.1#1 ───────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /^(?:New\s+Page)$/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-9.1#1","requirement":"REQ-9.1","title":"Quick Navigation from Recently Updated","category":"navigation","rationale":"The scenario requires the authenticated homepage to show a recently updated page, then navigating to that page's reading view via the Recently Updated Pages list. Because no page seed exists for Book 9.1, the check prepares state by logging in with the declared verified account, opening Book 9.1, creating a uniquely named page, and returning to the homepage so the newly saved page appears in the Recently Updated Pages dashboard section. Navigation from the homepage to the selected page is verified by observing the page title and content on the reading page.","given":[{"op":"open"},{"op":"click","target":{"name":["Login"],"via":"ladder","exact":true}},{"op":"fill","target":{"name":["email"],"via":"field"},"value":"bookstack_user@example.com"},{"op":"fill","target":{"name":["password"],"via":"field"},"value":"Password123!"},{"op":"click","target":{"name":["Login"],"via":"ladder","exact":true}},{"op":"click","target":{"name":["Books"],"via":"ladder","exact":true}},{"op":"click","target":{"name":["Book 9.1"],"via":"text","exact":true}},{"op":"click","target":{"name":["New Page"],"via":"ladder","exact":true}},{"op":"bind","variable":"pageName","value":"Page 9.1 Recently Updated","source":"Unique page name derived from the scenario to avoid colliding with other created pages."},{"op":"fill","target":{"name":["Name"],"via":"field"},"value":{"variable":"pageName"}},{"op":"fill","target":{"name":["Content"],"via":"field"},"value":"Recently updated page content for 9.1"},{"op":"click","target":{"name":["Save Page"],"via":"ladder","exact":true}},{"op":"click","target":{"name":["BookStack","BookStack logo"],"via":"ladder","exact":false}},{"op":"expectText","target":{"name":["Recently Updated Pages"],"via":"text","exact":true}}],"when":[{"op":"click","target":{"name":["${pageName}"],"via":"text","exact":true}}],"then":[{"op":"expectText","target":{"name":["${pageName}"],"via":"text","exact":true}},{"op":"expectText","target":{"name":["Recently updated page content for 9.1"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/results-parts/REQ-9.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/bookstack-2/specs/REQ-9.1.spec.ts:6:51
+
+    Error Context: out/bookstack-2/artifacts/REQ-9.1-REQ-9-1-1-chromium/error-context.md
+
+  24 failed
+    [chromium] › out/bookstack-2/specs/REQ-4.3.1.spec.ts:3:1 › REQ-4.3.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-4.4.1.spec.ts:3:1 › REQ-4.4.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-4.4.2.spec.ts:3:1 › REQ-4.4.2#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.1.spec.ts:3:1 › REQ-5.1#1 ─────────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.2.1.spec.ts:3:1 › REQ-5.2.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.2.2.spec.ts:3:1 › REQ-5.2.2#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.3.1.spec.ts:3:1 › REQ-5.3.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.3.2.spec.ts:3:1 › REQ-5.3.2#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.4.1.spec.ts:3:1 › REQ-5.4.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.4.2.spec.ts:3:1 › REQ-5.4.2#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.5.1.spec.ts:3:1 › REQ-5.5.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.5.2.spec.ts:3:1 › REQ-5.5.2#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-5.6.1.spec.ts:3:1 › REQ-5.6.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-6.1.1.spec.ts:3:1 › REQ-6.1.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-6.1.2.spec.ts:3:1 › REQ-6.1.2#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-6.1.3.spec.ts:3:1 › REQ-6.1.3#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-6.2.1.spec.ts:3:1 › REQ-6.2.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-6.3.1.spec.ts:3:1 › REQ-6.3.1#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-6.3.2.spec.ts:3:1 › REQ-6.3.2#1 ─────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-7.1.spec.ts:3:1 › REQ-7.1#1 ─────────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-7.2.spec.ts:3:1 › REQ-7.2#1 ─────────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-8.1.spec.ts:3:1 › REQ-8.1#1 ─────────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-8.2.spec.ts:3:1 › REQ-8.2#1 ─────────────────────────────
+    [chromium] › out/bookstack-2/specs/REQ-9.1.spec.ts:3:1 › REQ-9.1#1 ─────────────────────────────
+  10 passed (1.1m)
+| Local \ Official | pass | fail |
+|---|---:|---:|
+| pass | 7 | 3 |
+| fail | 4 | 20 |
+| unknown | 0 | 0 |
+
+Denominator: 34; official-pass recall: 63.6%; false passes: 3; unknown: 0; acceptance: FAIL.
+
+
+

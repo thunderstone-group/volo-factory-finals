@@ -1,0 +1,35 @@
+{
+  "denominator": 34,
+  "matrix": {
+    "pass": {
+      "pass": 7,
+      "fail": 3
+    },
+    "fail": {
+      "pass": 4,
+      "fail": 20
+    },
+    "unknown": {
+      "pass": 0,
+      "fail": 0
+    }
+  },
+  "officialPassRecall": 0.6363636363636364,
+  "falsePasses": [
+    "REQ-4.2.1#1",
+    "REQ-4.3.2#1",
+    "REQ-4.5.2#1"
+  ],
+  "falseFails": [
+    "REQ-4.4.2#1",
+    "REQ-5.1#1",
+    "REQ-5.2.1#1",
+    "REQ-5.4.2#1"
+  ],
+  "unknownCount": 0,
+  "unknown": [],
+  "accepted": false,
+  "interpretation": "Diagnostic calibration only; matching failure status does not establish matching failure cause.",
+  "checksSha256": "14d93b79b73d174d77f3df02d853b4270f86667fb86660be26380c5f857cb456",
+  "officialSha256": "61d45d805b49b2c21cb7bf3f8907c7a323bc6f07c6d54ca92902c30d0127ba3f"
+}
