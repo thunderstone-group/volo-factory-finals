@@ -127,3 +127,24 @@ Sub-agents: nothing in the rules mentions them. The organizers' own `arc` templa
 `deepagents` and explicitly disables its general-purpose sub-agent
 (`arc/agents/runtime/factory.py:295`); the Claude Code and Codex templates run one module per
 turn sequentially. Container facts that bound any parallelism: 1 CPU, 2 GiB, one shared store.
+
+## Addendum 18:50 — official runs of the built-in templates (hosted machine, our account)
+
+Run set `runs/2026-09-15-baselines-2/`. Cost column is the account-wide meter delta and is
+meaningless (concurrent local generation and other runs); pass counts are real.
+
+| Template | smoke (1+1) | smoke-evolution (2+2) | ticket-booking (10) | Keep (32) |
+|---|---|---|---|---|
+| arc (organizers' compiler) | 1/1, 1/1 (four runs, all pass) | 2/2, 2/2 and one 1/2 | **4/10** (6192 s) and **9/10** (4229 s) | **FAILED, no app after 10,153 s** |
+| codex (Codex SDK) | 1/1, 1/1 | 2/2, 2/2 | **4/10** (787 s) and **0/10** (1146 s) | **FAILED, no app after 1549 s** |
+| octos | 1/1 (3747 s) and 0/1 (2752 s) | 2/2 | **4/10** (5709 s) | not run |
+| VOLO (our rows, 09-12/14) | 1/1 at ≈ CNY 0.03 | 4/4 at CNY 0.017 | 10/10 at CNY 0.82 | one-shot package 27–29/32 locally |
+
+Reading: on the demo boards the templates pass the two-test tasks but take 2–60 minutes and
+CNY 2–14 per run (polluted, but the order of magnitude holds); on the 10-test ticket task
+they land between 0 and 9 with high variance; on Keep neither the organizers' own compiler
+nor the Codex template delivered a runnable app on the hosted machine. Nothing here is a
+threat to a package that scores 27–29 locally, provided it survives the hosted machine.
+
+Balance after this batch: CNY 71.6 (from 186 at 14:43); the arc Keep run alone ran 2.8 hours.
+No further baseline runs.
