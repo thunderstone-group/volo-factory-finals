@@ -1043,3 +1043,42 @@ generation has been run against any of this.
 - Next lever: RE (one 12-call retry of a capped batch, 7db22d7) and RF/RG are on
   feat/state-contract but not on the upload branch; a full local Keep generation on
   feat/state-contract head is the gate before they go up.
+
+### 2026-09-15, morning — the schedule became a loop: every batch worked until it verifies
+
+- Replaced "one pass, then deliver" with "keep working until every batch is verified or the
+  token budget is spent". `run_schedule` now builds one record per scheduled batch and
+  re-enters every incomplete batch in schedule order, round robin, up to three entries in
+  all (first pass plus two re-entries), each entry with fresh messages, the batch's latest
+  brief and the same twenty-call cap. The immediate 12-call retry of a capped batch is gone
+  (`BATCH_RETRY_CALL_LIMIT` removed): a re-entry is a fresh attempt taken after every other
+  incomplete batch has had its turn, so the batch returns to a tree the later batches moved
+  forward.
+- A failed entry is now measured before it is discarded. If it wrote product files, its own
+  check files move to `.factory/unverified/<batch-id>/` and the bundle that was passing
+  before the batch started (regression plus harness-owned checks) is run once over the tree
+  it left, through `workspace.verify` and without a model call. Passing, the tree is kept and
+  snapshotted and the batch is recorded `salvaged`, still incomplete and still eligible for
+  re-entry; failing, it is restored exactly as before and recorded `restored`. A batch that
+  wrote no product file, or a deadline that has already passed, skips straight to the
+  rollback. Every outcome is a `batch_salvage` event on the trace.
+- The next entry's brief now says which entry it is, how many calls the last one spent,
+  whether its work survived, and carries the quarantined check back as text so its assertions
+  are not rewritten from nothing.
+- The large default budget is 320 calls, 10 M tokens and three hours (was 200 / 6.5 M /
+  100 minutes). Evidence: official run `762faa0bd756` scored 19/32 because our own 45-minute
+  clock ended a batch whose work was then rolled back, while the same code scored 25/32
+  locally with all fifteen batches run; the platform waits for the container without a
+  timeout; the hosted machine makes 1.4–2 calls a minute; the Keep board's 100% row ran
+  9038 s and 28.8 M tokens. The clock is now a safety net, and the expected terminal
+  condition of a large run is the token budget or completion.
+- The result JSON and `.factory/checkpoint.json` gained `batches`
+  (`{id, requirements, status: completed|salvaged|incomplete, entries, calls,
+  quarantined_checks}`) and `loop` (`{passes, ended_by: complete|token_budget|call_budget|
+  deadline|entries_exhausted}`). Delivery decides exactly as before, and a run whose last
+  event was a salvage delivers the salvaged tree rather than exiting 1.
+- Tests: 366 before, 379 after, all synthetic — round-robin order and the three-entry cap,
+  salvage keeping the tree when the bundle passes and rolling back when it fails including
+  the quarantine move and the events, no model call and the deadline respected, a run with an
+  effectively infinite deadline ending on `token_budget`, a run delivering after a salvage,
+  and the large budget values.
