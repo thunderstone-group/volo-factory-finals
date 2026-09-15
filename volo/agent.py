@@ -1828,7 +1828,8 @@ class Agent:
             return
         if not self.workspace.list_files()['files']:
             scaffold(self.workspace)
-        state_runtime.install(self.workspace, self.contract, self.observed_texts())
+        state_runtime.install(self.workspace, self.contract, self.observed_texts(),
+                              self.requirements.batch_text(self.requirements.nodes))
         state_contract.save(self.contract, self.trace.directory)
         self.trace.event('state_contract_installed', **self.contract.get('audit', {}),
                          collections=state_contract.collections(self.contract))
