@@ -1,3 +1,69 @@
+# ARC continuation handoff — 2026-09-15 noon (supersedes the sections below)
+
+Read `docs/prime-transfer-2026-09-15.md` (the plan: three parallel tracks, decided with the team
+lead), `docs/campaign-plan-2026-09-14.md` (rules and order), `docs/arc-template-map-2026-09-15.md`
+(the organizers' ARC reference agent, mapped), `docs/organizer-report-2026-09-15-metering.md` (sent
+as a gist), and the dated entries in `docs/progress.md`. Branch `feat/state-contract` in this
+worktree holds everything; nothing is merged to `main`.
+
+## State at handoff
+
+- **Gateway key exhausted.** meter balance CNY −1.35 since about 10:48; every model call answers
+  HTTP 402 `insufficient_balance`. The team lead is asking the organizer for a top-up. Nothing that
+  calls the gateway can run until then. Check with `arcbench balance` (CLI 0.3.0 logs into the
+  meter with the key; no cookie needed).
+- **Aggregated board**: VOLO AI is rank 1 on `arc-bench-web` at 19.6% because the current Keep
+  package (submission `672b777e6cbe`) now has a completed run on all six tasks (bookstack 9/34,
+  stackoverflow 11/66, prestashop 13/86, 12306 0/135, ctrip 0/125, Keep 19/32). All five were cut
+  short by the 402. The ARC reference template (submission `68d7d015431f`) failed on Keep and
+  Bookstack with 0 tests run, also 402: no baseline data yet. Every one of the seven runs is stamped
+  with the account-wide meter delta (≈30 M tokens / CNY 37 each); real spend of that hour was
+  CNY 37.7. Reported to the organizer (gist in the report file).
+- **Harness on this branch, head 8e8d93b**, suite 420 tests green (46 skips without a browser;
+  browser-backed files pass with a real Chromium), all independently re-run from clean archives:
+  gate loop (round-robin re-entry ≤ 3 per batch, salvage of regression-clean work, delivery on any
+  end), budget in CNY (`FACTORY_COST_BUDGET_CNY`, LARGE 12.0; token/call ceilings secondary; meter
+  calibrated to run 5 within 0.5%), the empty-product-source bug fixed (52 of run 5's 142 requests
+  carried `{}`), gateway refusal (402/401/403 or three silent entries) ends the run and delivers,
+  one hover-action policy (bare verb, out of the tree until hover), RC only for verbs the
+  requirements declare, inertness only for dialogs, harness-owned `/factory/overlay.js` overlay
+  lifecycle (emitted into `frontend/dist`, never into `frontend/public`) plus a same-page
+  `overlayLeak` check that fires on run 5's REQ-4.2 race, and the requirement text handed to the
+  interface check so unquoted verbs (`More options`) count as declared.
+- **Local Keep run 7** on 4131da4 died at batch 2 on the 402 (CNY 1.30, 9 real calls; partial app
+  in the session scratchpad, not worth scoring). The branch has had no full generation since run 5
+  (25/32 on b3d2331). That is the first thing to do once the key is topped up: run 7 again with the
+  script pattern in `runs/2026-09-14-keep-full-5` / the scratchpad `keep-full-7/run.sh` (default
+  budget, no `--token-budget`), score hosted + repo + two hosted replays, worst replay counts.
+  Bar: ≥ 26/32 and ≤ CNY 12, else attribute first.
+
+## Decisions today (team lead)
+
+1. Official runs and local generation may overlap on the shared key; cost columns of overlapping
+   runs are meaningless, pass rates are not. Balance is the hard ceiling: check it before a batch.
+2. Baselines: ARC template as its own submission (rerun Keep only first, then decide on the other
+   tasks by its cost); our package on every task so the aggregated row exists (done).
+3. Track 3 (single-tool harness): an additional mode for ablation, Node kernel, six-function SDK,
+   continue only if calls halve at equal pass rate. Heavy discussion wanted; not on the 09-21
+   critical path.
+4. Phase 2 stays as planned (official-ladder locator primitives + per-scenario evidence): the
+   hidden suite is authored by separate evaluator infrastructure, not by the ARC compiler's
+   TestGenerator, so the public corpus helpers remain the closest sample.
+
+## Next, in order
+
+1. Top-up confirmed → Keep run 7 (above) → attribute → Bookstack holdout once Keep ≥ 26.
+2. ARC template official run on Keep alone (cost and pass rate of the organizers' own pipeline).
+3. Phase 2, then the three rules the ARC map surfaced (seeded records through the real startup
+   path, auth transitions asserted globally and surviving refresh, domain state verified through
+   persistence).
+4. Merge this branch to `main` through PR #21 only after a full local Keep generation on it.
+
+## Discipline
+
+Check `arcbench balance` before any batch of runs; one sample is not a cause; trace/video off
+locally; never upload from an agent; hand the organizer measured numbers, not inferences.
+
 # ARC continuation handoff — 2026-09-15 early morning (supersedes the sections below)
 
 Plan and rules: `docs/campaign-plan-2026-09-14.md`. Log: `docs/progress.md` (dated, append-only).

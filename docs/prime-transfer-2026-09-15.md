@@ -65,5 +65,9 @@ ranked by cost, so this does not change rank.
 2. **Our harness, as planned above** (gate loop → cost budget → rules → local Keep run 7 → phase 2).
 3. **Single-tool harness experiment**: fuse dsh's "ptc" with Prime Agent's one-tool design (one
    persistent code runtime as the only tool; file reads, edits and checks are programs the model
-   writes). Exploratory; the team lead wants heavy discussion before and during. Not on the
+   writes). **Decided 12:03 (team lead, on recommendation):** implemented as an additional mode for
+   ablation, not a replacement — one `run_code` tool backed by a Node kernel that persists across
+   calls within a batch, with an SDK of six functions (list, read, patch, write, verify, snapshot);
+   same Keep requirements, same rules, one local run each way; continue only if model calls halve
+   with no drop in pass rate. Exploratory; the team lead wants heavy discussion during it. Not on the
    critical path for 09-21 unless it beats track 2 on the same local Keep bar.

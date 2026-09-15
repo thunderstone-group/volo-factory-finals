@@ -1158,3 +1158,18 @@ generation has been run against any of this.
   first batch with one entry spent, three unanswered entries ending it as `gateway`, a
   transport failure that did get an answer staying a batch failure, and a run refused part
   way through still delivering what verified.
+
+## 2026-09-15, noon — Handoff: key exhausted, aggregated rank 1 by accident, branch ready for run 7
+
+- Seven concurrent official runs (five tasks of `672b777e6cbe`, Keep and Bookstack of the ARC
+  reference template `68d7d015431f`) all failed in generation on HTTP 402 after the shared key hit
+  CNY −1.35 at about 10:48; tests still ran on the partial apps, which put VOLO AI at rank 1 on the
+  aggregated `arc-bench-web` board (19.6%). Each run is stamped with the account-wide meter delta
+  (≈30 M tokens, CNY 37); reported to the organizer in
+  `docs/organizer-report-2026-09-15-metering.md`.
+- Local Keep run 7 (4131da4) reached batch 2 before the 402; the gate loop's handling of a refused
+  gateway was fixed in d13824c. No full generation has run on this branch yet.
+- arcbench-cli 0.3.0 released (concurrent `run --all-tasks`, multi-id `wait`, meter login with the
+  key, `models`/`usage`/`requests`); the no-overlap doctrine in its README and skill was replaced by
+  the measured facts.
+- Track 3 decided: a `run_code` single-tool mode on a Node kernel as an ablation, not a rewrite.
