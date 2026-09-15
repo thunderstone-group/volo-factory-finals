@@ -1,0 +1,520 @@
+[
+  {
+    "version": 2,
+    "scenario": "REQ-1.1#1",
+    "requirement": "REQ-1.1",
+    "title": "Open Homepage",
+    "category": "navigation",
+    "rationale": "GIVEN opens the app; WHEN is a pure view with no actions; THEN asserts homepage text.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "homepage"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-1.2#1",
+    "requirement": "REQ-1.2",
+    "title": "Back to Homepage from Other Pages",
+    "category": "read-list",
+    "rationale": "Compiler output failed source/schema validation twice.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: BookStack logo\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.1#1",
+    "requirement": "REQ-2.1",
+    "title": "Enter Login Page",
+    "category": "navigation",
+    "rationale": "GIVEN opens homepage; WHEN clicks Login; THEN asserts login form page text.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Login"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "login\\s+form\\s+page"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.2#1",
+    "requirement": "REQ-2.2",
+    "title": "Log In Successfully",
+    "category": "create",
+    "rationale": "WHEN requires fill email, fill password, check Remember Me, and click Login (4 operations) which exceeds the 2-step cap per sentence.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Single WHEN sentence contains four distinct operations exceeding the two-step maximum."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-3.1#1",
+    "requirement": "REQ-3.1",
+    "title": "Enter Authenticated Homepage",
+    "category": "read-list",
+    "rationale": "GIVEN requires logged-in state but login preparation needs more than two steps; no-preparation-path.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot reach authenticated homepage because login workflow exceeds the two-step WHEN cap."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.1#1",
+    "requirement": "REQ-4.1",
+    "title": "View Shelf List",
+    "category": "navigation",
+    "rationale": "GIVEN opens homepage; WHEN clicks Shelves; THEN asserts shelf list page.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Shelves"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "shelf\\s+list\\s+page"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.2.1#1",
+    "requirement": "REQ-4.2.1",
+    "title": "Enter Shelf Details Page",
+    "category": "navigation",
+    "rationale": "GIVEN requires shelf list page; open then click Shelves. WHEN clicks the seeded shelf name. THEN asserts the shelf name is visible on the details page.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelves"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Shelf 4\\.2\\.1"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Shelf 4\\.2\\.1"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.3.1#1",
+    "requirement": "REQ-4.3.1",
+    "title": "Create Shelf",
+    "category": "create",
+    "rationale": "WHEN requires clicking New Shelf, entering information, and clicking Save Shelf (3+ operations) exceeding the 2-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.3.2#1",
+    "requirement": "REQ-4.3.2",
+    "title": "Cancel Creation",
+    "category": "create",
+    "rationale": "GIVEN cannot reach the shelf creation page without performing the create flow which exceeds step limits.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot navigate to shelf creation page within allowed GIVEN steps."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.4.1#1",
+    "requirement": "REQ-4.4.1",
+    "title": "Confirm Delete Shelf",
+    "category": "delete",
+    "rationale": "WHEN requires clicking Delete and confirming deletion (two separate pages/actions) exceeding the 2-step cap for one sentence.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.4.2#1",
+    "requirement": "REQ-4.4.2",
+    "title": "Cancel Delete Shelf",
+    "category": "delete",
+    "rationale": "GIVEN cannot reach the delete shelf confirmation page without executing the delete flow first.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.5.1#1",
+    "requirement": "REQ-4.5.1",
+    "title": "Save Shelf Edits",
+    "category": "edit",
+    "rationale": "WHEN requires clicking Edit, updating info, and clicking Save Shelf (3+ operations) exceeding the 2-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Edit workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.5.2#1",
+    "requirement": "REQ-4.5.2",
+    "title": "Cancel Shelf Edits",
+    "category": "edit",
+    "rationale": "GIVEN cannot reach the shelf edit page without executing the edit flow first.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare shelf edit page state within allowed GIVEN navigation."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.1#1",
+    "requirement": "REQ-5.1",
+    "title": "View Books List",
+    "category": "navigation",
+    "rationale": "GIVEN opens homepage; WHEN clicks Books; THEN asserts books list page.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Books"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "books\\s+list\\s+page"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.2.1#1",
+    "requirement": "REQ-5.2.1",
+    "title": "Enter Book Details Page through Book List Page",
+    "category": "navigation",
+    "rationale": "GIVEN requires books list page; open then click Books. WHEN clicks the seeded book name. THEN asserts the book name is visible on the details page.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Books"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Book 5\\.2\\.1"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Book 5\\.2\\.1"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.2.2#1",
+    "requirement": "REQ-5.2.2",
+    "title": "Enter Book Details Page through Shelf Details Page",
+    "category": "navigation",
+    "rationale": "GIVEN requires a shelf details page with at least one book listed. The only navigation path to a shelf details page is clicking a shelf item from the shelf list, which already consumes the single allowed open plus one click. Reaching the specific seeded shelf 'Shelf 5.2.2' that contains 'Book 5.2.2' cannot be guaranteed without additional navigation steps or setup mutations, so there is no valid preparation path within the constraints.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot reach the required shelf details page containing Book 5.2.2 within the allowed GIVEN operations (one open plus minimum clicks)."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.3.1#1",
+    "requirement": "REQ-5.3.1",
+    "title": "Fill out and Save Book",
+    "category": "create",
+    "rationale": "WHEN requires clicking Create New Book, entering info, and clicking Save Book (3+ operations) exceeding the 2-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.3.2#1",
+    "requirement": "REQ-5.3.2",
+    "title": "Cancel Creating Book",
+    "category": "create",
+    "rationale": "GIVEN cannot reach the create new book page without performing the create flow which exceeds step limits.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot navigate to create new book page within allowed GIVEN steps."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.4.1#1",
+    "requirement": "REQ-5.4.1",
+    "title": "Save Book Edits",
+    "category": "edit",
+    "rationale": "WHEN requires clicking Edit, updating info, and clicking Save Book (3+ operations) exceeding the 2-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Edit workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.4.2#1",
+    "requirement": "REQ-5.4.2",
+    "title": "Cancel Book Edits",
+    "category": "edit",
+    "rationale": "GIVEN cannot reach the book edit page without executing the edit flow first.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare book edit page state within allowed GIVEN navigation."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.5.1#1",
+    "requirement": "REQ-5.5.1",
+    "title": "Confirm Delete Book",
+    "category": "delete",
+    "rationale": "WHEN requires clicking Delete and confirming deletion spanning multiple pages, exceeding the 2-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Delete confirmation spans multiple pages requiring more than two steps in one sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.5.2#1",
+    "requirement": "REQ-5.5.2",
+    "title": "Cancel Delete Book",
+    "category": "delete",
+    "rationale": "GIVEN cannot reach the delete book confirmation page without executing the delete flow first.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare delete confirmation page state within allowed GIVEN navigation."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.6.1#1",
+    "requirement": "REQ-5.6.1",
+    "title": "Fill out and Save Book with Shelf",
+    "category": "create",
+    "rationale": "WHEN requires clicking Create New Book, entering info, and clicking Save Book (3+ operations) exceeding the 2-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-6.1.1#1",
+    "requirement": "REQ-6.1.1",
+    "title": "Save Page",
+    "category": "create",
+    "rationale": "WHEN requires clicking New Page, entering info, and clicking Save Page (3+ operations) exceeding the 2-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-6.1.2#1",
+    "requirement": "REQ-6.1.2",
+    "title": "Save Draft",
+    "category": "create",
+    "rationale": "WHEN requires entering content and saving draft (fill + click) but lacks specific field/button names and exceeds simple action mapping.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Draft save requires filling content and clicking an unnamed save draft control, ambiguous within 2 steps."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-6.1.3#1",
+    "requirement": "REQ-6.1.3",
+    "title": "Delete Draft",
+    "category": "delete",
+    "rationale": "WHEN requires opening draft actions, clicking Delete Draft, and confirming deletion (3+ operations) exceeding the 2-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Delete draft workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-6.2.1#1",
+    "requirement": "REQ-6.2.1",
+    "title": "Create Chapter",
+    "category": "create",
+    "rationale": "WHEN requires clicking New Chapter, entering info, and clicking Save Chapter (3+ operations) exceeding the 2-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Create workflow requires more than two operations in a single WHEN sentence."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-6.3.1#1",
+    "requirement": "REQ-6.3.1",
+    "title": "Enter Page Reading Page",
+    "category": "navigation",
+    "rationale": "GIVEN cannot reach a book/chapter page list without creating a page or chapter first, which exceeds step limits.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare a page list view within allowed GIVEN navigation without prior creation workflows."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-6.3.2#1",
+    "requirement": "REQ-6.3.2",
+    "title": "Redirect to Page Edit Page",
+    "category": "edit",
+    "rationale": "GIVEN cannot reach the page reading page without prior creation/navigation workflows that exceed step limits.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare page reading page state within allowed GIVEN navigation."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-7.1#1",
+    "requirement": "REQ-7.1",
+    "title": "Add to Recently Viewed",
+    "category": "state-toggle",
+    "rationale": "WHEN lists four alternative target pages separated by commas/or; cannot deterministically select one path within 2 steps.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "WHEN sentence provides multiple alternative navigation targets that cannot be resolved to a single executable path."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-7.2#1",
+    "requirement": "REQ-7.2",
+    "title": "Quick Navigation from Recently Viewed",
+    "category": "navigation",
+    "rationale": "GIVEN requires recently viewed items which depend on REQ-7.1 state that cannot be prepared without login and browsing.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot seed My Recently Viewed list within allowed GIVEN navigation."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-8.1#1",
+    "requirement": "REQ-8.1",
+    "title": "Favorite Items",
+    "category": "state-toggle",
+    "rationale": "GIVEN requires being on a supported view, but navigating there and favoriting requires setup not possible within GIVEN limits without auth.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot reach a supported content view to favorite without authentication and prior navigation exceeding limits."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-8.2#1",
+    "requirement": "REQ-8.2",
+    "title": "Quick Navigation from Favorites",
+    "category": "navigation",
+    "rationale": "GIVEN requires favorites to exist, which depends on REQ-8.1 state that cannot be prepared.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot seed My Most Viewed Favorites list within allowed GIVEN navigation."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-9.1#1",
+    "requirement": "REQ-9.1",
+    "title": "Quick Navigation from Recently Updated",
+    "category": "navigation",
+    "rationale": "GIVEN requires recently updated pages which depend on prior page creation/editing that cannot be prepared.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot seed Recently Updated Pages list within allowed GIVEN navigation."
+  }
+]

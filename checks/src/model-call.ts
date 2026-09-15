@@ -19,7 +19,7 @@ export async function modelCall(args:{model:string;system:string;user:string;led
  ledger.push(entry);const save=()=>writeFileSync(ledgerPath,JSON.stringify(ledger,null,2)+'\n');save();
  const path=resolve(out,`${label}-call-${ledger.length}`);writeFileSync(path+'-request.json',JSON.stringify(request,null,2)+'\n');
  let response:Response;const start=Date.now();
- try {response=await fetch(`${(process.env.OPENAI_BASE_URL??'https://api.arc-bench.com/v1').replace(/\/$/,'')}/chat/completions`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${process.env.OPENAI_API_KEY??''}`},body,signal:AbortSignal.timeout(180000)});}
+ try {response=await fetch(`${(process.env.OPENAI_BASE_URL??'https://api.arc-bench.com/v1').replace(/\/$/,'')}/chat/completions`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${process.env.OPENAI_API_KEY??''}`},body,signal:AbortSignal.timeout(600000)});}
  catch(error){const code=(error as any).cause?.code;entry.error=code??String(error);entry.elapsedMs=Date.now()-start;if(['ENOTFOUND','ECONNREFUSED','ENETUNREACH'].includes(code)){entry.chargedCny=0;entry.accounting='not-sent';}save();throw error;}
  const text=await response.text();writeFileSync(path+'-response.json',text);entry.httpStatus=response.status;entry.elapsedMs=Date.now()-start;save();
  if(!response.ok)throw Error(`Gateway HTTP ${response.status}; no transport retry`);

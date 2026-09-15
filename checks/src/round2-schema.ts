@@ -73,6 +73,9 @@ export function groundedCheckSchema(row:ScenarioSource,requirementsText:string,c
   if(c.scenario!==row.scenario||c.requirement!==row.requirement||c.title!==row.title)issue('Scenario identity/title must match assigned input exactly');
   if(c.status==='unknown')return;
   if(c.given[0]?.op!=='open'||c.given.slice(1).some(s=>s.op==='open'))issue('GIVEN must begin with exactly one open; reload is forbidden');
+  const givenText=sentenceTexts(row,'GIVEN').join(' ');
+  const initialPage=/(?:home\s?page|sidebar|browser|network access|initialized|system is accessible|global navigation bar.*visible)/i.test(givenText)&&!/(?:non-homepage|editor|options list|notification|creation page|edit page|details page|confirmation page)/i.test(givenText);
+  if(initialPage&&c.given.length!==1)issue('GIVEN already names the initial page: extra navigation is not minimal and cannot absorb WHEN');
   const navigationNames=new Set<string>();
   for(const s of c.given)if(s.op==='click') {
    for(const name of s.name)if(!sourcePhrase(name,[requirementsText]))issue(`GIVEN navigation name absent from requirements: ${name}`);
@@ -83,6 +86,8 @@ export function groundedCheckSchema(row:ScenarioSource,requirementsText:string,c
   c.when.forEach((group,i)=>{
    if(group.sentence!==i)issue('WHEN sentence order or index changed');
    const sentence=g.whenSentences[i]??'';
+   const actionable=/(?:click|hover|enter|update|edit|choose|select|clear|confirm|save|enable)s?\b/i.test(sentence)||/open(?!s? the application)/i.test(sentence);
+   if(actionable&&group.steps.length===0)issue('WHEN cannot omit its explicit action or move it into GIVEN');
    const words=lexical(sentence);
    const actionWords=verbs.filter(v=>words.includes(v)||normalize(sentence).includes(' '+v+' '));
    for(const s of group.steps) {

@@ -1,0 +1,344 @@
+{
+  "recallPolicy": "exclude-unknown",
+  "recallDenominator": 7,
+  "officialPassCount": 22,
+  "fullDenominatorRecall": 0.2727272727272727,
+  "coverage": 0.3125,
+  "denominator": 32,
+  "matrix": {
+    "pass": {
+      "pass": 6,
+      "fail": 1
+    },
+    "fail": {
+      "pass": 1,
+      "fail": 2
+    },
+    "unknown": {
+      "pass": 15,
+      "fail": 7
+    }
+  },
+  "officialPassRecall": 0.8571428571428571,
+  "falsePasses": [
+    "REQ-2.7.6.2#1"
+  ],
+  "falseFails": [
+    "REQ-2.3.3#1"
+  ],
+  "unknownCount": 22,
+  "unknown": [
+    {
+      "scenario": "REQ-2.2#1",
+      "requirement": "REQ-2.2",
+      "title": "Create Note",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Single WHEN sentence contains click, fill title, fill content, and close actions exceeding the two-step limit."
+        }
+      ],
+      "error": "unsupported: Single WHEN sentence contains click, fill title, fill content, and close actions exceeding the two-step limit."
+    },
+    {
+      "scenario": "REQ-2.3.1#1",
+      "requirement": "REQ-2.3.1",
+      "title": "Delete",
+      "category": "delete",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "WHEN requires hover, click More options, and click Delete Note in one sentence, exceeding the 2-step limit."
+        }
+      ],
+      "error": "unsupported: WHEN requires hover, click More options, and click Delete Note in one sentence, exceeding the 2-step limit."
+    },
+    {
+      "scenario": "REQ-2.3.2#1",
+      "requirement": "REQ-2.3.2",
+      "title": "Notification and Undo",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare deleted-note state in GIVEN without performing delete operations."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare deleted-note state in GIVEN without performing delete operations."
+    },
+    {
+      "scenario": "REQ-2.4#1",
+      "requirement": "REQ-2.4",
+      "title": "Update Note",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Single WHEN sentence contains open, edit, and close actions exceeding the two-step limit."
+        }
+      ],
+      "error": "unsupported: Single WHEN sentence contains open, edit, and close actions exceeding the two-step limit."
+    },
+    {
+      "scenario": "REQ-2.5.1#1",
+      "requirement": "REQ-2.5.1",
+      "title": "Archive",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "Cannot assert note moved to archive list using only expectText or expectAbsent on the current page."
+        }
+      ],
+      "error": "ambiguous-assertion: Cannot assert note moved to archive list using only expectText or expectAbsent on the current page."
+    },
+    {
+      "scenario": "REQ-2.5.2#1",
+      "requirement": "REQ-2.5.2",
+      "title": "Archive Undo",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare archive notification state in GIVEN without performing archive operations."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare archive notification state in GIVEN without performing archive operations."
+    },
+    {
+      "scenario": "REQ-2.6.1#1",
+      "requirement": "REQ-2.6.1",
+      "title": "Change note color",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "Color change is a visual style property that cannot be verified with expectText or expectAbsent."
+        }
+      ],
+      "error": "ambiguous-assertion: Color change is a visual style property that cannot be verified with expectText or expectAbsent."
+    },
+    {
+      "scenario": "REQ-2.6.2#1",
+      "requirement": "REQ-2.6.2",
+      "title": "Choose note color when created",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Single WHEN sentence contains multiple actions exceeding the two-step limit."
+        }
+      ],
+      "error": "unsupported: Single WHEN sentence contains multiple actions exceeding the two-step limit."
+    },
+    {
+      "scenario": "REQ-2.7.1#1",
+      "requirement": "REQ-2.7.1",
+      "title": "Assign label to a note",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+        }
+      ],
+      "error": "unsupported: Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+    },
+    {
+      "scenario": "REQ-2.7.2#1",
+      "requirement": "REQ-2.7.2",
+      "title": "Remove label from a note",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+        }
+      ],
+      "error": "unsupported: Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+    },
+    {
+      "scenario": "REQ-2.7.4#1",
+      "requirement": "REQ-2.7.4",
+      "title": "Assign default label when creating note",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+        }
+      ],
+      "error": "no-preparation-path: Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+    },
+    {
+      "scenario": "REQ-2.7.5#1",
+      "requirement": "REQ-2.7.5",
+      "title": "Edit labels",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+        }
+      ],
+      "error": "unsupported: Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+    },
+    {
+      "scenario": "REQ-2.8.1#1",
+      "requirement": "REQ-2.8.1",
+      "title": "Pin note",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "Pin state and pinned section placement are visual properties not verifiable with expectText or expectAbsent."
+        }
+      ],
+      "error": "ambiguous-assertion: Pin state and pinned section placement are visual properties not verifiable with expectText or expectAbsent."
+    },
+    {
+      "scenario": "REQ-2.8.2#1",
+      "requirement": "REQ-2.8.2",
+      "title": "Unpin note",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare pinned note state in GIVEN without performing pin operations."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare pinned note state in GIVEN without performing pin operations."
+    },
+    {
+      "scenario": "REQ-2.8.3#1",
+      "requirement": "REQ-2.8.3",
+      "title": "Pin note when creating it",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+        }
+      ],
+      "error": "no-preparation-path: Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+    },
+    {
+      "scenario": "REQ-3.1#1",
+      "requirement": "REQ-3.1",
+      "title": "Initial suggested filters",
+      "category": "search-filter-sort",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "No specific filter name or expected result text available for expectText assertion."
+        }
+      ],
+      "error": "ambiguous-assertion: No specific filter name or expected result text available for expectText assertion."
+    },
+    {
+      "scenario": "REQ-4.1#1",
+      "requirement": "REQ-4.1",
+      "title": "Setting options list",
+      "category": "navigation",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "No specific settings option text available for expectText assertion."
+        }
+      ],
+      "error": "ambiguous-assertion: No specific settings option text available for expectText assertion."
+    },
+    {
+      "scenario": "REQ-4.2#1",
+      "requirement": "REQ-4.2",
+      "title": "Detailed settings",
+      "category": "navigation",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "no-preparation-path",
+          "detail": "Cannot prepare settings dropdown open state in GIVEN without a click."
+        }
+      ],
+      "error": "no-preparation-path: Cannot prepare settings dropdown open state in GIVEN without a click."
+    },
+    {
+      "scenario": "REQ-5.1#1",
+      "requirement": "REQ-5.1",
+      "title": "Toggle between list and grid views",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "View mode switching is a layout property not verifiable with expectText or expectAbsent."
+        }
+      ],
+      "error": "ambiguous-assertion: View mode switching is a layout property not verifiable with expectText or expectAbsent."
+    },
+    {
+      "scenario": "REQ-5.2#1",
+      "requirement": "REQ-5.2",
+      "title": "Grid View by default",
+      "category": "read-list",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "Grid view default and toolbar toggle visibility are layout properties not verifiable with expectText or expectAbsent."
+        }
+      ],
+      "error": "ambiguous-assertion: Grid view default and toolbar toggle visibility are layout properties not verifiable with expectText or expectAbsent."
+    },
+    {
+      "scenario": "REQ-6.1#1",
+      "requirement": "REQ-6.1",
+      "title": "Items and styling",
+      "category": "read-list",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "Sidebar styling and icon consistency are visual properties not verifiable with expectText or expectAbsent."
+        }
+      ],
+      "error": "ambiguous-assertion: Sidebar styling and icon consistency are visual properties not verifiable with expectText or expectAbsent."
+    },
+    {
+      "scenario": "REQ-6.2#1",
+      "requirement": "REQ-6.2",
+      "title": "Collapsible Sidebar",
+      "category": "state-toggle",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "Sidebar collapse and expand states are layout properties not verifiable with expectText or expectAbsent."
+        }
+      ],
+      "error": "ambiguous-assertion: Sidebar collapse and expand states are layout properties not verifiable with expectText or expectAbsent."
+    }
+  ],
+  "accepted": false,
+  "interpretation": "Diagnostic calibration only; matching failure status does not establish matching failure cause.",
+  "checksSha256": "2d395981a370634ac647953a8a230265a6abd62cfc7c3cd7aaacc6684c69bb57",
+  "officialSha256": "a7ce2eceec3d46410ce17cbac5e2cbe0cfb89ce891c0a1ab4d6314119ac8e004"
+}

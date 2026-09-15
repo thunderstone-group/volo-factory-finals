@@ -30,6 +30,9 @@ describe('round two enforced compiler contract',()=>{
   expect(()=>groundedCheckSchema(row,document,contract).parse({...check,then:[{op:'expectText',name:['Saved successfully']}]})).toThrow('THEN name');
   expect(()=>groundedCheckSchema(row,document,contract).parse({...check,given:[{op:'open'},{op:'click',name:['Notes']},{op:'click',name:['Notes']}]})).toThrow('minimal');
  });
+ it('cannot move WHEN navigation into initial-page GIVEN',()=>{
+  expect(()=>groundedCheckSchema(row,document,contract).parse({...check,given:[{op:'open'},{op:'click',name:['Notes']}],when:[{sentence:0,steps:[]}]})).toThrow('extra navigation');
+ });
  it('keeps unknown out of all executable phases',()=>{
   const {given,when,then,...meta}=check;
   const unknown=round2CheckSchema.parse({...meta,status:'unknown',reason:'unsupported',detail:'Three required actions exceed the two-step cap.'});

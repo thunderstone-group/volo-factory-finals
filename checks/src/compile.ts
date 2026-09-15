@@ -142,11 +142,12 @@ export async function compileRound2(requirements:string,contract:string,out:stri
  if(rows.length!==(app==='keep'?32:34))throw Error('Wrong scenario denominator');
  mkdirSync(out,{recursive:true});
  const system=round2SystemPrompt+JSON.stringify(z.toJSONSchema(round2ChecksSchema));
- const context={requirements:root,contract:contractData};
+ const shared=grounding(rows[0],requirementText,contractData);
+ const context={requirements:root,contract:contractData,sharedQuotedLiterals:shared.sharedQuotedLiterals,hoverTitles:shared.hoverTitles};
  const accepted=new Map<string,Round2Check>(),errors:Record<string,string>={};
  let assigned=rows;
  for(let attempt=0;attempt<2&&assigned.length;attempt++) {
-  const user=JSON.stringify({...context,assigned:assigned.map(r=>({...r,grounding:grounding(r,requirementText,contractData),previousValidationError:errors[r.scenario]}))});
+  const user=JSON.stringify({...context,assigned:assigned.map(r=>{const {sharedQuotedLiterals,hoverTitles,...local}=grounding(r,requirementText,contractData);return {scenario:r.scenario,requirement:r.requirement,title:r.title,grounding:local,previousValidationError:errors[r.scenario]};})});
   const response=responses?responses[attempt]??'{}':await modelCall({model,system,user,ledgerPath,out,label:`${app}-attempt-${attempt+1}`,budget:5,maxTokens:12000});
   let candidates:any[]=[];
   try {const parsed=JSON.parse(response.replace(/^```(?:json)?\s*|\s*```$/g,''));if(!Array.isArray(parsed.checks))throw Error('Missing checks array');candidates=parsed.checks;}
