@@ -1,0 +1,7 @@
+
+> arcbench-scenario-checks@0.1.0 compile
+> node --import tsx src/compile.ts --round2 --model qwen3.8-max --requirements ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/requirements/requirements.yaml --contract ~/projects/volo-factory/runs/2026-09-15-keep-full-7/app/.factory/state-contract.json --out out/round2/qwen/keep --ledger out/round2/usage.json
+
+keep-attempt-1: CNY 0.520752; cumulative 0.520752
+keep-attempt-2: CNY 0.149208; cumulative 0.669960
+qwen3.8-max keep: 32 scenarios; 31 unknown

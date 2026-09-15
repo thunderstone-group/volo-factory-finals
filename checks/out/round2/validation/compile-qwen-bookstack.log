@@ -1,0 +1,7 @@
+
+> arcbench-scenario-checks@0.1.0 compile
+> node --import tsx src/compile.ts --round2 --model qwen3.8-max --requirements ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/requirements/requirements.yaml --contract ~/projects/volo-factory/runs/2026-09-15-bookstack-2/app/.factory/state-contract.json --out out/round2/qwen/bookstack --ledger out/round2/usage.json
+
+bookstack-attempt-1: CNY 0.612156; cumulative 1.282116
+bookstack-attempt-2: CNY 0.092424; cumulative 1.374540
+qwen3.8-max bookstack: 34 scenarios; 28 unknown

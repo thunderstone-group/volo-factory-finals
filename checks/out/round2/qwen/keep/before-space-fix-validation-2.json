@@ -1,0 +1,50 @@
+{
+  "accepted": [
+    "REQ-2.2#1",
+    "REQ-2.3.2#1",
+    "REQ-2.4#1",
+    "REQ-2.5.1#1",
+    "REQ-2.5.2#1",
+    "REQ-2.6.1#1",
+    "REQ-2.6.2#1",
+    "REQ-2.7.1#1",
+    "REQ-2.7.2#1",
+    "REQ-2.7.3#1",
+    "REQ-2.7.4#1",
+    "REQ-2.7.5#1",
+    "REQ-2.8.1#1",
+    "REQ-2.8.2#1",
+    "REQ-2.8.3#1",
+    "REQ-3.1#1",
+    "REQ-4.1#1",
+    "REQ-4.2#1",
+    "REQ-5.1#1",
+    "REQ-5.2#1",
+    "REQ-6.1#1",
+    "REQ-6.2#1",
+    "REQ-2.3.1#1",
+    "REQ-3.2#1"
+  ],
+  "pending": [
+    "REQ-1.1#1",
+    "REQ-2.1#1",
+    "REQ-2.3.3#1",
+    "REQ-2.5.3#1",
+    "REQ-2.5.4#1",
+    "REQ-2.7.6.1#1",
+    "REQ-2.7.6.2#1",
+    "REQ-2.7.6.3#1"
+  ],
+  "errors": {
+    "REQ-1.1#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Exactly one WHEN group per original sentence; do not split comma/AND clauses\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Sprint goals\",\n    \"path\": []\n  }\n]",
+    "REQ-2.1#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Exactly one WHEN group per original sentence; do not split comma/AND clauses\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Sprint goals\",\n    \"path\": []\n  }\n]",
+    "REQ-2.3.1#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Hover must name an exact seed title: Delete me 2\\\\.3\\\\.1\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: More options\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Delete me 2\\\\.3\\\\.1\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Delete Note\",\n    \"path\": []\n  }\n]",
+    "REQ-2.3.3#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Trash\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Delete me 2\\\\.3\\\\.3\",\n    \"path\": []\n  }\n]",
+    "REQ-2.5.3#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Archived\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Travel plans 2\\\\.5\\\\.3\",\n    \"path\": []\n  }\n]",
+    "REQ-2.5.4#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Travel plans 2\\\\.5\\\\.4\",\n    \"path\": []\n  }\n]",
+    "REQ-2.7.6.1#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Design review\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Movie list\",\n    \"path\": []\n  }\n]",
+    "REQ-2.7.6.2#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Movie list\",\n    \"path\": []\n  }\n]",
+    "REQ-2.7.6.3#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Call dentist existing\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Movie list\",\n    \"path\": []\n  }\n]",
+    "REQ-3.2#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"THEN name absent from THEN/literals: Study schedule\",\n    \"path\": []\n  }\n]"
+  }
+}

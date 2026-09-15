@@ -1,0 +1,94 @@
+[
+  {
+    "model": "qwen3.8-max",
+    "label": "keep-attempt-1",
+    "startedAt": "2026-09-15T10:05:09.097Z",
+    "requestSha256": "ec5058cdef25e2272014287b61eb52ecfe05b92eda74c0f2f29ad58b907b3660",
+    "reservedCny": 2.229312,
+    "chargedCny": 0.520752,
+    "accounting": "usage",
+    "parameters": {
+      "enable_thinking": false
+    },
+    "httpStatus": 200,
+    "elapsedMs": 50835,
+    "usage": {
+      "completion_tokens": 3061,
+      "prompt_tokens": 34213,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "text_tokens": 34213
+      },
+      "total_tokens": 37274
+    }
+  },
+  {
+    "model": "qwen3.8-max",
+    "label": "keep-attempt-2",
+    "startedAt": "2026-09-15T10:05:59.967Z",
+    "requestSha256": "7359f6732bcbae957c28104e6a2e9d5ceebcbe5dd770844b2f68132fa198fa65",
+    "reservedCny": 1.3917,
+    "chargedCny": 0.149208,
+    "accounting": "usage",
+    "parameters": {
+      "enable_thinking": false
+    },
+    "httpStatus": 200,
+    "elapsedMs": 18386,
+    "usage": {
+      "completion_tokens": 1101,
+      "prompt_tokens": 18091,
+      "prompt_tokens_details": {
+        "cached_tokens": 10240,
+        "text_tokens": 18091
+      },
+      "total_tokens": 19192
+    }
+  },
+  {
+    "model": "qwen3.8-max",
+    "label": "bookstack-attempt-1",
+    "startedAt": "2026-09-15T10:09:14.736Z",
+    "requestSha256": "02b1c4471f88bef173de2c6ba398ec5b6a61fc4321d68c342e27def0f33e8c30",
+    "reservedCny": 2.466984,
+    "chargedCny": 0.612156,
+    "accounting": "usage",
+    "parameters": {
+      "enable_thinking": false
+    },
+    "httpStatus": 200,
+    "elapsedMs": 39014,
+    "usage": {
+      "completion_tokens": 3255,
+      "prompt_tokens": 42144,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024,
+        "text_tokens": 42144
+      },
+      "total_tokens": 45399
+    }
+  },
+  {
+    "model": "qwen3.8-max",
+    "label": "bookstack-attempt-2",
+    "startedAt": "2026-09-15T10:09:53.793Z",
+    "requestSha256": "d6079d467671742a149e2dbfaa3a6133a3f8d23209ee45129f37e7b0b611f4ef",
+    "reservedCny": 1.240284,
+    "chargedCny": 0.092424,
+    "accounting": "usage",
+    "parameters": {
+      "enable_thinking": false
+    },
+    "httpStatus": 200,
+    "elapsedMs": 9810,
+    "usage": {
+      "completion_tokens": 595,
+      "prompt_tokens": 15773,
+      "prompt_tokens_details": {
+        "cached_tokens": 11264,
+        "text_tokens": 15773
+      },
+      "total_tokens": 16368
+    }
+  }
+]
