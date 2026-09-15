@@ -4,11 +4,9 @@
     "REQ-2.1#1",
     "REQ-2.2#1",
     "REQ-2.3.2#1",
-    "REQ-2.3.3#1",
     "REQ-2.4#1",
     "REQ-2.5.1#1",
     "REQ-2.5.2#1",
-    "REQ-2.5.3#1",
     "REQ-2.5.4#1",
     "REQ-2.6.1#1",
     "REQ-2.6.2#1",
@@ -33,9 +31,13 @@
     "REQ-6.2#1"
   ],
   "pending": [
-    "REQ-2.3.1#1"
+    "REQ-2.3.1#1",
+    "REQ-2.3.3#1",
+    "REQ-2.5.3#1"
   ],
   "errors": {
-    "REQ-2.3.1#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: More options\",\n    \"path\": []\n  }\n]"
+    "REQ-2.3.1#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: More options\",\n    \"path\": []\n  }\n]",
+    "REQ-2.3.3#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN already names the initial page: extra navigation is not minimal and cannot absorb WHEN\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"WHEN cannot omit its explicit action or move it into GIVEN\",\n    \"path\": []\n  }\n]",
+    "REQ-2.5.3#1": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN already names the initial page: extra navigation is not minimal and cannot absorb WHEN\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"WHEN cannot omit its explicit action or move it into GIVEN\",\n    \"path\": []\n  }\n]"
   }
 }

@@ -99,34 +99,11 @@
     "scenario": "REQ-2.3.3#1",
     "requirement": "REQ-2.3.3",
     "title": "Trash list",
-    "category": "navigation",
-    "rationale": "Navigate to Trash from sidebar and verify deleted note is listed.",
-    "status": "compiled",
-    "given": [
-      {
-        "op": "open"
-      },
-      {
-        "op": "click",
-        "name": [
-          "Trash"
-        ]
-      }
-    ],
-    "when": [
-      {
-        "sentence": 0,
-        "steps": []
-      }
-    ],
-    "then": [
-      {
-        "op": "expectText",
-        "name": [
-          "Delete me 2\\.3\\.3"
-        ]
-      }
-    ]
+    "category": "read-list",
+    "rationale": "Compiler output failed source/schema validation twice.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Trash\",\n    \"path\": []\n  }\n]"
   },
   {
     "version": 2,
@@ -166,34 +143,11 @@
     "scenario": "REQ-2.5.3#1",
     "requirement": "REQ-2.5.3",
     "title": "Show archived notes",
-    "category": "navigation",
-    "rationale": "Navigate to Archived view and verify page loads with expected seed note context.",
-    "status": "compiled",
-    "given": [
-      {
-        "op": "open"
-      },
-      {
-        "op": "click",
-        "name": [
-          "Archived"
-        ]
-      }
-    ],
-    "when": [
-      {
-        "sentence": 0,
-        "steps": []
-      }
-    ],
-    "then": [
-      {
-        "op": "expectText",
-        "name": [
-          "Travel plans 2\\.5\\.3"
-        ]
-      }
-    ]
+    "category": "read-list",
+    "rationale": "Compiler output failed source/schema validation twice.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Archived\",\n    \"path\": []\n  }\n]"
   },
   {
     "version": 2,
