@@ -74,7 +74,8 @@ export async function compile(requirements: string, contract: string, out: strin
   let done:Check[]|undefined;
   for(let attempt=0;attempt<2;attempt++) {
    const request={model,messages,max_tokens:10000,temperature:0,reasoning_effort:'low',response_format:{type:'json_object'}};
-   // UTF-8 bytes upper-bound tokens; reserve full output including hidden reasoning.
+   // Reserve from request bytes and the requested output cap. Observed gateway
+   // reasoning can exceed max_tokens; this reservation is not a proven hard bound.
    const reserve=(Buffer.byteLength(JSON.stringify(request))*3+10000*9)/1e6;
    const spent=ledger.reduce((s,r)=>s+r.chargedCny,0);
    if(spent+reserve>8) throw Error(`Budget cap: spent ${spent}, reservation ${reserve}`);

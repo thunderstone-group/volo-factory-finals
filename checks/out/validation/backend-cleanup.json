@@ -1,0 +1,44 @@
+[
+  {
+    "sample": "keep-5",
+    "baseURL": "http://127.0.0.1:51634",
+    "stopped": true,
+    "error": "ECONNREFUSED"
+  },
+  {
+    "sample": "keep-7",
+    "baseURL": "http://127.0.0.1:52405",
+    "stopped": true,
+    "error": "ECONNREFUSED"
+  },
+  {
+    "sample": "bookstack-2",
+    "baseURL": "http://127.0.0.1:59026",
+    "stopped": true,
+    "error": "ECONNREFUSED"
+  },
+  {
+    "sample": "diagnostic-keep-5",
+    "baseURL": "http://127.0.0.1:54129",
+    "stopped": true,
+    "error": "ECONNREFUSED"
+  },
+  {
+    "sample": "diagnostic-keep-7",
+    "baseURL": "http://127.0.0.1:54215",
+    "stopped": true,
+    "error": "ECONNREFUSED"
+  },
+  {
+    "sample": "diagnostic-bookstack",
+    "baseURL": "http://127.0.0.1:60429",
+    "stopped": true,
+    "error": "ECONNREFUSED"
+  },
+  {
+    "sample": "bookstack-official",
+    "baseURL": "http://127.0.0.1:62985",
+    "stopped": true,
+    "error": "ECONNREFUSED"
+  }
+]

@@ -1,8 +1,10 @@
 # ARC-Bench scenario checks
 
 Independent, diagnostic TypeScript compiler and Playwright runner for Keep and
-Bookstack. **Not calibrated yet:** this session cannot resolve the model gateway
-or bind a localhost port. See `../docs/checks-calibration-2026-09-15.md`.
+Bookstack. **Calibration completed; all three samples FAILED acceptance.**
+Official-pass recall was 16.0% / 50.0% / 63.6%, with 1 / 2 / 3 false passes.
+Do not use these checks as an official-score predictor or repair authority.
+See `../docs/checks-calibration-2026-09-15.md`.
 
 ## Interfaces
 
@@ -71,7 +73,10 @@ Both invocations MUST use the same retained ledger. Do not delete it to restart 
 budget. Compiler model is `deepseek-v4-flash`; no Qwen comparison was run. Rates
 are the repository's confirmed gateway rates: CNY 3 / 0.1 / 9 per million
 uncached input / cached input / output tokens. Before every call the ledger
-reserves an upper bound using request UTF-8 bytes and maximum output tokens.
+reserves an estimate using request UTF-8 bytes and requested output tokens.
+The gateway returned more completion tokens than max_tokens on reasoning
+calls, so this is not a proven hard upper bound. This retained run spent
+CNY 1.9249914, with complete usage for all 34 successful HTTP calls.
 Requests, responses, model IDs, timing, usage and validation errors are retained;
 credentials are never serialized. A DNS/connect failure releases its reservation;
 uncertain transport or missing usage retains it and stops. Recompiling is a new
@@ -86,7 +91,7 @@ not individual cases, and restore seeds once before each suite.
 ```sh
 npm run calibrate -- --app-dir "$CHECKS_RUNS/2026-09-14-keep-full-5/app" --checks out/keep/checks.json --official "$CHECKS_RUNS/2026-09-14-keep-full-5/keep-hosted.json" --out out/keep-5
 npm run calibrate -- --app-dir "$CHECKS_RUNS/2026-09-15-keep-full-7/app" --checks out/keep/checks.json --official "$CHECKS_RUNS/2026-09-15-keep-full-7/keep-hosted.json" --out out/keep-7
-npm run calibrate -- --app-dir "$CHECKS_RUNS/2026-09-15-bookstack-2/app" --checks out/bookstack/checks.json --official-tests "$CHECKS_CORPUS/bookstack/tests" --out out/bookstack-2
+npm run calibrate -- --app-dir "$CHECKS_RUNS/2026-09-15-bookstack-2/app" --checks out/bookstack/checks.json --official out/bookstack-official/official-score.json --out out/bookstack-2
 ```
 
 Bookstack's official suite uses the upstream installation of Playwright for both
@@ -106,3 +111,27 @@ Calibration requires zero official-fail/local-pass cases and at least 85% recall
 on official passes. Unknown does not count as a local pass. Matching fail labels
 alone is insufficient evidence of matching causes: inspect `failedStep`, resolver
 and official failure evidence before assigning the compiler any repair authority.
+
+## Recompute the retained results without model or browser calls
+
+```sh
+node --import tsx out/recompute-calibration.mjs
+```
+
+This checks each matrix, denominator, unknown, false pass and the frozen check
+hash against the retained official summaries and scenario results. It reproduces
+the recorded numbers exactly; a new browser run may differ due to timing.
+
+Bookstack's retained official result (11/34) was generated first with the required
+Python harness. To reproduce it separately on a copy, from checks/:
+
+```sh
+mkdir -p out/bookstack-official/app
+cp -R "$CHECKS_RUNS/2026-09-15-bookstack-2/app/backend" out/bookstack-official/app/
+cp -R "$CHECKS_RUNS/2026-09-15-bookstack-2/app/frontend" out/bookstack-official/app/
+PYTHONDONTWRITEBYTECODE=1 ~/projects/volo-factory/.venv/bin/python ../harness_lab/state_rehearsal.py --app bookstack --app-dir out/bookstack-official/app --clone ~/projects/arcbench-campaign/upstream/arc-bench --profile hosted --work-dir out/bookstack-official/official --json out/bookstack-official/official-score.json
+```
+
+Use a fresh output directory if keeping a second run; do not overwrite the
+retained baseline to select a better score. Post-compilation diagnostic scripts
+in out/ are explicitly separate from scored checks and never compiler inputs.
