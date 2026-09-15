@@ -1,0 +1,24 @@
+
+> arcbench-scenario-checks@0.1.0 compile
+> node --import tsx src/compile.ts --requirements ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/requirements/requirements.yaml --contract ~/projects/volo-factory/runs/2026-09-15-bookstack-2/app/.factory/state-contract.json --out out/bookstack --ledger out/usage.json
+
+bookstack REQ-1: 2 checks; CNY 0.884493
+bookstack REQ-2: 2 checks; CNY 0.912327
+bookstack REQ-3: 1 checks; CNY 0.933026
+bookstack REQ-4: 1 checks; CNY 0.961448
+bookstack REQ-4.2: 1 checks; CNY 0.988852
+bookstack REQ-4.3: 2 checks; CNY 1.086489
+bookstack REQ-4.4: 2 checks; CNY 1.172834
+bookstack REQ-4.5: 2 checks; CNY 1.254139
+bookstack REQ-5: 1 checks; CNY 1.282842
+bookstack REQ-5.2: 2 checks; CNY 1.311992
+bookstack REQ-5.3: 2 checks; CNY 1.373005
+bookstack REQ-5.4: 2 checks; CNY 1.440513
+bookstack REQ-5.5: 2 checks; CNY 1.501925
+bookstack REQ-5.6: 1 checks; CNY 1.570401
+bookstack REQ-6.1: 3 checks; CNY 1.652819
+bookstack REQ-6.2: 1 checks; CNY 1.710976
+bookstack REQ-6.3: 2 checks; CNY 1.780148
+bookstack REQ-7: 2 checks; CNY 1.798009
+bookstack REQ-8: 2 checks; CNY 1.879966
+bookstack REQ-9: 1 checks; CNY 1.924991

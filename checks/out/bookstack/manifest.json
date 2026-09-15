@@ -1,0 +1,17 @@
+{
+  "app": "bookstack",
+  "scenarios": 34,
+  "groups": 20,
+  "model": "deepseek-v4-flash",
+  "requirements": "~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/bookstack/requirements/requirements.yaml",
+  "contract": "~/projects/volo-factory/runs/2026-09-15-bookstack-2/app/.factory/state-contract.json",
+  "requirementsSha256": "be5041fd2f6a75993b23905f2a307ef3625238abe4bd168b38b05e51d8b2f646",
+  "contractSha256": "4c5c1093a86a2f98ff45ddb897a25b57618d377db0d1a689b0ae2d8aa7d783fe",
+  "checksSha256": "14d93b79b73d174d77f3df02d853b4270f86667fb86660be26380c5f857cb456",
+  "compiledAt": "2026-09-15T09:03:40.193Z",
+  "compilerInputs": [
+    "requirements",
+    "contract"
+  ],
+  "calibrated": false
+}

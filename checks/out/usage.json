@@ -349,5 +349,530 @@
       "total_tokens": 14881
     },
     "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-1",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "9e1e9e64bab4da14a824bd920f336a030969e922f42938301addbb43f02e69f1",
+    "started": "2026-09-15T08:50:07.675Z",
+    "reservedCny": 0.267594,
+    "chargedCny": 0.0513278,
+    "accounting": "usage",
+    "elapsedMs": 13725,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 1477,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1128
+      },
+      "prompt_tokens": 14658,
+      "prompt_tokens_details": {
+        "cached_tokens": 2048
+      },
+      "total_tokens": 16135
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-2",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "61ee13735f8b48646004306a3d3a2a54a9e64e38e191bfb3fa651b8466487e4a",
+    "started": "2026-09-15T08:50:21.404Z",
+    "reservedCny": 0.268992,
+    "chargedCny": 0.0278334,
+    "accounting": "usage",
+    "elapsedMs": 22159,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 2631,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2180
+      },
+      "prompt_tokens": 14748,
+      "prompt_tokens_details": {
+        "cached_tokens": 13824
+      },
+      "total_tokens": 17379
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-3",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "8bd9d5401f86a7b3f696a32ca1e771185dd96bd523a1165e674e8ee4f8ec64e3",
+    "started": "2026-09-15T08:50:43.570Z",
+    "reservedCny": 0.264903,
+    "chargedCny": 0.0206994,
+    "accounting": "usage",
+    "elapsedMs": 16981,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 1950,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1616
+      },
+      "prompt_tokens": 14413,
+      "prompt_tokens_details": {
+        "cached_tokens": 13824
+      },
+      "total_tokens": 16363
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-4",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "96f995d20fa31cf2c32d1e6fa5216362ba1cbf75969cec2f52585a529895fa36",
+    "started": "2026-09-15T08:51:00.557Z",
+    "reservedCny": 0.263643,
+    "chargedCny": 0.028421400000000003,
+    "accounting": "usage",
+    "elapsedMs": 24482,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 2824,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2626
+      },
+      "prompt_tokens": 14365,
+      "prompt_tokens_details": {
+        "cached_tokens": 13824
+      },
+      "total_tokens": 17189
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-4.2",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "ce2106595792524432fccc9802643fc0f3fed9e130f4f88b321396b7dc2b571a",
+    "started": "2026-09-15T08:51:25.045Z",
+    "reservedCny": 0.26442,
+    "chargedCny": 0.027404400000000002,
+    "accounting": "usage",
+    "elapsedMs": 22523,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 2691,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2394
+      },
+      "prompt_tokens": 14425,
+      "prompt_tokens_details": {
+        "cached_tokens": 13824
+      },
+      "total_tokens": 17116
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-4.3",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "de8d79033525385c6afe54d790aa1841a7db859f5910f87efa61f5a2115f221f",
+    "started": "2026-09-15T08:51:47.572Z",
+    "reservedCny": 0.269802,
+    "chargedCny": 0.0976374,
+    "accounting": "usage",
+    "elapsedMs": 81735,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 10354,
+      "completion_tokens_details": {
+        "reasoning_tokens": 9364
+      },
+      "prompt_tokens": 14847,
+      "prompt_tokens_details": {
+        "cached_tokens": 13824
+      },
+      "total_tokens": 25201
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-4.4",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "eecc6cf91fc0e5d7cf90fd5a0345cb36fc2eff9f1185c300652fb4c6ed8304e8",
+    "started": "2026-09-15T08:53:09.312Z",
+    "reservedCny": 0.270006,
+    "chargedCny": 0.0863448,
+    "accounting": "usage",
+    "elapsedMs": 67441,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 8604,
+      "completion_tokens_details": {
+        "reasoning_tokens": 7913
+      },
+      "prompt_tokens": 14848,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 23452
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-4.5",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "c9d55dc8a242f75ea50a84e5f5658fdd9bb7a8291e9b98d3a07264c14c298262",
+    "started": "2026-09-15T08:54:16.754Z",
+    "reservedCny": 0.270114,
+    "chargedCny": 0.0813048,
+    "accounting": "usage",
+    "elapsedMs": 63970,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 8037,
+      "completion_tokens_details": {
+        "reasoning_tokens": 7096
+      },
+      "prompt_tokens": 14869,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 22906
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-5",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "de69354a8b57699c34dd20b4902cc1fd9d0b0089ba9e5daa4f1a838313ebf402",
+    "started": "2026-09-15T08:55:20.733Z",
+    "reservedCny": 0.263814,
+    "chargedCny": 0.0287028,
+    "accounting": "usage",
+    "elapsedMs": 18424,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 2357,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2182
+      },
+      "prompt_tokens": 14375,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 16732
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-5.2",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "c6a86e263258c75347ea3829bfb16a365a7d9e47998a9c349f32736e39843c54",
+    "started": "2026-09-15T08:55:39.164Z",
+    "reservedCny": 0.271116,
+    "chargedCny": 0.0291504,
+    "accounting": "usage",
+    "elapsedMs": 22671,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 2717,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2156
+      },
+      "prompt_tokens": 14929,
+      "prompt_tokens_details": {
+        "cached_tokens": 13824
+      },
+      "total_tokens": 17646
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-5.3",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "5cc447e2ad3118654d34465825901021f9a1e3749b4e58b0c3b320a8899954b3",
+    "started": "2026-09-15T08:56:01.839Z",
+    "reservedCny": 0.270171,
+    "chargedCny": 0.061012800000000006,
+    "accounting": "usage",
+    "elapsedMs": 45741,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 5785,
+      "completion_tokens_details": {
+        "reasoning_tokens": 4989
+      },
+      "prompt_tokens": 14861,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 20646
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-5.4",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "04c74d5979deabfc8c10195b16a3f3ccf203ddc0a49a1a5430aa8d3a2f88a0bc",
+    "started": "2026-09-15T08:56:47.584Z",
+    "reservedCny": 0.269922,
+    "chargedCny": 0.0675078,
+    "accounting": "usage",
+    "elapsedMs": 53444,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 6508,
+      "completion_tokens_details": {
+        "reasoning_tokens": 5416
+      },
+      "prompt_tokens": 14857,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 21365
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-5.5",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "b292e04f2d0642269945379f03e50a90aaebee3cdbee166d849e0e77da69e187",
+    "started": "2026-09-15T08:57:41.033Z",
+    "reservedCny": 0.269682,
+    "chargedCny": 0.0614118,
+    "accounting": "usage",
+    "elapsedMs": 44473,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 5839,
+      "completion_tokens_details": {
+        "reasoning_tokens": 4625
+      },
+      "prompt_tokens": 14832,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 20671
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-5.6",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "2fb46b35905b6f3da5a794a7f9a43fe1aaace5ebc9e79fdd41fdf97dbc2e2e16",
+    "started": "2026-09-15T08:58:25.510Z",
+    "reservedCny": 0.264876,
+    "chargedCny": 0.0489618,
+    "accounting": "usage",
+    "elapsedMs": 32623,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 4580,
+      "completion_tokens_details": {
+        "reasoning_tokens": 4098
+      },
+      "prompt_tokens": 14459,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 19039
+    },
+    "validation": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"if\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"if\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"visible\",\n            \"exists\"\n          ],\n          \"path\": [\n            \"state\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"visible\\\"|\\\"exists\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"then\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"else\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"try\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"try\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"steps\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"fallback\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"code\": \"unrecognized_keys\",\n          \"keys\": [\n            \"target\"\n          ],\n          \"path\": [],\n          \"message\": \"Unrecognized key: \\\"target\\\"\"\n        }\n      ]\n    ],\n    \"path\": [\n      0,\n      \"given\",\n      4\n    ],\n    \"message\": \"Invalid input\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"if\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"if\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"visible\",\n            \"exists\"\n          ],\n          \"path\": [\n            \"state\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"visible\\\"|\\\"exists\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"then\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"else\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"try\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"try\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"steps\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"fallback\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"code\": \"unrecognized_keys\",\n          \"keys\": [\n            \"target\"\n          ],\n          \"path\": [],\n          \"message\": \"Unrecognized key: \\\"target\\\"\"\n        }\n      ]\n    ],\n    \"path\": [\n      0,\n      \"given\",\n      5\n    ],\n    \"message\": \"Invalid input\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"if\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"if\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"visible\",\n            \"exists\"\n          ],\n          \"path\": [\n            \"state\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"visible\\\"|\\\"exists\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"then\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"else\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"try\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"try\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"steps\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"fallback\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"code\": \"unrecognized_keys\",\n          \"keys\": [\n            \"target\"\n          ],\n          \"path\": [],\n          \"message\": \"Unrecognized key: \\\"target\\\"\"\n        }\n      ]\n    ],\n    \"path\": [\n      0,\n      \"given\",\n      6\n    ],\n    \"message\": \"Invalid input\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"if\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"if\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"visible\",\n            \"exists\"\n          ],\n          \"path\": [\n            \"state\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"visible\\\"|\\\"exists\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"then\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"else\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"try\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"try\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"steps\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"fallback\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"code\": \"unrecognized_keys\",\n          \"keys\": [\n            \"target\"\n          ],\n          \"path\": [],\n          \"message\": \"Unrecognized key: \\\"target\\\"\"\n        }\n      ]\n    ],\n    \"path\": [\n      0,\n      \"when\",\n      1\n    ],\n    \"message\": \"Invalid input\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"if\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"if\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"visible\",\n            \"exists\"\n          ],\n          \"path\": [\n            \"state\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"visible\\\"|\\\"exists\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"then\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"else\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"try\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"try\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"steps\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"fallback\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"code\": \"unrecognized_keys\",\n          \"keys\": [\n            \"target\"\n          ],\n          \"path\": [],\n          \"message\": \"Unrecognized key: \\\"target\\\"\"\n        }\n      ]\n    ],\n    \"path\": [\n      0,\n      \"when\",\n      3\n    ],\n    \"message\": \"Invalid input\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"if\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"if\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"visible\",\n            \"exists\"\n          ],\n          \"path\": [\n            \"state\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"visible\\\"|\\\"exists\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"then\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"else\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"try\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"try\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"steps\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"fallback\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"code\": \"unrecognized_keys\",\n          \"keys\": [\n            \"target\"\n          ],\n          \"path\": [],\n          \"message\": \"Unrecognized key: \\\"target\\\"\"\n        }\n      ]\n    ],\n    \"path\": [\n      0,\n      \"then\",\n      1\n    ],\n    \"message\": \"Invalid input\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"if\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"if\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"ladder\",\n            \"text\",\n            \"role\",\n            \"field\"\n          ],\n          \"path\": [\n            \"target\",\n            \"via\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"ladder\\\"|\\\"text\\\"|\\\"role\\\"|\\\"field\\\"\"\n        },\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"visible\",\n            \"exists\"\n          ],\n          \"path\": [\n            \"state\"\n          ],\n          \"message\": \"Invalid option: expected one of \\\"visible\\\"|\\\"exists\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"then\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"else\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"try\"\n          ],\n          \"path\": [\n            \"op\"\n          ],\n          \"message\": \"Invalid input: expected \\\"try\\\"\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"steps\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"fallback\"\n          ],\n          \"message\": \"Invalid input: expected array, received undefined\"\n        },\n        {\n          \"code\": \"unrecognized_keys\",\n          \"keys\": [\n            \"target\"\n          ],\n          \"path\": [],\n          \"message\": \"Unrecognized key: \\\"target\\\"\"\n        }\n      ]\n    ],\n    \"path\": [\n      0,\n      \"then\",\n      2\n    ],\n    \"message\": \"Invalid input\"\n  }\n]"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-5.6",
+    "attempt": 1,
+    "model": "deepseek-v4-flash",
+    "requestHash": "19105660934afa105408ece93476a8a4b79a61bbbea70ce0820370498b6aab35",
+    "started": "2026-09-15T08:58:58.138Z",
+    "reservedCny": 0.2985,
+    "chargedCny": 0.0195146,
+    "accounting": "usage",
+    "elapsedMs": 10132,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 1197,
+      "completion_tokens_details": {
+        "reasoning_tokens": 756
+      },
+      "prompt_tokens": 16772,
+      "prompt_tokens_details": {
+        "cached_tokens": 14336
+      },
+      "total_tokens": 17969
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-6.1",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "c87812e9a57160ae9067e3acef846821124d12ae96b84541da08f85eccf0225c",
+    "started": "2026-09-15T08:59:08.274Z",
+    "reservedCny": 0.27543,
+    "chargedCny": 0.0824178,
+    "accounting": "usage",
+    "elapsedMs": 55704,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 8015,
+      "completion_tokens_details": {
+        "reasoning_tokens": 6707
+      },
+      "prompt_tokens": 15306,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 23321
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-6.2",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "6ebe4a4afe7404cbb1374a3239b34269c129783e29106959a9650dc57d6df4f5",
+    "started": "2026-09-15T09:00:03.981Z",
+    "reservedCny": 0.264498,
+    "chargedCny": 0.0581568,
+    "accounting": "usage",
+    "elapsedMs": 46573,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 5612,
+      "completion_tokens_details": {
+        "reasoning_tokens": 5177
+      },
+      "prompt_tokens": 14428,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 20040
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-6.3",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "4f91149ed0367abe585393a8dc977e368079555cd89c9e9209b12efbc4a93f3a",
+    "started": "2026-09-15T09:00:50.558Z",
+    "reservedCny": 0.269631,
+    "chargedCny": 0.0691728,
+    "accounting": "usage",
+    "elapsedMs": 54827,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 6699,
+      "completion_tokens_details": {
+        "reasoning_tokens": 5874
+      },
+      "prompt_tokens": 14839,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 21538
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-7",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "d79759978def01458b5adf5c2ec61a3d579045744cf9953d52d3d416f5bb90c8",
+    "started": "2026-09-15T09:01:45.387Z",
+    "reservedCny": 0.268437,
+    "chargedCny": 0.0178608,
+    "accounting": "usage",
+    "elapsedMs": 9009,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 1032,
+      "completion_tokens_details": {
+        "reasoning_tokens": 5
+      },
+      "prompt_tokens": 14736,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 15768
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-8",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "4e291333d3fca73b27113c5b6b3f089361b99e4a4c3d1070cf5f3b4d423c6ac8",
+    "started": "2026-09-15T09:01:54.398Z",
+    "reservedCny": 0.269016,
+    "chargedCny": 0.0819564,
+    "accounting": "usage",
+    "elapsedMs": 68738,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 8629,
+      "completion_tokens_details": {
+        "reasoning_tokens": 7709
+      },
+      "prompt_tokens": 14795,
+      "prompt_tokens_details": {
+        "cached_tokens": 13824
+      },
+      "total_tokens": 23424
+    },
+    "validation": "valid"
+  },
+  {
+    "app": "bookstack",
+    "group": "REQ-9",
+    "attempt": 0,
+    "model": "deepseek-v4-flash",
+    "requestHash": "a3318c4d4c75512adc3495a860e1b63a9c45fd1197b0bb18be43b49b60dbe903",
+    "started": "2026-09-15T09:03:03.138Z",
+    "reservedCny": 0.26355,
+    "chargedCny": 0.045025800000000005,
+    "accounting": "usage",
+    "elapsedMs": 37051,
+    "httpStatus": 200,
+    "usage": {
+      "completion_tokens": 4180,
+      "completion_tokens_details": {
+        "reasoning_tokens": 3598
+      },
+      "prompt_tokens": 14347,
+      "prompt_tokens_details": {
+        "cached_tokens": 12288
+      },
+      "total_tokens": 18527
+    },
+    "validation": "valid"
   }
 ]
