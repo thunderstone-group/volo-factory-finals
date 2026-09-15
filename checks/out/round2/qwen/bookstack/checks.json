@@ -314,10 +314,46 @@
     "requirement": "REQ-5.2.2",
     "title": "Enter Book Details Page through Shelf Details Page",
     "category": "navigation",
-    "rationale": "GIVEN requires a shelf details page with at least one book listed. The only navigation path to a shelf details page is clicking a shelf item from the shelf list, which already consumes the single allowed open plus one click. Reaching the specific seeded shelf 'Shelf 5.2.2' that contains 'Book 5.2.2' cannot be guaranteed without additional navigation steps or setup mutations, so there is no valid preparation path within the constraints.",
-    "status": "unknown",
-    "reason": "no-preparation-path",
-    "detail": "Cannot reach the required shelf details page containing Book 5.2.2 within the allowed GIVEN operations (one open plus minimum clicks)."
+    "rationale": "GIVEN navigates to shelf details via Shelves then Shelf 5.2.2; WHEN clicks Book 5.2.2; THEN asserts book details page.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelves"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelf\\s+5\\.2\\.2"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Book\\s+5\\.2\\.2"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "book\\s+details\\s+page"
+        ]
+      }
+    ]
   },
   {
     "version": 2,

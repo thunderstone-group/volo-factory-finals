@@ -1,0 +1,556 @@
+[
+  {
+    "version": 2,
+    "scenario": "REQ-1.1#1",
+    "requirement": "REQ-1.1",
+    "title": "Enter Website",
+    "category": "navigation",
+    "rationale": "Open entry URL and verify home page displays via seeded note text.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": []
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Sprint goals"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.1#1",
+    "requirement": "REQ-2.1",
+    "title": "Note Listing",
+    "category": "read-list",
+    "rationale": "View home page and verify both pinned and regular notes are displayed.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": []
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Sprint goals"
+        ]
+      },
+      {
+        "op": "expectText",
+        "name": [
+          "Groceries"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.2#1",
+    "requirement": "REQ-2.2",
+    "title": "Create Note",
+    "category": "create",
+    "rationale": "WHEN requires clicking, entering title, entering content, and closing editor which exceeds the two-step cap per sentence.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Single WHEN sentence contains click, fill title, fill content, and close actions exceeding the two-step limit."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.3.1#1",
+    "requirement": "REQ-2.3.1",
+    "title": "Delete",
+    "category": "delete",
+    "rationale": "WHEN sentence contains three comma-separated actions (hover, open More options, choose Delete Note) which exceeds the two-step cap per sentence.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "WHEN requires hover, click More options, and click Delete Note in one sentence, exceeding the 2-step limit."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.3.2#1",
+    "requirement": "REQ-2.3.2",
+    "title": "Notification and Undo",
+    "category": "state-toggle",
+    "rationale": "GIVEN requires a prior deletion which cannot be prepared without forbidden setup mutations.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare deleted-note state in GIVEN without performing delete operations."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.3.3#1",
+    "requirement": "REQ-2.3.3",
+    "title": "Trash list",
+    "category": "read-list",
+    "rationale": "Compiler output failed source/schema validation twice.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Trash\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.4#1",
+    "requirement": "REQ-2.4",
+    "title": "Update Note",
+    "category": "edit",
+    "rationale": "WHEN requires opening note, editing content, and closing editor which exceeds the two-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Single WHEN sentence contains open, edit, and close actions exceeding the two-step limit."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.5.1#1",
+    "requirement": "REQ-2.5.1",
+    "title": "Archive",
+    "category": "state-toggle",
+    "rationale": "THEN asserts note moves to archive list which is a positional/state requirement not expressible as simple text presence/absence on the current page.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "Cannot assert note moved to archive list using only expectText or expectAbsent on the current page."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.5.2#1",
+    "requirement": "REQ-2.5.2",
+    "title": "Archive Undo",
+    "category": "state-toggle",
+    "rationale": "GIVEN requires an archive notification visible after archiving, which cannot be prepared without forbidden setup mutations.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare archive notification state in GIVEN without performing archive operations."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.5.3#1",
+    "requirement": "REQ-2.5.3",
+    "title": "Show archived notes",
+    "category": "read-list",
+    "rationale": "Compiler output failed source/schema validation twice.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Click must name an original verb or quoted literal: Archived\",\n    \"path\": []\n  }\n]"
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.5.4#1",
+    "requirement": "REQ-2.5.4",
+    "title": "Unarchive",
+    "category": "state-toggle",
+    "rationale": "GIVEN requires viewing archived notes list; navigate there then click Unarchive and verify note removed from archived list.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Archived"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Unarchive"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectAbsent",
+        "name": [
+          "Travel plans 2\\.5\\.4"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.6.1#1",
+    "requirement": "REQ-2.6.1",
+    "title": "Change note color",
+    "category": "edit",
+    "rationale": "THEN asserts background color change which is a style requirement not expressible via text assertions.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "Color change is a visual style property that cannot be verified with expectText or expectAbsent."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.6.2#1",
+    "requirement": "REQ-2.6.2",
+    "title": "Choose note color when created",
+    "category": "create",
+    "rationale": "WHEN requires opening palette, choosing color, entering title, entering content, and closing editor exceeding the two-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Single WHEN sentence contains multiple actions exceeding the two-step limit."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.7.1#1",
+    "requirement": "REQ-2.7.1",
+    "title": "Assign label to a note",
+    "category": "edit",
+    "rationale": "WHEN requires opening More options, choosing Change labels, and selecting a label which is three actions in one sentence exceeding the two-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.7.2#1",
+    "requirement": "REQ-2.7.2",
+    "title": "Remove label from a note",
+    "category": "edit",
+    "rationale": "WHEN requires opening More options, choosing Change labels, and clearing the label which is three actions in one sentence exceeding the two-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.7.3#1",
+    "requirement": "REQ-2.7.3",
+    "title": "Default label",
+    "category": "read-list",
+    "rationale": "View labels list and verify Reminders default label is present.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": []
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Reminders"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.7.4#1",
+    "requirement": "REQ-2.7.4",
+    "title": "Assign default label when creating note",
+    "category": "create",
+    "rationale": "GIVEN requires Take a note editor open which needs a click to prepare; WHEN also requires multiple actions exceeding limits.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.7.5#1",
+    "requirement": "REQ-2.7.5",
+    "title": "Edit labels",
+    "category": "edit",
+    "rationale": "WHEN requires clicking Edit Labels, changing name, and saving which is three actions in one sentence exceeding the two-step cap.",
+    "status": "unknown",
+    "reason": "unsupported",
+    "detail": "Single WHEN sentence contains three sequential actions exceeding the two-step limit."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.7.6.1#1",
+    "requirement": "REQ-2.7.6.1",
+    "title": "View list filtered by label",
+    "category": "search-filter-sort",
+    "rationale": "Click Work label in sidebar and verify filtered list shows Design review but not Movie list.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Work"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Design review"
+        ]
+      },
+      {
+        "op": "expectAbsent",
+        "name": [
+          "Movie list"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.7.6.2#1",
+    "requirement": "REQ-2.7.6.2",
+    "title": "View all notes",
+    "category": "navigation",
+    "rationale": "Click Notes in sidebar and verify all notes including Movie list are shown.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Notes"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Movie list"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.7.6.3#1",
+    "requirement": "REQ-2.7.6.3",
+    "title": "View Reminders",
+    "category": "search-filter-sort",
+    "rationale": "Click Reminders in sidebar and verify filtered list shows Call dentist existing but not Movie list.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Reminders"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Call dentist existing"
+        ]
+      },
+      {
+        "op": "expectAbsent",
+        "name": [
+          "Movie list"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.8.1#1",
+    "requirement": "REQ-2.8.1",
+    "title": "Pin note",
+    "category": "state-toggle",
+    "rationale": "THEN asserts pin state and section placement which are visual/positional requirements not expressible via text assertions alone.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "Pin state and pinned section placement are visual properties not verifiable with expectText or expectAbsent."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.8.2#1",
+    "requirement": "REQ-2.8.2",
+    "title": "Unpin note",
+    "category": "state-toggle",
+    "rationale": "GIVEN requires the note to be pinned which cannot be prepared without forbidden setup mutations.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare pinned note state in GIVEN without performing pin operations."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-2.8.3#1",
+    "requirement": "REQ-2.8.3",
+    "title": "Pin note when creating it",
+    "category": "create",
+    "rationale": "GIVEN requires Take a note editor open needing a click; WHEN requires entering title, content, clicking pin, and closing editor exceeding limits.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-3.1#1",
+    "requirement": "REQ-3.1",
+    "title": "Initial suggested filters",
+    "category": "search-filter-sort",
+    "rationale": "THEN asserts filtered results matching selected filter but no specific filter name or result text is provided to assert.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "No specific filter name or expected result text available for expectText assertion."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-3.2#1",
+    "requirement": "REQ-3.2",
+    "title": "Search by keyword",
+    "category": "search-filter-sort",
+    "rationale": "Click search bar and fill keyword st; verify Study schedule appears. Highlighting is a style concern ignored per rules.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Search"
+            ]
+          },
+          {
+            "op": "fill",
+            "name": [
+              "Search"
+            ],
+            "value": "st"
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Study schedule"
+        ]
+      }
+    ]
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.1#1",
+    "requirement": "REQ-4.1",
+    "title": "Setting options list",
+    "category": "navigation",
+    "rationale": "THEN asserts settings options list is displayed but no specific option text is quoted in requirements to assert.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "No specific settings option text available for expectText assertion."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-4.2#1",
+    "requirement": "REQ-4.2",
+    "title": "Detailed settings",
+    "category": "navigation",
+    "rationale": "GIVEN requires settings options list visible which needs a prior click to open; cannot prepare in GIVEN.",
+    "status": "unknown",
+    "reason": "no-preparation-path",
+    "detail": "Cannot prepare settings dropdown open state in GIVEN without a click."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.1#1",
+    "requirement": "REQ-5.1",
+    "title": "Toggle between list and grid views",
+    "category": "state-toggle",
+    "rationale": "THEN asserts view switching which is a layout/style requirement not expressible via text assertions.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "View mode switching is a layout property not verifiable with expectText or expectAbsent."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-5.2#1",
+    "requirement": "REQ-5.2",
+    "title": "Grid View by default",
+    "category": "read-list",
+    "rationale": "THEN asserts grid view and toolbar toggle which are layout/style requirements not expressible via text assertions.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "Grid view default and toolbar toggle visibility are layout properties not verifiable with expectText or expectAbsent."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-6.1#1",
+    "requirement": "REQ-6.1",
+    "title": "Items and styling",
+    "category": "read-list",
+    "rationale": "THEN asserts consistent styling and identifiable items which are visual requirements not expressible via text assertions.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "Sidebar styling and icon consistency are visual properties not verifiable with expectText or expectAbsent."
+  },
+  {
+    "version": 2,
+    "scenario": "REQ-6.2#1",
+    "requirement": "REQ-6.2",
+    "title": "Collapsible Sidebar",
+    "category": "state-toggle",
+    "rationale": "THEN asserts collapse/expand visual states which are layout requirements not expressible via text assertions.",
+    "status": "unknown",
+    "reason": "ambiguous-assertion",
+    "detail": "Sidebar collapse and expand states are layout properties not verifiable with expectText or expectAbsent."
+  }
+]

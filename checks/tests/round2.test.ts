@@ -30,6 +30,12 @@ describe('round two enforced compiler contract',()=>{
   expect(()=>groundedCheckSchema(row,document,contract).parse({...check,then:[{op:'expectText',name:['Saved successfully']}]})).toThrow('THEN name');
   expect(()=>groundedCheckSchema(row,document,contract).parse({...check,given:[{op:'open'},{op:'click',name:['Notes']},{op:'click',name:['Notes']}]})).toThrow('minimal');
  });
+ it('accepts quoted dotted seed names in GIVEN navigation',()=>{
+  const detailRow={...row,source:{...row.source,scenario:{steps:[{keyword:'GIVEN',content:'User is on the delete confirmation page.'},{keyword:'WHEN',content:'Click Delete.'},{keyword:'THEN',content:'The shelf is absent.'}]}}};
+  const doc='Navigation includes \"Shelf 4.4.2\".';
+  const c={...check,given:[{op:'open'},{op:'click',name:['Shelf 4\\.4\\.2']}],when:[{sentence:0,steps:[{op:'click',name:['Delete']}]}],then:[{op:'expectAbsent',name:['Shelf 4\\.4\\.2']}]};
+  expect(groundedCheckSchema(detailRow,doc,contract).safeParse(c).success).toBe(true);
+ });
  it('cannot move WHEN navigation into initial-page GIVEN',()=>{
   expect(()=>groundedCheckSchema(row,document,contract).parse({...check,given:[{op:'open'},{op:'click',name:['Notes']}],when:[{sentence:0,steps:[]}]})).toThrow('extra navigation');
  });

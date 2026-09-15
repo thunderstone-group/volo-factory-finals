@@ -78,7 +78,7 @@ export function groundedCheckSchema(row:ScenarioSource,requirementsText:string,c
   if(initialPage&&c.given.length!==1)issue('GIVEN already names the initial page: extra navigation is not minimal and cannot absorb WHEN');
   const navigationNames=new Set<string>();
   for(const s of c.given)if(s.op==='click') {
-   for(const name of s.name)if(!sourcePhrase(name,[requirementsText]))issue(`GIVEN navigation name absent from requirements: ${name}`);
+   for(const name of s.name)if(!sourcePhrase(name,[requirementsText,...g.sharedQuotedLiterals]))issue(`GIVEN navigation name absent from requirements: ${name}`);
    const key=s.name.join('|').toLowerCase();if(navigationNames.has(key))issue('Repeated navigation is not a minimal preparation path');navigationNames.add(key);
   }
   const observationOnly=g.whenSentences.every(s=>/^(?:View\b|Open the application entry URL|The user opens the application URL|The system finishes the post-login navigation)/i.test(s));
@@ -93,7 +93,7 @@ export function groundedCheckSchema(row:ScenarioSource,requirementsText:string,c
    for(const s of group.steps) {
     if(s.op==='hover')for(const name of s.name)if(!sourcePhrase(name,g.hoverTitles,true))issue(`Hover must name an exact seed title: ${name}`);
     if(s.op==='click')for(const name of s.name)if(!sourcePhrase(name,[...g.quotedLiterals,...g.sharedQuotedLiterals,...actionWords],true))issue(`Click must name an original verb or quoted literal: ${name}`);
-    if(s.op==='fill'||s.op==='check')for(const name of s.name)if(!sourcePhrase(name,[requirementsText]))issue(`Field name absent from requirements: ${name}`);
+    if(s.op==='fill'||s.op==='check')for(const name of s.name)if(!sourcePhrase(name,[requirementsText,...g.sharedQuotedLiterals]))issue(`Field name absent from requirements: ${name}`);
    }
   });
   for(const s of c.then)for(const name of s.name)if(!sourcePhrase(name,[...g.thenSentences,...g.quotedLiterals,...g.sharedQuotedLiterals]))issue(`THEN name absent from THEN/literals: ${name}`);

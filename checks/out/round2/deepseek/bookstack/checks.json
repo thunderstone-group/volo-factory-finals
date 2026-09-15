@@ -182,11 +182,53 @@
     "scenario": "REQ-4.3.2#1",
     "requirement": "REQ-4.3.2",
     "title": "Cancel Creation",
-    "category": "read-list",
-    "rationale": "Compiler output failed source/schema validation twice.",
-    "status": "unknown",
-    "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+4\\\\.3\\\\.2\",\n    \"path\": []\n  }\n]"
+    "category": "navigation",
+    "rationale": "Cancel from create shelf page returns to shelf list.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelves"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelf\\s+4\\.3\\.2"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "New\\s+Shelf"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Cancel"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Shelf\\s+4\\.3\\.2"
+        ]
+      }
+    ]
   },
   {
     "version": 2,
@@ -204,11 +246,53 @@
     "scenario": "REQ-4.4.2#1",
     "requirement": "REQ-4.4.2",
     "title": "Cancel Delete Shelf",
-    "category": "read-list",
-    "rationale": "Compiler output failed source/schema validation twice.",
-    "status": "unknown",
-    "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+4\\\\.4\\\\.2\",\n    \"path\": []\n  }\n]"
+    "category": "navigation",
+    "rationale": "Cancel from delete confirmation returns to shelf details.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelves"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelf\\s+4\\.4\\.2"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Delete"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Cancel"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Shelf\\s+4\\.4\\.2"
+        ]
+      }
+    ]
   },
   {
     "version": 2,
@@ -226,11 +310,53 @@
     "scenario": "REQ-4.5.2#1",
     "requirement": "REQ-4.5.2",
     "title": "Cancel Shelf Edits",
-    "category": "read-list",
-    "rationale": "Compiler output failed source/schema validation twice.",
-    "status": "unknown",
-    "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+4\\\\.5\\\\.2\",\n    \"path\": []\n  }\n]"
+    "category": "navigation",
+    "rationale": "Cancel from edit shelf page returns to shelf details.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelves"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelf\\s+4\\.5\\.2"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Edit"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Cancel"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Shelf\\s+4\\.5\\.2"
+        ]
+      }
+    ]
   },
   {
     "version": 2,
@@ -313,11 +439,47 @@
     "scenario": "REQ-5.2.2#1",
     "requirement": "REQ-5.2.2",
     "title": "Enter Book Details Page through Shelf Details Page",
-    "category": "read-list",
-    "rationale": "Compiler output failed source/schema validation twice.",
-    "status": "unknown",
-    "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+5\\\\.2\\\\.2\",\n    \"path\": []\n  }\n]"
+    "category": "navigation",
+    "rationale": "Click book in shelf details opens book details.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelves"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Shelf\\s+5\\.2\\.2"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Book\\s+5\\.2\\.2"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Book\\s+5\\.2\\.2"
+        ]
+      }
+    ]
   },
   {
     "version": 2,
@@ -393,11 +555,53 @@
     "scenario": "REQ-5.4.2#1",
     "requirement": "REQ-5.4.2",
     "title": "Cancel Book Edits",
-    "category": "read-list",
-    "rationale": "Compiler output failed source/schema validation twice.",
-    "status": "unknown",
-    "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+5\\\\.4\\\\.2\",\n    \"path\": []\n  }\n]"
+    "category": "navigation",
+    "rationale": "Cancel from edit book page returns to book details.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Books"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Book\\s+5\\.4\\.2"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Edit"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Cancel"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Book\\s+5\\.4\\.2"
+        ]
+      }
+    ]
   },
   {
     "version": 2,
@@ -415,11 +619,53 @@
     "scenario": "REQ-5.5.2#1",
     "requirement": "REQ-5.5.2",
     "title": "Cancel Delete Book",
-    "category": "read-list",
-    "rationale": "Compiler output failed source/schema validation twice.",
-    "status": "unknown",
-    "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+5\\\\.5\\\\.2\",\n    \"path\": []\n  }\n]"
+    "category": "navigation",
+    "rationale": "Cancel from delete confirmation returns to book details.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Books"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Book\\s+5\\.5\\.2"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Delete"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Cancel"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Book\\s+5\\.5\\.2"
+        ]
+      }
+    ]
   },
   {
     "version": 2,
@@ -481,22 +727,100 @@
     "scenario": "REQ-6.3.1#1",
     "requirement": "REQ-6.3.1",
     "title": "Enter Page Reading Page",
-    "category": "read-list",
-    "rationale": "Compiler output failed source/schema validation twice.",
-    "status": "unknown",
-    "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+6\\\\.3\\\\.1\",\n    \"path\": []\n  }\n]"
+    "category": "navigation",
+    "rationale": "Click page entry in book list opens reading page.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Books"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Book\\s+6\\.3\\.1"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Page\\s+6\\.3\\.1"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Page\\s+6\\.3\\.1"
+        ]
+      }
+    ]
   },
   {
     "version": 2,
     "scenario": "REQ-6.3.2#1",
     "requirement": "REQ-6.3.2",
     "title": "Redirect to Page Edit Page",
-    "category": "read-list",
-    "rationale": "Compiler output failed source/schema validation twice.",
-    "status": "unknown",
-    "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+6\\\\.3\\\\.2\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Page\\\\s+6\\\\.3\\\\.2\",\n    \"path\": []\n  }\n]"
+    "category": "navigation",
+    "rationale": "Click Edit on page reading page opens edit page.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Books"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Book\\s+6\\.3\\.2"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Page\\s+6\\.3\\.2"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Edit"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Page\\s+6\\.3\\.2"
+        ]
+      }
+    ]
   },
   {
     "version": 2,
@@ -507,7 +831,7 @@
     "rationale": "Compiler output failed source/schema validation twice.",
     "status": "unknown",
     "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Shelf\\\\s+7\\\\.1\",\n    \"path\": []\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"Exactly one WHEN group per original sentence; do not split comma/AND clauses\",\n    \"path\": []\n  }\n]"
+    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"Exactly one WHEN group per original sentence; do not split comma/AND clauses\",\n    \"path\": []\n  }\n]"
   },
   {
     "version": 2,
@@ -525,11 +849,47 @@
     "scenario": "REQ-8.1#1",
     "requirement": "REQ-8.1",
     "title": "Favorite Items",
-    "category": "read-list",
-    "rationale": "Compiler output failed source/schema validation twice.",
-    "status": "unknown",
-    "reason": "unsupported",
-    "detail": "Schema/source validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"GIVEN navigation name absent from requirements: Book\\\\s+8\\\\.1\",\n    \"path\": []\n  }\n]"
+    "category": "state-toggle",
+    "rationale": "Click Favorite toggles to Unfavorite.",
+    "status": "compiled",
+    "given": [
+      {
+        "op": "open"
+      },
+      {
+        "op": "click",
+        "name": [
+          "Books"
+        ]
+      },
+      {
+        "op": "click",
+        "name": [
+          "Book\\s+8\\.1"
+        ]
+      }
+    ],
+    "when": [
+      {
+        "sentence": 0,
+        "steps": [
+          {
+            "op": "click",
+            "name": [
+              "Favorite"
+            ]
+          }
+        ]
+      }
+    ],
+    "then": [
+      {
+        "op": "expectText",
+        "name": [
+          "Unfavorite"
+        ]
+      }
+    ]
   },
   {
     "version": 2,
