@@ -8,6 +8,7 @@ from dataclasses import asdict
 
 from . import contract as state_contract
 from . import state_runtime
+from . import tap
 from .context import excerpt, project, size
 from .model import GatewayRefused, ModelError
 from .trace import atomic_json
@@ -1776,6 +1777,13 @@ class Agent:
                                     "defective_check": result.get('defective_check'),
                                     "released_self_check": result.get('released_self_check'),
                                     "captured_self_check": result.get('captured_self_check'),
+                                    # The failures, before the excerpt that used to hide them. TAP
+                                    # spreads `not ok` through the middle of a 310 KB log and
+                                    # excerpt keeps head and tail, so run 7 showed the model zero
+                                    # failing test names in 20 of its 26 failed verifications.
+                                    "check_failures": tap.failure_digest(
+                                        (result.get('steps') or [{}])[-1].get('output', ''),
+                                        [node['id'] for node in nodes]),
                                     "check_output": excerpt((result.get('steps') or [{}])[-1].get('output', ''), 5000),
                                     "server_output": result.get('server_output', '')[-2000:],
                                     "source_paths": {'index_html': 'frontend/public/index.html',
@@ -1789,6 +1797,14 @@ class Agent:
                                              "Await asynchronous UI outcomes before asserting them."
                                              if open_repairs else
                                              "Repair the previous HTML/check bundle directly from this error; return build_app again.")}
+                elif result.get('passed') is False and result.get('steps'):
+                    # Every other mode hands back the whole result and lets the context
+                    # projection cut it later, head and tail, in the same place. The
+                    # digest goes in front of it so the cut cannot reach the failures.
+                    digest = tap.failure_digest(result['steps'][-1].get('output', ''),
+                                                [node['id'] for node in nodes])
+                    if digest:
+                        model_result = {'check_failures': digest, **result}
                 if stalled:
                     # Two consecutive calls neither wrote a file nor ran a check. Hand back
                     # the complete current source once, with one instruction to act.
