@@ -1173,3 +1173,11 @@ generation has been run against any of this.
   key, `models`/`usage`/`requests`); the no-overlap doctrine in its README and skill was replaced by
   the measured facts.
 - Track 3 decided: a `run_code` single-tool mode on a Node kernel as an ablation, not a rewrite.
+
+## 2026-09-15, 12:26 — Key topped up, Keep run 7 started
+
+- Meter balance CNY 198.65 at 12:25 (organizer top-up). Local Keep run 7 started 12:26 on
+  03152c0 with the run-5 script pattern (default budget, hosted + repo score, two hosted
+  replays); evidence goes to `runs/2026-09-15-keep-full-7/` when archived. Bar: ≥ 26/32 and
+  ≤ CNY 12, worst hosted replay counts. The ARC-template official Keep run (plan step 2) is
+  sequenced after it so its cost column is not polluted by our local calls.
