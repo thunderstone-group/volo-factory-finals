@@ -1,0 +1,19 @@
+{
+  "files": {
+    "dialect.md": {
+      "bytes": 5299,
+      "sha256": "03d76d74e739f4975fa98d9bf5cb2fd882d4789471a497885602c35df1285d55"
+    },
+    "main.py": {
+      "bytes": 13406,
+      "sha256": "46077d46b689f1d3914ed6bc70b8c62e9aaf562382113e2c04dc972958ba0a2c"
+    },
+    "requirements.txt": {
+      "bytes": 15,
+      "sha256": "af1d882a2cc1717c9da20d96d963d2bf7f83b28f2a191612a17599e0e44ff3a5"
+    }
+  },
+  "origin": "oneshot-lab/arc-package",
+  "origin_files_untracked": true,
+  "origin_git_head": "a15036778e1eee9314ecd5b6fb6e4cb79b0a1010"
+}
