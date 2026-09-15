@@ -176,3 +176,19 @@ a codex review before merge.
    runner ships `playwright`, not `@playwright/test`, at `/opt/arcbench/node_modules`.
 4. First-pass repair budget R = 8: run 7 healthy batches converged in 4–7 calls including the
    implement call; is 8 too generous or too tight once failures are visible?
+
+## 8. Review verdict (GPT-6, 15:33, `docs/ts-kernel-design-review-gpt6-2026-09-15.md`)
+
+Do not freeze §3 as written. Verified points: the nine-step vocabulary misses screenshot
+comparison, keyboard, variables, sort/range/count assertions, region scoping, `selectOption`,
+dates; Keep's own helpers leave the ladder (`getByText(...).first()`, Escape fallback); the six
+apps do not share one ladder; run 7's completed batches had a median of 15 calls, not 4–7, so
+R=8 rests on a wrong number; §3.4 keeps partial trees while §3.6 delivers only green ones;
+per-file store restore under 4 workers breaks other workers; `reconcile` only proves one quoted
+value per seed sentence; no date contract; hosted Node is 20.19.3 in the corpus doc, not 22;
+packaging whitelist excludes `kernel/dist`. Recommendation: build the check compiler + runner
++ structured digest as an independent TS component and calibrate it offline on runs 5 and 7
+before it gets any authority over repair, rollback or delivery; keep the existing transport,
+loop, store and delivery for the preliminary with F1–F6 plus a global cost reservation
+(R=3 default, extend on progress, max 8) and a protected-pass-set delivery rule; full TS
+replacement after 09-21.
