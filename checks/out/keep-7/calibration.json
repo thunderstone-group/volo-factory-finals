@@ -1,0 +1,108 @@
+{
+  "denominator": 32,
+  "matrix": {
+    "pass": {
+      "pass": 11,
+      "fail": 2
+    },
+    "fail": {
+      "pass": 7,
+      "fail": 7
+    },
+    "unknown": {
+      "pass": 4,
+      "fail": 1
+    }
+  },
+  "officialPassRecall": 0.5,
+  "falsePasses": [
+    "REQ-2.7.2#1",
+    "REQ-2.7.6.2#1"
+  ],
+  "falseFails": [
+    "REQ-2.2#1",
+    "REQ-2.4#1",
+    "REQ-2.5.1#1",
+    "REQ-2.5.2#1",
+    "REQ-2.8.2#1",
+    "REQ-2.8.3#1",
+    "REQ-6.2#1"
+  ],
+  "unknownCount": 5,
+  "unknown": [
+    {
+      "scenario": "REQ-2.1#1",
+      "requirement": "REQ-2.1",
+      "title": "Note Listing",
+      "category": "read-list",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "The exact section heading or visual separator text for pinned vs regular notes is not declared in the contract exact-text list, so the two seeded cards are asserted individually."
+        }
+      ],
+      "error": "ambiguous-assertion: The exact section heading or visual separator text for pinned vs regular notes is not declared in the contract exact-text list, so the two seeded cards are asserted individually."
+    },
+    {
+      "scenario": "REQ-2.6.1#1",
+      "requirement": "REQ-2.6.1",
+      "title": "Change note color",
+      "category": "edit",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "The change to a light green background cannot be asserted with the available primitives (no style/color inspection), so this part of the THEN clause is unobservable."
+        }
+      ],
+      "error": "unsupported: The change to a light green background cannot be asserted with the available primitives (no style/color inspection), so this part of the THEN clause is unobservable."
+    },
+    {
+      "scenario": "REQ-2.6.2#1",
+      "requirement": "REQ-2.6.2",
+      "title": "Choose note color when created",
+      "category": "create",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "The selected light green color of the created note cannot be asserted with available primitives (no style/color inspection)."
+        }
+      ],
+      "error": "unsupported: The selected light green color of the created note cannot be asserted with available primitives (no style/color inspection)."
+    },
+    {
+      "scenario": "REQ-3.2#1",
+      "requirement": "REQ-3.2",
+      "title": "Search by keyword",
+      "category": "search-filter-sort",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "unsupported",
+          "detail": "Highlighting of matching text cannot be observed via DOM text assertions."
+        }
+      ],
+      "error": "unsupported: Highlighting of matching text cannot be observed via DOM text assertions."
+    },
+    {
+      "scenario": "REQ-6.1#1",
+      "requirement": "REQ-6.1",
+      "title": "Items and styling",
+      "category": "navigation",
+      "reasons": [
+        {
+          "op": "unknown",
+          "reason": "ambiguous-assertion",
+          "detail": "Consistent icons and alignment styling cannot be verified via text/DOM observations."
+        }
+      ],
+      "error": "ambiguous-assertion: Consistent icons and alignment styling cannot be verified via text/DOM observations."
+    }
+  ],
+  "accepted": false,
+  "interpretation": "Diagnostic calibration only; matching failure status does not establish matching failure cause.",
+  "checksSha256": "70f611302aef13554abeeffae3623a463d81369871d8fae1a58bda1cfa32fb6c",
+  "officialSha256": "a7ce2eceec3d46410ce17cbac5e2cbe0cfb89ce891c0a1ab4d6314119ac8e004"
+}

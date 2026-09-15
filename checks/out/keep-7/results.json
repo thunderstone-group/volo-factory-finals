@@ -1,0 +1,709 @@
+[
+  {
+    "scenario": "REQ-1.1#1",
+    "requirement": "REQ-1.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Groceries/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.1#1",
+    "requirement": "REQ-2.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "then",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "The exact section heading or visual separator text for pinned vs regular notes is not declared in the contract exact-text list, so the two seeded cards are asserted individually."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: The exact section heading or visual separator text for pinned vs regular notes is not declared in the contract exact-text list, so the two seeded cards are asserted individually."
+  },
+  {
+    "scenario": "REQ-2.2#1",
+    "requirement": "REQ-2.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "1",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            "${noteTitle}"
+          ],
+          "via": "text"
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/QA\\s+Created\\s+Note\\s+2\\.2/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/QA\\s+Created\\s+Note\\s+2\\.2/i).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/QA\\s+Created\\s+Note\\s+2\\.2/i).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.2#1\",\"requirement\":\"REQ-2.2\",\"title\":\"Create Note\",\"category\":\"create\",\"rationale\":\"The 'Take a note' composer is the declared navigation control for entering the note editor. Unique scenario-derived title and content are filled in the expanded editor, the editor is closed with Escape to commit autosave, and the new note card is asserted by its generated title and content.\",\"given\":[{\"op\":\"open\"},{\"op\":\"bind\",\"variable\":\"noteTitle\",\"value\":\"QA Created Note 2.2\",\"source\":\"Scenario-derived unique title for the note created in REQ-2.2; it does not collide with any seeded note title.\"},{\"op\":\"bind\",\"variable\":\"noteContent\",\"value\":\"QA content 2.2\",\"source\":\"Scenario-derived unique content for the same created note, allowing an unambiguous visible-text assertion.\"}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[\"Take a note\"],\"via\":\"ladder\"}},{\"op\":\"fill\",\"target\":{\"name\":[\"Title\",\"Note title\"],\"via\":\"field\"},\"value\":{\"variable\":\"noteTitle\"}},{\"op\":\"fill\",\"target\":{\"name\":[\"Take a note...\",\"Take a note\",\"Note text\",\"Content\"],\"via\":\"field\"},\"value\":{\"variable\":\"noteContent\"}},{\"op\":\"press\",\"key\":\"Escape\"}],\"then\":[{\"op\":\"expectAbsent\",\"target\":{\"name\":[\"Title\",\"Note title\"],\"via\":\"field\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"${noteTitle}\"],\"via\":\"text\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"${noteContent}\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.3.1#1",
+    "requirement": "REQ-2.3.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Undo/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.3.2#1",
+    "requirement": "REQ-2.3.2",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Action\\s+undone/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.3.3#1",
+    "requirement": "REQ-2.3.3",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Delete\\s+me\\s+2\\.3\\.3/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.4#1",
+    "requirement": "REQ-2.4",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "1",
+      "step": {
+        "op": "fill",
+        "target": {
+          "name": [
+            "Take a note...",
+            "Take a note",
+            "Note text",
+            "Content"
+          ],
+          "via": "field",
+          "within": {
+            "name": [
+              "Project ideas"
+            ],
+            "via": "text"
+          }
+        },
+        "value": {
+          "variable": "updatedContent"
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Take\\s+a\\s+note\\.\\.\\./i | /Take\\s+a\\s+note/i | /Note\\s+text/i | /Content/i",
+      "rungHit": "textbox",
+      "candidates": [],
+      "hidden": [],
+      "scope": "{\"name\":[\"Project ideas\"],\"via\":\"text\"}"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.apply: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/Project\\s+ideas/i).first().getByRole('textbox').first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.4#1\",\"requirement\":\"REQ-2.4\",\"title\":\"Update Note\",\"category\":\"edit\",\"rationale\":\"The seeded note 'Project ideas' has initial content 'Initial editable content'. Opening its card, replacing the content with a unique scenario-derived string, and closing the editor verifies persistence when the updated content is rendered and the old initial content is absent.\",\"given\":[{\"op\":\"open\"},{\"op\":\"bind\",\"variable\":\"updatedContent\",\"value\":\"QA updated content 2.4\",\"source\":\"Scenario-derived unique replacement content for the seeded 'Project ideas' note; it does not match any existing note text.\"}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[\"Project ideas\"],\"via\":\"text\"}},{\"op\":\"fill\",\"target\":{\"name\":[\"Take a note...\",\"Take a note\",\"Note text\",\"Content\"],\"via\":\"field\",\"within\":{\"name\":[\"Project ideas\"],\"via\":\"text\"}},\"value\":{\"variable\":\"updatedContent\"}},{\"op\":\"press\",\"key\":\"Escape\"}],\"then\":[{\"op\":\"expectAbsent\",\"target\":{\"name\":[\"Title\",\"Note title\"],\"via\":\"field\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"${updatedContent}\"],\"via\":\"text\"}},{\"op\":\"expectAbsent\",\"target\":{\"name\":[\"Initial editable content\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.4_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.4.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.5.1#1",
+    "requirement": "REQ-2.5.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            "Archive"
+          ],
+          "via": "ladder",
+          "within": {
+            "name": [
+              "Travel plans 2.5.1"
+            ],
+            "via": "text"
+          }
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Archive/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "{\"name\":[\"Travel plans 2.5.1\"],\"via\":\"text\"}"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/Travel\\s+plans\\s+2\\.5\\.1/i).first().getByRole('button', { name: /Archive/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.5.1#1\",\"requirement\":\"REQ-2.5.1\",\"title\":\"Archive\",\"category\":\"state-toggle\",\"rationale\":\"The note 'Travel plans 2.5.1' is seeded as active. Archive it from its note card, then confirm it is removed from the home list, the Undo notification appears, and it is visible in the Archived view when the sidebar link is used.\",\"given\":[{\"op\":\"open\"},{\"op\":\"expectText\",\"target\":{\"name\":[\"Travel plans 2.5.1\"],\"via\":\"text\"}},{\"op\":\"hover\",\"target\":{\"name\":[\"Travel plans 2.5.1\"],\"via\":\"text\"}}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[\"Archive\"],\"via\":\"ladder\",\"within\":{\"name\":[\"Travel plans 2.5.1\"],\"via\":\"text\"}}}],\"then\":[{\"op\":\"expectText\",\"target\":{\"name\":[\"Undo\"],\"via\":\"ladder\"}},{\"op\":\"expectAbsent\",\"target\":{\"name\":[\"Travel plans 2.5.1\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Archived\"],\"via\":\"role\",\"role\":\"link\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"Travel plans 2.5.1\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.5.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.5.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.5.2#1",
+    "requirement": "REQ-2.5.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "given",
+      "index": "3",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            "Archive"
+          ],
+          "via": "ladder",
+          "within": {
+            "name": [
+              "Travel plans 2.5.2"
+            ],
+            "via": "text"
+          }
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Archive/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "{\"name\":[\"Travel plans 2.5.2\"],\"via\":\"text\"}"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/Travel\\s+plans\\s+2\\.5\\.2/i).first().getByRole('button', { name: /Archive/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.5.2#1\",\"requirement\":\"REQ-2.5.2\",\"title\":\"Archive Undo\",\"category\":\"state-toggle\",\"rationale\":\"The scenario begins with the archive notification visible, so the active seed note 'Travel plans 2.5.2' is archived first. Clicking Undo should restore it to the home notes list, which is verified by its presence on the home page.\",\"given\":[{\"op\":\"open\"},{\"op\":\"expectText\",\"target\":{\"name\":[\"Travel plans 2.5.2\"],\"via\":\"text\"}},{\"op\":\"hover\",\"target\":{\"name\":[\"Travel plans 2.5.2\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Archive\"],\"via\":\"ladder\",\"within\":{\"name\":[\"Travel plans 2.5.2\"],\"via\":\"text\"}}},{\"op\":\"expectText\",\"target\":{\"name\":[\"Undo\"],\"via\":\"ladder\"}}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[\"Undo\"],\"via\":\"ladder\"}}],\"then\":[{\"op\":\"expectText\",\"target\":{\"name\":[\"Travel plans 2.5.2\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.5.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.5.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.5.3#1",
+    "requirement": "REQ-2.5.3",
+    "status": "fail",
+    "failedStep": {
+      "phase": "given",
+      "index": "3",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            "Archive"
+          ],
+          "via": "ladder",
+          "within": {
+            "name": [
+              "Travel plans 2.5.3"
+            ],
+            "via": "text"
+          }
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Archive/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "{\"name\":[\"Travel plans 2.5.3\"],\"via\":\"text\"}"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/Travel\\s+plans\\s+2\\.5\\.3/i).first().getByRole('button', { name: /Archive/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.5.3#1\",\"requirement\":\"REQ-2.5.3\",\"title\":\"Show archived notes\",\"category\":\"read-list\",\"rationale\":\"The seed note 'Travel plans 2.5.3' is active. It must be archived first to create archived content, then the Archived sidebar item opens the archived list where the note should be visible.\",\"given\":[{\"op\":\"open\"},{\"op\":\"expectText\",\"target\":{\"name\":[\"Travel plans 2.5.3\"],\"via\":\"text\"}},{\"op\":\"hover\",\"target\":{\"name\":[\"Travel plans 2.5.3\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Archive\"],\"via\":\"ladder\",\"within\":{\"name\":[\"Travel plans 2.5.3\"],\"via\":\"text\"}}}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[\"Archived\"],\"via\":\"role\",\"role\":\"link\"}}],\"then\":[{\"op\":\"expectText\",\"target\":{\"name\":[\"Travel plans 2.5.3\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.5.3_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.5.3.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.5.4#1",
+    "requirement": "REQ-2.5.4",
+    "status": "fail",
+    "failedStep": {
+      "phase": "given",
+      "index": "3",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            "Archive"
+          ],
+          "via": "ladder",
+          "within": {
+            "name": [
+              "Travel plans 2.5.4"
+            ],
+            "via": "text"
+          }
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Archive/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "{\"name\":[\"Travel plans 2.5.4\"],\"via\":\"text\"}"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/Travel\\s+plans\\s+2\\.5\\.4/i).first().getByRole('button', { name: /Archive/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.5.4#1\",\"requirement\":\"REQ-2.5.4\",\"title\":\"Unarchive\",\"category\":\"state-toggle\",\"rationale\":\"The seed note 'Travel plans 2.5.4' is active. After archiving it and opening the Archived list, the Unarchive action should move it out of the archived list and back to the main Notes list, verified by its absence in Archived and presence after clicking Notes.\",\"given\":[{\"op\":\"open\"},{\"op\":\"expectText\",\"target\":{\"name\":[\"Travel plans 2.5.4\"],\"via\":\"text\"}},{\"op\":\"hover\",\"target\":{\"name\":[\"Travel plans 2.5.4\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Archive\"],\"via\":\"ladder\",\"within\":{\"name\":[\"Travel plans 2.5.4\"],\"via\":\"text\"}}},{\"op\":\"click\",\"target\":{\"name\":[\"Archived\"],\"via\":\"role\",\"role\":\"link\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"Travel plans 2.5.4\"],\"via\":\"text\"}}],\"when\":[{\"op\":\"hover\",\"target\":{\"name\":[\"Travel plans 2.5.4\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Unarchive\"],\"via\":\"ladder\",\"within\":{\"name\":[\"Travel plans 2.5.4\"],\"via\":\"text\"}}}],\"then\":[{\"op\":\"expectAbsent\",\"target\":{\"name\":[\"Travel plans 2.5.4\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Notes\"],\"via\":\"role\",\"role\":\"link\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"Travel plans 2.5.4\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.5.4_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.5.4.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.6.1#1",
+    "requirement": "REQ-2.6.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "then",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "The change to a light green background cannot be asserted with the available primitives (no style/color inspection), so this part of the THEN clause is unobservable."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: The change to a light green background cannot be asserted with the available primitives (no style/color inspection), so this part of the THEN clause is unobservable."
+  },
+  {
+    "scenario": "REQ-2.6.2#1",
+    "requirement": "REQ-2.6.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "then",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "The selected light green color of the created note cannot be asserted with available primitives (no style/color inspection)."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: The selected light green color of the created note cannot be asserted with available primitives (no style/color inspection)."
+  },
+  {
+    "scenario": "REQ-2.7.1#1",
+    "requirement": "REQ-2.7.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "0",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            "Work"
+          ],
+          "via": "text",
+          "within": {
+            "name": [
+              "Team retro add label"
+            ],
+            "via": "text"
+          }
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Work/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "{\"name\":[\"Team retro add label\"],\"via\":\"text\"}"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Team\\s+retro\\s+add\\s+label/i).first().getByText(/Work/i).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Team\\s+retro\\s+add\\s+label/i).first().getByText(/Work/i).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.7.1#1\",\"requirement\":\"REQ-2.7.1\",\"title\":\"Assign label to a note\",\"category\":\"state-toggle\",\"rationale\":\"The seeded note 'Team retro add label' is present on the home page and initially has no labels. Opening its More options and selecting 'Change labels' exposes the label picker; choosing 'Work' adds the label. The label chip is then visible on the note, and the Work sidebar filter shows the note. All targets are derived from the navigation entries and seeded exact texts in the contract.\",\"given\":[{\"op\":\"open\"},{\"op\":\"expectText\",\"target\":{\"name\":[\"Team retro add label\"],\"via\":\"text\"}}],\"when\":[{\"op\":\"hover\",\"target\":{\"name\":[\"Team retro add label\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"More options\"],\"via\":\"ladder\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Change labels\"],\"via\":\"role\",\"role\":\"menuitem\"}},{\"op\":\"check\",\"target\":{\"name\":[\"Work\"],\"via\":\"role\",\"role\":\"checkbox\"},\"checked\":true},{\"op\":\"press\",\"key\":\"Escape\"}],\"then\":[{\"op\":\"expectText\",\"target\":{\"name\":[\"Work\"],\"via\":\"text\",\"within\":{\"name\":[\"Team retro add label\"],\"via\":\"text\"}}},{\"op\":\"click\",\"target\":{\"name\":[\"Work\"],\"via\":\"role\",\"role\":\"link\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"Team retro add label\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.7.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.7.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.7.2#1",
+    "requirement": "REQ-2.7.2",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Team\\s+retro\\s+remove\\s+label/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.3#1",
+    "requirement": "REQ-2.7.3",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Reminders/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.4#1",
+    "requirement": "REQ-2.7.4",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "2",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            "More options"
+          ],
+          "via": "ladder"
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/More\\s+options/i",
+      "rungHit": "label",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel(/More\\s+options/i).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"more-btn\" aria-label=\"More options\">⋮</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    19 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.7.4#1\",\"requirement\":\"REQ-2.7.4\",\"title\":\"Assign default label when creating note\",\"category\":\"create\",\"rationale\":\"The home page's 'Take a note' editor is opened from the entry page. A unique title and content are generated to avoid collisions with seeded notes. The editor's More options menu provides 'Change labels', where the default 'Reminders' label is selected before closing the editor; autosave persists the note. Opening the 'Reminders' sidebar filter then proves that the created note carries the default label.\",\"given\":[{\"op\":\"bind\",\"variable\":\"noteTitle\",\"value\":\"Reminders labeled note 2.7.4\",\"source\":\"Unique generated title to avoid collisions; Keep accepts arbitrary text titles.\"},{\"op\":\"bind\",\"variable\":\"noteContent\",\"value\":\"Created with default label\",\"source\":\"Unique generated content for the scenario note.\"},{\"op\":\"open\"},{\"op\":\"click\",\"target\":{\"name\":[\"Take a note\"],\"via\":\"text\"}}],\"when\":[{\"op\":\"fill\",\"target\":{\"name\":[\"Title\"],\"via\":\"field\"},\"value\":{\"variable\":\"noteTitle\"}},{\"op\":\"fill\",\"target\":{\"name\":[\"Take a note\"],\"via\":\"field\"},\"value\":{\"variable\":\"noteContent\"}},{\"op\":\"click\",\"target\":{\"name\":[\"More options\"],\"via\":\"ladder\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Change labels\"],\"via\":\"role\",\"role\":\"menuitem\"}},{\"op\":\"check\",\"target\":{\"name\":[\"Reminders\"],\"via\":\"role\",\"role\":\"checkbox\"},\"checked\":true},{\"op\":\"press\",\"key\":\"Escape\"},{\"op\":\"click\",\"target\":{\"name\":[\"Close\"],\"via\":\"ladder\"}}],\"then\":[{\"op\":\"click\",\"target\":{\"name\":[\"Reminders\"],\"via\":\"role\",\"role\":\"link\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"${noteTitle}\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.7.4_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.7.4.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.7.5#1",
+    "requirement": "REQ-2.7.5",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            "Edit Labels"
+          ],
+          "via": "role",
+          "role": "link"
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Edit\\s+Labels/i",
+      "rungHit": "role:link",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('link', { name: /Edit\\s+Labels/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.7.5#1\",\"requirement\":\"REQ-2.7.5\",\"title\":\"Edit labels\",\"category\":\"edit\",\"rationale\":\"The seeded label 'Work editable' is visible in the sidebar. Opening 'Edit Labels' shows the label management list; the edit control for that label is located by its accessible name containing the label text. The label is renamed to a unique value and committed with Enter. The new name appearing and the old name disappearing in the label list confirms the saved change.\",\"given\":[{\"op\":\"bind\",\"variable\":\"newLabel\",\"value\":\"Work editable renamed 2.7.5\",\"source\":\"Unique renamed label to avoid collisions and verify persistence.\"},{\"op\":\"open\"},{\"op\":\"expectText\",\"target\":{\"name\":[\"Work editable\"],\"via\":\"text\"}}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[\"Edit Labels\"],\"via\":\"role\",\"role\":\"link\"}},{\"op\":\"click\",\"target\":{\"name\":[{\"regex\":\"Edit Work editable\",\"flags\":\"i\"}],\"via\":\"role\",\"role\":\"button\"}},{\"op\":\"fill\",\"target\":{\"name\":[\"Work editable\"],\"via\":\"field\"},\"value\":{\"variable\":\"newLabel\"}},{\"op\":\"press\",\"target\":{\"name\":[\"Work editable\"],\"via\":\"field\"},\"key\":\"Enter\"}],\"then\":[{\"op\":\"expectText\",\"target\":{\"name\":[\"${newLabel}\"],\"via\":\"text\"}},{\"op\":\"expectAbsent\",\"target\":{\"name\":[\"Work editable\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.7.5_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.7.5.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.7.6.1#1",
+    "requirement": "REQ-2.7.6.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie\\s+list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.6.2#1",
+    "requirement": "REQ-2.7.6.2",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie\\s+list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.7.6.3#1",
+    "requirement": "REQ-2.7.6.3",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie\\s+list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.8.1#1",
+    "requirement": "REQ-2.8.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Meeting\\s+agenda\\s+2\\.8\\.1/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-2.8.2#1",
+    "requirement": "REQ-2.8.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "1",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            "Unpin note",
+            "Unpin"
+          ],
+          "via": "ladder"
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Unpin\\s+note/i | /Unpin/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Unpin\\s+note/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.8.2#1\",\"requirement\":\"REQ-2.8.2\",\"title\":\"Unpin note\",\"category\":\"state-toggle\",\"rationale\":\"The seed 'Meeting agenda 2.8.2' starts unpinned. To satisfy the pinned-state prerequisite, pin it first in the given phase. Then hover and click the unpin button. The note title remains visible; the pinned heading is still present because of the seeded pinned note.\",\"given\":[{\"op\":\"open\"},{\"op\":\"expectText\",\"target\":{\"name\":[\"Meeting agenda 2.8.2\"],\"via\":\"text\"}},{\"op\":\"hover\",\"target\":{\"name\":[\"Meeting agenda 2.8.2\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Pin note\",\"Pin\"],\"via\":\"ladder\"}}],\"when\":[{\"op\":\"hover\",\"target\":{\"name\":[\"Meeting agenda 2.8.2\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Unpin note\",\"Unpin\"],\"via\":\"ladder\"}}],\"then\":[{\"op\":\"expectText\",\"target\":{\"name\":[\"Meeting agenda 2.8.2\"],\"via\":\"text\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"Pinned\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.8.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.8.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-2.8.3#1",
+    "requirement": "REQ-2.8.3",
+    "status": "fail",
+    "failedStep": {
+      "phase": "then",
+      "index": "1",
+      "step": {
+        "op": "expectText",
+        "target": {
+          "name": [
+            "Pinned note 2.8.3"
+          ],
+          "via": "text"
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/Pinned\\s+note\\s+2\\.8\\.3/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Pinned\\s+note\\s+2\\.8\\.3/i).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Pinned\\s+note\\s+2\\.8\\.3/i).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-2.8.3#1\",\"requirement\":\"REQ-2.8.3\",\"title\":\"Pin note when creating it\",\"category\":\"create\",\"rationale\":\"Open the 'Take a note' editor, enter a unique title and content, click the pin control, and close the editor with Escape. The autosave should create the note and display it in the pinned section.\",\"given\":[{\"op\":\"open\"},{\"op\":\"expectText\",\"target\":{\"name\":[\"Take a note\"],\"via\":\"text\"}},{\"op\":\"click\",\"target\":{\"name\":[\"Take a note\"],\"via\":\"text\"}},{\"op\":\"bind\",\"variable\":\"newTitle\",\"value\":\"Pinned note 2.8.3\",\"source\":\"Unique scenario-derived title that does not collide with seeded notes; valid note title.\"},{\"op\":\"bind\",\"variable\":\"newContent\",\"value\":\"Content for pinned note 2.8.3\",\"source\":\"Unique scenario-derived content for the freshly created note; valid note content.\"},{\"op\":\"fill\",\"target\":{\"name\":[\"Title\"],\"via\":\"field\"},\"value\":{\"variable\":\"newTitle\"}},{\"op\":\"fill\",\"target\":{\"name\":[{\"regex\":\"Take a note.*\",\"flags\":\"i\"}],\"via\":\"field\"},\"value\":{\"variable\":\"newContent\"}}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[\"Pin note\",\"Pin\"],\"via\":\"ladder\"}},{\"op\":\"press\",\"key\":\"Escape\"}],\"then\":[{\"op\":\"expectText\",\"target\":{\"name\":[\"Pinned\"],\"via\":\"text\"}},{\"op\":\"expectText\",\"target\":{\"name\":[\"Pinned note 2.8.3\"],\"via\":\"text\"}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-2.8.3_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-2.8.3.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-3.1#1",
+    "requirement": "REQ-3.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": "/Movie\\s+list/i",
+      "rungHit": "text",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-3.2#1",
+    "requirement": "REQ-3.2",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "then",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "unsupported",
+        "detail": "Highlighting of matching text cannot be observed via DOM text assertions."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "unsupported: Highlighting of matching text cannot be observed via DOM text assertions."
+  },
+  {
+    "scenario": "REQ-4.1#1",
+    "requirement": "REQ-4.1",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            "Settings"
+          ],
+          "via": "role",
+          "role": "button",
+          "exact": true
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/^(?:Settings)$/i",
+      "rungHit": "role:button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^(?:Settings)$/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-4.1#1\",\"requirement\":\"REQ-4.1\",\"title\":\"Setting options list\",\"category\":\"navigation\",\"rationale\":\"Fresh browser session opens the application entry URL. The home page header exposes a settings icon with the accessible name 'Settings'. Clicking that button opens a dropdown whose menu includes a 'Settings' menu item; asserting that menu item is visible demonstrates the settings options list is displayed. No additional seed state is required for this check.\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[\"Settings\"],\"via\":\"role\",\"role\":\"button\",\"exact\":true}}],\"then\":[{\"op\":\"expectText\",\"target\":{\"name\":[\"Settings\"],\"via\":\"role\",\"role\":\"menuitem\",\"exact\":true}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-4.1_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-4.1.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-4.2#1",
+    "requirement": "REQ-4.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "given",
+      "index": "1",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            "Settings"
+          ],
+          "via": "role",
+          "role": "button",
+          "exact": true
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/^(?:Settings)$/i",
+      "rungHit": "role:button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^(?:Settings)$/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-4.2#1\",\"requirement\":\"REQ-4.2\",\"title\":\"Detailed settings\",\"category\":\"navigation\",\"rationale\":\"After opening the home page, the settings icon is clicked to reveal the settings dropdown. Choosing the 'Settings' menu item navigates to the detailed settings screen. The detailed settings screen is expected to present configurable options together with save and cancel actions; therefore the Save and Cancel controls are asserted as visible. The route is inferred from the supplied navigation contract where 'Settings' in the settings dropdown leads to the detailed settings screen.\",\"given\":[{\"op\":\"open\"},{\"op\":\"click\",\"target\":{\"name\":[\"Settings\"],\"via\":\"role\",\"role\":\"button\",\"exact\":true}}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[\"Settings\"],\"via\":\"role\",\"role\":\"menuitem\",\"exact\":true}}],\"then\":[{\"op\":\"expectText\",\"target\":{\"name\":[\"Save\"],\"via\":\"ladder\",\"exact\":true}},{\"op\":\"expectText\",\"target\":{\"name\":[\"Cancel\"],\"via\":\"ladder\",\"exact\":true}}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-4.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-4.2.spec.ts:6:51"
+  },
+  {
+    "scenario": "REQ-5.1#1",
+    "requirement": "REQ-5.1",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-5.2#1",
+    "requirement": "REQ-5.2",
+    "status": "pass",
+    "failedStep": null,
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": null
+  },
+  {
+    "scenario": "REQ-6.1#1",
+    "requirement": "REQ-6.1",
+    "status": "unknown",
+    "failedStep": {
+      "phase": "then",
+      "index": "unknown",
+      "step": {
+        "op": "unknown",
+        "reason": "ambiguous-assertion",
+        "detail": "Consistent icons and alignment styling cannot be verified via text/DOM observations."
+      }
+    },
+    "resolver": {
+      "pattern": null,
+      "rungHit": null,
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "ambiguous-assertion: Consistent icons and alignment styling cannot be verified via text/DOM observations."
+  },
+  {
+    "scenario": "REQ-6.2#1",
+    "requirement": "REQ-6.2",
+    "status": "fail",
+    "failedStep": {
+      "phase": "when",
+      "index": "0",
+      "step": {
+        "op": "click",
+        "target": {
+          "name": [
+            {
+              "regex": "collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse",
+              "flags": "i"
+            }
+          ],
+          "via": "ladder"
+        }
+      }
+    },
+    "resolver": {
+      "pattern": "/collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse/i",
+      "rungHit": "button",
+      "candidates": [],
+      "hidden": [],
+      "scope": "page"
+    },
+    "error": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse/i }).first()\u001b[22m\n\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"pass\"\u001b[39m\nReceived: \u001b[31m\"fail\"\u001b[39m\n\n  4 |  const result = await executeCheck(page, {\"scenario\":\"REQ-6.2#1\",\"requirement\":\"REQ-6.2\",\"title\":\"Collapsible Sidebar\",\"category\":\"navigation\",\"rationale\":\"Fresh browser opens '/' with the sidebar expanded by default. The sidebar collapse control toggles between expanded and collapsed states. First click hides the 'Notes' text label (icon-only view); second click restores it. The target regex covers common accessible names for the collapse control.\",\"given\":[{\"op\":\"open\"}],\"when\":[{\"op\":\"click\",\"target\":{\"name\":[{\"regex\":\"collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse\",\"flags\":\"i\"}],\"via\":\"ladder\"}},{\"op\":\"expectState\",\"target\":{\"name\":[\"Notes\"],\"via\":\"text\",\"exact\":true},\"state\":\"hidden\",\"value\":true},{\"op\":\"click\",\"target\":{\"name\":[{\"regex\":\"collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse\",\"flags\":\"i\"}],\"via\":\"ladder\"}}],\"then\":[{\"op\":\"expectState\",\"target\":{\"name\":[\"Notes\"],\"via\":\"text\",\"exact\":true},\"state\":\"visible\",\"value\":true}]}, \"~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/results-parts/REQ-6.2_1.json\");\n  5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');\n> 6 |  expect(result.status, result.error ?? undefined).toBe('pass');\n    |                                                   ^\n  7 | });\n  8 |\n    at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-7/specs/REQ-6.2.spec.ts:6:51"
+  }
+]
