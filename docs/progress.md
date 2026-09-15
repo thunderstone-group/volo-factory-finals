@@ -1199,3 +1199,17 @@ generation has been run against any of this.
   `checks/browser.cjs` / `reset.cjs`; a model-authored `checks/tmp-debug.spec.cjs` in the suite.
 - Evidence: `runs/2026-09-15-keep-full-7/` (git-ignored). Attribution assigned; no rule change
   until it lands.
+
+## 2026-09-15, 15:30 — Rewrite decided: TypeScript kernel on `feat/ts-kernel`
+
+- Team lead's decision after run 7 and its attribution: rewrite rather than patch. Language
+  TypeScript (Playwright-native verification layer; `main.py` becomes a shim). Rust was
+  considered and is permitted by the platform (the built-in octos template runs a downloaded
+  Rust binary behind `main.py`), deferred until after the preliminary.
+- Design: `docs/ts-kernel-design-2026-09-15.md` (0fcc016). Core change: the model never writes
+  checks; the harness compiles GIVEN/WHEN/THEN scenarios into steps on the official locator
+  ladder and runs them with a structured failure digest. Schedule and bars in §5.
+- GPT-6 review job: `~/.codex-jobs/volo-factory/2026-09-15-ts-kernel-design-review/`.
+- Fallback line continues on `feat/state-contract`: fixes F1–F6 from the run 7 attribution in
+  flight (agent `harness-fix-run7`), Keep run 8 on that head afterwards.
+- Also in flight: Prime Agent adapter trial (agent `prime-adapter`, `~/projects/prime-agent-lab/`).
