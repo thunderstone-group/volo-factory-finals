@@ -1,0 +1,16 @@
+{
+  "application": "~/projects/volo-factory/runs/2026-09-15-bookstack-2/app",
+  "node": "v22.22.0",
+  "baseURL": "http://127.0.0.1:53772",
+  "workers": 4,
+  "testTimeoutMs": 10000,
+  "expectTimeoutMs": 5000,
+  "trace": "off",
+  "video": "off",
+  "seedRestores": 1,
+  "seedSha256": "7e75222228cdf52136044a932142ba28b84d83348dd7608efa765c8b99cac21a",
+  "dataStrategy": "fresh APP_DATA_DIR then one whole-suite snapshot restore",
+  "startedAt": "2026-09-15T11:00:47.612Z",
+  "profile": "round2",
+  "actionTimeoutMs": 0
+}
