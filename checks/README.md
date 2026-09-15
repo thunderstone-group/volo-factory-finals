@@ -135,3 +135,37 @@ PYTHONDONTWRITEBYTECODE=1 ~/projects/volo-factory/.venv/bin/python ../harness_la
 Use a fresh output directory if keeping a second run; do not overwrite the
 retained baseline to select a better score. Post-compilation diagnostic scripts
 in out/ are explicitly separate from scored checks and never compiler inputs.
+
+## Round two: phase-constrained checks
+
+Use `npm run compile -- --round2 --model qwen3.8-max` (or
+`deepseek-v4-flash`) with the same `--requirements`, `--contract`, and `--out`
+arguments. All round-two requests share `--ledger out/round2/usage.json` and a
+CNY 5 admission limit, including unresolved request reservations and the network
+probe. Preserve the first-round ledger separately.
+
+The version=2 format enforces phase-specific operations, at most two steps per
+original WHEN sentence, source-grounded names, and no role/via/scope fields.
+The runner detects version=2 automatically and uses the direct named helpers,
+without extra readiness checks. It retains the 10-second test cap and uses the
+Playwright default 5-second assertion timeout. Unknown is a whole-check state.
+
+Second-round recall excludes official-pass scenarios classified unknown. Coverage
+and the full official-pass denominator are reported separately. A zero observable
+denominator cannot pass acceptance. The original first-round accounting and
+artifacts remain unchanged.
+
+```sh
+node --import tsx out/round2/recompute.mjs
+node out/round2/report.mjs
+```
+
+The first command verifies frozen hashes and all retained matrices without model
+or browser calls. The second rebuilds only the report's `第二轮` section. The
+`before-phase-fix/` artifacts are preliminary, structurally noncompliant runs;
+they are preserved for diagnosis and excluded from final second-round results.
+DeepSeek comparison completed after upstream/proxy connectivity recovered.
+Both models have three retained final matrices. The only sample meeting the
+round-two gate is Qwen on Keep round five, with only 8/32 scenarios executed.
+Transport failures and unresolved reservations remain in the shared ledger.
+See the report and ledger before any new paid call.

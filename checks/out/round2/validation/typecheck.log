@@ -1,0 +1,4 @@
+
+> arcbench-scenario-checks@0.1.0 typecheck
+> tsc --noEmit
+

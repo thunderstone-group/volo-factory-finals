@@ -1,0 +1,1062 @@
+test_candidate_cannot_supply_its_own_authority_directory (test_acceptance.AcceptanceTests) ... ok
+test_cross_requirement_cases_activate_only_when_the_full_scope_exists (test_acceptance.AcceptanceTests) ... ok
+test_deleted_and_changed_authoritative_files_fail_closed (test_acceptance.AcceptanceTests) ... ok
+test_empty_contract_and_wrong_requirements_are_rejected (test_acceptance.AcceptanceTests) ... ok
+test_incremental_scope_does_not_execute_unimplemented_future_cases (test_acceptance.AcceptanceTests) ... ok
+test_manifest_change_cannot_redefine_case_to_match_empty_file (test_acceptance.AcceptanceTests) ... ok
+test_missing_authoritative_case_stops_without_more_model_calls (test_acceptance.AcceptanceTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+ok
+test_named_assertion_positive_control_and_failing_control (test_acceptance.AcceptanceTests) ... ok
+test_no_contract_means_no_independent_verification_claim (test_acceptance.AcceptanceTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_real_agent_repairs_product_without_changing_pinned_suite (test_acceptance.AcceptanceTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: Independent acceptance did not pass
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] build_app passed=True
+ok
+test_real_browser_suite_checks_external_app_without_candidate_test_code (test_acceptance.AcceptanceTests) ... skipped 'Installed Playwright and Chromium required'
+test_real_wrong_app_remains_rejected_when_self_checks_are_weakened (test_acceptance.AcceptanceTests) ... ok
+test_resumed_self_check_cannot_bypass_new_contract_in_same_workspace (test_acceptance.AcceptanceTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_skips_todos_and_duplicates_do_not_count_as_passes (test_acceptance.AcceptanceTests) ... ok
+test_snapshot_tampering_during_test_is_detected (test_acceptance.AcceptanceTests) ... ok
+test_symlinks_and_traversal_in_pinned_files_are_rejected (test_acceptance.AcceptanceTests) ... ok
+test_timeout_cannot_pass (test_acceptance.AcceptanceTests) ... ok
+test_uncovered_requirement_is_not_implicitly_verified (test_acceptance.AcceptanceTests) ... ok
+test_worker_neutral_cli_scores_real_http_without_model_credentials (test_acceptance.AcceptanceTests) ... ok
+test_zero_assertion_file_and_printed_success_cannot_forge_named_test (test_acceptance.AcceptanceTests) ... ok
+test_cli_writes_inconclusive_report_for_missing_evidence_without_network (test_acceptance_probe.AcceptanceTests) ... ok
+test_default_cli_inspection_never_starts_browser_or_model (test_acceptance_probe.AcceptanceTests) ... ok
+test_failed_browser_assertion_is_not_success (test_acceptance_probe.AcceptanceTests) ... ok
+test_failure_verdict_requires_matching_failure_evidence (test_acceptance_probe.AcceptanceTests) ... ok
+test_incomplete_or_mismatched_pass_evidence_is_rejected (test_acceptance_probe.AcceptanceTests) ... ok
+test_late_browser_result_is_not_success (test_acceptance_probe.AcceptanceTests) ... ok
+test_malformed_plan_does_not_execute_checks (test_acceptance_probe.AcceptanceTests) ... ok
+test_missing_check_for_same_requirement_is_not_success (test_acceptance_probe.AcceptanceTests) ... ok
+test_missing_coverage_and_blocked_actions_are_inconclusive (test_acceptance_probe.AcceptanceTests) ... ok
+test_one_attempt_transport_does_not_retry_429 (test_acceptance_probe.AcceptanceTests) ... ok
+test_one_call_original_requirements_and_actual_browser_results (test_acceptance_probe.AcceptanceTests) ... ok
+test_overlarge_inputs_and_expired_time_do_not_call_model (test_acceptance_probe.AcceptanceTests) ... ok
+test_plan_rejects_unsupported_actions_unknown_ids_and_extra_fields (test_acceptance_probe.AcceptanceTests) ... ok
+test_plan_validates_assertion_types_and_navigation (test_acceptance_probe.AcceptanceTests) ... ok
+test_real_browser_input_click_reload_assertions_and_redirect_guard (test_acceptance_probe.AcceptanceTests) ... skipped 'Installed browser configuration required'
+test_truncated_plan_does_not_execute_checks (test_acceptance_probe.AcceptanceTests) ... ok
+test_unknown_browser_status_is_inconclusive (test_acceptance_probe.AcceptanceTests) ... ok
+test_ambiguity_is_reported_after_scoping_and_the_requirement_assertions_decide (test_captured_self_checks.CapturedSelfCheckTests)
+A capture is evidence. It survives a rewrite of the live check, and it never ... skipped 'Installed Chrome/Playwright required'
+test_deepseek_thinking_omits_forcing_and_preserves_reasoning_with_empty_content (test_captured_self_checks.CapturedSelfCheckTests) ... ok
+test_non_ambiguity_failure_is_not_frozen (test_captured_self_checks.CapturedSelfCheckTests) ... ok
+test_syntax_error_is_not_frozen_as_a_product_contract (test_captured_self_checks.CapturedSelfCheckTests) ... ok
+test_authored_test_bundle_runs_before_another_model_call (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+ok
+test_bounded_failure_opens_narrow_repairs_and_keeps_both_log_ends (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: ...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+# LATE_FAILURE
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-ojq1i4mx/application/checks/requirements.cjs:4:8
+#     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 38.047459
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-ojq1i4mx/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 41.687333
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_bounded_feature_uses_full_tools_with_low_reasoning (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] deliver passed=True
+ok
+test_bounded_new_app_uses_runtime_for_routes_and_stateful_api (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=True
+ok
+test_compact_context_omits_only_byte_identical_known_runtime (test_context.ContextRepairTests) ... ok
+test_real_failed_check_survives_context_pressure_and_repairs (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] finish passed=False
+[volo] verification detail: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'hello' !== 'wrong'
+
+    at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-570hc2s7/application/checks/greeting.cjs:1:86
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'hello',
+  expected: 'wrong',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_small_existing_source_supports_one_verified_edit_without_exposing_state (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_successful_read_survives_an_oversized_reasoning_exchange (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] deliver passed=True
+ok
+test_below_limit_keeps_exact_existing_prompt (test_context.ContextTests) ... ok
+test_checkpoint_retains_complete_real_protocol_exchanges_and_reasoning (test_context.ContextTests) ... ok
+test_invalid_pairs_are_rejected_without_fabricating_results (test_context.ContextTests) ... ok
+test_only_old_tool_output_is_pruned_and_history_is_unchanged (test_context.ContextTests) ... ok
+test_oversized_checkpoint_fails_before_sending_an_over_limit_request (test_context.ContextTests) ... ok
+test_oversized_latest_exchange_is_omitted_whole (test_context.ContextTests) ... ok
+test_a_file_exactly_at_the_bound_leaves_no_partial_chunk (test_core.BoundedReadTests) ... ok
+test_a_limit_above_the_chunk_bound_is_clamped_rather_than_rejected (test_core.BoundedReadTests) ... ok
+test_a_missing_or_unusable_limit_takes_the_whole_bound (test_core.BoundedReadTests) ... ok
+test_a_negative_or_unusable_offset_reads_from_the_start (test_core.BoundedReadTests) ... ok
+test_a_path_that_does_not_exist_is_still_an_error (test_core.BoundedReadTests) ... ok
+test_a_single_oversized_file_is_still_refused_for_run (test_core.BoundedReadTests) ... ok
+test_files_that_fit_are_all_returned_complete (test_core.BoundedReadTests) ... ok
+test_the_first_file_over_the_bound_is_returned_as_a_leading_chunk (test_core.BoundedReadTests) ... ok
+test_a_billing_error_answered_with_status_200_is_still_a_refusal (test_core.ExecutionTests) ... ok
+test_a_rejected_key_is_a_refusal (test_core.ExecutionTests) ... ok
+test_an_exhausted_balance_is_a_refusal_and_is_never_retried (test_core.ExecutionTests) ... ok
+test_an_ordinary_gateway_failure_is_not_a_refusal (test_core.ExecutionTests) ... ok
+test_browser_failure_retains_visible_state_and_pending_request (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_browser_rejects_primary_route_aliases_but_allows_home_and_hidden_links (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_browser_rejects_unnamed_meter_even_when_authored_check_passes (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_captured_real_gateway_response_preserves_reasoning_and_usage (test_core.ExecutionTests) ... ok
+test_each_model_is_charged_at_its_own_rates (test_core.ExecutionTests) ... ok
+test_final_budget_does_not_rerun_unchanged_failed_source (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-g_qg205a/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 37.229667
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-g_qg205a/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 40.932791
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+test_final_budget_verification_does_not_accept_a_bad_repair (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-4a0wr97o/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 36.816542
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-4a0wr97o/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 40.331042
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+test_final_call_budget_edit_is_verified_without_another_model_call (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-m7bt39p5/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 37.18575
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-m7bt39p5/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 40.852375
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+test_final_token_budget_edit_is_verified_without_another_model_call (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: Application did not serve HTTP 200 on PORT. backend/api.cjs never returns false, so it answers requests the static server should serve; return false for anything that is not your API.
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ERROR
+test_kimi_uses_low_effort_without_claiming_thinking_can_be_disabled (test_core.ExecutionTests) ... ok
+test_missing_usage_stays_unknown (test_core.ExecutionTests) ... ok
+test_model_tool_loop_repairs_failure_then_resumes_without_model_call (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-nwhav1qh/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 36.751333
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-nwhav1qh/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 40.383666
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] build_app passed=True
+ok
+test_prepared_browser_routes_and_reports_missing_controls (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_qwen_uses_provider_thinking_switch (test_core.ExecutionTests) ... ok
+test_real_build_http_check_and_process_cleanup (test_core.ExecutionTests) ... ok
+test_real_empty_optional_api_does_not_break_the_application_server (test_core.ExecutionTests) ... ok
+test_the_cost_meter_reproduces_the_retained_run (test_core.ExecutionTests) ... ok
+test_the_transport_accumulates_the_cost_of_every_priced_response (test_core.ExecutionTests) ... ok
+test_thinking_effort_and_actual_truncated_usage (test_core.ExecutionTests) ... ok
+test_unselected_browser_check_still_blocks_acceptance_and_can_be_repaired (test_core.ExecutionTests) ... ok
+test_archive_is_reproducible_and_excludes_development_state (test_core.PackagingTests) ... ok
+test_ancestor_reference_keeps_context_without_creating_a_self_cycle (test_core.RequirementsTests) ... ok
+test_cycles_and_unknown_dependencies_fail_before_generation (test_core.RequirementsTests) ... ok
+test_dependency_order_not_yaml_order (test_core.RequirementsTests) ... ok
+test_folder_dependencies_expand_to_atomic_nodes (test_core.RequirementsTests) ... ok
+test_parent_folder_constraints_reach_the_model (test_core.RequirementsTests) ... ok
+test_reference_content_changes_fingerprint (test_core.RequirementsTests) ... ok
+test_batch_validated_before_any_file_is_written (test_core.WorkspaceTests) ... ok
+test_browser_discovery_uses_existing_compatible_module (test_core.WorkspaceTests) ... ok
+test_browser_gc_cannot_be_enabled_by_inherited_or_extra_environment (test_core.WorkspaceTests) ... ok
+test_exact_edit_rejects_ambiguous_context (test_core.WorkspaceTests) ... ok
+test_guarded_paths_and_symlink_escape (test_core.WorkspaceTests) ... ok
+test_large_source_is_read_in_complete_unicode_chunks (test_core.WorkspaceTests) ... ok
+test_subprocess_has_no_model_secret_and_timeout_is_real (test_core.WorkspaceTests) ... ok
+test_trace_redacts_known_secret (test_core.WorkspaceTests) ... ok
+test_a_span_anchor_is_not_offered (test_edit_protocol.AnchoredEditTests) ... ok
+test_exact_unique_anchor_is_replaced_once (test_edit_protocol.AnchoredEditTests) ... ok
+test_insert_after_adds_text_without_repeating_the_anchor (test_edit_protocol.AnchoredEditTests) ... ok
+test_insert_after_rejects_a_missing_or_repeated_anchor (test_edit_protocol.AnchoredEditTests) ... ok
+test_missing_anchor_is_rejected_without_changing_text (test_edit_protocol.AnchoredEditTests) ... ok
+test_one_anchor_kind_is_required (test_edit_protocol.AnchoredEditTests) ... ok
+test_only_an_empty_file_takes_new_without_an_anchor (test_edit_protocol.AnchoredEditTests) ... ok
+test_repeated_anchor_is_rejected_and_names_its_count (test_edit_protocol.AnchoredEditTests) ... ok
+test_several_edits_to_one_file_compose_in_order (test_edit_protocol.AnchoredEditTests) ... ok
+test_edits_apply_in_file_order_not_call_order (test_edit_protocol.MultipleEditTests) ... ok
+test_every_anchor_resolves_against_the_text_the_model_was_shown (test_edit_protocol.MultipleEditTests) ... ok
+test_overlapping_edits_are_refused_before_anything_is_written (test_edit_protocol.MultipleEditTests) ... ok
+test_a_derivation_without_literals_still_executes_a_real_page_check (test_edit_protocol.PreparedCheckDerivationTests) ... ok
+test_derived_source_is_valid_javascript_with_escaped_names (test_edit_protocol.PreparedCheckDerivationTests) ... ok
+test_quoted_test_ids_and_button_names_become_assertions (test_edit_protocol.PreparedCheckDerivationTests) ... ok
+test_repeated_names_are_asserted_once_and_unknown_phrasing_is_ignored (test_edit_protocol.PreparedCheckDerivationTests) ... ok
+test_a_partial_batch_keeps_the_full_requirement_index (test_edit_protocol.PreparedModeTests) ... ok
+test_an_edit_batch_touching_only_prepared_checks_is_refused (test_edit_protocol.PreparedModeTests) ... ok
+test_compact_serialization_keeps_every_requirement_and_drops_empty_sections (test_edit_protocol.PreparedModeTests) ... ok
+test_edits_to_prepared_checks_are_reported_and_product_edits_still_apply (test_edit_protocol.PreparedModeTests) ... ok
+test_one_shot_small_batch_prepares_its_own_interface_check (test_edit_protocol.PreparedModeTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# Subtest: prepared interface check
+not ok 1 - prepared interface check
+  ---
+  duration_ms: 0.367625
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-iazadmwx/application/checks/browser.cjs:4:12'
+  failureType: 'testCodeFailure'
+  error: 'Provided Playwright is unavailable'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-iazadmwx/application/checks/browser.cjs:5:54)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: checks/requirements.cjs
+ok 2 - checks/requirements.cjs
+  ---
+  duration_ms: 17.462125
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 30.467917
+
+ok
+test_prepared_mode_keeps_authored_behavior_and_drops_the_check_command (test_edit_protocol.PreparedModeTests) ... ok
+test_prepared_snapshot_hides_harness_owned_checks (test_edit_protocol.PreparedModeTests) ... ok
+test_hanging_module_load_is_bounded_with_real_process (test_environment.DiscoveryTests) ... ok
+test_invalid_budget_is_rejected_before_spawning (test_environment.DiscoveryTests) ... ok
+test_local_module_is_used_before_host_scan (test_environment.DiscoveryTests) ... ok
+test_probe_does_not_receive_credentials_or_node_preload (test_environment.DiscoveryTests) ... ok
+test_candidate_mutation_invalidates_result (test_external_gate.ExternalGateTests) ... ok
+test_changed_pinned_checks_rejected_before_execution (test_external_gate.ExternalGateTests) ... ok
+test_changed_requirements_rejected_before_execution (test_external_gate.ExternalGateTests) ... ok
+test_cli_writes_evidence_outside_inputs (test_external_gate.ExternalGateTests) ... ok
+test_duplicate_json_keys_and_missing_evidence_are_rejected (test_external_gate.ExternalGateTests) ... ok
+test_empty_contract_uncovered_requirement_and_symlink_rejected (test_external_gate.ExternalGateTests) ... ok
+test_every_declared_case_must_run (test_external_gate.ExternalGateTests) ... ok
+test_interpreter_invocation_preserves_virtual_environment (test_external_gate.ExternalGateTests) ... ok
+test_missing_duplicate_unknown_and_unsupported_results_rejected (test_external_gate.ExternalGateTests) ... ok
+test_model_credentials_and_process_injection_settings_are_not_inherited (test_external_gate.ExternalGateTests) ... ok
+test_nonzero_exit_does_not_override_all_pass_report (test_external_gate.ExternalGateTests) ... ok
+test_noop_and_empty_results_cannot_pass (test_external_gate.ExternalGateTests) ... ok
+test_real_correct_app_accepted_wrong_app_rejected_even_with_weakened_self_checks (test_external_gate.ExternalGateTests) ... ok
+test_skipped_and_error_are_incomplete_not_passed (test_external_gate.ExternalGateTests) ... ok
+test_suite_inside_candidate_is_rejected (test_external_gate.ExternalGateTests) ... ok
+test_suite_mutation_during_execution_invalidates_result (test_external_gate.ExternalGateTests) ... ok
+test_timeout_and_oversized_output_are_bounded_failures (test_external_gate.ExternalGateTests) ... ok
+test_contract_rejects_empty_cases_and_unbound_requirements (test_external_verifier.EvidenceTests) ... ok
+test_exit_zero_without_executed_cases_cannot_pass (test_external_verifier.EvidenceTests) ... ok
+test_missing_duplicate_unknown_cases_are_rejected (test_external_verifier.EvidenceTests) ... ok
+test_modified_requirements_are_rejected_before_any_container_starts (test_external_verifier.EvidenceTests) ... ok
+test_pass_fail_skip_and_process_error_are_distinct (test_external_verifier.EvidenceTests) ... ok
+test_snapshot_is_content_bound_and_rejects_symlinks (test_external_verifier.EvidenceTests) ... ok
+test_correct_product_passes_outside_its_own_test_files (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'
+test_empty_grader_is_an_error_not_a_pass (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'
+test_timeout_is_an_error_and_containers_are_removed (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'
+test_weakening_self_tests_does_not_repair_wrong_product (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'
+test_new_fixed_contract_blocks_stale_success_repairs_app_and_rejects_tampering (test_fixed_checks.FixedCheckTests) ... ok
+test_both_entrypoints_share_state_and_stop_with_the_launcher (test_launcher.LauncherTests) ... ok
+test_install_is_idempotent_and_refuses_external_manifest_symlinks (test_launcher.LauncherTests) ... ok
+test_reserved_port_conflict_fails_and_does_not_leave_the_child_running (test_launcher.LauncherTests) ... ok
+test_three_consecutive_truncations_stop_without_spending_remaining_calls (test_output_recovery.OutputRecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=length
+[volo] model calls=3 reported_tokens=450 finish=length
+ok
+test_truncation_leaves_compact_edit_mode_without_losing_source (test_output_recovery.OutputRecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_truncation_unlocks_incremental_tools_and_repairs_real_app (test_output_recovery.OutputRecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] deliver passed=True
+ok
+test_a_contract_that_names_no_generic_action_declares_none (test_overlay_rules.DeclaredActionTests) ... ok
+test_a_schema_word_is_not_a_declaration (test_overlay_rules.DeclaredActionTests) ... ok
+test_an_identifier_convention_is_not_a_row_menu (test_overlay_rules.DeclaredActionTests) ... ok
+test_prose_in_the_contract_declares_the_actions_it_names (test_overlay_rules.DeclaredActionTests) ... ok
+test_requirement_text_declares_the_row_menu_the_contract_cannot_see (test_overlay_rules.DeclaredActionTests) ... ok
+test_the_vocabulary_module_carries_the_declared_actions (test_overlay_rules.DeclaredActionTests) ... ok
+test_a_hover_revealed_action_named_by_its_bare_verb_passes (test_overlay_rules.OverlayLifecycleCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_row_scoped_name_on_an_always_visible_action_passes (test_overlay_rules.OverlayLifecycleCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_verb_no_requirement_declares_is_not_a_finding (test_overlay_rules.OverlayLifecycleCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_an_inline_non_modal_palette_does_not_owe_the_page_inertness (test_overlay_rules.OverlayLifecycleCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_an_overlay_superseded_before_its_request_resolves_fails (test_overlay_rules.OverlayLifecycleCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_same_page_fails_once_the_requirements_declare_that_action (test_overlay_rules.OverlayLifecycleCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_same_page_rewritten_on_the_overlay_module_passes (test_overlay_rules.OverlayLifecycleCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_build_emits_the_overlay_where_the_page_loads_it (test_overlay_rules.OverlayModuleTests) ... ok
+test_the_instructions_name_the_module_and_the_script_tag (test_overlay_rules.OverlayModuleTests) ... ok
+test_the_module_exposes_the_open_sequence_and_the_cleanup (test_overlay_rules.OverlayModuleTests) ... ok
+test_the_overlay_path_is_harness_owned_and_summarised (test_overlay_rules.OverlayModuleTests) ... ok
+test_the_scaffold_does_not_create_the_public_directory (test_overlay_rules.OverlayModuleTests) ... ok
+test_both_messages_prescribe_the_bare_verb_on_a_hover_revealed_action (test_overlay_rules.RuleTextConsistencyTests) ... ok
+test_no_message_asks_for_the_row_title_in_a_hover_revealed_name (test_overlay_rules.RuleTextConsistencyTests) ... ok
+test_the_container_rule_speaks_of_the_actions_the_requirements_ask_for (test_overlay_rules.RuleTextConsistencyTests) ... ok
+test_the_inertness_rule_speaks_of_dialogs_and_exempts_inline_pickers (test_overlay_rules.RuleTextConsistencyTests) ... ok
+test_the_rules_allow_a_row_scoped_name_where_the_action_is_always_visible (test_overlay_rules.RuleTextConsistencyTests) ... ok
+test_foreign_gateway_is_rejected_before_launch (test_pi_adapter.PiAdapterTests) ... ok
+test_fresh_config_no_secret_on_disk_and_no_inherited_provider_auth (test_pi_adapter.PiAdapterTests) ... ok
+test_only_terminal_assistant_usage_is_counted (test_pi_adapter.PiAdapterTests) ... ok
+test_cancel_error_can_follow_state_change_without_retry (test_platform_cli.PlatformTests) ... ok
+test_create_failure_is_not_retried_or_started (test_platform_cli.PlatformTests) ... ok
+test_downloaded_archive_must_match_uploaded_bytes (test_platform_cli.PlatformTests) ... ok
+test_filtered_leaderboard_matches_task_suffix_and_keeps_server_order (test_platform_cli.PlatformTests) ... ok
+test_foreign_cookie_and_redirect_are_rejected (test_platform_cli.PlatformTests) ... ok
+test_incomplete_mutation_response_is_uncertain_and_never_retried (test_platform_cli.PlatformTests) ... ok
+test_log_redaction_covers_model_keys_and_meter_identifiers (test_platform_cli.PlatformTests) ... ok
+test_log_tail_preserves_cursor_without_duplicate_streams (test_platform_cli.PlatformTests) ... ok
+test_meter_uses_separate_auth_route_and_preserves_decimal_balance (test_platform_cli.PlatformTests) ... ok
+test_real_status_fields_preserve_explicit_currency_and_test_counts (test_platform_cli.PlatformTests) ... ok
+test_rejected_import_does_not_replace_an_existing_private_session (test_platform_cli.PlatformTests) ... ok
+test_saved_submission_id_survives_missing_archive (test_platform_cli.PlatformTests) ... ok
+test_source_reads_only_requested_file_and_saves_redacted_private_text (test_platform_cli.PlatformTests) ... ok
+test_start_failure_retains_created_id_without_creating_another_run (test_platform_cli.PlatformTests) ... ok
+test_upload_hash_run_sequence_and_cookie_affinity (test_platform_cli.PlatformTests) ... ok
+test_wait_polls_through_observed_queued_state_without_starting_another_run (test_platform_cli.PlatformTests) ... ok
+test_wait_recovers_one_incomplete_read_without_mutating_the_run (test_platform_cli.PlatformTests) ... ok
+test_changed_public_file_is_rejected (test_public_specs.PublicSpecsTests) ... ok
+test_exact_input_binding_and_unmodified_public_source (test_public_specs.PublicSpecsTests) ... ok
+test_public_input_survives_bounded_context_and_checkpoint (test_public_specs.PublicSpecsTests) ... ok
+test_compact_edit_truncation_releases_forcing_without_discarding_source (test_recovery.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_repeated_truncation_stops_at_three_not_entire_call_budget (test_recovery.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=length
+[volo] model calls=3 reported_tokens=450 finish=length
+ok
+test_truncation_opens_incremental_tools_and_finishes_real_http_check (test_recovery.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_unadvertised_tool_does_not_execute_after_fallback (test_recovery.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: build_app did not run: Tool was not offered in this execution mode: build_app
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] finish passed=True
+ok
+test_completed_response_resets_consecutive_truncation_counter (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=length
+[volo] model calls=4 reported_tokens=600 finish=length
+[volo] model calls=5 reported_tokens=750 finish=tool_calls
+[volo] finish passed=True
+ok
+test_noop_self_check_is_never_authoritative_requirement_evidence (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_three_consecutive_truncations_stop_before_call_budget (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=length
+[volo] model calls=3 reported_tokens=450 finish=length
+ok
+test_truncated_bundle_opens_file_tools_and_finishes_real_http_app (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] finish passed=True
+ok
+test_truncated_compact_patch_preserves_existing_files_and_opens_tools (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_configured_observer_is_still_asked_for_the_active_images (test_references.ObservationDisabledTests) ... ok
+test_disabled_observer_reports_uninspected_images_without_a_request (test_references.ObservationDisabledTests) ... ok
+test_active_and_inherited_images_only_without_duplicates (test_references.ReferenceTests) ... ok
+test_encoded_payload_byte_budget_splits_even_three_images (test_references.ReferenceTests) ... ok
+test_large_raster_is_resized_but_small_text_reference_stays_exact (test_references.ReferenceTests) ... ok
+test_real_response_routing_usage_cache_invalidation_and_context (test_references.ReferenceTests) ... ok
+test_remote_missing_and_symlink_inputs_are_never_read (test_references.ReferenceTests) ... ok
+test_truncated_observation_is_not_cached_or_called_complete (test_references.ReferenceTests) ... ok
+test_any_other_value_names_the_observation_model_verbatim (test_references.VisionSwitchTests) ... ok
+test_empty_and_off_values_disable_the_observation (test_references.VisionSwitchTests) ... ok
+test_process_environment_is_read_when_no_mapping_is_supplied (test_references.VisionSwitchTests) ... ok
+test_the_expensive_observation_model_is_one_variable_away (test_references.VisionSwitchTests) ... ok
+test_unset_variable_reads_the_images_on_the_cheap_model (test_references.VisionSwitchTests) ... ok
+test_a_failing_capture_reports_but_does_not_block_the_requirement_assertions (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_a_filtered_capture_is_reported_incomplete_rather_than_failing_the_run (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_an_operator_supplied_required_check_keeps_its_authority (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_independent_acceptance_decides_over_a_failing_capture (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_repairing_the_product_makes_the_capture_pass_and_it_is_still_not_a_verdict (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_a_call_that_writes_or_verifies_resets_the_bound (test_repair_loop.DiagnosisStallTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+[volo] model calls=5 reported_tokens=750 finish=tool_calls
+ok
+test_running_a_test_bundle_counts_as_acting_and_grep_does_not (test_repair_loop.DiagnosisStallTests) ... ok
+test_the_call_after_two_stalls_receives_the_complete_source_it_has_been_reading (test_repair_loop.DiagnosisStallTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+[volo] model calls=5 reported_tokens=750 finish=tool_calls
+ok
+test_the_third_stalled_call_switches_to_the_bounded_repair_path (test_repair_loop.DiagnosisStallTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+ok
+test_a_missing_key_in_the_real_payload_names_the_edit_and_the_key (test_repair_loop.EditAnchorTests) ... ok
+test_a_whitespace_only_difference_is_named_as_such (test_repair_loop.EditAnchorTests) ... ok
+test_an_absent_anchor_reports_where_it_stops_matching_and_the_real_text (test_repair_loop.EditAnchorTests)
+Call 7 guessed a different anchor instead of being told what the file holds. ... ok
+test_an_ambiguous_anchor_reports_its_count_and_line_numbers (test_repair_loop.EditAnchorTests)
+Calls 3 and 5 of run 8abb7f040604 were rejected with only a file name. ... ok
+test_the_real_failing_payload_is_rejected_with_a_usable_message_and_writes_nothing (test_repair_loop.EditAnchorTests) ... ok
+test_a_created_file_that_does_not_parse_is_reported_and_not_verified (test_repair_loop.PatchCreatesAFileTests) ... ok
+test_an_anchored_edit_to_a_missing_file_is_still_refused (test_repair_loop.PatchCreatesAFileTests) ... ok
+test_an_edit_with_no_anchor_on_a_file_that_exists_is_still_refused (test_repair_loop.PatchCreatesAFileTests) ... ok
+test_an_edit_with_only_new_text_for_a_missing_path_creates_it_and_verifies (test_repair_loop.PatchCreatesAFileTests) ... ok
+test_a_file_error_names_the_application_path_not_the_host_path (test_repair_loop.ToolFailureTests) ... ok
+test_a_missing_key_never_reaches_the_model_as_a_bare_exception_string (test_repair_loop.ToolFailureTests)
+Calls 4 and 7 of run 8abb7f040604 were rejected with the message "'path'". ... ok
+test_every_tool_exception_is_named_actionable_and_free_of_host_paths (test_repair_loop.ToolFailureTests) ... ok
+test_the_loop_formats_an_escaping_exception_instead_of_repeating_it (test_repair_loop.ToolFailureTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] write_files error: write_files did not run: Tool was not offered in this execution mode: write_files
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+test_write_files_rejects_a_malformed_entry_by_name (test_repair_loop.ToolFailureTests) ... ok
+test_authored_product_source_is_rejected_before_any_build (test_self_navigation.SelfNavigationGuardTests) ... ok
+test_generated_checks_and_files_this_run_did_not_write_are_not_scanned (test_self_navigation.SelfNavigationGuardTests) ... ok
+test_in_place_rerender_passes_the_guard (test_self_navigation.SelfNavigationGuardTests) ... ok
+test_every_navigating_form_is_reported_with_its_line (test_self_navigation.SelfNavigationPatternTests) ... ok
+test_findings_are_bounded_and_one_per_line (test_self_navigation.SelfNavigationPatternTests) ... ok
+test_route_reads_history_calls_and_similar_names_are_not_reported (test_self_navigation.SelfNavigationPatternTests) ... ok
+test_the_gate_refuses_a_generation_that_recorded_nothing (test_selfcheck_deadend.BrowserAvailabilityTests) ... ok
+test_the_gate_refuses_a_generation_without_a_browser (test_selfcheck_deadend.BrowserAvailabilityTests) ... ok
+test_the_gate_still_refuses_self_navigation_when_a_browser_was_present (test_selfcheck_deadend.BrowserAvailabilityTests) ... ok
+test_verification_and_checkpoint_record_the_browser_environment (test_selfcheck_deadend.BrowserAvailabilityTests) ... ok
+test_assertion_library_misuse_is_recognized_in_both_report_formats (test_selfcheck_deadend.DefectDetectionTests) ... ok
+test_missing_module_and_undefined_symbol_are_check_defects (test_selfcheck_deadend.DefectDetectionTests) ... ok
+test_product_javascript_errors_and_page_text_are_not_check_defects (test_selfcheck_deadend.DefectDetectionTests) ... ok
+test_signature_ignores_ports_ids_and_durations_but_not_the_failure (test_selfcheck_deadend.DefectDetectionTests) ... ok
+test_an_edit_missing_a_key_reports_what_it_needs (test_selfcheck_deadend.MalformedEditTests)
+Run 8abb spent two of fifteen calls on a KeyError reported to the model as "'path'". ... ok
+test_an_edit_missing_its_path_still_names_the_edit_and_the_key (test_selfcheck_deadend.MalformedEditTests) ... ok
+test_a_capture_survives_repair_that_does_not_change_the_product (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+test_a_defective_check_is_never_frozen_and_is_handed_back (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+test_a_frozen_check_that_becomes_defective_is_released_on_its_first_failure (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+test_clear_prepared_check_guards_restores_capture_for_a_new_batch (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+test_two_identical_failures_over_changed_source_release_the_capture (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+test_a_single_batch_package_takes_the_unchanged_path (test_state_contract.AgentWiringTests) ... ok
+test_installing_the_contract_writes_the_seeder_and_keeps_it_out_of_git (test_state_contract.AgentWiringTests) ... ok
+test_the_contract_reaches_every_batch_verbatim (test_state_contract.AgentWiringTests) ... ok
+test_the_contract_system_prompt_states_the_store_and_regression_rules (test_state_contract.AgentWiringTests) ... ok
+test_the_supplement_asks_each_batch_for_its_own_feature_file (test_state_contract.BatchFeatureFileTests) ... ok
+test_the_supplement_reaches_the_model_on_the_contract_path (test_state_contract.BatchFeatureFileTests) ... [volo] model calls=1 reported_tokens=1500 finish=stop
+ok
+test_a_batch_that_wrote_no_product_file_just_restores (test_state_contract.BatchSalvageTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 2 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] pass 3: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 3 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+ok
+test_a_capped_batch_is_rolled_back_when_the_bundle_fails (test_state_contract.BatchSalvageTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] restored the last verified snapshot
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 2 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] restored the last verified snapshot
+[volo] pass 3: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 3 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] restored the last verified snapshot
+ok
+test_a_capped_batch_keeps_its_tree_when_the_bundle_still_passes (test_state_contract.BatchSalvageTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 2 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+[volo] pass 3: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 3 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+ok
+test_a_run_that_ends_after_a_salvage_still_delivers (test_state_contract.BatchSalvageTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 2 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+[volo] pass 3: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 3 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+ok
+test_the_next_entry_is_told_the_tree_was_kept_and_is_given_its_own_check_back (test_state_contract.BatchSalvageTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 2 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+[volo] pass 3: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 3 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+ok
+test_the_salvage_obeys_the_deadline (test_state_contract.BatchSalvageTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] restored the last verified snapshot
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 2 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] restored the last verified snapshot
+[volo] pass 3: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 3 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] restored the last verified snapshot
+ok
+test_the_salvage_spends_no_model_call (test_state_contract.BatchSalvageTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 2 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+[volo] pass 3: re-entering batch-2
+[volo] implementing REQ-2.2, REQ-2.3 (entry 3 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] kept 1 file(s) from the batch; the package still passes its checks without the batch check
+ok
+test_disjoint_state_is_not_packed_into_one_batch (test_state_contract.BatchingTests) ... ok
+test_every_requirement_appears_exactly_once_and_keeps_dependency_order (test_state_contract.BatchingTests) ... ok
+test_requirements_are_grouped_by_the_state_they_share (test_state_contract.BatchingTests) ... ok
+test_a_multi_batch_package_gets_the_large_defaults (test_state_contract.BudgetDefaultTests) ... ok
+test_a_single_batch_package_keeps_the_small_defaults (test_state_contract.BudgetDefaultTests) ... ok
+test_an_explicit_flag_and_the_environment_win (test_state_contract.BudgetDefaultTests) ... ok
+test_the_cost_budget_is_read_from_the_environment_as_a_decimal (test_state_contract.BudgetDefaultTests) ... ok
+test_the_large_defaults_let_the_loop_end_on_money_rather_than_the_clock (test_state_contract.BudgetDefaultTests) ... ok
+test_a_current_verified_snapshot_is_delivered_when_the_final_check_fails (test_state_contract.DeliveryTests) ... ok
+test_without_a_verified_snapshot_the_failure_still_raises (test_state_contract.DeliveryTests) ... ok
+test_an_image_path_is_not_mistaken_for_a_quoted_literal (test_state_contract.DeterministicExtractionTests) ... ok
+test_image_captions_do_not_leak_into_a_seed_sentence (test_state_contract.DeterministicExtractionTests) ... ok
+test_quoted_literals_and_seed_sentences_are_recovered_without_a_model (test_state_contract.DeterministicExtractionTests) ... ok
+test_the_internal_mapping_sentinel_never_reaches_a_batch (test_state_contract.DocumentHygieneTests) ... ok
+test_a_truncated_extraction_is_refused_rather_than_half_applied (test_state_contract.ExtractionCallTests) ... ok
+test_one_call_produces_a_reconciled_contract_and_reports_its_cost (test_state_contract.ExtractionCallTests) ... ok
+test_a_connection_level_failure_is_retried_and_recorded (test_state_contract.GatewayRetryTests) ... ok
+test_a_gateway_proxy_error_is_retried (test_state_contract.GatewayRetryTests) ... ok
+test_a_request_error_is_not_retried (test_state_contract.GatewayRetryTests) ... ok
+test_a_single_attempt_transport_still_makes_one_request (test_state_contract.GatewayRetryTests) ... ok
+test_a_truncated_response_body_is_retried_and_then_surfaced_as_a_model_error (test_state_contract.GatewayRetryTests) ... ok
+test_a_package_without_a_contract_reads_normally (test_state_contract.HarnessReadDispatchTests) ... ok
+test_reading_a_harness_file_returns_its_contract_not_its_bytes (test_state_contract.HarnessReadDispatchTests) ... ok
+test_reading_product_source_is_unaffected (test_state_contract.HarnessReadDispatchTests) ... ok
+test_mixed_read_names_the_product_files_for_a_verbatim_read (test_state_contract.HarnessReadTests) ... ok
+test_owned_only_read_is_summarised (test_state_contract.HarnessReadTests) ... ok
+test_product_only_read_is_not_intercepted (test_state_contract.HarnessReadTests) ... ok
+test_a_dialog_that_is_modal_only_by_declaration_fails (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_form_that_clears_itself_on_a_submission_passes (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_name_outside_the_vocabulary_is_reported_and_not_failed (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_named_input_passes (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_picker_that_leaves_a_matching_name_beside_it_fails (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_report_longer_than_twenty_names_is_cut_and_counted (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_row_title_answered_only_by_a_hover_only_control_fails (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_rule_is_applied_to_a_state_one_click_away (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_a_verb_that_resolves_outside_the_hovered_row_fails (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_actions_hidden_until_hover_pass (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_actions_hidden_with_opacity_are_not_hidden_at_all (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_an_unnamed_input_fails (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_an_unnamed_meter_fails (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_controls_a_click_removed_that_a_reload_does_not_bring_back_fail (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_row_scoped_names_are_reported_once_per_action_and_capped (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_row_scoped_names_visible_at_rest_fail_on_the_verb (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_container_rule_is_stated_to_the_model (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_form_durability_rule_is_stated_to_the_model (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_inertness_rule_is_stated_to_the_model (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_restore_rule_is_stated_to_the_model (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_row_title_rule_is_stated_to_the_model (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_rules_are_stated_to_the_model (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_supplement_asks_a_self_check_to_assert_on_the_row_not_a_toast (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_supplement_tells_a_self_check_to_hover_before_locating_a_row_action (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_synthetic_hover_fixture_passes_every_rule (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_walk_puts_back_every_row_it_moved (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_two_visible_controls_sharing_a_name_fail (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_typing_lost_to_an_in_form_click_fails (test_state_contract.InterfaceCheckTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_the_report_is_still_a_log_line_and_never_an_assertion (test_state_contract.InterfaceVocabularyReportTests) ... ok
+test_the_reported_list_is_capped_and_says_how_many_were_omitted (test_state_contract.InterfaceVocabularyReportTests) ... ok
+test_the_row_title_suffix_is_stripped_before_matching (test_state_contract.InterfaceVocabularyReportTests) ... ok
+test_a_refused_gateway_ends_the_schedule_at_the_first_batch (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] the gateway refused this run (billing); no later call can succeed
+[volo] stopped on billing; delivering the best verified snapshot
+ok
+test_a_rejected_key_ends_the_schedule_the_same_way (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] the gateway refused this run (auth); no later call can succeed
+[volo] stopped on auth; delivering the best verified snapshot
+ok
+test_a_run_out_of_calls_reports_the_call_budget (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] stopped on call_budget; delivering the best verified snapshot
+ok
+test_a_run_out_of_money_reports_the_cost_budget (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] stopped on cost_budget; delivering the best verified snapshot
+ok
+test_a_run_out_of_tokens_reports_the_token_budget (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] stopped on token_budget; delivering the best verified snapshot
+ok
+test_a_run_refused_part_way_through_still_delivers_what_verified (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] the gateway refused this run (billing); no later call can succeed
+[volo] stopped on billing; delivering the best verified snapshot
+ok
+test_a_schedule_that_finishes_reports_complete (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] implementing REQ-3.1
+ok
+test_a_transport_failure_that_still_got_an_answer_is_a_batch_failure (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] batch did not converge: Gateway retry limit reached
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: Gateway retry limit reached
+[volo] implementing REQ-3.1
+[volo] batch did not converge: Gateway retry limit reached
+[volo] pass 2: re-entering batch-1, batch-2, batch-3
+[volo] implementing REQ-1.1, REQ-2.1 (entry 2 of 3)
+[volo] batch did not converge: Gateway retry limit reached
+[volo] implementing REQ-2.2, REQ-2.3 (entry 2 of 3)
+[volo] batch did not converge: Gateway retry limit reached
+[volo] implementing REQ-3.1 (entry 2 of 3)
+[volo] batch did not converge: Gateway retry limit reached
+[volo] pass 3: re-entering batch-1, batch-2, batch-3
+[volo] implementing REQ-1.1, REQ-2.1 (entry 3 of 3)
+[volo] batch did not converge: Gateway retry limit reached
+[volo] implementing REQ-2.2, REQ-2.3 (entry 3 of 3)
+[volo] batch did not converge: Gateway retry limit reached
+[volo] implementing REQ-3.1 (entry 3 of 3)
+[volo] batch did not converge: Gateway retry limit reached
+ok
+test_money_is_the_terminal_condition_and_tokens_are_the_safety_net (test_state_contract.LoopTerminationTests) ... ok
+test_the_wall_clock_is_still_reported_when_it_is_what_stopped_the_run (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] stopped on deadline; delivering the best verified snapshot
+ok
+test_three_unanswered_entries_in_a_row_end_the_schedule (test_state_contract.LoopTerminationTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] batch did not converge: Model request failed; gateway usage may have been consumed
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: Model request failed; gateway usage may have been consumed
+[volo] implementing REQ-3.1
+[volo] batch did not converge: Model request failed; gateway usage may have been consumed
+[volo] 3 entries in a row got no answer from the gateway
+[volo] stopped on gateway; delivering the best verified snapshot
+ok
+test_a_fenced_response_is_read (test_state_contract.NormalizationTests) ... ok
+test_a_mapping_shaped_response_normalizes_without_losing_a_row (test_state_contract.NormalizationTests) ... ok
+test_duplicate_seed_ids_are_kept_as_separate_rows (test_state_contract.NormalizationTests) ... ok
+test_a_first_batch_that_failed_leaves_no_product_files_for_the_retry (test_state_contract.NothingImplementedTests) ... ok
+test_a_stall_after_a_product_file_still_enters_patch_mode (test_state_contract.NothingImplementedTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+ok
+test_a_stall_before_anything_is_written_keeps_the_full_tools_and_says_so (test_state_contract.NothingImplementedTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+ok
+test_the_scaffold_alone_is_not_an_implementation (test_state_contract.NothingImplementedTests) ... ok
+test_the_rules_ticket_depends_on_survive_in_contract_mode (test_state_contract.PromptRuleRetentionTests) ... ok
+test_the_supplement_is_additive_not_a_replacement (test_state_contract.PromptRuleRetentionTests) ... ok
+test_a_complete_contract_reports_nothing_unresolved (test_state_contract.ReconciliationTests) ... ok
+test_a_dropped_literal_is_reattached_mechanically (test_state_contract.ReconciliationTests) ... ok
+test_a_dropped_seed_row_is_reported_as_unresolved (test_state_contract.ReconciliationTests) ... ok
+test_a_finished_batch_check_is_read_as_a_summary_not_as_bytes (test_state_contract.RegressionCheckOwnershipTests) ... ok
+test_a_mixed_read_still_returns_the_product_file_verbatim (test_state_contract.RegressionCheckOwnershipTests) ... ok
+test_a_package_without_a_contract_locks_nothing (test_state_contract.RegressionCheckOwnershipTests) ... ok
+test_a_stall_never_hands_back_a_locked_check_it_declined_to_show (test_state_contract.RegressionCheckOwnershipTests) ... ok
+test_a_write_keeps_the_product_files_and_withholds_only_the_locked_check (test_state_contract.RegressionCheckOwnershipTests) ... ok
+test_a_write_of_only_a_locked_check_is_refused_with_the_reason (test_state_contract.RegressionCheckOwnershipTests) ... ok
+test_an_edit_of_a_finished_batch_check_is_refused_and_names_the_remedy (test_state_contract.RegressionCheckOwnershipTests) ... ok
+test_the_batch_writing_a_check_can_still_read_and_rewrite_it (test_state_contract.RegressionCheckOwnershipTests) ... ok
+test_the_harness_owned_interface_check_is_not_attributed_to_a_batch (test_state_contract.RegressionCheckOwnershipTests) ... ok
+test_an_application_without_startup_state_is_not_health_gated (test_state_contract.RunningApplicationTests) ... ok
+test_health_answers_only_after_seeding_and_seeding_is_idempotent (test_state_contract.RunningApplicationTests) ... ok
+test_health_reports_503_when_seeding_fails (test_state_contract.RunningApplicationTests) ... ok
+test_verification_refuses_an_application_whose_health_never_reports_ready (test_state_contract.RunningApplicationTests) ... ok
+test_rows_written_at_runtime_do_not_change_the_source_fingerprint (test_state_contract.RuntimeStateExclusionTests) ... ok
+test_a_batch_that_converges_on_a_later_entry_is_completed_and_not_entered_again (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-1
+[volo] implementing REQ-1.1, REQ-2.1 (entry 2 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] pass 3: re-entering batch-1
+[volo] implementing REQ-1.1, REQ-2.1 (entry 3 of 3)
+ok
+test_a_batch_that_does_not_converge_does_not_end_the_schedule (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-1
+[volo] implementing REQ-1.1, REQ-2.1 (entry 2 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] pass 3: re-entering batch-1
+[volo] implementing REQ-1.1, REQ-2.1 (entry 3 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+ok
+test_a_batch_that_spends_every_entry_is_recorded_incomplete_once (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-1
+[volo] implementing REQ-1.1, REQ-2.1 (entry 2 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] pass 3: re-entering batch-1
+[volo] implementing REQ-1.1, REQ-2.1 (entry 3 of 3)
+[volo] batch did not converge: Batch did not converge within the model call limit
+ok
+test_a_contract_batch_stops_at_its_call_limit (test_state_contract.ScheduleCompletionTests) ... [volo] model calls=1 reported_tokens=1100 finish=tool_calls
+[volo] list_files error: list_files did not run: Tool was not offered in this execution mode: list_files
+[volo] model calls=2 reported_tokens=2200 finish=tool_calls
+[volo] list_files error: list_files did not run: Tool was not offered in this execution mode: list_files
+[volo] model calls=3 reported_tokens=3300 finish=tool_calls
+[volo] list_files error: list_files did not run: Tool was not offered in this execution mode: list_files
+[volo] model calls=4 reported_tokens=4400 finish=tool_calls
+[volo] model calls=5 reported_tokens=5500 finish=tool_calls
+[volo] model calls=6 reported_tokens=6600 finish=tool_calls
+[volo] model calls=7 reported_tokens=7700 finish=tool_calls
+[volo] model calls=8 reported_tokens=8800 finish=tool_calls
+[volo] model calls=9 reported_tokens=9900 finish=tool_calls
+[volo] model calls=10 reported_tokens=11000 finish=tool_calls
+[volo] model calls=11 reported_tokens=12100 finish=tool_calls
+[volo] model calls=12 reported_tokens=13200 finish=tool_calls
+[volo] model calls=13 reported_tokens=14300 finish=tool_calls
+[volo] model calls=14 reported_tokens=15400 finish=tool_calls
+[volo] model calls=15 reported_tokens=16500 finish=tool_calls
+[volo] model calls=16 reported_tokens=17600 finish=tool_calls
+[volo] model calls=17 reported_tokens=18700 finish=tool_calls
+[volo] model calls=18 reported_tokens=19800 finish=tool_calls
+[volo] model calls=19 reported_tokens=20900 finish=tool_calls
+[volo] model calls=20 reported_tokens=22000 finish=tool_calls
+ok
+test_a_failed_batch_restores_the_last_verified_tree (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] restored the last verified snapshot
+[volo] implementing REQ-3.1
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] restored the last verified snapshot
+[volo] pass 2: re-entering batch-2, batch-3
+[volo] implementing REQ-2.2, REQ-2.3 (entry 2 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] restored the last verified snapshot
+[volo] implementing REQ-3.1 (entry 2 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] restored the last verified snapshot
+[volo] pass 3: re-entering batch-2, batch-3
+[volo] implementing REQ-2.2, REQ-2.3 (entry 3 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] restored the last verified snapshot
+[volo] implementing REQ-3.1 (entry 3 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] restored the last verified snapshot
+ok
+test_a_package_without_a_contract_still_fails_fast (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1
+ok
+test_a_re_entry_is_told_which_entry_it_is_and_what_it_was_stuck_on (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] batch did not converge: Batch did not converge within the model call limit
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-1
+[volo] implementing REQ-1.1, REQ-2.1 (entry 2 of 3)
+ok
+test_a_wall_clock_timeout_also_stops_the_schedule (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] stopped on deadline; delivering the best verified snapshot
+ok
+test_budget_exhaustion_stops_the_schedule_and_is_recorded (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] stopped on call_budget; delivering the best verified snapshot
+ok
+test_each_batch_owns_the_checks_it_left_and_locks_the_earlier_ones (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] implementing REQ-3.1
+ok
+test_every_incomplete_batch_takes_its_next_entry_before_any_takes_another (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] implementing REQ-3.1
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] pass 2: re-entering batch-1, batch-3
+[volo] implementing REQ-1.1, REQ-2.1 (entry 2 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] implementing REQ-3.1 (entry 2 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] pass 3: re-entering batch-1, batch-3
+[volo] implementing REQ-1.1, REQ-2.1 (entry 3 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] implementing REQ-3.1 (entry 3 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+ok
+test_no_batch_is_entered_more_than_the_entry_limit (test_state_contract.ScheduleCompletionTests) ... [volo] implementing REQ-1.1, REQ-2.1
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] implementing REQ-2.2, REQ-2.3
+[volo] implementing REQ-3.1
+[volo] pass 2: re-entering batch-1
+[volo] implementing REQ-1.1, REQ-2.1 (entry 2 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+[volo] pass 3: re-entering batch-1
+[volo] implementing REQ-1.1, REQ-2.1 (entry 3 of 3)
+[volo] batch did not converge: synthetic: batch did not converge
+ok
+test_the_snapshot_survives_protected_and_runtime_files_in_the_tree (test_state_contract.ScheduleCompletionTests) ... ok
+test_collections_carry_every_seeded_store_key (test_state_contract.SeedModuleTests) ... ok
+test_the_seeder_is_generated_from_the_contract_not_from_a_model (test_state_contract.SeedModuleTests) ... ok
+test_a_correct_handler_and_a_built_document_produce_no_diagnosis (test_state_contract.ServingDiagnosisTests) ... ok
+test_a_handler_that_never_returns_false_is_named (test_state_contract.ServingDiagnosisTests) ... ok
+test_the_api_contract_is_stated_to_the_model (test_state_contract.ServingDiagnosisTests) ... ok
+test_a_verified_tree_is_snapshotted_and_restored_over_a_broken_one (test_state_contract.SnapshotDeliveryTests) ... [volo] restored the last verified snapshot
+ok
+test_an_unverified_tree_is_never_snapshotted (test_state_contract.SnapshotDeliveryTests) ... ok
+test_nothing_is_restored_when_the_tree_already_matches_a_verification (test_state_contract.SnapshotDeliveryTests) ... ok
+test_a_large_application_still_fits_the_context_checkpoint (test_state_contract.SourceBudgetTests) ... ok
+test_a_tree_of_many_files_still_carries_source_nearest_to_the_batch (test_state_contract.SourceBudgetTests) ... ok
+test_earlier_batches_checks_are_not_re_delivered (test_state_contract.SourceBudgetTests) ... ok
+test_the_harness_and_earlier_checks_are_excluded_before_the_budget_is_spent (test_state_contract.SourceBudgetTests) ... ok
+test_product_source_is_delivered_without_the_harness_runtime_files (test_state_contract.SourceDeliveryTests) ... ok
+test_an_invalid_json_escape_is_repaired_to_the_intended_bytes (test_state_contract.ToolArgumentRepairTests) ... ok
+test_valid_arguments_and_truly_broken_json_are_unchanged (test_state_contract.ToolArgumentRepairTests) ... ok
+test_a_single_file_write_is_executed_rather_than_rejected (test_state_contract.ToolShapeTests) ... ok
+test_an_extra_argument_does_not_discard_the_write (test_state_contract.ToolShapeTests) ... ok
+test_the_normal_shape_is_untouched (test_state_contract.ToolShapeTests) ... ok
+test_an_empty_contract_produces_a_loadable_module (test_state_contract.VocabularyModuleTests) ... ok
+test_the_seeded_row_titles_are_exported_longest_first (test_state_contract.VocabularyModuleTests) ... ok
+test_the_vocabulary_carries_requirement_words_and_observed_headings (test_state_contract.VocabularyModuleTests) ... ok
+test_a_broken_file_is_diagnosed_by_the_parser_at_write_time (test_state_contract.WriteTimeSyntaxTests) ... ok
+test_a_package_without_a_contract_is_not_syntax_checked (test_state_contract.WriteTimeSyntaxTests) ... ok
+test_valid_files_pass_through_untouched (test_state_contract.WriteTimeSyntaxTests) ... ok
+
+======================================================================
+ERROR: test_final_token_budget_edit_is_verified_without_another_model_call (test_core.ExecutionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/projects/volo-factory-worktrees/ts-kernel/tests/test_core.py", line 432, in test_final_token_budget_edit_is_verified_without_another_model_call
+    self.assert_final_budget_verification('hello')
+  File "~/projects/volo-factory-worktrees/ts-kernel/tests/test_core.py", line 413, in assert_final_budget_verification
+    self.assertEqual(agent.run()['status'], 'completed')
+  File "~/projects/volo-factory-worktrees/ts-kernel/volo/agent.py", line 1875, in run
+    self.run_schedule()
+  File "~/projects/volo-factory-worktrees/ts-kernel/volo/agent.py", line 1172, in run_schedule
+    self.enter_batch(state)
+  File "~/projects/volo-factory-worktrees/ts-kernel/volo/agent.py", line 1210, in enter_batch
+    self.run_batch(nodes)
+  File "~/projects/volo-factory-worktrees/ts-kernel/volo/agent.py", line 1669, in run_batch
+    self.guard_budget()
+  File "~/projects/volo-factory-worktrees/ts-kernel/volo/agent.py", line 1375, in guard_budget
+    raise RuntimeError("Observed model token budget exhausted")
+RuntimeError: Observed model token budget exhausted
+
+----------------------------------------------------------------------
+Ran 420 tests in 196.973s
+
+FAILED (errors=1, skipped=46)

@@ -251,3 +251,210 @@ node --import tsx out/recompute-calibration.mjs
 4. 保留本轮冻结版本和负面基线，修订另出新版本。**本轮不启用自动修复控制，不继续付费调参。**
 
 所有步骤已分别提交；报告结论是“校准完成且不通过”，不是“组件已经可靠”。
+
+## 第二轮
+
+### 结论与口径
+
+Qwen 的三份校准已完成。按本轮新口径，unknown 从召回率分母排除，
+但仍保留在固定场景总数和覆盖率中；无可观测官方通过场景时，召回为 null，不能判达标。
+第一轮原始口径不覆盖修改，下面同时列出可比较的排除 unknown 口径。
+
+DeepSeek 对照已完成，三份结果与 Qwen 并列。
+
+| 样本 | 版本 | 本地 pass / fail / unknown | 假通过 | 排除 unknown 的召回 | 固定官方通过分母的召回 | 覆盖率 | 本轮判据 |
+|---|---|---:|---:|---:|---:|---:|---|
+| Keep 第 5 局 | 第一轮 | 5 / 22 / 5 | 1 | 20.0% (4/20) | 16.0% | 84.4% | 未达标 |
+| Keep 第 5 局 | 第二轮 Qwen | 7 / 1 / 24 | 0 | 100.0% (7/7) | 28.0% | 25.0% | 达标 |
+| Keep 第 5 局 | 第二轮 DeepSeek | 9 / 11 / 12 | 0 | 52.9% (9/17) | 36.0% | 62.5% | 未达标 |
+| Keep 第 7 局 | 第一轮 | 13 / 14 / 5 | 2 | 61.1% (11/18) | 50.0% | 84.4% | 未达标 |
+| Keep 第 7 局 | 第二轮 Qwen | 7 / 1 / 24 | 1 | 100.0% (6/6) | 27.3% | 25.0% | 未达标 |
+| Keep 第 7 局 | 第二轮 DeepSeek | 9 / 11 / 12 | 2 | 53.8% (7/13) | 31.8% | 62.5% | 未达标 |
+| Bookstack 第 2 局 | 第一轮 | 10 / 24 / 0 | 3 | 63.6% (7/11) | 63.6% | 100.0% | 未达标 |
+| Bookstack 第 2 局 | 第二轮 Qwen | 1 / 6 / 27 | 1 | 0.0% (0/5) | 0.0% | 20.6% | 未达标 |
+| Bookstack 第 2 局 | 第二轮 DeepSeek | 6 / 10 / 18 | 2 | 57.1% (4/7) | 36.4% | 47.1% | 未达标 |
+
+**排除 unknown 后的高召回不等于广泛覆盖。** Qwen 在 Keep 只执行 8/32 个场景，在 Bookstack 只执行 7/34 个；第一轮假通过变成 unknown 也不能算“识别了原来的缺陷”。
+
+### 三张主矩阵与第一轮并排
+
+每格为 **官方 pass / 官方 fail** 的数量；行是本地判定。
+
+#### Keep 第 5 局
+
+| 本地判定 | 第一轮 | 第二轮 Qwen | 第二轮 DeepSeek |
+|---|---:|---:|---:|
+| pass | 4 / 1 | 7 / 0 | 9 / 0 |
+| fail | 16 / 6 | 0 / 1 | 8 / 3 |
+| unknown | 5 / 0 | 18 / 6 | 8 / 4 |
+
+[Qwen calibration](../checks/out/round2/qwen/keep-5/calibration.json) · [Qwen results](../checks/out/round2/qwen/keep-5/results.json)
+
+#### Keep 第 7 局
+
+| 本地判定 | 第一轮 | 第二轮 Qwen | 第二轮 DeepSeek |
+|---|---:|---:|---:|
+| pass | 11 / 2 | 6 / 1 | 7 / 2 |
+| fail | 7 / 7 | 0 / 1 | 6 / 5 |
+| unknown | 4 / 1 | 16 / 8 | 9 / 3 |
+
+[Qwen calibration](../checks/out/round2/qwen/keep-7/calibration.json) · [Qwen results](../checks/out/round2/qwen/keep-7/results.json)
+
+#### Bookstack 第 2 局
+
+| 本地判定 | 第一轮 | 第二轮 Qwen | 第二轮 DeepSeek |
+|---|---:|---:|---:|
+| pass | 7 / 3 | 0 / 1 | 4 / 2 |
+| fail | 4 / 20 | 5 / 1 | 3 / 7 |
+| unknown | 0 / 0 | 6 / 21 | 4 / 14 |
+
+[Qwen calibration](../checks/out/round2/qwen/bookstack-2/calibration.json) · [Qwen results](../checks/out/round2/qwen/bookstack-2/results.json)
+
+### 仍然假通过的场景
+
+| 模型 / 样本 / 场景 | 已观察差异与原因 |
+|---|---|
+| qwen / Keep 第 7 局 / REQ-2.7.6.2#1 | 本轮 GIVEN 只有打开首页，直接点 Notes；官方先按 Work 过滤再返回 Notes，失败时落到 /^notes$/ 的 button 后备。删掉准备路径后，跨页面状态与原故障没有被复现。不是已经修复官方失败。 |
+| qwen / Bookstack 第 2 局 / REQ-4.2.1#1 | 本轮已无前置 expect，仍能点击 Shelf 4.2.1；官方在该步骤落到不存在的 button 后备并超时。本地仍是 Keep 的十级 resolveNamed 和 count/重复解析后备，Bookstack 官方是较短的 firstVisible。执行协议/采样时序差异仍存在；没有单独隔离各次解析的时序贡献。 |
+| deepseek / Keep 第 7 局 / REQ-2.7.6.2#1 | 本轮 GIVEN 只有打开首页，直接点 Notes；官方先按 Work 过滤再返回 Notes，失败时落到 /^notes$/ 的 button 后备。删掉准备路径后，跨页面状态与原故障没有被复现。不是已经修复官方失败。 |
+| deepseek / Keep 第 7 局 / REQ-6.1#1 | DeepSeek 只断言 Notes 可见；官方依次检查 Notes、Reminders、Edit labels、Archive、Trash，并实际失败在 Edit labels。属于编译漏断言，不能用一个导航项代表整条场景。 |
+| deepseek / Bookstack 第 2 局 / REQ-4.3.2#1 | DeepSeek 只导航至新建页、点击 Cancel、断言原种子书架标题可见；官方此前在点击 Shelf 4.3.2 时落到 button 后备并超时。即使已删除额外 expect，不同 helper/异步解析仍可绕开原失败；末尾断言也未证明未创建新记录。 |
+| deepseek / Bookstack 第 2 局 / REQ-4.5.2#1 | DeepSeek 导航至编辑页后直接 Cancel，只断言原书架标题。官方实际失败在精确 Edit 的 button 后备；本地解析时序不同，同时没有修改字段或验证原描述，存在编译漏测。 |
+
+Qwen 的 Bookstack 召回为 0/5：REQ-1.1、REQ-2.1、REQ-4.1、REQ-5.1 把需求 prose 中的 `homepage`、`login form page`、`shelf list page`、`books list page` 当成实际 UI 文本；REQ-5.2.1 先用非精确 Books 导航，仍可能命中 BookStack 品牌链接，随后找不到目标书籍。名称“来自原文”并不证明它是页面可见文本。
+
+### 编译与执行约束及校验过程
+
+- 新增独立 version=2 格式：GIVEN 仅 open/click；WHEN 按原句分组且最多两步，只允许 hover/click/fill/check/press；THEN 仅 expectText/expectAbsent。严格对象拒绝 role、via、exact、within 和其他操作。unknown 是整个 Check 的状态，不混入可执行阶段。
+- 名称由原文/种子来源校验；本轮裸动作词按当前 WHEN 原句核对，共享的引号/反引号字面量可复用。hover 必须是种子标题，实际执行却始终调用原样 hoverNamed/resolveNamed。fill 使用原样 fillField。没有增加动作前可见性探测、等待或条件后备。
+- 模型不知道官方结果和 tests 内容。Qwen 输入最初含重复的共享词汇/祖先信息；DeepSeek 重试将这些相同信息去重到顶层，完整需求和合约未删除。这不是逐字相同请求的成本比较。
+- 最小导航是语义要求，不能只靠结构 schema 证明。运行前检查发现模型把 Trash/Archived 的 WHEN 点击移动到 GIVEN，于是补上初始页额外导航和空动作 WHEN 的拒绝条件。原响应离线重新校验，没有付费重写来迎合官方结果。早期两份运行留在 `out/round2/qwen/before-phase-fix/`，不纳入最终矩阵。
+- 修正了普通空格和 \s+ 等价形式被误拒的来源校验 bug；保留原始请求、响应和修改前产物。随后修正了含点号的引号种子名被误拒的问题；四份响应离线重验后 Keep 哈希不变，仅重新运行两个 Bookstack 套件，旧结果留在 `out/round2/before-literal-fix/`。最终 artifacts 使用新校验，原始响应未修改。
+- 语义完整性仍是模型错误来源：DeepSeek 的 REQ-2.3.1 省略 More options，REQ-2.4 省略关闭编辑器，REQ-2.7.1/2 省略菜单准备。它们满足结构上的两步上限，却没有完整执行原 WHEN，保留这些失败作为对照，不能把执行覆盖率当成语义覆盖率。
+- 四个 worker、10 秒用例上限、默认 Playwright expect 5 秒、默认 actionTimeout=0（由用例时限约束）、trace/video off。第一轮 expect=10 秒，本轮这一差异来自用户要求，不能把变化完全归因于模型或提示词。
+
+### unknown 逐条清单
+
+这里记录编译输出本身的原因，不把每个理由都当作正确的能力边界。例如 Qwen 在 REQ-4.2 声称 GIVEN 不能 click，实际规则允许必要的导航点击；这属于模型过于保守。
+
+#### qwen / keep：24/32
+
+| 场景 | category | reason | 原因 |
+|---|---|---|---|
+| REQ-2.2#1 Create Note | create | unsupported | Single WHEN sentence contains click, fill title, fill content, and close actions exceeding the two-step limit. |
+| REQ-2.3.1#1 Delete | delete | unsupported | WHEN requires hover, click More options, and click Delete Note in one sentence, exceeding the 2-step limit. |
+| REQ-2.3.2#1 Notification and Undo | state-toggle | no-preparation-path | Cannot prepare deleted-note state in GIVEN without performing delete operations. |
+| REQ-2.3.3#1 Trash list | read-list | unsupported | 校验拒绝：Click must name an original verb or quoted literal: Trash |
+| REQ-2.4#1 Update Note | edit | unsupported | Single WHEN sentence contains open, edit, and close actions exceeding the two-step limit. |
+| REQ-2.5.1#1 Archive | state-toggle | ambiguous-assertion | Cannot assert note moved to archive list using only expectText or expectAbsent on the current page. |
+| REQ-2.5.2#1 Archive Undo | state-toggle | no-preparation-path | Cannot prepare archive notification state in GIVEN without performing archive operations. |
+| REQ-2.5.3#1 Show archived notes | read-list | unsupported | 校验拒绝：Click must name an original verb or quoted literal: Archived |
+| REQ-2.6.1#1 Change note color | edit | ambiguous-assertion | Color change is a visual style property that cannot be verified with expectText or expectAbsent. |
+| REQ-2.6.2#1 Choose note color when created | create | unsupported | Single WHEN sentence contains multiple actions exceeding the two-step limit. |
+| REQ-2.7.1#1 Assign label to a note | edit | unsupported | Single WHEN sentence contains three sequential actions exceeding the two-step limit. |
+| REQ-2.7.2#1 Remove label from a note | edit | unsupported | Single WHEN sentence contains three sequential actions exceeding the two-step limit. |
+| REQ-2.7.4#1 Assign default label when creating note | create | no-preparation-path | Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions. |
+| REQ-2.7.5#1 Edit labels | edit | unsupported | Single WHEN sentence contains three sequential actions exceeding the two-step limit. |
+| REQ-2.8.1#1 Pin note | state-toggle | ambiguous-assertion | Pin state and pinned section placement are visual properties not verifiable with expectText or expectAbsent. |
+| REQ-2.8.2#1 Unpin note | state-toggle | no-preparation-path | Cannot prepare pinned note state in GIVEN without performing pin operations. |
+| REQ-2.8.3#1 Pin note when creating it | create | no-preparation-path | Cannot open Take a note editor in GIVEN without a click, and WHEN has too many actions. |
+| REQ-3.1#1 Initial suggested filters | search-filter-sort | ambiguous-assertion | No specific filter name or expected result text available for expectText assertion. |
+| REQ-4.1#1 Setting options list | navigation | ambiguous-assertion | No specific settings option text available for expectText assertion. |
+| REQ-4.2#1 Detailed settings | navigation | no-preparation-path | Cannot prepare settings dropdown open state in GIVEN without a click. |
+| REQ-5.1#1 Toggle between list and grid views | state-toggle | ambiguous-assertion | View mode switching is a layout property not verifiable with expectText or expectAbsent. |
+| REQ-5.2#1 Grid View by default | read-list | ambiguous-assertion | Grid view default and toolbar toggle visibility are layout properties not verifiable with expectText or expectAbsent. |
+| REQ-6.1#1 Items and styling | read-list | ambiguous-assertion | Sidebar styling and icon consistency are visual properties not verifiable with expectText or expectAbsent. |
+| REQ-6.2#1 Collapsible Sidebar | state-toggle | ambiguous-assertion | Sidebar collapse and expand states are layout properties not verifiable with expectText or expectAbsent. |
+
+#### qwen / bookstack：27/34
+
+| 场景 | category | reason | 原因 |
+|---|---|---|---|
+| REQ-1.2#1 Back to Homepage from Other Pages | read-list | unsupported | 校验拒绝：Click must name an original verb or quoted literal: BookStack logo |
+| REQ-2.2#1 Log In Successfully | create | unsupported | Single WHEN sentence contains four distinct operations exceeding the two-step maximum. |
+| REQ-3.1#1 Enter Authenticated Homepage | read-list | no-preparation-path | Cannot reach authenticated homepage because login workflow exceeds the two-step WHEN cap. |
+| REQ-4.3.1#1 Create Shelf | create | unsupported | Create workflow requires more than two operations in a single WHEN sentence. |
+| REQ-4.3.2#1 Cancel Creation | create | no-preparation-path | Cannot navigate to shelf creation page within allowed GIVEN steps. |
+| REQ-4.4.1#1 Confirm Delete Shelf | delete | unsupported | Delete confirmation spans multiple pages requiring more than two steps in one sentence. |
+| REQ-4.4.2#1 Cancel Delete Shelf | delete | no-preparation-path | Cannot prepare delete confirmation page state within allowed GIVEN navigation. |
+| REQ-4.5.1#1 Save Shelf Edits | edit | unsupported | Edit workflow requires more than two operations in a single WHEN sentence. |
+| REQ-4.5.2#1 Cancel Shelf Edits | edit | no-preparation-path | Cannot prepare shelf edit page state within allowed GIVEN navigation. |
+| REQ-5.3.1#1 Fill out and Save Book | create | unsupported | Create workflow requires more than two operations in a single WHEN sentence. |
+| REQ-5.3.2#1 Cancel Creating Book | create | no-preparation-path | Cannot navigate to create new book page within allowed GIVEN steps. |
+| REQ-5.4.1#1 Save Book Edits | edit | unsupported | Edit workflow requires more than two operations in a single WHEN sentence. |
+| REQ-5.4.2#1 Cancel Book Edits | edit | no-preparation-path | Cannot prepare book edit page state within allowed GIVEN navigation. |
+| REQ-5.5.1#1 Confirm Delete Book | delete | unsupported | Delete confirmation spans multiple pages requiring more than two steps in one sentence. |
+| REQ-5.5.2#1 Cancel Delete Book | delete | no-preparation-path | Cannot prepare delete confirmation page state within allowed GIVEN navigation. |
+| REQ-5.6.1#1 Fill out and Save Book with Shelf | create | unsupported | Create workflow requires more than two operations in a single WHEN sentence. |
+| REQ-6.1.1#1 Save Page | create | unsupported | Create workflow requires more than two operations in a single WHEN sentence. |
+| REQ-6.1.2#1 Save Draft | create | unsupported | Draft save requires filling content and clicking an unnamed save draft control, ambiguous within 2 steps. |
+| REQ-6.1.3#1 Delete Draft | delete | unsupported | Delete draft workflow requires more than two operations in a single WHEN sentence. |
+| REQ-6.2.1#1 Create Chapter | create | unsupported | Create workflow requires more than two operations in a single WHEN sentence. |
+| REQ-6.3.1#1 Enter Page Reading Page | navigation | no-preparation-path | Cannot prepare a page list view within allowed GIVEN navigation without prior creation workflows. |
+| REQ-6.3.2#1 Redirect to Page Edit Page | edit | no-preparation-path | Cannot prepare page reading page state within allowed GIVEN navigation. |
+| REQ-7.1#1 Add to Recently Viewed | state-toggle | ambiguous-assertion | WHEN sentence provides multiple alternative navigation targets that cannot be resolved to a single executable path. |
+| REQ-7.2#1 Quick Navigation from Recently Viewed | navigation | no-preparation-path | Cannot seed My Recently Viewed list within allowed GIVEN navigation. |
+| REQ-8.1#1 Favorite Items | state-toggle | no-preparation-path | Cannot reach a supported content view to favorite without authentication and prior navigation exceeding limits. |
+| REQ-8.2#1 Quick Navigation from Favorites | navigation | no-preparation-path | Cannot seed My Most Viewed Favorites list within allowed GIVEN navigation. |
+| REQ-9.1#1 Quick Navigation from Recently Updated | navigation | no-preparation-path | Cannot seed Recently Updated Pages list within allowed GIVEN navigation. |
+
+#### deepseek / keep：12/32
+
+| 场景 | category | reason | 原因 |
+|---|---|---|---|
+| REQ-2.2#1 Create Note | read-list | unsupported | 校验拒绝：THEN name absent from THEN/literals: New\s+note |
+| REQ-2.3.3#1 Trash list | read-list | unsupported | 校验拒绝：Click must name an original verb or quoted literal: Trash |
+| REQ-2.5.3#1 Show archived notes | read-list | unsupported | 校验拒绝：Click must name an original verb or quoted literal: Archived |
+| REQ-2.6.1#1 Change note color | edit | ambiguous-assertion | The requirement asserts a background color change, which cannot be verified with text presence or absence. |
+| REQ-2.6.2#1 Choose note color when created | create | ambiguous-assertion | The requirement asserts the note is saved with a selected color, which cannot be verified with text presence or absence. |
+| REQ-2.7.4#1 Assign default label when creating note | read-list | unsupported | 校验拒绝：THEN name absent from THEN/literals: New\s+note |
+| REQ-2.7.5#1 Edit labels | edit | unsupported | The workflow requires clicking Edit Labels, changing a label name, and saving, which exceeds the two-step limit per sentence. |
+| REQ-2.8.3#1 Pin note when creating it | create | unsupported | The workflow requires entering title, entering content, clicking pin, and closing the editor, which exceeds the two-step limit per sentence. |
+| REQ-3.1#1 Initial suggested filters | search-filter-sort | ambiguous-assertion | The suggested filter to choose is not specified, so the expected filtered results cannot be determined. |
+| REQ-5.1#1 Toggle between list and grid views | state-toggle | ambiguous-assertion | The requirement asserts a view mode change, which cannot be verified with text presence or absence. |
+| REQ-5.2#1 Grid View by default | navigation | ambiguous-assertion | The requirement asserts the default view mode, which cannot be verified with text presence or absence. |
+| REQ-6.2#1 Collapsible Sidebar | state-toggle | ambiguous-assertion | The requirement asserts the sidebar collapses and expands, which cannot be verified with text presence or absence. |
+
+#### deepseek / bookstack：18/34
+
+| 场景 | category | reason | 原因 |
+|---|---|---|---|
+| REQ-1.2#1 Back to Homepage from Other Pages | navigation | ambiguous-assertion | Click name 'BookStack logo' is not a bare action verb or quoted literal; cannot compile. |
+| REQ-2.2#1 Log In Successfully | navigation | unsupported | WHEN sentence requires fill email, fill password, check Remember Me, and click Login, exceeding two-step limit. |
+| REQ-3.1#1 Enter Authenticated Homepage | read-list | unsupported | WHEN sentence describes system navigation, not user actions; no valid steps. |
+| REQ-4.3.1#1 Create Shelf | create | unsupported | WHEN sentence requires click New Shelf, fill information, and click Save Shelf, exceeding two-step limit. |
+| REQ-4.4.1#1 Confirm Delete Shelf | delete | unsupported | WHEN sentence requires click Delete and confirm deletion, exceeding two-step limit. |
+| REQ-4.5.1#1 Save Shelf Edits | edit | unsupported | WHEN sentence requires click Edit, update information, and click Save Shelf, exceeding two-step limit. |
+| REQ-5.3.1#1 Fill out and Save Book | create | unsupported | WHEN sentence requires click Create New Book, fill information, and click Save Book, exceeding two-step limit. |
+| REQ-5.4.1#1 Save Book Edits | edit | unsupported | WHEN sentence requires click Edit, update information, and click Save Book, exceeding two-step limit. |
+| REQ-5.5.1#1 Confirm Delete Book | delete | unsupported | WHEN sentence requires click Delete and confirm deletion, exceeding two-step limit. |
+| REQ-5.6.1#1 Fill out and Save Book with Shelf | create | unsupported | WHEN sentence requires click Create New Book, fill information, and click Save Book, exceeding two-step limit. |
+| REQ-6.1.1#1 Save Page | create | unsupported | WHEN sentence requires click New Page, fill information, and click Save Page, exceeding two-step limit. |
+| REQ-6.1.2#1 Save Draft | create | unsupported | WHEN sentence requires fill content and save draft, exceeding two-step limit. |
+| REQ-6.1.3#1 Delete Draft | delete | unsupported | WHEN sentence requires open actions, click Delete Draft, and confirm, exceeding two-step limit. |
+| REQ-6.2.1#1 Create Chapter | create | unsupported | WHEN sentence requires click New Chapter, fill information, and click Save Chapter, exceeding two-step limit. |
+| REQ-7.1#1 Add to Recently Viewed | read-list | unsupported | 校验拒绝：Exactly one WHEN group per original sentence; do not split comma/AND clauses |
+| REQ-7.2#1 Quick Navigation from Recently Viewed | navigation | no-preparation-path | Cannot prepare homepage with recently viewed item without forbidden setup mutations. |
+| REQ-8.2#1 Quick Navigation from Favorites | navigation | no-preparation-path | Cannot prepare homepage with favorite item without forbidden setup mutations. |
+| REQ-9.1#1 Quick Navigation from Recently Updated | navigation | no-preparation-path | Cannot prepare homepage with recently updated item without forbidden setup mutations. |
+
+### 费用、验证与网络中断记录
+
+- 本轮账本独立于第一轮 CNY 8 预算，限额 **CNY 5**。有 usage 的已知费用 **CNY 1.649094**；未结算预留 **CNY 0.932857**；合计占用 **CNY 2.581951**。预留不是实际账单，不能报告成精确消费。
+- Qwen 价目 12/1.5/36，DeepSeek 3/0.1/9；缓存折扣和所有重试均在 [usage.json](../checks/out/round2/usage.json) 中。一次小响应探针另存 [probe](../checks/out/round2/validation/deepseek-probe.json)，用于区分服务故障与输入规模，费用也纳入上面的合计。
+- 两模型均请求关闭 thinking；最终 8 次成功 HTTP 调用均有 usage（每个编译任务一次初始输出和一次修正）。DeepSeek Keep 首次 180 秒超时，去重输入重试收到 HTTP 400 proxy_error，说明 gateway→上游转发连接被重置；Bookstack 在 TLS 建立前 ECONNRESET，未发出 HTTP 请求，计费为 0。
+- 期间本机 Clash 默认节点及多个备用节点失活，普通 HTTPS 也失败；18:47 复查网关恢复 HTTP 200 后，完成了两份 DeepSeek 编译及三份校准。没有修改共享代理配置，网络恢复提醒已不再阻塞任务。
+- TypeScript 和 Vitest 29 项通过。Python 全套实际运行 420 项，1 个 token-budget 测试报错、46 skipped；该报错测试单独重跑通过。没有修改 volo 或用单独重跑冒充整套通过。
+- 六份最终矩阵均已离线复算，四份 Check 的结构和来源校验通过；见 [schema audit](../checks/out/round2/validation/schema-audit.json) 和 [复算记录](../checks/out/round2/validation/recomputed.log)。全部测试/诊断后端已关闭，临时应用副本已清理；见 [cleanup](../checks/out/round2/validation/backend-cleanup.json)。
+
+### 复现与判断
+
+```sh
+cd ~/projects/volo-factory-worktrees/ts-kernel/checks
+export PATH=~/.nvm/versions/node/v22.22.0/bin:$PATH
+node --import tsx out/round2/recompute.mjs
+```
+
+复算读取冻结 checks、results 与相同的官方摘要，核对 SHA-256 和每个矩阵字段。第一轮原始文件未覆盖。
+
+本轮不支持“把检查变笨就能同时得到高覆盖与零假通过”的结论：Qwen 的 Keep 第 5 局达标主要伴随覆盖范围缩小，第 7 局与 Bookstack 仍有假通过。DeepSeek 对照在更高执行覆盖率下仍未过门槛。下一步应先区分路径缺失、断言缺失和 app 专属执行协议差异，再决定是否保留两步限制；不能通过把更多场景改成 unknown 来宣称泛化或可靠验收。

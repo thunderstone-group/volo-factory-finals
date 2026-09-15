@@ -1,0 +1,52 @@
+[
+  {
+    "sample": "checks/out/round2/before-literal-fix/qwen/bookstack-2",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "sample": "checks/out/round2/before-literal-fix/deepseek/bookstack-2",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "sample": "checks/out/round2/qwen/before-phase-fix/keep-7",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "sample": "checks/out/round2/qwen/before-phase-fix/keep-5",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "sample": "checks/out/round2/qwen/keep-7",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "sample": "checks/out/round2/qwen/bookstack-2",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "sample": "checks/out/round2/qwen/keep-5",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "sample": "checks/out/round2/deepseek/keep-7",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "sample": "checks/out/round2/deepseek/bookstack-2",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "sample": "checks/out/round2/deepseek/keep-5",
+    "stopped": true,
+    "error": "<urlopen error [Errno 61] Connection refused>"
+  }
+]

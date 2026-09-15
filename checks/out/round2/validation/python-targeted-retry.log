@@ -1,0 +1,44 @@
+test_final_token_budget_edit_is_verified_without_another_model_call (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-1v7dvvn4/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 36.420125
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-1v7dvvn4/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 40.004667
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.960s
+
+OK

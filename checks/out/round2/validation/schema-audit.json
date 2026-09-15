@@ -1,0 +1,38 @@
+[
+  {
+    "model": "qwen",
+    "app": "keep",
+    "total": 32,
+    "compiled": 8,
+    "unknown": 24,
+    "structuralAndSourceAudit": "pass",
+    "semanticCompleteness": "model-dependent; see calibration failures"
+  },
+  {
+    "model": "qwen",
+    "app": "bookstack",
+    "total": 34,
+    "compiled": 7,
+    "unknown": 27,
+    "structuralAndSourceAudit": "pass",
+    "semanticCompleteness": "model-dependent; see calibration failures"
+  },
+  {
+    "model": "deepseek",
+    "app": "keep",
+    "total": 32,
+    "compiled": 20,
+    "unknown": 12,
+    "structuralAndSourceAudit": "pass",
+    "semanticCompleteness": "model-dependent; see calibration failures"
+  },
+  {
+    "model": "deepseek",
+    "app": "bookstack",
+    "total": 34,
+    "compiled": 16,
+    "unknown": 18,
+    "structuralAndSourceAudit": "pass",
+    "semanticCompleteness": "model-dependent; see calibration failures"
+  }
+]
