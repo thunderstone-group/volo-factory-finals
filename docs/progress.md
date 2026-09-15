@@ -1247,3 +1247,15 @@ generation has been run against any of this.
   the binding constraint (all runs peaked at 97–115k, one compaction). Probe cost CNY 11.5
   (3.8M input tokens) — the main session's instruction called it negligible; it was not.
 - Prime adapter closed; `~/projects/prime-agent-lab/` kept as evidence.
+
+## 2026-09-15, 19:30 — Check compiler round 2: still below bar; parked for the preliminary
+
+- Dumbed-down official-style compiler, qwen3.8-max and deepseek-v4-flash, six calibrations
+  (`docs/checks-calibration-2026-09-15.md` §第二轮, head 9b6f3a4). Qwen: 0 false passes on Keep 5
+  but 24/32 unknown (compiles only 8 scenarios); DeepSeek: recall 53–57% with 2 false passes per
+  sample. Bookstack worse (official helper differs from the Keep ladder). Cost CNY 2.6 total.
+- Decision (main session): the scenario-level check compiler is a research task (as the GPT-6
+  review said) and does not converge before 09-21. It is parked; `checks/` stays on
+  `feat/ts-kernel` with its calibration harness. The preliminary entry is the one-shot package
+  without a repair loop: three local runs at 27/27/29 with zero repair make the marginal value
+  of repair 3–5 tests against a real risk of wrong repairs.
