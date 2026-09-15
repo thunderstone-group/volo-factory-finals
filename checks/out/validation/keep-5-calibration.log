@@ -1,0 +1,698 @@
+
+> arcbench-scenario-checks@0.1.0 calibrate
+> node --import tsx src/calibrate.ts --app-dir ~/projects/volo-factory/runs/2026-09-14-keep-full-5/app --checks out/keep/checks.json --official ~/projects/volo-factory/runs/2026-09-14-keep-full-5/keep-hosted.json --out out/keep-5
+
+
+Running 32 tests using 4 workers
+
+(node:77862) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77861) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77863) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -   3 [chromium] › out/keep-5/specs/REQ-2.1.spec.ts:3:1 › REQ-2.1#1
+  ✓   2 [chromium] › out/keep-5/specs/REQ-2.3.1.spec.ts:3:1 › REQ-2.3.1#1 (244ms)
+  ✓   5 [chromium] › out/keep-5/specs/REQ-2.3.2.spec.ts:3:1 › REQ-2.3.2#1 (228ms)
+  ✘   1 [chromium] › out/keep-5/specs/REQ-1.1.spec.ts:3:1 › REQ-1.1#1 (10.0s)
+  ✘   4 [chromium] › out/keep-5/specs/REQ-2.2.spec.ts:3:1 › REQ-2.2#1 (10.0s)
+(node:78138) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:78137) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   6 [chromium] › out/keep-5/specs/REQ-2.3.3.spec.ts:3:1 › REQ-2.3.3#1 (10.0s)
+  ✘   7 [chromium] › out/keep-5/specs/REQ-2.4.spec.ts:3:1 › REQ-2.4#1 (10.0s)
+(node:78161) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:78164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   9 [chromium] › out/keep-5/specs/REQ-2.5.2.spec.ts:3:1 › REQ-2.5.2#1 (10.0s)
+  ✘   8 [chromium] › out/keep-5/specs/REQ-2.5.1.spec.ts:3:1 › REQ-2.5.1#1 (10.0s)
+(node:78481) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:78480) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  10 [chromium] › out/keep-5/specs/REQ-2.5.3.spec.ts:3:1 › REQ-2.5.3#1 (10.0s)
+  ✘  11 [chromium] › out/keep-5/specs/REQ-2.5.4.spec.ts:3:1 › REQ-2.5.4#1 (10.0s)
+  -  12 [chromium] › out/keep-5/specs/REQ-2.6.1.spec.ts:3:1 › REQ-2.6.1#1
+  -  13 [chromium] › out/keep-5/specs/REQ-2.6.2.spec.ts:3:1 › REQ-2.6.2#1
+(node:78482) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 [chromium] › out/keep-5/specs/REQ-2.7.3.spec.ts:3:1 › REQ-2.7.3#1 (72ms)
+(node:78495) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  15 [chromium] › out/keep-5/specs/REQ-2.7.4.spec.ts:3:1 › REQ-2.7.4#1 (10.0s)
+  ✘  16 [chromium] › out/keep-5/specs/REQ-2.7.5.spec.ts:3:1 › REQ-2.7.5#1 (10.0s)
+(node:78879) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  17 [chromium] › out/keep-5/specs/REQ-2.7.1.spec.ts:3:1 › REQ-2.7.1#1 (10.0s)
+(node:78880) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  18 [chromium] › out/keep-5/specs/REQ-2.7.2.spec.ts:3:1 › REQ-2.7.2#1 (10.0s)
+(node:78881) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:78893) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  22 [chromium] › out/keep-5/specs/REQ-2.8.1.spec.ts:3:1 › REQ-2.8.1#1 (158ms)
+  ✓  23 [chromium] › out/keep-5/specs/REQ-2.8.2.spec.ts:3:1 › REQ-2.8.2#1 (212ms)
+  ✘  19 [chromium] › out/keep-5/specs/REQ-2.7.6.1.spec.ts:3:1 › REQ-2.7.6.1#1 (10.0s)
+  ✘  20 [chromium] › out/keep-5/specs/REQ-2.7.6.2.spec.ts:3:1 › REQ-2.7.6.2#1 (10.0s)
+(node:79702) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  21 [chromium] › out/keep-5/specs/REQ-2.7.6.3.spec.ts:3:1 › REQ-2.7.6.3#1 (10.0s)
+(node:79704) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:79705) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  26 [chromium] › out/keep-5/specs/REQ-3.2.spec.ts:3:1 › REQ-3.2#1
+  ✘  24 [chromium] › out/keep-5/specs/REQ-2.8.3.spec.ts:3:1 › REQ-2.8.3#1 (10.0s)
+(node:79741) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  25 [chromium] › out/keep-5/specs/REQ-3.1.spec.ts:3:1 › REQ-3.1#1 (10.0s)
+  ✘  27 [chromium] › out/keep-5/specs/REQ-4.2.spec.ts:3:1 › REQ-4.2#1 (10.0s)
+(node:80014) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  28 [chromium] › out/keep-5/specs/REQ-4.1.spec.ts:3:1 › REQ-4.1#1 (10.0s)
+(node:80015) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:80026) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  31 [chromium] › out/keep-5/specs/REQ-6.1.spec.ts:3:1 › REQ-6.1#1
+  ✘  29 [chromium] › out/keep-5/specs/REQ-5.1.spec.ts:3:1 › REQ-5.1#1 (10.0s)
+  ✘  30 [chromium] › out/keep-5/specs/REQ-5.2.spec.ts:3:1 › REQ-5.2#1 (10.0s)
+  ✘  32 [chromium] › out/keep-5/specs/REQ-6.2.spec.ts:3:1 › REQ-6.2#1 (10.0s)
+
+
+  1) [chromium] › out/keep-5/specs/REQ-1.1.spec.ts:3:1 › REQ-1.1#1 ─────────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Take\s+a\s+note/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Take\s+a\s+note/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-1.1#1","requirement":"REQ-1.1","title":"Enter Website","category":"navigation","rationale":"Starts with a fresh browser context; the application server is seeded with initial notes. Opening the root URL should render the home page, which includes the 'Take a note' editor entry and the seeded notes list.","given":[],"when":[{"op":"open"}],"then":[{"op":"expectText","target":{"name":["Take a note"],"via":"text"}},{"op":"expectText","target":{"name":["Sprint goals"],"via":"text"}},{"op":"expectText","target":{"name":["Groceries"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-1.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-1.1.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-1.1-REQ-1-1-1-chromium/error-context.md
+
+  2) [chromium] › out/keep-5/specs/REQ-2.2.spec.ts:3:1 › REQ-2.2#1 ─────────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByLabel(/Title/i)
+    Expected: 0
+    Received: 1
+
+    Call log:
+      - Expect "toHaveCount" with timeout 10000ms
+      - waiting for getByLabel(/Title/i)
+        23 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.2#1","requirement":"REQ-2.2","title":"Create Note","category":"create","rationale":"The 'Take a note' composer is the declared navigation control for entering the note editor. Unique scenario-derived title and content are filled in the expanded editor, the editor is closed with Escape to commit autosave, and the new note card is asserted by its generated title and content.","given":[{"op":"open"},{"op":"bind","variable":"noteTitle","value":"QA Created Note 2.2","source":"Scenario-derived unique title for the note created in REQ-2.2; it does not collide with any seeded note title."},{"op":"bind","variable":"noteContent","value":"QA content 2.2","source":"Scenario-derived unique content for the same created note, allowing an unambiguous visible-text assertion."}],"when":[{"op":"click","target":{"name":["Take a note"],"via":"ladder"}},{"op":"fill","target":{"name":["Title","Note title"],"via":"field"},"value":{"variable":"noteTitle"}},{"op":"fill","target":{"name":["Take a note...","Take a note","Note text","Content"],"via":"field"},"value":{"variable":"noteContent"}},{"op":"press","key":"Escape"}],"then":[{"op":"expectAbsent","target":{"name":["Title","Note title"],"via":"field"}},{"op":"expectText","target":{"name":["${noteTitle}"],"via":"text"}},{"op":"expectText","target":{"name":["${noteContent}"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.2.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.2-REQ-2-2-1-chromium/error-context.md
+
+  3) [chromium] › out/keep-5/specs/REQ-2.3.3.spec.ts:3:1 › REQ-2.3.3#1 ─────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: /Trash/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.3.3#1","requirement":"REQ-2.3.3","title":"Trash list","category":"navigation","rationale":"The seeded note 'Delete me 2.3.3' is initially active, so it is deleted first to put an item in the trash. Then the sidebar Trash link is used to navigate to the Trash list, where the deleted note should be visible.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Delete me 2.3.3"],"via":"text"}},{"op":"hover","target":{"name":["Delete me 2.3.3"],"via":"text"}},{"op":"click","target":{"name":["More options"],"via":"role","role":"button"}},{"op":"click","target":{"name":["Delete Note"],"via":"role","role":"menuitem"}}],"when":[{"op":"click","target":{"name":["Trash"],"via":"role","role":"link"}}],"then":[{"op":"expectText","target":{"name":["Delete me 2.3.3"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.3.3_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.3.3.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.3.3-REQ-2-3-3-1-chromium/error-context.md
+
+  4) [chromium] › out/keep-5/specs/REQ-2.4.spec.ts:3:1 › REQ-2.4#1 ─────────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.apply: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/Project\s+ideas/i).first().getByRole('textbox').first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.4#1","requirement":"REQ-2.4","title":"Update Note","category":"edit","rationale":"The seeded note 'Project ideas' has initial content 'Initial editable content'. Opening its card, replacing the content with a unique scenario-derived string, and closing the editor verifies persistence when the updated content is rendered and the old initial content is absent.","given":[{"op":"open"},{"op":"bind","variable":"updatedContent","value":"QA updated content 2.4","source":"Scenario-derived unique replacement content for the seeded 'Project ideas' note; it does not match any existing note text."}],"when":[{"op":"click","target":{"name":["Project ideas"],"via":"text"}},{"op":"fill","target":{"name":["Take a note...","Take a note","Note text","Content"],"via":"field","within":{"name":["Project ideas"],"via":"text"}},"value":{"variable":"updatedContent"}},{"op":"press","key":"Escape"}],"then":[{"op":"expectAbsent","target":{"name":["Title","Note title"],"via":"field"}},{"op":"expectText","target":{"name":["${updatedContent}"],"via":"text"}},{"op":"expectAbsent","target":{"name":["Initial editable content"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.4_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.4.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.4-REQ-2-4-1-chromium/error-context.md
+
+  5) [chromium] › out/keep-5/specs/REQ-2.5.1.spec.ts:3:1 › REQ-2.5.1#1 ─────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/Travel\s+plans\s+2\.5\.1/i).first().getByRole('button', { name: /Archive/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.5.1#1","requirement":"REQ-2.5.1","title":"Archive","category":"state-toggle","rationale":"The note 'Travel plans 2.5.1' is seeded as active. Archive it from its note card, then confirm it is removed from the home list, the Undo notification appears, and it is visible in the Archived view when the sidebar link is used.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Travel plans 2.5.1"],"via":"text"}},{"op":"hover","target":{"name":["Travel plans 2.5.1"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Archive"],"via":"ladder","within":{"name":["Travel plans 2.5.1"],"via":"text"}}}],"then":[{"op":"expectText","target":{"name":["Undo"],"via":"ladder"}},{"op":"expectAbsent","target":{"name":["Travel plans 2.5.1"],"via":"text"}},{"op":"click","target":{"name":["Archived"],"via":"role","role":"link"}},{"op":"expectText","target":{"name":["Travel plans 2.5.1"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.5.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.5.1.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.5.1-REQ-2-5-1-1-chromium/error-context.md
+
+  6) [chromium] › out/keep-5/specs/REQ-2.5.2.spec.ts:3:1 › REQ-2.5.2#1 ─────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/Travel\s+plans\s+2\.5\.2/i).first().getByRole('button', { name: /Archive/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.5.2#1","requirement":"REQ-2.5.2","title":"Archive Undo","category":"state-toggle","rationale":"The scenario begins with the archive notification visible, so the active seed note 'Travel plans 2.5.2' is archived first. Clicking Undo should restore it to the home notes list, which is verified by its presence on the home page.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Travel plans 2.5.2"],"via":"text"}},{"op":"hover","target":{"name":["Travel plans 2.5.2"],"via":"text"}},{"op":"click","target":{"name":["Archive"],"via":"ladder","within":{"name":["Travel plans 2.5.2"],"via":"text"}}},{"op":"expectText","target":{"name":["Undo"],"via":"ladder"}}],"when":[{"op":"click","target":{"name":["Undo"],"via":"ladder"}}],"then":[{"op":"expectText","target":{"name":["Travel plans 2.5.2"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.5.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.5.2.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.5.2-REQ-2-5-2-1-chromium/error-context.md
+
+  7) [chromium] › out/keep-5/specs/REQ-2.5.3.spec.ts:3:1 › REQ-2.5.3#1 ─────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/Travel\s+plans\s+2\.5\.3/i).first().getByRole('button', { name: /Archive/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.5.3#1","requirement":"REQ-2.5.3","title":"Show archived notes","category":"read-list","rationale":"The seed note 'Travel plans 2.5.3' is active. It must be archived first to create archived content, then the Archived sidebar item opens the archived list where the note should be visible.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Travel plans 2.5.3"],"via":"text"}},{"op":"hover","target":{"name":["Travel plans 2.5.3"],"via":"text"}},{"op":"click","target":{"name":["Archive"],"via":"ladder","within":{"name":["Travel plans 2.5.3"],"via":"text"}}}],"when":[{"op":"click","target":{"name":["Archived"],"via":"role","role":"link"}}],"then":[{"op":"expectText","target":{"name":["Travel plans 2.5.3"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.5.3_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.5.3.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.5.3-REQ-2-5-3-1-chromium/error-context.md
+
+  8) [chromium] › out/keep-5/specs/REQ-2.5.4.spec.ts:3:1 › REQ-2.5.4#1 ─────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/Travel\s+plans\s+2\.5\.4/i).first().getByRole('button', { name: /Archive/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.5.4#1","requirement":"REQ-2.5.4","title":"Unarchive","category":"state-toggle","rationale":"The seed note 'Travel plans 2.5.4' is active. After archiving it and opening the Archived list, the Unarchive action should move it out of the archived list and back to the main Notes list, verified by its absence in Archived and presence after clicking Notes.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Travel plans 2.5.4"],"via":"text"}},{"op":"hover","target":{"name":["Travel plans 2.5.4"],"via":"text"}},{"op":"click","target":{"name":["Archive"],"via":"ladder","within":{"name":["Travel plans 2.5.4"],"via":"text"}}},{"op":"click","target":{"name":["Archived"],"via":"role","role":"link"}},{"op":"expectText","target":{"name":["Travel plans 2.5.4"],"via":"text"}}],"when":[{"op":"hover","target":{"name":["Travel plans 2.5.4"],"via":"text"}},{"op":"click","target":{"name":["Unarchive"],"via":"ladder","within":{"name":["Travel plans 2.5.4"],"via":"text"}}}],"then":[{"op":"expectAbsent","target":{"name":["Travel plans 2.5.4"],"via":"text"}},{"op":"click","target":{"name":["Notes"],"via":"role","role":"link"}},{"op":"expectText","target":{"name":["Travel plans 2.5.4"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.5.4_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.5.4.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.5.4-REQ-2-5-4-1-chromium/error-context.md
+
+  9) [chromium] › out/keep-5/specs/REQ-2.7.1.spec.ts:3:1 › REQ-2.7.1#1 ─────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('menuitem', { name: /Change\s+labels/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.7.1#1","requirement":"REQ-2.7.1","title":"Assign label to a note","category":"state-toggle","rationale":"The seeded note 'Team retro add label' is present on the home page and initially has no labels. Opening its More options and selecting 'Change labels' exposes the label picker; choosing 'Work' adds the label. The label chip is then visible on the note, and the Work sidebar filter shows the note. All targets are derived from the navigation entries and seeded exact texts in the contract.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Team retro add label"],"via":"text"}}],"when":[{"op":"hover","target":{"name":["Team retro add label"],"via":"text"}},{"op":"click","target":{"name":["More options"],"via":"ladder"}},{"op":"click","target":{"name":["Change labels"],"via":"role","role":"menuitem"}},{"op":"check","target":{"name":["Work"],"via":"role","role":"checkbox"},"checked":true},{"op":"press","key":"Escape"}],"then":[{"op":"expectText","target":{"name":["Work"],"via":"text","within":{"name":["Team retro add label"],"via":"text"}}},{"op":"click","target":{"name":["Work"],"via":"role","role":"link"}},{"op":"expectText","target":{"name":["Team retro add label"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.7.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.7.1.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.7.1-REQ-2-7-1-1-chromium/error-context.md
+
+  10) [chromium] › out/keep-5/specs/REQ-2.7.2.spec.ts:3:1 › REQ-2.7.2#1 ────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('menuitem', { name: /Change\s+labels/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.7.2#1","requirement":"REQ-2.7.2","title":"Remove label from a note","category":"state-toggle","rationale":"The seeded note 'Team retro remove label' already carries the Work label, so the test starts from that state. Opening the label picker and unchecking Work removes the label; the note's card no longer shows the Work chip, and the Work sidebar filter no longer lists the note while still showing the seeded Work-labeled note 'Design review' as a positive control.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Team retro remove label"],"via":"text"}}],"when":[{"op":"hover","target":{"name":["Team retro remove label"],"via":"text"}},{"op":"click","target":{"name":["More options"],"via":"ladder"}},{"op":"click","target":{"name":["Change labels"],"via":"role","role":"menuitem"}},{"op":"check","target":{"name":["Work"],"via":"role","role":"checkbox"},"checked":false},{"op":"press","key":"Escape"}],"then":[{"op":"expectAbsent","target":{"name":["Work"],"via":"text","within":{"name":["Team retro remove label"],"via":"text"}}},{"op":"click","target":{"name":["Work"],"via":"role","role":"link"}},{"op":"expectText","target":{"name":["Design review"],"via":"text"}},{"op":"expectAbsent","target":{"name":["Team retro remove label"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.7.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.7.2.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.7.2-REQ-2-7-2-1-chromium/error-context.md
+
+  11) [chromium] › out/keep-5/specs/REQ-2.7.4.spec.ts:3:1 › REQ-2.7.4#1 ────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByText(/Take\s+a\s+note/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.7.4#1","requirement":"REQ-2.7.4","title":"Assign default label when creating note","category":"create","rationale":"The home page's 'Take a note' editor is opened from the entry page. A unique title and content are generated to avoid collisions with seeded notes. The editor's More options menu provides 'Change labels', where the default 'Reminders' label is selected before closing the editor; autosave persists the note. Opening the 'Reminders' sidebar filter then proves that the created note carries the default label.","given":[{"op":"bind","variable":"noteTitle","value":"Reminders labeled note 2.7.4","source":"Unique generated title to avoid collisions; Keep accepts arbitrary text titles."},{"op":"bind","variable":"noteContent","value":"Created with default label","source":"Unique generated content for the scenario note."},{"op":"open"},{"op":"click","target":{"name":["Take a note"],"via":"text"}}],"when":[{"op":"fill","target":{"name":["Title"],"via":"field"},"value":{"variable":"noteTitle"}},{"op":"fill","target":{"name":["Take a note"],"via":"field"},"value":{"variable":"noteContent"}},{"op":"click","target":{"name":["More options"],"via":"ladder"}},{"op":"click","target":{"name":["Change labels"],"via":"role","role":"menuitem"}},{"op":"check","target":{"name":["Reminders"],"via":"role","role":"checkbox"},"checked":true},{"op":"press","key":"Escape"},{"op":"click","target":{"name":["Close"],"via":"ladder"}}],"then":[{"op":"click","target":{"name":["Reminders"],"via":"role","role":"link"}},{"op":"expectText","target":{"name":["${noteTitle}"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.7.4_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.7.4.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.7.4-REQ-2-7-4-1-chromium/error-context.md
+
+  12) [chromium] › out/keep-5/specs/REQ-2.7.5.spec.ts:3:1 › REQ-2.7.5#1 ────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Work\s+editable/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Work\s+editable/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.7.5#1","requirement":"REQ-2.7.5","title":"Edit labels","category":"edit","rationale":"The seeded label 'Work editable' is visible in the sidebar. Opening 'Edit Labels' shows the label management list; the edit control for that label is located by its accessible name containing the label text. The label is renamed to a unique value and committed with Enter. The new name appearing and the old name disappearing in the label list confirms the saved change.","given":[{"op":"bind","variable":"newLabel","value":"Work editable renamed 2.7.5","source":"Unique renamed label to avoid collisions and verify persistence."},{"op":"open"},{"op":"expectText","target":{"name":["Work editable"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Edit Labels"],"via":"role","role":"link"}},{"op":"click","target":{"name":[{"regex":"Edit Work editable","flags":"i"}],"via":"role","role":"button"}},{"op":"fill","target":{"name":["Work editable"],"via":"field"},"value":{"variable":"newLabel"}},{"op":"press","target":{"name":["Work editable"],"via":"field"},"key":"Enter"}],"then":[{"op":"expectText","target":{"name":["${newLabel}"],"via":"text"}},{"op":"expectAbsent","target":{"name":["Work editable"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.7.5_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.7.5.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.7.5-REQ-2-7-5-1-chromium/error-context.md
+
+  13) [chromium] › out/keep-5/specs/REQ-2.7.6.1.spec.ts:3:1 › REQ-2.7.6.1#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: /Work/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.7.6.1#1","requirement":"REQ-2.7.6.1","title":"View list filtered by label","category":"search-filter-sort","rationale":"Filters the notes list by selecting the Work label in the sidebar; verifies only notes with that label remain visible. Relies on seeded notes 'Design review' (Work label) and 'Movie list' (no Work or Reminders label). Inferred UI route: open home page, sidebar visible, click Work label in sidebar.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Design review"],"via":"text"}},{"op":"expectText","target":{"name":["Movie list"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Work"],"via":"role","role":"link"}}],"then":[{"op":"expectText","target":{"name":["Design review"],"via":"text"}},{"op":"expectAbsent","target":{"name":["Movie list"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.7.6.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.7.6.1.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.7.6.1-REQ-2-7-6-1-1-chromium/error-context.md
+
+  14) [chromium] › out/keep-5/specs/REQ-2.7.6.2.spec.ts:3:1 › REQ-2.7.6.2#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: /Work/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.7.6.2#1","requirement":"REQ-2.7.6.2","title":"View all notes","category":"navigation","rationale":"Returns from a label-filtered view to the full notes list by clicking Notes in the sidebar. Preparation includes opening home and filtering by Work label to enter filtered view, then asserting the filter worked before navigating back. Inferred UI route: sidebar links for labels and Notes.","given":[{"op":"open"},{"op":"click","target":{"name":["Work"],"via":"role","role":"link"}},{"op":"expectAbsent","target":{"name":["Movie list"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Notes"],"via":"role","role":"link"}}],"then":[{"op":"expectText","target":{"name":["Design review"],"via":"text"}},{"op":"expectText","target":{"name":["Movie list"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.7.6.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.7.6.2.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.7.6.2-REQ-2-7-6-2-1-chromium/error-context.md
+
+  15) [chromium] › out/keep-5/specs/REQ-2.7.6.3.spec.ts:3:1 › REQ-2.7.6.3#1 ────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: /Reminders/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.7.6.3#1","requirement":"REQ-2.7.6.3","title":"View Reminders","category":"search-filter-sort","rationale":"Filters notes by the default Reminders label via the sidebar; only notes with that label should appear. Relies on seeded notes 'Call dentist existing' (Reminders label) and 'Movie list' (no Reminders label). Inferred UI route: sidebar Reminders link.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Call dentist existing"],"via":"text"}},{"op":"expectText","target":{"name":["Movie list"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Reminders"],"via":"role","role":"link"}}],"then":[{"op":"expectText","target":{"name":["Call dentist existing"],"via":"text"}},{"op":"expectAbsent","target":{"name":["Movie list"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.7.6.3_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.7.6.3.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.7.6.3-REQ-2-7-6-3-1-chromium/error-context.md
+
+  16) [chromium] › out/keep-5/specs/REQ-2.8.3.spec.ts:3:1 › REQ-2.8.3#1 ────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Take\s+a\s+note/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Take\s+a\s+note/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-2.8.3#1","requirement":"REQ-2.8.3","title":"Pin note when creating it","category":"create","rationale":"Open the 'Take a note' editor, enter a unique title and content, click the pin control, and close the editor with Escape. The autosave should create the note and display it in the pinned section.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Take a note"],"via":"text"}},{"op":"click","target":{"name":["Take a note"],"via":"text"}},{"op":"bind","variable":"newTitle","value":"Pinned note 2.8.3","source":"Unique scenario-derived title that does not collide with seeded notes; valid note title."},{"op":"bind","variable":"newContent","value":"Content for pinned note 2.8.3","source":"Unique scenario-derived content for the freshly created note; valid note content."},{"op":"fill","target":{"name":["Title"],"via":"field"},"value":{"variable":"newTitle"}},{"op":"fill","target":{"name":[{"regex":"Take a note.*","flags":"i"}],"via":"field"},"value":{"variable":"newContent"}}],"when":[{"op":"click","target":{"name":["Pin note","Pin"],"via":"ladder"}},{"op":"press","key":"Escape"}],"then":[{"op":"expectText","target":{"name":["Pinned"],"via":"text"}},{"op":"expectText","target":{"name":["Pinned note 2.8.3"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-2.8.3_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-2.8.3.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-2.8.3-REQ-2-8-3-1-chromium/error-context.md
+
+  17) [chromium] › out/keep-5/specs/REQ-3.1.spec.ts:3:1 › REQ-3.1#1 ────────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Take\s+a\s+note/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Take\s+a\s+note/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-3.1#1","requirement":"REQ-3.1","title":"Initial suggested filters","category":"search-filter-sort","rationale":"The search bar is at the top of the home page. Clicking it reveals suggested filters. The seed contains a note titled 'Call dentist existing' with the 'Reminders' label and a note 'Movie list' without that label. Selecting the 'Reminders' filter should show only the note with that label. Navigation: open home, click search bar to focus it, then choose the suggested 'Reminders' filter. The filter result is observed by checking the presence of 'Call dentist existing' and absence of 'Movie list'.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Take a note"],"via":"text"}}],"when":[{"op":"click","target":{"name":["Search"],"via":"field"}},{"op":"click","target":{"name":["Reminders"],"via":"text"}}],"then":[{"op":"expectText","target":{"name":["Call dentist existing"],"via":"text"}},{"op":"expectAbsent","target":{"name":["Movie list"],"via":"text"}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-3.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-3.1.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-3.1-REQ-3-1-1-chromium/error-context.md
+
+  18) [chromium] › out/keep-5/specs/REQ-4.1.spec.ts:3:1 › REQ-4.1#1 ────────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /^(?:Settings)$/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-4.1#1","requirement":"REQ-4.1","title":"Setting options list","category":"navigation","rationale":"Fresh browser session opens the application entry URL. The home page header exposes a settings icon with the accessible name 'Settings'. Clicking that button opens a dropdown whose menu includes a 'Settings' menu item; asserting that menu item is visible demonstrates the settings options list is displayed. No additional seed state is required for this check.","given":[{"op":"open"}],"when":[{"op":"click","target":{"name":["Settings"],"via":"role","role":"button","exact":true}}],"then":[{"op":"expectText","target":{"name":["Settings"],"via":"role","role":"menuitem","exact":true}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-4.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-4.1.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-4.1-REQ-4-1-1-chromium/error-context.md
+
+  19) [chromium] › out/keep-5/specs/REQ-4.2.spec.ts:3:1 › REQ-4.2#1 ────────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /^(?:Settings)$/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-4.2#1","requirement":"REQ-4.2","title":"Detailed settings","category":"navigation","rationale":"After opening the home page, the settings icon is clicked to reveal the settings dropdown. Choosing the 'Settings' menu item navigates to the detailed settings screen. The detailed settings screen is expected to present configurable options together with save and cancel actions; therefore the Save and Cancel controls are asserted as visible. The route is inferred from the supplied navigation contract where 'Settings' in the settings dropdown leads to the detailed settings screen.","given":[{"op":"open"},{"op":"click","target":{"name":["Settings"],"via":"role","role":"button","exact":true}}],"when":[{"op":"click","target":{"name":["Settings"],"via":"role","role":"menuitem","exact":true}}],"then":[{"op":"expectText","target":{"name":["Save"],"via":"ladder","exact":true}},{"op":"expectText","target":{"name":["Cancel"],"via":"ladder","exact":true}}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-4.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-4.2.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-4.2-REQ-4-2-1-chromium/error-context.md
+
+  20) [chromium] › out/keep-5/specs/REQ-5.1.spec.ts:3:1 › REQ-5.1#1 ────────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Take\s+a\s+note/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Take\s+a\s+note/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.1#1","requirement":"REQ-5.1","title":"Toggle between list and grid views","category":"state-toggle","rationale":"The seeded home page displays notes such as 'Groceries'. Capturing the same note region before toggling, after switching to list view, and after switching back to grid view provides visual evidence of the layout change. Equality of the initial and final screenshots confirms the grid view was restored; inequality with the list-view screenshot confirms the switch to list view occurred.","given":[{"op":"open"},{"op":"expectText","target":{"name":["Take a note"],"via":"text"}},{"op":"expectText","target":{"name":["Groceries"],"via":"text"}},{"op":"capture","target":{"name":["Groceries"],"via":"text"},"variable":"baseline","kind":"screenshot","padding":40}],"when":[{"op":"click","target":{"name":["List view"],"via":"ladder"}},{"op":"capture","target":{"name":["Groceries"],"via":"text"},"variable":"listView","kind":"screenshot","padding":40},{"op":"click","target":{"name":["Grid view"],"via":"ladder"}},{"op":"capture","target":{"name":["Groceries"],"via":"text"},"variable":"gridView","kind":"screenshot","padding":40}],"then":[{"op":"expectText","target":{"name":["Groceries"],"via":"text"}},{"op":"compare","left":"baseline","right":"gridView","relation":"equal"},{"op":"compare","left":"baseline","right":"listView","relation":"notEqual"}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-5.1_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-5.1.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-5.1-REQ-5-1-1-chromium/error-context.md
+
+  21) [chromium] › out/keep-5/specs/REQ-5.2.spec.ts:3:1 › REQ-5.2#1 ────────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Take\s+a\s+note/i).first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText(/Take\s+a\s+note/i).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-5.2#1","requirement":"REQ-5.2","title":"Grid View by default","category":"read-list","rationale":"After opening the entry URL, the notes page is expected to start in grid view while the toolbar offers the list-view toggle. By capturing the default layout and then comparing it with the layout after switching to list view and back to grid view, the default state can be verified: equal to the final grid view and different from list view. The presence and operability of the list-view toggle also confirms the toolbar control exists.","given":[],"when":[{"op":"open"},{"op":"expectText","target":{"name":["Take a note"],"via":"text"}},{"op":"capture","target":{"name":["Groceries"],"via":"text"},"variable":"defaultView","kind":"screenshot","padding":40}],"then":[{"op":"expectText","target":{"name":["List view"],"via":"ladder"}},{"op":"click","target":{"name":["List view"],"via":"ladder"}},{"op":"capture","target":{"name":["Groceries"],"via":"text"},"variable":"listView","kind":"screenshot","padding":40},{"op":"click","target":{"name":["Grid view"],"via":"ladder"}},{"op":"capture","target":{"name":["Groceries"],"via":"text"},"variable":"gridView","kind":"screenshot","padding":40},{"op":"expectText","target":{"name":["Groceries"],"via":"text"}},{"op":"compare","left":"defaultView","right":"gridView","relation":"equal"},{"op":"compare","left":"defaultView","right":"listView","relation":"notEqual"}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-5.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-5.2.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-5.2-REQ-5-2-1-chromium/error-context.md
+
+  22) [chromium] › out/keep-5/specs/REQ-6.2.spec.ts:3:1 › REQ-6.2#1 ────────────────────────────────
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse/i }).first()
+
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pass"
+    Received: "fail"
+
+      4 |  const result = await executeCheck(page, {"scenario":"REQ-6.2#1","requirement":"REQ-6.2","title":"Collapsible Sidebar","category":"navigation","rationale":"Fresh browser opens '/' with the sidebar expanded by default. The sidebar collapse control toggles between expanded and collapsed states. First click hides the 'Notes' text label (icon-only view); second click restores it. The target regex covers common accessible names for the collapse control.","given":[{"op":"open"}],"when":[{"op":"click","target":{"name":[{"regex":"collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse","flags":"i"}],"via":"ladder"}},{"op":"expectState","target":{"name":["Notes"],"via":"text","exact":true},"state":"hidden","value":true},{"op":"click","target":{"name":[{"regex":"collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse","flags":"i"}],"via":"ladder"}}],"then":[{"op":"expectState","target":{"name":["Notes"],"via":"text","exact":true},"state":"visible","value":true}]}, "~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/results-parts/REQ-6.2_1.json");
+      5 |  test.skip(result.status === 'unknown', result.error ?? 'unknown');
+    > 6 |  expect(result.status, result.error ?? undefined).toBe('pass');
+        |                                                   ^
+      7 | });
+      8 |
+        at ~/projects/volo-factory-worktrees/ts-kernel/checks/out/keep-5/specs/REQ-6.2.spec.ts:6:51
+
+    Error Context: out/keep-5/artifacts/REQ-6.2-REQ-6-2-1-chromium/error-context.md
+
+  22 failed
+    [chromium] › out/keep-5/specs/REQ-1.1.spec.ts:3:1 › REQ-1.1#1 ──────────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.2.spec.ts:3:1 › REQ-2.2#1 ──────────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.3.3.spec.ts:3:1 › REQ-2.3.3#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.4.spec.ts:3:1 › REQ-2.4#1 ──────────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.5.1.spec.ts:3:1 › REQ-2.5.1#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.5.2.spec.ts:3:1 › REQ-2.5.2#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.5.3.spec.ts:3:1 › REQ-2.5.3#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.5.4.spec.ts:3:1 › REQ-2.5.4#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.7.1.spec.ts:3:1 › REQ-2.7.1#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.7.2.spec.ts:3:1 › REQ-2.7.2#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.7.4.spec.ts:3:1 › REQ-2.7.4#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.7.5.spec.ts:3:1 › REQ-2.7.5#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.7.6.1.spec.ts:3:1 › REQ-2.7.6.1#1 ──────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.7.6.2.spec.ts:3:1 › REQ-2.7.6.2#1 ──────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.7.6.3.spec.ts:3:1 › REQ-2.7.6.3#1 ──────────────────────────
+    [chromium] › out/keep-5/specs/REQ-2.8.3.spec.ts:3:1 › REQ-2.8.3#1 ──────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-3.1.spec.ts:3:1 › REQ-3.1#1 ──────────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-4.1.spec.ts:3:1 › REQ-4.1#1 ──────────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-4.2.spec.ts:3:1 › REQ-4.2#1 ──────────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-5.1.spec.ts:3:1 › REQ-5.1#1 ──────────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-5.2.spec.ts:3:1 › REQ-5.2#1 ──────────────────────────────────
+    [chromium] › out/keep-5/specs/REQ-6.2.spec.ts:3:1 › REQ-6.2#1 ──────────────────────────────────
+  5 skipped
+  5 passed (1.0m)
+| Local \ Official | pass | fail |
+|---|---:|---:|
+| pass | 4 | 1 |
+| fail | 16 | 6 |
+| unknown | 5 | 0 |
+
+Denominator: 32; official-pass recall: 16.0%; false passes: 1; unknown: 5; acceptance: FAIL.
+
+- REQ-2.1#1 (read-list) Note Listing: ambiguous-assertion: The exact section heading or visual separator text for pinned vs regular notes is not declared in the contract exact-text list, so the two seeded cards are asserted individually.
+- REQ-2.6.1#1 (edit) Change note color: unsupported: The change to a light green background cannot be asserted with the available primitives (no style/color inspection), so this part of the THEN clause is unobservable.
+- REQ-2.6.2#1 (create) Choose note color when created: unsupported: The selected light green color of the created note cannot be asserted with available primitives (no style/color inspection).
+- REQ-3.2#1 (search-filter-sort) Search by keyword: unsupported: Highlighting of matching text cannot be observed via DOM text assertions.
+- REQ-6.1#1 (navigation) Items and styling: ambiguous-assertion: Consistent icons and alignment styling cannot be verified via text/DOM observations.
+
