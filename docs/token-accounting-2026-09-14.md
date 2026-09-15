@@ -20,7 +20,7 @@ The run made exactly two gateway requests. The runner's own log confirms it:
 
 ## 2. The official number is a meter delta, not a sum of responses
 
-Two lines from the official runner log, fetched read-only with `./arcbench logs a129e387e562`:
+Two lines from the official runner log, fetched read-only with `arcbench logs a129e387e562`:
 
 ```
 [2026-09-12 10:02:54 UTC] [backend] Meter baseline captured for access key [REDACTED]
