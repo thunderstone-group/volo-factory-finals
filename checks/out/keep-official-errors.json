@@ -1,0 +1,383 @@
+{
+  "keep-5": {
+    "source": "~/projects/volo-factory/runs/2026-09-14-keep-full-5/report-keep-hosted.json",
+    "results": [
+      {
+        "title": "REQ-1.1: Enter Website",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.1: Note Listing",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.2: Create Note",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.3.1: Delete",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.3.2: Notification and Undo",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.3.3: Trash list",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Delete me 2\\.3\\.3/i).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Delete me 2\\.3\\.3/i).first()\u001b[22m\n\n\n   at helpers.ts:205\n\n  203 |\n  204 | export async function expectNoteVisible(page: Page, titleOrText: string | RegExp): Promise<void> {\n> 205 |   await expect(await noteCard(page, titleOrText)).toBeVisible();\n      |                                                   ^\n  206 | }\n  207 |\n  208 | export async function noteVisualSnapshot(page: Page, titleOrText: string | RegExp): Promise<Buffer> {\n    at Object.expectNoteVisible (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:205:51)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.3.3.spec.ts:11:3"
+        ]
+      },
+      {
+        "title": "REQ-2.4: Update Note",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.5.1: Archive",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.5.2: Archive Undo",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.5.3: Show archived notes",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Travel plans 2\\.5\\.3/i).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Travel plans 2\\.5\\.3/i).first()\u001b[22m\n\n\n   at helpers.ts:205\n\n  203 |\n  204 | export async function expectNoteVisible(page: Page, titleOrText: string | RegExp): Promise<void> {\n> 205 |   await expect(await noteCard(page, titleOrText)).toBeVisible();\n      |                                                   ^\n  206 | }\n  207 |\n  208 | export async function noteVisualSnapshot(page: Page, titleOrText: string | RegExp): Promise<Buffer> {\n    at Object.expectNoteVisible (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:205:51)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.5.3.spec.ts:11:3"
+        ]
+      },
+      {
+        "title": "REQ-2.5.4: Unarchive",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.hover: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Travel\\s+plans\\s+2\\.5\\.4/i }).first()\u001b[22m\n\n\n   at helpers.ts:144\n\n  142 | export async function hoverNamed(scope: Scope, value: Match): Promise<void> {\n  143 |   const locator = await resolveNamed(scope, value);\n> 144 |   await locator.hover();\n      |                 ^\n  145 | }\n  146 |\n  147 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n    at hoverNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:144:17)\n    at Object.unarchiveNote (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:282:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.5.4.spec.ts:11:3"
+        ]
+      },
+      {
+        "title": "REQ-2.6.1: Change note color",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.6.2: Choose note color when created",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.7.1: Assign label to a note",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.7.2: Remove label from a note",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.7.3: Default label",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.7.4: Assign default label when creating note",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel(/Reminders/i).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" class=\"nav-item\" aria-label=\"Reminders\">\u2026</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 \u00d7 waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 \u00d7 waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    19 \u00d7 waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at helpers.ts:313\n\n  311 |     return;\n  312 |   } catch {\n> 313 |     await checkbox.click();\n      |                    ^\n  314 |   }\n  315 | }\n  316 |\n    at Object.setLabel (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:313:20)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.7.4.spec.ts:12:3"
+        ]
+      },
+      {
+        "title": "REQ-2.7.5: Edit labels",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Projects/i }).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Projects/i }).first()\u001b[22m\n\n\n   at helpers.ts:149\n\n  147 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n  148 |   const locator = await resolveNamed(scope, value);\n> 149 |   await expect(locator).toBeVisible();\n      |                         ^\n  150 | }\n  151 |\n  152 | export async function expectTextsVisible(scope: Scope, values: Array<string | RegExp>): Promise<void> {\n    at expectVisible (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:149:25)\n    at Object.expectTextsVisible (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:154:5)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.7.5.spec.ts:13:3"
+        ]
+      },
+      {
+        "title": "REQ-2.7.6.1: View list filtered by label",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.7.6.2: View all notes",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.7.6.3: View Reminders",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.8.1: Pin note",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.8.2: Unpin note",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.hover: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Meeting\\s+agenda\\s+2\\.8\\.2/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"icon-btn row-action col-btn\" aria-label=\"Color for Meeting agenda 2.8.2\">\u2026</button>\u001b[22m\n\u001b[2m  - attempting hover action\u001b[22m\n\u001b[2m    - waiting for element to be visible and stable\u001b[22m\n\u001b[2m    - element is not stable\u001b[22m\n\u001b[2m  - retrying hover action\u001b[22m\n\u001b[2m    - waiting for element to be visible and stable\u001b[22m\n\u001b[2m    - element is not visible\u001b[22m\n\u001b[2m  - retrying hover action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 \u00d7 waiting for element to be visible and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying hover action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    19 \u00d7 waiting for element to be visible and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying hover action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at helpers.ts:144\n\n  142 | export async function hoverNamed(scope: Scope, value: Match): Promise<void> {\n  143 |   const locator = await resolveNamed(scope, value);\n> 144 |   await locator.hover();\n      |                 ^\n  145 | }\n  146 |\n  147 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n    at hoverNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:144:17)\n    at Object.unpinNote (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:323:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.8.2.spec.ts:10:3"
+        ]
+      },
+      {
+        "title": "REQ-2.8.3: Pin note when creating it",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-3.1: Initial suggested filters",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-3.2: Search by keyword",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-4.1: Setting options list",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-4.2: Detailed settings",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.click: Target page, context or browser has been closed\n\n   at helpers.ts:124\n\n  122 | export async function clickNamed(scope: Scope, value: Match): Promise<void> {\n  123 |   const locator = await resolveNamed(scope, value);\n> 124 |   await locator.click();\n      |                 ^\n  125 | }\n  126 |\n  127 | export async function clickFirstAvailable(scope: Scope, values: Match[]): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:124:17)\n    at Object.clickFirstAvailable (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:139:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-4.2.spec.ts:10:3"
+        ]
+      },
+      {
+        "title": "REQ-5.1: Toggle between list and grid views",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-5.2: Grid View by default",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-6.1: Items and styling",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-6.2: Collapsible Sidebar",
+        "status": "expected",
+        "errors": []
+      }
+    ]
+  },
+  "keep-7": {
+    "source": "~/projects/volo-factory/runs/2026-09-15-keep-full-7/score-hosted/report-keep-hosted.json",
+    "results": [
+      {
+        "title": "REQ-1.1: Enter Website",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.1: Note Listing",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.2: Create Note",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.3.1: Delete",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.3.2: Notification and Undo",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.3.3: Trash list",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.4: Update Note",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.5.1: Archive",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.5.2: Archive Undo",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.5.3: Show archived notes",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Travel plans 2\\.5\\.3/i).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Travel plans 2\\.5\\.3/i).first()\u001b[22m\n\n\n   at helpers.ts:205\n\n  203 |\n  204 | export async function expectNoteVisible(page: Page, titleOrText: string | RegExp): Promise<void> {\n> 205 |   await expect(await noteCard(page, titleOrText)).toBeVisible();\n      |                                                   ^\n  206 | }\n  207 |\n  208 | export async function noteVisualSnapshot(page: Page, titleOrText: string | RegExp): Promise<Buffer> {\n    at Object.expectNoteVisible (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:205:51)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.5.3.spec.ts:11:3"
+        ]
+      },
+      {
+        "title": "REQ-2.5.4: Unarchive",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.hover: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Travel\\s+plans\\s+2\\.5\\.4/i }).first()\u001b[22m\n\n\n   at helpers.ts:144\n\n  142 | export async function hoverNamed(scope: Scope, value: Match): Promise<void> {\n  143 |   const locator = await resolveNamed(scope, value);\n> 144 |   await locator.hover();\n      |                 ^\n  145 | }\n  146 |\n  147 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n    at hoverNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:144:17)\n    at Object.unarchiveNote (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:282:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.5.4.spec.ts:11:3"
+        ]
+      },
+      {
+        "title": "REQ-2.6.1: Change note color",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.6.2: Choose note color when created",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.7.1: Assign label to a note",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.hover: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Team\\s+retro\\s+add\\s+label/i }).first()\u001b[22m\n\n\n   at helpers.ts:144\n\n  142 | export async function hoverNamed(scope: Scope, value: Match): Promise<void> {\n  143 |   const locator = await resolveNamed(scope, value);\n> 144 |   await locator.hover();\n      |                 ^\n  145 | }\n  146 |\n  147 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n    at hoverNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:144:17)\n    at openMoreOptionsForNote (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:257:3)\n    at Object.openLabelDialogForNote (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:299:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.7.1.spec.ts:9:3"
+        ]
+      },
+      {
+        "title": "REQ-2.7.2: Remove label from a note",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByText(/Team\\s+retro\\s+remove\\s+label/i)\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Team\\s+retro\\s+remove\\s+label/i)\u001b[22m\n\u001b[2m    23 \u00d7 locator resolved to 1 element\u001b[22m\n\u001b[2m       - unexpected value \"1\"\u001b[22m\n\n\n   at helpers.ts:186\n\n  184 |   const patterns = toPatterns(value);\n  185 |   const locator = target(scope).getByText(patterns[0]);\n> 186 |   await expect(locator).toHaveCount(0);\n      |                         ^\n  187 | }\n  188 |\n  189 | export async function openSidebar(page: Page): Promise<void> {\n    at Object.expectTextAbsent (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:186:25)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.7.2.spec.ts:14:11"
+        ]
+      },
+      {
+        "title": "REQ-2.7.3: Default label",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.7.4: Assign default label when creating note",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel(/more/i).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"more-btn\" aria-label=\"More options\">\u22ee</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 \u00d7 waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 \u00d7 waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    19 \u00d7 waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at helpers.ts:124\n\n  122 | export async function clickNamed(scope: Scope, value: Match): Promise<void> {\n  123 |   const locator = await resolveNamed(scope, value);\n> 124 |   await locator.click();\n      |                 ^\n  125 | }\n  126 |\n  127 | export async function clickFirstAvailable(scope: Scope, values: Match[]): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:124:17)\n    at Object.clickFirstAvailable (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:139:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.7.4.spec.ts:10:3"
+        ]
+      },
+      {
+        "title": "REQ-2.7.5: Edit labels",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /edit labels/i }).first()\u001b[22m\n\n\n   at helpers.ts:124\n\n  122 | export async function clickNamed(scope: Scope, value: Match): Promise<void> {\n  123 |   const locator = await resolveNamed(scope, value);\n> 124 |   await locator.click();\n      |                 ^\n  125 | }\n  126 |\n  127 | export async function clickFirstAvailable(scope: Scope, values: Match[]): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:124:17)\n    at Object.clickFirstAvailable (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:139:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.7.5.spec.ts:10:3"
+        ]
+      },
+      {
+        "title": "REQ-2.7.6.1: View list filtered by label",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.7.6.2: View all notes",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^notes$/i }).first()\u001b[22m\n\n\n   at helpers.ts:124\n\n  122 | export async function clickNamed(scope: Scope, value: Match): Promise<void> {\n  123 |   const locator = await resolveNamed(scope, value);\n> 124 |   await locator.click();\n      |                 ^\n  125 | }\n  126 |\n  127 | export async function clickFirstAvailable(scope: Scope, values: Match[]): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:124:17)\n    at Object.clickFirstAvailable (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:139:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-2.7.6.2.spec.ts:11:3"
+        ]
+      },
+      {
+        "title": "REQ-2.7.6.3: View Reminders",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.8.1: Pin note",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.8.2: Unpin note",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-2.8.3: Pin note when creating it",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-3.1: Initial suggested filters",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-3.2: Search by keyword",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-4.1: Setting options list",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /settings/i }).first()\u001b[22m\n\n\n   at helpers.ts:124\n\n  122 | export async function clickNamed(scope: Scope, value: Match): Promise<void> {\n  123 |   const locator = await resolveNamed(scope, value);\n> 124 |   await locator.click();\n      |                 ^\n  125 | }\n  126 |\n  127 | export async function clickFirstAvailable(scope: Scope, values: Match[]): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:124:17)\n    at clickFirstAvailable (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:139:3)\n    at Object.openSettingsMenu (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:332:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-4.1.spec.ts:9:3"
+        ]
+      },
+      {
+        "title": "REQ-4.2: Detailed settings",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /settings/i }).first()\u001b[22m\n\n\n   at helpers.ts:124\n\n  122 | export async function clickNamed(scope: Scope, value: Match): Promise<void> {\n  123 |   const locator = await resolveNamed(scope, value);\n> 124 |   await locator.click();\n      |                 ^\n  125 | }\n  126 |\n  127 | export async function clickFirstAvailable(scope: Scope, values: Match[]): Promise<void> {\n    at clickNamed (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:124:17)\n    at clickFirstAvailable (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:139:3)\n    at Object.openSettingsMenu (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:332:3)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-4.2.spec.ts:9:3"
+        ]
+      },
+      {
+        "title": "REQ-5.1: Toggle between list and grid views",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-5.2: Grid View by default",
+        "status": "expected",
+        "errors": []
+      },
+      {
+        "title": "REQ-6.1: Items and styling",
+        "status": "unexpected",
+        "errors": [
+          "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+          "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /edit labels/i }).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /edit labels/i }).first()\u001b[22m\n\n\n   at helpers.ts:149\n\n  147 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n  148 |   const locator = await resolveNamed(scope, value);\n> 149 |   await expect(locator).toBeVisible();\n      |                         ^\n  150 | }\n  151 |\n  152 | export async function expectTextsVisible(scope: Scope, values: Array<string | RegExp>): Promise<void> {\n    at expectVisible (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:149:25)\n    at Object.expectTextsVisible (~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/helpers.ts:154:5)\n    at ~/projects/arcbench-campaign/upstream/arc-bench/arc-bench/webapp/keep/tests/REQ-6.1.spec.ts:10:3"
+        ]
+      },
+      {
+        "title": "REQ-6.2: Collapsible Sidebar",
+        "status": "expected",
+        "errors": []
+      }
+    ]
+  }
+}

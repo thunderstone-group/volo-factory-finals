@@ -1,0 +1,192 @@
+[
+  {
+    "sample": "keep-5",
+    "observations": {
+      "takeNoteText": {
+        "query": "getByText(/take a note/i)",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "takeNoteLadder": {
+        "query": "getByLabel(/take a note/i).first()",
+        "count": 1,
+        "visible": true,
+        "html": "<input type=\"text\" placeholder=\"Take a note...\" aria-label=\"Take a note\">"
+      },
+      "workLink": {
+        "query": "getByRole('link', { name: /Work/i })",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "workLadder": {
+        "query": "getByRole('menuitem', { name: /Work/i }).first()",
+        "count": 1,
+        "visible": true,
+        "html": "<button class=\"nav-item\" role=\"menuitem\" type=\"button\" aria-label=\"Work\"><span><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16zM16 15.5C15.17 15.5 14.5 14.83 14.5 14s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5.5 18L11 12 5.5 6H5v12h.5z\"></path></svg></span><span class=\"nav-label\">Work</span></button>"
+      },
+      "settingsExactButton": {
+        "query": "getByRole('button', { name: /^Settings$/i })",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "settingsLadder": {
+        "query": "getByRole('menuitem', { name: /settings/i }).first()",
+        "count": 1,
+        "visible": true,
+        "html": "<button class=\"nav-item\" role=\"menuitem\" type=\"button\" aria-label=\"Settings\"><span><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3"
+      },
+      "collapseNames": {
+        "query": "getByRole('button', { name: /collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse/i }).first()",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "menuLadder": {
+        "query": "getByRole('button', { name: /main menu|menu|sidebar/i }).first()",
+        "count": 1,
+        "visible": true,
+        "html": "<button class=\"icon-btn\" aria-label=\"Menu\" type=\"button\" onclick=\"window.keepToggleSidebar &amp;&amp; window.keepToggleSidebar()\"><span><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z\"></path></svg></span></button>"
+      },
+      "archiveWithinTitle": {
+        "query": "getByText('Travel plans 2.5.1').first().getByRole('button', { name: /archive/i })",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "archiveLadder": {
+        "query": "getByRole('button', { name: /archive/i }).first()",
+        "count": 1,
+        "visible": true,
+        "html": "<button type=\"button\" class=\"icon-btn row-action arch-btn\" aria-label=\"Archive for Travel plans 2.5.1\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M20.54 5.23 19.15 3.55A1 1 0 0 0 18.34 3H5.66a1 1 0 0 0-.81.55L3.46 5.23A2 2 0 0 0 3 6.39V7a2 2 0 0 0 1 1.73V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.73A2 2 0 0 0 21 7V6.39a2 2 0 0 0-.46-1.16zM12 16.5 7.5 12H10V9h4v3h2.5L12 16.5z\"></path></svg></button>"
+      },
+      "fieldsBeforeEscape": [
+        {
+          "label": "Search",
+          "placeholder": "Search",
+          "value": ""
+        },
+        {
+          "label": "Title",
+          "placeholder": "Title",
+          "value": "Diagnostic creation"
+        },
+        {
+          "label": "Content",
+          "placeholder": "Take a note...",
+          "value": "Diagnostic body"
+        }
+      ],
+      "createdAfterEscape": {
+        "query": "getByText('Diagnostic creation', { exact: true })",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "titleFieldAfterEscape": {
+        "query": "getByLabel(/Title/i)",
+        "count": 1,
+        "visible": true,
+        "html": "<input type=\"text\" placeholder=\"Title\" aria-label=\"Title\">"
+      },
+      "storeContainsCreatedTitle": false
+    }
+  },
+  {
+    "sample": "keep-7",
+    "observations": {
+      "takeNoteText": {
+        "query": "getByText(/take a note/i)",
+        "count": 1,
+        "visible": true,
+        "html": "<div class=\"composer\">Take a note...</div>"
+      },
+      "takeNoteLadder": {
+        "query": "getByText(/take a note/i).first()",
+        "count": 1,
+        "visible": true,
+        "html": "<div class=\"composer\">Take a note...</div>"
+      },
+      "workLink": {
+        "query": "getByRole('link', { name: /Work/i })",
+        "count": 2,
+        "visible": true,
+        "html": "<a class=\"nav-item\" href=\"/\">Work</a>"
+      },
+      "workLadder": {
+        "query": "getByRole('link', { name: /Work/i }).first()",
+        "count": 1,
+        "visible": true,
+        "html": "<a class=\"nav-item\" href=\"/\">Work</a>"
+      },
+      "settingsExactButton": {
+        "query": "getByRole('button', { name: /^Settings$/i })",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "settingsLadder": {
+        "query": "getByRole('button', { name: /settings/i }).first()",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "collapseNames": {
+        "query": "getByRole('button', { name: /collapse sidebar|hide sidebar|minimize sidebar|sidebar collapse/i }).first()",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "menuLadder": {
+        "query": "getByLabel(/main menu|menu|sidebar/i).first()",
+        "count": 1,
+        "visible": true,
+        "html": "<nav class=\"sidebar\" aria-label=\"Sidebar\"><a class=\"nav-item active\" href=\"/\">Notes<span class=\"nav-icon\">💡</span></a><a class=\"nav-item\" href=\"/\">Work</a><a class=\"nav-item\" href=\"/\"><span class=\"nav-icon\">🔔</span>Reminders</a><a class=\"nav-item\" href=\"/\">Work editable</a><a class=\"nav-item nav-arch-link\" href=\"/\">Archived</a><a class=\"nav-item nav-trash-link\" href=\"/\">Trash</a></nav>"
+      },
+      "archiveWithinTitle": {
+        "query": "getByText('Travel plans 2.5.1').first().getByRole('button', { name: /archive/i })",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "archiveLadder": {
+        "query": "getByRole('button', { name: /archive/i }).first()",
+        "count": 1,
+        "visible": true,
+        "html": "<button type=\"button\" class=\"action-btn archive-btn\" aria-label=\"Archive\">📥</button>"
+      },
+      "fieldsBeforeEscape": [
+        {
+          "label": "Search",
+          "placeholder": "Search",
+          "value": ""
+        },
+        {
+          "label": "Title",
+          "placeholder": "Title",
+          "value": "Diagnostic creation"
+        },
+        {
+          "label": "Take a note",
+          "placeholder": "Take a note...",
+          "value": "Diagnostic body"
+        }
+      ],
+      "createdAfterEscape": {
+        "query": "getByText('Diagnostic creation', { exact: true })",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "titleFieldAfterEscape": {
+        "query": "getByLabel(/Title/i)",
+        "count": 0,
+        "visible": false,
+        "html": null
+      },
+      "storeReadError": "TypeError: fetch failed"
+    }
+  }
+]
