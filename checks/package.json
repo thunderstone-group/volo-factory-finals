@@ -1,0 +1,27 @@
+{
+  "name": "arcbench-scenario-checks",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run --pool=threads",
+    "typecheck": "tsc --noEmit",
+    "compile": "node --import tsx src/compile.ts",
+    "run": "node --import tsx src/run.ts",
+    "calibrate": "node --import tsx src/calibrate.ts"
+  },
+  "dependencies": {
+    "@playwright/test": "1.61.1",
+    "yaml": "^2.8.1",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.0",
+    "tsx": "^4.20.0",
+    "vitest": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

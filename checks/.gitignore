@@ -1,0 +1,15 @@
+node_modules/
+out/**/app/
+out/**/data/
+out/**/specs/
+out/**/artifacts/
+out/**/server.log
+out/**/playwright.json
+out/**/config.ts
+out/**/results-parts/
+out/**/official/node_modules
+out/**/official/data/
+out/**/official/artifacts/
+out/test/
+out/**/official/playwright.json
+out/**/official/config.ts
