@@ -1077,7 +1077,7 @@ generation has been run against any of this.
   quarantined_checks}`) and `loop` (`{passes, ended_by: complete|token_budget|call_budget|
   deadline|entries_exhausted}`). Delivery decides exactly as before, and a run whose last
   event was a salvage delivers the salvaged tree rather than exiting 1.
-- Tests: 366 before, 379 after, all synthetic — round-robin order and the three-entry cap,
+- Tests: 366 before, 380 after, all synthetic — round-robin order and the three-entry cap,
   salvage keeping the tree when the bundle passes and rolling back when it fails including
   the quarantine move and the events, no model call and the deadline respected, a run with an
   effectively infinite deadline ending on `token_budget`, a run delivering after a salvage,
