@@ -127,6 +127,21 @@ class EvolutionTests(unittest.TestCase):
         self.assertEqual(adapter.read_template(self.out), before)
         self.assertEqual(list(self.root.glob('.oneshot-*')), [])
 
+    def test_concurrent_metadata_change_aborts_without_losing_it(self):
+        self.seed()
+        (self.out / '.env').write_text('before')
+        def response(*args, **kwargs):
+            (self.out / '.env').write_text('concurrent change')
+            (self.out / '.git').mkdir()
+            (self.out / '.git/new-object').write_text('retained')
+            return block('frontend/public/index.html', '<h1>Updated</h1>'), {}, 'stop'
+        with patch.object(adapter, 'stream_completion', side_effect=response):
+            with self.assertRaisesRegex(ValueError, 'template changed'):
+                self.upgrade()
+        self.assertEqual((self.out / '.env').read_text(), 'concurrent change')
+        self.assertEqual((self.out / '.git/new-object').read_text(), 'retained')
+        self.assertNotIn('Updated', (self.out / 'frontend/public/index.html').read_text())
+
     def test_platform_cli_detects_prepopulated_application(self):
         self.seed()
         req = self.root / 'input'

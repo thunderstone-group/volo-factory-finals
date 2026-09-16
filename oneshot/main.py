@@ -336,8 +336,20 @@ def template_context(blobs):
             json.dumps(records, ensure_ascii=False))
 
 
-def publish(stage, out, template, snapshot):
-    if template is not None and read_template(template) != snapshot:
+def template_stamp(root):
+    """Detect concurrent edits to opaque metadata without reading or logging it."""
+    stamp = {}
+    for directory, dirs, names in os.walk(root, followlinks=False):
+        for path in [Path(directory), *(Path(directory) / name for name in dirs + names)]:
+            info = path.lstat()
+            stamp[path.relative_to(root).as_posix()] = (
+                info.st_dev, info.st_ino, info.st_mode, info.st_size,
+                info.st_mtime_ns, info.st_ctime_ns)
+    return stamp
+
+
+def publish(stage, out, template, snapshot, stamp):
+    if template is not None and (template_stamp(template) != stamp or read_template(template) != snapshot):
         raise ValueError("template changed during generation")
     if template is None or template != out:
         if out.is_symlink() or (out.exists() and (not out.is_dir() or any(out.iterdir()))):
@@ -365,6 +377,9 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
         raise ValueError("output directory must be absent or empty, and not a symlink")
     if template is not None and template != out and (template in out.parents or out in template.parents):
         raise ValueError("template and output directories must not overlap")
+    if template is not None and (template.is_symlink() or not template.is_dir()):
+        raise ValueError("template must be a directory, not a symlink")
+    stamp = template_stamp(template) if template is not None else None
     snapshot = read_template(template) if template is not None else {}
     out.parent.mkdir(parents=True, exist_ok=True)
     user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT +
@@ -417,7 +432,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             raise ValueError("incomplete delivery: " + "; ".join(needed))
         if template is not None and all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files):
             raise ValueError("upgrade did not change any files")
-        publish(stage, out, template, snapshot)
+        publish(stage, out, template, snapshot, stamp)
     return files, budget.summary()
 
 
