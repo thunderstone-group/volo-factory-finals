@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
-from scripts.arc_read import read_json
+from scripts.arc_read import read_json, redact
 
 
 class ArcReadTests(unittest.TestCase):
@@ -37,6 +37,10 @@ class ArcReadTests(unittest.TestCase):
         self.assertEqual(rows[0]['stdout'], 'partial')
         self.assertNotIn('synthetic', rows[0]['stderr'])
         self.assertEqual(rows[1]['stdout'], '<html>broken</html>')
+
+    def test_token_usage_counts_remain_visible(self):
+        self.assertEqual(redact('{"tokens":123,"prompt_tokens":456}'), '{"tokens":123,"prompt_tokens":456}')
+        self.assertNotIn('sensitive', redact('{"access_token":"sensitive"}'))
 
     def test_mutations_cannot_use_read_retry_helper(self):
         with patch('scripts.arc_read.subprocess.run') as call, self.assertRaises(ValueError):

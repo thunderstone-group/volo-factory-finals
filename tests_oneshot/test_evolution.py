@@ -86,6 +86,26 @@ class EvolutionTests(unittest.TestCase):
         context = adapter.template_context(snapshot)
         self.assertNotIn('do-not-send', context)
         self.assertNotIn('old-dist-sentinel', context)
+        self.replies(events(block('frontend/public/index.html', '<h1>Updated</h1>')))
+        self.upgrade()
+        self.assertEqual((self.out / '.env').read_text(), 'SYNTHETIC_SECRET=do-not-send')
+        self.assertEqual((self.out / 'frontend/dist/index.html').read_text(), 'old-dist-sentinel')
+
+    def test_alias_path_cannot_turn_unchanged_response_into_success(self):
+        before = self.seed()
+        self.replies(events(block('./frontend/public/index.html', before['frontend/public/index.html'].decode().rstrip())))
+        with self.assertRaisesRegex(ValueError, 'did not change'):
+            self.upgrade()
+        self.assertEqual(adapter.read_template(self.out), before)
+
+    def test_preserved_metadata_is_not_writable_by_generated_patch(self):
+        self.seed()
+        (self.out / '.env').write_text('preserved')
+        for name in ('.env', 'frontend/.env', 'frontend/dist/old.js', 'node_modules/x.js'):
+            self.replies(events(block(name, 'bad')))
+            with self.assertRaisesRegex(ValueError, 'metadata or build artifacts'):
+                self.upgrade()
+        self.assertEqual((self.out / '.env').read_text(), 'preserved')
 
     def test_concurrent_source_change_aborts_publication(self):
         self.seed()

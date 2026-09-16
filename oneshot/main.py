@@ -47,7 +47,9 @@ Emit two npm packages under one application root.
   the seed data is fully in place. Everything is scored zero if this never answers.
 - ZERO npm dependencies. Backend uses `node:http`, `node:fs`, `node:path` only. Frontend is plain
   HTML/CSS/JS, no framework, no bundler, no CDN (the test machine has no network).
-- Keep all application state in backend memory and reseed on startup, so every run starts clean.
+- Keep shared/domain data in backend memory and reseed it on startup. Keep transient UI state
+  scoped to its page or browser session unless persistence is required; do not share a single
+  visitor's counters, form state, or selections globally across unrelated visitors.
 - Never let an API handler throw: wrap request handling so one bad request cannot kill the process.
 - Every file you emit must be complete and syntactically valid. No placeholders, no "...", no TODO.
 Output format: emit each file as a block, and nothing else — no JSON, no markdown fence, no
@@ -374,6 +376,10 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     with tempfile.TemporaryDirectory(prefix=".oneshot-", dir=out.parent) as temp:
         stage = Path(temp) / "app"
         stage.mkdir()
+        if template is not None:
+            # Keep opaque local metadata/artifacts intact, without putting their
+            # contents in the prompt. Generated edits cannot touch those paths.
+            shutil.copytree(template, stage, dirs_exist_ok=True, symlinks=True)
         for name, data in snapshot.items():
             target = resolve_path(stage, name)
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -384,6 +390,9 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             batch, missing = parse_blocks(content)
             for name in [item["path"] for item in batch] + missing:
                 resolve_path(stage, name)
+                if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
+                                                for part in PurePosixPath(name).parts):
+                    raise ValueError("upgrade cannot edit local metadata or build artifacts: " + name)
             if expected and (not batch or batch[0]["path"] != expected):
                 raise ValueError("continuation did not complete file: " + expected)
             for item in batch:
@@ -391,6 +400,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
                 if target in emitted:
                     raise ValueError("duplicate file path: " + item["path"])
                 emitted.add(target)
+                item["path"] = target.relative_to(stage.resolve()).as_posix()
                 write_one(stage, item)
                 files.append(item)
             if not missing:

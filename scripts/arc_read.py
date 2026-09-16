@@ -17,7 +17,7 @@ def redact(text, secrets=()):
     for secret in sorted((s for s in secrets if s), key=len, reverse=True):
         text = text.replace(secret, '[REDACTED]')
     text = re.sub(r'(?i)(Bearer\s+)\S+', r'\1[REDACTED]', text)
-    text = re.sub(r'(?i)((?:[\w-]*(?:token|cookie|password|api[_-]?key|secret)[\w-]*)[\"\x27]?\s*[:=]\s*[\"\x27]?)[^\"\x27\s,}]+', r'\1[REDACTED]', text)
+    text = re.sub(r'(?i)((?:api[_-]?key|access[_-]?key|(?:access|refresh|auth|session)[_-]?token|token|cookie|password|secret)[\"\x27]?\s*[:=]\s*[\"\x27]?)[^\"\x27\s,}]+', r'\1[REDACTED]', text)
     return text[:16000]
 
 
@@ -37,7 +37,9 @@ def read_json(cli, args, log_path, *, secrets=(), attempts=3, timeout=35):
         try:
             result = subprocess.run([*cli, *args], capture_output=True, text=True, timeout=timeout)
             entry.update(exit_code=result.returncode, stdout=redact(result.stdout, secrets),
-                         stderr=redact(result.stderr, secrets))
+                         stderr=redact(result.stderr, secrets),
+                         stdout_truncated=len(result.stdout) > 16000,
+                         stderr_truncated=len(result.stderr) > 16000)
             if result.returncode:
                 entry['error_type'] = 'ProcessExit'
             else:
