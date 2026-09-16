@@ -19,13 +19,27 @@ Neither forum tools nor platform sessions, test fixtures, or run evidence are pa
 
 Run the extracted entrypoint as `python3 main.py REQUIREMENT_DIR --output-dir EMPTY_DIR --type web`.
 Real generation uses the authorized gateway environment, never credentials in arguments.
-This invocation is paid model work; it was NOT run against a real model in this change.
+The platform's Evolution invocation may prepopulate OUTPUT_DIR with an existing application.
+The CLI recognizes a source template containing frontend/backend package manifests and supplies
+its bounded source snapshot to the same one-shot call. For a separate immutable input, use
+`--template-dir EXISTING_APP --output-dir EMPTY_DIR`. The Python `generate()` API retains its
+empty-output default unless `template=` is supplied explicitly.
 
 ## Boundaries
 
 Paths must be relative and resolve within the output tree. Generation is staged and the
-validated directory is published by one rename. Existing nonempty output is rejected
-before any model call, rather than silently mixing old files. Gateway redirects are refused.
+validated new-build directory is published by one rename. New builds reject nonempty output
+unless the CLI recognizes an application template.
+Evolution starts from an isolated copy, emits complete replacements for changed/new files,
+and retains unmentioned files. The prompt excludes dotfiles, node_modules, dist and Python
+caches; these remain preserved in the delivered tree and cannot be edited by the response.
+Source snapshots are bounded to 256 files / 2 MiB with explicit failure instead of truncation.
+Symlinks in source are rejected; ignored metadata is copied without following links.
+Source or local metadata changes during generation abort publication. No-op upgrades are rejected after path
+normalization. In-place publication uses two renames with rollback, not an atomic directory
+exchange: a process kill between renames may leave the original at a sibling
+`.oneshot-backup-*` path. A failed rollback leaves that backup outside temporary cleanup.
+Gateway redirects are refused.
 A single global three-request limit includes stream retries and one truncation continuation.
 Permanent HTTP failures (including 402) are not retried. Observed token usage is accumulated
 across all attempts; incomplete usage remains unknown and is not reported as zero cost.
@@ -38,11 +52,21 @@ start the generated application or establish health/behavior correctness. A succ
 exit is therefore not an official acceptance result. The original root `main.py` / `volo/`
 are a frozen legacy baseline; this change does not silently replace that entrypoint.
 
-## Validation on 2026-09-16
+## Continuation validation on 2026-09-16
+
+The continuation adds Evolution source input, rollback/preservation regressions, and
+`scripts/arc_read.py` for bounded read-only preflights. The helper retains each attempt's
+exit code, stdout/stderr, timeout and error type in private JSONL, including failed attempts
+before a later success. It never retries platform mutations. Both output streams must be
+captured; callers should use the standalone CLI's `--log-file` for request-level details.
+See `oneshot-evolution-2026-09-16.md` for exact candidate hashes, local behavioral results,
+real cost and the Lite gate decision. These are distinct from the original import checks.
+
+## Original import validation on 2026-09-16
 
 Coordinator reran 25 mock/file tests successfully, including retry isolation, traversal,
 402 handling, missing usage, global budget, failure exit, redirect refusal and packaging.
-Two builds were byte-identical. Current candidate SHA-256:
+Two builds were byte-identical. Original imported candidate SHA-256:
 `778f2ec1a39efe6bcb44b34dfc074f18ec2d6b18f6604b785b74a004b587d058`.
 The import hashes were checked against the untouched experiment files.
 

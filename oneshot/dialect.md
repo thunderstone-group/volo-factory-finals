@@ -16,6 +16,9 @@ Observed helpers may try button/link/tab/menuitem/option roles before visible te
 Field helpers may use labels, placeholders and textbox/combobox/spinbutton roles.
 Names may be case-insensitive substring matches or exact matches. Preserve quoted
 labels from the requirements and distinguish navigation from actions on an entity.
+Preserve required section headings as visible text, not only as accessibility labels.
+Use a native meter or progress element with its accessible name and changing value for
+quantitative indicators; a styled div with an ID alone does not expose a semantic role.
 
 ## Avoid ambiguous targets
 
@@ -23,6 +26,9 @@ Make repeated row actions identifiable in their row. If contextual actions are h
 at rest, reveal them on keyboard focus as well as pointer hover. Do not turn an entity's
 title into the accessible name of an unrelated action. Keep requested row/editor actions
 inside their own context instead of requiring an unrelated global menu.
+Render singular identity or status values once per screen. Repeating the same standalone
+username or success text in a header and the page body makes an exact-text query ambiguous;
+use one canonical display and different surrounding prose where repetition is necessary.
 
 When an actual modal dialog is open, move focus into it and make background controls
 inert until it closes. A nonmodal menu should retain the interactions its requirements
