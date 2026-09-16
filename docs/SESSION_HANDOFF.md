@@ -10,9 +10,12 @@ Git bundles are in `runs/workspace-archive-20260916/` in the main checkout.
 - One-shot: `oneshot/`; build with `scripts/package_oneshot.py`. Import and candidate
   provenance are separate. 25 mock/file regressions passed and two builds matched.
   See `docs/oneshot.md` for the hash and the unvalidated loopback/runtime boundaries.
-- Forum: standalone `qiwoo` command in this repo. 44 synthetic regressions passed.
-  Reading contracts, browser-session handoff and real publishing are NOT yet validated;
-  `publish` is explicitly disabled. See `docs/forum-cli.md`.
+- Forum: standalone `qiwoo` command in this repo. Explicit `--chrome` now reuses the
+  authorized macOS Chrome forum session without exporting cookies. `--chrome auth status`,
+  topic 15/16 reads, search and real post-ID batches were live-validated on 2026-09-16.
+  Synthetic transport/JavaScript regressions complement (not replace) those live checks.
+  Keep a logged-in forum tab open; no silent browser/HTTP fallback. Publishing is still
+  explicitly disabled, and drafts stay local. See `docs/forum-cli.md`.
 - ARC CLI: use the existing `arcbench-cli` repo, not a vendored client. Launch preflight
   hardening is being reviewed separately; inspect that repo's live main/PR state before
   assuming the installed command includes it. Main VOLO now removes the duplicate CLI

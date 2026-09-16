@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .client import ALIASES, ORIGIN, Client, ForumError, topic_id
+from .chrome import ChromeClient
 from .storage import (BODY_LIMIT, AUTH_LIMIT, DEFAULT_AUTH, load_auth, parse_session,
                       read_stdin, redact, redact_result, save_private)
 
@@ -30,10 +31,11 @@ def bounded(low, high):
 
 
 def parser():
-    root = Parser(description="奇物论坛：只读查询和本地草稿（站点契约待认证验证）。")
+    root = Parser(description="奇物论坛：只读查询、本地草稿和显式 Chrome 会话复用。")
     auth = root.add_mutually_exclusive_group()
     auth.add_argument("--auth-file", type=Path, help="独立 0600 认证文件路径；凭据仅从 stdin 导入")
     auth.add_argument("--anonymous", action="store_true", help="不读取认证文件")
+    auth.add_argument("--chrome", action="store_true", help="复用 macOS Chrome 已登录的论坛标签页；不导出 Cookie")
     commands = root.add_subparsers(dest="command", required=True)
     for command in ("topic", "course", "competition", "search"):
         child = commands.add_parser(command)
@@ -45,8 +47,10 @@ def parser():
         child.add_argument("--offset", type=bounded(0, 1000000), default=0)
         child.add_argument("--limit", type=bounded(1, 100), default=20)
         child.add_argument("--body-limit", type=bounded(0, 10000), default=2000)
-    auth_cmd = commands.add_parser("auth", help="显式导入用户授权的同源 session")
-    auth_cmd.add_subparsers(dest="auth_command", required=True).add_parser("import")
+    auth_cmd = commands.add_parser("auth", help="导入独立 session 或检查 Chrome 登录身份")
+    auth_commands = auth_cmd.add_subparsers(dest="auth_command", required=True)
+    auth_commands.add_parser("import")
+    auth_commands.add_parser("status", help="配合 --chrome 检查实时登录身份")
     draft = commands.add_parser("draft", help="正文从 stdin 读取，仅写本地 JSON")
     draft.add_argument("topic")
     draft.add_argument("--reply-to", type=bounded(1, 2**63 - 1), help="被回复的 post_number，不是帖子 ID")
@@ -69,17 +73,26 @@ def page(items, args):
 
 def main(argv=None):
     session = None
+    exit_code = 0
     try:
         args = parser().parse_args(argv)
         if args.command == "publish":
             raise ForumError("发布未实现；未发送任何请求。请保存本地 draft 并另行审阅。", 4)
         if args.command == "auth":
-            if args.anonymous:
-                raise ForumError("auth import 不能与 --anonymous 同用。", 2)
-            session = parse_session(read_stdin(sys.stdin, AUTH_LIMIT, private=True))
-            save_private(args.auth_file or DEFAULT_AUTH, session, replace=True)
-            result = {"status": "imported", "origin": ORIGIN, "network_validated": False}
+            if args.auth_command == "status":
+                if not args.chrome:
+                    raise ForumError("登录检查请使用 qiwoo --chrome auth status。", 2)
+                result = ChromeClient().auth_status()
+                exit_code = 0 if result["authenticated"] else 3
+            else:
+                if args.anonymous or args.chrome:
+                    raise ForumError("auth import 不能与 --anonymous 或 --chrome 同用。", 2)
+                session = parse_session(read_stdin(sys.stdin, AUTH_LIMIT, private=True))
+                save_private(args.auth_file or DEFAULT_AUTH, session, replace=True)
+                result = {"status": "imported", "origin": ORIGIN, "network_validated": False}
         elif args.command == "draft":
+            if args.chrome:
+                raise ForumError("draft 仅保存本地草稿，无需 --chrome。", 2)
             target = topic_id(args.topic)
             body = read_stdin(sys.stdin, BODY_LIMIT)
             if not body.strip():
@@ -99,9 +112,12 @@ def main(argv=None):
                     raise ForumError("搜索须为 1–1000 字符，最多 10 个不同主题。", 2)
             else:
                 target = topic_id(args.topic if args.command == "topic" else args.command)
-            if not args.anonymous:
-                session = load_auth(args.auth_file or DEFAULT_AUTH, required=args.auth_file is not None)
-            client = Client(session)
+            if args.chrome:
+                client = ChromeClient()
+            else:
+                if not args.anonymous:
+                    session = load_auth(args.auth_file or DEFAULT_AUTH, required=args.auth_file is not None)
+                client = Client(session)
             if args.command == "search":
                 result = dict(page(client.search(args.query, targets), args), topic_ids=targets)
             else:
@@ -109,9 +125,12 @@ def main(argv=None):
                 result = dict(page(topic["posts"], args), topic_id=target, title=topic["title"], url=topic["url"])
             result.update({"complete_stream": True, "contract": "discourse_site_unverified",
                            "scope": "accessible_post_stream_snapshot"})
+            if args.chrome:
+                result.update(client.auth_status())
+                result["contract"] = "discourse_read_contract_v1"
         # ASCII JSON escapes terminal control sequences in untrusted forum/draft text.
         print(json.dumps(redact_result(result, session), ensure_ascii=True))
-        return 0
+        return exit_code
     except ForumError as exc:
         print("qiwoo: " + redact(str(exc), session), file=sys.stderr)
         return exc.code
