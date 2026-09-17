@@ -1,11 +1,16 @@
-# Current handoff — 2026-09-18 03:40 (goal mode, Fable alone while the owner sleeps)
+# Current handoff — 2026-09-18 06:50 (goal mode ended for the night; owner decisions pending)
 
 Owner's goal (01:53): `arc-bench-web` aggregated board ≥ 80%, local and platform. Loop, guards and
 the per-round ledger are in `docs/goal-2026-09-18.md`; the dated detail is in `docs/progress.md`
 from "2026-09-18 — Content cap 131072". Branch `goal/round-1` (on top of `fix/call-budget`, PR #36
 open) is the only line; every round is a commit + a package under `runs/2026-09-18-goal/`.
 
-## State at 05:12
+## State at 06:50 (read `docs/goal-2026-09-18.md` bottom first)
+
+- Board **64.5%**, rank 5 (round 13, `e453f46c469c`, temperature 0). 14 rounds, CNY 195 → 93.
+- Temperature 0 is in `oneshot/main.py` now; two-sample spreads: t0.3 60.8/34.0, t0 64.5/58.6.
+
+## State at 05:12 (older)
 
 - Board: VOLO AI **60.8%**, rank 5 (round 10, submission `875c9522b2b5`). Round averages: 45.0, 41.0,
   37.2, 53.1, 48.1, 44.3, 45.2, 46.8, 55.9, 54.8, **60.8**. Round 11 (`6f422db9ee51`) is a second sample
