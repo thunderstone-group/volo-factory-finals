@@ -116,6 +116,12 @@ text field first in DOM order). Exception: a requirement that names a region lit
 - Typing must survive a re-render: an in-form click (pin toggle, colour swatch) must not wipe the
   title/body inputs. Do not rebuild `innerHTML` on every state change.
 - Mutations write to the store before the success message renders.
+- Navigation renders SYNCHRONOUSLY from an in-memory store. The click ladder probes each rung for only 500 ms
+  (`button`, `link`, `tab`, …), so a list that appears one second after the click is never found even though
+  it is on the page by the time the test times out (Bookstack lost 10 of 34 this way: the shelf list was
+  fetched after navigation). Load all data once at startup before enabling the UI (or embed seeds in the
+  initial HTML), keep it in memory, and render every screen from it in the same tick as the click;
+  write-through to the API in the background.
 - Budget: 10 s per test. No animations that gate visibility, no artificial delays, no redirect chains.
 - The backend must survive its own bugs: register `process.on('uncaughtException', …)` and
   `process.on('unhandledRejection', …)` handlers that log and keep serving, and wrap every request handler in
