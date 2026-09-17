@@ -24,6 +24,7 @@ const path = require('node:path');
 const DIST = path.join(__dirname, '..', 'frontend', 'dist');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript', '.css': 'text/css' };
 %(prelude)s
+process.on('uncaughtException', (e) => console.error('uncaught', e)); process.on('unhandledRejection', (e) => console.error('unhandled', e));
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://localhost');
   if (url.pathname === '/api/health') {
@@ -170,6 +171,25 @@ class SmokeCase(unittest.TestCase):
         self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
         self.assertEqual(budget.smoke["repair"]["vocabulary_missing_after"], 1)
         self.assertIn("Sign Out", (self.out / "frontend/public/index.html").read_text())
+
+    def test_static_gates_flag_missing_process_guards_and_aria_collisions(self):
+        stage = self.root / "stage"
+        (stage / "backend").mkdir(parents=True)
+        (stage / "frontend" / "public").mkdir(parents=True)
+        (stage / "backend" / "server.js").write_text("const http = require('http');\n")
+        (stage / "frontend" / "public" / "app.js").write_text(
+            "html += '<label for=\"qty\">Quantity</label><input id=\"qty\">';\n"
+            "html += '<button aria-label=\"Decrease quantity\">-</button>';\n"
+            "html += '<button aria-label=\"Close dialog\">x</button>';\n")
+        guard = adapter.process_guard_gaps(stage)
+        self.assertEqual(len(guard), 1)
+        self.assertIn("uncaughtException", guard[0])
+        aria = adapter.aria_collision_gaps(stage)
+        self.assertEqual(len(aria), 1)
+        self.assertIn("Decrease quantity", aria[0])
+        self.assertNotIn("Close dialog", aria[0])
+        (stage / "backend" / "server.js").write_text("process.on('uncaughtException', () => {}); process.on('unhandledRejection', () => {});\n")
+        self.assertEqual(adapter.process_guard_gaps(stage), [])
 
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"

@@ -710,15 +710,92 @@ def vocabulary_gaps(stage, requirements):
             f"{shown}{more}"], len(missing)
 
 
+ARIA_LABEL = re.compile(r"""aria-label["']?\s*[=:]\s*["'`]([^"'`\n]{1,60})["'`]""")
+FIELD_LABEL = re.compile(r"""(?:<label\b[^>]*>\s*([^<{]{1,60}?)\s*<|placeholder["']?\s*[=:]\s*["'`]([^"'`\n]{1,60})["'`]"""
+                         r"""|<(?:input|textarea|select)\b[^>]*aria-label\s*=\s*["']([^"'\n]{1,60})["'])""")
+LABEL_STOP = {"the", "and", "for", "your", "enter", "please", "input", "type", "here", "select", "choose",
+              "search", "with", "this", "that", "from", "into", "new", "add", "all", "any", "name"}
+
+
+def _label_words(text):
+    words = set(w for w in re.findall(r"[a-z0-9]{3,}", text.lower()) if w not in LABEL_STOP)
+    words |= set(re.findall(r"[\u4e00-\u9fff]{2,}", text))
+    return words
+
+
+def _frontend_sources(stage):
+    out = []
+    for directory, dirs, names in os.walk(Path(stage) / "frontend", followlinks=False):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d not in TEMPLATE_ARTIFACTS]
+        for name in names:
+            if name.endswith((".js", ".mjs", ".jsx", ".ts", ".tsx", ".html", ".vue")) and name != "package-lock.json":
+                try:
+                    out.append((Path(directory) / name).read_text(encoding="utf-8", errors="replace"))
+                except OSError:
+                    continue
+    return "\n".join(out)
+
+
+def aria_collision_gaps(stage):
+    """A button whose aria-label shares a word with a field label steals getByLabel(/word/i):
+    'Decrease quantity' before the quantity input, 'Upvote comment' before the comment box."""
+    source = _frontend_sources(stage)
+    field_words = set()
+    for label, placeholder, aria in FIELD_LABEL.findall(source):
+        field_words |= _label_words(label or placeholder or aria)
+    if not field_words:
+        return []
+    collisions = []
+    for match in ARIA_LABEL.finditer(source):
+        before = source[max(0, match.start() - 160):match.start()].lower()
+        if not ("<button" in before or "'button'" in before or '"button"' in before or "createelement('button')" in before):
+            continue
+        shared = sorted(_label_words(match.group(1)) & field_words)
+        if shared:
+            collisions.append((match.group(1), shared))
+    seen, lines = set(), []
+    for label, shared in collisions:
+        if label in seen:
+            continue
+        seen.add(label)
+        lines.append(f'button aria-label "{label}" shares {"/".join(shared)} with a field label')
+    if not lines:
+        return []
+    return [f"{len(lines)} button label(s) collide with field labels; the fill helper's first rung is "
+            f"getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it "
+            f"shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; "
+            f"submit: \"Send\"): " + "; ".join(lines[:20])]
+
+
+def process_guard_gaps(stage):
+    """One thrown request handler must not kill the server for the rest of the suite."""
+    backend = Path(stage) / "backend"
+    text = ""
+    for path in sorted(backend.glob("*.js")) + sorted(backend.glob("*.cjs")) + sorted(backend.glob("*.mjs")):
+        try:
+            text += path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+    missing = [name for name in ("uncaughtException", "unhandledRejection") if name not in text]
+    if not missing:
+        return []
+    return [f"backend registers no process.on({' / '.join(repr(m) for m in missing)}) handler: one thrown request "
+            f"handler ends the Node process and every later test fails with ERR_CONNECTION_REFUSED. Add at the top of "
+            f"the server: process.on('uncaughtException', (e) => console.error('uncaught', e)); "
+            f"process.on('unhandledRejection', (e) => console.error('unhandled', e)); and wrap each request "
+            f"handler body in try/catch that answers HTTP 500 instead of throwing"]
+
+
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None):
     """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
     at most one model call on a fix and keep it only if the smoke check then passes and the
     vocabulary did not get worse. Records the outcome in budget.smoke."""
     problems, executed = smoke_check(stage)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
-    budget.smoke = {"executed": executed, "problems": problems + vocab, "vocabulary_missing": missing_before,
+    static = process_guard_gaps(stage) + aria_collision_gaps(stage)
+    budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
                     "repair": None}
-    problems = problems + vocab
+    problems = problems + static + vocab
     if not problems:
         return
     if budget.exhausted():

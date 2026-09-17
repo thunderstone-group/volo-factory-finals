@@ -113,3 +113,7 @@ field's word, and put the input BEFORE its steppers in DOM order. Exception: a r
   title/body inputs. Do not rebuild `innerHTML` on every state change.
 - Mutations write to the store before the success message renders.
 - Budget: 10 s per test. No animations that gate visibility, no artificial delays, no redirect chains.
+- The backend must survive its own bugs: register `process.on('uncaughtException', …)` and
+  `process.on('unhandledRejection', …)` handlers that log and keep serving, and wrap every request handler in
+  try/catch that answers HTTP 500. One thrown handler otherwise ends the Node process and every later test
+  fails with ERR_CONNECTION_REFUSED (a 12306 run died at test 6 of 135 on "Assignment to constant variable").

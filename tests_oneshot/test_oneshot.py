@@ -31,7 +31,7 @@ def block(path, content):
 
 def application(extra=""):
     return (block("backend/package.json", '{"scripts":{"start":"node server.js"}}') +
-            block("backend/server.js", "// Synthetic local fixture\nconsole.log('fixture');") +
+            block("backend/server.js", "// Synthetic local fixture\n"+"process.on('uncaughtException', (e) => console.error('uncaught', e)); process.on('unhandledRejection', (e) => console.error('unhandled', e));\n"+"console.log('fixture');") +
             block("frontend/package.json", '{"scripts":{"build":"node build.js"}}') +
             block("frontend/build.js", "// Synthetic build fixture") +
             block("frontend/public/index.html", "<!doctype html><title>Synthetic</title>") + extra)
