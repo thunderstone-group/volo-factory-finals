@@ -758,15 +758,29 @@ def aria_collision_gaps(stage):
         shared = sorted(_label_words(match.group(1)) & field_words)
         if shared:
             collisions.append((match.group(1), shared))
+    labels = sorted({(l or p or a).strip() for l, p, a in FIELD_LABEL.findall(source)
+                     if (l or p or a).strip() and len((l or p or a).strip()) <= 32
+                     and len((l or p or a).split()) <= 4}, key=len)
+    nested = []
+    for i, short in enumerate(labels):
+        for long in labels[i + 1:]:
+            if short.lower() != long.lower() and re.search(r"(?<![a-z0-9])" + re.escape(short.lower()) + r"(?![a-z0-9])", long.lower()):
+                nested.append((short, long))
     seen, lines = set(), []
     for label, shared in collisions:
         if label in seen:
             continue
         seen.add(label)
         lines.append(f'button aria-label "{label}" shares {"/".join(shared)} with a field label')
+    out = []
+    if nested:
+        pairs = "; ".join(f'"{a}" is contained in "{b}"' for a, b in nested[:12])
+        out.append(f"{len(nested)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
+                   f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another "
+                   f"(e.g. \"From\" vs \"Filter by departure station\"): {pairs}")
     if not lines:
-        return []
-    return [f"{len(lines)} button label(s) collide with field labels; the fill helper's first rung is "
+        return out
+    return out + [f"{len(lines)} button label(s) collide with field labels; the fill helper's first rung is "
             f"getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it "
             f"shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; "
             f"submit: \"Send\"): " + "; ".join(lines[:20])]

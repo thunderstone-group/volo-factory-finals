@@ -19,6 +19,11 @@ logged-in scenario first waits for that button. Rules:
   filter toggle, apply, confirm, vote, follow — is a real `<button type="button">` with the exact name.
 - Only navigation to another screen is an `<a href>` link, and it still carries the exact name.
 - A sortable or toggleable column header is a `<button>` inside the `<th>`, named exactly the column title.
+  The FIRST click sorts ascending, the second descending (the suite asserts exactly that order), and values
+  that sort as strings must be rendered so that lexical and numeric order agree: zero-pad times and
+  durations (`05h28m`, `07:00`), never mix `5h28m` with `13h50m`.
+- No field label may be a whole-word substring of another field label on the same screen ("From" and "From
+  Station"): `getByLabel('From')` without `.first()` then hits two elements and fails in strict mode.
 - After login the header shows the exact controls the requirement lists (e.g. "Sign Out"), as buttons.
 ## 2. Names are case-insensitive SUBSTRING regexes
 `/archive/i` matches "Archive note". Whitespace runs are flexible. A few helpers ANCHOR the pattern:
