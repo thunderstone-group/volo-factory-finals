@@ -170,7 +170,7 @@ class CallBudget:
 def stream_completion(messages, model, base, key, budget, tries=3):
     """Buffer each attempt separately; failed streams never write application files."""
     payload = {"model": model, "messages": messages, "max_tokens": MAX_TOKENS,
-               "temperature": 0.3, "stream": True, "stream_options": {"include_usage": True}}
+               "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
     req = request.Request(base.rstrip("/") + "/chat/completions",
                           data=json.dumps(payload).encode("utf-8"),
                           headers={"Content-Type": "application/json",
