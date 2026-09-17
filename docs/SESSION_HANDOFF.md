@@ -5,19 +5,25 @@ the per-round ledger are in `docs/goal-2026-09-18.md`; the dated detail is in `d
 from "2026-09-18 — Content cap 131072". Branch `goal/round-1` (on top of `fix/call-budget`, PR #36
 open) is the only line; every round is a commit + a package under `runs/2026-09-18-goal/`.
 
-## State at 03:40
+## State at 05:12
 
-- Board: VOLO AI **53.1%**, rank 5 (round 3, submission `e3d00d4f3f4d`). Rounds: 0 = 45.0, 1 = 41.0,
-  2 = 37.2, 3 = 53.1, 4 = 48.1; round 5 (`9653af1b4ce2`, static gates) and round 6 (`f12d9a141dbb`,
-  + radio collision and synchronous-navigation rules) are in flight.
-- Per task best so far: Keep 28/32, Bookstack 28/34 (r0; r3 16, r4 23), StackOverflow 36/66,
-  Prestashop 56/86, 12306 64/135, Ctrip 43/125 (r1). The two large tasks and StackOverflow are where
-  the 80% is missing.
-- What is now deterministic in `oneshot/main.py` (all feed the one bounded repair): content cap 131072
-  and a split call budget; prose outside file blocks ignored; jsdom load of `/` (throw on load / blank
-  page); quoted-vocabulary gate (every quoted requirement string must appear in the source, partial
-  repairs kept); backend process-guard gate; button/field aria-label collision gate. `tests_oneshot`
-  57 green. Card `oneshot/dialect.md` 129 lines (59 at the start of the night).
+- Board: VOLO AI **60.8%**, rank 5 (round 10, submission `875c9522b2b5`). Round averages: 45.0, 41.0,
+  37.2, 53.1, 48.1, 44.3, 45.2, 46.8, 55.9, 54.8, **60.8**. Round 11 (`6f422db9ee51`) is a second sample
+  of the round-10 package: the board keeps the best submission average and per-task variance is large,
+  so re-sampling a good package is a legitimate lever (about CNY 5 per sample; balance CNY 122).
+- Per-task bests: Keep 28/32, Bookstack 32/34 (r7; swings 11–32), StackOverflow 53/66 (r10),
+  Prestashop 64/86 (r9), 12306 76/135 (r10), Ctrip 54/125 (r10).
+- Deterministic gates in `oneshot/main.py` (all feed the one bounded repair): content cap 131072 +
+  split call budget; prose outside blocks ignored; unterminated final block closed at finish=stop;
+  jsdom load of `/` (throw on load / blank); quoted-vocabulary gate; backend process-guard gate;
+  collision gate (button aria-labels and radio options sharing a word with a field label, CJK as
+  substrings; field labels that are whole-word substrings of another). `tests_oneshot` 57 green.
+  Card `oneshot/dialect.md` about 150 lines; the rules that moved the most: §6a nothing gated behind
+  login (Bookstack 11→32, SO 20→47), §1a buttons for actions (12306), §3c action bar below the title
+  (Keep), §7 verbatim vocabulary (SO Profile family).
+- What still costs the most: Bookstack's seed-click-after-navigation family (lists fetched after
+  navigation; stochastic), Ctrip's login entry not opening / login placeholder order from a screenshot,
+  12306 data semantics (filters, string-vs-numeric sort, duplicate sort headers), Prestashop carousel.
 
 ## How to continue
 
