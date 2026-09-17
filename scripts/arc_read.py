@@ -7,7 +7,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-READ_COMMANDS = {'balance', 'runs', 'tasks', 'models'}
+READ_COMMANDS = {'balance', 'runs', 'tasks', 'models', 'requests'}
 
 
 def redact(text, secrets=()):

@@ -734,3 +734,88 @@ each rule snapshot and experiment with date and source.
 - Not done here: other branches still carry the old `arcbench_cli.py` and call `./arcbench`
   from the main checkout. The main checkout is untouched, so those keep working until they
   rebase onto this change.
+
+## 2026-09-16 — Minimal V1 measured; V2 begins
+
+- V1 actually changed the generator input path and UI guidance; ZIP/prompt hashes bind every real request.
+- Reused V0, then generated 12 fixed V1 samples: local rates 13.1% (V0), 16.7% (V1 Flash), 20.2% (V1 Pro); neither candidate met the predeclared gate.
+- Nineteen gateway calls cost CNY 16.379350; all failures retained. No holdout generation, official submission, push or merge.
+- Browser evidence found name/scope drift and a natural early-locator race. Corrected ambiguous dynamic HTML to unknown; 90 focused regressions passed.
+- Decision: retain evidence and minimal feedback infrastructure; stop prompt/model-only expansion. Details: [V1 report](minimal-v1-quality-report-2026-09-16.md).
+- V2 scope: only shared editor/row actions and initialization/navigation, actual browser path checks, then four fixed Pro samples (two per task). Implementation started; no V2 quality result yet.
+- Official Lite source added at `1eb0183`: all 72 requirement/test text files match the retained baseline. Reference images themselves use “Take a note...”; corrected the one-sided naming-drift attribution and retained the scores. UI-contract questions drafted locally, not sent.
+- V2 shared-code acceptance passed in three real browser paths (navigation, modal editing, inline editing), including save/reopen/reload and executed-source hashes; 94 focused regressions passed. Four real Pro generations have started from a frozen explicit ZIP; quality results remain pending.
+
+## 2026-09-16 — Minimal V2 batch closed
+
+- Implemented two domain-neutral shared JS modules, protected in generated applications; browser coverage binds executed functions to source hashes.
+- Four fixed Pro generations used twelve attempts: both Bookstack delivered (16/34, 15/34), both Keep failed before usable code. No replacement or sample repair.
+- Bookstack navigation passed in both apps. One editor round trip passed; the other actually saved on the backend but read stale frontend state because `domain.shelves` was decoded as top-level `shelves`.
+- Ten StreamError attempts lack detailed upstream events; Keep quality remains unmeasured. Actual settled gateway cost: CNY 3.004732.
+- Decision: preserve the shared implementation; do not expand samples or claim cross-task gain. Next investigate generation diagnostics and the observed business-state boundary using retained artifacts.
+- 94 focused regressions, nine follow-up entry tests and three real component browser checks passed. All original application scores/sources retained; no upload, official run, push or merge.
+- Full evidence and limits: [V2 report](minimal-v2-quality-report-2026-09-16.md). Official-reference conflicts remain in a local clarification draft, not sent.
+
+## 2026-09-16 — Selective skill loading scoped
+
+- Reviewed the forwarded skill audit against the completed V2 batch: runtime skill discovery/loading remains absent; the guide and shared source are injected in full.
+- Recorded three candidate topics: interface contracts, ready navigation, and state round trips. Evidence strength and unverified generalization are explicit.
+- Proposed a short index with bounded on-demand reads, actual prompt/load traces, and a fixed-content comparison against full injection; splitting files alone does not qualify.
+- Generation diagnostics and the observed business-state mismatch remain the next priorities. No runtime loader implemented, new model calls, package changes, or skill-quality claims in this documentation step.
+- Execution scope and acceptance: [selective skill plan](minimal-skills-plan-2026-09-16.md).
+
+## 2026-09-16 — Organizer Q&A synchronized before continuation
+
+- Read the named group's ten imported ChatDrop messages, then all 1,109 subtitle segments of the organizer-published 54-minute Q&A using the existing browser session.
+- Recorded requirement/test discrepancies, acknowledged locator investigation, overlapping-key cost accounting, reusable scaffolding versus copied answers, and platform-failure handling.
+- Scoring formula, submission count, requirement release, image role, resource limits and network policy remain subject to announcement; participant assertions were not promoted to rules.
+- Continue with transport diagnostics and requirement-based business-state evidence. [Source times and decisions](official-qa-sync-2026-09-16.md).
+- Subsequently implemented bounded, redacted V2 stream diagnostics plus batch retention and interrupted-trace handling. Historical V0/V1/V2 packages remain byte-identical; a separate diagnostics candidate was built.
+- Initial validation exposed dropped diagnostic fields in the batch parser (42/43 passed); after fixing aggregation and adding interrupted-trace coverage, 44/44 passed. Includes synthetic real HTTP loopback and extracted-package verification.
+- No new model calls or quality claim. Old StreamError causes remain unknown; production gateway diagnostic coverage awaits a future bounded run. Hashes and limits are recorded in the Q&A sync document.
+
+## 2026-09-16 — State round-trip cause checked on a derived artifact
+
+- Resumed V2 without new generation. Replayed the two existing requirement-derived interaction checks on the second retained Bookstack application: 1/2 before, 2/2 after one response-decoding correction on a separate copy.
+- Original source and historic scores unchanged; both real container runs verified cleanup. This is a controlled diagnostic, not model-repair quality or full-suite improvement.
+- Evidence: `runs/minimal-skills-state/20260916-233304/`; [validation note](minimal-state-roundtrip-validation-2026-09-16.md).
+- Skill catalog/loader creation was not completed; runtime skill count remains zero. The earlier safety-block attribution is withdrawn: no original denial was found, and the execution ledger records zero permission denials.
+- Next: a bounded, source-bound state diagnostic and real model repair on a derived artifact; skill-assisted comparison only after genuine read-on-demand wiring exists. No batch expansion, upload, push or merge.
+
+## 2026-09-17 — Q&A commitment verified against original saved subtitles
+
+- Confirmed the local full timestamped transcript and 1109 subtitle segments; source hashes match the preserved manifest, ending at 54:16.88.
+- Corrected the previous weak summary: at 01:00–01:47 the organizer explicitly said formal tests will be grounded in requirements, including names used for lookup. At 20:26–20:38 the reply also confirmed the textual-requirement basis.
+- This does not prove practice tests are fixed. Preserve raw scores; distinguish unimplemented requirements, extra/contradictory test assumptions, environment/transport failures and blocked/unresolved cases in the requested per-case audit.
+- Do not encode undisclosed practice-test answers as skills. Full case-by-case attribution and runtime skill implementation remain unfinished; no new quality-test or model result is claimed by this documentation correction.
+- Evidence and exact timestamps: [Q&A sync](official-qa-sync-2026-09-16.md).
+
+## 2026-09-17 — Three local skills, real repair, and all 66 cases audited
+
+- Implemented an opt-in indexed/native read_skill repair client and three generic bodies; no full-body first-prompt injection or default generator change. Final 22 client regressions passed; initial fixture and gateway-index failures retained and corrected.
+- Real Pro conversation loaded all three skills, then proposed one source-bound edit. Requirement-derived browser checks passed 2/2; original full Bookstack suite scored 16/34 versus A0 15/34. Original input/tests unchanged; cleanup verified. No claim of skill-vs-no-skill advantage or new-generation generalization.
+- Read all Keep32/Bookstack34 requirement/spec pairs and selected raw errors; delivered [66-case ledger](minimal-case-ledger-2026-09-17.md). First blocked step and untested downstream behavior are explicit; not all causes independently reproduced.
+- Reproduced original Keep sidebar helper collapsing an already-open link sidebar. Verified reversed requirement/helper book-creation labels. Separate controlled state fix also changed only chapter-creation score, 15→16; the other18 failures remain.
+- Three real model requests included one diagnosed client compatibility failure; observed balance movement CNY0.332083, pending0, not asserted as request-linked billing. No new generation batch, upload, push, merge or baseline replacement.
+- Next: requirement-based business observation feeding bounded repair; no additional component library. [Full implementation/limits](minimal-skill-repair-and-case-audit-2026-09-17.md).
+
+## 2026-09-17 — Business observations wired into bounded skill repair
+
+- Added an opt-in source/contract-bound coordinator and three fixed browser templates: save/reopen, cancel/preserve, favorite action. Reused the existing skill client and isolation; no new component or skill library.
+- 37 targeted unit tests passed. Real first-artifact control observed 3/3 and requested no repair. A synthetic cancellation-writing defect was correctly detected in a real browser.
+- Corrected our observer's own login scope ambiguity; prior unknown results remain and triggered zero model calls. Final second-artifact observation found stale save and missing favorite action, while cancel passed.
+- The automatic real repair used three gateway requests but stopped at model_error with no accepted candidate. Detailed trace retrieval was then explicitly blocked by the tool; no alternate read path used, precise repair failure still unknown. Do not claim this block caused the earlier model failure.
+- No new full score or fresh generation, no upload/push/merge/default-package replacement. Next resolve the live repair failure before batch expansion. [Results and limitations](minimal-business-feedback-2026-09-17.md).
+
+## 2026-09-17 — Automatic business repair delivered, 15/34 to 17/34
+
+- Added metadata-only failure stages/codes and diagnostic-status.json, with no source, credentials or model content in the public receipt. Did not reread the previously denied trace.
+- Three bounded replays exposed a local120-second cutoff and then an8192-token length cutoff. Business repair uses300-second request cap within the unchanged300-second conversation budget and16384 output tokens; round/call limits and patch validation stay enforced.
+- Successful third replay used2 calls and one repair round: automatic save/cancel/favorite probes3/3, original full suite17/34 versus A0 15/34. REQ-6.2.1 and REQ-8.1 newly passed; no prior pass regressed. Only derived frontend app.js changed, no official feedback to model.
+- Final48 focused regressions passed. Six real requests across the three replays; timeout usage unknown. Original application/tests/default package/shared modules unchanged and containers cleaned. No new generation, upload, official submission, push or merge.
+- This verifies bounded repair of one retained artifact, not general generation quality or all34 requirements. Next use a frozen integrated candidate on fresh samples, retaining the explicit limits of caller-reviewed observation configuration. [Evidence and next boundary](minimal-repair-delivery-2026-09-17.md).
+
+
+## 2026-09-17 — wanctl 接续：V3预检前置与低推理控制
+
+在现有minimal工作树新增可信能力预检与逐阶段回执，接入既有低推理控制；91项指定回归通过，0失败/错误/跳过。复现镜像无bwrap，受限namespace探针被拒绝，未放宽权限。后续冻结打包与扩大回归请求被工具安全检查拦下，未执行/重试，未进入Linux解包验收。无真实模型调用、新平台成绩、上传、提交或合并。候选仍不可宣称已部署；详见`minimal-v3-preflight-2026-09-17.md`。

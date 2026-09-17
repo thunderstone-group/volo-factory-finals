@@ -1,3 +1,6 @@
+> 当前方向名称及离线反馈原型见[极简版（minimal）](minimal.md)。本文保留历史 one-shot
+> 首次生成基线的说明；`oneshot/` 等兼容路径及默认包未迁移、未改变。
+
 # One-shot candidate inside VOLO
 
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;

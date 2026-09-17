@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "skills": [
+    {
+      "id": "interface-contract",
+      "name": "Interface contract",
+      "description": "Resolve interface names, scope, and entry points from requirements.",
+      "trigger": "Ambiguous names, action scope, or requirement versus evaluator assumptions.",
+      "version": "1.0.0",
+      "path": "interface-contract/SKILL.md",
+      "body_sha256": "b0c5d57195213000c760d445e9c00c584e80818fe99c648230100ba33b0ed3ad"
+    },
+    {
+      "id": "ready-navigation",
+      "name": "Ready navigation",
+      "description": "Use supplied navigation modules with prepared state and synchronous rendering.",
+      "trigger": "Initial render or navigation depends on state that arrives too late.",
+      "version": "1.0.0",
+      "path": "ready-navigation/SKILL.md",
+      "body_sha256": "6c988e2efa43ef5f6e829fb20a968fc8832add696d61ecf7221b51bdb8cb4851"
+    },
+    {
+      "id": "state-roundtrip",
+      "name": "State roundtrip",
+      "description": "Trace save decoding, store updates, and reopen consistency.",
+      "trigger": "Saved values become stale when reopened or refreshed.",
+      "version": "1.0.0",
+      "path": "state-roundtrip/SKILL.md",
+      "body_sha256": "e6807881d1379311f47fcfe028d02cc160940dfb513b16f4ca17731e4106b419"
+    }
+  ]
+}
