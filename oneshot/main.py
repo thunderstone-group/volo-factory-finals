@@ -630,6 +630,11 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
         content = ""
         for turn in range(2):
             content, _, finish = stream_completion(messages, model, base, key, budget)
+            if finish == "stop" and template is None and parse_blocks(content)[1]:
+                # The model stopped on its own but forgot the closing marker of the last file:
+                # the content is whole, only the framing is missing. Close it rather than lose the draft.
+                print("[oneshot] closing an unterminated final block at finish_reason=stop", file=sys.stderr)
+                content = content.rstrip("\r\n") + "\n=== END ===\n"
             batch, missing = parse_blocks(content)
             for name in [item["path"] for item in batch] + missing:
                 resolve_path(stage, name)

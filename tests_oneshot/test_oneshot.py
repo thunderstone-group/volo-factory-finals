@@ -258,7 +258,7 @@ class OfflineCase(unittest.TestCase):
         self.assertIn("backend/server.js", budget.attempts[1]["messages"][-1]["content"])
 
     def test_no_continuation_for_stop_with_open_block_or_length_between_blocks(self):
-        cases = (("=== FILE: x.js ===\npartial", "stop", "unterminated"),
+        cases = (("=== FILE: x.js ===\npartial", "stop", "incomplete delivery"),
                  (application(), "length", "truncated between"),
                  ("", "stop", "no content"),
                  ("no blocks", "stop", "no file blocks"))
