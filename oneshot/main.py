@@ -728,6 +728,15 @@ def _label_words(text):
     return words
 
 
+def _shared_words(text, field_words):
+    """Latin words match whole; a CJK field label matches as a substring (搜航班号 contains 航班号)."""
+    shared = set(_label_words(text) & field_words)
+    for word in field_words:
+        if re.search(r"[\u4e00-\u9fff]", word) and len(word) >= 2 and word in text:
+            shared.add(word)
+    return sorted(shared)
+
+
 def _frontend_sources(stage):
     out = []
     for directory, dirs, names in os.walk(Path(stage) / "frontend", followlinks=False):
@@ -755,7 +764,7 @@ def aria_collision_gaps(stage):
         before = source[max(0, match.start() - 160):match.start()].lower()
         if not ("<button" in before or "'button'" in before or '"button"' in before or "createelement('button')" in before):
             continue
-        shared = sorted(_label_words(match.group(1)) & field_words)
+        shared = _shared_words(match.group(1), field_words)
         if shared:
             collisions.append((match.group(1), shared))
     labels = sorted({(l or p or a).strip() for l, p, a in FIELD_LABEL.findall(source)
@@ -766,12 +775,16 @@ def aria_collision_gaps(stage):
         for long in labels[i + 1:]:
             if short.lower() != long.lower() and re.search(r"(?<![a-z0-9])" + re.escape(short.lower()) + r"(?![a-z0-9])", long.lower()):
                 nested.append((short, long))
+    for match in re.finditer(r"""type=["']radio["'][^>]*>\s*([^<{\n]{1,30})""", source):
+        shared = _shared_words(match.group(1), field_words)
+        if shared:
+            collisions.append(("radio " + match.group(1).strip(), shared))
     seen, lines = set(), []
     for label, shared in collisions:
         if label in seen:
             continue
         seen.add(label)
-        lines.append(f'button aria-label "{label}" shares {"/".join(shared)} with a field label')
+        lines.append(f'{"radio option" if label.startswith("radio ") else "button aria-label"} "{label.removeprefix("radio ")}" shares {"/".join(shared)} with a field label')
     out = []
     if nested:
         pairs = "; ".join(f'"{a}" is contained in "{b}"' for a, b in nested[:12])
