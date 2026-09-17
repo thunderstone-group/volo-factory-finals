@@ -9,6 +9,17 @@ elements, `aria-label`, `<label for>`, real landmarks.
 - Fill a field: `getByLabel`, then `getByPlaceholder`, then roles `textbox, combobox, spinbutton`, then a LAST RESORT bare `getByRole('textbox').first()` with no name at all.
 - Hover: same ladder as click, `button` first, `getByText` last.
 - Roles in use: button, textbox, link, combobox, checkbox, tab, heading, radio, option, menuitem, searchbox, spinbutton, cell, status, row, alert, dialog, region.
+## 1a. Buttons for actions, links only for navigation — regardless of the requirement's word
+Helpers assert session and action controls by ROLE: `getByRole('button', {name: /sign out/i})` right after
+login, `getByRole('button', {name: /^Book$/i})`, `getByRole('button', {name: /Departure\s+Time/i})` for a
+sortable column header. A requirement may call it a "link" ("replace the Register link with Sign Out"); the
+suite still wants a `<button>`. On one 12306 run a `<a>Sign Out</a>` failed 73 of 135 tests because every
+logged-in scenario first waits for that button. Rules:
+- Anything that changes state or triggers an action — sign in/out, submit, book, buy, add to cart, sort,
+  filter toggle, apply, confirm, vote, follow — is a real `<button type="button">` with the exact name.
+- Only navigation to another screen is an `<a href>` link, and it still carries the exact name.
+- A sortable or toggleable column header is a `<button>` inside the `<th>`, named exactly the column title.
+- After login the header shows the exact controls the requirement lists (e.g. "Sign Out"), as buttons.
 ## 2. Names are case-insensitive SUBSTRING regexes
 `/archive/i` matches "Archive note". Whitespace runs are flexible. A few helpers ANCHOR the pattern:
 `/^archived?$/i` for the archive view, `/^settings$/i` for the settings screen. Assume any sidebar
@@ -38,6 +49,14 @@ exactly "Edit" is fine — the click ladder reaches links.
 reveal the actions; if a button also answers to the title it resolves to that hover-only button, the click
 re-renders the row, the button vanishes, and the test deadlocks. On an unhovered page
 `getByRole('button', {name: /<any note title>/i})` must have count 0 — titles live in plain text nodes.
+## 3c. Hover-revealed actions must never cover the thing that gets hovered
+The suite hovers the row TITLE (`getByRole('heading', {name})`) and then clicks an action. If the revealed
+action bar is absolutely positioned over the title, the hover lands on an icon (`<span aria-hidden>🎨</span>
+from .row-actions intercepts pointer events`), Playwright retries until the 10 s budget dies, and every
+hover-then-act test on that screen fails (13 of 15 Keep failures on one run). So the action bar is a normal
+block BELOW the text in the card's flow (`display:none` → `display:flex` on `:hover` / `:focus-within`),
+never `position:absolute` over the title, never overlapping any text a test may hover or click. Nothing
+else may sit on top of a title either: no full-card overlay links, no `::after` covers.
 ## 4. An open chooser must make the rest of the page inert
 Playwright does NOT honour `aria-modal`. Put `inert` and `aria-hidden="true"` on every sibling while a
 dialog, dropdown, colour palette or label picker is open. In particular **no text input outside the open
@@ -52,6 +71,12 @@ or to the composer must be reachable from inside it by the generic verb.
 93% of tests need pre-seeded rows and there is no reset API. Every quoted title in a requirement
 description ("The system contains …") is a literal seed row: create it at startup with that exact title,
 one dedicated row per mutating requirement, never shared between tests. Four workers hit one server at once.
+## 6a. Ownership never hides a control
+Tests log in as the seed account the requirement pairs with a row ("owned by question_editor@example.com")
+and then expect the bare "Edit" / "Delete" / "Reply" control on that row. If your ownership check does not
+recognise the seed pairing, the control is missing and the whole edit/delete family scores zero; no test
+ever asserts that a non-owner CANNOT see such a control. So: every signed-in user sees every action control
+a requirement mentions; seed rows are owned by exactly the seed account the requirement names.
 ## 7. Verbatim vocabulary — the largest family of lost points on big apps
 The assert-visible ladder ends in `getByRole('button', {name})`; when it fails it means NOTHING on the page
 carried the phrase. Every quoted string and every noun phrase in a THEN step must appear literally as
