@@ -70,6 +70,11 @@ Playwright does NOT honour `aria-modal`. Put `inert` and `aria-hidden="true"` on
 dialog, dropdown, colour palette or label picker is open. In particular **no text input outside the open
 chooser may be visible**: the fill helper's last resort is the first bare textbox on the page, so a header
 Search box will silently swallow typing meant for the dialog.
+**An idle overlay root must not exist in the hit-test tree.** A permanent `<div id="dialog-root">` /
+toast root / backdrop that covers the viewport intercepts every hover and click even when empty
+(`<div id="dialog-root"></div> intercepts pointer events` killed 26 of 32 Keep tests on one run). Keep such
+roots `display:none` (or `pointer-events:none`) until a dialog actually opens, and remove the backdrop
+when it closes.
 ## 5. A verb must resolve INSIDE the container the test is working in
 With the composer ("Take a note" editor) open the test still searches `/more|options|menu/i` and
 `/labels/i`. If the composer offers neither, the ladder escapes to the banner "Menu" button and the sidebar
