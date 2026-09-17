@@ -317,6 +317,36 @@ class OfflineCase(unittest.TestCase):
         self.assertIn('"billing_status": "unknown"', capture.getvalue())
         self.assertNotIn(SYNTHETIC_KEY, capture.getvalue())
 
+    def test_cli_generates_into_runner_prepopulated_output(self):
+        # A fresh platform run pre-creates `.arc/` and `requirements/` inside output-dir.
+        requirement = self.out / "requirements"
+        requirement.mkdir(parents=True)
+        (requirement / "requirements.yaml").write_text("synthetic: true")
+        (self.out / ".arc" / "traceability").mkdir(parents=True)
+        (self.out / ".arc" / "runner-events.jsonl").write_text("{}\n")
+        self.replies(events(application()))
+        with patch.dict(os.environ, {"OPENAI_API_KEY": SYNTHETIC_KEY}, clear=True), \
+                contextlib.redirect_stderr(io.StringIO()), contextlib.redirect_stdout(io.StringIO()):
+            code = adapter.main([str(requirement), "--output-dir", str(self.out)])
+        self.assertEqual(code, 0)
+        self.assertEqual(self.transport.call_count, 1)
+        self.assertTrue((self.out / "frontend/package.json").is_file())
+        self.assertTrue((self.out / "backend/package.json").is_file())
+        self.assertEqual((self.out / ".arc" / "runner-events.jsonl").read_text(), "{}\n")
+        self.assertEqual((requirement / "requirements.yaml").read_text(), "synthetic: true")
+        self.assertEqual(list(self.out.glob(".oneshot-*")), [])
+
+    def test_cli_prepopulated_output_with_stray_file_is_still_rejected(self):
+        requirement = self.out / "requirements"
+        requirement.mkdir(parents=True)
+        (requirement / "requirements.yaml").write_text("synthetic: true")
+        (self.out / "stale.txt").write_text("leftover")
+        capture = io.StringIO()
+        with patch.dict(os.environ, {"OPENAI_API_KEY": SYNTHETIC_KEY}, clear=True), contextlib.redirect_stderr(capture):
+            self.assertEqual(adapter.main([str(requirement), "--output-dir", str(self.out)]), 1)
+        self.transport.assert_not_called()
+        self.assertIn("absent or empty", capture.getvalue())
+
     def test_cli_missing_requirements_is_nonzero_without_http(self):
         with contextlib.redirect_stderr(io.StringIO()):
             self.assertEqual(adapter.main([str(self.root), "--output-dir", str(self.out)]), 1)
