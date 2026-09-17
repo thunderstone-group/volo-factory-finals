@@ -662,16 +662,63 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             raise ValueError("upgrade did not change any files")
         if SMOKE:
             repair_delivery(stage, files, messages + [{"role": "assistant", "content": content}],
-                            model, base, key, budget, template)
+                            model, base, key, budget, template, requirements)
         publish(stage, out, template, snapshot, stamp)
     return files, budget.summary()
 
 
-def repair_delivery(stage, files, messages, model, base, key, budget, template=None):
-    """Smoke-check the staged app; on failure spend at most one model call on a fix and keep
-    it only if the check then passes. Records the outcome in budget.smoke."""
+QUOTED = re.compile(r'[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
+VOCAB_SHOWN = 60
+
+
+def vocabulary_gaps(stage, requirements):
+    """Every string the requirement quotes is matched verbatim by the suite (control names,
+    messages, seed titles, accounts). Return the ones absent from the delivered source."""
+    seen, phrases = set(), []
+    for match in QUOTED.finditer(requirements or ""):
+        phrase = re.sub(r"\s+", " ", match.group(1)).strip()
+        if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
+                or phrase.lower() in seen):
+            continue
+        seen.add(phrase.lower())
+        phrases.append(phrase)
+    if not phrases:
+        return [], 0
+    chunks = []
+    for directory, dirs, names in os.walk(Path(stage), followlinks=False):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d not in TEMPLATE_ARTIFACTS]
+        for name in names:
+            if name == "package-lock.json" or name.startswith("."):
+                continue
+            path = Path(directory) / name
+            try:
+                if path.stat().st_size <= 2_000_000:
+                    chunks.append(path.read_text(encoding="utf-8", errors="replace"))
+            except OSError:
+                continue
+    corpus = re.sub(r"\s+", " ", "\n".join(chunks)).lower()
+    corpus = corpus.replace("&amp;", "&").replace("&quot;", '"').replace("&#39;", "'")
+    missing = [p for p in phrases if p.lower() not in corpus]
+    if not missing:
+        return [], 0
+    shown = ", ".join('"' + p + '"' for p in missing[:VOCAB_SHOWN])
+    more = f" (and {len(missing) - VOCAB_SHOWN} more)" if len(missing) > VOCAB_SHOWN else ""
+    return [f"{len(missing)} phrase(s) quoted in the requirements never appear in the delivered source, and the "
+            f"suite matches every quoted string verbatim as visible text, a control's accessible name, a message "
+            f"or a seed value. Add each one exactly as written where the requirement implies it (a control name, "
+            f"a heading, a status message, a seed row, or a placeholder for a value the user types): "
+            f"{shown}{more}"], len(missing)
+
+
+def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None):
+    """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
+    at most one model call on a fix and keep it only if the smoke check then passes and the
+    vocabulary did not get worse. Records the outcome in budget.smoke."""
     problems, executed = smoke_check(stage)
-    budget.smoke = {"executed": executed, "problems": problems, "repair": None}
+    vocab, missing_before = vocabulary_gaps(stage, requirements)
+    budget.smoke = {"executed": executed, "problems": problems + vocab, "vocabulary_missing": missing_before,
+                    "repair": None}
+    problems = problems + vocab
     if not problems:
         return
     if budget.exhausted():
@@ -699,9 +746,13 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         after, _ = smoke_check(stage)
         if after:
             raise ValueError("still failing after repair: " + "; ".join(after))
+        _, missing_after = vocabulary_gaps(stage, requirements)
+        if missing_after > missing_before:
+            raise ValueError(f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
         for item in batch:
             files[:] = [f for f in files if f["path"] != item["path"]] + [item]
-        budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch]}
+        budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch],
+                                  "vocabulary_missing_after": missing_after}
     except Exception as exc:
         # Keep the original delivery: a half-applied fix could be worse than the known state.
         shutil.rmtree(stage)

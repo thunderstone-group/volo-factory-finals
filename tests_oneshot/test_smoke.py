@@ -82,7 +82,7 @@ class SmokeCase(unittest.TestCase):
         self.replies(events(app(server())))
         files, budget = self.generate()
         self.assertEqual(self.transport.call_count, 1)
-        self.assertEqual(budget.smoke, {"executed": True, "problems": [], "repair": None})
+        self.assertEqual(budget.smoke, {"executed": True, "problems": [], "vocabulary_missing": 0, "repair": None})
         self.assertTrue((self.out / "backend/server.js").is_file())
         self.assertEqual(list(self.root.glob(".oneshot-*")), [])
 
@@ -92,7 +92,7 @@ class SmokeCase(unittest.TestCase):
         files, budget = self.generate()
         self.assertEqual(self.transport.call_count, 2)
         self.assertIn("GET / returned HTTP 404", budget.smoke["problems"][0])
-        self.assertEqual(budget.smoke["repair"], {"accepted": True, "files": ["backend/server.js"]})
+        self.assertEqual(budget.smoke["repair"], {"accepted": True, "files": ["backend/server.js"], "vocabulary_missing_after": 0})
         self.assertIn("'index.html'", (self.out / "backend/server.js").read_text())
         delivered = {f["path"]: f["content"] for f in files}
         self.assertIn("'index.html'", delivered["backend/server.js"])
@@ -145,7 +145,7 @@ class SmokeCase(unittest.TestCase):
         self.replies(events(app(server())))
         with patch.object(adapter.shutil, "which", return_value=None):
             files, budget = self.generate()
-        self.assertEqual(budget.smoke, {"executed": False, "problems": [], "repair": None})
+        self.assertEqual(budget.smoke, {"executed": False, "problems": [], "vocabulary_missing": 0, "repair": None})
         self.assertEqual(self.transport.call_count, 1)
 
     def test_frontend_that_throws_on_load_is_reported_when_jsdom_is_available(self):
@@ -156,6 +156,20 @@ class SmokeCase(unittest.TestCase):
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         self.assertTrue(any("frontend script error on load" in p for p in budget.smoke["problems"]), budget.smoke)
+
+    def test_missing_quoted_vocabulary_is_reported_and_partial_repair_is_kept(self):
+        req = 'After login replace the link with \u201cSign Out\u201d. Show \u201cEmail cannot be empty\u201d. Seed \u201cBook 5.1\u201d.'
+        good = app(server()).replace("<h1>Synthetic</h1>", "<h1>Synthetic</h1><p>Book 5.1</p>")
+        fixed = block("frontend/public/index.html",
+                      "<!doctype html><title>Synthetic</title><h1>Synthetic</h1><p>Book 5.1</p><button>Sign Out</button><script src=\"app.js\"></script>")
+        self.replies(events(good), events(fixed))
+        budget = adapter.CallBudget()
+        adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        self.assertEqual(budget.smoke["vocabulary_missing"], 2)
+        self.assertTrue(any("Sign Out" in p and "Email cannot be empty" in p for p in budget.smoke["problems"]), budget.smoke)
+        self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
+        self.assertEqual(budget.smoke["repair"]["vocabulary_missing_after"], 1)
+        self.assertIn("Sign Out", (self.out / "frontend/public/index.html").read_text())
 
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"
@@ -169,7 +183,7 @@ class SmokeCase(unittest.TestCase):
             code = adapter.main([str(requirement), "--output-dir", str(self.out)])
         self.assertEqual(code, 0)
         line = [l for l in capture.getvalue().splitlines() if l.startswith("[oneshot] smoke ")][0]
-        self.assertEqual(json.loads(line.split(" ", 2)[2]), {"executed": True, "problems": [], "repair": None})
+        self.assertEqual(json.loads(line.split(" ", 2)[2]), {"executed": True, "problems": [], "vocabulary_missing": 0, "repair": None})
         self.assertNotIn(SYNTHETIC_KEY, capture.getvalue())
 
 
