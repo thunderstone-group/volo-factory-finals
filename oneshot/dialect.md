@@ -103,7 +103,11 @@ container kills every test that types into that field. Therefore containers (`se
 word. The stepper next to a "Quantity" field is the classic leak: a `<button aria-label="Decrease
 quantity">` placed before the input is what `getByLabel(/quantity/i).first()` returns, and
 `inputValue()` on a button fails. Name steppers "Minus" / "Plus" (or "Fewer" / "More"), never with the
-field's word, and put the input BEFORE its steppers in DOM order. Exception: a requirement that names a region literally ("the Contact information section") gets one
+field's word, and put the input BEFORE its steppers in DOM order. The same leak with radios: a mode switch
+`<label><input type="radio"> 航班号</label>` placed before the "航班号" text field is what
+`getByLabel(/航班号/).first()` returns, and `fill()` on a radio fails. Mode/filter radios and checkboxes must
+not share a word with any text field on the screen (name the modes "按编号查询" vs field "航班号", or put the
+text field first in DOM order). Exception: a requirement that names a region literally ("the Contact information section") gets one
 `<section aria-label="Contact information">` whose name shares no word with any field label on that screen.
 ## 8. Mechanics
 - Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
