@@ -33,6 +33,18 @@ MAX_CALLS = 3  # Shared by retries and the single truncation continuation.
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
 MAX_TEMPLATE_FILES = 256
 TEMPLATE_ARTIFACTS = {"node_modules", "dist", "__pycache__"}
+APPLICATION_ROOTS = ("frontend", "backend")
+RUNNER_METADATA = {"requirements"}  # non-dot entries the platform runner pre-creates
+
+
+def runner_metadata_only(out):
+    """True when output-dir holds only runner metadata (dotfiles, requirements/) and no app."""
+    if out.is_symlink() or not out.is_dir():
+        return False
+    entries = list(out.iterdir())
+    return bool(entries) and all(e.name.startswith(".") or (e.name in RUNNER_METADATA and e.is_dir())
+                                 for e in entries)
+
 
 CONTRACT = """## Delivery contract (a runner enforces this exactly)
 Emit two npm packages under one application root.
@@ -456,14 +468,30 @@ def main(argv=None):
     started = time.monotonic()
     try:
         template = args.template_dir
-        # The platform places Evolution's supplied application directly in output-dir.
-        # Arbitrary leftovers fail the template contract before any model request.
-        if template is None and args.output_dir.is_dir() and any(args.output_dir.iterdir()):
-            template = args.output_dir
-        files, _ = generate(document.read_text(encoding="utf-8"),
-                            os.environ.get("MODEL", DEFAULT_MODEL),
-                            os.environ.get("OPENAI_BASE_URL", DEFAULT_BASE), key,
-                            args.output_dir, budget, template=template)
+        out = Path(os.path.abspath(args.output_dir))
+        if template is None and runner_metadata_only(out):
+            # A fresh platform run pre-populates output-dir with `.arc/` and `requirements/`
+            # only. Generate beside it, then move the two application roots in, keeping
+            # the runner's metadata untouched.
+            stage = out / (".oneshot-stage-" + uuid.uuid4().hex)
+            try:
+                files, _ = generate(document.read_text(encoding="utf-8"),
+                                    os.environ.get("MODEL", DEFAULT_MODEL),
+                                    os.environ.get("OPENAI_BASE_URL", DEFAULT_BASE), key,
+                                    stage, budget)
+                for name in APPLICATION_ROOTS:
+                    (stage / name).rename(out / name)
+            finally:
+                shutil.rmtree(stage, ignore_errors=True)
+        else:
+            # The platform places Evolution's supplied application directly in output-dir.
+            # Arbitrary leftovers fail the template contract before any model request.
+            if template is None and out.is_dir() and any(out.iterdir()):
+                template = out
+            files, _ = generate(document.read_text(encoding="utf-8"),
+                                os.environ.get("MODEL", DEFAULT_MODEL),
+                                os.environ.get("OPENAI_BASE_URL", DEFAULT_BASE), key,
+                                out, budget, template=template)
     except Exception as exc:
         print(("[oneshot] failed: " + str(exc)).replace(key, "[REDACTED]"), file=sys.stderr)
         return 1
