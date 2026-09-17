@@ -97,6 +97,12 @@ visible text or as an accessible name; synonyms and paraphrases score zero. Conc
   control with exactly that name ("Profile", "Addresses", "Order history and details", "Favorites",
   "Recently viewed", "Watch tag"). After login the word "Profile" must be a visible button or link.
 - Every seed name, product title, wishlist name, tag or username quoted in a requirement exists verbatim.
+- Chinese-language apps: the suite's patterns carry English fallbacks (`/账号|account/i`, `/密码|password/i`,
+  `/登录|login/i`). Give every form field and primary action a bilingual accessible name — label
+  `账号 Account` for the multi-purpose login identifier (email / username / mobile), `密码 Password`,
+  button `登录 Login`, `注册 Register`, `搜索 Search`, `提交订单 Submit order` — so either language matches.
+  When a requirement defers a form's exact wording to a reference screenshot you cannot see, the
+  bilingual label is the only reliable hit (one Ctrip run lost 50 of 125 tests on that single field).
 Notifications are `role="status"` carrying the literal message plus an `Undo` button. Section titles are
 visible headings (`<h2>Comments</h2>`), never an `aria-label` on the container.
 ## 7a. `aria-label` is reserved for form controls and icon-only buttons
