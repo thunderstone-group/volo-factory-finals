@@ -49,7 +49,7 @@ def app(server_js):
             block("backend/server.js", server_js) +
             block("frontend/package.json",
                   '{"scripts":{"build":"node -e \\"require(\'fs\').cpSync(\'public\',\'dist\',{recursive:true})\\""}}') +
-            block("frontend/public/index.html", "<!doctype html><title>Synthetic</title><script src=\"app.js\"></script>") +
+            block("frontend/public/index.html", "<!doctype html><title>Synthetic</title><h1>Synthetic</h1><script src=\"app.js\"></script>") +
             block("frontend/public/app.js", "console.log('synthetic');"))
 
 
@@ -147,6 +147,15 @@ class SmokeCase(unittest.TestCase):
             files, budget = self.generate()
         self.assertEqual(budget.smoke, {"executed": False, "problems": [], "repair": None})
         self.assertEqual(self.transport.call_count, 1)
+
+    def test_frontend_that_throws_on_load_is_reported_when_jsdom_is_available(self):
+        throwing = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                         block("frontend/public/app.js", "document.body.appendChild(null);"))
+        self.replies(events(throwing))
+        files, budget = self.generate(limit=1)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        self.assertTrue(any("frontend script error on load" in p for p in budget.smoke["problems"]), budget.smoke)
 
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"

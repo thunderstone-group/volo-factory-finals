@@ -100,7 +100,10 @@ order, so `.first()` returns the container and `fill()` fails ("Element is not a
 container kills every test that types into that field. Therefore containers (`section`, `form`, `nav`,
 `div`, `ul`, `table`, `article`, `aside`) carry NO `aria-label` and NO `aria-labelledby`; only `input`,
 `textarea`, `select` and icon-only `button`s do, and no two visible controls on a screen share a label
-word. Exception: a requirement that names a region literally ("the Contact information section") gets one
+word. The stepper next to a "Quantity" field is the classic leak: a `<button aria-label="Decrease
+quantity">` placed before the input is what `getByLabel(/quantity/i).first()` returns, and
+`inputValue()` on a button fails. Name steppers "Minus" / "Plus" (or "Fewer" / "More"), never with the
+field's word, and put the input BEFORE its steppers in DOM order. Exception: a requirement that names a region literally ("the Contact information section") gets one
 `<section aria-label="Contact information">` whose name shares no word with any field label on that screen.
 ## 8. Mechanics
 - Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.

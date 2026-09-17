@@ -390,6 +390,58 @@ def _check_page(port, problems):
             problems.append(f"GET {path} returned an empty body")
 
 
+DOM_PROBE = r"""
+const { JSDOM, VirtualConsole } = require('jsdom');
+(async () => {
+  const errors = [];
+  const vc = new VirtualConsole();
+  vc.on('jsdomError', (e) => errors.push(String((e && e.message) || e).split('\n')[0].slice(0, 300)));
+  let dom;
+  try {
+    dom = await JSDOM.fromURL(process.env.PROBE_URL, { runScripts: 'dangerously', resources: 'usable',
+                                                 pretendToBeVisual: true, virtualConsole: vc });
+  } catch (e) { console.log(JSON.stringify({ load_error: String(e).slice(0, 300) })); return; }
+  await new Promise((r) => setTimeout(r, 2500));
+  const body = dom.window.document.body;
+  const text = body ? body.textContent.replace(/\s+/g, ' ').trim() : '';
+  console.log(JSON.stringify({ text_chars: text.length, errors: errors.slice(0, 5) }));
+  dom.window.close();
+})();
+"""
+
+
+def _check_dom(stage, port, problems):
+    """Load `/` in jsdom with scripts running: a frontend that throws on load or renders no text
+    scores zero on every test, and no HTTP check can see it. Skips silently when jsdom cannot
+    be installed (offline) so the check never blocks delivery on its own account."""
+    node, npm = shutil.which("node"), shutil.which("npm")
+    prefix = Path(tempfile.gettempdir()) / "oneshot-jsdom"  # one install per machine, reused across runs
+    if not (prefix / "node_modules" / "jsdom").is_dir():
+        try:
+            install = subprocess.run([npm, "install", "--prefix", str(prefix), "jsdom", "--no-audit", "--no-fund",
+                                      "--silent"], env=_child_env(), capture_output=True, timeout=150)
+        except subprocess.TimeoutExpired:
+            return
+        if install.returncode != 0 or not (prefix / "node_modules" / "jsdom").is_dir():
+            return
+    try:
+        run = subprocess.run([node, "-e", DOM_PROBE],
+                             env={**_child_env(), "NODE_PATH": str(prefix / "node_modules"),
+                                  "PROBE_URL": f"http://127.0.0.1:{port}/"},
+                             capture_output=True, timeout=60, text=True)
+        report = json.loads(run.stdout.strip().splitlines()[-1])
+    except (subprocess.TimeoutExpired, ValueError, IndexError):
+        return
+    if report.get("load_error"):
+        problems.append(f"loading / in a DOM failed: {report['load_error']}")
+        return
+    for err in report.get("errors", []):
+        problems.append(f"frontend script error on load (the page is blank for every test): {err}")
+    if not report.get("errors") and report.get("text_chars", 0) == 0:
+        problems.append("after scripts run, / renders no visible text (blank page); the app must render its "
+                        "home screen synchronously on load, without waiting for anything a test cannot trigger")
+
+
 def smoke_check(stage):
     """Build the frontend, start the backend on a free port and read it the way the runner
     does. Returns (problems, executed). Never calls a model; skips when node/npm are absent."""
@@ -447,6 +499,8 @@ def smoke_check(stage):
         if ready:
             try:
                 _check_page(port, problems)
+                if not problems:
+                    _check_dom(stage, port, problems)
             except Exception as exc:
                 problems.append(f"GET / failed: {str(exc)[:200]}")
     finally:
