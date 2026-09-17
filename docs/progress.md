@@ -734,3 +734,15 @@ each rule snapshot and experiment with date and source.
 - Not done here: other branches still carry the old `arcbench_cli.py` and call `./arcbench`
   from the main checkout. The main checkout is untouched, so those keep working until they
   rebase onto this change.
+
+## 2026-09-17 — Fable takes over; one-shot line measured on all six Web tasks
+
+- Codex/ChatGPT execution stopped by the owner; the minimal worktree was committed as-is (`c55b8b3`, pushed) and all thin/V3 lines are parked. The Lite thin package hung after one request and its Keep run failed on readiness; no further investment.
+- The one-shot package had never run on the platform: the runner pre-populates the output directory with `.arc/` and `requirements/`, which the entrypoint rejected (run `12f7c07637ec`). Fixed in PR #34 (generate beside the metadata, move `frontend/` and `backend/` in).
+- Dialect-card ablation on platform Keep, three runs each: ported generic card 21/20/17; ported + hover rule 19/26/25; original 59-line lab card 26/24/28; lab card + "hide instead of inert" 22/17/not-ready. Decision: the lab card verbatim, no further card tuning on Keep — single-sentence edits swing ±5 tests.
+- Root causes found with local replays: always-visible row actions and `<button>` sidebar entries let the helper's page-wide `.first()` pick the wrong control (archive/trash/labels families); `inert` does not stop `isVisible()` resolution, so a sidebar link wins over a picker checkbox (labels family, all nine runs).
+- Holdout on the lab-card package: Bookstack 27/34, Prestashop 51/86, Ctrip 20/125, StackOverflow 0/66, 12306 0/135. Both zeros and one Keep run were delivery faults at `/` (404 from `.index.html` path join; `application/octet-stream` making the browser download). Aggregated board 38.8%, rank 6 (from 19.6%).
+- Helper survey: keep/prestashop/stackoverflow share identical resolver functions, ctrip is a variant, bookstack and 12306 are a different generation. The card's mechanics are corpus-level for four of six apps, not Keep-only.
+- Local generation is unusable today: nine local calls and three parallel curl probes were all cut by the gateway or the path to it (all three at the same instant, unbilled); platform-side requests are unaffected. Experiments run on the platform.
+- Added the delivery smoke check with one bounded repair (this branch, PR #35): build, start on a free port, read `/api/health`, `/` and referenced assets; validated on the real failing artifacts. Six-task platform validation on submission `7fd7a288b404`.
+- Next: the evaluator-reading audit (one visible control per verb, hover-only row actions, links for navigation, hidden siblings while a chooser is open) as a deterministic gate with bounded repair, then requirement-group generation for the large tasks. Evidence: `runs/2026-09-17-web-keep-oneshot/`.
