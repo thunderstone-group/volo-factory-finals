@@ -1,3 +1,41 @@
+# Current handoff — 2026-09-18 03:40 (goal mode, Fable alone while the owner sleeps)
+
+Owner's goal (01:53): `arc-bench-web` aggregated board ≥ 80%, local and platform. Loop, guards and
+the per-round ledger are in `docs/goal-2026-09-18.md`; the dated detail is in `docs/progress.md`
+from "2026-09-18 — Content cap 131072". Branch `goal/round-1` (on top of `fix/call-budget`, PR #36
+open) is the only line; every round is a commit + a package under `runs/2026-09-18-goal/`.
+
+## State at 03:40
+
+- Board: VOLO AI **53.1%**, rank 5 (round 3, submission `e3d00d4f3f4d`). Rounds: 0 = 45.0, 1 = 41.0,
+  2 = 37.2, 3 = 53.1, 4 = 48.1; round 5 (`9653af1b4ce2`, static gates) and round 6 (`f12d9a141dbb`,
+  + radio collision and synchronous-navigation rules) are in flight.
+- Per task best so far: Keep 28/32, Bookstack 28/34 (r0; r3 16, r4 23), StackOverflow 36/66,
+  Prestashop 56/86, 12306 64/135, Ctrip 43/125 (r1). The two large tasks and StackOverflow are where
+  the 80% is missing.
+- What is now deterministic in `oneshot/main.py` (all feed the one bounded repair): content cap 131072
+  and a split call budget; prose outside file blocks ignored; jsdom load of `/` (throw on load / blank
+  page); quoted-vocabulary gate (every quoted requirement string must appear in the source, partial
+  repairs kept); backend process-guard gate; button/field aria-label collision gate. `tests_oneshot`
+  57 green. Card `oneshot/dialect.md` 129 lines (59 at the start of the night).
+
+## How to continue
+
+1. Read the round-5/6 results with `arcbench status <run> --json` (run ids in the ledger), then
+   `scripts/attribute_runs.py <run>` for families, and for detail download the bundle and replay
+   locally: `harness_lab/state_rehearsal.py --app <app> --app-dir <bundle>/template --profile hosted`
+   from the `bigtask-keep` worktree; read `artifacts/*/error-context.md` (locator + page snapshot).
+2. One change per round when possible; a swing inside ±3 on one task is noise, Bookstack swings ±6.
+3. Balance was CNY 186 at 02:36; a six-task round costs about CNY 4–5. Stop below CNY 50.
+4. Known open families: StackOverflow "Profile" button after login and quoted validation messages
+   (stochastic adherence; the vocabulary gate should now catch the quoted ones), 12306 sort/filter
+   semantics (data correctness, not naming), Ctrip 邮箱/用户名/手机号 login placeholder order and
+   more-services menu, Prestashop carousel change and quantity stepper.
+5. Merge PR #36 and fold `goal/round-1` into it once the owner is back; the forum post draft for the
+   organizer is in `~/.local/share/qiwoo/drafts/` (publishing disabled; owner pastes).
+
+---
+
 # Current handoff — 2026-09-18 00:30 (Fable + owner, no Codex/Opus)
 
 Read `docs/progress.md` from the "2026-09-17 evening" entry first. Working mode set by the
