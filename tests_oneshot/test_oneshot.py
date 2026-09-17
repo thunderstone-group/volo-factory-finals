@@ -184,7 +184,7 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(len(budget.attempts[0]["usage_events"]), 3)
 
     def test_final_failure_retains_usage_without_publishing(self):
-        budget = adapter.CallBudget(limit=1)
+        budget = adapter.CallBudget(limit=1, fail_limit=1)
         self.replies(events(application(), {"prompt_tokens": 9}, done=False))
         with self.assertRaisesRegex(RuntimeError, "StreamError"):
             self.generate(budget)
@@ -204,26 +204,40 @@ class OfflineCase(unittest.TestCase):
                 self.assertEqual(budget.summary()["unknown_usage_calls"], [1])
                 self.assertEqual(budget.attempts[0]["http_status"], status)
 
-    def test_transient_http_errors_share_global_cap(self):
-        budget = adapter.CallBudget()
+    def test_transient_http_errors_share_global_failure_cap(self):
+        budget = adapter.CallBudget(fail_limit=3)
         self.replies(*[HTTPError("https://synthetic.invalid", status, "synthetic", {}, None)
                        for status in (408, 429, 503)])
         with self.assertRaisesRegex(RuntimeError, "HTTP 503"):
             self.generate(budget)
-        self.assertEqual(self.transport.call_count, adapter.MAX_CALLS)
-        with self.assertRaisesRegex(RuntimeError, "global model call limit"):
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertEqual(budget.summary()["failed_calls"], 3)
+        self.assertEqual(budget.summary()["completed_calls"], 0)
+        with self.assertRaisesRegex(RuntimeError, "global model failure limit"):
             adapter.stream_completion([], "synthetic-model", "https://synthetic.invalid",
                                       SYNTHETIC_KEY, budget)
-        self.assertEqual(self.transport.call_count, adapter.MAX_CALLS)
+        self.assertEqual(self.transport.call_count, 3)
 
-    def test_retries_and_continuation_share_global_cap(self):
+    def test_cut_streams_do_not_consume_the_continuation(self):
         budget = adapter.CallBudget()
-        partial = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
-        partial += "=== FILE: backend/server.js ===\n// cut off"
-        self.replies(URLError("first"), URLError("second"), events(partial, finish="length"))
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        rest = application()[len(prefix):]
+        self.replies(URLError("first"), URLError("second"),
+                     events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="length"),
+                     events(rest))
+        self.generate(budget)
+        self.assertEqual(self.transport.call_count, 4)
+        self.assertEqual(budget.summary()["failed_calls"], 2)
+        self.assertEqual(budget.summary()["completed_calls"], 2)
+        self.assertTrue((self.out / "backend" / "server.js").exists())
+
+    def test_completed_calls_still_share_the_global_cap(self):
+        budget = adapter.CallBudget(limit=1)
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        self.replies(events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="length"))
         with self.assertRaisesRegex(RuntimeError, "global model call limit"):
             self.generate(budget)
-        self.assertEqual(self.transport.call_count, 3)
+        self.assertEqual(self.transport.call_count, 1)
         self.assertFalse(self.out.exists())
 
     def test_continuation_can_retry_without_leaking_a_failed_version(self):

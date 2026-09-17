@@ -29,8 +29,9 @@ from urllib import error, request
 HERE = Path(__file__).resolve().parent
 DEFAULT_BASE = "https://api.arc-bench.com/v1"
 DEFAULT_MODEL = "deepseek-v4-flash"
-MAX_TOKENS = 32768
-MAX_CALLS = 3  # Shared by retries and the single truncation continuation.
+MAX_TOKENS = 131072  # content cap per call; the gateway has metered >135k output tokens in one request
+MAX_CALLS = 3  # Completed calls: first draft, one truncation continuation, one smoke repair.
+MAX_FAILURES = 4  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation.
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
 MAX_TEMPLATE_FILES = 256
 TEMPLATE_ARTIFACTS = {"node_modules", "dist", "__pycache__"}
@@ -120,16 +121,30 @@ def _open_model(req, timeout):
 class CallBudget:
     """One global request cap and an honest ledger, including failed requests."""
 
-    def __init__(self, limit=MAX_CALLS):
+    def __init__(self, limit=MAX_CALLS, fail_limit=MAX_FAILURES):
         if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= MAX_CALLS:
             raise ValueError(f"call limit must be between 1 and {MAX_CALLS}")
+        if not isinstance(fail_limit, int) or isinstance(fail_limit, bool) or not 1 <= fail_limit <= MAX_FAILURES:
+            raise ValueError(f"failure limit must be between 1 and {MAX_FAILURES}")
         self.limit = limit
+        self.fail_limit = fail_limit
         self.attempts = []
         self.smoke = None
 
+    def completed(self):
+        return [r for r in self.attempts if r["status"] == "completed"]
+
+    def failed(self):
+        return [r for r in self.attempts if r["status"] != "completed"]
+
+    def exhausted(self):
+        return len(self.completed()) >= self.limit or len(self.failed()) >= self.fail_limit
+
     def start(self, messages, model):
-        if len(self.attempts) >= self.limit:
+        if len(self.completed()) >= self.limit:
             raise RuntimeError(f"global model call limit reached ({self.limit})")
+        if len(self.failed()) >= self.fail_limit:
+            raise RuntimeError(f"global model failure limit reached ({self.fail_limit})")
         record = {"call": len(self.attempts) + 1, "model": model, "messages": list(messages),
                   "content": "", "usage": {}, "usage_events": [], "status": "failed",
                   "finish_reason": None}
@@ -137,7 +152,9 @@ class CallBudget:
         return record
 
     def summary(self):
-        result = {"calls": len(self.attempts), "call_limit": self.limit}
+        result = {"calls": len(self.attempts), "call_limit": self.limit,
+                  "completed_calls": len(self.completed()), "failed_calls": len(self.failed()),
+                  "failure_limit": self.fail_limit}
         unknown = [r["call"] for r in self.attempts
                    if any(field not in r["usage"] for field in TOKEN_FIELDS)]
         for field in TOKEN_FIELDS:
@@ -217,7 +234,7 @@ def stream_completion(messages, model, base, key, budget, tries=3):
             failure = RuntimeError(f"model stream failed ({type(exc).__name__})")
         finally:
             record["elapsed_seconds"] = round(time.monotonic() - started, 3)
-        if not retryable or attempt + 1 >= tries or len(budget.attempts) >= budget.limit:
+        if not retryable or attempt + 1 >= tries or budget.exhausted():
             raise failure
         print(f"[oneshot] call {record['call']} failed; bounded retry", file=sys.stderr)
         time.sleep(1)
@@ -601,7 +618,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     budget.smoke = {"executed": executed, "problems": problems, "repair": None}
     if not problems:
         return
-    if len(budget.attempts) >= budget.limit:
+    if budget.exhausted():
         budget.smoke["repair"] = "skipped: call limit reached"
         return
     backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
