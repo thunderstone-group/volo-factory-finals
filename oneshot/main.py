@@ -257,7 +257,7 @@ def resolve_path(out, name):
 
 def parse_blocks(text):
     """Strict line framing; only a nonempty final open block may be continued."""
-    files, current, body = [], None, []
+    files, current, body, stray = [], None, [], 0
     for line in text.splitlines(keepends=True):
         marker = line.rstrip("\r\n")
         opening = FILE_OPEN.fullmatch(marker)
@@ -283,9 +283,11 @@ def parse_blocks(text):
         elif current is not None:
             body.append(line)
         elif line.strip():
-            raise ValueError("text outside file blocks")
+            stray += 1  # prose between blocks is ignored; an 18-minute draft must not die on a sentence
     if not files and current is None:
         raise ValueError("no file blocks in the response")
+    if stray:
+        print(f"[oneshot] ignored {stray} line(s) outside file blocks", file=sys.stderr)
     return files, [current] if current is not None else []
 
 

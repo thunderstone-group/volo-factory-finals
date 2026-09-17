@@ -132,11 +132,16 @@ class OfflineCase(unittest.TestCase):
                     "=== FILE: x.js ==\nx\n=== END ===\n", "=== END ===\n",
                     block("x.js", ""), block("x.js", "   "),
                     "=== FILE: x.js ===\na\n" + block("y.js", "b"),
-                    block("x.js", "a") + "commentary", block("x.js", "a") * 2)
+                    block("x.js", "a") * 2)
         for value in examples:
             with self.subTest(value=value), self.assertRaises(ValueError) as caught:
                 adapter.parse_blocks(value)
             self.assertNotIsInstance(caught.exception, IndexError)
+
+    def test_prose_outside_blocks_is_ignored(self):
+        files, missing = adapter.parse_blocks("Here is the app:\n" + block("x.js", "a") + "Done.\n" + block("y.js", "b"))
+        self.assertEqual([f["path"] for f in files], ["x.js", "y.js"])
+        self.assertEqual(missing, [])
 
     def test_crlf_and_unterminated_final_block(self):
         files, missing = adapter.parse_blocks((block("a.js", "one") +
@@ -256,7 +261,7 @@ class OfflineCase(unittest.TestCase):
         cases = (("=== FILE: x.js ===\npartial", "stop", "unterminated"),
                  (application(), "length", "truncated between"),
                  ("", "stop", "no content"),
-                 ("no blocks", "stop", "outside file blocks"))
+                 ("no blocks", "stop", "no file blocks"))
         for content, finish, message in cases:
             with self.subTest(content=content):
                 budget = adapter.CallBudget()
