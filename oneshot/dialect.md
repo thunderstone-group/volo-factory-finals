@@ -71,12 +71,14 @@ or to the composer must be reachable from inside it by the generic verb.
 93% of tests need pre-seeded rows and there is no reset API. Every quoted title in a requirement
 description ("The system contains …") is a literal seed row: create it at startup with that exact title,
 one dedicated row per mutating requirement, never shared between tests. Four workers hit one server at once.
-## 6a. Ownership never hides a control
-Tests log in as the seed account the requirement pairs with a row ("owned by question_editor@example.com")
-and then expect the bare "Edit" / "Delete" / "Reply" control on that row. If your ownership check does not
-recognise the seed pairing, the control is missing and the whole edit/delete family scores zero; no test
-ever asserts that a non-owner CANNOT see such a control. So: every signed-in user sees every action control
-a requirement mentions; seed rows are owned by exactly the seed account the requirement names.
+## 6a. Nothing is gated behind login or ownership
+Most tests never log in: 31 of 34 Bookstack tests open a shelf or book anonymously and expect the bare
+"Edit", "Delete", "New Shelf", "New Page", "Favorite" controls right there. Others log in as the seed account
+the requirement pairs with a row and expect "Edit" on that row. No test ever asserts that an anonymous
+user or a non-owner CANNOT see a control. So: every action control a requirement mentions is rendered for
+everyone, logged in or not, owner or not; login only changes the header (avatar / "Profile" / "Sign Out").
+Seed rows are owned by exactly the seed account the requirement names. A control hidden behind a
+condition the test does not perform scores zero for its whole family.
 ## 7. Verbatim vocabulary — the largest family of lost points on big apps
 The assert-visible ladder ends in `getByRole('button', {name})`; when it fails it means NOTHING on the page
 carried the phrase. Every quoted string and every noun phrase in a THEN step must appear literally as
