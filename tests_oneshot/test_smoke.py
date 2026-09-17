@@ -1,0 +1,168 @@
+"""Delivery smoke check and bounded repair, exercised against REAL tiny Node servers.
+
+All applications and model replies are local synthetic fixtures; no model is called.
+"""
+import contextlib
+import io
+import json
+import os
+import shutil
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import patch
+
+from oneshot import main as adapter
+from test_oneshot import SYNTHETIC_KEY, SyntheticStream, block, events
+
+NODE = shutil.which("node") and shutil.which("npm")
+
+SERVER = """// Synthetic local fixture
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
+const DIST = path.join(__dirname, '..', 'frontend', 'dist');
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript', '.css': 'text/css' };
+%(prelude)s
+http.createServer((req, res) => {
+  const url = new URL(req.url, 'http://localhost');
+  if (url.pathname === '/api/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify(%(health)s));
+  }
+  const rel = url.pathname === '/' ? '%(root)s' : url.pathname;
+  const file = path.join(DIST, rel);
+  if (!fs.existsSync(file)) { res.writeHead(404); return res.end('nope'); }
+  res.writeHead(200, { 'Content-Type': %(ctype)s });
+  res.end(fs.readFileSync(file));
+}).listen(process.env.PORT, () => console.log('listening'));
+"""
+
+
+def server(root="index.html", health='{"code":200,"message":"Backend Ready"}',
+           ctype="TYPES[path.extname(file)] || 'application/octet-stream'", prelude=""):
+    return SERVER % {"root": root, "health": health, "ctype": ctype, "prelude": prelude}
+
+
+def app(server_js):
+    return (block("backend/package.json", '{"scripts":{"start":"node server.js"}}') +
+            block("backend/server.js", server_js) +
+            block("frontend/package.json",
+                  '{"scripts":{"build":"node -e \\"require(\'fs\').cpSync(\'public\',\'dist\',{recursive:true})\\""}}') +
+            block("frontend/public/index.html", "<!doctype html><title>Synthetic</title><script src=\"app.js\"></script>") +
+            block("frontend/public/app.js", "console.log('synthetic');"))
+
+
+@unittest.skipUnless(NODE, "node and npm are required for the smoke tests")
+class SmokeCase(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name).resolve()
+        self.out = self.root / "app"
+        self.transport = self.enter(patch.object(adapter, "_open_model",
+                                                side_effect=AssertionError("unexpected HTTP")))
+        self.enter(patch.object(adapter, "SMOKE_READY_SECONDS", 8))
+
+    def enter(self, manager):
+        value = manager.__enter__()
+        self.addCleanup(manager.__exit__, None, None, None)
+        return value
+
+    def replies(self, *items):
+        self.transport.side_effect = [SyntheticStream(x) for x in items]
+
+    def generate(self, limit=adapter.MAX_CALLS):
+        budget = adapter.CallBudget(limit)
+        files, _ = adapter.generate("Synthetic requirements only", "synthetic-model",
+                                   "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        return files, budget
+
+    def test_good_application_passes_without_repair(self):
+        self.replies(events(app(server())))
+        files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 1)
+        self.assertEqual(budget.smoke, {"executed": True, "problems": [], "repair": None})
+        self.assertTrue((self.out / "backend/server.js").is_file())
+        self.assertEqual(list(self.root.glob(".oneshot-*")), [])
+
+    def test_root_404_is_repaired_and_repair_is_kept(self):
+        self.replies(events(app(server(root="missing.html"))),
+                     events(block("backend/server.js", server())))
+        files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertIn("GET / returned HTTP 404", budget.smoke["problems"][0])
+        self.assertEqual(budget.smoke["repair"], {"accepted": True, "files": ["backend/server.js"]})
+        self.assertIn("'index.html'", (self.out / "backend/server.js").read_text())
+        delivered = {f["path"]: f["content"] for f in files}
+        self.assertIn("'index.html'", delivered["backend/server.js"])
+        self.assertEqual(len(files), 5)
+        # The repair request carries the concrete failure, not the whole conversation again.
+        messages = budget.attempts[1]["messages"]
+        self.assertEqual(messages[-1]["role"], "user")
+        self.assertIn("HTTP 404", messages[-1]["content"])
+        self.assertEqual(messages[-2]["role"], "assistant")
+
+    def test_wrong_content_type_and_bad_health_are_reported(self):
+        self.replies(events(app(server(ctype="'application/octet-stream'"))))
+        files, budget = self.generate(limit=1)
+        self.assertEqual(self.transport.call_count, 1)
+        self.assertTrue(any("text/html" in p for p in budget.smoke["problems"]), budget.smoke)
+        self.assertEqual(budget.smoke["repair"], "skipped: call limit reached")
+        self.transport.side_effect = [SyntheticStream(events(app(server(health='{"ok":true}'))))]
+        self.out = self.root / "app2"
+        files, budget = self.generate(limit=1)
+        self.assertTrue(any("/api/health" in p for p in budget.smoke["problems"]), budget.smoke)
+
+    def test_crashing_backend_with_failed_repair_keeps_original_delivery(self):
+        broken = server(prelude="throw new Error('boom at startup');")
+        self.replies(events(app(broken)), events(block("backend/server.js", broken)))
+        files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertIn("exited with code 1", budget.smoke["problems"][0])
+        self.assertIn("boom at startup", budget.smoke["problems"][0])
+        self.assertFalse(budget.smoke["repair"]["accepted"])
+        self.assertIn("still failing", budget.smoke["repair"]["reason"])
+        self.assertEqual((self.out / "backend/server.js").read_text(), broken.rstrip("\n") + "\n")
+        self.assertTrue((self.out / "frontend/public/app.js").is_file())
+        self.assertEqual(list(self.root.glob(".oneshot-*")), [])
+
+    def test_repair_that_escapes_the_application_root_is_rejected(self):
+        self.replies(events(app(server(root="missing.html"))),
+                     events(block("../escape.js", "bad")))
+        files, budget = self.generate()
+        self.assertFalse(budget.smoke["repair"]["accepted"])
+        self.assertFalse((self.root / "escape.js").exists())
+        self.assertIn("'missing.html'", (self.out / "backend/server.js").read_text())
+
+    def test_missing_asset_referenced_by_index_is_reported(self):
+        missing_asset = app(server()).replace('<script src="app.js">', '<script src="vendor/lib.js">')
+        self.replies(events(missing_asset))
+        files, budget = self.generate(limit=1)
+        self.assertTrue(any("vendor/lib.js" in p and "404" in p for p in budget.smoke["problems"]), budget.smoke)
+
+    def test_without_node_the_check_is_skipped_not_failed(self):
+        self.replies(events(app(server())))
+        with patch.object(adapter.shutil, "which", return_value=None):
+            files, budget = self.generate()
+        self.assertEqual(budget.smoke, {"executed": False, "problems": [], "repair": None})
+        self.assertEqual(self.transport.call_count, 1)
+
+    def test_cli_prints_smoke_summary_without_the_key(self):
+        requirement = self.root / "requirements"
+        requirement.mkdir()
+        (requirement / "requirements.yaml").write_text("synthetic: true")
+        self.replies(events(app(server())))
+        capture = io.StringIO()
+        env = {"OPENAI_API_KEY": SYNTHETIC_KEY, "PATH": os.environ.get("PATH", ""), "HOME": os.environ.get("HOME", "")}
+        with patch.dict(os.environ, env, clear=True), \
+                contextlib.redirect_stderr(capture), contextlib.redirect_stdout(io.StringIO()):
+            code = adapter.main([str(requirement), "--output-dir", str(self.out)])
+        self.assertEqual(code, 0)
+        line = [l for l in capture.getvalue().splitlines() if l.startswith("[oneshot] smoke ")][0]
+        self.assertEqual(json.loads(line.split(" ", 2)[2]), {"executed": True, "problems": [], "repair": None})
+        self.assertNotIn(SYNTHETIC_KEY, capture.getvalue())
+
+
+if __name__ == "__main__":
+    unittest.main()
