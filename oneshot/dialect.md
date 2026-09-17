@@ -27,6 +27,13 @@ Two shapes are fatal:
 exactly one row's actions are in the accessibility tree at a time. Name them `More options`, `Archive
 note`, `Unarchive note`, `Pin note`, `Unpin note`, `Change color`, `Change labels`, `Delete note` — the
 bare verb matches as a substring, the anchored sidebar pattern does not.
+**Name an action control EXACTLY the verb the requirement quotes.** Many helpers anchor the verb:
+`/^edit$/i`, `/^delete$/i`, `/^reply$/i`, `/^save$/i`, `/^cancel$/i`. "Edit question" or "Delete answer"
+does not match an anchored pattern and the whole edit/delete/reply family scores zero. The ONLY time
+to add a noun ("Archive note") is when a navigation entry shares the verb's stem (sidebar "Archived"
+vs action "Archive"): then the anchored navigation pattern would catch the bare button, because button
+outranks link. Otherwise: bare verb, nothing else. Where the requirement says "Edit" link, a link named
+exactly "Edit" is fine — the click ladder reaches links.
 **Never put a note's own title inside an action control's accessible name.** The suite hovers the title to
 reveal the actions; if a button also answers to the title it resolves to that hover-only button, the click
 re-renders the row, the button vanishes, and the test deadlocks. On an unhovered page
@@ -45,10 +52,31 @@ or to the composer must be reachable from inside it by the generic verb.
 93% of tests need pre-seeded rows and there is no reset API. Every quoted title in a requirement
 description ("The system contains …") is a literal seed row: create it at startup with that exact title,
 one dedicated row per mutating requirement, never shared between tests. Four workers hit one server at once.
-## 7. Verbatim vocabulary
-Every quoted string and every noun in a THEN step must appear literally as visible text or as an accessible
-name; synonyms score zero. Notifications are `role="status"` carrying the literal message plus an `Undo`
-button. A named section must be a real landmark (`<section aria-label="…">` → role region).
+## 7. Verbatim vocabulary — the largest family of lost points on big apps
+The assert-visible ladder ends in `getByRole('button', {name})`; when it fails it means NOTHING on the page
+carried the phrase. Every quoted string and every noun phrase in a THEN step must appear literally as
+visible text or as an accessible name; synonyms and paraphrases score zero. Concretely:
+- Layout nouns are text, not just tags: "header, sidebar, main question feed, footer, logo, filter panel,
+  right sidebar widgets" must each be visible words on the page (a small caption or heading `Sidebar`,
+  a footer line starting with `Footer`, the logo image's alt text `Logo`). `<header>` alone is invisible.
+- Every validation / error / success message quoted in a requirement is rendered VERBATIM in a
+  `role="status"` or `role="alert"` element with the exact sentence, punctuation included.
+- Every navigation target, account section, tab, filter and widget named in a requirement is a visible
+  control with exactly that name ("Profile", "Addresses", "Order history and details", "Favorites",
+  "Recently viewed", "Watch tag"). After login the word "Profile" must be a visible button or link.
+- Every seed name, product title, wishlist name, tag or username quoted in a requirement exists verbatim.
+Notifications are `role="status"` carrying the literal message plus an `Undo` button. Section titles are
+visible headings (`<h2>Comments</h2>`), never an `aria-label` on the container.
+## 7a. `aria-label` is reserved for form controls and icon-only buttons
+The fill ladder's FIRST rung is `getByLabel(/price/i)`, and `getByLabel` matches ANY element whose
+`aria-label` / `aria-labelledby` contains the pattern: `<section aria-label="Price">`,
+`<form aria-label="Search">`, `<div aria-label="Comments">`. The container precedes its own input in DOM
+order, so `.first()` returns the container and `fill()` fails ("Element is not an <input>"). One such
+container kills every test that types into that field. Therefore containers (`section`, `form`, `nav`,
+`div`, `ul`, `table`, `article`, `aside`) carry NO `aria-label` and NO `aria-labelledby`; only `input`,
+`textarea`, `select` and icon-only `button`s do, and no two visible controls on a screen share a label
+word. Exception: a requirement that names a region literally ("the Contact information section") gets one
+`<section aria-label="Contact information">` whose name shares no word with any field label on that screen.
 ## 8. Mechanics
 - Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
 - A view transition must UNMOUNT the old view, never cross-fade; a stale control visible for 100 ms loses
