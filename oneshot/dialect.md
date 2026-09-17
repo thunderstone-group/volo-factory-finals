@@ -1,50 +1,59 @@
-# Accessibility guidance for the application in the supplied requirements
-
-This is diagnostic guidance carried over from an earlier candidate's observed locator
-behavior. It is not a calibrated acceptance suite or a claim about every ARC task.
-The supplied requirements determine entities, actions, state, routing and seed data.
-Do not invent a note-taking application, an archive workflow, or any other task's features.
-
-## Semantic controls and names
-
-Use native buttons, links, labeled inputs and real landmarks. Give controls accessible
-names that match the requested vocabulary. A named section can use
-`<section aria-label="…">`. Do not rely exclusively on CSS classes or data attributes
-for identifying an action.
-
-Observed helpers may try button/link/tab/menuitem/option roles before visible text.
-Field helpers may use labels, placeholders and textbox/combobox/spinbutton roles.
-Names may be case-insensitive substring matches or exact matches. Preserve quoted
-labels from the requirements and distinguish navigation from actions on an entity.
-Preserve required section headings as visible text, not only as accessibility labels.
-Use a native meter or progress element with its accessible name and changing value for
-quantitative indicators; a styled div with an ID alone does not expose a semantic role.
-
-## Avoid ambiguous targets
-
-Make repeated row actions identifiable in their row. If contextual actions are hidden
-at rest, reveal them on keyboard focus as well as pointer hover. Do not turn an entity's
-title into the accessible name of an unrelated action. Keep requested row/editor actions
-inside their own context instead of requiring an unrelated global menu.
-Render singular identity or status values once per screen. Repeating the same standalone
-username or success text in a header and the page body makes an exact-text query ambiguous;
-use one canonical display and different surrounding prose where repetition is necessary.
-
-When an actual modal dialog is open, move focus into it and make background controls
-inert until it closes. A nonmodal menu should retain the interactions its requirements
-need. Avoid duplicate visible controls with indistinguishable names in the same context.
-
-## Requirements, state and seed data
-
-Create the initial entities and values explicitly required by the task. Quoted button
-labels and expected messages are not automatically seed records. Use the required
-relationships and state transitions, and persist a mutation before announcing success.
-Do not assume a worker count, test order, or isolation policy. Never depend on another
-test first constructing a fixture. Health readiness follows initialization of seed data.
-
-## Interaction mechanics
-
-Make required screens discoverable through the requested navigation. Preserve deep links
-when the requirements ask for them. Remove obsolete controls on a view transition and
-keep typing/focus stable across state updates. Avoid artificial delays and animations
-that block input. Report required notifications with appropriate status or alert semantics.
+# ARC-Bench evaluator dialect — how the official Playwright suite reads your app
+The suite sees ONLY the accessibility tree and visible text. It never uses CSS/id/data-* selectors, never
+navigates except `page.goto('/')`, never touches localStorage, never reads the URL, never calls `/api/*`,
+never runs `page.evaluate`. `data-testid` buys nothing. Build the DOM for a screen reader: semantic
+elements, `aria-label`, `<label for>`, real landmarks.
+## 1. The locator ladder (fixed and public)
+- Click: role `button`, then `link`, `tab`, `menuitem`, `option`, then `getByText` — FIRST VISIBLE WINS.
+- Assert visible: `getByText`, then roles `heading, button, link, tab, cell, columnheader, textbox, combobox`, then `getByLabel`, then `getByPlaceholder`.
+- Fill a field: `getByLabel`, then `getByPlaceholder`, then roles `textbox, combobox, spinbutton`, then a LAST RESORT bare `getByRole('textbox').first()` with no name at all.
+- Hover: same ladder as click, `button` first, `getByText` last.
+- Roles in use: button, textbox, link, combobox, checkbox, tab, heading, radio, option, menuitem, searchbox, spinbutton, cell, status, row, alert, dialog, region.
+## 2. Names are case-insensitive SUBSTRING regexes
+`/archive/i` matches "Archive note". Whitespace runs are flexible. A few helpers ANCHOR the pattern:
+`/^archived?$/i` for the archive view, `/^settings$/i` for the settings screen. Assume any sidebar
+navigation target may be matched anchored.
+## 3. The ambiguity rule — this is where most points are lost
+The suite looks up row actions by BARE VERB — `/more/i`, `/options/i`, `/menu/i`, `/archive/i`, `/pin/i`,
+`/color/i`, `/delete/i`, `/labels/i`, `/close/i`, `/done/i`, `/save/i`, `/cancel/i` — then takes `.first()`
+in DOM order. Therefore: **at any instant at most ONE visible control may match each of those verbs.**
+Two shapes are fatal:
+- (a) Every note card shows its Archive button at rest → N matches, the first card always wins, so every
+  archive/pin/delete/colour test mutates the wrong note. Zero points across a whole requirement family.
+- (b) A row action named the bare word `Archive` while the sidebar has `Archived`: the anchored
+  `/^archived?$/i` matches that BUTTON, and button outranks link, so "open the archive view" archives a
+  second note instead — and destroys another test's fixture on the way.
+**The shape that works.** Row actions are `display:none`, revealed only on `:hover` / `:focus-within`, so
+exactly one row's actions are in the accessibility tree at a time. Name them `More options`, `Archive
+note`, `Unarchive note`, `Pin note`, `Unpin note`, `Change color`, `Change labels`, `Delete note` — the
+bare verb matches as a substring, the anchored sidebar pattern does not.
+**Never put a note's own title inside an action control's accessible name.** The suite hovers the title to
+reveal the actions; if a button also answers to the title it resolves to that hover-only button, the click
+re-renders the row, the button vanishes, and the test deadlocks. On an unhovered page
+`getByRole('button', {name: /<any note title>/i})` must have count 0 — titles live in plain text nodes.
+## 4. An open chooser must make the rest of the page inert
+Playwright does NOT honour `aria-modal`. Put `inert` and `aria-hidden="true"` on every sibling while a
+dialog, dropdown, colour palette or label picker is open. In particular **no text input outside the open
+chooser may be visible**: the fill helper's last resort is the first bare textbox on the page, so a header
+Search box will silently swallow typing meant for the dialog.
+## 5. A verb must resolve INSIDE the container the test is working in
+With the composer ("Take a note" editor) open the test still searches `/more|options|menu/i` and
+`/labels/i`. If the composer offers neither, the ladder escapes to the banner "Menu" button and the sidebar
+"Edit Labels" item and the test goes somewhere else entirely. Every action a requirement attaches to a row
+or to the composer must be reachable from inside it by the generic verb.
+## 6. Seed data is the contract
+93% of tests need pre-seeded rows and there is no reset API. Every quoted title in a requirement
+description ("The system contains …") is a literal seed row: create it at startup with that exact title,
+one dedicated row per mutating requirement, never shared between tests. Four workers hit one server at once.
+## 7. Verbatim vocabulary
+Every quoted string and every noun in a THEN step must appear literally as visible text or as an accessible
+name; synonyms score zero. Notifications are `role="status"` carrying the literal message plus an `Undo`
+button. A named section must be a real landmark (`<section aria-label="…">` → role region).
+## 8. Mechanics
+- Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
+- A view transition must UNMOUNT the old view, never cross-fade; a stale control visible for 100 ms loses
+  the race and loses the test.
+- Typing must survive a re-render: an in-form click (pin toggle, colour swatch) must not wipe the
+  title/body inputs. Do not rebuild `innerHTML` on every state change.
+- Mutations write to the store before the success message renders.
+- Budget: 10 s per test. No animations that gate visibility, no artificial delays, no redirect chains.

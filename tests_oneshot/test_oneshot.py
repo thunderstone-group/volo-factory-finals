@@ -76,6 +76,7 @@ class OfflineCase(unittest.TestCase):
         self.transport = self.enter(patch.object(adapter, "_open_model",
                                                 side_effect=AssertionError("unexpected HTTP")))
         self.enter(patch.object(adapter.time, "sleep"))
+        self.enter(patch.object(adapter, "SMOKE", False))
 
     def enter(self, manager):
         value = manager.__enter__()

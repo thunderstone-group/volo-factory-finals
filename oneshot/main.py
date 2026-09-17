@@ -21,6 +21,7 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 import http.client
 import shlex
 import shutil
+import subprocess
 import tempfile
 import uuid
 from urllib import error, request
@@ -85,6 +86,18 @@ CONTINUE = ("Your output was cut off inside the file `{path}`. Re-emit that file
             "emitted in full. Use the same `=== FILE: <path> ===` and `=== END ===` framing and emit "
             "nothing else.")
 
+REPAIR = ("The application you delivered failed the runner's delivery check before any test ran:\n"
+          "{problems}\n\n"
+          "Fix the cause. Re-emit every file that must change as a COMPLETE file block with the same "
+          "`=== FILE: <path> ===` / `=== END ===` framing, and emit nothing else. Do not re-emit files "
+          "that do not change. The check will run again on the result.")
+
+SMOKE = True  # run the delivery smoke check (build, start, GET / and /api/health) before publishing
+SMOKE_BUILD_SECONDS = 90
+SMOKE_READY_SECONDS = 30
+HEALTH_BODY = {"code": 200, "message": "Backend Ready"}
+ASSET_REF = re.compile(r"""<(?:script|link)\b[^>]*?\b(?:src|href)\s*=\s*["']([^"']+)["']""", re.I)
+
 FILE_OPEN = re.compile(r"=== FILE:[ \t]*(.*?)[ \t]*===[ \t]*")
 TOKEN_FIELDS = ("prompt_tokens", "completion_tokens")
 
@@ -112,6 +125,7 @@ class CallBudget:
             raise ValueError(f"call limit must be between 1 and {MAX_CALLS}")
         self.limit = limit
         self.attempts = []
+        self.smoke = None
 
     def start(self, messages, model):
         if len(self.attempts) >= self.limit:
@@ -299,6 +313,134 @@ def missing_required(out):
     return needed
 
 
+def _tail(text, limit=1500):
+    text = text if isinstance(text, str) else text.decode("utf-8", "replace")
+    return text[-limit:].strip()
+
+
+def _child_env():
+    """A minimal environment for generated code: no model credential, no proxies."""
+    keep = ("PATH", "HOME", "TMPDIR", "TEMP", "TMP", "LANG", "LC_ALL", "SYSTEMROOT", "USERPROFILE", "NODE_PATH")
+    return {name: os.environ[name] for name in keep if name in os.environ}
+
+
+def _fetch_local(url, timeout=5):
+    """GET a loopback URL directly (never through a proxy); returns (status, headers, body)."""
+    opener = request.build_opener(request.ProxyHandler({}))
+    try:
+        with opener.open(url, timeout=timeout) as response:
+            return response.status, {k.lower(): v for k, v in response.headers.items()}, response.read(4_000_000)
+    except error.HTTPError as exc:
+        body = exc.read(4000) if exc.fp is not None else b""
+        return exc.code, {k.lower(): v for k, v in exc.headers.items()}, body
+
+
+def _free_port():
+    import socket
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        return sock.getsockname()[1]
+
+
+def _check_page(port, problems):
+    status, headers, body = _fetch_local(f"http://127.0.0.1:{port}/")
+    ctype = headers.get("content-type", "")
+    if status != 200:
+        problems.append(f"GET / returned HTTP {status} (the runner opens `/` and expects the index page): {_tail(body, 200)}")
+        return
+    if "attachment" in headers.get("content-disposition", "").lower() or "text/html" not in ctype:
+        problems.append(f"GET / must be served as text/html; got Content-Type {ctype!r} "
+                        f"(a browser would download it instead of rendering)")
+        return
+    html = body.decode("utf-8", "replace")
+    if not html.strip():
+        problems.append("GET / returned an empty body")
+        return
+    for ref in ASSET_REF.findall(html)[:20]:
+        if re.match(r"^(?:[a-z]+:|//|#)", ref, re.I):
+            continue
+        path = ref if ref.startswith("/") else "/" + ref
+        a_status, a_headers, a_body = _fetch_local(f"http://127.0.0.1:{port}{path}")
+        a_type = a_headers.get("content-type", "")
+        expect = "javascript" if path.split("?")[0].endswith((".js", ".mjs")) else "text/css" if path.split("?")[0].endswith(".css") else None
+        if a_status != 200:
+            problems.append(f"index.html references {ref!r} but GET {path} returned HTTP {a_status}")
+        elif expect and expect not in a_type:
+            problems.append(f"GET {path} must be served with a {expect} Content-Type; got {a_type!r}")
+        elif not a_body.strip():
+            problems.append(f"GET {path} returned an empty body")
+
+
+def smoke_check(stage):
+    """Build the frontend, start the backend on a free port and read it the way the runner
+    does. Returns (problems, executed). Never calls a model; skips when node/npm are absent."""
+    node, npm = shutil.which("node"), shutil.which("npm")
+    if not node or not npm:
+        return [], False
+    stage = Path(stage).resolve()
+    env = _child_env()
+    problems = []
+    try:
+        build = subprocess.run([npm, "run", "build", "--silent"], cwd=stage / "frontend", env=env,
+                               capture_output=True, timeout=SMOKE_BUILD_SECONDS)
+        if build.returncode != 0:
+            problems.append(f"frontend `npm run build` exited {build.returncode}: "
+                            f"{_tail(build.stderr + build.stdout)}")
+    except subprocess.TimeoutExpired:
+        problems.append(f"frontend `npm run build` did not finish within {SMOKE_BUILD_SECONDS}s")
+    index = stage / "frontend" / "dist" / "index.html"
+    if not problems and (not index.is_file() or not index.read_text(encoding="utf-8", errors="replace").strip()):
+        problems.append("frontend/dist/index.html is missing or empty after `npm run build`")
+    if problems:
+        return problems, True
+    manifest = json.loads((stage / "backend" / "package.json").read_text(encoding="utf-8"))
+    entry = shlex.split(manifest["scripts"]["start"])[1]
+    port = _free_port()
+    proc = subprocess.Popen([node, entry], cwd=stage / "backend", env={**env, "PORT": str(port)},
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    output = []
+
+    def pump():
+        for chunk in iter(lambda: proc.stdout.read(4096), b""):
+            if sum(len(c) for c in output) < 200_000:
+                output.append(chunk)
+    import threading
+    threading.Thread(target=pump, daemon=True).start()
+    try:
+        ready, last, deadline = False, "", time.monotonic() + SMOKE_READY_SECONDS
+        while time.monotonic() < deadline:
+            if proc.poll() is not None:
+                problems.append(f"backend `node {entry}` exited with code {proc.returncode} before answering "
+                                f"GET /api/health: {_tail(b''.join(output))}")
+                break
+            try:
+                status, _, body = _fetch_local(f"http://127.0.0.1:{port}/api/health", timeout=3)
+                if status == 200 and json.loads(body.decode("utf-8", "replace")) == HEALTH_BODY:
+                    ready = True
+                    break
+                last = f"HTTP {status} {_tail(body, 200)}"
+            except Exception as exc:  # connection refused while starting, bad JSON, timeouts
+                last = str(exc)[:200]
+            time.sleep(0.4)
+        if not ready and not problems:
+            problems.append(f"GET /api/health did not return 200 {json.dumps(HEALTH_BODY)} within "
+                            f"{SMOKE_READY_SECONDS}s (last: {last}); backend output: {_tail(b''.join(output))}")
+        if ready:
+            try:
+                _check_page(port, problems)
+            except Exception as exc:
+                problems.append(f"GET / failed: {str(exc)[:200]}")
+    finally:
+        if proc.poll() is None:
+            proc.terminate()
+            try:
+                proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait()
+    return problems, True
+
+
 def read_template(root):
     """Read a bounded source snapshot; never follow links or send local dotfiles."""
     root = Path(root)
@@ -412,6 +554,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
         emitted = set()
+        content = ""
         for turn in range(2):
             content, _, finish = stream_completion(messages, model, base, key, budget)
             batch, missing = parse_blocks(content)
@@ -444,8 +587,55 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             raise ValueError("incomplete delivery: " + "; ".join(needed))
         if template is not None and all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files):
             raise ValueError("upgrade did not change any files")
+        if SMOKE:
+            repair_delivery(stage, files, messages + [{"role": "assistant", "content": content}],
+                            model, base, key, budget, template)
         publish(stage, out, template, snapshot, stamp)
     return files, budget.summary()
+
+
+def repair_delivery(stage, files, messages, model, base, key, budget, template=None):
+    """Smoke-check the staged app; on failure spend at most one model call on a fix and keep
+    it only if the check then passes. Records the outcome in budget.smoke."""
+    problems, executed = smoke_check(stage)
+    budget.smoke = {"executed": executed, "problems": problems, "repair": None}
+    if not problems:
+        return
+    if len(budget.attempts) >= budget.limit:
+        budget.smoke["repair"] = "skipped: call limit reached"
+        return
+    backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
+    shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
+    try:
+        ask = REPAIR.format(problems="\n".join("- " + p for p in problems))
+        fixed, _, finish = stream_completion(messages + [{"role": "user", "content": ask}],
+                                             model, base, key, budget, tries=1)
+        batch, missing = parse_blocks(fixed)
+        if missing or finish == "length":
+            raise ValueError("repair output truncated")
+        for item in batch:
+            target = resolve_path(stage, item["path"])
+            if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
+                                            for part in PurePosixPath(item["path"]).parts):
+                raise ValueError("repair cannot edit local metadata or build artifacts: " + item["path"])
+            item["path"] = target.relative_to(stage.resolve()).as_posix()
+            write_one(stage, item)
+        needed = missing_required(stage)
+        if needed:
+            raise ValueError("repair broke delivery: " + "; ".join(needed))
+        after, _ = smoke_check(stage)
+        if after:
+            raise ValueError("still failing after repair: " + "; ".join(after))
+        for item in batch:
+            files[:] = [f for f in files if f["path"] != item["path"]] + [item]
+        budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch]}
+    except Exception as exc:
+        # Keep the original delivery: a half-applied fix could be worse than the known state.
+        shutil.rmtree(stage)
+        shutil.copytree(backup, stage, symlinks=True)
+        budget.smoke["repair"] = {"accepted": False, "reason": str(exc)[:600]}
+    finally:
+        shutil.rmtree(backup, ignore_errors=True)
 
 
 def main(argv=None):
@@ -502,6 +692,9 @@ def main(argv=None):
         # True prompts, responses, timing and usage, including failures; never headers or keys.
         for attempt in budget.attempts:
             print("[oneshot] trace " + json.dumps(attempt, ensure_ascii=False).replace(key, "[REDACTED]"),
+                  file=sys.stderr)
+        if budget.smoke is not None:
+            print("[oneshot] smoke " + json.dumps(budget.smoke, ensure_ascii=False).replace(key, "[REDACTED]"),
                   file=sys.stderr)
         print("[oneshot] usage " + json.dumps(budget.summary(), sort_keys=True), file=sys.stderr)
 

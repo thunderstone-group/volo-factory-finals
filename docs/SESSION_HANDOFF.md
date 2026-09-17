@@ -1,3 +1,83 @@
+# Current handoff — 2026-09-18 00:30 (Fable + owner, no Codex/Opus)
+
+Read `docs/progress.md` from the "2026-09-17 evening" entry first. Working mode set by the
+owner: no commander/dispatch, no Codex, no Opus; Fable and the owner collaborate directly.
+Report in plain language, three parts: current state / next step / decisions needed.
+
+## Tonight in one paragraph
+
+The six-task validation of the smoke package failed on 2026-09-17 evening because the gateway
+cut every in-flight `deepseek-v4-flash` stream at the same instants (19:58, 20:08, 20:17, and
+again 00:03 and 00:09 on 09-18); cut streams are never metered. The fault is per model route
+and intermittent: DeepSeek v4-flash/v4-pro and qwen3.6-flash drop, minimax-m3 / qwen3.7-plus /
+kimi-k3 / glm-5.3 hold a 12k-token stream. Same smoke package, model swap only, on Keep:
+flash 25/32, qwen3.7-plus 22/32, glm-5.3 and glm-5.3-flash no content (GLM counts reasoning
+inside `max_tokens` and spends all 32,768 on it). Six tasks: flash 25/16/4/44/0/0 (avg 30.4%,
+the two zeros are cut + call budget), qwen3.7-plus 22/12/15/29/63/12 (avg 36.1%). The board
+keeps the lab-card submission at 38.8%, rank 6. The delivery smoke check (PR #35) is
+validated on the real path: StackOverflow and 12306 left zero. A forum post draft for the
+organizer is in `~/.local/share/qiwoo/drafts/` (owner pastes it; publishing is disabled).
+
+## Package findings to act on
+
+- One-shot has no reasoning parameter: flash runs at gateway default; `max_tokens` bounds
+  content only on DeepSeek/Qwen, so reasoning can run to 65,536 with no content (seen twice).
+  A `reasoning_effort` ablation on flash (low vs default, two runs each) is untried.
+- The global 3-call budget is shared by cut-stream retries and `length` continuations, so a
+  large task (12306/ctrip output > 32,768 content tokens) that loses one stream cannot
+  deliver. Separate the budgets or raise the limit for large tasks.
+- Run-to-run variance on one model is as large as the model gap (Bookstack flash 27 vs 16).
+  Decide models with paired runs, not single runs.
+
+## Next
+
+1. Owner decision: preliminary default model. Flash scores best when its route holds; the
+   route dropped twice tonight. Recommendation: flash default with automatic fallback to
+   qwen3.7-plus after the second StreamError, which also needs the call-budget fix above.
+2. Evaluator-reading audit as a deterministic gate with bounded repair (unchanged from the
+   09-17 plan); the failure families (labels, colors, pin) are identical across models.
+3. Requirement-group generation for the large tasks (12306/ctrip/prestashop).
+
+---
+
+# Handoff — 2026-09-17 evening (superseded by the section above)
+
+## State
+
+- main = 72f1472 (PR #34: generate into the runner's pre-populated output directory).
+- Branch `feat/delivery-smoke` (PR #35, this worktree): lab dialect card verbatim + delivery
+  smoke check with one bounded repair. Six-task platform validation on Web submission
+  `7fd7a288b404`; results land in `runs/2026-09-17-web-keep-oneshot/smoke-final.json`
+  (a detached `arcbench wait` writes it; `smoke-final.done` appears when finished).
+  Judge: StackOverflow/12306 leave zero, other tasks do not drop vs the lab-card holdout
+  (Keep 22–28, Bookstack 27/34, Prestashop 51/86, Ctrip 20/125). Merge PR #35 if so.
+- Aggregated Web board before the smoke package: VOLO AI 38.8%, rank 6.
+- Branches `exp/dialect-hover-actions` and `exp/lab-dialect-restore` are ablation records only.
+- `feat/minimal-feedback-v1-20260916` (WIP c55b8b3) holds the 09-16/17 Codex line; parked.
+- Balance about CNY 210; the organizer tops up on request. Cost column on the platform is
+  polluted by concurrent runs on one key; read pass rates only.
+
+## Facts that constrain the next session
+
+- Local generation is unusable today: long streams from this machine are cut by the gateway
+  path (unbilled); platform-side requests are fine. Run experiments on the platform.
+- Card tuning on Keep is high variance (±5 tests per sentence). Card frozen = lab card verbatim.
+- Evaluator-reading mechanics are shared by keep/prestashop/stackoverflow (identical resolver
+  functions), ctrip is a variant, bookstack/12306 are a different helper generation.
+- Local replay of a downloaded bundle reproduces platform scores
+  (`harness_lab/state_rehearsal.py` from the restored `bigtask-keep` worktree, hosted profile).
+
+## Next
+
+1. Evaluator-reading audit as a deterministic gate with bounded repair: one visible control per
+   action verb; row actions hidden at rest; navigation as links; while a chooser is open no
+   other named interactive element visible (isVisible ignores inert); referenced seed titles
+   present. Real browser, no official tests.
+2. Requirement-group generation with a shared scaffold for the large tasks (12306/ctrip/prestashop).
+3. Formal rounds start 2026-09-21: two hidden tasks, one medium and one large.
+
+---
+
 # Latest continuation — 2026-09-16, diagnostics and Evolution
 
 CLI diagnostics are merged in `arcbench-cli` PR #7 (`389e1a4`) and installed as 0.3.1.
