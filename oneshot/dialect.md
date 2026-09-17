@@ -31,11 +31,17 @@ bare verb matches as a substring, the anchored sidebar pattern does not.
 reveal the actions; if a button also answers to the title it resolves to that hover-only button, the click
 re-renders the row, the button vanishes, and the test deadlocks. On an unhovered page
 `getByRole('button', {name: /<any note title>/i})` must have count 0 — titles live in plain text nodes.
-## 4. An open chooser must make the rest of the page inert
-Playwright does NOT honour `aria-modal`. Put `inert` and `aria-hidden="true"` on every sibling while a
-dialog, dropdown, colour palette or label picker is open. In particular **no text input outside the open
-chooser may be visible**: the fill helper's last resort is the first bare textbox on the page, so a header
-Search box will silently swallow typing meant for the dialog.
+## 4. An open chooser must HIDE the rest of the page — `inert` is not enough
+The suite resolves names with `isVisible()`, which ignores `inert`, `aria-hidden` and `aria-modal`. While
+a dialog, dropdown, colour palette or label picker is open, every other interactive element that is
+still visible competes for the same name, and `link` outranks `checkbox`, `button` outranks everything:
+a sidebar link named like a picker option wins, the click lands on an inert element and the test hangs
+until timeout. So while a chooser is open set `visibility: hidden` (or `display: none`) on the rest of the
+app (render the chooser outside that container), and restore it on close. In particular **no text input
+outside the open chooser may be visible**: the fill helper's last resort is the first bare textbox on the
+page, so a header Search box will silently swallow typing meant for the dialog. Picker options are native
+`<input type="checkbox">` elements that are themselves visible (not visually hidden behind a styled span)
+with the option name as their label.
 ## 5. A verb must resolve INSIDE the container the test is working in
 With the composer ("Take a note" editor) open the test still searches `/more|options|menu/i` and
 `/labels/i`. If the composer offers neither, the ladder escapes to the banner "Menu" button and the sidebar
