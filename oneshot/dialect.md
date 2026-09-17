@@ -19,6 +19,9 @@ logged-in scenario first waits for that button. Rules:
   filter toggle, apply, confirm, vote, follow — is a real `<button type="button">` with the exact name.
 - Only navigation to another screen is an `<a href>` link, and it still carries the exact name.
 - A sortable or toggleable column header is a `<button>` inside the `<th>`, named exactly the column title.
+  Two tables with the same column headers (direct trains and transfer plans) must never be visible at
+  once — the sort helper uses `getByRole('button', {name: 'Departure Time'})` WITHOUT `.first()` and fails
+  in strict mode on two matches; render the second table only after its tab/toggle is chosen.
   The FIRST click sorts ascending, the second descending (the suite asserts exactly that order), and values
   that sort as strings must be rendered so that lexical and numeric order agree: zero-pad times and
   durations (`05h28m`, `07:00`), never mix `5h28m` with `13h50m`.
