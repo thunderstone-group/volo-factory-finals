@@ -22,10 +22,17 @@ quantitative indicators; a styled div with an ID alone does not expose a semanti
 
 ## Avoid ambiguous targets
 
-Make repeated row actions identifiable in their row. If contextual actions are hidden
-at rest, reveal them on keyboard focus as well as pointer hover. Do not turn an entity's
-title into the accessible name of an unrelated action. Keep requested row/editor actions
-inside their own context instead of requiring an unrelated global menu.
+Automated checks act on a list item by hovering its title and then clicking the first
+visible button on the whole page whose name matches the action verb. Therefore per-item
+actions (pin, archive, more options, change color, delete, restore, …) must be hidden at
+rest and revealed only while their own item is hovered or focused (`.item:hover .actions,
+.item:focus-within .actions { display: flex }`), so that at any moment at most one item's
+action buttons are visible. Always-visible per-item actions make the first item win every
+time. Navigation entries in sidebars, tabs and menus must be `<a>` links (with `href`),
+never `<button>`, so a navigation label cannot be mistaken for an item action with the
+same verb. Do not turn an entity's title into the accessible name of an unrelated action.
+Keep requested row/editor actions inside their own context instead of requiring an
+unrelated global menu.
 Render singular identity or status values once per screen. Repeating the same standalone
 username or success text in a header and the page body makes an exact-text query ambiguous;
 use one canonical display and different surrounding prose where repetition is necessary.

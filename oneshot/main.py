@@ -152,6 +152,7 @@ def stream_completion(messages, model, base, key, budget, tries=3):
             ended = False
             with _open_model(req, timeout=900) as response:
                 for line in response:
+                    record["received_bytes"] = record.get("received_bytes", 0) + len(line)
                     if not line.startswith(b"data:"):
                         continue
                     chunk = line[5:].strip()
@@ -161,7 +162,7 @@ def stream_completion(messages, model, base, key, budget, tries=3):
                     try:
                         obj = json.loads(chunk)
                         if not isinstance(obj, dict) or "error" in obj:
-                            raise ValueError("invalid stream object")
+                            raise ValueError("invalid stream object: " + chunk[:300].decode("utf-8", "replace"))
                         usage = obj.get("usage")
                         if isinstance(usage, dict):
                             record["usage_events"].append(usage)
@@ -181,7 +182,7 @@ def stream_completion(messages, model, base, key, budget, tries=3):
                             if choice.get("finish_reason"):
                                 record["finish_reason"] = choice["finish_reason"]
                     except (ValueError, TypeError, AttributeError) as exc:
-                        raise StreamError("malformed SSE event") from exc
+                        raise StreamError("malformed SSE event: " + str(exc)) from exc
             if not ended or record["finish_reason"] is None:
                 raise StreamError("stream ended without completion markers")
             if record["finish_reason"] not in ("stop", "length"):
@@ -199,6 +200,8 @@ def stream_completion(messages, model, base, key, budget, tries=3):
             failure = RuntimeError(f"model HTTP {exc.code}")
         except (error.URLError, OSError, http.client.IncompleteRead, StreamError) as exc:
             record["error_type"] = type(exc).__name__
+            record["error_detail"] = str(exc)[:400]
+            record["received_bytes"] = record.get("received_bytes", 0)
             retryable = True
             failure = RuntimeError(f"model stream failed ({type(exc).__name__})")
         finally:
