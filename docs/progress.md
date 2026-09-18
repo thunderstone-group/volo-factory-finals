@@ -441,3 +441,20 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   runs were started on retry — check `arcbench runs` before re-issuing). Waiter `r25-wait.sh` → `r25-final.json`.
 - arcbench-cli PR #8: `download`/`archive` resume with `Range` after a cut stream (the r23a bundle needed it).
 
+## 2026-09-19 01:00 — Round 25 kept; 12306 a lost 45 tests to the repair renaming "From"; round 26
+
+- r25 Web **61.8 / 67.8** (b: Keep 28, Bookstack 30, SO 44, PS 57, 12306 88, Ctrip 41), Lite 65.0 / 66.5. Kept over
+  r24 (67.8 / 54.7). 12306 has now delivered 90 / 87 / 88 in three of four samples.
+- r25a 12306 54/135 replayed locally (54/135, identical): 45 tests wait for `getByLabel(/From/i)`. The draft had
+  `placeholder="From"` / `"To"` exactly as the requirement quotes; the smoke found 19 nested-label pairs (the log's
+  list is cut by the platform's `***` redaction after "New password:"), and the accepted repair re-emitted app.js
+  with `aria-label="Origin city"` / `"Destination city"`. The gate said "rename" without saying which side; the
+  vocabulary count could not see the loss because "From" survives in "From Station" and `data-from`.
+- Fixed (`0ba726d`, 81 green): the nested-label advice names the side to rename (the label the requirement does
+  not quote; a pair with both quoted is not reported), and the repair is rejected when any quoted control name
+  present before it (label text / placeholder / aria-label / button text) is gone after it.
+- Third finding of the night of the same shape: a gate or protocol that is right, and a repair/acceptance that
+  throws away or damages the good part (parse-error repair rejected whole; glued marker killing eight good
+  blocks; collision repair renaming the mandated name). Each is now a bounded, tested rule.
+- **Round 26 = r25 + this**, Web `6d58dedfc0b5`, Lite `dc788a8eb93d`, two samples each, 01:00. Balance ≈ CNY 95.
+

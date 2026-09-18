@@ -67,7 +67,10 @@ Keep every candidate package and its run ids under `runs/2026-09-18-goal/`.
 | 24a | r24 = r22 + `a36bad5` duplicate file block → later wins, status span, DOM probe timeout is a problem, `node --check` syntax gate with file:line, repair kept when it removes a whole-app failure (`3cc0f24`, `d97509f`); card = r22 verbatim (`7bec21d`). Web `5189caeffa1b` | 25/32 | 30/34 | 45/66 | 60/86 | **90/135** | 45/125 | **67.8%** | mechanical only | **kept**: best single sample so far; 12306 and Prestashop b at all-time highs |
 | 24b | (second sample) | **0/0** | 29/34 | 48/66 | **68/86** | 87/135 | 33/125 | 54.7% (67.7% over the five delivered) | none | Keep b: agent exit 1 — `</think>=== FILE: seed.js ===` on one line, marker unrecognised, next END 'without an open block' (fixed `8c96fe4`) |
 | lite24 | (arc-bench-lite `465e2b38f27d`, same package) | **20/32**, 16/32 | 25/34, 24/34 | | | | | **68.2% / 60.6%** | | from 61.9 / 61.8; Lite Keep 20 is a new high |
-| 25 | r24 + glued-marker parser fix (`8c96fe4`). Web `362bc22182ff`, Lite `1a37de39c710`, two samples each, started 00:12 | | | | | | | | protocol only | running; judge against r24 |
+| 25a | r24 + glued-marker parser fix (`8c96fe4`). Web `362bc22182ff` | 25/32 | 29/34 | 45/66 | **68/86** | 54/135 | 25/125 | 61.8% | protocol only | **kept** (pair 61.8 / 67.8 vs r24 67.8 / 54.7); 12306 a = the collision repair renamed the quoted "From"/"To" to "Origin city" (45 tests; fixed `0ba726d`) |
+| 25b | (second sample) | 28/32 | 30/34 | 44/66 | 57/86 | 88/135 | 41/125 | **67.8%** | none | ties the best sample |
+| lite25 | (arc-bench-lite `1a37de39c710`) | 19/32, 20/32 | 24/34, 24/34 | | | | | 65.0% / 66.5% | | Lite Keep holds 19–20 (r22: 17/16) |
+| 26 | r25 + nested-label advice names the side to rename + repair rejected when it renames a quoted control (`0ba726d`). Web `6d58dedfc0b5`, Lite `dc788a8eb93d`, two samples each, started 01:00 | | | | | | | | gate + acceptance | running; judge against r25 |
 
 ## Reading at 06:50 (Fable stops launching rounds here; balance CNY 93)
 
