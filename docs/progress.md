@@ -394,7 +394,7 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   re-emitted `seed.js` → `duplicate file block` ValueError → 0/135; now the later block wins (`a36bad5`, tests
   74 green). Prestashop a — every test timed out from "Visit Homepage" in the real browser while the DOM
   probe passed; the probe's own 60 s timeout returns silently instead of reporting, so a page that hangs
-  after load is invisible to the gate (bundle `r23a-prestashop-bundle`, probe unfinished at session end).
+  after load is invisible to the gate (the bundle download failed twice with IncompleteRead at ~18.7 MB of 18.9; retry `arcbench download 5e54581b8c44`, then a real-browser probe).
 - SO a 21/66 and Ctrip a 12/125 are sample-a-only (21 and 9 tests fail only in a); the other sample is in
   band. The Keep-shaped lines did not take: the r23 Lite Keep app still rendered `Archive note` and put the
   editor behind a plain button, so the remaining Lite Keep families are unchanged (card-scoped `Archive` /

@@ -27,7 +27,7 @@ the owner: Fable and the owner directly, no Codex/Opus dispatch. `arcbench` need
    carries the round-23 card lines (not validated — consider reverting `Card:` commit `(editor dialog)` before
    merging, keep the status span and the duplicate-file fix `a36bad5`). Nothing is running on the platform.
 2. Open mechanical items, in order: (a) the DOM probe must report its own timeout as a problem (Prestashop
-   r23a hung after load, 0/86; bundle `runs/2026-09-18-goal/r23a-prestashop-bundle`); (b) a jsdom check that
+   r23a hung after load, 0/86; bundle NOT on disk — `arcbench download 5e54581b8c44` failed twice with IncompleteRead, retry); (b) a jsdom check that
    `/` settles (no runaway timers / loops); (c) planner stage for the large tasks; (d) seed-link heading walk.
 3. Lite Keep remaining families (progress 22:35) need a scaffold carrier, not prose: card row actions named
    by the bare verb, editor dialog primitive, settings menu items.
