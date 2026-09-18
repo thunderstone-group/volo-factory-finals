@@ -238,6 +238,26 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(budget.smoke["repair"]["vocabulary_missing_after"], 1)
         self.assertIn("Sign Out", (self.out / "frontend/public/index.html").read_text())
 
+    def test_exact_name_gate_flags_decorated_quoted_names(self):
+        stage = self.root / "stage"
+        (stage / "frontend" / "public").mkdir(parents=True)
+        req = 'Click the "Take a note" form. The sidebar shows "Notes" and "Reminders" entries. The snackbar shows exactly "Note trashed". Stats read "Asked" and "Viewed".'
+        (stage / "frontend" / "public" / "app.js").write_text(
+            "html += `<a href=\"#/\">\u2022 Notes</a><a href=\"#/r\">\U0001f514 Reminders</a>`;\n"
+            "html += `<input placeholder=\"Take a note...\">`;\n"
+            "html += `<div role=\"status\">Note trashed</div><span>Asked ' + when + '</span>`;\n")
+        gaps = adapter.exact_name_gaps(stage, req)
+        self.assertEqual(len(gaps), 1, gaps)
+        self.assertIn("3 quoted control name(s)", gaps[0])
+        for word in ("Take a note", "Notes", "Reminders"):
+            self.assertIn(word, gaps[0])
+        self.assertNotIn("Note trashed", gaps[0])
+        self.assertNotIn("Asked", gaps[0])  # no control word near the quote: not a control name
+        (stage / "frontend" / "public" / "app.js").write_text(
+            "html += `<a href=\"#/\"><span aria-hidden=\"true\">\u2022</span>Notes</a><button aria-label=\"Reminders\">R</button>`;\n"
+            "html += `<button type=\"button\">Take a note</button><div role=\"status\">Note trashed</div>`;\n")
+        self.assertEqual(adapter.exact_name_gaps(stage, req), [])
+
     def test_static_gates_flag_missing_process_guards_and_aria_collisions(self):
         stage = self.root / "stage"
         (stage / "backend").mkdir(parents=True)

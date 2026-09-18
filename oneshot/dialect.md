@@ -108,14 +108,24 @@ visible text or as an accessible name; synonyms and paraphrases score zero. Conc
   control with exactly that name ("Profile", "Addresses", "Order history and details", "Favorites",
   "Recently viewed", "Watch tag"). After login the word "Profile" must be a visible button or link.
 - Every seed name, product title, wishlist name, tag or username quoted in a requirement exists verbatim.
-- Chinese-language apps: the suite's patterns carry English fallbacks (`/账号|account/i`, `/密码|password/i`,
-  `/登录|login/i`). Give every form field and primary action a bilingual accessible name — label
-  `账号 Account` for the multi-purpose login identifier (email / username / mobile), `密码 Password`,
-  button `登录 Login`, `注册 Register`, `搜索 Search`, `提交订单 Submit order` — so either language matches.
-  When a requirement defers a form's exact wording to a reference screenshot you cannot see, the
-  bilingual label is the only reliable hit (one Ctrip run lost 50 of 125 tests on that single field).
+- Chinese-language apps: a name the requirement quotes is rendered exactly (§7b). For a control whose
+  wording the requirement defers to a screenshot you cannot see, the suite's patterns carry English
+  fallbacks (`/账号|account/i`, `/密码|password/i`, `/登录|login/i`): give it the Chinese name as the accessible
+  name and the English in an `aria-hidden` sibling (`<button>登录<span aria-hidden="true"> Login</span></button>`)
+  or, when nothing is quoted at all, a bilingual label `账号 Account` (one Ctrip run lost 50 of 125 tests on
+  that single field).
 Notifications are `role="status"` carrying the literal message plus an `Undo` button. Section titles are
 visible headings (`<h2>Comments</h2>`), never an `aria-label` on the container.
+## 7b. A quoted control name is the WHOLE accessible name, byte-exact
+The formal suite anchors the names the requirement quotes: `getByRole('button', {name: /^Take a note$/i})`,
+`getByRole('textbox', {name: /^Note content$/i})`, `getByText(/^Notes$/i)`, `getByRole('dialog', {name:
+/^Note editor$/i})`. Any decoration in the same accessible name fails the match: a bullet or icon glyph
+before the word (`• Notes`, `🔔 Reminders`), an ellipsis after it (`Take a note...`), a count
+(`Notes (3)`), or an added noun (`Archive note` when the requirement quotes "Archive"). Put icons in a
+separate `<span aria-hidden="true">` and give the control `aria-label` equal to the quoted name. The role
+follows the requirement's verb: click/press → `<button>`; field/enter → textbox labelled exactly;
+dialog/editor → `role="dialog"` named as the requirement calls it; menu → `role="menu"` with
+`menuitem`s. §3's "add a noun" applies only to names the requirement does NOT quote.
 ## 7a. `aria-label` is reserved for form controls and icon-only buttons
 The fill ladder's FIRST rung is `getByLabel(/price/i)`, and `getByLabel` matches ANY element whose
 `aria-label` / `aria-labelledby` contains the pattern: `<section aria-label="Price">`,

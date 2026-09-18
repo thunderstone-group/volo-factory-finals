@@ -800,13 +800,83 @@ def vocabulary_table(requirements):
     if not seen:
         return ""
     lines = ["\n\n## Quoted vocabulary checklist (every phrase must exist verbatim; the delivery check enforces it)",
-             "Each phrase below is quoted by the requirement and matched verbatim by the suite as visible text, an "
-             "accessible name, a message or a seed value, on the screen that requirement describes."]
+             "Each phrase below is quoted by the requirement and matched by the suite as visible text, an accessible "
+             "name, a message or a seed value, on the screen that requirement describes. A quoted control name is the "
+             "WHOLE accessible name, byte-exact: the suite anchors it (`/^Take a note$/i`), so an icon, bullet, "
+             "ellipsis, count or extra word in the same name (`\u2022 Notes`, `Take a note...`, `Archive note`) fails it. "
+             "The role follows the requirement's verb: click/press \u2192 button, field/enter \u2192 textbox with that "
+             "exact label, dialog/editor \u2192 role=dialog with that exact name, menu \u2192 menu/menuitem."]
     for key in order:
         label, phrases = groups[key]
         head = key if key == "ROOT" else key + (" " + label if label else "")
         lines.append(f"- {head}: " + "; ".join(f"\u201c{p}\u201d" for p in phrases))
     return "\n".join(lines)
+
+
+NAME_MAX_WORDS = 5
+CONTROL_CONTEXT = re.compile(r"\b(click|press|tap|button|link|field|input|textbox|tab|menu|dialog|editor|label|option|"
+                             r"checkbox|radio|toggle|named|called|titled|heading|section|sidebar|nav|navigation|entry|"
+                             r"item|action|icon|control|select|dropdown|form|snackbar|toast|notification|message)\b", re.I)
+TOKEN_EDGE = set('<>"\'`')
+
+
+def exact_name_gaps(stage, requirements):
+    """A quoted control name must be rendered as a WHOLE name. A phrase that appears in the source only
+    inside a longer token (\u2022 Notes, Take a note..., Archive note) fails the suite's anchored
+    /^Name$/i match (Lite Keep 5/32: 22 of 27 losses cascaded from one decorated name). Only phrases
+    whose requirement context names a control are checked. Static, no model."""
+    seen, phrases = set(), []
+    text_req = requirements or ""
+    for match in QUOTED.finditer(text_req):
+        phrase = re.sub(r"\s+", " ", match.group(1)).strip()
+        context = text_req[max(0, match.start() - 80):match.end() + 40]
+        if (len(phrase) < 3 or len(phrase.split()) > NAME_MAX_WORDS or re.search(r"[.!?:;,]$", phrase)
+                or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
+                or phrase.lower() in seen or not CONTROL_CONTEXT.search(context)):
+            continue
+        seen.add(phrase.lower())
+        phrases.append(phrase)
+    if not phrases:
+        return []
+    texts = []
+    for directory, dirs, names in os.walk(Path(stage), followlinks=False):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d not in TEMPLATE_ARTIFACTS]
+        for name in names:
+            if name == "package-lock.json" or name.startswith(".") or not name.endswith((".js", ".html", ".mjs", ".cjs")):
+                continue
+            path = Path(directory) / name
+            try:
+                if path.stat().st_size <= 2_000_000:
+                    texts.append(path.read_text(encoding="utf-8", errors="replace"))
+            except OSError:
+                continue
+    decorated = []
+    for phrase in phrases:
+        pattern = re.compile(re.escape(phrase), re.I)
+        found, clean, sample = 0, 0, None
+        for text in texts:
+            for m in pattern.finditer(text):
+                found += 1
+                b = m.start()
+                while b > 0 and text[b - 1] not in TOKEN_EDGE and text[b - 1] != "\n":
+                    b -= 1
+                e = m.end()
+                while e < len(text) and text[e] not in TOKEN_EDGE and text[e] != "\n":
+                    e += 1
+                token = re.sub(r"\s+", " ", text[b:e]).strip()
+                if token.lower() == phrase.lower():
+                    clean += 1
+                elif sample is None:
+                    sample = token[:60]
+        if found and not clean:
+            decorated.append((phrase, sample))
+    if not decorated:
+        return []
+    shown = "; ".join(f"\u201c{p}\u201d appears only as `{sample}`" for p, sample in decorated[:VOCAB_SHOWN])
+    return [f"{len(decorated)} quoted control name(s) never appear as a WHOLE accessible name or text node; the suite "
+            f"anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. "
+            f"Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and "
+            f"translations go in a separate aria-hidden sibling element): {shown}"]
 
 
 def vocabulary_gaps(stage, requirements):
@@ -957,7 +1027,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     vocabulary did not get worse. Records the outcome in budget.smoke."""
     problems, executed = smoke_check(stage, requirements)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
-    static = process_guard_gaps(stage) + aria_collision_gaps(stage) + (scaffold_gaps(stage) if scaffold else [])
+    static = (process_guard_gaps(stage) + aria_collision_gaps(stage) + exact_name_gaps(stage, requirements)
+              + (scaffold_gaps(stage) if scaffold else []))
     budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
                     "repair": None}
     problems = problems + static + vocab
