@@ -977,3 +977,14 @@ each rule snapshot and experiment with date and source.
   through the UI first), 2.7.x are the label dialog. Routes and the "Archived" sidebar link are correct.
   Seed-state interpretation is the known Keep stochastic family, not an effect of §7b; one sample, band 24–31.
   Round 18 candidate built (`r18-candidate.zip`); upload waits for the local Lite Keep replay.
+- Local Lite Keep with the §7b package (15:18–16:08, 2981 s): replay **6/32** (was 5). Names are now exact
+  (textbox "Title"/"Note content", "Close", "More options", "Pin note"), the blockers are Lite's helper
+  conventions: sidebar entries resolved as `complementary >> button /^Name$/` (ours were links), search as
+  `textbox /^Search$/` (ours `type=search` = searchbox), cards as `article`, the editor as `dialog "Note
+  editor"` (unwritten in the requirement; skipped). Web Keep's `archiveNote` is a page-wide `.first()` for
+  /archive/i, so sidebar buttons must come after the cards in DOM order: scaffold v2 (`sidebar buttons in
+  <aside> placed after <main>, CSS order -1`; search textbox; article example) + card §8 lines. Bare scaffold
+  clean on every gate. Round 18 = this package on Web (two samples, submission `87b8bf978a70`) and Lite
+  (two samples, `4f410b2e5ae7`), started 16:15. Local generation time rose to 30–50 min this afternoon
+  (gateway load or the longer prompt; platform drafts will tell).
+- Session handoff at 16:20: context at 45%; the next session continues from `docs/SESSION_HANDOFF.md`.
