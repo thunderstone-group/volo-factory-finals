@@ -174,6 +174,31 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(budget.smoke["problems"], [], budget.smoke)
         self.assertEqual(self.transport.call_count, 1)
 
+    def test_click_handler_that_throws_is_reported_when_jsdom_is_available(self):
+        throwing = app(server()).replace(
+            block("frontend/public/app.js", "console.log('synthetic');"),
+            block("frontend/public/app.js",
+                  "document.body.insertAdjacentHTML('beforeend', '<button type=\"button\" data-action=\"add-to-cart\">Add to cart</button>');\n"
+                  "document.addEventListener('click', (e) => { if (e.target.dataset.action === 'add-to-cart') { const p = undefined; p.id; } });"))
+        self.replies(events(throwing))
+        files, budget = self.generate(limit=1)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        flagged = [p for p in budget.smoke["problems"] if "throws" in p]
+        self.assertEqual(len(flagged), 1, budget.smoke)
+        self.assertIn("`Add to cart` (data-action `add-to-cart`)", flagged[0])
+        self.assertIn("reading 'id'", flagged[0])
+
+    def test_readonly_input_is_a_static_problem(self):
+        picker = app(server()).replace(
+            block("frontend/public/app.js", "console.log('synthetic');"),
+            block("frontend/public/app.js", "document.body.innerHTML += '<label>出发城市 <input id=\"o\" readonly data-action=\"open-city\"></label>';"))
+        self.replies(events(picker))
+        files, budget = self.generate(limit=1)
+        flagged = [p for p in budget.smoke["problems"] if "readonly" in p]
+        self.assertEqual(len(flagged), 1, budget.smoke)
+        self.assertIn("frontend/public/app.js:1", flagged[0])
+
     def test_home_screen_must_render_the_landmarks_the_requirement_describes(self):
         req = "The global header carries the navigation links and the login control. A footer closes every page."
         feed_only = app(server()).replace("<h1>Synthetic</h1>", "<h1>Top questions</h1>")
