@@ -932,3 +932,16 @@ each rule snapshot and experiment with date and source.
 - Round 17 = scaffold + empty-draft retry (`25e7d44`, `588e6be`; sha256 `831f5e09…`, submission
   `efdc725f67bf`), two samples started 13:28 (sample A's Keep entry came back without a run id and was started
   separately). Ids in `r17a-runs.json`, `r17a-keep-run.json`, `r17b-runs.json`.
+- Round 17 (scaffold + empty-draft retry) sample A closed 14:10: Keep 28/32, Bookstack 29/34, SO 47/66,
+  Prestashop 58/86, 12306 69/135, Ctrip 36/125 → **65.2%** (second-best round; no whole-app zero). Sample B
+  so far: Keep 27, Bookstack 19, SO 35, Prestashop 57, Ctrip 37; 12306 still PENDING after an hour in the
+  platform queue.
+- Lite holdout (14:12): the round-17 package uploaded to `arc-bench-lite` (submission `d4fb5e687fa3`, two
+  samples: A Bookstack `8ea91c95dfb3` / Keep `71c64ecb4e69`; B Bookstack `a7523e35a279` / Keep
+  `37eb3cd66155`). Lite's Keep/Bookstack use different tests and stricter helper conventions than Web
+  (09-16: the same Keep product Web 21/32, Lite 5/32), so this measures the "other helper generation" risk
+  Jev weighted 0.80. First result: Lite Bookstack B **5/34**. Board context: four 100% entries (fixed
+  answers on every small board so far), then 51.5 / 38.1 / 37.1 / VOLO 31.6.
+- Tooling: `arcbench wait` returns as soon as one run reports FAILED (our normal terminal state), so the
+  background waiters exited early all afternoon; replaced by `scratchpad/poll_runs.py` (polls `arcbench
+  runs` until every id is terminal). Worth folding into the CLI as `wait --until-terminal`.
