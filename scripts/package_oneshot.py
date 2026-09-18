@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the isolated candidate from three allowlisted files; no imports or network."""
+"""Build the isolated candidate from the allowlisted files plus the scaffold directory; no imports or network."""
 import argparse
 import hashlib
 import io
@@ -12,6 +12,15 @@ SOURCE = ROOT / "oneshot"
 FILES = ("main.py", "dialect.md", "requirements.txt")
 
 
+def scaffold_files(source=SOURCE):
+    """Every regular file under <source>/scaffold, shipped beside main.py so the generator can place it."""
+    root = Path(source) / "scaffold"
+    if root.is_symlink() or not root.is_dir():
+        return ()
+    return tuple(sorted(p.relative_to(source).as_posix() for p in root.rglob("*")
+                        if p.is_file() and not p.is_symlink() and not p.name.startswith(".")))
+
+
 def sha256(data):
     return hashlib.sha256(data).hexdigest()
 
@@ -19,7 +28,7 @@ def sha256(data):
 def build_package(output, source=SOURCE):
     source, output = Path(source), Path(output)
     blobs = {}
-    for name in FILES:
+    for name in FILES + scaffold_files(source):
         path = source / name
         if source.is_symlink() or path.is_symlink() or not path.is_file():
             raise ValueError(f"package source must be a regular file: {name}")
@@ -39,7 +48,7 @@ def build_package(output, source=SOURCE):
     buffer = io.BytesIO()
     # Stored entries avoid compression-version differences as well as timestamp drift.
     with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_STORED) as archive:
-        for name in FILES:
+        for name in FILES + scaffold_files(source):
             info = zipfile.ZipInfo(name, date_time=(2026, 9, 16, 0, 0, 0))
             info.create_system = 3
             info.external_attr = 0o100644 << 16
@@ -49,7 +58,7 @@ def build_package(output, source=SOURCE):
     manifest["package_sha256"] = sha256(package)
     manifest["package_bytes"] = len(package)
     manifest_path = output.with_suffix(output.suffix + ".manifest.json")
-    inputs = {(source / name).resolve() for name in (*FILES, "source_manifest.json")}
+    inputs = {(source / name).resolve() for name in (*FILES, *scaffold_files(source), "source_manifest.json")}
     for path in (output, manifest_path):
         if path.is_symlink() or path.resolve() in inputs:
             raise ValueError("package output must not overwrite or link to source files")

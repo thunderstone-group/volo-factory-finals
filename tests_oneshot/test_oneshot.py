@@ -73,6 +73,7 @@ class OfflineCase(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
         self.out = self.root / "app"
+        self.enter(patch.object(adapter, "SCAFFOLD", False))
         self.transport = self.enter(patch.object(adapter, "_open_model",
                                                 side_effect=AssertionError("unexpected HTTP")))
         self.enter(patch.object(adapter.time, "sleep"))
@@ -489,7 +490,8 @@ class LocalHTTPTests(unittest.TestCase):
                 requirements.mkdir()
                 (requirements / "requirements.yaml").write_text("synthetic: true")
                 env = {"PATH": os.defpath, "PYTHONDONTWRITEBYTECODE": "1", "OPENAI_API_KEY": SYNTHETIC_KEY,
-                       "OPENAI_BASE_URL": f"http://127.0.0.1:{server.server_port}/v1", "MODEL": "synthetic-model"}
+                       "OPENAI_BASE_URL": f"http://127.0.0.1:{server.server_port}/v1", "MODEL": "synthetic-model",
+                       "ONESHOT_SCAFFOLD": "0"}  # the CLI mechanics, without the scaffold completing a partial reply
                 for index, expected in enumerate((0, 1, 1)):
                     result = subprocess.run([sys.executable, str(root / "candidate/main.py"), str(requirements),
                                              "--output-dir", str(root / f"out-{index}"), "--type", "web"],

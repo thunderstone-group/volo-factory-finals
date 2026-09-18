@@ -61,6 +61,7 @@ class SmokeCase(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
         self.out = self.root / "app"
+        self.enter(patch.object(adapter, "SCAFFOLD", False))
         self.transport = self.enter(patch.object(adapter, "_open_model",
                                                 side_effect=AssertionError("unexpected HTTP")))
         self.enter(patch.object(adapter, "SMOKE_READY_SECONDS", 8))
@@ -189,6 +190,39 @@ class SmokeCase(unittest.TestCase):
         self.assertTrue(all("shared layout" in p for p in flagged))
         self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
         self.assertIn("<header>", (self.out / "frontend/public/index.html").read_text())
+
+    def test_scaffold_is_placed_shown_and_extended(self):
+        # With the scaffold on, the model only writes seed.js and app.js; the delivered app keeps the
+        # primitives, the prompt shows them, and the bare result passes every gate.
+        req = "The global header carries the navigation links and the login control. A footer closes every page."
+        reply = (block("frontend/public/seed.js", "window.SEED = { session: null, users: [], items: [] };") +
+                 block("frontend/public/app.js",
+                       "window.LAYOUT = { brand: 'T', nav: [{ label: 'Home', hash: '#/' }], footer: 'Footer', account: () => '' };\n"
+                       "window.APP = { screen() { return '<h1>Home</h1>'; }, actions: {} };"))
+        self.replies(events(reply))
+        budget = adapter.CallBudget()
+        with patch.object(adapter, "SCAFFOLD", True):
+            adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        self.assertTrue((self.out / "frontend/public/lib/arc.js").is_file())
+        self.assertTrue((self.out / "backend/server.js").is_file())
+        self.assertIn("window.SEED = { session: null", (self.out / "frontend/public/seed.js").read_text())
+        prompt = budget.attempts[0]["messages"][1]["content"]
+        self.assertIn("## Scaffold already in the application root", prompt)
+        self.assertIn("frontend/public/lib/arc.js", prompt)
+        self.assertEqual(self.transport.call_count, 1)
+        if (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.assertEqual(budget.smoke["problems"], [], budget.smoke)
+
+    def test_replacing_the_scaffold_shell_is_a_gate_problem(self):
+        reply = (block("frontend/public/index.html", "<!doctype html><title>T</title><h1>T</h1><script src=\"app.js\"></script>") +
+                 block("frontend/public/app.js", "document.body.append('x');"))
+        self.replies(events(reply))
+        budget = adapter.CallBudget(1)
+        with patch.object(adapter, "SCAFFOLD", True):
+            adapter.generate("req", "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        gaps = [p for p in budget.smoke["problems"] if "scaffold" in p]
+        self.assertTrue(any("lib/arc.js" in p and "no longer loads" in p for p in gaps), budget.smoke)
+        self.assertTrue(any("app.js no longer defines" in p for p in gaps), budget.smoke)
 
     def test_missing_quoted_vocabulary_is_reported_and_partial_repair_is_kept(self):
         req = 'After login replace the link with \u201cSign Out\u201d. Show \u201cEmail cannot be empty\u201d. Seed \u201cBook 5.1\u201d.'

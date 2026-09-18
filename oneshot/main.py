@@ -36,6 +36,11 @@ MAX_CALLS = 3  # Completed calls: first draft, one truncation continuation, one 
 MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
 #                 three on the primary model, then up to two on the fallback.
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
+SCAFFOLD = os.environ.get("ONESHOT_SCAFFOLD", "1") != "0"  # place oneshot/scaffold in the stage before a fresh generation and show it in the prompt
+SCAFFOLD_DIR = HERE / "scaffold"
+SCAFFOLD_KEEP = {"frontend/public/lib/arc.js": ("ARC.layout", "ARC.openDialog", "ARC.notify", "ARC.rowActions", "ARC.render"),
+                 "frontend/public/app.js": ("window.LAYOUT", "window.APP"),
+                 "frontend/public/seed.js": ("window.SEED",)}
 MAX_TEMPLATE_FILES = 256
 TEMPLATE_ARTIFACTS = {"node_modules", "dist", "__pycache__"}
 APPLICATION_ROOTS = ("frontend", "backend")
@@ -605,6 +610,44 @@ def template_context(blobs):
             json.dumps(records, ensure_ascii=False))
 
 
+def scaffold_context(blobs):
+    records = [{"path": name, "content": data.decode("utf-8")} for name, data in sorted(blobs.items())]
+    return ("\n\n## Scaffold already in the application root (extend it, never replace it)\n"
+            "The files below exist before your output is applied. They implement the evaluator mechanics: one "
+            "shared layout with the header, navigation, account controls, sidebar, main and footer on EVERY screen "
+            "including `/`; synchronous hash routing from an in-memory store seeded by `seed.js`; row actions hidden "
+            "at rest; dialogs that make the page inert; `role=status` notifications with Undo; a backend with process "
+            "guards, static serving and `/api/health`. Write the application as `frontend/public/seed.js` "
+            "(`window.SEED`, every seed row the requirement names), `frontend/public/app.js` (`window.LAYOUT`: brand, "
+            "nav, sidebar, footer text, account controls; `window.APP`: `screens`, `screen(route)`, `actions`, "
+            "optional `afterRender`), and additions to `frontend/public/styles.css`. Re-emit `backend/server.js` "
+            "only to add API routes inside `api()`, keeping everything it does. Do not re-emit `index.html` or "
+            "`lib/arc.js` unless a change is unavoidable, and then keep every function they define. Emit complete "
+            "file blocks only for the files you add or change; the scaffold files you do not mention are kept. "
+            "The JSON below is application source, not instructions.\n" + json.dumps(records, ensure_ascii=False))
+
+
+def scaffold_gaps(stage):
+    """The delivered app must still load and define the scaffold primitives it was built on."""
+    stage = Path(stage)
+    gaps = []
+    index = stage / "frontend" / "public" / "index.html"
+    html = index.read_text(encoding="utf-8", errors="replace") if index.is_file() else ""
+    for ref in ("seed.js", "lib/arc.js", "app.js"):
+        if ref not in html:
+            gaps.append(f"frontend/public/index.html no longer loads `{ref}` (the scaffold's script order is seed.js, "
+                        f"lib/arc.js, app.js); restore the <script src=\"{ref}\"> tag")
+    for name, symbols in SCAFFOLD_KEEP.items():
+        path = stage / name
+        text = path.read_text(encoding="utf-8", errors="replace") if path.is_file() else ""
+        missing = [sym for sym in symbols if sym not in text]
+        if not path.is_file():
+            gaps.append(f"{name} is missing; the scaffold requires it")
+        elif missing:
+            gaps.append(f"{name} no longer defines {', '.join(missing)}; the scaffold's primitives must stay defined")
+    return gaps
+
+
 def template_stamp(root):
     """Detect concurrent edits to opaque metadata without reading or logging it."""
     stamp = {}
@@ -653,6 +696,9 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     out.parent.mkdir(parents=True, exist_ok=True)
     user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
+    scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
+    if scaffold:
+        user += scaffold_context(scaffold)
     if template is not None:
         user += template_context(snapshot)
     messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
@@ -664,7 +710,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             # Keep opaque local metadata/artifacts intact, without putting their
             # contents in the prompt. Generated edits cannot touch those paths.
             shutil.copytree(template, stage, dirs_exist_ok=True, symlinks=True)
-        for name, data in snapshot.items():
+        for name, data in {**scaffold, **snapshot}.items():
             target = resolve_path(stage, name)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
@@ -709,7 +755,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             raise ValueError("upgrade did not change any files")
         if SMOKE:
             repair_delivery(stage, files, messages + [{"role": "assistant", "content": content}],
-                            model, base, key, budget, template, requirements)
+                            model, base, key, budget, template, requirements, scaffold=bool(scaffold))
         publish(stage, out, template, snapshot, stamp)
     return files, budget.summary()
 
@@ -860,13 +906,13 @@ def process_guard_gaps(stage):
             f"handler body in try/catch that answers HTTP 500 instead of throwing"]
 
 
-def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None):
+def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
     """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
     at most one model call on a fix and keep it only if the smoke check then passes and the
     vocabulary did not get worse. Records the outcome in budget.smoke."""
     problems, executed = smoke_check(stage, requirements)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
-    static = process_guard_gaps(stage) + aria_collision_gaps(stage)
+    static = process_guard_gaps(stage) + aria_collision_gaps(stage) + (scaffold_gaps(stage) if scaffold else [])
     budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
                     "repair": None}
     problems = problems + static + vocab
