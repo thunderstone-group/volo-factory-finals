@@ -884,3 +884,20 @@ each rule snapshot and experiment with date and source.
   Prestashop `b7e272ce6ba8`, SO `58e3c1cd9234`. Sample B 11:36 (first start hit a platform 500 on
   GET /submissions, retried): 12306 `4f1f041e40f1`, Bookstack `11c50656c2cd`, Ctrip `44d9c77266f0`, Keep
   `74032e8864ac`, Prestashop `5b227b45dde5`, SO `56896036410e`. Both samples run concurrently.
+- Round 16 (landmark gate) closed 12:40: sample A 29/15/53/49/35/51 → 56.5%; sample B 24/33/34/57/79/37 →
+  63.0%. Pair 56.5 / 63.0 against round 15's 52.6 / 67.1: same band, no whole-app zero in either sample
+  (lowest: 12306 35/135 in A, a new low for that task, two `stop` calls, no delivery fault; Bookstack 15/34
+  in A with zero gate problems — the known stochastic navigation family). **Verdict: keep the landmark
+  gate.** Board stays 67.1%.
+- Generic-card ablation started 12:41 (branch `exp/generic-card` `4ce8ec3`, same code as round 16, card
+  cut to 126 mechanics-only lines: §6a and every task-shaped rule/example removed; package sha256
+  `23d8de9f…`, submission `85832f7d5293`). Sample A: 12306 `9388c7bf1d25`, Bookstack `030833032cb4`,
+  Ctrip `7443f5012b3a`, Keep `bdd209231711`, Prestashop `9e9221d34ae8`, SO `37a29cdeb557`. Sample B:
+  12306 `22f415b33177`, Bookstack `c9d8c7213a24`, Ctrip `f421af673378`, Keep `da773e8e9c80`, Prestashop
+  `22e270c017c5`, SO `a5c0b54ee171`. Control = round 16's pair.
+- Distillation plan proposed to the owner (12:38, awaiting a nod): move know-how down the ladder prose →
+  requirement table → scaffold code → gates. Next levers in order: (1) a fixed scaffold (layout, router,
+  in-memory store, inert dialog, hover-revealed row actions, status notifications) shipped with the package
+  for the model to extend; (2) prepend the quoted-vocabulary table to the prompt instead of only checking it
+  afterwards; (3) a screen-walk gate for "phrase in source but not on the asserted screen" (half of the
+  r15b SO/Prestashop failures).
