@@ -1,4 +1,23 @@
-# Current handoff — 2026-09-18 11:45 (Fable + owner; goal mode continues by day)
+# Current handoff — 2026-09-18 13:40 (Fable + owner; goal mode continues by day)
+
+Newer than the 11:45 section below; read both. Doctrine since 12:47: ADR 0001 (push know-how down the
+carrier ladder: gate → scaffold → table → prose), ADR 0002 (model policy). Narrative in
+`docs/distillation-2026-09-18.md`.
+
+- Board 67.1% (round 15b). Round 16 (landmark gate) 56.5/63.0 kept. Generic-card ablation 55.3/45.7:
+  task-shaped rules are worth ~10 points on the six public tasks; hidden-task expectation ~50.
+- **Scaffold shipped** (`oneshot/scaffold/`, README there; `25e7d44`) + empty-draft retry (`588e6be`).
+  Local Keep probe 31/32 with the model touching only `app.js`/`seed.js`. **Round 17** = this package,
+  two samples running (submission `efdc725f67bf`, ids in `runs/2026-09-18-goal/r17*-runs.json`).
+  Keep it if the pair does not drop against 56.5/63.0; watch for the model replacing the shell (gate
+  `scaffold_gaps`) and for large tasks (12306/Ctrip) fitting in one `app.js`.
+- Next levers in order: quoted-vocabulary table prepended to the prompt (level 2); planner stage
+  (stronger gateway model, short output) from the superpowers reading; screen-walk gate (level 0).
+- glm-5.3 out (20-minute gateway stream ceiling); uncapped flash out (provider ceiling).
+
+---
+
+# Handoff — 2026-09-18 11:45 (older)
 
 Read `docs/goal-2026-09-18.md` bottom first (ledger rows 15a/15b/16a/16b and the morning reading), then
 `docs/progress.md` from "2026-09-18 morning". Branch `goal/round-1` is merged into main (PR #37,
