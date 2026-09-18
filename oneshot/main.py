@@ -36,6 +36,11 @@ MAX_CALLS = 3  # Completed calls: first draft, one truncation continuation, one 
 MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
 #                 three on the primary model, then up to two on the fallback.
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
+SCAFFOLD = os.environ.get("ONESHOT_SCAFFOLD", "1") != "0"  # place oneshot/scaffold in the stage before a fresh generation and show it in the prompt
+SCAFFOLD_DIR = HERE / "scaffold"
+SCAFFOLD_KEEP = {"frontend/public/lib/arc.js": ("ARC.layout", "ARC.openDialog", "ARC.openPopover", "ARC.notify", "ARC.rowActions", "ARC.render"),
+                 "frontend/public/app.js": ("window.LAYOUT", "window.APP"),
+                 "frontend/public/seed.js": ("window.SEED",)}
 MAX_TEMPLATE_FILES = 256
 TEMPLATE_ARTIFACTS = {"node_modules", "dist", "__pycache__"}
 APPLICATION_ROOTS = ("frontend", "backend")
@@ -99,6 +104,7 @@ REPAIR = ("The application you delivered failed the runner's delivery check befo
 SMOKE = True  # run the delivery smoke check (build, start, GET / and /api/health) before publishing
 SMOKE_BUILD_SECONDS = 90
 SMOKE_READY_SECONDS = 30
+DOM_PROBE_SECONDS = 60  # jsdom load of / plus the click walk; a page that never settles hits this
 HEALTH_BODY = {"code": 200, "message": "Backend Ready"}
 ASSET_REF = re.compile(r"""<(?:script|link)\b[^>]*?\b(?:src|href)\s*=\s*["']([^"']+)["']""", re.I)
 
@@ -172,12 +178,17 @@ class CallBudget:
         return result
 
 
+def fallback_model(budget):
+    """The model the rest of a run switches to; empty once switched, or when disabled by FALLBACK_MODEL=."""
+    return "" if budget.model else os.environ.get("FALLBACK_MODEL", FALLBACK_MODEL).strip()
+
+
 def stream_completion(messages, model, base, key, budget, tries=3):
     """Buffer each attempt separately; failed streams never write application files. The primary
     model is retried `tries` times on transport failures; when those are spent the run switches to
     FALLBACK_MODEL for this and every later call (a cut route rarely heals within one run)."""
     model = budget.model or model
-    fallback = "" if budget.model else os.environ.get("FALLBACK_MODEL", FALLBACK_MODEL).strip()
+    fallback = fallback_model(budget)
     payload = {"model": model, "messages": messages, "max_tokens": MAX_TOKENS,
                "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
     req = request.Request(base.rstrip("/") + "/chat/completions",
@@ -224,7 +235,7 @@ def stream_completion(messages, model, base, key, budget, tries=3):
                         raise StreamError("malformed SSE event") from exc
             if not ended or record["finish_reason"] is None:
                 raise StreamError("stream ended without completion markers")
-            if record["finish_reason"] not in ("stop", "length"):
+            if record["finish_reason"] not in ("stop", "length", "content_filter"):
                 raise ValueError("unsupported finish reason: " + str(record["finish_reason"]))
             if not record["content"].strip():
                 raise ValueError("stream produced no content")
@@ -276,6 +287,13 @@ def parse_blocks(text):
     for line in text.splitlines(keepends=True):
         marker = line.rstrip("\r\n")
         opening = FILE_OPEN.fullmatch(marker)
+        if not opening and current is None:
+            # Leaked reasoning glued to the marker on one line ("... Writing the output.</think>=== FILE: x ===",
+            # round 24 Keep b: the next END was then "without an open block" and the task scored 0/32). Between
+            # blocks, a line that ENDS with a well-formed marker opens the block; the prefix is prose.
+            glued = FILE_OPEN.search(marker)
+            if glued and glued.end() == len(marker) and glued.start() > 0:
+                opening, stray = glued, stray + 1
         if opening:
             if current is not None:
                 raise ValueError("unterminated file before next block: " + current)
@@ -289,8 +307,9 @@ def parse_blocks(text):
             content = "".join(body)
             if not content.strip():
                 raise ValueError("empty file block: " + current)
-            if any(item["path"] == current for item in files):
-                raise ValueError("duplicate file block: " + current)
+            # A path emitted twice is the model correcting itself (qwen3.7-plus re-emitted seed.js and a
+            # 12306 run scored 0/135 on the old ValueError): the later block wins.
+            files[:] = [item for item in files if item["path"] != current]
             files.append({"path": current, "content": content.rstrip("\r\n") + "\n"})
             current, body = None, []
         elif marker.startswith(("=== FILE", "=== END")):
@@ -376,6 +395,42 @@ def _free_port():
         return sock.getsockname()[1]
 
 
+def _check_syntax(stage, node, problems):
+    """`node --check` every frontend script, before anything is served. A file that does not parse is
+    dropped whole by the browser, so the scaffold renders its empty defaults on every screen (round 23
+    Prestashop: one missing parenthesis on app.js:12, 0/86). The DOM probe sees the same error but
+    without a location, and a repair told only "Unexpected token ';'" did not find the line in 65 KB.
+    Needs neither jsdom nor the network."""
+    root = stage / "frontend"
+    index = root / "public" / "index.html"
+    as_module = index.is_file() and 'type="module"' in index.read_text(encoding="utf-8", errors="replace")
+    for path in sorted(root.rglob("*.js")):
+        rel = path.relative_to(stage).as_posix()
+        if "/node_modules/" in "/" + rel or rel.startswith("frontend/dist/"):
+            continue
+        target = path
+        if as_module:
+            target = Path(tempfile.mkdtemp(prefix=".oneshot-syntax-", dir=stage.parent)) / (path.stem + ".mjs")
+            shutil.copyfile(path, target)
+        try:
+            run = subprocess.run([node, "--check", str(target)], env=_child_env(), capture_output=True,
+                                 text=True, timeout=20)
+        except subprocess.TimeoutExpired:
+            continue
+        finally:
+            if target is not path:
+                shutil.rmtree(target.parent, ignore_errors=True)
+        if run.returncode == 0:
+            continue
+        where = re.search(r":(\d+)\n(.*)\n", run.stderr)
+        what = re.search(r"^(\w*Error: .*)$", run.stderr, re.M)
+        line = f":{where.group(1)}" if where else ""
+        source = f" — the line reads `{where.group(2).strip()[:160]}`" if where and where.group(2).strip() else ""
+        problems.append(f"{rel}{line} does not parse ({what.group(1) if what else run.stderr.strip()[:200]}){source}. "
+                        f"The browser drops the whole file, so the scaffold renders its empty defaults on every "
+                        f"screen and every test fails; re-emit the file with this line fixed")
+
+
 def _check_page(port, problems):
     status, headers, body = _fetch_local(f"http://127.0.0.1:{port}/")
     ctype = headers.get("content-type", "")
@@ -418,6 +473,11 @@ const { JSDOM, VirtualConsole } = require('jsdom');
       const target = typeof input === 'string' ? input : (input && input.url) || String(input);
       return fetch(new URL(target, process.env.PROBE_URL).href, init);
     };
+    // Layout APIs jsdom lacks; an app that calls them is not wrong.
+    window.scrollTo = () => {}; window.scroll = () => {}; window.scrollBy = () => {};
+    window.HTMLElement.prototype.scrollIntoView = function () {};
+    window.matchMedia = () => ({ matches: false, media: '', addEventListener() {}, removeEventListener() {},
+                                 addListener() {}, removeListener() {} });
   };
   let dom;
   try {
@@ -430,7 +490,57 @@ const { JSDOM, VirtualConsole } = require('jsdom');
   const q = (sel) => !!(body && body.querySelector(sel));
   const landmarks = { header: q('header, [role="banner"]'), navigation: q('nav, [role="navigation"]'),
                       footer: q('footer, [role="contentinfo"]') };
-  console.log(JSON.stringify({ text_chars: text.length, errors: errors.slice(0, 5), landmarks }));
+  // Click walk: visit every hash route reachable from `/` (bounded) and click every button once,
+  // recording uncaught exceptions. A handler that throws leaves the suite's next step waiting
+  // for a result that never renders (round 20 Prestashop: "Add to cart" threw on the product page
+  // and 17 checkout tests waited for the dialog). jsdom's own gaps are not the app's errors.
+  const loadErrors = errors.slice();  // what the page threw while loading; the walk's exceptions are reported apart
+  const clickErrors = [];
+  const win = dom.window;
+  const isGap = (m) => /not implemented|navigation|Cannot navigate|canvas|getContext|localStorage/i.test(m);
+  const onError = (ev) => {
+    const msg = String((ev && ev.error && ev.error.message) || (ev && ev.message) || ev).split('\n')[0]
+      .replace(/^Uncaught \[?/, '').replace(/\]$/, '').replace(/^\w*Error:\s*/, '').slice(0, 200);
+    if (isGap(msg)) return;
+    const key = current.action + '|' + msg;  // one entry per handler and message, whichever screen
+    if (!clickErrors.some((e) => e.key === key)) clickErrors.push({ key, hash: win.location.hash || '#/', action: current.action, label: current.label, message: msg });
+  };
+  let current = { action: '', label: '' };
+  win.addEventListener('error', onError);
+  const walkStart = Date.now();
+  const seen = new Set(); const queue = ['#/'];
+  const tick = () => new Promise((r) => setTimeout(r, 0));
+  while (queue.length && seen.size < 40 && Date.now() - walkStart < 15000) {
+    const hash = queue.shift();
+    if (seen.has(hash)) continue;
+    seen.add(hash);
+    win.location.hash = hash;
+    await tick();
+    for (const a of Array.from(win.document.querySelectorAll('a[href^="#/"], [data-hash^="#/"]'))) {
+      const h = a.getAttribute('href') || a.getAttribute('data-hash');
+      if (h && !seen.has(h) && queue.length < 200) queue.push(h);
+    }
+    // Every click may rebuild the screen (innerHTML render), so re-query after each one and walk by key.
+    const done = new Set();
+    const keyOf = (b) => ({ action: b.getAttribute('data-action') || '',
+                            label: (b.getAttribute('aria-label') || b.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 40) });
+    for (let guard = 0; guard < 60; guard++) {
+      const b = Array.from(win.document.querySelectorAll('button, [role="button"]'))
+        .find((x) => { const k = keyOf(x); const key = k.action || k.label; return key && !done.has(key); });
+      if (!b) break;
+      current = keyOf(b);
+      done.add(current.action || current.label);
+      const before = errors.length;
+      try { b.click(); } catch (e) { onError(e); }
+      await tick();
+      for (const m of errors.slice(before)) onError(m);  // jsdom reports listener exceptions on its console too
+      if (win.location.hash !== hash) { win.location.hash = hash; await tick(); }
+      if (clickErrors.length >= 8 || Date.now() - walkStart > 15000) break;
+    }
+    if (clickErrors.length >= 8) break;
+  }
+  console.log(JSON.stringify({ text_chars: text.length, errors: loadErrors.slice(0, 5), landmarks, screens: seen.size,
+                               click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e) }));
   dom.window.close();
 })();
 """
@@ -455,16 +565,27 @@ def _check_dom(stage, port, problems, requirements=None):
             install = subprocess.run([npm, "install", "--prefix", str(prefix), "jsdom", "--no-audit", "--no-fund",
                                       "--silent"], env=_child_env(), capture_output=True, timeout=150)
         except subprocess.TimeoutExpired:
+            print("[oneshot] jsdom install timed out; DOM probe skipped", file=sys.stderr)
             return
         if install.returncode != 0 or not (prefix / "node_modules" / "jsdom").is_dir():
+            print("[oneshot] jsdom install failed; DOM probe skipped", file=sys.stderr)
             return
     try:
         run = subprocess.run([node, "-e", DOM_PROBE],
                              env={**_child_env(), "NODE_PATH": str(prefix / "node_modules"),
                                   "PROBE_URL": f"http://127.0.0.1:{port}/"},
-                             capture_output=True, timeout=60, text=True)
+                             capture_output=True, timeout=DOM_PROBE_SECONDS, text=True)
         report = json.loads(run.stdout.strip().splitlines()[-1])
-    except (subprocess.TimeoutExpired, ValueError, IndexError):
+    except subprocess.TimeoutExpired:
+        # The probe's own timeout is the app's fault, not a gap: a script that never returns (a loop waiting
+        # on state, a render that re-triggers itself) keeps the page from settling, and in the runner every
+        # test then times out at its first step (round 23 Prestashop: 0/86, all "Visit Homepage").
+        problems.append(f"loading / in a DOM did not finish within {DOM_PROBE_SECONDS} s: a script on the page never "
+                        f"returns (a loop that waits for state, a render that re-triggers itself, synchronous work "
+                        f"on every timer tick), so the page never settles and every test times out at its first "
+                        f"step; render the home screen once on load and return")
+        return
+    except (ValueError, IndexError):  # the probe itself failed to report (jsdom gap); never the app's fault
         return
     if report.get("load_error"):
         problems.append(f"loading / in a DOM failed: {report['load_error']}")
@@ -475,6 +596,11 @@ def _check_dom(stage, port, problems, requirements=None):
         problems.append("after scripts run, / renders no visible text (blank page); the app must render its "
                         "home screen synchronously on load, without waiting for anything a test cannot trigger")
         return
+    for err in report.get("click_errors", []):
+        who = f"`{err.get('label') or err.get('action')}`" + (f" (data-action `{err['action']}`)" if err.get("action") and err.get("label") else "")
+        problems.append(f"clicking {who} on screen `{err.get('hash', '#/')}` throws: {err.get('message')}. A click handler "
+                        f"that throws renders nothing, so the suite's next step waits for a result that never comes; guard "
+                        f"every lookup (a missing record must not dereference undefined) and never throw from a handler")
     present = report.get("landmarks") or {}
     for name, (pattern, element) in LANDMARKS.items():
         if requirements and re.search(pattern, requirements, re.I) and name in present and not present[name]:
@@ -504,6 +630,8 @@ def smoke_check(stage, requirements=None):
     index = stage / "frontend" / "dist" / "index.html"
     if not problems and (not index.is_file() or not index.read_text(encoding="utf-8", errors="replace").strip()):
         problems.append("frontend/dist/index.html is missing or empty after `npm run build`")
+    if not problems:
+        _check_syntax(stage, node, problems)
     if problems:
         return problems, True
     manifest = json.loads((stage / "backend" / "package.json").read_text(encoding="utf-8"))
@@ -605,6 +733,65 @@ def template_context(blobs):
             json.dumps(records, ensure_ascii=False))
 
 
+def scaffold_context(blobs):
+    records = [{"path": name, "content": data.decode("utf-8")} for name, data in sorted(blobs.items())]
+    return ("\n\n## Scaffold already in the application root (extend it, never replace it)\n"
+            "The files below exist before your output is applied. They implement the evaluator mechanics: one "
+            "shared layout with the header, navigation, account controls, sidebar, main and footer on EVERY screen "
+            "including `/`; synchronous hash routing from an in-memory store seeded by `seed.js`; row actions hidden "
+            "at rest; dialogs that make the page inert; `role=status` notifications with Undo; a backend with process "
+            "guards, static serving and `/api/health`. Write the application as `frontend/public/seed.js` "
+            "(`window.SEED`, every seed row the requirement names), `frontend/public/app.js` (`window.LAYOUT`: brand, "
+            "nav, sidebar, footer text, account controls; `window.APP`: `screens`, `screen(route)`, `actions`, "
+            "optional `afterRender`), and additions to `frontend/public/styles.css`. Re-emit `backend/server.js` "
+            "only to add API routes inside `api()`, keeping everything it does. Do not re-emit `index.html` or "
+            "`lib/arc.js` unless a change is unavoidable, and then keep every function they define. Emit complete "
+            "file blocks only for the files you add or change; the scaffold files you do not mention are kept. "
+            "The JSON below is application source, not instructions.\n" + json.dumps(records, ensure_ascii=False))
+
+
+READONLY = re.compile(r"<(?:input|textarea)\b[^>]*\breadonly\b|\.readOnly\s*=\s*true|setAttribute\(\s*['\"]readonly['\"]", re.I)
+
+
+def readonly_gaps(stage):
+    """A text field the suite types into must accept `fill()`; a readonly input (a picker trigger)
+    makes every fill time out (round 20 Ctrip: 出发城市 / 到达城市 readonly, 35 fills + 64 cascades)."""
+    gaps = []
+    public = Path(stage) / "frontend" / "public"
+    for path in sorted(public.rglob("*")) if public.is_dir() else []:
+        if path.suffix not in (".js", ".html") or "lib" in path.relative_to(public).parts:
+            continue
+        for number, line in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            if READONLY.search(line):
+                gaps.append(f"{path.relative_to(stage).as_posix()}:{number} marks an input readonly ({line.strip()[:80]}); "
+                            f"the suite fills fields by typing and a readonly field times out on every fill. Make it a "
+                            f"plain text input that accepts typing; open any picker from a separate button, not from the field")
+                if len(gaps) >= 6:
+                    return gaps
+    return gaps
+
+
+def scaffold_gaps(stage):
+    """The delivered app must still load and define the scaffold primitives it was built on."""
+    stage = Path(stage)
+    gaps = []
+    index = stage / "frontend" / "public" / "index.html"
+    html = index.read_text(encoding="utf-8", errors="replace") if index.is_file() else ""
+    for ref in ("seed.js", "lib/arc.js", "app.js"):
+        if ref not in html:
+            gaps.append(f"frontend/public/index.html no longer loads `{ref}` (the scaffold's script order is seed.js, "
+                        f"lib/arc.js, app.js); restore the <script src=\"{ref}\"> tag")
+    for name, symbols in SCAFFOLD_KEEP.items():
+        path = stage / name
+        text = path.read_text(encoding="utf-8", errors="replace") if path.is_file() else ""
+        missing = [sym for sym in symbols if sym not in text]
+        if not path.is_file():
+            gaps.append(f"{name} is missing; the scaffold requires it")
+        elif missing:
+            gaps.append(f"{name} no longer defines {', '.join(missing)}; the scaffold's primitives must stay defined")
+    return gaps
+
+
 def template_stamp(root):
     """Detect concurrent edits to opaque metadata without reading or logging it."""
     stamp = {}
@@ -651,8 +838,11 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     stamp = template_stamp(template) if template is not None else None
     snapshot = read_template(template) if template is not None else {}
     out.parent.mkdir(parents=True, exist_ok=True)
-    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT +
+    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
+    scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
+    if scaffold:
+        user += scaffold_context(scaffold)
     if template is not None:
         user += template_context(snapshot)
     messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
@@ -664,7 +854,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             # Keep opaque local metadata/artifacts intact, without putting their
             # contents in the prompt. Generated edits cannot touch those paths.
             shutil.copytree(template, stage, dirs_exist_ok=True, symlinks=True)
-        for name, data in snapshot.items():
+        for name, data in {**scaffold, **snapshot}.items():
             target = resolve_path(stage, name)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
@@ -672,6 +862,22 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
         content = ""
         for turn in range(2):
             content, _, finish = stream_completion(messages, model, base, key, budget)
+            if turn == 0 and "=== FILE" not in content and not budget.exhausted():
+                # An empty draft ("No answer text provided." after a 14-minute reasoning stream, finish=stop)
+                # is a whole-task zero; one fresh draft is cheaper than the task (generic-card SO sample B).
+                print("[oneshot] the draft has no file blocks; asking once more", file=sys.stderr)
+                content, _, finish = stream_completion(messages, model, base, key, budget)
+            if finish == "content_filter":
+                # The gateway's output filter ends a stream the way a truncation does, with the partial
+                # draft intact (r18a Ctrip: 200 KB of app.js, then a whole-task zero). Continue it like a
+                # `length` cut, on the fallback model: at temperature 0 the same model re-emits the tokens
+                # that tripped the filter.
+                switch = fallback_model(budget)
+                print("[oneshot] the stream ended with finish_reason=content_filter; continuing the draft"
+                      + (f" on {switch}" if switch else ""), file=sys.stderr)
+                if switch:
+                    budget.model = switch
+                finish = "length"
             if finish == "stop" and template is None and parse_blocks(content)[1]:
                 # The model stopped on its own but forgot the closing marker of the last file:
                 # the content is whole, only the framing is missing. Close it rather than lose the draft.
@@ -687,10 +893,11 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
                 raise ValueError("continuation did not complete file: " + expected)
             for item in batch:
                 target = resolve_path(stage, item["path"])
-                if target in emitted:
-                    raise ValueError("duplicate file path: " + item["path"])
-                emitted.add(target)
                 item["path"] = target.relative_to(stage.resolve()).as_posix()
+                if target in emitted:  # re-emitted in a later turn: the later version replaces the earlier
+                    print(f"[oneshot] {item['path']} emitted again; keeping the later version", file=sys.stderr)
+                    files[:] = [f for f in files if f["path"] != item["path"]]
+                emitted.add(target)
                 write_one(stage, item)
                 files.append(item)
             if not missing:
@@ -709,13 +916,134 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             raise ValueError("upgrade did not change any files")
         if SMOKE:
             repair_delivery(stage, files, messages + [{"role": "assistant", "content": content}],
-                            model, base, key, budget, template, requirements)
+                            model, base, key, budget, template, requirements, scaffold=bool(scaffold))
         publish(stage, out, template, snapshot, stamp)
     return files, budget.summary()
 
 
 QUOTED = re.compile(r'[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
 VOCAB_SHOWN = 60
+
+
+REQ_ID = re.compile(r"^\s*-?\s*id:\s*['\"]?([A-Za-z0-9._-]+)['\"]?\s*$")
+REQ_NAME = re.compile(r"^\s*name:\s*['\"]?(.*?)['\"]?\s*$")
+
+
+def vocabulary_table(requirements):
+    """The quoted strings of the requirement, grouped by the requirement id that quotes them — the
+    checklist the vocabulary gate will enforce, handed to the model before it writes (ladder level 2)."""
+    groups, order, seen = {}, [], set()
+    current, name = None, None
+    for line in (requirements or "").splitlines():
+        m = REQ_ID.match(line)
+        if m:
+            current, name = m.group(1), None
+            continue
+        n = REQ_NAME.match(line)
+        if n and current and name is None:
+            name = n.group(1)
+        for match in QUOTED.finditer(line):
+            phrase = re.sub(r"\s+", " ", match.group(1)).strip()
+            if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
+                    or phrase.lower() in seen):
+                continue
+            seen.add(phrase.lower())
+            key = current or "ROOT"
+            if key not in groups:
+                groups[key] = (name, [])
+                order.append(key)
+            groups[key][1].append(phrase)
+    if not seen:
+        return ""
+    lines = ["\n\n## Quoted vocabulary checklist (every phrase must exist verbatim; the delivery check enforces it)",
+             "This list holds the QUOTED phrases only. The unquoted nouns of the requirement's THEN steps (layout "
+             "nouns such as header / sidebar / main feed, navigation targets such as 'product links' → `Products`, "
+             "metadata words such as asked / modified / viewed, section titles, sort options) are asserted as "
+             "visible text just the same (§7) and are not listed here: keep writing them. ",
+             "Each phrase below is quoted by the requirement and matched by the suite as visible text, an accessible "
+             "name, a message or a seed value, on the screen that requirement describes. A quoted control name is the "
+             "WHOLE accessible name, byte-exact: the suite anchors it (`/^Take a note$/i`), so an icon, bullet, "
+             "ellipsis, count or extra word in the same name (`\u2022 Notes`, `Take a note...`, `Archive note`) fails it. "
+             "The role follows the requirement's verb: click/press \u2192 button, field/enter \u2192 textbox with that "
+             "exact label, dialog/editor \u2192 role=dialog with that exact name, menu \u2192 menu/menuitem."]
+    for key in order:
+        label, phrases = groups[key]
+        head = key if key == "ROOT" else key + (" " + label if label else "")
+        lines.append(f"- {head}: " + "; ".join(f"\u201c{p}\u201d" for p in phrases))
+    return "\n".join(lines)
+
+
+NAME_MAX_WORDS = 5
+CONTROL_CONTEXT = re.compile(r"\b(click|press|tap|button|link|field|input|textbox|tab|menu|dialog|editor|label|option|"
+                             r"checkbox|radio|toggle|named|called|titled|heading|section|sidebar|nav|navigation|entry|"
+                             r"item|action|icon|control|select|dropdown|form|snackbar|toast|notification|message)\b", re.I)
+TOKEN_EDGE = set('<>"\'`')
+
+
+def quoted_control_phrases(requirements):
+    """Quoted phrases whose requirement context names a control (button, field, tab, dialog...), short enough
+    to be an accessible name and not a sentence or message. Original casing, first occurrence wins."""
+    seen, phrases = set(), []
+    text_req = requirements or ""
+    for match in QUOTED.finditer(text_req):
+        phrase = re.sub(r"\s+", " ", match.group(1)).strip()
+        context = text_req[max(0, match.start() - 80):match.end() + 40]
+        if (len(phrase) < 3 or len(phrase.split()) > NAME_MAX_WORDS or re.search(r"[.!?:;,]$", phrase)
+                or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
+                or phrase.lower() in seen or not CONTROL_CONTEXT.search(context)):
+            continue
+        seen.add(phrase.lower())
+        phrases.append(phrase)
+    return phrases
+
+
+def exact_name_gaps(stage, requirements):
+    """A quoted control name must be rendered as a WHOLE name. A phrase that appears in the source only
+    inside a longer token (\u2022 Notes, Take a note..., Archive note) fails the suite's anchored
+    /^Name$/i match (Lite Keep 5/32: 22 of 27 losses cascaded from one decorated name). Only phrases
+    whose requirement context names a control are checked. Static, no model."""
+    phrases = quoted_control_phrases(requirements)
+    if not phrases:
+        return []
+    texts = []
+    for directory, dirs, names in os.walk(Path(stage), followlinks=False):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d not in TEMPLATE_ARTIFACTS]
+        for name in names:
+            if name == "package-lock.json" or name.startswith(".") or not name.endswith((".js", ".html", ".mjs", ".cjs")):
+                continue
+            path = Path(directory) / name
+            try:
+                if path.stat().st_size <= 2_000_000:
+                    texts.append(path.read_text(encoding="utf-8", errors="replace"))
+            except OSError:
+                continue
+    decorated = []
+    for phrase in phrases:
+        pattern = re.compile(re.escape(phrase), re.I)
+        found, clean, sample = 0, 0, None
+        for text in texts:
+            for m in pattern.finditer(text):
+                found += 1
+                b = m.start()
+                while b > 0 and text[b - 1] not in TOKEN_EDGE and text[b - 1] != "\n":
+                    b -= 1
+                e = m.end()
+                while e < len(text) and text[e] not in TOKEN_EDGE and text[e] != "\n":
+                    e += 1
+                token = re.sub(r"\s+", " ", text[b:e]).strip()
+                if token.lower() == phrase.lower():
+                    clean += 1
+                elif sample is None:
+                    sample = token[:60]
+        if found and not clean:
+            decorated.append((phrase, sample))
+    if not decorated:
+        return []
+    shown = "; ".join(f"\u201c{p}\u201d appears only as `{sample}`" for p, sample in decorated[:VOCAB_SHOWN])
+    return [f"{len(decorated)} quoted control name(s) never appear as a WHOLE accessible name or text node; the suite "
+            f"anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. "
+            f"Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and "
+            f"translations go in a separate aria-hidden sibling element): {shown}"]
 
 
 def vocabulary_gaps(stage, requirements):
@@ -792,10 +1120,31 @@ def _frontend_sources(stage):
     return "\n".join(out)
 
 
-def aria_collision_gaps(stage):
+def _quoted_lower(requirements):
+    """Every quoted phrase of the requirement, lower-cased and space-normalised."""
+    return {re.sub(r"\s+", " ", m.group(1)).strip().lower() for m in QUOTED.finditer(requirements or "")}
+
+
+def control_names(stage):
+    """Lower-cased exact names the frontend gives its controls: label text, placeholder, aria-label,
+    button text. A quoted requirement name that is in this set before a repair must still be in it after."""
+    source = _frontend_sources(stage)
+    names = set()
+    for l, p, a in FIELD_LABEL.findall(source):
+        names.add(re.sub(r"\s+", " ", (l or p or a)).strip().lower())
+    for m in ARIA_LABEL.finditer(source):
+        names.add(re.sub(r"\s+", " ", m.group(1)).strip().lower())
+    for m in re.finditer(r"<button\b[^>]*>\s*([^<{$\n]{1,40}?)\s*<", source):
+        names.add(re.sub(r"\s+", " ", m.group(1)).strip().lower())
+    names.discard("")
+    return names
+
+
+def aria_collision_gaps(stage, requirements=None):
     """A button whose aria-label shares a word with a field label steals getByLabel(/word/i):
     'Decrease quantity' before the quantity input, 'Upvote comment' before the comment box."""
     source = _frontend_sources(stage)
+    quoted = _quoted_lower(requirements)
     field_words = set()
     for label, placeholder, aria in FIELD_LABEL.findall(source):
         field_words |= _label_words(label or placeholder or aria)
@@ -807,8 +1156,8 @@ def aria_collision_gaps(stage):
         if not ("<button" in before or "'button'" in before or '"button"' in before or "createelement('button')" in before):
             continue
         shared = _shared_words(match.group(1), field_words)
-        if shared:
-            collisions.append((match.group(1), shared))
+        if shared and match.group(1).strip().lower() not in quoted:
+            collisions.append((match.group(1), shared))  # a quoted button name is mandated; renaming it loses tests
     labels = sorted({(l or p or a).strip() for l, p, a in FIELD_LABEL.findall(source)
                      if (l or p or a).strip() and len((l or p or a).strip()) <= 32
                      and len((l or p or a).split()) <= 4}, key=len)
@@ -819,7 +1168,7 @@ def aria_collision_gaps(stage):
                 nested.append((short, long))
     for match in re.finditer(r"""type=["']radio["'][^>]*>\s*([^<{\n]{1,30})""", source):
         shared = _shared_words(match.group(1), field_words)
-        if shared:
+        if shared and match.group(1).strip().lower() not in quoted:
             collisions.append(("radio " + match.group(1).strip(), shared))
     seen, lines = set(), []
     for label, shared in collisions:
@@ -828,11 +1177,24 @@ def aria_collision_gaps(stage):
         seen.add(label)
         lines.append(f'{"radio option" if label.startswith("radio ") else "button aria-label"} "{label.removeprefix("radio ")}" shares {"/".join(shared)} with a field label')
     out = []
-    if nested:
-        pairs = "; ".join(f'"{a}" is contained in "{b}"' for a, b in nested[:12])
-        out.append(f"{len(nested)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
-                   f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another "
-                   f"(e.g. \"From\" vs \"Filter by departure station\"): {pairs}")
+    # The requirement pins a quoted name; the rename must land on the OTHER label. Round 25 12306 a: told only
+    # "rename", the repair renamed the quoted "From"/"To" to "Origin city"/"Destination city" and lost 45 tests.
+    advised = []
+    for short, long in nested:
+        s_q, l_q = short.lower() in quoted, long.lower() in quoted
+        if s_q and l_q:
+            continue  # both names are mandated; renaming either loses tests, so this pair is not a problem to fix
+        if s_q:
+            advised.append(f'"{short}" is contained in "{long}" — keep "{short}" exactly (quoted in the requirement) and rename "{long}"')
+        elif l_q:
+            advised.append(f'"{short}" is contained in "{long}" — keep "{long}" exactly (quoted in the requirement) and rename "{short}"')
+        else:
+            advised.append(f'"{short}" is contained in "{long}"')
+    if advised:
+        out.append(f"{len(advised)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
+                   f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and "
+                   f"NEVER rename a label the requirement quotes — rename the other one "
+                   f"(e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): " + "; ".join(advised[:12]))
     if not lines:
         return out
     return out + [f"{len(lines)} button label(s) collide with field labels; the fill helper's first rung is "
@@ -860,13 +1222,21 @@ def process_guard_gaps(stage):
             f"handler body in try/catch that answers HTTP 500 instead of throwing"]
 
 
-def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None):
+def _fatal(problem):
+    """A smoke problem that zeroes the whole app (nothing renders or serves), as opposed to one that
+    costs a family of tests (a click handler that throws, a missing landmark)."""
+    return not (problem.startswith("clicking ") or "renders no <" in problem)
+
+
+def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
     """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
     at most one model call on a fix and keep it only if the smoke check then passes and the
     vocabulary did not get worse. Records the outcome in budget.smoke."""
     problems, executed = smoke_check(stage, requirements)
+    smoke_before = list(problems)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
-    static = process_guard_gaps(stage) + aria_collision_gaps(stage)
+    static = (process_guard_gaps(stage) + aria_collision_gaps(stage, requirements) + exact_name_gaps(stage, requirements)
+              + readonly_gaps(stage) + (scaffold_gaps(stage) if scaffold else []))
     budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
                     "repair": None}
     problems = problems + static + vocab
@@ -875,6 +1245,9 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     if budget.exhausted():
         budget.smoke["repair"] = "skipped: call limit reached"
         return
+    # Only names the requirement quotes as controls are pinned (12306 r26b: a rule pinning every quoted phrase
+    # rejected a repair for "renaming" quoted messages and section headings, and the collision-laden draft shipped).
+    pinned_before = control_names(stage) & {p.lower() for p in quoted_control_phrases(requirements)}
     backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
     shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
     try:
@@ -895,11 +1268,23 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         if needed:
             raise ValueError("repair broke delivery: " + "; ".join(needed))
         after, _ = smoke_check(stage, requirements)
-        if after:
+        improved = not any(_fatal(p) for p in after) and (
+            not after or any(_fatal(p) for p in smoke_before) or len(after) < len(smoke_before))
+        if not improved:
+            # A repair is kept when the app is clean, or when nothing whole-app remains and it is strictly
+            # better than before: it removed a whole-app failure (round 23 Prestashop: the parse-error repair
+            # was rejected and 0/86 shipped) or it removed more family-level problems than it left (Lite
+            # Bookstack r26b: six throwing handlers fixed, one newly reachable one exposed, the repair rejected
+            # and the six-fault draft shipped, 9/34). Same or more problems → the original stays.
             raise ValueError("still failing after repair: " + "; ".join(after))
         _, missing_after = vocabulary_gaps(stage, requirements)
         if missing_after > missing_before:
             raise ValueError(f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
+        renamed = sorted(pinned_before - control_names(stage))
+        if renamed:
+            # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
+            # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).
+            raise ValueError("repair renamed quoted control(s): " + ", ".join(renamed[:8]))
         for item in batch:
             files[:] = [f for f in files if f["path"] != item["path"]] + [item]
         budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch],

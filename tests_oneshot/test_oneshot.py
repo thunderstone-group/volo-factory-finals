@@ -73,6 +73,7 @@ class OfflineCase(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
         self.out = self.root / "app"
+        self.enter(patch.object(adapter, "SCAFFOLD", False))
         self.transport = self.enter(patch.object(adapter, "_open_model",
                                                 side_effect=AssertionError("unexpected HTTP")))
         self.enter(patch.object(adapter.time, "sleep"))
@@ -131,17 +132,34 @@ class OfflineCase(unittest.TestCase):
         examples = ("", " \n", "hello", "=== FILE: ===\nx\n=== END ===\n",
                     "=== FILE: x.js ==\nx\n=== END ===\n", "=== END ===\n",
                     block("x.js", ""), block("x.js", "   "),
-                    "=== FILE: x.js ===\na\n" + block("y.js", "b"),
-                    block("x.js", "a") * 2)
+                    "=== FILE: x.js ===\na\n" + block("y.js", "b"))
         for value in examples:
             with self.subTest(value=value), self.assertRaises(ValueError) as caught:
                 adapter.parse_blocks(value)
             self.assertNotIsInstance(caught.exception, IndexError)
 
+    def test_a_path_emitted_twice_in_one_reply_keeps_the_later_block(self):
+        files, missing = adapter.parse_blocks(block("x.js", "first") + block("y.js", "b") + block("x.js", "second"))
+        self.assertEqual([f["path"] for f in files], ["y.js", "x.js"])
+        self.assertEqual(files[1]["content"], "second\n")
+        self.assertEqual(missing, [])
+
     def test_prose_outside_blocks_is_ignored(self):
         files, missing = adapter.parse_blocks("Here is the app:\n" + block("x.js", "a") + "Done.\n" + block("y.js", "b"))
         self.assertEqual([f["path"] for f in files], ["x.js", "y.js"])
         self.assertEqual(missing, [])
+
+    def test_marker_glued_to_leaked_reasoning_opens_the_block(self):
+        # Round 24 Keep b: a continuation's content began with reasoning that ended "</think>=== FILE: ... ==="
+        # on one line; the marker went unrecognised and the next END killed the task (0/32).
+        text = block("a.js", "one") + "Now I'm confident. Writing the output.</think>=== FILE: seed.js ===\nrows\n=== END ===\n"
+        files, missing = adapter.parse_blocks(text)
+        self.assertEqual([f["path"] for f in files], ["a.js", "seed.js"])
+        self.assertEqual(files[1]["content"], "rows\n")
+        self.assertEqual(missing, [])
+        # Inside a block the same line is content, not a new block.
+        files, missing = adapter.parse_blocks("=== FILE: a.js ===\nprose === FILE: b.js ===\n=== END ===\n")
+        self.assertEqual(files, [{"path": "a.js", "content": "prose === FILE: b.js ===\n"}])
 
     def test_crlf_and_unterminated_final_block(self):
         files, missing = adapter.parse_blocks((block("a.js", "one") +
@@ -252,6 +270,41 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.summary()["failed_calls"], 3)
         self.assertTrue((self.out / "backend" / "server.js").exists())
 
+    def test_a_file_emitted_twice_keeps_the_later_version(self):
+        budget = adapter.CallBudget()
+        twice = application(block("backend/server.js", "// Synthetic local fixture\nconsole.log('second');"))
+        self.replies(events(twice))
+        self.generate(budget)
+        self.assertEqual(self.transport.call_count, 1)
+        self.assertIn("second", (self.out / "backend/server.js").read_text())
+
+    def test_content_filter_keeps_the_draft_and_continues_on_the_fallback(self):
+        budget = adapter.CallBudget()
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        rest = application()[len(prefix):]
+        self.replies(events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="content_filter"),
+                     events(rest))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": "synthetic-fallback"}):
+            self.generate(budget)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertEqual([r["model"] for r in budget.attempts], ["synthetic-model", "synthetic-fallback"])
+        self.assertEqual(budget.summary()["completed_calls"], 2)
+        self.assertEqual(budget.attempts[0]["finish_reason"], "content_filter")
+        self.assertTrue((self.out / "backend" / "server.js").exists())
+        self.assertNotIn("cut off", (self.out / "backend/server.js").read_text())
+
+    def test_content_filter_continues_on_the_same_model_when_the_fallback_is_disabled(self):
+        budget = adapter.CallBudget()
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        rest = application()[len(prefix):]
+        self.replies(events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="content_filter"),
+                     events(rest))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": ""}):
+            self.generate(budget)
+        self.assertEqual([r["model"] for r in budget.attempts], ["synthetic-model"] * 2)
+        self.assertIsNone(budget.summary()["fallback_model"])
+        self.assertTrue((self.out / "backend" / "server.js").exists())
+
     def test_fallback_is_not_taken_for_permanent_errors(self):
         budget = adapter.CallBudget()
         self.replies(HTTPError("https://synthetic.invalid", 402, "synthetic", {}, None))
@@ -269,6 +322,35 @@ class OfflineCase(unittest.TestCase):
                 self.generate(budget)
         self.assertEqual(self.transport.call_count, 3)
         self.assertIsNone(budget.summary()["fallback_model"])
+
+    def test_an_empty_first_draft_is_asked_once_more(self):
+        budget = adapter.CallBudget()
+        self.replies(events("No answer text provided."), events(application()))
+        files, totals = self.generate(budget)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertEqual(totals["completed_calls"], 2)
+
+    def test_two_empty_drafts_fail_without_a_third_call(self):
+        budget = adapter.CallBudget()
+        self.replies(events("No answer text provided."), events("Still nothing."))
+        with self.assertRaisesRegex(ValueError, "no file blocks"):
+            self.generate(budget)
+        self.assertEqual(self.transport.call_count, 2)
+
+    def test_quoted_vocabulary_table_precedes_the_requirements(self):
+        req = ("- id: REQ-1\n  name: Login\n  description: Show \u201cEmail cannot be empty\u201d and a \"Sign In\" button.\n"
+               "- id: REQ-2\n  name: Notes\n  description: The system contains a note titled \"Groceries\". Show \u201cEmail cannot be empty\u201d again.\n")
+        table = adapter.vocabulary_table(req)
+        self.assertIn("REQ-1 Login: \u201cEmail cannot be empty\u201d; \u201cSign In\u201d", table)
+        self.assertIn("REQ-2 Notes: \u201cGroceries\u201d", table)
+        self.assertEqual(table.count("Email cannot be empty"), 1)
+        self.assertEqual(adapter.vocabulary_table("no quotes here"), "")
+        budget = adapter.CallBudget()
+        self.replies(events(application()))
+        adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        prompt = budget.attempts[0]["messages"][1]["content"]
+        self.assertLess(prompt.index("## Quoted vocabulary checklist"), prompt.index("## Requirements (the application to build)"))
 
     def test_completed_calls_still_share_the_global_cap(self):
         budget = adapter.CallBudget(limit=1)
@@ -294,8 +376,7 @@ class OfflineCase(unittest.TestCase):
     def test_no_continuation_for_stop_with_open_block_or_length_between_blocks(self):
         cases = (("=== FILE: x.js ===\npartial", "stop", "incomplete delivery"),
                  (application(), "length", "truncated between"),
-                 ("", "stop", "no content"),
-                 ("no blocks", "stop", "no file blocks"))
+                 ("", "stop", "no content"))  # a draft without blocks is asked once more (own test)
         for content, finish, message in cases:
             with self.subTest(content=content):
                 budget = adapter.CallBudget()
@@ -489,7 +570,8 @@ class LocalHTTPTests(unittest.TestCase):
                 requirements.mkdir()
                 (requirements / "requirements.yaml").write_text("synthetic: true")
                 env = {"PATH": os.defpath, "PYTHONDONTWRITEBYTECODE": "1", "OPENAI_API_KEY": SYNTHETIC_KEY,
-                       "OPENAI_BASE_URL": f"http://127.0.0.1:{server.server_port}/v1", "MODEL": "synthetic-model"}
+                       "OPENAI_BASE_URL": f"http://127.0.0.1:{server.server_port}/v1", "MODEL": "synthetic-model",
+                       "ONESHOT_SCAFFOLD": "0"}  # the CLI mechanics, without the scaffold completing a partial reply
                 for index, expected in enumerate((0, 1, 1)):
                     result = subprocess.run([sys.executable, str(root / "candidate/main.py"), str(requirements),
                                              "--output-dir", str(root / f"out-{index}"), "--type", "web"],

@@ -13,7 +13,7 @@ from urllib.parse import unquote, urlsplit
 from .trace import atomic_json
 
 VISION_MODEL_VARIABLE = 'FACTORY_VISION_MODEL'
-# Keep the screenshots and stop paying kimi-k3 prices for them. docs/image-ablation-2026-09-14.md
+# Keep the screenshots and stop paying kimi-k3 prices for them. docs/archive/legacy-harness/image-ablation-2026-09-14.md
 # recorded one run without the observation that still scored 10/10 at a higher cost and with four
 # more repair rounds; that is a single sample and not a cause, so it is not a reason either way.
 # The reason to switch is price: qwen3.6-flash reads the same three images correctly and is priced

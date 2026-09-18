@@ -46,7 +46,7 @@ def normalize_check_command(command):
 # test runner's next goto/reload. Measured on 2026-09-14: 10 of 48 replays of an
 # application that assigns location.href failed with ERR_ABORTED or "interrupted by
 # another navigation", against 0 of 18 replays of the same application re-rendering in
-# place. See docs/registration-timing-2026-09-14.md.
+# place. See docs/archive/legacy-harness/registration-timing-2026-09-14.md.
 GLOBAL = r'(?:(?:window|document|self|top|parent)\s*\.\s*)?'
 SELF_NAVIGATION = re.compile(
     r'<meta[^>]+http-equiv\s*=\s*["\']?\s*refresh'
@@ -80,7 +80,7 @@ def self_navigation_findings(path, source, limit=5):
 # evidence. Freezing such a check, or repairing the product against it, can never
 # converge: the nav-race first generation lost 450,000 tokens to a frozen check that
 # called assert(locator).toBeVisible(), where assert is node:assert/strict.
-# See docs/selfcheck-deadend-2026-09-14.md.
+# See docs/archive/legacy-harness/selfcheck-deadend-2026-09-14.md.
 CHECK_DEFECT = re.compile(
     r"is not a function"
     r"|Cannot read properties of (?:undefined|null) \(reading '(?:to[A-Z]\w*|not|resolves|rejects|and)'\)"
@@ -157,7 +157,7 @@ def failure_signature(text):
 # Run 8abb7f040604 lost four of fifteen calls to edits that never applied. Two were
 # rejected with the message "'path'", a bare KeyError, and two with a path and no count,
 # no line numbers and no current text. Every tool failure now names the tool, what was
-# wrong and what to do next. See docs/repair-loop-autopsy-2026-09-14.md.
+# wrong and what to do next. See docs/archive/legacy-harness/repair-loop-autopsy-2026-09-14.md.
 TOOL_GUIDANCE = {
     'patch_and_verify': 'Nothing was written. Resend every edit of this call, each with path, '
                         'old and new, using a unique anchor from the current file.',

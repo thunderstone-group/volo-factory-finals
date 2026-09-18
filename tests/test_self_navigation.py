@@ -1,6 +1,6 @@
 """Static rejection of browser self-navigation in generated product code.
 
-The measured failure mode is in docs/registration-timing-2026-09-14.md: an application
+The measured failure mode is in docs/archive/legacy-harness/registration-timing-2026-09-14.md: an application
 that assigns location.href after an awaited fetch races the test runner's next
 navigation. These checks are deterministic and need no Node, browser or model.
 """

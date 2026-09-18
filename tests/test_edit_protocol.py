@@ -21,7 +21,7 @@ class AnchoredEditTests(unittest.TestCase):
 
     def test_missing_anchor_is_rejected_without_changing_text(self):
         # The rejection says where the anchor stops matching and what the file holds there,
-        # so the next call does not have to guess. See docs/repair-loop-autopsy-2026-09-14.md.
+        # so the next call does not have to guess. See docs/archive/legacy-harness/repair-loop-autopsy-2026-09-14.md.
         with self.assertRaises(ValueError) as rejected:
             apply_edit(SOURCE, {'path': 'x', 'old': 'let total = 0;', 'new': 'let total = 1;'})
         message = str(rejected.exception)

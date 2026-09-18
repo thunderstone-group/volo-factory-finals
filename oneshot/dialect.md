@@ -108,14 +108,28 @@ visible text or as an accessible name; synonyms and paraphrases score zero. Conc
   control with exactly that name ("Profile", "Addresses", "Order history and details", "Favorites",
   "Recently viewed", "Watch tag"). After login the word "Profile" must be a visible button or link.
 - Every seed name, product title, wishlist name, tag or username quoted in a requirement exists verbatim.
-- Chinese-language apps: the suite's patterns carry English fallbacks (`/账号|account/i`, `/密码|password/i`,
-  `/登录|login/i`). Give every form field and primary action a bilingual accessible name — label
-  `账号 Account` for the multi-purpose login identifier (email / username / mobile), `密码 Password`,
-  button `登录 Login`, `注册 Register`, `搜索 Search`, `提交订单 Submit order` — so either language matches.
-  When a requirement defers a form's exact wording to a reference screenshot you cannot see, the
-  bilingual label is the only reliable hit (one Ctrip run lost 50 of 125 tests on that single field).
+- Chinese-language apps: a name the requirement quotes is rendered exactly (§7b), with the English in an
+  `aria-hidden` sibling if you want it (`<button>登录<span aria-hidden="true"> Login</span></button>`). Every
+  OTHER form field and primary action — the ones whose wording the requirement leaves to a screenshot —
+  gets the product's own Chinese name AND an English word in one bilingual label, because the suite's
+  patterns carry both (`/账号|account/i`, `/密码|password/i`, `/到达城市/`, `/search/i`): `账号 Account` for
+  the multi-purpose login identifier with placeholder `邮箱/用户名/手机号` (that order, the product's wording;
+  the suite matches `/邮箱.*用户名.*手机号/`), `密码 Password`, `出发城市 Origin`, `到达城市 Destination`,
+  `出发日期 Departure date`, `搜索 Search`, `提交订单 Submit order`. A run that renamed these to `出发地` /
+  `到达地` and reversed the placeholder lost 106 of 125 Ctrip tests; the bilingual, product-worded labels
+  scored 36–54.
 Notifications are `role="status"` carrying the literal message plus an `Undo` button. Section titles are
 visible headings (`<h2>Comments</h2>`), never an `aria-label` on the container.
+## 7b. A quoted control name is the WHOLE accessible name, byte-exact
+The formal suite anchors the names the requirement quotes: `getByRole('button', {name: /^Take a note$/i})`,
+`getByRole('textbox', {name: /^Note content$/i})`, `getByText(/^Notes$/i)`, `getByRole('dialog', {name:
+/^Note editor$/i})`. Any decoration in the same accessible name fails the match: a bullet or icon glyph
+before the word (`• Notes`, `🔔 Reminders`), an ellipsis after it (`Take a note...`), a count
+(`Notes (3)`), or an added noun (`Archive note` when the requirement quotes "Archive"). Put icons in a
+separate `<span aria-hidden="true">` and give the control `aria-label` equal to the quoted name. The role
+follows the requirement's verb: click/press → `<button>`; field/enter → textbox labelled exactly;
+dialog/editor → `role="dialog"` named as the requirement calls it; menu → `role="menu"` with
+`menuitem`s. §3's "add a noun" applies only to names the requirement does NOT quote.
 ## 7a. `aria-label` is reserved for form controls and icon-only buttons
 The fill ladder's FIRST rung is `getByLabel(/price/i)`, and `getByLabel` matches ANY element whose
 `aria-label` / `aria-labelledby` contains the pattern: `<section aria-label="Price">`,
@@ -135,6 +149,33 @@ text field first in DOM order). Exception: a requirement that names a region lit
 `<section aria-label="Contact information">` whose name shares no word with any field label on that screen.
 ## 8. Mechanics
 - Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
+- Every repeated record (note, book, product, question, order) is an `<article>`; suites scope a row's
+  actions as `getByRole('article').filter({has: getByText(title)}).getByRole('button', {name})`.
+- A search field is `<input type="text" aria-label="Search">` (role textbox), never `type="search"`: one
+  suite generation asks for `getByRole('textbox', {name: /^Search$/i})`.
+- Sidebar entries (labels, filters, Archive, Trash) are the scaffold's `<button>`s inside `<aside>`; header
+  entries are links.
+- Every `<form>` is named after the phrase the requirement uses for it, in `aria-label`, capitalised, ending in
+  "form": `<form aria-label="Login form">`, `<form aria-label="Shelf creation form">`. One suite generation
+  scopes the submit button as `getByRole('form', {name: /^Login form$/i}).getByRole('button', {name: /^Login$/i})`;
+  an unnamed form has no accessible name and every test that logs in fails (Lite Bookstack: 6 of 34). The
+  form's name must not share a word with a field label inside it (§7a): "Login form" with fields "Email
+  address" / "Password" is fine.
+- A quoted field name is BOTH the `<label>` and the `placeholder` of its input, byte-exact ("Page title",
+  "Write your page content here..."): one suite generation fills by `getByPlaceholder(/^Page title$/i)`
+  only, the other by label first. Never a placeholder that differs from the label.
+- The logo is the scaffold's `<button aria-label="<Brand> logo">` beside the brand link; keep both.
+- A record's own menu, colour palette or label picker opens INSIDE that record's `<article>` through
+  `ARC.openPopover(card, items)` — the suites scope the lookup to the card (`article >> button /^Delete Note$/`,
+  `article >> button /^Light green$/`, `article >> checkbox /^Work$/`). Never open it with `ARC.openDialog`: the
+  dialog root sits outside every article, so every item in it is invisible to those lookups (one Lite Keep
+  run lost 12 of 32). Header dropdowns (Settings, account) are `ARC.openPopover(button.parentNode, items,
+  {kind: 'menu'})` → `role="menu"` with `menuitem`s. The dialog root is for editors and confirmations only.
+- A record's state is shown by an element inside the card whose `title` is the state word (`<span
+  title="Pinned">`): suites read `article >> [title="Pinned"]`.
+- A settings list row that edits one value is a `<fieldset>` whose `<legend>` and the input's label are both
+  `"<Noun> <value>"` (`Label Work`) with its own `Save` button: suites scope `group /^Label Work$/ >> getByLabel`.
+- Toggle buttons (List view / Grid view, Pin) carry `aria-pressed` reflecting the state.
 - Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
   header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
   only its feed loses every header, navigation, login and sidebar test at once (one StackOverflow run: 1/66).
