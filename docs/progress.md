@@ -865,3 +865,13 @@ each rule snapshot and experiment with date and source.
   hypothesis: the jsdom false positive used to reject such whole-file rewrites by accident; now they land.
   Sample B (same submission) started 11:01: 12306 `df60e5072a9a`, Bookstack `f2d259d182b7`, Ctrip
   `66c719aedcad`, Keep `61fa7531580f`, Prestashop `80d4434870dd`, StackOverflow `a49aa2ec0296`.
+- Round 15 SO 1/66 replayed locally (1/66 reproduced): the a11y snapshot of `/` starts at the "Top
+  Questions" heading — no header, navigation, login control or sidebar exist on the home screen, so every
+  test that starts there times out. The trace shows the **draft itself** rendered `renderHome()` and
+  `renderQuestionsPage()` without the shared `renderLayout()` wrapper (14 other routes use it); the accepted
+  vocabulary repair only added constants. Not gate-visible until now: the DOM check only asked for text.
+- Gate `f72342f`: the jsdom probe reports header / navigation / footer landmarks on `/`; when the requirement
+  mentions one of those words and the landmark is absent, the bounded repair gets "the first screen renders
+  no <header>… every screen renders through the one shared layout". Card §8 states the rule. Real-bundle
+  check: r15 SO flagged (header, nav), r1 Keep / r11 Keep / r8 Bookstack clean. `tests_oneshot` 62 green.
+  Round 16 = round-15 package + this gate, uploaded once sample B has finished.
