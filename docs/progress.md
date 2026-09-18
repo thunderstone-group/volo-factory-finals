@@ -402,3 +402,25 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   `Help & feedback` / `Send feedback`, Toggle sidebar). Card adherence on unwritten names is stochastic;
   the next carrier is a scaffold primitive or a gate, not more prose.
 
+## 2026-09-18 23:35 — Round 23 Prestashop re-read: not a hang; round 24 (mechanical) started
+
+- The r23a Prestashop bundle downloaded on the fourth try (the platform cuts the stream near 18.0 of 18.9 MB;
+  `arcbench download` gives up, a plain urllib fetch with `Range` finished — script in the session scratchpad,
+  worth folding into the CLI). Local replay reproduces 0/86 in 11 s: the page renders the scaffold's EMPTY shell
+  (brand `App`, heading `Home`, footer `Footer`), not a hang. `node --check app.js` → `app.js:12 SyntaxError:
+  Unexpected token ';'` (a missing parenthesis in `cartSubtotal`). The 22:35 "hangs after load" reading was wrong.
+- Full run log (`arcbench logs --offset 0 --tail 100000`, the default tail is 42 lines): three flash cuts →
+  qwen3.7-plus draft (call 4) → smoke DID catch it (`frontend script error on load: Uncaught [SyntaxError:
+  Unexpected token ';']`, plus label collisions and one missing quoted phrase) → repair (call 5) re-emitted
+  65 KB and left the same error → rejected → the broken original shipped. The gate worked; the repair had no
+  location to work from, and even a partial win would have been thrown away.
+- Fixes (`3cc0f24`, `d97509f`, tests_oneshot 78 green): (1) the DOM probe's own timeout is a problem, not a
+  silent pass; (2) `_check_syntax` runs `node --check` on every frontend script before anything is served and
+  names file, line and the source line — no jsdom, no network, so it holds when the runner's jsdom install is
+  slow (that skip now prints to stderr); (3) a repair that removes a whole-app failure (parse error, blank page,
+  dead backend) is kept even if a click or landmark problem remains; the ordinary path still demands a clean app.
+- Round-23 card lines reverted (`7bec21d`); the status-span scaffold change stays. **Round 24 = r22 + the
+  mechanical fixes only**, Web `5189caeffa1b` and Lite `465e2b38f27d`, two samples each, started 23:30
+  (balance CNY 116 before). Detached waiter `runs/2026-09-18-goal/r24-wait.sh` writes `r24-final.json` +
+  `r24-final.done`. Judge: no drop vs r22 (63.5 / 64.2, Lite 61.9 / 61.8); then r24 is the candidate and PR #38 merges.
+- Dropped from the list: the "jsdom check that `/` settles" (its premise was the hang).
