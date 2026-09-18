@@ -355,3 +355,10 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   make those typeable; harmless for a suite that picks dates.
 - Round 21 = r20 + these gates, Web and Lite two samples each (~19:05).
 
+## 2026-09-18 19:40 — Round 21 kept: best pair so far
+
+- Web pair **65.5 / 62.9** (Keep 26/28, Bookstack 27/29, SO 51/44, Prestashop 54/53, 12306 81/76, Ctrip 40/25) —
+  the first pair whose lower sample is above 60. Lite 55.6 / 52.5, flat. Results in `r21-final.json`.
+- Round 22 = r21 + the scaffold popover (`19a872d`), Web and Lite two samples each; judge Lite Keep against
+  13/11 (the popover targets 12 of its 19 failures) and Web against 65.5 / 62.9.
+
