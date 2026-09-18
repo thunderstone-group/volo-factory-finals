@@ -945,3 +945,24 @@ each rule snapshot and experiment with date and source.
 - Tooling: `arcbench wait` returns as soon as one run reports FAILED (our normal terminal state), so the
   background waiters exited early all afternoon; replaced by `scratchpad/poll_runs.py` (polls `arcbench
   runs` until every id is terminal). Worth folding into the CLI as `wait --until-terminal`.
+- **Lite holdout closed 15:05: Keep 5/32 and 5/32, Bookstack 10/34 and 5/34 (about 19%)** against ~60% on
+  Web with the same package. Local replay of the Lite Keep bundle (test pack via `arcbench fetch
+  --competition arc-bench-lite`, `state_rehearsal.py --tests-dir`, node_modules symlinked beside the pack)
+  reproduces 5/32. Reading of `lite-testsets/arc-bench-lite--keep/helpers.ts`: a **different helper
+  generation — task-specific helpers with anchored exact names** (`getByRole('button', {name: /^Take a
+  note$/i})`, `getByRole('dialog', {name: /^Note editor$/i})`, textboxes `/^Title$/i` `/^Note content$/i`,
+  `/^Close$/i`, `/^More options$/i`, `/^Delete Note$/i`, `/^Archive$/i`, `getByText(/^Notes$/i)`,
+  `menu`/`menuitem`, `article`, `complementary`). 23 anchored names; **22 are written in the Lite
+  requirement** (only "Note editor" is not), which is exactly what the organizer promised for the formal
+  round. So Lite is the closest public sample of the formal dialect, and it is winnable: our losses are
+  decoration and role, not missing vocabulary — sidebar links rendered as "• Notes" / "🔔 Reminders"
+  (anchored `^Notes$` fails), "Take a note" rendered as a placeholder instead of a button, no dialog named
+  "Note editor"; 22 of 27 failures cascade from `openComposer`. The vocabulary gate passed (phrases exist in
+  source, just decorated).
+- Board oddity: `arc-bench-web` shows VOLO AI 72.3% at 15:00 while no six-task sample exceeds 67.1; the
+  aggregation must combine runs across the latest submission's samples. Not relied on.
+- Next (evening): (1) card §7b + vocabulary-table header: a quoted control name is the exact accessible
+  name, byte-exact, no icon/bullet/ellipsis/added noun, role from the requirement's verb; §3's "add a noun"
+  only for unquoted names. (2) Exact-name static gate: a quoted phrase ≤ 5 words that appears in the source
+  only decorated (`• Notes`, `Take a note...`, `Archive note`) is a problem for the bounded repair. (3) Validate
+  with a local Lite Keep generation + replay and a Web Keep replay for regression, then Lite/Web platform pairs.
