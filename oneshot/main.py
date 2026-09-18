@@ -38,7 +38,7 @@ MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so 
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
 SCAFFOLD = os.environ.get("ONESHOT_SCAFFOLD", "1") != "0"  # place oneshot/scaffold in the stage before a fresh generation and show it in the prompt
 SCAFFOLD_DIR = HERE / "scaffold"
-SCAFFOLD_KEEP = {"frontend/public/lib/arc.js": ("ARC.layout", "ARC.openDialog", "ARC.notify", "ARC.rowActions", "ARC.render"),
+SCAFFOLD_KEEP = {"frontend/public/lib/arc.js": ("ARC.layout", "ARC.openDialog", "ARC.openPopover", "ARC.notify", "ARC.rowActions", "ARC.render"),
                  "frontend/public/app.js": ("window.LAYOUT", "window.APP"),
                  "frontend/public/seed.js": ("window.SEED",)}
 MAX_TEMPLATE_FILES = 256

@@ -72,6 +72,7 @@
   ARC.render = function () {
     const route = ARC.route();
     ARC._renderedHash = route.hash;
+    ARC._popover = null;  // the screen is rebuilt; an open popover goes with it
     const app = window.APP || {};
     const main = app.screen ? app.screen(route) : '<h1>Home</h1>';
     document.getElementById('app').innerHTML = ARC.layout(main, route);
@@ -107,6 +108,33 @@
     }
   };
 
+  // --- Popover: a menu, colour palette or label picker that belongs to ONE record opens INSIDE that
+  // record's element (the <article>), never in the dialog root: both suite generations scope the
+  // lookup to the card (`article >> button /^Delete Note$/`, `article >> button /^Light green$/`),
+  // and one of them anchors a header dropdown as `menu >> menuitem /^Settings$/`. `items` are
+  // { label, action, extra? }; kind 'buttons' (default, record menus and palettes) renders plain
+  // <button>s, kind 'menu' (header dropdowns) renders role="menu" with role="menuitem" buttons.
+  // The popover closes on the next render, on Escape, or on a click outside it.
+  ARC.openPopover = function (host, items, opts) {
+    ARC.closePopover();
+    if (!host) return;
+    const kind = (opts && opts.kind) || 'buttons';
+    const id = (opts && opts.id) != null ? String(opts.id) : (host.dataset && host.dataset.id) || '';
+    const button = (a) => `<button type="button"${kind === 'menu' ? ' role="menuitem"' : ''} data-action="${ARC.esc(a.action)}" data-id="${ARC.esc(id)}"${a.extra ? ' ' + a.extra : ''}>${ARC.esc(a.label)}</button>`;
+    const body = typeof items === 'string' ? items : items.map(button).join('');
+    const wrap = document.createElement('div');
+    wrap.className = 'popover';
+    wrap.setAttribute('data-popover', '');
+    if (kind === 'menu') { wrap.setAttribute('role', 'menu'); if (opts && opts.label) wrap.setAttribute('aria-label', opts.label); }
+    wrap.innerHTML = body;
+    host.appendChild(wrap);
+    ARC._popover = wrap;
+  };
+  ARC.closePopover = function () {
+    if (ARC._popover && ARC._popover.parentNode) ARC._popover.parentNode.removeChild(ARC._popover);
+    ARC._popover = null;
+  };
+
   // --- Notification: a role="status" element carrying the literal message plus an Undo button.
   ARC.notify = function (message, opts) {
     const root = document.getElementById('status-root');
@@ -137,6 +165,7 @@
     fn({ id: el.dataset.id, data: { ...el.dataset }, el, event, form });
   }
   document.addEventListener('click', (ev) => {
+    if (ARC._popover && !ARC._popover.contains(ev.target) && !ev.target.closest('[data-action]')) ARC.closePopover();
     const el = ev.target.closest('[data-action]');
     if (!el || el.tagName === 'FORM') {
       // In-app links render synchronously too (see ARC.navigate); the browser's own fragment
@@ -163,6 +192,7 @@
     if (!el) return;
     dispatch(el.dataset.change, el, ev, null);
   });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && ARC._popover) ARC.closePopover(); });
   window.addEventListener('hashchange', () => {
     if ((location.hash || '#/') === ARC._renderedHash) return;  // already rendered in the click's task
     if (ARC.dialogOpen) ARC.closeDialog();

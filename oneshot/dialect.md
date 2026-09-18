@@ -165,6 +165,17 @@ text field first in DOM order). Exception: a requirement that names a region lit
   "Write your page content here..."): one suite generation fills by `getByPlaceholder(/^Page title$/i)`
   only, the other by label first. Never a placeholder that differs from the label.
 - The logo is the scaffold's `<button aria-label="<Brand> logo">` beside the brand link; keep both.
+- A record's own menu, colour palette or label picker opens INSIDE that record's `<article>` through
+  `ARC.openPopover(card, items)` — the suites scope the lookup to the card (`article >> button /^Delete Note$/`,
+  `article >> button /^Light green$/`, `article >> checkbox /^Work$/`). Never open it with `ARC.openDialog`: the
+  dialog root sits outside every article, so every item in it is invisible to those lookups (one Lite Keep
+  run lost 12 of 32). Header dropdowns (Settings, account) are `ARC.openPopover(button.parentNode, items,
+  {kind: 'menu'})` → `role="menu"` with `menuitem`s. The dialog root is for editors and confirmations only.
+- A record's state is shown by an element inside the card whose `title` is the state word (`<span
+  title="Pinned">`): suites read `article >> [title="Pinned"]`.
+- A settings list row that edits one value is a `<fieldset>` whose `<legend>` and the input's label are both
+  `"<Noun> <value>"` (`Label Work`) with its own `Save` button: suites scope `group /^Label Work$/ >> getByLabel`.
+- Toggle buttons (List view / Grid view, Pin) carry `aria-pressed` reflecting the state.
 - Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
   header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
   only its feed loses every header, navigation, login and sidebar test at once (one StackOverflow run: 1/66).
