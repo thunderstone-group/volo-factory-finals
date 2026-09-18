@@ -104,6 +104,7 @@ REPAIR = ("The application you delivered failed the runner's delivery check befo
 SMOKE = True  # run the delivery smoke check (build, start, GET / and /api/health) before publishing
 SMOKE_BUILD_SECONDS = 90
 SMOKE_READY_SECONDS = 30
+DOM_PROBE_SECONDS = 60  # jsdom load of / plus the click walk; a page that never settles hits this
 HEALTH_BODY = {"code": 200, "message": "Backend Ready"}
 ASSET_REF = re.compile(r"""<(?:script|link)\b[^>]*?\b(?:src|href)\s*=\s*["']([^"']+)["']""", re.I)
 
@@ -528,9 +529,18 @@ def _check_dom(stage, port, problems, requirements=None):
         run = subprocess.run([node, "-e", DOM_PROBE],
                              env={**_child_env(), "NODE_PATH": str(prefix / "node_modules"),
                                   "PROBE_URL": f"http://127.0.0.1:{port}/"},
-                             capture_output=True, timeout=60, text=True)
+                             capture_output=True, timeout=DOM_PROBE_SECONDS, text=True)
         report = json.loads(run.stdout.strip().splitlines()[-1])
-    except (subprocess.TimeoutExpired, ValueError, IndexError):
+    except subprocess.TimeoutExpired:
+        # The probe's own timeout is the app's fault, not a gap: a script that never returns (a loop waiting
+        # on state, a render that re-triggers itself) keeps the page from settling, and in the runner every
+        # test then times out at its first step (round 23 Prestashop: 0/86, all "Visit Homepage").
+        problems.append(f"loading / in a DOM did not finish within {DOM_PROBE_SECONDS} s: a script on the page never "
+                        f"returns (a loop that waits for state, a render that re-triggers itself, synchronous work "
+                        f"on every timer tick), so the page never settles and every test times out at its first "
+                        f"step; render the home screen once on load and return")
+        return
+    except (ValueError, IndexError):  # the probe itself failed to report (jsdom gap); never the app's fault
         return
     if report.get("load_error"):
         problems.append(f"loading / in a DOM failed: {report['load_error']}")

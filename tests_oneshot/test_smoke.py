@@ -189,6 +189,19 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("`Add to cart` (data-action `add-to-cart`)", flagged[0])
         self.assertIn("reading 'id'", flagged[0])
 
+    def test_script_that_never_returns_is_reported_not_skipped(self):
+        # Round 23 Prestashop: every test timed out at "Visit Homepage" while the gate stayed silent, because
+        # the probe's own timeout returned without a problem. A page that never settles is the app's fault.
+        spinning = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                         block("frontend/public/app.js", "for (;;) {}"))
+        self.replies(events(spinning))
+        with patch.object(adapter, "DOM_PROBE_SECONDS", 4):
+            files, budget = self.generate(limit=1)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        flagged = [p for p in budget.smoke["problems"] if "did not finish within 4 s" in p]
+        self.assertEqual(len(flagged), 1, budget.smoke)
+
     def test_readonly_input_is_a_static_problem(self):
         picker = app(server()).replace(
             block("frontend/public/app.js", "console.log('synthetic');"),
