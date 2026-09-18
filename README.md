@@ -18,11 +18,12 @@ remains the sole platform client; do not vendor a second copy into VOLO.
 | `scripts/package_oneshot.py` | Candidate ZIP plus source/package SHA-256 manifest |
 | `qiwoo`, `tools/qiwoo_cli/` | Separate forum reader and local drafts; live login/publishing unfinished |
 | installed `arcbench` | Platform operations, maintained in `thunderstone-group/arcbench-cli` |
+| `docs/README.md` | Map of `docs/` and the documentation policy |
 | `docs/SESSION_HANDOFF.md` | Continuation and verification boundaries |
 
 Build the candidate with `python3 scripts/package_oneshot.py`; output is
-`oneshot/dist/oneshot.zip`. See [one-shot](docs/oneshot.md), [forum CLI](docs/forum-cli.md),
-and [workspace cleanup](docs/workspace-consolidation-2026-09-16.md).
+`oneshot/dist/oneshot.zip`. See [one-shot](docs/reference/oneshot.md), [forum CLI](docs/reference/forum-cli.md),
+and [workspace cleanup](docs/reports/2026-09-16-workspace-consolidation.md).
 The original `oneshot-lab` directory remains an untouched recovery source, not the
 active development entry. Original root `main.py`, `volo/`, `harness_lab/` and
 `scripts/package.py` are a frozen legacy baseline. Do not mistake that older archive
@@ -34,12 +35,12 @@ Version **0.7.0.dev35** was the dated consolidated agent. Its E057 official Tick
 run scored **9/10**, **CNY 0.668715**, **212 seconds**, and reached **rank 1** in the
 September 12, 18:08 Taipei snapshot. One registration test still times out. The new
 bounded repair branch did not execute in that run, so its model convergence remains
-unverified. The [competition review](docs/competition-gap-2026-09-12.md) separates
+unverified. The [competition review](docs/archive/legacy-harness/competition-gap-2026-09-12.md) separates
 the observed result, comparisons and remaining limitations.
 
 Start a continuation from [SESSION_HANDOFF](docs/SESSION_HANDOFF.md). Current standings
-come from the platform CLI; [experiments](docs/experiments.md) preserves dated results.
-The earlier [consolidation review](docs/harness-consolidation-2026-09-12.md) records how
+come from the platform CLI; [experiments](docs/archive/legacy-harness/experiments.md) preserves dated results.
+The earlier [consolidation review](docs/archive/legacy-harness/harness-consolidation-2026-09-12.md) records how
 the prior runtime, explicit acceptance and optional lab tools were integrated.
 
 ## Legacy baseline map
@@ -51,7 +52,7 @@ the prior runtime, explicit acceptance and optional lab tools were integrated.
 | `scripts/package.py` | Deterministic upload archive |
 | `scripts/evaluate_candidate.py` | Run a supplied pinned Node acceptance suite against an existing local application, without model calls |
 | `tests/` | Transport, recovery, HTTP, browser and evaluator regressions |
-| `docs/experiments.md`, `docs/evidence/` | Dated results and source-bound evidence, not live state |
+| `docs/archive/legacy-harness/experiments.md`, `docs/evidence/` | Dated results and source-bound evidence, not live state |
 
 `AGENTS.md` maps development work. Keep the main checkout on `main`; create each new
 branch in `../volo-factory-worktrees/` from current `main`, and merge through a PR.
@@ -86,7 +87,7 @@ requires an explicitly supplied, reviewed manifest:
   --acceptance-contract /absolute/separate-suite/contract.json
 ```
 
-The [pinned acceptance contract](docs/evidence-gated-harness.md) uses executable tests,
+The [pinned acceptance contract](docs/archive/legacy-harness/evidence-gated-harness.md) uses executable tests,
 not a second model. Missing coverage, altered tests and broken evaluators cannot certify
 completion. Without a manifest, `verified_requirements` stays empty and
 `independent_acceptance` is `not_configured`. Even a supplied suite proves only its
@@ -114,7 +115,7 @@ hashes are not an operating-system sandbox.
 
 ## Platform and research
 
-Use [the platform CLI](docs/platform-cli.md) for uploads, statuses, logs and standings:
+Use [the platform CLI](docs/reference/platform-cli.md) for uploads, statuses, logs and standings:
 
 ```sh
 arcbench leaderboard --competition ticket-booking --task ticket-booking
@@ -124,6 +125,6 @@ arcbench status RUN_ID
 The client is installed from its own repository; it is not part of this one.
 
 Model calls and official submissions are separate experiment decisions; merging this
-baseline does not start them. The [current architecture proposal](docs/harness-design-2026-09-12.md)
+baseline does not start them. The [current architecture proposal](docs/archive/legacy-harness/harness-design-2026-09-12.md)
 compares Octos/ARC adapter, Pi, mini-SWE-agent, OpenHands and Harbor at pinned revisions.
 It distinguishes proven local behavior, research findings and untested proposals.
