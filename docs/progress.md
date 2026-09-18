@@ -841,3 +841,13 @@ each rule snapshot and experiment with date and source.
   Results below when they finish.
 - Round 15 package (`6cb35f8` + `60a4707`, sha256 `8ae67a05…`) uploaded as submission `83fba30a434a`;
   runs start after the local probes finish so the usage-meter delta stays clean.
+- Uncapped flash (local Keep, `max_tokens` omitted, 09:59–10:20): **failed**. Call 1 `finish=length` at
+  95,200 completion tokens after 699 s with only 13,606 characters of content; the continuation
+  `finish=length` again at 71,296 tokens; `unterminated file block: frontend/public/app.js`. The platform's
+  round-13 Keep draft finished `stop` in 553 s (about 80k tokens at the observed 150 tok/s), so omitting
+  the cap did not buy more content: the provider applies its own, lower, ceiling and the reasoning volume is
+  the same. Keep the explicit 131072 cap. One sample; not worth a second at CNY 1.5.
+- Round 15 sample A started 10:26 (`r15-runs.json`: 12306 `8f92145a3744`, Bookstack `863318b7cf5a`,
+  Ctrip `bbc5bb0a7fdd`, Keep `7747d71e9e70`, Prestashop `63d21f8ba126`, StackOverflow `0eb9937e897f`).
+  The glm-5.3 local probe was still running (call 1 failed on transport at about 10:20, retrying), so this
+  round's token column includes it.
