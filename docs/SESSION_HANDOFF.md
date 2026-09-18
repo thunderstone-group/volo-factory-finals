@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-18 18:45 (Fable + owner; read this section, then progress.md from "17:40")
+# Current handoff — 2026-09-18 19:10 (Fable + owner; read this section, then progress.md from "17:40")
 
 Branch `goal/round-1` (head pushed) = main `ff686e3` + the day's commits; open a PR to main when round 19 is
 judged. Doctrine: ADR 0001 (gate → scaffold → table → prose), ADR 0002 (model policy). Working mode set by
@@ -22,13 +22,14 @@ the owner: Fable and the owner directly, no Codex/Opus dispatch. `arcbench` need
   `<work-dir>/artifacts/*/error-context.md` (the "waiting for" line names the rung the ladder fell to).
 
 ## Next
-1. Round 20 (r19 + Chinese-app paragraph) pair 54.1 / 57.9: Ctrip 20 / 41 with the right words in both apps,
-   Prestashop 41 / 57. Two bad samples (Ctrip a, Prestashop a) are being replayed (`r20a-replay-*`); read their
-   error contexts and decide whether a family is card-caused. Candidate for the formal round = r20 package
-   (`r20-candidate.zip`, submission `2108891b5706`) unless that reading says otherwise.
-2. Variance is now the main cost: the same package spans 54–66 between pairs. Owner decision pending on
-   best-of-2 at generation time (two drafts, gate problem count picks one) — the only lever aimed at bad
-   samples. Ask the organizer how many runs the formal round allows per task and which one counts.
+1. **Round 21 running** (Web + Lite, two samples each, ids in `r21{a,b}-runs-arc-bench-{web,lite}.json`,
+   `scratchpad/poll_r21.py` writes `r21-final.json`): r20 + two level-0 gates (click walk for throwing handlers,
+   readonly inputs). Keep if the Web pair holds r19's band (65.5 / 60.0) and no whole-family bad sample of
+   the two kinds appears; Lite should hold 54 / 56. Then r21 is the formal-round candidate.
+2. Owner (18:42): the formal round allows several submissions and counts the best or the average, so
+   variance is handled by re-submitting; generation-time best-of-2 is off the table. Direction agreed:
+   bad samples → gates (done for two families), Lite Keep's remaining families (archive / label / pin /
+   dialog naming; 12–13/32), then a planner stage for the large tasks (12306 63%, Ctrip 43% at best).
 2. Candidate gate: jsdom walk that clicks each seed link on the list screens and expects the main heading to
    become the link text (Bookstack r18a route bug, 20 tests). Candidate rules not encoded: Bookstack's tags
    BUTTON, `Confirm Delete`, swapped `Create New Book` / `New Book` (helper contradicts the requirement).

@@ -338,3 +338,20 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - Candidate for the formal round stays r20 (= r19 + the Chinese paragraph) unless the replays show a
   mechanism the card caused.
 
+## 2026-09-18 19:05 — Two bad samples become two gates; round 21
+
+- Round-20 sample A replays: Prestashop 41/86 because the product page's `add-to-cart` handler throws
+  `Cannot read properties of undefined (reading 'id')` (no dialog, 17 checkout tests wait for "Proceed to
+  checkout"); Ctrip 20/125 because `出发城市` / `到达城市` / dates are `readonly` picker triggers, so every
+  `fill()` times out (35 direct, 64 cascades through the city picker's `热门` tab). Both confirmed with a real
+  browser probe, not only the suite's error contexts.
+- Gates (commit on goal/round-1, 72 tests green twice): the DOM probe now walks every hash route reachable
+  from `/` (≤ 40 screens, 15 s), clicks every button once (re-querying after each render, since the scaffold
+  rebuilds the screen) and reports uncaught handler exceptions per handler + message, jsdom's own gaps filtered;
+  `readonly_gaps` flags readonly inputs in the generated frontend. Checked on six real bundles: Prestashop a →
+  page-change / toggle-password / select-color / add-to-cart (one signature bug across handlers), Ctrip a →
+  4 readonly, Ctrip b → `发送验证码` throws on an empty phone (a real robustness bug); Bookstack, Keep, SO
+  bundles and the bare scaffold stay clean. r17a Ctrip (36/125) has readonly date inputs too — the gate will
+  make those typeable; harmless for a suite that picks dates.
+- Round 21 = r20 + these gates, Web and Lite two samples each (~19:05).
+
