@@ -173,6 +173,23 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(budget.smoke["problems"], [], budget.smoke)
         self.assertEqual(self.transport.call_count, 1)
 
+    def test_home_screen_must_render_the_landmarks_the_requirement_describes(self):
+        req = "The global header carries the navigation links and the login control. A footer closes every page."
+        feed_only = app(server()).replace("<h1>Synthetic</h1>", "<h1>Top questions</h1>")
+        laid_out = app(server()).replace(
+            "<h1>Synthetic</h1>",
+            "<header><nav><a href=\"#/\">Home</a></nav></header><main><h1>Top questions</h1></main><footer>Footer</footer>")
+        self.replies(events(feed_only), events(laid_out))
+        budget = adapter.CallBudget()
+        adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        flagged = [p for p in budget.smoke["problems"] if "renders no <" in p]
+        self.assertEqual(len(flagged), 3, budget.smoke)
+        self.assertTrue(all("shared layout" in p for p in flagged))
+        self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
+        self.assertIn("<header>", (self.out / "frontend/public/index.html").read_text())
+
     def test_missing_quoted_vocabulary_is_reported_and_partial_repair_is_kept(self):
         req = 'After login replace the link with \u201cSign Out\u201d. Show \u201cEmail cannot be empty\u201d. Seed \u201cBook 5.1\u201d.'
         good = app(server()).replace("<h1>Synthetic</h1>", "<h1>Synthetic</h1><p>Book 5.1</p>")

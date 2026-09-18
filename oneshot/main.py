@@ -427,16 +427,27 @@ const { JSDOM, VirtualConsole } = require('jsdom');
   await new Promise((r) => setTimeout(r, 2500));
   const body = dom.window.document.body;
   const text = body ? body.textContent.replace(/\s+/g, ' ').trim() : '';
-  console.log(JSON.stringify({ text_chars: text.length, errors: errors.slice(0, 5) }));
+  const q = (sel) => !!(body && body.querySelector(sel));
+  const landmarks = { header: q('header, [role="banner"]'), navigation: q('nav, [role="navigation"]'),
+                      footer: q('footer, [role="contentinfo"]') };
+  console.log(JSON.stringify({ text_chars: text.length, errors: errors.slice(0, 5), landmarks }));
   dom.window.close();
 })();
 """
 
 
-def _check_dom(stage, port, problems):
+LANDMARKS = {"header": (r"\bheader\b", "<header> (or role=banner)"),
+             "navigation": (r"\bnav(?:igation)?\b", "<nav> (or role=navigation)"),
+             "footer": (r"\bfooter\b", "<footer> (or role=contentinfo)")}
+
+
+def _check_dom(stage, port, problems, requirements=None):
     """Load `/` in jsdom with scripts running: a frontend that throws on load or renders no text
-    scores zero on every test, and no HTTP check can see it. Skips silently when jsdom cannot
-    be installed (offline) so the check never blocks delivery on its own account."""
+    scores zero on every test, and no HTTP check can see it. When the requirement describes a
+    header / navigation / footer, the first screen must render that landmark too: a home screen
+    that skips the shared layout loses every header and navigation test (round 15 StackOverflow,
+    1/66). Skips silently when jsdom cannot be installed (offline) so the check never blocks
+    delivery on its own account."""
     node, npm = shutil.which("node"), shutil.which("npm")
     prefix = Path(tempfile.gettempdir()) / "oneshot-jsdom"  # one install per machine, reused across runs
     if not (prefix / "node_modules" / "jsdom").is_dir():
@@ -463,9 +474,17 @@ def _check_dom(stage, port, problems):
     if not report.get("errors") and report.get("text_chars", 0) == 0:
         problems.append("after scripts run, / renders no visible text (blank page); the app must render its "
                         "home screen synchronously on load, without waiting for anything a test cannot trigger")
+        return
+    present = report.get("landmarks") or {}
+    for name, (pattern, element) in LANDMARKS.items():
+        if requirements and re.search(pattern, requirements, re.I) and name in present and not present[name]:
+            problems.append(f"the first screen (/) renders no {element} although the requirement describes a "
+                            f"{name}; every screen, including the home screen, must render through the one shared "
+                            f"layout (header, navigation, main content, footer) so the suite finds the same "
+                            f"landmarks and controls on every route")
 
 
-def smoke_check(stage):
+def smoke_check(stage, requirements=None):
     """Build the frontend, start the backend on a free port and read it the way the runner
     does. Returns (problems, executed). Never calls a model; skips when node/npm are absent."""
     node, npm = shutil.which("node"), shutil.which("npm")
@@ -523,7 +542,7 @@ def smoke_check(stage):
             try:
                 _check_page(port, problems)
                 if not problems:
-                    _check_dom(stage, port, problems)
+                    _check_dom(stage, port, problems, requirements)
             except Exception as exc:
                 problems.append(f"GET / failed: {str(exc)[:200]}")
     finally:
@@ -845,7 +864,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
     at most one model call on a fix and keep it only if the smoke check then passes and the
     vocabulary did not get worse. Records the outcome in budget.smoke."""
-    problems, executed = smoke_check(stage)
+    problems, executed = smoke_check(stage, requirements)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
     static = process_guard_gaps(stage) + aria_collision_gaps(stage)
     budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
@@ -875,7 +894,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         needed = missing_required(stage)
         if needed:
             raise ValueError("repair broke delivery: " + "; ".join(needed))
-        after, _ = smoke_check(stage)
+        after, _ = smoke_check(stage, requirements)
         if after:
             raise ValueError("still failing after repair: " + "; ".join(after))
         _, missing_after = vocabulary_gaps(stage, requirements)

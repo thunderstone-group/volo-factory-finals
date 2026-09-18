@@ -135,6 +135,9 @@ text field first in DOM order). Exception: a requirement that names a region lit
 `<section aria-label="Contact information">` whose name shares no word with any field label on that screen.
 ## 8. Mechanics
 - Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
+- Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
+  header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
+  only its feed loses every header, navigation, login and sidebar test at once (one StackOverflow run: 1/66).
 - A view transition must UNMOUNT the old view, never cross-fade; a stale control visible for 100 ms loses
   the race and loses the test.
 - Typing must survive a re-render: an in-form click (pin toggle, colour swatch) must not wipe the
