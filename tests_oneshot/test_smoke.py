@@ -202,6 +202,46 @@ class SmokeCase(unittest.TestCase):
         flagged = [p for p in budget.smoke["problems"] if "did not finish within 4 s" in p]
         self.assertEqual(len(flagged), 1, budget.smoke)
 
+    def test_script_that_does_not_parse_is_reported_with_its_line_before_anything_is_served(self):
+        # Round 23 Prestashop: a missing parenthesis on app.js:12; the DOM probe said only "Unexpected token ';'"
+        # and the repair did not find the line. node --check names file and line and needs no jsdom.
+        broken = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                       block("frontend/public/app.js", "function f( { }\nconsole.log('x');"))
+        self.replies(events(broken))
+        with patch.object(adapter, "_check_dom", side_effect=AssertionError("the DOM probe must not run")):
+            files, budget = self.generate(limit=1)
+        flagged = [p for p in budget.smoke["problems"] if "does not parse" in p]
+        self.assertEqual(len(flagged), 1, budget.smoke)
+        self.assertIn("frontend/public/app.js:2 does not parse (SyntaxError:", flagged[0])
+        self.assertIn("`console.log('x');`", flagged[0])
+
+    def test_repair_that_removes_a_whole_app_failure_is_kept_despite_a_remaining_click_error(self):
+        broken = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                       block("frontend/public/app.js", "function f( { }"))
+        throwing_button = block("frontend/public/app.js",
+                                "document.body.insertAdjacentHTML('beforeend', '<button type=\"button\" data-action=\"add-to-cart\">Add to cart</button>');\n"
+                                "document.addEventListener('click', (e) => { if (e.target.dataset.action === 'add-to-cart') { const p = undefined; p.id; } });")
+        self.replies(events(broken), events(throwing_button))
+        files, budget = self.generate()
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        self.assertEqual(budget.smoke["repair"]["accepted"], True, budget.smoke)
+        delivered = next(f for f in files if f["path"] == "frontend/public/app.js")["content"]
+        self.assertIn("add-to-cart", delivered)
+
+    def test_repair_that_leaves_a_click_error_is_rejected_when_the_app_was_never_broken_whole(self):
+        # Unchanged rule for the ordinary path: a repair for a family-level problem must leave the app clean.
+        throwing = ("document.body.insertAdjacentHTML('beforeend', '<button type=\"button\" data-action=\"add-to-cart\">Add to cart</button>');\n"
+                    "document.addEventListener('click', (e) => { if (e.target.dataset.action === 'add-to-cart') { const p = undefined; p.id; } });")
+        draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                      block("frontend/public/app.js", throwing))
+        self.replies(events(draft), events(block("frontend/public/app.js", throwing + "\nconsole.log('still throws');")))
+        files, budget = self.generate()
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        self.assertEqual(budget.smoke["repair"]["accepted"], False, budget.smoke)
+        self.assertIn("still failing after repair", budget.smoke["repair"]["reason"])
+
     def test_readonly_input_is_a_static_problem(self):
         picker = app(server()).replace(
             block("frontend/public/app.js", "console.log('synthetic');"),

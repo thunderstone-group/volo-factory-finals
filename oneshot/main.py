@@ -388,6 +388,42 @@ def _free_port():
         return sock.getsockname()[1]
 
 
+def _check_syntax(stage, node, problems):
+    """`node --check` every frontend script, before anything is served. A file that does not parse is
+    dropped whole by the browser, so the scaffold renders its empty defaults on every screen (round 23
+    Prestashop: one missing parenthesis on app.js:12, 0/86). The DOM probe sees the same error but
+    without a location, and a repair told only "Unexpected token ';'" did not find the line in 65 KB.
+    Needs neither jsdom nor the network."""
+    root = stage / "frontend"
+    index = root / "public" / "index.html"
+    as_module = index.is_file() and 'type="module"' in index.read_text(encoding="utf-8", errors="replace")
+    for path in sorted(root.rglob("*.js")):
+        rel = path.relative_to(stage).as_posix()
+        if "/node_modules/" in "/" + rel or rel.startswith("frontend/dist/"):
+            continue
+        target = path
+        if as_module:
+            target = Path(tempfile.mkdtemp(prefix=".oneshot-syntax-", dir=stage.parent)) / (path.stem + ".mjs")
+            shutil.copyfile(path, target)
+        try:
+            run = subprocess.run([node, "--check", str(target)], env=_child_env(), capture_output=True,
+                                 text=True, timeout=20)
+        except subprocess.TimeoutExpired:
+            continue
+        finally:
+            if target is not path:
+                shutil.rmtree(target.parent, ignore_errors=True)
+        if run.returncode == 0:
+            continue
+        where = re.search(r":(\d+)\n(.*)\n", run.stderr)
+        what = re.search(r"^(\w*Error: .*)$", run.stderr, re.M)
+        line = f":{where.group(1)}" if where else ""
+        source = f" — the line reads `{where.group(2).strip()[:160]}`" if where and where.group(2).strip() else ""
+        problems.append(f"{rel}{line} does not parse ({what.group(1) if what else run.stderr.strip()[:200]}){source}. "
+                        f"The browser drops the whole file, so the scaffold renders its empty defaults on every "
+                        f"screen and every test fails; re-emit the file with this line fixed")
+
+
 def _check_page(port, problems):
     status, headers, body = _fetch_local(f"http://127.0.0.1:{port}/")
     ctype = headers.get("content-type", "")
@@ -522,8 +558,10 @@ def _check_dom(stage, port, problems, requirements=None):
             install = subprocess.run([npm, "install", "--prefix", str(prefix), "jsdom", "--no-audit", "--no-fund",
                                       "--silent"], env=_child_env(), capture_output=True, timeout=150)
         except subprocess.TimeoutExpired:
+            print("[oneshot] jsdom install timed out; DOM probe skipped", file=sys.stderr)
             return
         if install.returncode != 0 or not (prefix / "node_modules" / "jsdom").is_dir():
+            print("[oneshot] jsdom install failed; DOM probe skipped", file=sys.stderr)
             return
     try:
         run = subprocess.run([node, "-e", DOM_PROBE],
@@ -585,6 +623,8 @@ def smoke_check(stage, requirements=None):
     index = stage / "frontend" / "dist" / "index.html"
     if not problems and (not index.is_file() or not index.read_text(encoding="utf-8", errors="replace").strip()):
         problems.append("frontend/dist/index.html is missing or empty after `npm run build`")
+    if not problems:
+        _check_syntax(stage, node, problems)
     if problems:
         return problems, True
     manifest = json.loads((stage / "backend" / "package.json").read_text(encoding="utf-8"))
@@ -1134,11 +1174,18 @@ def process_guard_gaps(stage):
             f"handler body in try/catch that answers HTTP 500 instead of throwing"]
 
 
+def _fatal(problem):
+    """A smoke problem that zeroes the whole app (nothing renders or serves), as opposed to one that
+    costs a family of tests (a click handler that throws, a missing landmark)."""
+    return not (problem.startswith("clicking ") or "renders no <" in problem)
+
+
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
     """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
     at most one model call on a fix and keep it only if the smoke check then passes and the
     vocabulary did not get worse. Records the outcome in budget.smoke."""
     problems, executed = smoke_check(stage, requirements)
+    smoke_before = list(problems)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
     static = (process_guard_gaps(stage) + aria_collision_gaps(stage) + exact_name_gaps(stage, requirements)
               + readonly_gaps(stage) + (scaffold_gaps(stage) if scaffold else []))
@@ -1170,7 +1217,12 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         if needed:
             raise ValueError("repair broke delivery: " + "; ".join(needed))
         after, _ = smoke_check(stage, requirements)
-        if after:
+        if any(_fatal(p) for p in after) or (after and not any(_fatal(p) for p in smoke_before)):
+            # A repair must leave the app clean, except when it removed a whole-app failure (a file that
+            # does not parse, a blank page, a dead backend): then a remaining click or landmark problem costs
+            # one family, while rejecting the repair costs every test (round 23 Prestashop: the repair was
+            # rejected for the same error it did not find; with the location it would fix it and the app
+            # still had label collisions).
             raise ValueError("still failing after repair: " + "; ".join(after))
         _, missing_after = vocabulary_gaps(stage, requirements)
         if missing_after > missing_before:
