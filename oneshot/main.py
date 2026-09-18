@@ -299,8 +299,9 @@ def parse_blocks(text):
             content = "".join(body)
             if not content.strip():
                 raise ValueError("empty file block: " + current)
-            if any(item["path"] == current for item in files):
-                raise ValueError("duplicate file block: " + current)
+            # A path emitted twice is the model correcting itself (qwen3.7-plus re-emitted seed.js and a
+            # 12306 run scored 0/135 on the old ValueError): the later block wins.
+            files[:] = [item for item in files if item["path"] != current]
             files.append({"path": current, "content": content.rstrip("\r\n") + "\n"})
             current, body = None, []
         elif marker.startswith(("=== FILE", "=== END")):
@@ -835,10 +836,11 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
                 raise ValueError("continuation did not complete file: " + expected)
             for item in batch:
                 target = resolve_path(stage, item["path"])
-                if target in emitted:
-                    raise ValueError("duplicate file path: " + item["path"])
-                emitted.add(target)
                 item["path"] = target.relative_to(stage.resolve()).as_posix()
+                if target in emitted:  # re-emitted in a later turn: the later version replaces the earlier
+                    print(f"[oneshot] {item['path']} emitted again; keeping the later version", file=sys.stderr)
+                    files[:] = [f for f in files if f["path"] != item["path"]]
+                emitted.add(target)
                 write_one(stage, item)
                 files.append(item)
             if not missing:

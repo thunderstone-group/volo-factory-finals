@@ -132,12 +132,17 @@ class OfflineCase(unittest.TestCase):
         examples = ("", " \n", "hello", "=== FILE: ===\nx\n=== END ===\n",
                     "=== FILE: x.js ==\nx\n=== END ===\n", "=== END ===\n",
                     block("x.js", ""), block("x.js", "   "),
-                    "=== FILE: x.js ===\na\n" + block("y.js", "b"),
-                    block("x.js", "a") * 2)
+                    "=== FILE: x.js ===\na\n" + block("y.js", "b"))
         for value in examples:
             with self.subTest(value=value), self.assertRaises(ValueError) as caught:
                 adapter.parse_blocks(value)
             self.assertNotIsInstance(caught.exception, IndexError)
+
+    def test_a_path_emitted_twice_in_one_reply_keeps_the_later_block(self):
+        files, missing = adapter.parse_blocks(block("x.js", "first") + block("y.js", "b") + block("x.js", "second"))
+        self.assertEqual([f["path"] for f in files], ["y.js", "x.js"])
+        self.assertEqual(files[1]["content"], "second\n")
+        self.assertEqual(missing, [])
 
     def test_prose_outside_blocks_is_ignored(self):
         files, missing = adapter.parse_blocks("Here is the app:\n" + block("x.js", "a") + "Done.\n" + block("y.js", "b"))
@@ -252,6 +257,14 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.summary()["fallback_model"], "synthetic-fallback")
         self.assertEqual(budget.summary()["failed_calls"], 3)
         self.assertTrue((self.out / "backend" / "server.js").exists())
+
+    def test_a_file_emitted_twice_keeps_the_later_version(self):
+        budget = adapter.CallBudget()
+        twice = application(block("backend/server.js", "// Synthetic local fixture\nconsole.log('second');"))
+        self.replies(events(twice))
+        self.generate(budget)
+        self.assertEqual(self.transport.call_count, 1)
+        self.assertIn("second", (self.out / "backend/server.js").read_text())
 
     def test_content_filter_keeps_the_draft_and_continues_on_the_fallback(self):
         budget = adapter.CallBudget()
