@@ -806,3 +806,38 @@ each rule snapshot and experiment with date and source.
 - Round 12 partial (06:00): Keep 27, Bookstack 12, SO 29, Prestashop 64, 12306 50 (sort still descends first; time cells carry the station name). Round 13 (temperature 0.0, `c217e08`+): Keep **30/32** (best), Bookstack 24, SO 46 — all in the upper band so far.
 - Round 12 closed: ctrip 34/125; average 50.4%. Round 13 (temperature 0.0) closed 06:12: Keep 30/32, Bookstack 24/34, SO 46/66, Prestashop 52/86, 12306 **85/135**, ctrip 37/125 → **64.5%** (best). Round 14 = second sample of the round-13 package (submission `$SUB`) to test whether temperature 0 narrows the spread.
 - Round 14 (second temperature-0 sample) closed 06:49: Keep 27, Bookstack **34/34**, SO **3/66** (a bad sample: homepage without "Main question feed" text or a "Log in" control, no runtime fault), Prestashop 58, 12306 77, ctrip 48 → 58.6%. Temperature 0 pairs (64.5 / 58.6) are much tighter than the temperature-0.3 pair (60.8 / 34.0). Stopping autonomous rounds at 06:50 with CNY 93 left; board 64.5%, rank 5. Decisions and next levers are at the end of `docs/goal-2026-09-18.md`.
+
+## 2026-09-18 morning — owner decisions, jsdom fetch false positive, model fallback
+
+- Owner decisions (09:50): no best-of-2 for now (fix the gate first, re-sample); balance is not a concern
+  before the preliminary (topped up to CNY 289 overnight; note it, do not guard on it); `goal/round-1`
+  opens its own PR to main and supersedes #36; keep retrying the same model and only switch models once
+  the retry limit is hit; open a side branch that runs glm-5.3 with thinking and a matching token cap;
+  find out whether an uncapped run was ever tried.
+- Correction to the round-14 reading: StackOverflow 3/66 was **not** "no runtime fault". The run log's
+  `[oneshot] smoke` line shows `Uncaught [SyntaxError: Unexpected identifier 'ffice']` on load
+  (`title.indexOf(t)ffice !== -1` at app.js:794, a five-character generation glitch, two calls, no
+  continuation), the bounded repair rewrote the file, and the repair was **rejected** because the re-check
+  reported `ReferenceError: fetch is not defined`. jsdom 29 ships no `fetch`; any frontend that loads its
+  data on start tripped the DOM gate. Round 13's good SO sample (46/66) reported the same false positive
+  first and spent its only repair call on it. Keep r11 (6/32) had one gate problem and an accepted repair:
+  the empty overlay root is not visible to gate counts, so a gate-count best-of-2 would have caught one of
+  the two whole-app bad samples, and the fetch fix catches that one for free.
+- Fix `6cb35f8`: the probe's `beforeParse` installs `window.fetch` that resolves against the probe URL and
+  calls Node's fetch (the backend is running on that port during the check). Verified on the downloaded
+  r14 bundle: unchanged it still reports the SyntaxError; with the five characters removed the check is
+  clean. New regression: a frontend that fetches `/api/health` on load and renders it reports no problem.
+- Gateway probe (tiny streaming calls, 09:57): `deepseek-v4-flash` without `max_tokens` is accepted;
+  `glm-5.3` accepts `thinking: {type: enabled|disabled}` and `reasoning_effort: low` without error but
+  **still streams `reasoning_content` in every variant** (34–284 reasoning tokens for a one-word answer),
+  so the gateway does not forward a thinking switch for GLM; the only lever is `max_tokens`, which for GLM
+  bounds reasoning + content together and is now 131072.
+- Fallback `60a4707`: same-model retries stay at three per call; when all three are transport failures the
+  run switches to `FALLBACK_MODEL` (default `qwen3.7-plus`) for that and every later call; permanent HTTP
+  errors never switch; empty `FALLBACK_MODEL` disables it; `MAX_FAILURES` 4 → 5 so the fallback gets two
+  attempts. `tests_oneshot` 61 green.
+- Uncapped run: never tried on a real task before today. Two local Keep generations started 09:59 on the
+  current package: `deepseek-v4-flash` with `max_tokens` omitted, and `glm-5.3` unchanged (cap 131072).
+  Results below when they finish.
+- Round 15 package (`6cb35f8` + `60a4707`, sha256 `8ae67a05…`) uploaded as submission `83fba30a434a`;
+  runs start after the local probes finish so the usage-meter delta stays clean.
