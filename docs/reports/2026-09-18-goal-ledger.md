@@ -60,6 +60,7 @@ Keep every candidate package and its run ids under `runs/2026-09-18-goal/`.
 | 22a | r22 (r21 + scaffold popover `19a872d`: a record's menu/palette/picker inside its article, header dropdowns menu/menuitem) | 26/32 | 30/34 | 44/66 | 50/86 | 61/135 | **52/125** | 63.5% | Lite Keep attribution (12 of 19 failures were menus opened as dialogs) | **kept**: Web pair 63.5 / 64.2 = r21's band; Lite Keep 13/11 → 17/16 |
 | 22b | (second sample) | 27/32 | 27/34 | 48/66 | 63/86 | 76/135 | 24/125 | 64.2% | none | |
 | lite22 | (arc-bench-lite, same package) | **17/32, 16/32** | 24/34, 25/34 | | | | | **61.9% / 61.8%** | | from 55.6 / 52.5; the popover is a formal-dialect mechanic |
+| 23 | r23 (r22 + card: record editor = one dialog `<Record> editor` incl. the composer, bare-verb row actions and sidebar words, aria-pressed strings, listbox suggestions, settings menu items; scaffold: status text in its own span) | | | | | | | | Lite Keep r22 attribution: 6 composer-as-dialog, 4 `Archive` naming, 1 each status text / aria-pressed / listbox / Help & feedback | Web + Lite two samples each, ~20:40 (`r23{a,b}-runs-arc-bench-{web,lite}.json`); judge Lite Keep against 17/16, Web against 63.5/64.2 |
 
 ## Reading at 06:50 (Fable stops launching rounds here; balance CNY 93)
 

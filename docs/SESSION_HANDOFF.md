@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-18 20:15 (Fable + owner; read this section, then progress.md from "17:40")
+# Current handoff — 2026-09-18 20:45 (Fable + owner; read this section, then progress.md from "17:40")
 
 Branch `goal/round-1` (head pushed) = main `ff686e3` + the day's commits; open a PR to main when round 19 is
 judged. Doctrine: ADR 0001 (gate → scaffold → table → prose), ADR 0002 (model policy). Working mode set by
@@ -22,11 +22,12 @@ the owner: Fable and the owner directly, no Codex/Opus dispatch. `arcbench` need
   `<work-dir>/artifacts/*/error-context.md` (the "waiting for" line names the rung the ladder fell to).
 
 ## Next
-1. Round 22 **kept** (Web 63.5 / 64.2, Lite 61.9 / 61.8; Lite Keep 17/16): **`r22-candidate.zip` (goal/round-1
-   head) is the formal-round candidate.** Nothing is running. Next levers in order: replay an r22 Lite Keep
-   bundle for its remaining 15 failures (Pinned `title`, label-row `group`, view toggle, sidebar); planner
-   stage for the large tasks; seed-link heading walk (Bookstack r18a route bug). Open a PR goal/round-1 →
-   main.
+1. Round 22 **kept** (Web 63.5 / 64.2, Lite 61.9 / 61.8; Lite Keep 17/16); **PR #38** goal/round-1 → main is open.
+   **Round 23 running** (r22 + Keep-shaped editor-dialog / bare-verb card lines + status span; Web + Lite two
+   samples, ids `r23{a,b}-runs-arc-bench-{web,lite}.json`, results land in `r23-final.json`). Keep if Lite Keep
+   rises above 17/16 and Web holds 63.5 / 64.2; the kept package is the formal-round candidate.
+2. Next levers: planner stage for the large tasks (12306 / Ctrip ceiling); seed-link heading walk in jsdom
+   (Bookstack r18a route bug).
 2. Owner (18:42): the formal round allows several submissions and counts the best or the average, so
    variance is handled by re-submitting; generation-time best-of-2 is off the table. Direction agreed:
    bad samples → gates (done for two families), Lite Keep's remaining families (archive / label / pin /

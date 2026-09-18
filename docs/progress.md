@@ -373,3 +373,16 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   view toggle, sidebar); the planner stage for the large tasks; a jsdom check that a seed link's target screen
   carries the link text as its heading (Bookstack r18a route bug).
 
+## 2026-09-18 20:40 — Lite Keep r22 attributed; round 23
+
+- r22 Lite Keep sample a replays 17/32. Of the 15 failures: six wait for `dialog "Note editor"` (the composer
+  was an inline form and the label picker a card popover; the suite fills `dialog >> textbox Title` and checks
+  `dialog >> checkbox Work`), four for `article >> button /^Archive$/` (ours said `Archive note`; sidebar said
+  `Archived`), one each for an anchored `Note trashed` (the status text shared its element with the Undo
+  label), `aria-pressed=""` on Toggle sidebar, a `listbox` of search suggestions, and the settings menu's
+  `Help & feedback`. Only `Note editor`, `Help & feedback`, the listbox role and the bare `Archive` are
+  unwritten in the requirement — the real product's accessibility tree, which this helper generation copies.
+- Card §8 rewritten for these (one editor dialog for create and edit, bare-verb row actions, aria-pressed as
+  strings, listbox suggestions, settings items); the scaffold's notify wraps the message in its own span.
+- Round 23 = r22 + these, Web and Lite two samples each (~20:40). PR #38 (goal/round-1 → main) is open.
+
