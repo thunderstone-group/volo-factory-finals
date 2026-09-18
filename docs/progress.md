@@ -302,3 +302,15 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   and Lite Keep against 12 / 11.
 - Tooling: `arcbench` needs `--env-file ~/.config/arcbench/volo.env` (sourcing the file in the shell gives 401).
 
+## 2026-09-18 17:40 — Round 19 closed: kept; Lite doubled
+
+- Web pair **65.5 / 60.0** (Keep 29/22, Bookstack 33/29, SO 50/43, Prestashop 66/69, 12306 51/61, Ctrip 19/19)
+  against round 17's 65.2 / 58.7 and round 18's 52.2 / 45.6. SO's five prose-noun tests (REQ-1.1/1.2/3.3.2/4.4/5.1.2)
+  passed in both samples again; Bookstack and Prestashop set or tied their bests. Lite pair **54.0 / 55.6**
+  (Keep 12/13, Bookstack 24/24) from 27.6 / 27.5: the click-ladder race was the whole Lite Bookstack story.
+  Boards: Web 72.3% (rank 5, unchanged aggregation), Lite 55.6% (rank 6; the five above are 98.5–100).
+- Open: Ctrip 19/125 in both samples (round 17: 36/37, round 18: 23 and the content_filter zero). The drop
+  started with round 18, so it is in the §7b / vocabulary-table / scaffold-v2 set, not in today's scaffold
+  patch. Next: attribute the round-19 Ctrip bundle (families, error contexts) before touching the card.
+- Docs reorganised (`8236924`): `docs/README.md` is the map and policy; see it for where things live now.
+
