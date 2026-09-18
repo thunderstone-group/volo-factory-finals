@@ -923,3 +923,12 @@ each rule snapshot and experiment with date and source.
 - Empty-draft retry (`588e6be`): a first draft without file blocks is asked once more (two calls left in
   the budget); two empty drafts still fail. Round 17 candidate = scaffold + empty-draft retry
   (sha256 `see r17-candidate.zip.manifest.json`), uploaded once the ablation's runs finish.
+- Generic-card ablation closed 13:27: sample A 22/32/29/59/47/27 → 55.3%; sample B 29/24/0(empty draft)/44/47/34
+  → 45.7%. Control (round 16, same code) 56.5 / 63.0. Excluding the empty-draft SO, the generic card is about
+  10 points cheaper on the six public tasks, the loss concentrated in 12306, Prestashop and Ctrip; Bookstack
+  without §6a stayed in its band (32, 24). Reading: task-shaped rules are worth ~10 points where they were
+  written and ~0 elsewhere, so the hidden-task expectation is ~50, not ~60. Decision: keep the full card plus
+  the scaffold for the formal round; trim the card only after the scaffold is validated.
+- Round 17 = scaffold + empty-draft retry (`25e7d44`, `588e6be`; sha256 `831f5e09…`, submission
+  `efdc725f67bf`), two samples started 13:28 (sample A's Keep entry came back without a run id and was started
+  separately). Ids in `r17a-runs.json`, `r17a-keep-run.json`, `r17b-runs.json`.
