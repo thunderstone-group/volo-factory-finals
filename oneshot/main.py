@@ -396,10 +396,18 @@ const { JSDOM, VirtualConsole } = require('jsdom');
   const errors = [];
   const vc = new VirtualConsole();
   vc.on('jsdomError', (e) => errors.push(String((e && e.message) || e).split('\n')[0].slice(0, 300)));
+  // jsdom ships no fetch; a real browser does. Route the page's fetch to the local backend so an
+  // app that loads its data on start is judged on its own errors, not on the probe's gaps.
+  const beforeParse = (window) => {
+    window.fetch = (input, init) => {
+      const target = typeof input === 'string' ? input : (input && input.url) || String(input);
+      return fetch(new URL(target, process.env.PROBE_URL).href, init);
+    };
+  };
   let dom;
   try {
     dom = await JSDOM.fromURL(process.env.PROBE_URL, { runScripts: 'dangerously', resources: 'usable',
-                                                 pretendToBeVisual: true, virtualConsole: vc });
+                                                 pretendToBeVisual: true, virtualConsole: vc, beforeParse });
   } catch (e) { console.log(JSON.stringify({ load_error: String(e).slice(0, 300) })); return; }
   await new Promise((r) => setTimeout(r, 2500));
   const body = dom.window.document.body;

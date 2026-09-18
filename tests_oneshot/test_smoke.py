@@ -158,6 +158,21 @@ class SmokeCase(unittest.TestCase):
             self.skipTest("jsdom could not be installed (offline)")
         self.assertTrue(any("frontend script error on load" in p for p in budget.smoke["problems"]), budget.smoke)
 
+    def test_frontend_that_fetches_its_data_on_load_is_not_a_script_error(self):
+        # jsdom has no fetch; the probe must supply one that reaches the local backend (r14 StackOverflow
+        # lost a whole task to "fetch is not defined" rejecting a good repair).
+        fetching = (app(server())
+                    .replace("<h1>Synthetic</h1>", "")
+                    .replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                             block("frontend/public/app.js",
+                                   "fetch('/api/health').then((r) => r.json()).then((d) => { document.body.textContent = d.message; });")))
+        self.replies(events(fetching))
+        files, budget = self.generate(limit=1)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        self.assertEqual(budget.smoke["problems"], [], budget.smoke)
+        self.assertEqual(self.transport.call_count, 1)
+
     def test_missing_quoted_vocabulary_is_reported_and_partial_repair_is_kept(self):
         req = 'After login replace the link with \u201cSign Out\u201d. Show \u201cEmail cannot be empty\u201d. Seed \u201cBook 5.1\u201d.'
         good = app(server()).replace("<h1>Synthetic</h1>", "<h1>Synthetic</h1><p>Book 5.1</p>")
