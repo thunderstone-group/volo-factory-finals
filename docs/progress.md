@@ -875,3 +875,12 @@ each rule snapshot and experiment with date and source.
   no <header>… every screen renders through the one shared layout". Card §8 states the rule. Real-bundle
   check: r15 SO flagged (header, nav), r1 Keep / r11 Keep / r8 Bookstack clean. `tests_oneshot` 62 green.
   Round 16 = round-15 package + this gate, uploaded once sample B has finished.
+- Round 15 sample B closed 11:31: Keep **30/32**, Bookstack 23/34, SO 49/66, Prestashop 63/86, 12306 68/135,
+  Ctrip **54/125** (ties best) → **67.1%** (best; board now 67.1%, rank 5). Round-15 pair 52.6 / 67.1 against
+  round 13/14's 64.5 / 58.6: same band, the A-sample drop is the gated SO family. Verdict: keep the jsdom
+  fetch and the fallback. **PR #37 merged** (`ff686e3`); main now carries the whole goal line.
+- Round 16 = round 15 + landmark gate (`f72342f`, package sha256 `79af8e84…`, submission `003f21fc67a7`).
+  Sample A 11:33: 12306 `5614ef17a3ac`, Bookstack `d45bdb61afd8`, Ctrip `4be2d1b4205a`, Keep `094302f16050`,
+  Prestashop `b7e272ce6ba8`, SO `58e3c1cd9234`. Sample B 11:36 (first start hit a platform 500 on
+  GET /submissions, retried): 12306 `4f1f041e40f1`, Bookstack `11c50656c2cd`, Ctrip `44d9c77266f0`, Keep
+  `74032e8864ac`, Prestashop `5b227b45dde5`, SO `56896036410e`. Both samples run concurrently.
