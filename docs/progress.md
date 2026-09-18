@@ -386,3 +386,19 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   strings, listbox suggestions, settings items); the scaffold's notify wraps the message in its own span.
 - Round 23 = r22 + these, Web and Lite two samples each (~20:40). PR #38 (goal/round-1 → main) is open.
 
+## 2026-09-18 22:35 — Round 23 rejected; two robustness findings; session ends
+
+- Round 23 (r22 + Keep-shaped editor-dialog / bare-verb card lines + status span) **rejected**: Web 40.8 / 53.6,
+  Lite 60.3 / 55.5 (Keep 16/12). Candidate stays **r22** (`r22-candidate.zip`, PR #38).
+- Two whole-app zeros, both mechanical, one fixed: 12306 b — three flash stream cuts → qwen3.7-plus draft
+  re-emitted `seed.js` → `duplicate file block` ValueError → 0/135; now the later block wins (`a36bad5`, tests
+  74 green). Prestashop a — every test timed out from "Visit Homepage" in the real browser while the DOM
+  probe passed; the probe's own 60 s timeout returns silently instead of reporting, so a page that hangs
+  after load is invisible to the gate (bundle `r23a-prestashop-bundle`, probe unfinished at session end).
+- SO a 21/66 and Ctrip a 12/125 are sample-a-only (21 and 9 tests fail only in a); the other sample is in
+  band. The Keep-shaped lines did not take: the r23 Lite Keep app still rendered `Archive note` and put the
+  editor behind a plain button, so the remaining Lite Keep families are unchanged (card-scoped `Archive` /
+  `Delete Note` / `Change labels` / `Pin note`, `listbox` suggestions, settings menu items `Settings` /
+  `Help & feedback` / `Send feedback`, Toggle sidebar). Card adherence on unwritten names is stochastic;
+  the next carrier is a scaffold primitive or a gate, not more prose.
+
