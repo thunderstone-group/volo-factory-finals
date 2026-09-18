@@ -229,6 +229,22 @@ class SmokeCase(unittest.TestCase):
         delivered = next(f for f in files if f["path"] == "frontend/public/app.js")["content"]
         self.assertIn("add-to-cart", delivered)
 
+    def test_repair_that_removes_more_click_errors_than_it_leaves_is_kept(self):
+        # Lite Bookstack r26b: six throwing handlers fixed, one exposed; rejecting the repair shipped the six-fault draft.
+        def buttons(*throwing):
+            html = "".join(f'<button type=\"button\" data-action=\"{a}\">{a}</button>' for a in ("one", "two", "three"))
+            handler = " ".join(f"if (e.target.dataset.action === '{a}') {{ const p = undefined; p.id; }}" for a in throwing)
+            return (f"document.body.insertAdjacentHTML('beforeend', '{html}');\n"
+                    f"document.addEventListener('click', (e) => {{ {handler} }});")
+        draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                      block("frontend/public/app.js", buttons("one", "two")))
+        self.replies(events(draft), events(block("frontend/public/app.js", buttons("three"))))
+        files, budget = self.generate()
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        self.assertEqual(budget.smoke["repair"]["accepted"], True, budget.smoke)
+        self.assertIn("=== 'three'", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
+
     def test_repair_that_leaves_a_click_error_is_rejected_when_the_app_was_never_broken_whole(self):
         # Unchanged rule for the ordinary path: a repair for a family-level problem must leave the app clean.
         throwing = ("document.body.insertAdjacentHTML('beforeend', '<button type=\"button\" data-action=\"add-to-cart\">Add to cart</button>');\n"

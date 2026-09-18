@@ -1259,12 +1259,14 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         if needed:
             raise ValueError("repair broke delivery: " + "; ".join(needed))
         after, _ = smoke_check(stage, requirements)
-        if any(_fatal(p) for p in after) or (after and not any(_fatal(p) for p in smoke_before)):
-            # A repair must leave the app clean, except when it removed a whole-app failure (a file that
-            # does not parse, a blank page, a dead backend): then a remaining click or landmark problem costs
-            # one family, while rejecting the repair costs every test (round 23 Prestashop: the repair was
-            # rejected for the same error it did not find; with the location it would fix it and the app
-            # still had label collisions).
+        improved = not any(_fatal(p) for p in after) and (
+            not after or any(_fatal(p) for p in smoke_before) or len(after) < len(smoke_before))
+        if not improved:
+            # A repair is kept when the app is clean, or when nothing whole-app remains and it is strictly
+            # better than before: it removed a whole-app failure (round 23 Prestashop: the parse-error repair
+            # was rejected and 0/86 shipped) or it removed more family-level problems than it left (Lite
+            # Bookstack r26b: six throwing handlers fixed, one newly reachable one exposed, the repair rejected
+            # and the six-fault draft shipped, 9/34). Same or more problems → the original stays.
             raise ValueError("still failing after repair: " + "; ".join(after))
         _, missing_after = vocabulary_gaps(stage, requirements)
         if missing_after > missing_before:
