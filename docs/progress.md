@@ -915,3 +915,11 @@ each rule snapshot and experiment with date and source.
 - Generic-card ablation partial (13:35): Keep 29/22, Bookstack 24/32 (§6a removed and Bookstack did not
   collapse), SO sample B **0/0** — one 865 s call, `finish=stop`, "no file blocks in the response", and the
   pipeline exits after that single call instead of asking again.
+- Scaffold probe (local Keep, flash t0, 13:33–13:47, 831 s, two calls: draft 123,665 completion tokens /
+  40k chars, repair 49 s): the model wrote only `app.js` (26 KB) and `seed.js` (4.6 KB); `lib/arc.js`,
+  `index.html` and `server.js` are byte-identical to the scaffold. One gate problem (Note / "Take a note..."
+  label substring), repair accepted. **Local replay 31/32** (hosted profile; best Keep so far was 30/32),
+  the one loss REQ-2.7.4 default label on create. Bundle under `runs/2026-09-18-goal/scaffold-probe-keep`.
+- Empty-draft retry (`588e6be`): a first draft without file blocks is asked once more (two calls left in
+  the budget); two empty drafts still fail. Round 17 candidate = scaffold + empty-draft retry
+  (sha256 `see r17-candidate.zip.manifest.json`), uploaded once the ablation's runs finish.
