@@ -7,7 +7,8 @@ Reads `<requirement_path>/requirements.yaml`, sends it to the model together wit
 `dialect.md` (how the official accessibility-driven suite resolves controls) and the
 delivery contract, and writes the returned files under `<DIR>`.
 
-Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash).
+Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash),
+FALLBACK_MODEL (default qwen3.7-plus; empty disables the switch).
 """
 import argparse
 import hashlib
@@ -29,8 +30,11 @@ from urllib import error, request
 HERE = Path(__file__).resolve().parent
 DEFAULT_BASE = "https://api.arc-bench.com/v1"
 DEFAULT_MODEL = "deepseek-v4-flash"
-MAX_TOKENS = 32768
-MAX_CALLS = 3  # Shared by retries and the single truncation continuation.
+FALLBACK_MODEL = "qwen3.7-plus"  # taken up for the rest of a run once the primary model's retries are spent on transport failures
+MAX_TOKENS = 131072  # content cap per call; the gateway has metered >135k output tokens in one request
+MAX_CALLS = 3  # Completed calls: first draft, one truncation continuation, one smoke repair.
+MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
+#                 three on the primary model, then up to two on the fallback.
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
 MAX_TEMPLATE_FILES = 256
 TEMPLATE_ARTIFACTS = {"node_modules", "dist", "__pycache__"}
@@ -120,16 +124,31 @@ def _open_model(req, timeout):
 class CallBudget:
     """One global request cap and an honest ledger, including failed requests."""
 
-    def __init__(self, limit=MAX_CALLS):
+    def __init__(self, limit=MAX_CALLS, fail_limit=MAX_FAILURES):
         if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= MAX_CALLS:
             raise ValueError(f"call limit must be between 1 and {MAX_CALLS}")
+        if not isinstance(fail_limit, int) or isinstance(fail_limit, bool) or not 1 <= fail_limit <= MAX_FAILURES:
+            raise ValueError(f"failure limit must be between 1 and {MAX_FAILURES}")
         self.limit = limit
+        self.fail_limit = fail_limit
         self.attempts = []
         self.smoke = None
+        self.model = None  # set once the run has switched to the fallback model
+
+    def completed(self):
+        return [r for r in self.attempts if r["status"] == "completed"]
+
+    def failed(self):
+        return [r for r in self.attempts if r["status"] != "completed"]
+
+    def exhausted(self):
+        return len(self.completed()) >= self.limit or len(self.failed()) >= self.fail_limit
 
     def start(self, messages, model):
-        if len(self.attempts) >= self.limit:
+        if len(self.completed()) >= self.limit:
             raise RuntimeError(f"global model call limit reached ({self.limit})")
+        if len(self.failed()) >= self.fail_limit:
+            raise RuntimeError(f"global model failure limit reached ({self.fail_limit})")
         record = {"call": len(self.attempts) + 1, "model": model, "messages": list(messages),
                   "content": "", "usage": {}, "usage_events": [], "status": "failed",
                   "finish_reason": None}
@@ -137,7 +156,9 @@ class CallBudget:
         return record
 
     def summary(self):
-        result = {"calls": len(self.attempts), "call_limit": self.limit}
+        result = {"calls": len(self.attempts), "call_limit": self.limit,
+                  "completed_calls": len(self.completed()), "failed_calls": len(self.failed()),
+                  "failure_limit": self.fail_limit}
         unknown = [r["call"] for r in self.attempts
                    if any(field not in r["usage"] for field in TOKEN_FIELDS)]
         for field in TOKEN_FIELDS:
@@ -145,15 +166,20 @@ class CallBudget:
             result["known_" + field] = sum(values) if values else None
             result[field] = sum(values) if len(values) == len(self.attempts) and values else None
         result["unknown_usage_calls"] = unknown
+        result["fallback_model"] = self.model
         result["billing_status"] = ("not_called" if not self.attempts else
                                     "unknown" if unknown else "tokens_reported_cost_not_estimated")
         return result
 
 
 def stream_completion(messages, model, base, key, budget, tries=3):
-    """Buffer each attempt separately; failed streams never write application files."""
+    """Buffer each attempt separately; failed streams never write application files. The primary
+    model is retried `tries` times on transport failures; when those are spent the run switches to
+    FALLBACK_MODEL for this and every later call (a cut route rarely heals within one run)."""
+    model = budget.model or model
+    fallback = "" if budget.model else os.environ.get("FALLBACK_MODEL", FALLBACK_MODEL).strip()
     payload = {"model": model, "messages": messages, "max_tokens": MAX_TOKENS,
-               "temperature": 0.3, "stream": True, "stream_options": {"include_usage": True}}
+               "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
     req = request.Request(base.rstrip("/") + "/chat/completions",
                           data=json.dumps(payload).encode("utf-8"),
                           headers={"Content-Type": "application/json",
@@ -217,7 +243,13 @@ def stream_completion(messages, model, base, key, budget, tries=3):
             failure = RuntimeError(f"model stream failed ({type(exc).__name__})")
         finally:
             record["elapsed_seconds"] = round(time.monotonic() - started, 3)
-        if not retryable or attempt + 1 >= tries or len(budget.attempts) >= budget.limit:
+        if not retryable or budget.exhausted():
+            raise failure
+        if attempt + 1 >= tries:
+            if fallback and fallback != model:
+                print(f"[oneshot] {model} failed {tries} times; the rest of this run uses {fallback}", file=sys.stderr)
+                budget.model = fallback
+                return stream_completion(messages, fallback, base, key, budget, tries)
             raise failure
         print(f"[oneshot] call {record['call']} failed; bounded retry", file=sys.stderr)
         time.sleep(1)
@@ -240,7 +272,7 @@ def resolve_path(out, name):
 
 def parse_blocks(text):
     """Strict line framing; only a nonempty final open block may be continued."""
-    files, current, body = [], None, []
+    files, current, body, stray = [], None, [], 0
     for line in text.splitlines(keepends=True):
         marker = line.rstrip("\r\n")
         opening = FILE_OPEN.fullmatch(marker)
@@ -266,9 +298,11 @@ def parse_blocks(text):
         elif current is not None:
             body.append(line)
         elif line.strip():
-            raise ValueError("text outside file blocks")
+            stray += 1  # prose between blocks is ignored; an 18-minute draft must not die on a sentence
     if not files and current is None:
         raise ValueError("no file blocks in the response")
+    if stray:
+        print(f"[oneshot] ignored {stray} line(s) outside file blocks", file=sys.stderr)
     return files, [current] if current is not None else []
 
 
@@ -371,7 +405,86 @@ def _check_page(port, problems):
             problems.append(f"GET {path} returned an empty body")
 
 
-def smoke_check(stage):
+DOM_PROBE = r"""
+const { JSDOM, VirtualConsole } = require('jsdom');
+(async () => {
+  const errors = [];
+  const vc = new VirtualConsole();
+  vc.on('jsdomError', (e) => errors.push(String((e && e.message) || e).split('\n')[0].slice(0, 300)));
+  // jsdom ships no fetch; a real browser does. Route the page's fetch to the local backend so an
+  // app that loads its data on start is judged on its own errors, not on the probe's gaps.
+  const beforeParse = (window) => {
+    window.fetch = (input, init) => {
+      const target = typeof input === 'string' ? input : (input && input.url) || String(input);
+      return fetch(new URL(target, process.env.PROBE_URL).href, init);
+    };
+  };
+  let dom;
+  try {
+    dom = await JSDOM.fromURL(process.env.PROBE_URL, { runScripts: 'dangerously', resources: 'usable',
+                                                 pretendToBeVisual: true, virtualConsole: vc, beforeParse });
+  } catch (e) { console.log(JSON.stringify({ load_error: String(e).slice(0, 300) })); return; }
+  await new Promise((r) => setTimeout(r, 2500));
+  const body = dom.window.document.body;
+  const text = body ? body.textContent.replace(/\s+/g, ' ').trim() : '';
+  const q = (sel) => !!(body && body.querySelector(sel));
+  const landmarks = { header: q('header, [role="banner"]'), navigation: q('nav, [role="navigation"]'),
+                      footer: q('footer, [role="contentinfo"]') };
+  console.log(JSON.stringify({ text_chars: text.length, errors: errors.slice(0, 5), landmarks }));
+  dom.window.close();
+})();
+"""
+
+
+LANDMARKS = {"header": (r"\bheader\b", "<header> (or role=banner)"),
+             "navigation": (r"\bnav(?:igation)?\b", "<nav> (or role=navigation)"),
+             "footer": (r"\bfooter\b", "<footer> (or role=contentinfo)")}
+
+
+def _check_dom(stage, port, problems, requirements=None):
+    """Load `/` in jsdom with scripts running: a frontend that throws on load or renders no text
+    scores zero on every test, and no HTTP check can see it. When the requirement describes a
+    header / navigation / footer, the first screen must render that landmark too: a home screen
+    that skips the shared layout loses every header and navigation test (round 15 StackOverflow,
+    1/66). Skips silently when jsdom cannot be installed (offline) so the check never blocks
+    delivery on its own account."""
+    node, npm = shutil.which("node"), shutil.which("npm")
+    prefix = Path(tempfile.gettempdir()) / "oneshot-jsdom"  # one install per machine, reused across runs
+    if not (prefix / "node_modules" / "jsdom").is_dir():
+        try:
+            install = subprocess.run([npm, "install", "--prefix", str(prefix), "jsdom", "--no-audit", "--no-fund",
+                                      "--silent"], env=_child_env(), capture_output=True, timeout=150)
+        except subprocess.TimeoutExpired:
+            return
+        if install.returncode != 0 or not (prefix / "node_modules" / "jsdom").is_dir():
+            return
+    try:
+        run = subprocess.run([node, "-e", DOM_PROBE],
+                             env={**_child_env(), "NODE_PATH": str(prefix / "node_modules"),
+                                  "PROBE_URL": f"http://127.0.0.1:{port}/"},
+                             capture_output=True, timeout=60, text=True)
+        report = json.loads(run.stdout.strip().splitlines()[-1])
+    except (subprocess.TimeoutExpired, ValueError, IndexError):
+        return
+    if report.get("load_error"):
+        problems.append(f"loading / in a DOM failed: {report['load_error']}")
+        return
+    for err in report.get("errors", []):
+        problems.append(f"frontend script error on load (the page is blank for every test): {err}")
+    if not report.get("errors") and report.get("text_chars", 0) == 0:
+        problems.append("after scripts run, / renders no visible text (blank page); the app must render its "
+                        "home screen synchronously on load, without waiting for anything a test cannot trigger")
+        return
+    present = report.get("landmarks") or {}
+    for name, (pattern, element) in LANDMARKS.items():
+        if requirements and re.search(pattern, requirements, re.I) and name in present and not present[name]:
+            problems.append(f"the first screen (/) renders no {element} although the requirement describes a "
+                            f"{name}; every screen, including the home screen, must render through the one shared "
+                            f"layout (header, navigation, main content, footer) so the suite finds the same "
+                            f"landmarks and controls on every route")
+
+
+def smoke_check(stage, requirements=None):
     """Build the frontend, start the backend on a free port and read it the way the runner
     does. Returns (problems, executed). Never calls a model; skips when node/npm are absent."""
     node, npm = shutil.which("node"), shutil.which("npm")
@@ -428,6 +541,8 @@ def smoke_check(stage):
         if ready:
             try:
                 _check_page(port, problems)
+                if not problems:
+                    _check_dom(stage, port, problems, requirements)
             except Exception as exc:
                 problems.append(f"GET / failed: {str(exc)[:200]}")
     finally:
@@ -557,6 +672,11 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
         content = ""
         for turn in range(2):
             content, _, finish = stream_completion(messages, model, base, key, budget)
+            if finish == "stop" and template is None and parse_blocks(content)[1]:
+                # The model stopped on its own but forgot the closing marker of the last file:
+                # the content is whole, only the framing is missing. Close it rather than lose the draft.
+                print("[oneshot] closing an unterminated final block at finish_reason=stop", file=sys.stderr)
+                content = content.rstrip("\r\n") + "\n=== END ===\n"
             batch, missing = parse_blocks(content)
             for name in [item["path"] for item in batch] + missing:
                 resolve_path(stage, name)
@@ -589,19 +709,170 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             raise ValueError("upgrade did not change any files")
         if SMOKE:
             repair_delivery(stage, files, messages + [{"role": "assistant", "content": content}],
-                            model, base, key, budget, template)
+                            model, base, key, budget, template, requirements)
         publish(stage, out, template, snapshot, stamp)
     return files, budget.summary()
 
 
-def repair_delivery(stage, files, messages, model, base, key, budget, template=None):
-    """Smoke-check the staged app; on failure spend at most one model call on a fix and keep
-    it only if the check then passes. Records the outcome in budget.smoke."""
-    problems, executed = smoke_check(stage)
-    budget.smoke = {"executed": executed, "problems": problems, "repair": None}
+QUOTED = re.compile(r'[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
+VOCAB_SHOWN = 60
+
+
+def vocabulary_gaps(stage, requirements):
+    """Every string the requirement quotes is matched verbatim by the suite (control names,
+    messages, seed titles, accounts). Return the ones absent from the delivered source."""
+    seen, phrases = set(), []
+    for match in QUOTED.finditer(requirements or ""):
+        phrase = re.sub(r"\s+", " ", match.group(1)).strip()
+        if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
+                or phrase.lower() in seen):
+            continue
+        seen.add(phrase.lower())
+        phrases.append(phrase)
+    if not phrases:
+        return [], 0
+    chunks = []
+    for directory, dirs, names in os.walk(Path(stage), followlinks=False):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d not in TEMPLATE_ARTIFACTS]
+        for name in names:
+            if name == "package-lock.json" or name.startswith("."):
+                continue
+            path = Path(directory) / name
+            try:
+                if path.stat().st_size <= 2_000_000:
+                    chunks.append(path.read_text(encoding="utf-8", errors="replace"))
+            except OSError:
+                continue
+    corpus = re.sub(r"\s+", " ", "\n".join(chunks)).lower()
+    corpus = corpus.replace("&amp;", "&").replace("&quot;", '"').replace("&#39;", "'")
+    missing = [p for p in phrases if p.lower() not in corpus]
+    if not missing:
+        return [], 0
+    shown = ", ".join('"' + p + '"' for p in missing[:VOCAB_SHOWN])
+    more = f" (and {len(missing) - VOCAB_SHOWN} more)" if len(missing) > VOCAB_SHOWN else ""
+    return [f"{len(missing)} phrase(s) quoted in the requirements never appear in the delivered source, and the "
+            f"suite matches every quoted string verbatim as visible text, a control's accessible name, a message "
+            f"or a seed value. Add each one exactly as written where the requirement implies it (a control name, "
+            f"a heading, a status message, a seed row, or a placeholder for a value the user types): "
+            f"{shown}{more}"], len(missing)
+
+
+ARIA_LABEL = re.compile(r"""aria-label["']?\s*[=:]\s*["'`]([^"'`\n]{1,60})["'`]""")
+FIELD_LABEL = re.compile(r"""(?:<label\b[^>]*>\s*([^<{]{1,60}?)\s*<|placeholder["']?\s*[=:]\s*["'`]([^"'`\n]{1,60})["'`]"""
+                         r"""|<(?:input|textarea|select)\b[^>]*aria-label\s*=\s*["']([^"'\n]{1,60})["'])""")
+LABEL_STOP = {"the", "and", "for", "your", "enter", "please", "input", "type", "here", "select", "choose",
+              "search", "with", "this", "that", "from", "into", "new", "add", "all", "any", "name"}
+
+
+def _label_words(text):
+    words = set(w for w in re.findall(r"[a-z0-9]{3,}", text.lower()) if w not in LABEL_STOP)
+    words |= set(re.findall(r"[\u4e00-\u9fff]{2,}", text))
+    return words
+
+
+def _shared_words(text, field_words):
+    """Latin words match whole; a CJK field label matches as a substring (搜航班号 contains 航班号)."""
+    shared = set(_label_words(text) & field_words)
+    for word in field_words:
+        if re.search(r"[\u4e00-\u9fff]", word) and len(word) >= 2 and word in text:
+            shared.add(word)
+    return sorted(shared)
+
+
+def _frontend_sources(stage):
+    out = []
+    for directory, dirs, names in os.walk(Path(stage) / "frontend", followlinks=False):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d not in TEMPLATE_ARTIFACTS]
+        for name in names:
+            if name.endswith((".js", ".mjs", ".jsx", ".ts", ".tsx", ".html", ".vue")) and name != "package-lock.json":
+                try:
+                    out.append((Path(directory) / name).read_text(encoding="utf-8", errors="replace"))
+                except OSError:
+                    continue
+    return "\n".join(out)
+
+
+def aria_collision_gaps(stage):
+    """A button whose aria-label shares a word with a field label steals getByLabel(/word/i):
+    'Decrease quantity' before the quantity input, 'Upvote comment' before the comment box."""
+    source = _frontend_sources(stage)
+    field_words = set()
+    for label, placeholder, aria in FIELD_LABEL.findall(source):
+        field_words |= _label_words(label or placeholder or aria)
+    if not field_words:
+        return []
+    collisions = []
+    for match in ARIA_LABEL.finditer(source):
+        before = source[max(0, match.start() - 160):match.start()].lower()
+        if not ("<button" in before or "'button'" in before or '"button"' in before or "createelement('button')" in before):
+            continue
+        shared = _shared_words(match.group(1), field_words)
+        if shared:
+            collisions.append((match.group(1), shared))
+    labels = sorted({(l or p or a).strip() for l, p, a in FIELD_LABEL.findall(source)
+                     if (l or p or a).strip() and len((l or p or a).strip()) <= 32
+                     and len((l or p or a).split()) <= 4}, key=len)
+    nested = []
+    for i, short in enumerate(labels):
+        for long in labels[i + 1:]:
+            if short.lower() != long.lower() and re.search(r"(?<![a-z0-9])" + re.escape(short.lower()) + r"(?![a-z0-9])", long.lower()):
+                nested.append((short, long))
+    for match in re.finditer(r"""type=["']radio["'][^>]*>\s*([^<{\n]{1,30})""", source):
+        shared = _shared_words(match.group(1), field_words)
+        if shared:
+            collisions.append(("radio " + match.group(1).strip(), shared))
+    seen, lines = set(), []
+    for label, shared in collisions:
+        if label in seen:
+            continue
+        seen.add(label)
+        lines.append(f'{"radio option" if label.startswith("radio ") else "button aria-label"} "{label.removeprefix("radio ")}" shares {"/".join(shared)} with a field label')
+    out = []
+    if nested:
+        pairs = "; ".join(f'"{a}" is contained in "{b}"' for a, b in nested[:12])
+        out.append(f"{len(nested)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
+                   f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another "
+                   f"(e.g. \"From\" vs \"Filter by departure station\"): {pairs}")
+    if not lines:
+        return out
+    return out + [f"{len(lines)} button label(s) collide with field labels; the fill helper's first rung is "
+            f"getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it "
+            f"shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; "
+            f"submit: \"Send\"): " + "; ".join(lines[:20])]
+
+
+def process_guard_gaps(stage):
+    """One thrown request handler must not kill the server for the rest of the suite."""
+    backend = Path(stage) / "backend"
+    text = ""
+    for path in sorted(backend.glob("*.js")) + sorted(backend.glob("*.cjs")) + sorted(backend.glob("*.mjs")):
+        try:
+            text += path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+    missing = [name for name in ("uncaughtException", "unhandledRejection") if name not in text]
+    if not missing:
+        return []
+    return [f"backend registers no process.on({' / '.join(repr(m) for m in missing)}) handler: one thrown request "
+            f"handler ends the Node process and every later test fails with ERR_CONNECTION_REFUSED. Add at the top of "
+            f"the server: process.on('uncaughtException', (e) => console.error('uncaught', e)); "
+            f"process.on('unhandledRejection', (e) => console.error('unhandled', e)); and wrap each request "
+            f"handler body in try/catch that answers HTTP 500 instead of throwing"]
+
+
+def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None):
+    """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
+    at most one model call on a fix and keep it only if the smoke check then passes and the
+    vocabulary did not get worse. Records the outcome in budget.smoke."""
+    problems, executed = smoke_check(stage, requirements)
+    vocab, missing_before = vocabulary_gaps(stage, requirements)
+    static = process_guard_gaps(stage) + aria_collision_gaps(stage)
+    budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
+                    "repair": None}
+    problems = problems + static + vocab
     if not problems:
         return
-    if len(budget.attempts) >= budget.limit:
+    if budget.exhausted():
         budget.smoke["repair"] = "skipped: call limit reached"
         return
     backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
@@ -623,12 +894,16 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         needed = missing_required(stage)
         if needed:
             raise ValueError("repair broke delivery: " + "; ".join(needed))
-        after, _ = smoke_check(stage)
+        after, _ = smoke_check(stage, requirements)
         if after:
             raise ValueError("still failing after repair: " + "; ".join(after))
+        _, missing_after = vocabulary_gaps(stage, requirements)
+        if missing_after > missing_before:
+            raise ValueError(f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
         for item in batch:
             files[:] = [f for f in files if f["path"] != item["path"]] + [item]
-        budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch]}
+        budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch],
+                                  "vocabulary_missing_after": missing_after}
     except Exception as exc:
         # Keep the original delivery: a half-applied fix could be worse than the known state.
         shutil.rmtree(stage)

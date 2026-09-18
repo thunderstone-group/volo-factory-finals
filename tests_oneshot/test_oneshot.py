@@ -31,7 +31,7 @@ def block(path, content):
 
 def application(extra=""):
     return (block("backend/package.json", '{"scripts":{"start":"node server.js"}}') +
-            block("backend/server.js", "// Synthetic local fixture\nconsole.log('fixture');") +
+            block("backend/server.js", "// Synthetic local fixture\n"+"process.on('uncaughtException', (e) => console.error('uncaught', e)); process.on('unhandledRejection', (e) => console.error('unhandled', e));\n"+"console.log('fixture');") +
             block("frontend/package.json", '{"scripts":{"build":"node build.js"}}') +
             block("frontend/build.js", "// Synthetic build fixture") +
             block("frontend/public/index.html", "<!doctype html><title>Synthetic</title>") + extra)
@@ -132,11 +132,16 @@ class OfflineCase(unittest.TestCase):
                     "=== FILE: x.js ==\nx\n=== END ===\n", "=== END ===\n",
                     block("x.js", ""), block("x.js", "   "),
                     "=== FILE: x.js ===\na\n" + block("y.js", "b"),
-                    block("x.js", "a") + "commentary", block("x.js", "a") * 2)
+                    block("x.js", "a") * 2)
         for value in examples:
             with self.subTest(value=value), self.assertRaises(ValueError) as caught:
                 adapter.parse_blocks(value)
             self.assertNotIsInstance(caught.exception, IndexError)
+
+    def test_prose_outside_blocks_is_ignored(self):
+        files, missing = adapter.parse_blocks("Here is the app:\n" + block("x.js", "a") + "Done.\n" + block("y.js", "b"))
+        self.assertEqual([f["path"] for f in files], ["x.js", "y.js"])
+        self.assertEqual(missing, [])
 
     def test_crlf_and_unterminated_final_block(self):
         files, missing = adapter.parse_blocks((block("a.js", "one") +
@@ -184,7 +189,7 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(len(budget.attempts[0]["usage_events"]), 3)
 
     def test_final_failure_retains_usage_without_publishing(self):
-        budget = adapter.CallBudget(limit=1)
+        budget = adapter.CallBudget(limit=1, fail_limit=1)
         self.replies(events(application(), {"prompt_tokens": 9}, done=False))
         with self.assertRaisesRegex(RuntimeError, "StreamError"):
             self.generate(budget)
@@ -204,26 +209,74 @@ class OfflineCase(unittest.TestCase):
                 self.assertEqual(budget.summary()["unknown_usage_calls"], [1])
                 self.assertEqual(budget.attempts[0]["http_status"], status)
 
-    def test_transient_http_errors_share_global_cap(self):
-        budget = adapter.CallBudget()
+    def test_transient_http_errors_share_global_failure_cap(self):
+        budget = adapter.CallBudget(fail_limit=3)
         self.replies(*[HTTPError("https://synthetic.invalid", status, "synthetic", {}, None)
                        for status in (408, 429, 503)])
         with self.assertRaisesRegex(RuntimeError, "HTTP 503"):
             self.generate(budget)
-        self.assertEqual(self.transport.call_count, adapter.MAX_CALLS)
-        with self.assertRaisesRegex(RuntimeError, "global model call limit"):
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertEqual(budget.summary()["failed_calls"], 3)
+        self.assertEqual(budget.summary()["completed_calls"], 0)
+        with self.assertRaisesRegex(RuntimeError, "global model failure limit"):
             adapter.stream_completion([], "synthetic-model", "https://synthetic.invalid",
                                       SYNTHETIC_KEY, budget)
-        self.assertEqual(self.transport.call_count, adapter.MAX_CALLS)
+        self.assertEqual(self.transport.call_count, 3)
 
-    def test_retries_and_continuation_share_global_cap(self):
+    def test_cut_streams_do_not_consume_the_continuation(self):
         budget = adapter.CallBudget()
-        partial = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
-        partial += "=== FILE: backend/server.js ===\n// cut off"
-        self.replies(URLError("first"), URLError("second"), events(partial, finish="length"))
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        rest = application()[len(prefix):]
+        self.replies(URLError("first"), URLError("second"),
+                     events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="length"),
+                     events(rest))
+        self.generate(budget)
+        self.assertEqual(self.transport.call_count, 4)
+        self.assertEqual(budget.summary()["failed_calls"], 2)
+        self.assertEqual(budget.summary()["completed_calls"], 2)
+        self.assertTrue((self.out / "backend" / "server.js").exists())
+
+    def test_primary_model_retries_are_spent_then_the_run_switches_to_the_fallback(self):
+        budget = adapter.CallBudget()
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        rest = application()[len(prefix):]
+        self.replies(URLError("first"), URLError("second"), URLError("third"),
+                     events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="length"),
+                     events(rest))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": "synthetic-fallback"}):
+            self.generate(budget)
+        self.assertEqual(self.transport.call_count, 5)
+        self.assertEqual([r["model"] for r in budget.attempts],
+                         ["synthetic-model"] * 3 + ["synthetic-fallback"] * 2)
+        self.assertEqual(budget.summary()["fallback_model"], "synthetic-fallback")
+        self.assertEqual(budget.summary()["failed_calls"], 3)
+        self.assertTrue((self.out / "backend" / "server.js").exists())
+
+    def test_fallback_is_not_taken_for_permanent_errors(self):
+        budget = adapter.CallBudget()
+        self.replies(HTTPError("https://synthetic.invalid", 402, "synthetic", {}, None))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": "synthetic-fallback"}):
+            with self.assertRaisesRegex(RuntimeError, "HTTP 402"):
+                self.generate(budget)
+        self.assertEqual(self.transport.call_count, 1)
+        self.assertIsNone(budget.summary()["fallback_model"])
+
+    def test_fallback_can_be_disabled(self):
+        budget = adapter.CallBudget()
+        self.replies(URLError("first"), URLError("second"), URLError("third"))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": ""}):
+            with self.assertRaisesRegex(RuntimeError, "URLError"):
+                self.generate(budget)
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertIsNone(budget.summary()["fallback_model"])
+
+    def test_completed_calls_still_share_the_global_cap(self):
+        budget = adapter.CallBudget(limit=1)
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        self.replies(events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="length"))
         with self.assertRaisesRegex(RuntimeError, "global model call limit"):
             self.generate(budget)
-        self.assertEqual(self.transport.call_count, 3)
+        self.assertEqual(self.transport.call_count, 1)
         self.assertFalse(self.out.exists())
 
     def test_continuation_can_retry_without_leaking_a_failed_version(self):
@@ -239,10 +292,10 @@ class OfflineCase(unittest.TestCase):
         self.assertIn("backend/server.js", budget.attempts[1]["messages"][-1]["content"])
 
     def test_no_continuation_for_stop_with_open_block_or_length_between_blocks(self):
-        cases = (("=== FILE: x.js ===\npartial", "stop", "unterminated"),
+        cases = (("=== FILE: x.js ===\npartial", "stop", "incomplete delivery"),
                  (application(), "length", "truncated between"),
                  ("", "stop", "no content"),
-                 ("no blocks", "stop", "outside file blocks"))
+                 ("no blocks", "stop", "no file blocks"))
         for content, finish, message in cases:
             with self.subTest(content=content):
                 budget = adapter.CallBudget()

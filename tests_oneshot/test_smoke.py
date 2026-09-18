@@ -24,6 +24,7 @@ const path = require('node:path');
 const DIST = path.join(__dirname, '..', 'frontend', 'dist');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript', '.css': 'text/css' };
 %(prelude)s
+process.on('uncaughtException', (e) => console.error('uncaught', e)); process.on('unhandledRejection', (e) => console.error('unhandled', e));
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://localhost');
   if (url.pathname === '/api/health') {
@@ -49,7 +50,7 @@ def app(server_js):
             block("backend/server.js", server_js) +
             block("frontend/package.json",
                   '{"scripts":{"build":"node -e \\"require(\'fs\').cpSync(\'public\',\'dist\',{recursive:true})\\""}}') +
-            block("frontend/public/index.html", "<!doctype html><title>Synthetic</title><script src=\"app.js\"></script>") +
+            block("frontend/public/index.html", "<!doctype html><title>Synthetic</title><h1>Synthetic</h1><script src=\"app.js\"></script>") +
             block("frontend/public/app.js", "console.log('synthetic');"))
 
 
@@ -82,7 +83,7 @@ class SmokeCase(unittest.TestCase):
         self.replies(events(app(server())))
         files, budget = self.generate()
         self.assertEqual(self.transport.call_count, 1)
-        self.assertEqual(budget.smoke, {"executed": True, "problems": [], "repair": None})
+        self.assertEqual(budget.smoke, {"executed": True, "problems": [], "vocabulary_missing": 0, "repair": None})
         self.assertTrue((self.out / "backend/server.js").is_file())
         self.assertEqual(list(self.root.glob(".oneshot-*")), [])
 
@@ -92,7 +93,7 @@ class SmokeCase(unittest.TestCase):
         files, budget = self.generate()
         self.assertEqual(self.transport.call_count, 2)
         self.assertIn("GET / returned HTTP 404", budget.smoke["problems"][0])
-        self.assertEqual(budget.smoke["repair"], {"accepted": True, "files": ["backend/server.js"]})
+        self.assertEqual(budget.smoke["repair"], {"accepted": True, "files": ["backend/server.js"], "vocabulary_missing_after": 0})
         self.assertIn("'index.html'", (self.out / "backend/server.js").read_text())
         delivered = {f["path"]: f["content"] for f in files}
         self.assertIn("'index.html'", delivered["backend/server.js"])
@@ -145,8 +146,82 @@ class SmokeCase(unittest.TestCase):
         self.replies(events(app(server())))
         with patch.object(adapter.shutil, "which", return_value=None):
             files, budget = self.generate()
-        self.assertEqual(budget.smoke, {"executed": False, "problems": [], "repair": None})
+        self.assertEqual(budget.smoke, {"executed": False, "problems": [], "vocabulary_missing": 0, "repair": None})
         self.assertEqual(self.transport.call_count, 1)
+
+    def test_frontend_that_throws_on_load_is_reported_when_jsdom_is_available(self):
+        throwing = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                         block("frontend/public/app.js", "document.body.appendChild(null);"))
+        self.replies(events(throwing))
+        files, budget = self.generate(limit=1)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        self.assertTrue(any("frontend script error on load" in p for p in budget.smoke["problems"]), budget.smoke)
+
+    def test_frontend_that_fetches_its_data_on_load_is_not_a_script_error(self):
+        # jsdom has no fetch; the probe must supply one that reaches the local backend (r14 StackOverflow
+        # lost a whole task to "fetch is not defined" rejecting a good repair).
+        fetching = (app(server())
+                    .replace("<h1>Synthetic</h1>", "")
+                    .replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                             block("frontend/public/app.js",
+                                   "fetch('/api/health').then((r) => r.json()).then((d) => { document.body.textContent = d.message; });")))
+        self.replies(events(fetching))
+        files, budget = self.generate(limit=1)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        self.assertEqual(budget.smoke["problems"], [], budget.smoke)
+        self.assertEqual(self.transport.call_count, 1)
+
+    def test_home_screen_must_render_the_landmarks_the_requirement_describes(self):
+        req = "The global header carries the navigation links and the login control. A footer closes every page."
+        feed_only = app(server()).replace("<h1>Synthetic</h1>", "<h1>Top questions</h1>")
+        laid_out = app(server()).replace(
+            "<h1>Synthetic</h1>",
+            "<header><nav><a href=\"#/\">Home</a></nav></header><main><h1>Top questions</h1></main><footer>Footer</footer>")
+        self.replies(events(feed_only), events(laid_out))
+        budget = adapter.CallBudget()
+        adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        flagged = [p for p in budget.smoke["problems"] if "renders no <" in p]
+        self.assertEqual(len(flagged), 3, budget.smoke)
+        self.assertTrue(all("shared layout" in p for p in flagged))
+        self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
+        self.assertIn("<header>", (self.out / "frontend/public/index.html").read_text())
+
+    def test_missing_quoted_vocabulary_is_reported_and_partial_repair_is_kept(self):
+        req = 'After login replace the link with \u201cSign Out\u201d. Show \u201cEmail cannot be empty\u201d. Seed \u201cBook 5.1\u201d.'
+        good = app(server()).replace("<h1>Synthetic</h1>", "<h1>Synthetic</h1><p>Book 5.1</p>")
+        fixed = block("frontend/public/index.html",
+                      "<!doctype html><title>Synthetic</title><h1>Synthetic</h1><p>Book 5.1</p><button>Sign Out</button><script src=\"app.js\"></script>")
+        self.replies(events(good), events(fixed))
+        budget = adapter.CallBudget()
+        adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        self.assertEqual(budget.smoke["vocabulary_missing"], 2)
+        self.assertTrue(any("Sign Out" in p and "Email cannot be empty" in p for p in budget.smoke["problems"]), budget.smoke)
+        self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
+        self.assertEqual(budget.smoke["repair"]["vocabulary_missing_after"], 1)
+        self.assertIn("Sign Out", (self.out / "frontend/public/index.html").read_text())
+
+    def test_static_gates_flag_missing_process_guards_and_aria_collisions(self):
+        stage = self.root / "stage"
+        (stage / "backend").mkdir(parents=True)
+        (stage / "frontend" / "public").mkdir(parents=True)
+        (stage / "backend" / "server.js").write_text("const http = require('http');\n")
+        (stage / "frontend" / "public" / "app.js").write_text(
+            "html += '<label for=\"qty\">Quantity</label><input id=\"qty\">';\n"
+            "html += '<button aria-label=\"Decrease quantity\">-</button>';\n"
+            "html += '<button aria-label=\"Close dialog\">x</button>';\n")
+        guard = adapter.process_guard_gaps(stage)
+        self.assertEqual(len(guard), 1)
+        self.assertIn("uncaughtException", guard[0])
+        aria = adapter.aria_collision_gaps(stage)
+        self.assertEqual(len(aria), 1)
+        self.assertIn("Decrease quantity", aria[0])
+        self.assertNotIn("Close dialog", aria[0])
+        (stage / "backend" / "server.js").write_text("process.on('uncaughtException', () => {}); process.on('unhandledRejection', () => {});\n")
+        self.assertEqual(adapter.process_guard_gaps(stage), [])
 
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"
@@ -160,7 +235,7 @@ class SmokeCase(unittest.TestCase):
             code = adapter.main([str(requirement), "--output-dir", str(self.out)])
         self.assertEqual(code, 0)
         line = [l for l in capture.getvalue().splitlines() if l.startswith("[oneshot] smoke ")][0]
-        self.assertEqual(json.loads(line.split(" ", 2)[2]), {"executed": True, "problems": [], "repair": None})
+        self.assertEqual(json.loads(line.split(" ", 2)[2]), {"executed": True, "problems": [], "vocabulary_missing": 0, "repair": None})
         self.assertNotIn(SYNTHETIC_KEY, capture.getvalue())
 
 
