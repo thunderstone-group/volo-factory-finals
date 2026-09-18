@@ -287,6 +287,13 @@ def parse_blocks(text):
     for line in text.splitlines(keepends=True):
         marker = line.rstrip("\r\n")
         opening = FILE_OPEN.fullmatch(marker)
+        if not opening and current is None:
+            # Leaked reasoning glued to the marker on one line ("... Writing the output.</think>=== FILE: x ===",
+            # round 24 Keep b: the next END was then "without an open block" and the task scored 0/32). Between
+            # blocks, a line that ENDS with a well-formed marker opens the block; the prefix is prose.
+            glued = FILE_OPEN.search(marker)
+            if glued and glued.end() == len(marker) and glued.start() > 0:
+                opening, stray = glued, stray + 1
         if opening:
             if current is not None:
                 raise ValueError("unterminated file before next block: " + current)

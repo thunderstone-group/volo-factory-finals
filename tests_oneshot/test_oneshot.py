@@ -149,6 +149,18 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual([f["path"] for f in files], ["x.js", "y.js"])
         self.assertEqual(missing, [])
 
+    def test_marker_glued_to_leaked_reasoning_opens_the_block(self):
+        # Round 24 Keep b: a continuation's content began with reasoning that ended "</think>=== FILE: ... ==="
+        # on one line; the marker went unrecognised and the next END killed the task (0/32).
+        text = block("a.js", "one") + "Now I'm confident. Writing the output.</think>=== FILE: seed.js ===\nrows\n=== END ===\n"
+        files, missing = adapter.parse_blocks(text)
+        self.assertEqual([f["path"] for f in files], ["a.js", "seed.js"])
+        self.assertEqual(files[1]["content"], "rows\n")
+        self.assertEqual(missing, [])
+        # Inside a block the same line is content, not a new block.
+        files, missing = adapter.parse_blocks("=== FILE: a.js ===\nprose === FILE: b.js ===\n=== END ===\n")
+        self.assertEqual(files, [{"path": "a.js", "content": "prose === FILE: b.js ===\n"}])
+
     def test_crlf_and_unterminated_final_block(self):
         files, missing = adapter.parse_blocks((block("a.js", "one") +
                                                "=== FILE: b.js ===\ntwo").replace("\n", "\r\n"))
