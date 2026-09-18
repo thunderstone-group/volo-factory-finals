@@ -988,3 +988,50 @@ each rule snapshot and experiment with date and source.
   (two samples, `4f410b2e5ae7`), started 16:15. Local generation time rose to 30–50 min this afternoon
   (gateway load or the longer prompt; platform drafts will tell).
 - Session handoff at 16:20: context at 45%; the next session continues from `docs/SESSION_HANDOFF.md`.
+
+## 2026-09-18 17:00 — Round 18 read; the click-ladder race; round 19 (Fable + owner)
+
+- Round 18 closed on Web except 12306 sample B: **52.2% / 46.1%** against round 17's 65.2 / 58.7. Three
+  causes, read from bundles and local replays, none of them the §7b rule itself:
+  1. Ctrip sample B **0/125**: the gateway ended the draft stream with `finish_reason=content_filter` after
+     483 s and about 200 KB of `app.js` (the trace stops in an airport list); `stream_completion` raised on any
+     finish other than stop/length and the run exited 1. Fixed in `7169cb9`: content_filter is treated as a
+     truncation (the partial draft is kept) and the continuation goes to `FALLBACK_MODEL`, because at
+     temperature 0 the same model re-emits the tokens that tripped the filter. Two tests. A formal-round task
+     with a whole-app zero from this would be unrecoverable, so this is the most valuable fix of the day.
+  2. StackOverflow **27 / 32** (from 47 / 35): REQ-1.1, 1.2, 3.3.2, 4.4, 5.1.2 failed in BOTH samples and passed in
+     17a. They assert prose nouns as visible text (`/header/i`, `/sidebar/i`, `/products/i`, `/modified/i`,
+     `/helpful user/i`). The round-17 app wrote them (footer line `Footer · Header · Sidebar · …`, a `Products`
+     nav entry); the round-18 app did not — the prepended quoted-vocabulary checklist read as the whole
+     vocabulary. Response: the scaffold footer now ends with `Header · Sidebar · Main content · Footer` (level 1),
+     and the checklist header says the unquoted THEN-step nouns are asserted just the same (level 3).
+  3. Bookstack sample A 13/34: the model's own route bug (cards link to `#/shelves/<id>`, the detail screen is
+     registered as `shelf`), so every detail-page test failed. Not a scaffold mechanic; a jsdom "click each seed
+     link, expect the heading to become the link text" walk would catch it (candidate gate, not built).
+- **Lite Bookstack 6/34 replayed locally, root cause found**: both suite generations' `firstVisible` probes each
+  rung with `isVisible()` (no wait) right after the click resolves. The scaffold rendered on the `hashchange`
+  task, which comes after the click's task, so every "click an entry after navigation" step saw nothing,
+  fell to `locators[0]` (button) and waited until the 10 s timeout — deterministic on Lite (Bookstack lost
+  22 tests this way), stochastic on Web (the known seed-click family). A probe script reproduced it: the
+  hash changed but `h1` was still the list heading when the next probe ran. Fix in the scaffold (`dab1c49`):
+  `ARC.navigate` and in-app `a[href^="#/"]` clicks render synchronously; `hashchange` only renders when the
+  hash differs from the last rendered one (back/forward). Plus a logo BUTTON `"<Brand> logo"` beside the brand
+  link (Lite: `button /^BookStack logo$/`; Web: `link /bookstack/i`) and, in the bundle, `aria-label="Login
+  form"` on the login form (Lite scopes the submit button inside `form /^Login form$/`). Replay of the same
+  bundle: **22/34**. Web Bookstack sample A with the same patch: 14 → 14 (its failures are the route bug).
+  Lite Keep sample A with the patch: 11 → 11 (its families are archive/label/pin).
+- Remaining Lite Bookstack families after the patch (12): `Shelf Tags` / `Book Tags` resolved as a BUTTON
+  (the requirement calls it a field; the real product has a collapsible section), `Confirm Delete` (our
+  dialog button says `Confirm`; the requirement's REQ title is "Confirm Delete Shelf"), `Page title` /
+  `Write your page content here...` as PLACEHOLDERS (ours were labels), `Create New Book` on the books list
+  vs `New Book` on the shelf page (the helper is the reverse of the requirement's wording; Web's helper
+  uses `Create New Book` for both). Card §8 now says: every form named "<phrase> form"; a quoted field name
+  is both label and placeholder. The tags-button and the swapped names are Bookstack-specific and not
+  encoded.
+- Round 19 = `dab1c49` + `7169cb9`. Lite two samples started 16:58 (submission `0aa67e9eaa9b`); the Web upload
+  is chained after round-18 12306 sample B finishes (the server keeps one submission per competition), two
+  samples, by `scratchpad/r19_web_chain.py`, which then polls every round-19 run and writes
+  `runs/2026-09-18-goal/r19-final.json`. Judge Web against 65.2 / 58.7 (round 17), Lite Bookstack against 6 / 7
+  and Lite Keep against 12 / 11.
+- Tooling: `arcbench` needs `--env-file ~/.config/arcbench/volo.env` (sourcing the file in the shell gives 401).
+
