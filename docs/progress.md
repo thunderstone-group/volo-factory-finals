@@ -362,3 +362,14 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - Round 22 = r21 + the scaffold popover (`19a872d`), Web and Lite two samples each; judge Lite Keep against
   13/11 (the popover targets 12 of its 19 failures) and Web against 65.5 / 62.9.
 
+## 2026-09-18 20:10 — Round 22 kept: the popover lifts Lite Keep
+
+- Lite pair **61.9 / 61.8** (Keep 17/16 from 13/11, Bookstack 24/25); Web pair 63.5 / 64.2 (Keep 26/27, Bookstack 30/27,
+  SO 44/48, Prestashop 50/63, 12306 61/76, Ctrip 52/24) — r21's band, Ctrip a 52 is two off its best. Results in
+  `r22-final.json`. **r22-candidate.zip is the formal-round candidate.**
+- Day's arc: r17 65.2/58.7 → r18 52.2/45.6 (three regressions) → r19 65.5/60.0 → r20 54.1/57.9 (two bad samples) →
+  r21 65.5/62.9 (gates) → r22 63.5/64.2; Lite 19 → 27 → 55 → 62.
+- Next (not started): replay an r22 Lite Keep bundle for the remaining 15 failures (Pinned title, label group,
+  view toggle, sidebar); the planner stage for the large tasks; a jsdom check that a seed link's target screen
+  carries the link text as its heading (Bookstack r18a route bug).
+

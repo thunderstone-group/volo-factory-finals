@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-18 19:45 (Fable + owner; read this section, then progress.md from "17:40")
+# Current handoff — 2026-09-18 20:15 (Fable + owner; read this section, then progress.md from "17:40")
 
 Branch `goal/round-1` (head pushed) = main `ff686e3` + the day's commits; open a PR to main when round 19 is
 judged. Doctrine: ADR 0001 (gate → scaffold → table → prose), ADR 0002 (model policy). Working mode set by
@@ -22,10 +22,11 @@ the owner: Fable and the owner directly, no Codex/Opus dispatch. `arcbench` need
   `<work-dir>/artifacts/*/error-context.md` (the "waiting for" line names the rung the ladder fell to).
 
 ## Next
-1. Round 21 **kept** (Web 65.5 / 62.9, Lite 55.6 / 52.5): r21-candidate.zip is the formal-round candidate.
-   **Round 22 running** (r21 + scaffold popover `19a872d`; Web + Lite two samples, ids in
-   `r22{a,b}-runs-arc-bench-{web,lite}.json`, `scratchpad/poll_r22.py` → `r22-final.json`). Keep if Lite Keep
-   rises above 13 and Web holds; then r22 is the candidate.
+1. Round 22 **kept** (Web 63.5 / 64.2, Lite 61.9 / 61.8; Lite Keep 17/16): **`r22-candidate.zip` (goal/round-1
+   head) is the formal-round candidate.** Nothing is running. Next levers in order: replay an r22 Lite Keep
+   bundle for its remaining 15 failures (Pinned `title`, label-row `group`, view toggle, sidebar); planner
+   stage for the large tasks; seed-link heading walk (Bookstack r18a route bug). Open a PR goal/round-1 →
+   main.
 2. Owner (18:42): the formal round allows several submissions and counts the best or the average, so
    variance is handled by re-submitting; generation-time best-of-2 is off the table. Direction agreed:
    bad samples → gates (done for two families), Lite Keep's remaining families (archive / label / pin /
