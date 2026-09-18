@@ -970,3 +970,10 @@ each rule snapshot and experiment with date and source.
   (rerun `dc34a40bdd46` after the first run sat PENDING two hours; ties best), Ctrip 37/125 → 58.7%. Pair
   **65.2 / 58.7** against round 16's 56.5 / 63.0 (mean 62.0 vs 59.8), no whole-app zero in either sample,
   the model touched only `app.js`/`seed.js` in every run. **Verdict: keep the scaffold.**
+- Web Keep regression probe of the round-18 candidate (scaffold + vocabulary table + §7b + exact-name gate;
+  local, 15:18–15:47, 1764 s — twice the scaffold probe's time): replay **25/32**. The seven losses are the
+  archive/trash/label families; 2.5.3 and 2.3.3 fail at the first hover because this sample seeded
+  "Travel plans 2.5.3" already archived and "Delete me 2.3.3" already trashed (the tests archive/trash them
+  through the UI first), 2.7.x are the label dialog. Routes and the "Archived" sidebar link are correct.
+  Seed-state interpretation is the known Keep stochastic family, not an effect of §7b; one sample, band 24–31.
+  Round 18 candidate built (`r18-candidate.zip`); upload waits for the local Lite Keep replay.
