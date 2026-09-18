@@ -1113,10 +1113,31 @@ def _frontend_sources(stage):
     return "\n".join(out)
 
 
-def aria_collision_gaps(stage):
+def _quoted_lower(requirements):
+    """Every quoted phrase of the requirement, lower-cased and space-normalised."""
+    return {re.sub(r"\s+", " ", m.group(1)).strip().lower() for m in QUOTED.finditer(requirements or "")}
+
+
+def control_names(stage):
+    """Lower-cased exact names the frontend gives its controls: label text, placeholder, aria-label,
+    button text. A quoted requirement name that is in this set before a repair must still be in it after."""
+    source = _frontend_sources(stage)
+    names = set()
+    for l, p, a in FIELD_LABEL.findall(source):
+        names.add(re.sub(r"\s+", " ", (l or p or a)).strip().lower())
+    for m in ARIA_LABEL.finditer(source):
+        names.add(re.sub(r"\s+", " ", m.group(1)).strip().lower())
+    for m in re.finditer(r"<button\b[^>]*>\s*([^<{$\n]{1,40}?)\s*<", source):
+        names.add(re.sub(r"\s+", " ", m.group(1)).strip().lower())
+    names.discard("")
+    return names
+
+
+def aria_collision_gaps(stage, requirements=None):
     """A button whose aria-label shares a word with a field label steals getByLabel(/word/i):
     'Decrease quantity' before the quantity input, 'Upvote comment' before the comment box."""
     source = _frontend_sources(stage)
+    quoted = _quoted_lower(requirements)
     field_words = set()
     for label, placeholder, aria in FIELD_LABEL.findall(source):
         field_words |= _label_words(label or placeholder or aria)
@@ -1149,11 +1170,24 @@ def aria_collision_gaps(stage):
         seen.add(label)
         lines.append(f'{"radio option" if label.startswith("radio ") else "button aria-label"} "{label.removeprefix("radio ")}" shares {"/".join(shared)} with a field label')
     out = []
-    if nested:
-        pairs = "; ".join(f'"{a}" is contained in "{b}"' for a, b in nested[:12])
-        out.append(f"{len(nested)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
-                   f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another "
-                   f"(e.g. \"From\" vs \"Filter by departure station\"): {pairs}")
+    # The requirement pins a quoted name; the rename must land on the OTHER label. Round 25 12306 a: told only
+    # "rename", the repair renamed the quoted "From"/"To" to "Origin city"/"Destination city" and lost 45 tests.
+    advised = []
+    for short, long in nested:
+        s_q, l_q = short.lower() in quoted, long.lower() in quoted
+        if s_q and l_q:
+            continue  # both names are mandated; renaming either loses tests, so this pair is not a problem to fix
+        if s_q:
+            advised.append(f'"{short}" is contained in "{long}" — keep "{short}" exactly (quoted in the requirement) and rename "{long}"')
+        elif l_q:
+            advised.append(f'"{short}" is contained in "{long}" — keep "{long}" exactly (quoted in the requirement) and rename "{short}"')
+        else:
+            advised.append(f'"{short}" is contained in "{long}"')
+    if advised:
+        out.append(f"{len(advised)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
+                   f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and "
+                   f"NEVER rename a label the requirement quotes — rename the other one "
+                   f"(e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): " + "; ".join(advised[:12]))
     if not lines:
         return out
     return out + [f"{len(lines)} button label(s) collide with field labels; the fill helper's first rung is "
@@ -1194,7 +1228,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     problems, executed = smoke_check(stage, requirements)
     smoke_before = list(problems)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
-    static = (process_guard_gaps(stage) + aria_collision_gaps(stage) + exact_name_gaps(stage, requirements)
+    static = (process_guard_gaps(stage) + aria_collision_gaps(stage, requirements) + exact_name_gaps(stage, requirements)
               + readonly_gaps(stage) + (scaffold_gaps(stage) if scaffold else []))
     budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
                     "repair": None}
@@ -1204,6 +1238,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     if budget.exhausted():
         budget.smoke["repair"] = "skipped: call limit reached"
         return
+    pinned_before = control_names(stage) & _quoted_lower(requirements)
     backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
     shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
     try:
@@ -1234,6 +1269,11 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         _, missing_after = vocabulary_gaps(stage, requirements)
         if missing_after > missing_before:
             raise ValueError(f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
+        renamed = sorted(pinned_before - control_names(stage))
+        if renamed:
+            # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
+            # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).
+            raise ValueError("repair renamed quoted control(s): " + ", ".join(renamed[:8]))
         for item in batch:
             files[:] = [f for f in files if f["path"] != item["path"]] + [item]
         budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch],

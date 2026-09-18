@@ -355,6 +355,33 @@ class SmokeCase(unittest.TestCase):
         (stage / "backend" / "server.js").write_text("process.on('uncaughtException', () => {}); process.on('unhandledRejection', () => {});\n")
         self.assertEqual(adapter.process_guard_gaps(stage), [])
 
+    def test_nested_label_advice_keeps_the_quoted_name_and_renames_the_other(self):
+        stage = self.root / "stage2"
+        (stage / "frontend" / "public").mkdir(parents=True)
+        (stage / "frontend" / "public" / "app.js").write_text(
+            "html += '<input placeholder=\"From\"><label>From Station <select></select></label>';\n"
+            "html += '<label>Date <input></label><label>End date <input></label>';\n")
+        req = 'input placeholders "From", "To", and "Date". Later a filter labeled "End date".'
+        [problem] = adapter.aria_collision_gaps(stage, req)
+        self.assertIn('keep "From" exactly (quoted in the requirement) and rename "From Station"', problem)
+        self.assertNotIn('"Date" is contained in "End date"', problem)  # both quoted: not a rename problem
+        [generic] = adapter.aria_collision_gaps(stage)
+        self.assertIn('"Date" is contained in "End date"', generic)
+
+    def test_repair_that_renames_a_quoted_control_is_rejected(self):
+        # 12306 r25a: the collision repair renamed the quoted "From" to "Origin city"; 45 tests then waited for
+        # getByLabel(/From/i). The word survived elsewhere, so only a control-name check sees it.
+        draft_js = "document.body.innerHTML += '<label>From <input id=\"f\"></label><label>From Station <select id=\"s\"></select></label>';"
+        repaired_js = "document.body.innerHTML += '<label>Origin city <input id=\"f\"></label><label>From Station <select id=\"s\"></select></label>';"
+        draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"), block("frontend/public/app.js", draft_js))
+        self.replies(events(draft), events(block("frontend/public/app.js", repaired_js)))
+        budget = adapter.CallBudget(adapter.MAX_CALLS)
+        files, _ = adapter.generate('Synthetic: the departure field labeled "From" and a From Station filter.',
+                                    "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        self.assertEqual(budget.smoke["repair"]["accepted"], False, budget.smoke)
+        self.assertIn("renamed quoted control(s): from", budget.smoke["repair"]["reason"])
+        self.assertIn("From <input", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
+
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"
         requirement.mkdir()
