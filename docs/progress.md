@@ -327,3 +327,14 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - Round 20 = round 19 + that paragraph, Web only, two samples (submission `2108891b5706`, 17:52).
   Judge Ctrip against 19/19 and 36/37; everything else should hold round 19's band.
 
+## 2026-09-18 18:40 — Round 20 read: the paragraph works, the pair is noisy
+
+- Web pair **54.1 / 57.9** (Keep 25/19, Bookstack 25/27, SO 39/33, Prestashop 41/57, 12306 68/80, Ctrip 20/41).
+  Both Ctrip apps carry the restored words (`账号 Account` + `邮箱/用户名/手机号`, `出发城市` / `到达城市`); sample b
+  scores 41 (r17 band 36–37, best 54), sample a 20 with 24 tests that fail only in a. Prestashop a 41 has 19 tests
+  that fail only in a. SO differs from r19 by two shared tests. So the drop against round 19 (65.5 / 60.0) is two
+  bad samples plus noise, not the paragraph, which cannot touch the English tasks. Replays of Ctrip a and
+  Prestashop a are running to name the two families.
+- Candidate for the formal round stays r20 (= r19 + the Chinese paragraph) unless the replays show a
+  mechanism the card caused.
+

@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-18 17:55 (Fable + owner; read this section, then progress.md from "17:40")
+# Current handoff — 2026-09-18 18:45 (Fable + owner; read this section, then progress.md from "17:40")
 
 Branch `goal/round-1` (head pushed) = main `ff686e3` + the day's commits; open a PR to main when round 19 is
 judged. Doctrine: ADR 0001 (gate → scaffold → table → prose), ADR 0002 (model policy). Working mode set by
@@ -22,10 +22,13 @@ the owner: Fable and the owner directly, no Codex/Opus dispatch. `arcbench` need
   `<work-dir>/artifacts/*/error-context.md` (the "waiting for" line names the rung the ladder fell to).
 
 ## Next
-1. **Round 20 running** (Web only, submission `2108891b5706`, ids `r20{a,b}-runs-arc-bench-web.json`, a poller
-   writes `r20-final.json`): round 19 + the restored Chinese-app paragraph (Ctrip attribution in progress
-   17:55). Keep if Ctrip returns to ≥ 36 and the other five hold round 19's band; then this is the package
-   for the formal round unless something else moves.
+1. Round 20 (r19 + Chinese-app paragraph) pair 54.1 / 57.9: Ctrip 20 / 41 with the right words in both apps,
+   Prestashop 41 / 57. Two bad samples (Ctrip a, Prestashop a) are being replayed (`r20a-replay-*`); read their
+   error contexts and decide whether a family is card-caused. Candidate for the formal round = r20 package
+   (`r20-candidate.zip`, submission `2108891b5706`) unless that reading says otherwise.
+2. Variance is now the main cost: the same package spans 54–66 between pairs. Owner decision pending on
+   best-of-2 at generation time (two drafts, gate problem count picks one) — the only lever aimed at bad
+   samples. Ask the organizer how many runs the formal round allows per task and which one counts.
 2. Candidate gate: jsdom walk that clicks each seed link on the list screens and expects the main heading to
    become the link text (Bookstack r18a route bug, 20 tests). Candidate rules not encoded: Bookstack's tags
    BUTTON, `Confirm Delete`, swapped `Create New Book` / `New Book` (helper contradicts the requirement).
