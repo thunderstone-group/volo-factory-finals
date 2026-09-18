@@ -482,3 +482,21 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   The owner said budget is not a guard before the preliminary, but the goal-mode rule says stop below CNY 50:
   **no round 28 tonight without the owner**; ask the organizer for a top-up.
 
+## 2026-09-19 02:10 — Round 27 kept as candidate; PR #38 merged; session ends (balance guard)
+
+- r27 Web **60.9 / 65.3** (a: Keep 27, Bookstack 30, SO 41, PS 55, 12306 62, Ctrip 26; b: 25, **33**, 47, 55, 75, 32),
+  Lite 54.4 / 54.2. r26 a completed at **68.7%** (12306 **91**), the best single sample of the day. Web pairs of
+  the night: r24 67.8/54.7 → r25 61.8/67.8 → r26 68.7/51.5 → r27 60.9/65.3; every sub-60 sample was a mechanical
+  fault (agent exit, rejected repair, renamed quoted name) and each has a fix and a test now.
+- Lite 54 is Keep 16/14 + Bookstack 20/22. Bookstack's drafts had no problems and no repair (variance). Keep's
+  repairs re-emitted `lib/arc.js` + `app.js` and were accepted as clean — identical to r26 (21/20), so r27's rules
+  did not touch this path; the families are the known ones (Note editor dialog, card `More options`, `Toggle sidebar`
+  unstable 24×). Keep Lite band tonight: 14–21.
+- 12306 r27a 62/135 replayed (62/135): 49 tests wait for `button /^Personal$/`, `/^Book$/`, `/^Information
+  management$/` — header entries this suite generation resolves as BUTTONS with exact names, while the scaffold
+  renders header entries as links (the Bookstack/SO generation wants links). Content/scaffold family, not done;
+  candidate: header entries as `<a>` wrapped with a same-named button, or per-app choice from the requirement's
+  verb ("click the Personal button").
+- **r27 is the candidate** (`r27-candidate.zip` = oneshot/ at `e439539`); **PR #38 merged** into main (owner
+  authorised). Balance about CNY 40 after r27; no round 28 without the owner.
+

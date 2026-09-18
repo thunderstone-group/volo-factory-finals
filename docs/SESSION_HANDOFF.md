@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-19 01:05 (Fable + owner; read this section, then progress.md from "23:35")
+# Current handoff — 2026-09-19 02:10 (Fable + owner; read this section, then progress.md from "23:35")
 
 Branch `goal/round-1` (head pushed) = main `ff686e3` + the day's commits; **PR #38** goal/round-1 → main is open.
 Doctrine: ADR 0001 (gate → scaffold → table → prose), ADR 0002 (model policy). Working mode set by the owner:
@@ -6,8 +6,8 @@ Fable and the owner directly, no Codex/Opus dispatch. `arcbench` needs `--env-fi
 (never `source` it in zsh: the cookie value contains `;`).
 
 ## State
-- Web board 72.3% (rank 5), Lite board **68.0%** (rank 7, from 55.6). Candidate = **r25** (`r25-candidate.zip`,
-  Web 61.8 / 67.8, Lite 65.0 / 66.5); r24 (67.8 / 54.7, Lite 68.2 / 60.6) was the best single sample.
+- Web board 72.3% (rank 5), Lite board **68.0%** (rank 7, from 55.6). Candidate = **r27** (see below); r26 a
+  (68.7%) is the best single Web sample, r24 Lite a (68.2%) the best Lite sample.
 - Tonight's three fixes are all "the gate was right, the repair/acceptance threw the good part away":
   (1) r23a Prestashop 0/86 = parse error the DOM probe caught but the repair could not locate → `node --check`
   syntax gate with file:line + repairs that remove a whole-app failure are kept (`3cc0f24`, `d97509f`);
@@ -17,9 +17,10 @@ Fable and the owner directly, no Codex/Opus dispatch. `arcbench` needs `--env-fi
 - Round 26 (r25 + fix 3): Web a 25/32/47/64/?/34, b **51.5%** (three bad samples, two of them repair-acceptance
   faults, both fixed: `45a9182` strictly-fewer-problems repairs are kept; `e439539` quoted button names are not
   collisions and only quoted control phrases are pinned). Lite 69.7 / 43.9 (Keep 21 = new high).
-- **Round 27 running** (r26 + those two): Web `f1f64dec4e4c`, Lite `97082c9ded7c`, two samples each, 01:33.
-  `runs/2026-09-18-goal/r27-wait.sh` → `r27-final.txt` + `.done`; `python3 finalize_round.py 27` rebuilds the
-  summary from `arcbench status` any time (`arcbench wait` emits JSON lines and returns on the first FAILED).
+- **Round 27 kept = candidate** (`r27-candidate.zip`, oneshot/ at `e439539`): Web 60.9 / 65.3, Lite 54.4 / 54.2
+  (Lite dip = Keep variance, same repair path as r26's 21/20; progress 02:10). r26 a finished at **68.7%** (12306 91),
+  best sample of the day. **PR #38 merged**; main carries everything. `python3 runs/2026-09-18-goal/finalize_round.py <n>`
+  rebuilds any round's summary from `arcbench status` (`arcbench wait` emits JSON lines and returns on the first FAILED).
 - **Balance CNY 56 before round 27** (a Web+Lite pair round costs CNY 15–20). Goal-mode guard: stop below 50.
   No round 28 without the owner; ask the organizer for a top-up.
 - Downloads: the platform cuts bundle streams near the end; the installed `arcbench download` fails. Use the
@@ -30,13 +31,15 @@ Fable and the owner directly, no Codex/Opus dispatch. `arcbench` needs `--env-fi
   the platform redacts `***` inside the smoke JSON, so parse it with regex, not json.loads.
 
 ## Next
-1. Judge r27 against r25 (61.8 / 67.8; no drop → r27 is the candidate); then **merge PR #38** (owner authorised merging
-   volo-factory PRs) and rebuild the candidate zip from main.
+1. Owner: top-up (balance ≈ CNY 40) and whether to keep sampling the board with the r27 package (the board keeps
+   the best submission average; r26 a's 68.7% package is r26, not r27 — resubmitting r27 is the honest lever).
 2. Remaining Web losses by size: Ctrip (25–45/125; login placeholders from a screenshot, more-services menu),
    12306 bad samples (attribute each with the replay), SO 44–48/66, Prestashop 57–68/86. Lite Keep 19–20/32:
    the families listed in progress 22:35 need a scaffold primitive or a gate, not prose. New scaffold candidate
    (progress 01:35): view flags (sidebar collapsed, grid/list) must not ride in the saved state — one worker's
    REQ-6.2 toggle hid the sidebar for the other three (Keep 18/32; Prestashop's collapsed category menu is the same shape).
+   12306 r27a: 49 tests want header entries as BUTTONS named exactly `Personal` / `Book` / `Information management`
+   while the scaffold renders header entries as links (progress 02:10).
 3. Planner stage for the large tasks (untried); seed-link heading walk gate (Bookstack r18a route bug).
 4. Formal round 2026-09-21: several submissions allowed, best or average counts (owner 09-18 18:42).
 
