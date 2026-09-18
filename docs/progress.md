@@ -901,3 +901,7 @@ each rule snapshot and experiment with date and source.
   for the model to extend; (2) prepend the quoted-vocabulary table to the prompt instead of only checking it
   afterwards; (3) a screen-walk gate for "phrase in source but not on the asserted screen" (half of the
   r15b SO/Prestashop failures).
+- Owner 12:47: the three levers approved ("think less, execute"); the scaffold is to become a generic
+  architecture knowledge base for ARC; the screen-walk gate is the TDD analogue; research obra/superpowers
+  for flash. Recorded in `docs/distillation-2026-09-18.md` (assessment: only its plan discipline
+  transfers, as a planning stage; multi-agent parts are the route lost on 09-15) and ADR 0001/0002.
