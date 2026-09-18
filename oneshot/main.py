@@ -177,12 +177,17 @@ class CallBudget:
         return result
 
 
+def fallback_model(budget):
+    """The model the rest of a run switches to; empty once switched, or when disabled by FALLBACK_MODEL=."""
+    return "" if budget.model else os.environ.get("FALLBACK_MODEL", FALLBACK_MODEL).strip()
+
+
 def stream_completion(messages, model, base, key, budget, tries=3):
     """Buffer each attempt separately; failed streams never write application files. The primary
     model is retried `tries` times on transport failures; when those are spent the run switches to
     FALLBACK_MODEL for this and every later call (a cut route rarely heals within one run)."""
     model = budget.model or model
-    fallback = "" if budget.model else os.environ.get("FALLBACK_MODEL", FALLBACK_MODEL).strip()
+    fallback = fallback_model(budget)
     payload = {"model": model, "messages": messages, "max_tokens": MAX_TOKENS,
                "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
     req = request.Request(base.rstrip("/") + "/chat/completions",
@@ -229,7 +234,7 @@ def stream_completion(messages, model, base, key, budget, tries=3):
                         raise StreamError("malformed SSE event") from exc
             if not ended or record["finish_reason"] is None:
                 raise StreamError("stream ended without completion markers")
-            if record["finish_reason"] not in ("stop", "length"):
+            if record["finish_reason"] not in ("stop", "length", "content_filter"):
                 raise ValueError("unsupported finish reason: " + str(record["finish_reason"]))
             if not record["content"].strip():
                 raise ValueError("stream produced no content")
@@ -723,6 +728,17 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
                 # is a whole-task zero; one fresh draft is cheaper than the task (generic-card SO sample B).
                 print("[oneshot] the draft has no file blocks; asking once more", file=sys.stderr)
                 content, _, finish = stream_completion(messages, model, base, key, budget)
+            if finish == "content_filter":
+                # The gateway's output filter ends a stream the way a truncation does, with the partial
+                # draft intact (r18a Ctrip: 200 KB of app.js, then a whole-task zero). Continue it like a
+                # `length` cut, on the fallback model: at temperature 0 the same model re-emits the tokens
+                # that tripped the filter.
+                switch = fallback_model(budget)
+                print("[oneshot] the stream ended with finish_reason=content_filter; continuing the draft"
+                      + (f" on {switch}" if switch else ""), file=sys.stderr)
+                if switch:
+                    budget.model = switch
+                finish = "length"
             if finish == "stop" and template is None and parse_blocks(content)[1]:
                 # The model stopped on its own but forgot the closing marker of the last file:
                 # the content is whole, only the framing is missing. Close it rather than lose the draft.

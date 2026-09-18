@@ -253,6 +253,33 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.summary()["failed_calls"], 3)
         self.assertTrue((self.out / "backend" / "server.js").exists())
 
+    def test_content_filter_keeps_the_draft_and_continues_on_the_fallback(self):
+        budget = adapter.CallBudget()
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        rest = application()[len(prefix):]
+        self.replies(events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="content_filter"),
+                     events(rest))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": "synthetic-fallback"}):
+            self.generate(budget)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertEqual([r["model"] for r in budget.attempts], ["synthetic-model", "synthetic-fallback"])
+        self.assertEqual(budget.summary()["completed_calls"], 2)
+        self.assertEqual(budget.attempts[0]["finish_reason"], "content_filter")
+        self.assertTrue((self.out / "backend" / "server.js").exists())
+        self.assertNotIn("cut off", (self.out / "backend/server.js").read_text())
+
+    def test_content_filter_continues_on_the_same_model_when_the_fallback_is_disabled(self):
+        budget = adapter.CallBudget()
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        rest = application()[len(prefix):]
+        self.replies(events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="content_filter"),
+                     events(rest))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": ""}):
+            self.generate(budget)
+        self.assertEqual([r["model"] for r in budget.attempts], ["synthetic-model"] * 2)
+        self.assertIsNone(budget.summary()["fallback_model"])
+        self.assertTrue((self.out / "backend" / "server.js").exists())
+
     def test_fallback_is_not_taken_for_permanent_errors(self):
         budget = adapter.CallBudget()
         self.replies(HTTPError("https://synthetic.invalid", 402, "synthetic", {}, None))
