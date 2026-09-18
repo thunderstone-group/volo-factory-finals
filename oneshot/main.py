@@ -980,11 +980,9 @@ CONTROL_CONTEXT = re.compile(r"\b(click|press|tap|button|link|field|input|textbo
 TOKEN_EDGE = set('<>"\'`')
 
 
-def exact_name_gaps(stage, requirements):
-    """A quoted control name must be rendered as a WHOLE name. A phrase that appears in the source only
-    inside a longer token (\u2022 Notes, Take a note..., Archive note) fails the suite's anchored
-    /^Name$/i match (Lite Keep 5/32: 22 of 27 losses cascaded from one decorated name). Only phrases
-    whose requirement context names a control are checked. Static, no model."""
+def quoted_control_phrases(requirements):
+    """Quoted phrases whose requirement context names a control (button, field, tab, dialog...), short enough
+    to be an accessible name and not a sentence or message. Original casing, first occurrence wins."""
     seen, phrases = set(), []
     text_req = requirements or ""
     for match in QUOTED.finditer(text_req):
@@ -996,6 +994,15 @@ def exact_name_gaps(stage, requirements):
             continue
         seen.add(phrase.lower())
         phrases.append(phrase)
+    return phrases
+
+
+def exact_name_gaps(stage, requirements):
+    """A quoted control name must be rendered as a WHOLE name. A phrase that appears in the source only
+    inside a longer token (\u2022 Notes, Take a note..., Archive note) fails the suite's anchored
+    /^Name$/i match (Lite Keep 5/32: 22 of 27 losses cascaded from one decorated name). Only phrases
+    whose requirement context names a control are checked. Static, no model."""
+    phrases = quoted_control_phrases(requirements)
     if not phrases:
         return []
     texts = []
@@ -1149,8 +1156,8 @@ def aria_collision_gaps(stage, requirements=None):
         if not ("<button" in before or "'button'" in before or '"button"' in before or "createelement('button')" in before):
             continue
         shared = _shared_words(match.group(1), field_words)
-        if shared:
-            collisions.append((match.group(1), shared))
+        if shared and match.group(1).strip().lower() not in quoted:
+            collisions.append((match.group(1), shared))  # a quoted button name is mandated; renaming it loses tests
     labels = sorted({(l or p or a).strip() for l, p, a in FIELD_LABEL.findall(source)
                      if (l or p or a).strip() and len((l or p or a).strip()) <= 32
                      and len((l or p or a).split()) <= 4}, key=len)
@@ -1161,7 +1168,7 @@ def aria_collision_gaps(stage, requirements=None):
                 nested.append((short, long))
     for match in re.finditer(r"""type=["']radio["'][^>]*>\s*([^<{\n]{1,30})""", source):
         shared = _shared_words(match.group(1), field_words)
-        if shared:
+        if shared and match.group(1).strip().lower() not in quoted:
             collisions.append(("radio " + match.group(1).strip(), shared))
     seen, lines = set(), []
     for label, shared in collisions:
@@ -1238,7 +1245,9 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     if budget.exhausted():
         budget.smoke["repair"] = "skipped: call limit reached"
         return
-    pinned_before = control_names(stage) & _quoted_lower(requirements)
+    # Only names the requirement quotes as controls are pinned (12306 r26b: a rule pinning every quoted phrase
+    # rejected a repair for "renaming" quoted messages and section headings, and the collision-laden draft shipped).
+    pinned_before = control_names(stage) & {p.lower() for p in quoted_control_phrases(requirements)}
     backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
     shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
     try:

@@ -384,6 +384,21 @@ class SmokeCase(unittest.TestCase):
         [generic] = adapter.aria_collision_gaps(stage)
         self.assertIn('"Date" is contained in "End date"', generic)
 
+    def test_quoted_button_names_are_not_collision_problems_and_only_control_phrases_are_pinned(self):
+        stage = self.root / "stage3"
+        (stage / "frontend" / "public").mkdir(parents=True)
+        (stage / "frontend" / "public" / "app.js").write_text(
+            "html += '<label>Email address <input></label>';\n"
+            "html += '<button aria-label=\"Contact information\">Edit</button><button aria-label=\"Address book\">Open</button>';\n"
+            "html += '<p>Please enter a new email address.</p>';\n")
+        req = ('Click the "Contact information" button. Fill the "Email address" field. '
+               'On error show "Please enter a new email address."')
+        [problem] = adapter.aria_collision_gaps(stage, req)
+        self.assertIn('"Address book"', problem)
+        self.assertNotIn('"Contact information"', problem)
+        pinned = adapter.control_names(stage) & {p.lower() for p in adapter.quoted_control_phrases(req)}
+        self.assertEqual(pinned, {"contact information", "email address"})
+
     def test_repair_that_renames_a_quoted_control_is_rejected(self):
         # 12306 r25a: the collision repair renamed the quoted "From" to "Origin city"; 45 tests then waited for
         # getByLabel(/From/i). The word survived elsewhere, so only a control-name check sees it.
