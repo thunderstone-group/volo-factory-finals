@@ -139,7 +139,9 @@
   ARC.notify = function (message, opts) {
     const root = document.getElementById('status-root');
     ARC._undo = opts && opts.undo;
-    root.innerHTML = `<div class="status" role="status">${ARC.esc(message)}${ARC._undo ? ' <button type="button" data-action="arc:undo">Undo</button>' : ''}</div>`;
+    // The message sits in its own <span>: an anchored `getByText(/^Note trashed$/)` must find an element whose
+    // whole text is the message, and the status container's text also holds the Undo button's label.
+    root.innerHTML = `<div class="status" role="status"><span class="status-text">${ARC.esc(message)}</span>${ARC._undo ? ' <button type="button" data-action="arc:undo">Undo</button>' : ''}</div>`;
     root.hidden = false;
     clearTimeout(ARC._statusTimer);
     ARC._statusTimer = setTimeout(() => { root.hidden = true; root.innerHTML = ''; ARC._undo = null; }, (opts && opts.ms) || 6000);

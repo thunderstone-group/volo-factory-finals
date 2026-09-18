@@ -165,17 +165,31 @@ text field first in DOM order). Exception: a requirement that names a region lit
   "Write your page content here..."): one suite generation fills by `getByPlaceholder(/^Page title$/i)`
   only, the other by label first. Never a placeholder that differs from the label.
 - The logo is the scaffold's `<button aria-label="<Brand> logo">` beside the brand link; keep both.
-- A record's own menu, colour palette or label picker opens INSIDE that record's `<article>` through
-  `ARC.openPopover(card, items)` — the suites scope the lookup to the card (`article >> button /^Delete Note$/`,
-  `article >> button /^Light green$/`, `article >> checkbox /^Work$/`). Never open it with `ARC.openDialog`: the
-  dialog root sits outside every article, so every item in it is invisible to those lookups (one Lite Keep
-  run lost 12 of 32). Header dropdowns (Settings, account) are `ARC.openPopover(button.parentNode, items,
-  {kind: 'menu'})` → `role="menu"` with `menuitem`s. The dialog root is for editors and confirmations only.
+- A record's own menu and colour palette open INSIDE that record's `<article>` through `ARC.openPopover(card,
+  items)` — the suites scope the lookup to the card (`article >> button /^Delete Note$/`, `article >> button
+  /^Light green$/`). Never open them with `ARC.openDialog`: the dialog root sits outside every article, so every
+  item in it is invisible to those lookups (one Lite Keep run lost 12 of 32). Header dropdowns (Settings,
+  account) are `ARC.openPopover(button.parentNode, items, {kind: 'menu'})` → `role="menu"` with `menuitem`s.
+- The editor of a record is ONE dialog named `"<Record> editor"` (`Note editor`), and it is the same dialog for
+  creating and for editing: the "Take a note" composer expands into it (the suites fill `dialog /^Note editor$/
+  >> textbox /^Title$/`), opening a card opens it, and "Change labels" from a card's menu opens it with the label
+  checkboxes (`dialog /^Note editor$/ >> checkbox /^Work$/`). Inside it: textboxes named exactly as the
+  requirement's fields, `Change color` with the colour buttons, `Change labels` with one checkbox per label, `More
+  options`, `Close`. An inline composer that is not a dialog loses every create-flow test on one suite generation.
+- Row actions revealed by hover are named by the BARE verb or the exact quoted phrase, never with an added
+  noun (`Archive`, not `Archive note`; `Pin note` because the requirement quotes it); actions the requirement
+  says to "choose from More options" go in the menu, actions it says to click after hovering are direct.
+  Sidebar entries use the same bare words (`Archive`, `Trash`, `Notes`, `Reminders`); the sidebar sits after
+  `<main>` so a page-wide `.first()` for the verb still reaches the card.
 - A record's state is shown by an element inside the card whose `title` is the state word (`<span
   title="Pinned">`): suites read `article >> [title="Pinned"]`.
 - A settings list row that edits one value is a `<fieldset>` whose `<legend>` and the input's label are both
   `"<Noun> <value>"` (`Label Work`) with its own `Save` button: suites scope `group /^Label Work$/ >> getByLabel`.
-- Toggle buttons (List view / Grid view, Pin) carry `aria-pressed` reflecting the state.
+- Toggle buttons (List view / Grid view, Toggle sidebar, Pin) carry `aria-pressed="true"` or `"false"` as literal
+  strings from the first render on (an empty attribute fails `toHaveAttribute('aria-pressed', 'false')`).
+- Suggestions that drop down under a focused search field are a `role="listbox"` containing one `<button>` per
+  suggestion named by its text (`listbox >> button /Reminders$/`).
+- A settings icon's dropdown lists `Settings` and `Help & feedback` as `menuitem`s (the product's own items).
 - Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
   header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
   only its feed loses every header, navigation, login and sidebar test at once (one StackOverflow run: 1/66).
