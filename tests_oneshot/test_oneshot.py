@@ -286,6 +286,20 @@ class OfflineCase(unittest.TestCase):
             self.generate(budget)
         self.assertEqual(self.transport.call_count, 2)
 
+    def test_quoted_vocabulary_table_precedes_the_requirements(self):
+        req = ("- id: REQ-1\n  name: Login\n  description: Show \u201cEmail cannot be empty\u201d and a \"Sign In\" button.\n"
+               "- id: REQ-2\n  name: Notes\n  description: The system contains a note titled \"Groceries\". Show \u201cEmail cannot be empty\u201d again.\n")
+        table = adapter.vocabulary_table(req)
+        self.assertIn("REQ-1 Login: \u201cEmail cannot be empty\u201d; \u201cSign In\u201d", table)
+        self.assertIn("REQ-2 Notes: \u201cGroceries\u201d", table)
+        self.assertEqual(table.count("Email cannot be empty"), 1)
+        self.assertEqual(adapter.vocabulary_table("no quotes here"), "")
+        budget = adapter.CallBudget()
+        self.replies(events(application()))
+        adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        prompt = budget.attempts[0]["messages"][1]["content"]
+        self.assertLess(prompt.index("## Quoted vocabulary checklist"), prompt.index("## Requirements (the application to build)"))
+
     def test_completed_calls_still_share_the_global_cap(self):
         budget = adapter.CallBudget(limit=1)
         prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')

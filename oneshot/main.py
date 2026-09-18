@@ -694,7 +694,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     stamp = template_stamp(template) if template is not None else None
     snapshot = read_template(template) if template is not None else {}
     out.parent.mkdir(parents=True, exist_ok=True)
-    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT +
+    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
     scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
     if scaffold:
@@ -767,6 +767,46 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
 
 QUOTED = re.compile(r'[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
 VOCAB_SHOWN = 60
+
+
+REQ_ID = re.compile(r"^\s*-?\s*id:\s*['\"]?([A-Za-z0-9._-]+)['\"]?\s*$")
+REQ_NAME = re.compile(r"^\s*name:\s*['\"]?(.*?)['\"]?\s*$")
+
+
+def vocabulary_table(requirements):
+    """The quoted strings of the requirement, grouped by the requirement id that quotes them — the
+    checklist the vocabulary gate will enforce, handed to the model before it writes (ladder level 2)."""
+    groups, order, seen = {}, [], set()
+    current, name = None, None
+    for line in (requirements or "").splitlines():
+        m = REQ_ID.match(line)
+        if m:
+            current, name = m.group(1), None
+            continue
+        n = REQ_NAME.match(line)
+        if n and current and name is None:
+            name = n.group(1)
+        for match in QUOTED.finditer(line):
+            phrase = re.sub(r"\s+", " ", match.group(1)).strip()
+            if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
+                    or phrase.lower() in seen):
+                continue
+            seen.add(phrase.lower())
+            key = current or "ROOT"
+            if key not in groups:
+                groups[key] = (name, [])
+                order.append(key)
+            groups[key][1].append(phrase)
+    if not seen:
+        return ""
+    lines = ["\n\n## Quoted vocabulary checklist (every phrase must exist verbatim; the delivery check enforces it)",
+             "Each phrase below is quoted by the requirement and matched verbatim by the suite as visible text, an "
+             "accessible name, a message or a seed value, on the screen that requirement describes."]
+    for key in order:
+        label, phrases = groups[key]
+        head = key if key == "ROOT" else key + (" " + label if label else "")
+        lines.append(f"- {head}: " + "; ".join(f"\u201c{p}\u201d" for p in phrases))
+    return "\n".join(lines)
 
 
 def vocabulary_gaps(stage, requirements):
