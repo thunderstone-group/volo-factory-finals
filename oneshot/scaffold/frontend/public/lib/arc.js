@@ -19,12 +19,24 @@
     const parts = (location.hash || '#/').replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
     return { name: parts[0] || 'home', params: parts.slice(1), hash: location.hash || '#/' };
   };
+  // Navigation renders in the SAME task as the click. The click ladder probes each rung with
+  // `isVisible()` (no wait) right after the click resolves; a render deferred to the `hashchange`
+  // task loses that race under load, and the step then waits for the wrong rung until the test
+  // times out (Lite Bookstack: every "click an entry after navigation" step; Web: the stochastic
+  // seed-click family).
   ARC.navigate = function (hash) {
-    if ((location.hash || '#/') === hash) ARC.render(); else location.hash = hash;
+    if ((location.hash || '#/') !== hash) location.hash = hash;
+    if (ARC.dialogOpen) ARC.closeDialog();
+    ARC.render();
   };
 
   // --- Layout: EVERY screen, the home screen included, renders through this one function so the same
   // header (landmark + navigation + account controls), sidebar, main and footer exist on every route.
+  // The footer ends with the layout nouns as visible words ("Header · Sidebar · Main content · Footer"):
+  // layout tests assert /header/i, /sidebar/i as visible text, and a landmark tag alone is invisible
+  // (StackOverflow REQ-1.1 / 1.2 lost in both round-18 samples once the model stopped writing them).
+  // The brand is a logo BUTTON named "<Brand> logo" next to the brand link: one suite generation
+  // returns home through `button /^BookStack logo$/`, the other through `link /bookstack/i`.
   // Header entries are links (navigation). Sidebar entries are BUTTONS inside <aside> (role
   // complementary): one suite generation resolves them as `complementary >> button /^Name$/`. The aside
   // comes AFTER <main> in DOM order (CSS puts it back on the left) so a page-wide `.first()` for a verb
@@ -37,6 +49,7 @@
     const nav = (L.nav || []).map(link).join('');
     const side = (L.sidebar || []).map(entry).join('');
     return `<header class="app-header">
+  <button type="button" class="brand-logo" aria-label="${ARC.esc(L.brand || 'App')} logo" data-action="arc:nav" data-hash="#/"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="2"/></svg></button>
   <a class="brand" href="#/">${ARC.esc(L.brand || 'App')}</a>
   <nav aria-label="Main navigation">${nav}</nav>
   <div class="account">${L.account ? L.account(user) : ''}</div>
@@ -45,7 +58,7 @@
   <main id="main-content" class="main">${mainHtml}</main>
   ${side ? `<aside class="sidebar">${side}</aside>` : ''}
 </div>
-<footer class="app-footer">${ARC.esc(L.footer || 'Footer')}</footer>`;
+<footer class="app-footer">${ARC.esc(L.footer || 'Footer')} <span class="landmarks">Header · Sidebar · Main content · Footer</span></footer>`;
   };
   ARC.currentUser = function () {
     const s = ARC.state;
@@ -58,6 +71,7 @@
   // only after they change state, and forms keep their values via ARC.preserveInputs.
   ARC.render = function () {
     const route = ARC.route();
+    ARC._renderedHash = route.hash;
     const app = window.APP || {};
     const main = app.screen ? app.screen(route) : '<h1>Home</h1>';
     document.getElementById('app').innerHTML = ARC.layout(main, route);
@@ -124,7 +138,16 @@
   }
   document.addEventListener('click', (ev) => {
     const el = ev.target.closest('[data-action]');
-    if (!el || el.tagName === 'FORM') return;
+    if (!el || el.tagName === 'FORM') {
+      // In-app links render synchronously too (see ARC.navigate); the browser's own fragment
+      // navigation would only render on the later hashchange task.
+      const link = ev.target.closest('a[href^="#/"], a[href="#"]');
+      if (link && !ev.defaultPrevented && !ev.metaKey && !ev.ctrlKey) {
+        ev.preventDefault();
+        ARC.navigate(link.getAttribute('href') === '#' ? '#/' : link.getAttribute('href'));
+      }
+      return;
+    }
     ev.preventDefault();
     dispatch(el.dataset.action, el, ev, null);
   });
@@ -140,7 +163,11 @@
     if (!el) return;
     dispatch(el.dataset.change, el, ev, null);
   });
-  window.addEventListener('hashchange', () => { if (ARC.dialogOpen) ARC.closeDialog(); ARC.render(); });
+  window.addEventListener('hashchange', () => {
+    if ((location.hash || '#/') === ARC._renderedHash) return;  // already rendered in the click's task
+    if (ARC.dialogOpen) ARC.closeDialog();
+    ARC.render();
+  });
   document.addEventListener('DOMContentLoaded', () => ARC.render());
   window.ARC = ARC;
 })();

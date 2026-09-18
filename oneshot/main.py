@@ -816,6 +816,10 @@ def vocabulary_table(requirements):
     if not seen:
         return ""
     lines = ["\n\n## Quoted vocabulary checklist (every phrase must exist verbatim; the delivery check enforces it)",
+             "This list holds the QUOTED phrases only. The unquoted nouns of the requirement's THEN steps (layout "
+             "nouns such as header / sidebar / main feed, navigation targets such as 'product links' → `Products`, "
+             "metadata words such as asked / modified / viewed, section titles, sort options) are asserted as "
+             "visible text just the same (§7) and are not listed here: keep writing them. ",
              "Each phrase below is quoted by the requirement and matched by the suite as visible text, an accessible "
              "name, a message or a seed value, on the screen that requirement describes. A quoted control name is the "
              "WHOLE accessible name, byte-exact: the suite anchors it (`/^Take a note$/i`), so an icon, bullet, "

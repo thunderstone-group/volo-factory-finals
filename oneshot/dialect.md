@@ -151,6 +151,16 @@ text field first in DOM order). Exception: a requirement that names a region lit
   suite generation asks for `getByRole('textbox', {name: /^Search$/i})`.
 - Sidebar entries (labels, filters, Archive, Trash) are the scaffold's `<button>`s inside `<aside>`; header
   entries are links.
+- Every `<form>` is named after the phrase the requirement uses for it, in `aria-label`, capitalised, ending in
+  "form": `<form aria-label="Login form">`, `<form aria-label="Shelf creation form">`. One suite generation
+  scopes the submit button as `getByRole('form', {name: /^Login form$/i}).getByRole('button', {name: /^Login$/i})`;
+  an unnamed form has no accessible name and every test that logs in fails (Lite Bookstack: 6 of 34). The
+  form's name must not share a word with a field label inside it (§7a): "Login form" with fields "Email
+  address" / "Password" is fine.
+- A quoted field name is BOTH the `<label>` and the `placeholder` of its input, byte-exact ("Page title",
+  "Write your page content here..."): one suite generation fills by `getByPlaceholder(/^Page title$/i)`
+  only, the other by label first. Never a placeholder that differs from the label.
+- The logo is the scaffold's `<button aria-label="<Brand> logo">` beside the brand link; keep both.
 - Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
   header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
   only its feed loses every header, navigation, login and sidebar test at once (one StackOverflow run: 1/66).
