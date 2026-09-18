@@ -7,7 +7,8 @@ Reads `<requirement_path>/requirements.yaml`, sends it to the model together wit
 `dialect.md` (how the official accessibility-driven suite resolves controls) and the
 delivery contract, and writes the returned files under `<DIR>`.
 
-Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash).
+Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash),
+FALLBACK_MODEL (default qwen3.7-plus; empty disables the switch).
 """
 import argparse
 import hashlib
@@ -29,9 +30,11 @@ from urllib import error, request
 HERE = Path(__file__).resolve().parent
 DEFAULT_BASE = "https://api.arc-bench.com/v1"
 DEFAULT_MODEL = "deepseek-v4-flash"
+FALLBACK_MODEL = "qwen3.7-plus"  # taken up for the rest of a run once the primary model's retries are spent on transport failures
 MAX_TOKENS = 131072  # content cap per call; the gateway has metered >135k output tokens in one request
 MAX_CALLS = 3  # Completed calls: first draft, one truncation continuation, one smoke repair.
-MAX_FAILURES = 4  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation.
+MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
+#                 three on the primary model, then up to two on the fallback.
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
 MAX_TEMPLATE_FILES = 256
 TEMPLATE_ARTIFACTS = {"node_modules", "dist", "__pycache__"}
@@ -130,6 +133,7 @@ class CallBudget:
         self.fail_limit = fail_limit
         self.attempts = []
         self.smoke = None
+        self.model = None  # set once the run has switched to the fallback model
 
     def completed(self):
         return [r for r in self.attempts if r["status"] == "completed"]
@@ -162,13 +166,18 @@ class CallBudget:
             result["known_" + field] = sum(values) if values else None
             result[field] = sum(values) if len(values) == len(self.attempts) and values else None
         result["unknown_usage_calls"] = unknown
+        result["fallback_model"] = self.model
         result["billing_status"] = ("not_called" if not self.attempts else
                                     "unknown" if unknown else "tokens_reported_cost_not_estimated")
         return result
 
 
 def stream_completion(messages, model, base, key, budget, tries=3):
-    """Buffer each attempt separately; failed streams never write application files."""
+    """Buffer each attempt separately; failed streams never write application files. The primary
+    model is retried `tries` times on transport failures; when those are spent the run switches to
+    FALLBACK_MODEL for this and every later call (a cut route rarely heals within one run)."""
+    model = budget.model or model
+    fallback = "" if budget.model else os.environ.get("FALLBACK_MODEL", FALLBACK_MODEL).strip()
     payload = {"model": model, "messages": messages, "max_tokens": MAX_TOKENS,
                "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
     req = request.Request(base.rstrip("/") + "/chat/completions",
@@ -234,7 +243,13 @@ def stream_completion(messages, model, base, key, budget, tries=3):
             failure = RuntimeError(f"model stream failed ({type(exc).__name__})")
         finally:
             record["elapsed_seconds"] = round(time.monotonic() - started, 3)
-        if not retryable or attempt + 1 >= tries or budget.exhausted():
+        if not retryable or budget.exhausted():
+            raise failure
+        if attempt + 1 >= tries:
+            if fallback and fallback != model:
+                print(f"[oneshot] {model} failed {tries} times; the rest of this run uses {fallback}", file=sys.stderr)
+                budget.model = fallback
+                return stream_completion(messages, fallback, base, key, budget, tries)
             raise failure
         print(f"[oneshot] call {record['call']} failed; bounded retry", file=sys.stderr)
         time.sleep(1)

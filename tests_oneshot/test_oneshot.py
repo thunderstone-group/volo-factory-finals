@@ -236,6 +236,40 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.summary()["completed_calls"], 2)
         self.assertTrue((self.out / "backend" / "server.js").exists())
 
+    def test_primary_model_retries_are_spent_then_the_run_switches_to_the_fallback(self):
+        budget = adapter.CallBudget()
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        rest = application()[len(prefix):]
+        self.replies(URLError("first"), URLError("second"), URLError("third"),
+                     events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="length"),
+                     events(rest))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": "synthetic-fallback"}):
+            self.generate(budget)
+        self.assertEqual(self.transport.call_count, 5)
+        self.assertEqual([r["model"] for r in budget.attempts],
+                         ["synthetic-model"] * 3 + ["synthetic-fallback"] * 2)
+        self.assertEqual(budget.summary()["fallback_model"], "synthetic-fallback")
+        self.assertEqual(budget.summary()["failed_calls"], 3)
+        self.assertTrue((self.out / "backend" / "server.js").exists())
+
+    def test_fallback_is_not_taken_for_permanent_errors(self):
+        budget = adapter.CallBudget()
+        self.replies(HTTPError("https://synthetic.invalid", 402, "synthetic", {}, None))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": "synthetic-fallback"}):
+            with self.assertRaisesRegex(RuntimeError, "HTTP 402"):
+                self.generate(budget)
+        self.assertEqual(self.transport.call_count, 1)
+        self.assertIsNone(budget.summary()["fallback_model"])
+
+    def test_fallback_can_be_disabled(self):
+        budget = adapter.CallBudget()
+        self.replies(URLError("first"), URLError("second"), URLError("third"))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": ""}):
+            with self.assertRaisesRegex(RuntimeError, "URLError"):
+                self.generate(budget)
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertIsNone(budget.summary()["fallback_model"])
+
     def test_completed_calls_still_share_the_global_cap(self):
         budget = adapter.CallBudget(limit=1)
         prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
