@@ -966,3 +966,7 @@ each rule snapshot and experiment with date and source.
   only for unquoted names. (2) Exact-name static gate: a quoted phrase ≤ 5 words that appears in the source
   only decorated (`• Notes`, `Take a note...`, `Archive note`) is a problem for the bounded repair. (3) Validate
   with a local Lite Keep generation + replay and a Web Keep replay for regression, then Lite/Web platform pairs.
+- Round 17 closed 15:43: sample B Keep 27/32, Bookstack 19/34, SO 35/66, Prestashop 57/86, 12306 **85/135**
+  (rerun `dc34a40bdd46` after the first run sat PENDING two hours; ties best), Ctrip 37/125 → 58.7%. Pair
+  **65.2 / 58.7** against round 16's 56.5 / 63.0 (mean 62.0 vs 59.8), no whole-app zero in either sample,
+  the model touched only `app.js`/`seed.js` in every run. **Verdict: keep the scaffold.**
