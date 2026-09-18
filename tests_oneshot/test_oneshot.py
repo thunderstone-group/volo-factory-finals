@@ -271,6 +271,21 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(self.transport.call_count, 3)
         self.assertIsNone(budget.summary()["fallback_model"])
 
+    def test_an_empty_first_draft_is_asked_once_more(self):
+        budget = adapter.CallBudget()
+        self.replies(events("No answer text provided."), events(application()))
+        files, totals = self.generate(budget)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertEqual(totals["completed_calls"], 2)
+
+    def test_two_empty_drafts_fail_without_a_third_call(self):
+        budget = adapter.CallBudget()
+        self.replies(events("No answer text provided."), events("Still nothing."))
+        with self.assertRaisesRegex(ValueError, "no file blocks"):
+            self.generate(budget)
+        self.assertEqual(self.transport.call_count, 2)
+
     def test_completed_calls_still_share_the_global_cap(self):
         budget = adapter.CallBudget(limit=1)
         prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
@@ -295,8 +310,7 @@ class OfflineCase(unittest.TestCase):
     def test_no_continuation_for_stop_with_open_block_or_length_between_blocks(self):
         cases = (("=== FILE: x.js ===\npartial", "stop", "incomplete delivery"),
                  (application(), "length", "truncated between"),
-                 ("", "stop", "no content"),
-                 ("no blocks", "stop", "no file blocks"))
+                 ("", "stop", "no content"))  # a draft without blocks is asked once more (own test)
         for content, finish, message in cases:
             with self.subTest(content=content):
                 budget = adapter.CallBudget()

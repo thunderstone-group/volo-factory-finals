@@ -718,6 +718,11 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
         content = ""
         for turn in range(2):
             content, _, finish = stream_completion(messages, model, base, key, budget)
+            if turn == 0 and "=== FILE" not in content and not budget.exhausted():
+                # An empty draft ("No answer text provided." after a 14-minute reasoning stream, finish=stop)
+                # is a whole-task zero; one fresh draft is cheaper than the task (generic-card SO sample B).
+                print("[oneshot] the draft has no file blocks; asking once more", file=sys.stderr)
+                content, _, finish = stream_completion(messages, model, base, key, budget)
             if finish == "stop" and template is None and parse_blocks(content)[1]:
                 # The model stopped on its own but forgot the closing marker of the last file:
                 # the content is whole, only the framing is missing. Close it rather than lose the draft.
