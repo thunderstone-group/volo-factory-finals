@@ -851,3 +851,17 @@ each rule snapshot and experiment with date and source.
   Ctrip `bbc5bb0a7fdd`, Keep `7747d71e9e70`, Prestashop `63d21f8ba126`, StackOverflow `0eb9937e897f`).
   The glm-5.3 local probe was still running (call 1 failed on transport at about 10:20, retrying), so this
   round's token column includes it.
+- glm-5.3 local Keep probe (09:59–10:59, current package, cap 131072): **three attempts, each cut by the
+  gateway at 1201 s with no content and no usage frame** (`StreamError: stream ended without completion
+  markers`). The token cap never fired; the gateway closes a stream at 20 minutes and GLM's reasoning runs at
+  about 35 tok/s (09-17: 32,768 tokens in 16 min), so it cannot finish thinking inside the window. Removing
+  `max_tokens` cannot change that. Cut streams are unmetered. GLM is out on this gateway unless the
+  organizer raises the stream ceiling or forwards a thinking switch (it accepts `thinking`/`reasoning_effort`
+  and ignores both, 09:57 probe).
+- Round 15 sample A closed 10:58: Keep **30/32**, Bookstack 26/34, StackOverflow **1/66**, Prestashop 57/86,
+  12306 **85/135**, Ctrip 18/125 → 52.6%. Keep and 12306 tie their bests; SO is a whole-app bad sample
+  again — no DOM error this time, the vocabulary repair rewrote the 110 KB single-file `index.html` (the
+  whole app is inline) and was accepted with 0 phrases missing. Local replay of the bundle running. Working
+  hypothesis: the jsdom false positive used to reject such whole-file rewrites by accident; now they land.
+  Sample B (same submission) started 11:01: 12306 `df60e5072a9a`, Bookstack `f2d259d182b7`, Ctrip
+  `66c719aedcad`, Keep `61fa7531580f`, Prestashop `80d4434870dd`, StackOverflow `a49aa2ec0296`.
