@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-18 17:45 (Fable + owner; read this section, then progress.md from "17:40")
+# Current handoff — 2026-09-18 17:55 (Fable + owner; read this section, then progress.md from "17:40")
 
 Branch `goal/round-1` (head pushed) = main `ff686e3` + the day's commits; open a PR to main when round 19 is
 judged. Doctrine: ADR 0001 (gate → scaffold → table → prose), ADR 0002 (model policy). Working mode set by
@@ -22,9 +22,10 @@ the owner: Fable and the owner directly, no Codex/Opus dispatch. `arcbench` need
   `<work-dir>/artifacts/*/error-context.md` (the "waiting for" line names the rung the ladder fell to).
 
 ## Next
-1. Ctrip is 19/125 in both round-19 samples (36/37 in round 17; the drop began in round 18). Attribute the
-   round-19 Ctrip bundle (download `586c93b426ce`, `scripts/attribute_runs.py`, local replay, error contexts)
-   before changing anything; suspects are the §7b exact-name rule and the vocabulary table on a Chinese app.
+1. **Round 20 running** (Web only, submission `2108891b5706`, ids `r20{a,b}-runs-arc-bench-web.json`, a poller
+   writes `r20-final.json`): round 19 + the restored Chinese-app paragraph (Ctrip attribution in progress
+   17:55). Keep if Ctrip returns to ≥ 36 and the other five hold round 19's band; then this is the package
+   for the formal round unless something else moves.
 2. Candidate gate: jsdom walk that clicks each seed link on the list screens and expects the main heading to
    become the link text (Bookstack r18a route bug, 20 tests). Candidate rules not encoded: Bookstack's tags
    BUTTON, `Confirm Delete`, swapped `Create New Book` / `New Book` (helper contradicts the requirement).

@@ -314,3 +314,16 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   patch. Next: attribute the round-19 Ctrip bundle (families, error contexts) before touching the card.
 - Docs reorganised (`8236924`): `docs/README.md` is the map and policy; see it for where things live now.
 
+## 2026-09-18 17:55 — Ctrip attributed to the card's Chinese-app rewrite; round 20
+
+- Round-19 Ctrip bundle replays 19/125 locally (platform 19/19). Every failure waits for `/邮箱.*用户名.*手机号/`
+  (login) or `/到达城市/` (flight search) or the registration agreement; 106 cascade from those. The round-17
+  app wrote `账号 Account` + placeholder `邮箱/用户名/手机号` and `出发城市 Origin` / `到达城市 Destination`; the
+  round-19 app wrote `手机号/用户名/邮箱` and `出发地` / `到达地`. The difference is the card: the §7b rewrite
+  (round 18) reduced the Chinese-app paragraph to "quoted names exact, bilingual label only when nothing is
+  quoted", and the model took the fields' wording as free. Restored the explicit list of product-worded
+  bilingual fields (commit on goal/round-1). Not the vocabulary table: SO's prose nouns came back in
+  round 19 with the footer alone, and the Ctrip words are not in any quoted phrase either way.
+- Round 20 = round 19 + that paragraph, Web only, two samples (submission `2108891b5706`, 17:52).
+  Judge Ctrip against 19/19 and 36/37; everything else should hold round 19's band.
+

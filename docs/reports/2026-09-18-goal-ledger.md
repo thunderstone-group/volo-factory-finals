@@ -52,6 +52,7 @@ Keep every candidate package and its run ids under `runs/2026-09-18-goal/`.
 | 19a | 3d5bb7a3cc1b (`dab1c49` + `7169cb9`: content_filter continues on the fallback model; scaffold renders in the click's task, logo button, footer layout nouns; card: form names, label+placeholder; checklist note) | 29/32 | **33/34** | 50/66 | **66/86** | 51/135 | 19/125 | **65.5%** | scaffold sync render + prose-noun footer + content_filter path | **kept** (pair 65.5/60.0 vs 65.2/58.7); SO's five prose tests back; Ctrip still low (19/19 vs 36/37 in r17) |
 | 19b | 3d5bb7a3cc1b (second sample) | 22/32 | 29/34 | 43/66 | **69/86** | 61/135 | 19/125 | 60.0% | none | |
 | lite19 | 0aa67e9eaa9b (arc-bench-lite, same package) | 12/32, 13/32 | **24/34, 24/34** | | | | | **54.0% / 55.6%** | holdout, two samples | Bookstack 6/7 → 24/24 (the click-ladder race was the whole story); Lite board 55.6%, rank 6 |
+| 20 | 2108891b5706 (r19 + card: Chinese-app paragraph lists the bilingual, product-worded fields again — `账号 Account` / placeholder `邮箱/用户名/手机号`, `出发城市 Origin`, `到达城市 Destination`; commit `HEAD` of goal/round-1) | | | | | | | | one change: Ctrip attribution (r19 bundle: `出发地/到达地`, reversed placeholder → /到达城市/ and /邮箱.*用户名.*手机号/ match nothing, 106 cascade) | Web only, two samples 17:52 (`r20{a,b}-runs-arc-bench-web.json`); judge Ctrip against 19/19 (r19) and 36/37 (r17), other tasks against r19 |
 
 ## Reading at 06:50 (Fable stops launching rounds here; balance CNY 93)
 
