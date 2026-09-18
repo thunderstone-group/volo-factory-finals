@@ -458,3 +458,27 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   blocks; collision repair renaming the mandated name). Each is now a bounded, tested rule.
 - **Round 26 = r25 + this**, Web `6d58dedfc0b5`, Lite `dc788a8eb93d`, two samples each, 01:00. Balance ≈ CNY 95.
 
+## 2026-09-19 01:35 — Round 26 read (three bad samples, two fixed), round 27 started; balance CNY 56
+
+- r26 Web a: Keep 25, Bookstack **32**, SO 47, PS 64, Ctrip 34, 12306 pending. Web b **51.5%**: Keep 18, Bookstack 27,
+  SO 46, PS 47, 12306 48, Ctrip 37. Lite 69.7 / 43.9 (Keep **21**/20, Bookstack 25/**9**).
+- Lite Bookstack b 9/34: draft with six click handlers throwing `this.shelfForm is not a function`; the repair fixed
+  all six and exposed one newly reachable throw (Save Draft); the acceptance demanded a clean app, rejected it, and
+  the six-fault draft shipped. **Fixed `45a9182`**: a repair is kept when nothing whole-app remains and it is strictly
+  better (clean, or a whole-app failure removed, or fewer problems than before).
+- 12306 b 48/135: the collision gate asked to rename the button "Contact information" (shares a word with a field);
+  the new pinned-name rule then rejected the repair for "renaming" that quoted name and quoted MESSAGES ("Please
+  enter a new email address."); the collision-laden draft shipped. **Fixed `e439539`**: a button/radio whose name
+  the requirement quotes is never a collision to fix, and only phrases quoted in a control context (≤ 5 words, no
+  sentence punctuation; the filter shared with exact_name_gaps) are pinned across a repair.
+- Web Keep b 18/32 (gates clean, no repair): replay 18/14; REQ-6.2 toggles the sidebar, the app stores
+  `sidebarCollapsed` in `ARC.state` which `ARC.save` PUTs to `/api/state`, and the other three workers then find
+  every sidebar entry hidden (7 tests: Reminders / Notes / Archive / Trash / Edit labels). Candidate scaffold rule,
+  not done: view flags (collapsed, grid/list, theme) live outside the saved state. Prestashop b 47/86 (repair
+  accepted): category links `Men`/`Women` hidden behind a collapsed menu (same shape), product names
+  "Hummingbird checkout-step t-shirt" (seed per step), 15 unstable-click waits. Both are content/scaffold work.
+- **Round 27 = r26 + `45a9182` + `e439539`**, Web `f1f64dec4e4c`, Lite `97082c9ded7c`, two samples each, 01:33.
+  Balance **CNY 56** before it (a Web+Lite round costs about CNY 15–20, more than the CNY 5 estimated this morning).
+  The owner said budget is not a guard before the preliminary, but the goal-mode rule says stop below CNY 50:
+  **no round 28 tonight without the owner**; ask the organizer for a top-up.
+
