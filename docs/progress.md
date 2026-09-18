@@ -905,3 +905,13 @@ each rule snapshot and experiment with date and source.
   architecture knowledge base for ARC; the screen-walk gate is the TDD analogue; research obra/superpowers
   for flash. Recorded in `docs/distillation-2026-09-18.md` (assessment: only its plan discipline
   transfers, as a planning stage; multi-agent parts are the route lost on 09-15) and ADR 0001/0002.
+- Scaffold shipped (`25e7d44`, level 1 of the ladder): `oneshot/scaffold/` (328 lines: backend with process
+  guards + static + `/api/health` + `/api/state`; `lib/arc.js` primitives — layout with landmarks on every
+  route, hash router, in-memory store with write-through, inert dialogs, `role=status` notifications with
+  Undo, hover-revealed row actions, delegated `data-action` events; `app.js`/`seed.js` example stubs). For a
+  fresh generation it is placed in the stage first and shown in the prompt as the base to extend; a static
+  gate keeps the shell and primitives defined. `ONESHOT_SCAFFOLD=0` disables it. Bare scaffold passes every
+  gate; `tests_oneshot` 64 green; the package carries the directory. Local Keep probe running (13:35).
+- Generic-card ablation partial (13:35): Keep 29/22, Bookstack 24/32 (§6a removed and Bookstack did not
+  collapse), SO sample B **0/0** — one 865 s call, `finish=stop`, "no file blocks in the response", and the
+  pipeline exits after that single call instead of asking again.
