@@ -145,6 +145,12 @@ text field first in DOM order). Exception: a requirement that names a region lit
 `<section aria-label="Contact information">` whose name shares no word with any field label on that screen.
 ## 8. Mechanics
 - Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
+- Every repeated record (note, book, product, question, order) is an `<article>`; suites scope a row's
+  actions as `getByRole('article').filter({has: getByText(title)}).getByRole('button', {name})`.
+- A search field is `<input type="text" aria-label="Search">` (role textbox), never `type="search"`: one
+  suite generation asks for `getByRole('textbox', {name: /^Search$/i})`.
+- Sidebar entries (labels, filters, Archive, Trash) are the scaffold's `<button>`s inside `<aside>`; header
+  entries are links.
 - Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
   header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
   only its feed loses every header, navigation, login and sidebar test at once (one StackOverflow run: 1/66).

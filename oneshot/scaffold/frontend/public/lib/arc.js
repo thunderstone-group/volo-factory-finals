@@ -25,20 +25,25 @@
 
   // --- Layout: EVERY screen, the home screen included, renders through this one function so the same
   // header (landmark + navigation + account controls), sidebar, main and footer exist on every route.
+  // Header entries are links (navigation). Sidebar entries are BUTTONS inside <aside> (role
+  // complementary): one suite generation resolves them as `complementary >> button /^Name$/`. The aside
+  // comes AFTER <main> in DOM order (CSS puts it back on the left) so a page-wide `.first()` for a verb
+  // like /archive/i reaches a card's hover-revealed action before the sidebar's "Archived" entry.
   ARC.layout = function (mainHtml, route) {
     const L = window.LAYOUT || {};
     const user = ARC.currentUser();
     const link = (n) => `<a href="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</a>`;
+    const entry = (n) => `<button type="button" data-action="arc:nav" data-hash="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</button>`;
     const nav = (L.nav || []).map(link).join('');
-    const side = (L.sidebar || []).map(link).join('');
+    const side = (L.sidebar || []).map(entry).join('');
     return `<header class="app-header">
   <a class="brand" href="#/">${ARC.esc(L.brand || 'App')}</a>
   <nav aria-label="Main navigation">${nav}</nav>
   <div class="account">${L.account ? L.account(user) : ''}</div>
 </header>
 <div class="layout">
-  ${side ? `<aside class="sidebar"><nav aria-label="Sidebar navigation">${side}</nav></aside>` : ''}
   <main id="main-content" class="main">${mainHtml}</main>
+  ${side ? `<aside class="sidebar">${side}</aside>` : ''}
 </div>
 <footer class="app-footer">${ARC.esc(L.footer || 'Footer')}</footer>`;
   };
@@ -112,6 +117,7 @@
     const app = window.APP || {};
     if (name === 'arc:undo') { const u = ARC._undo; ARC._undo = null; document.getElementById('status-root').hidden = true; if (u) u(); return; }
     if (name === 'arc:close') { ARC.closeDialog(); return; }
+    if (name === 'arc:nav') { ARC.navigate(el.dataset.hash || '#/'); return; }
     const fn = app.actions && app.actions[name];
     if (!fn) return;
     fn({ id: el.dataset.id, data: { ...el.dataset }, el, event, form });

@@ -5,7 +5,7 @@
 window.LAYOUT = {
   brand: 'App',
   nav: [{ label: 'Home', hash: '#/' }, { label: 'Items', hash: '#/items' }],
-  sidebar: [],
+  sidebar: [{ label: 'Items', hash: '#/items' }],  // rendered as buttons inside <aside>
   footer: 'Footer',
   account: (user) => user
     ? `<span>${ARC.esc(user.name)}</span><button type="button" data-action="logout">Sign Out</button>`
@@ -18,11 +18,14 @@ window.APP = {
       return `<h1>Home</h1><p>Welcome.</p>`;
     },
     items() {
-      const rows = ARC.state.items.map((it) => `<article class="row">
+      const q = (ARC.state.query || '').toLowerCase();
+      // Every repeated record is an <article>: suites scope a row's actions with getByRole('article').
+      const rows = ARC.state.items.filter((it) => !q || it.title.toLowerCase().includes(q)).map((it) => `<article class="row">
   <h3>${ARC.esc(it.title)}</h3><p>${ARC.esc(it.body)}</p>
   ${ARC.rowActions([{ label: 'Edit', action: 'edit-item' }, { label: 'Delete', action: 'delete-item' }], it.id)}
 </article>`).join('');
-      return `<h1>Items</h1><button type="button" data-action="new-item">New Item</button>${rows}`;
+      // A search field is a plain text input labelled exactly (role textbox, never type="search").
+      return `<h1>Items</h1><input type="text" aria-label="Search" data-change="search-items"><button type="button" data-action="new-item">New Item</button>${rows}`;
     },
     login() {
       return `<h1>Log in</h1><form data-action="login">
@@ -63,6 +66,7 @@ window.APP = {
   <label for="title">Title</label><input id="title" name="title" value="${ARC.esc(it.title)}">
   <button type="submit">Save</button> <button type="button" data-action="arc:close">Cancel</button></form>`, { title: 'Edit Item' });
     },
+    'search-items'({ el }) { ARC.state.query = el.value; ARC.render(); },
     'save-item'({ el, form }) {
       const it = ARC.state.items.find((x) => x.id === el.dataset.id);
       it.title = form.title; ARC.save(); ARC.closeDialog(); ARC.render(); ARC.notify('Item saved');
