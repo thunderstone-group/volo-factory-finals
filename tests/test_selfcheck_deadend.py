@@ -4,7 +4,7 @@ Model transport here is synthetic; the Node checks, server and verification are 
 Reproduces two observed losses: the nav-race first generation, where a frozen check
 called assert(locator).toBeVisible() and no product repair could satisfy it, and the
 local gate that scored a generation produced without a browser.
-See docs/selfcheck-deadend-2026-09-14.md.
+See docs/archive/legacy-harness/selfcheck-deadend-2026-09-14.md.
 """
 import json
 import shutil

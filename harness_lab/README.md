@@ -13,9 +13,9 @@ requests implicitly. The uploaded optional acceptance runner is `volo/acceptance
 | `python -m harness_lab.pi_probe` | Run installed Pi against scripted loopback responses, optionally evaluate its artifact in Docker | None | Real Pi tools, synthetic model responses; no quality comparison |
 | `pi_adapter.py` | Prepare an explicit, isolated Pi configuration | None during preparation | Real model execution still needs a runner with sandbox, metering and budget controls |
 
-Detailed contracts: [model browser probe](../docs/acceptance.md),
-[external process runner](../docs/external-gate.md),
-[container runner and Pi protocol](../docs/verified-harness-core.md).
+Detailed contracts: [model browser probe](../docs/archive/legacy-harness/acceptance.md),
+[external process runner](../docs/archive/legacy-harness/external-gate.md),
+[container runner and Pi protocol](../docs/archive/legacy-harness/verified-harness-core.md).
 
 The process runner and container runner are retained as explicit experiments with
 different contracts. Neither runs in addition to the pinned production acceptance
@@ -31,5 +31,5 @@ it is used to rank executors. Report coverage, failures and unverified requireme
 
 `python -m harness_lab.calibrate_logout` runs the E047-specific 0/400 ms logout
 controls with original, self-check-weakened and one-label-corrected copies. See
-[the measured result](../docs/logout-calibration-2026-09-12.md). It is a narrow
+[the measured result](../docs/archive/legacy-harness/logout-calibration-2026-09-12.md). It is a narrow
 laboratory case, not a general product rule or an official score.

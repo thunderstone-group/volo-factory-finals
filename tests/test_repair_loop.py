@@ -3,7 +3,7 @@
 Every payload here is taken from a retained trace: the edits that never applied and the
 KeyError reported to the model as "'path'" are the literal arguments of official run
 8abb7f040604, calls 3 to 7. Model transport is synthetic; Node, the server and the
-verification are real. See docs/repair-loop-autopsy-2026-09-14.md.
+verification are real. See docs/archive/legacy-harness/repair-loop-autopsy-2026-09-14.md.
 """
 import hashlib
 import json
