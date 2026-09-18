@@ -424,3 +424,20 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   (balance CNY 116 before). Detached waiter `runs/2026-09-18-goal/r24-wait.sh` writes `r24-final.json` +
   `r24-final.done`. Judge: no drop vs r22 (63.5 / 64.2, Lite 61.9 / 61.8); then r24 is the candidate and PR #38 merges.
 - Dropped from the list: the "jsdom check that `/` settles" (its premise was the hang).
+
+## 2026-09-19 00:15 — Round 24 kept (67.8% sample); Keep b protocol crash fixed; round 25 started
+
+- r24 Web a: Keep 25, Bookstack 30, SO 45, Prestashop 60, 12306 **90** (best ever), Ctrip 45 → **67.8%**, the best
+  single sample of the day (r22 63.5 / 64.2). Web b: Bookstack 29, SO 48, Prestashop **68** (best ever), Ctrip 33,
+  12306 pending, **Keep 0/0 — the agent exited 1**. Lite: **68.2 / 60.6** (Keep 20/16, Bookstack 25/24) from 61.9 / 61.8.
+- Keep b full log: call 1 cut, call 2 completed, then `[oneshot] failed: file closing marker without an open
+  block`. The continuation's content began with leaked reasoning ending `Writing the output.</think>=== FILE:
+  frontend/public/seed.js ===` on ONE line: the marker was not a full-line match, was ignored as prose, and the
+  next `=== END ===` was "without an open block" — the whole task died on protocol strictness, with eight good
+  file blocks in hand. Fixed (`8c96fe4`, 79 green): between blocks, a line that ends with a well-formed marker
+  opens it; the prefix counts as prose outside blocks; inside a block the line stays content.
+- **Round 25 = r24 + that fix**, Web `362bc22182ff` and Lite `1a37de39c710`, two samples each, started 00:12
+  (the platform's own API cut two `run` calls with TLS EOF / IncompleteRead first; the uploads had landed, the
+  runs were started on retry — check `arcbench runs` before re-issuing). Waiter `r25-wait.sh` → `r25-final.json`.
+- arcbench-cli PR #8: `download`/`archive` resume with `Range` after a cut stream (the r23a bundle needed it).
+

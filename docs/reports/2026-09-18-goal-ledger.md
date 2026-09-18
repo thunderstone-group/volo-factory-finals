@@ -64,7 +64,10 @@ Keep every candidate package and its run ids under `runs/2026-09-18-goal/`.
 | 23b | (second sample) | 26/32 | 26/34 | 47/66 | 55/86 | **0/0** | 36/125 | 53.6% | none | 12306 b: three flash stream cuts → qwen3.7-plus draft re-emitted seed.js → `duplicate file block` ValueError → whole-task zero (fixed: the later block wins) |
 | lite23 | (arc-bench-lite, same package) | 16/32, 12/32 | 24/34, 25/34 | | | | | 60.3% / 55.5% | | Lite Keep did not move (17/16 → 16/12); the editor-dialog lines did not take or hurt — read the bundle before keeping any of them |
 
-| 24 | r24 = r22 + `a36bad5` duplicate file block → later wins, status span, DOM probe timeout is a problem, `node --check` syntax gate with file:line, repair kept when it removes a whole-app failure (`3cc0f24`, `d97509f`); card = r22 verbatim (round-23 lines reverted `7bec21d`). Web `5189caeffa1b`, Lite `465e2b38f27d`, two samples each, started 23:30 | | | | | | | | mechanical only | running; judge against r22 (63.5 / 64.2, Lite 61.9 / 61.8) |
+| 24a | r24 = r22 + `a36bad5` duplicate file block → later wins, status span, DOM probe timeout is a problem, `node --check` syntax gate with file:line, repair kept when it removes a whole-app failure (`3cc0f24`, `d97509f`); card = r22 verbatim (`7bec21d`). Web `5189caeffa1b` | 25/32 | 30/34 | 45/66 | 60/86 | **90/135** | 45/125 | **67.8%** | mechanical only | **kept**: best single sample so far; 12306 and Prestashop b at all-time highs |
+| 24b | (second sample) | **0/0** | 29/34 | 48/66 | **68/86** | pending | 33/125 | — | none | Keep b: agent exit 1 — `</think>=== FILE: seed.js ===` on one line, marker unrecognised, next END 'without an open block' (fixed `8c96fe4`) |
+| lite24 | (arc-bench-lite `465e2b38f27d`, same package) | **20/32**, 16/32 | 25/34, 24/34 | | | | | **68.2% / 60.6%** | | from 61.9 / 61.8; Lite Keep 20 is a new high |
+| 25 | r24 + glued-marker parser fix (`8c96fe4`). Web `362bc22182ff`, Lite `1a37de39c710`, two samples each, started 00:12 | | | | | | | | protocol only | running; judge against r24 |
 
 ## Reading at 06:50 (Fable stops launching rounds here; balance CNY 93)
 
