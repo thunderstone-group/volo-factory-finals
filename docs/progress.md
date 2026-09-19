@@ -531,3 +531,39 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   200.357 s: **214 passed, 12 skipped, zero failures/errors**. Skips are not passes; this does not establish
   isolated verifier/container or real-browser task coverage.
 
+## 2026-09-19 08:07 UTC — View-state official Lite validation and branch push
+
+- Owner authorized checking pass rates and pushing. Code `be89f837` was pushed to
+  `origin/fix/view-state-isolation-20260919` and read back; main remains `248eb656`.
+  The unchanged 12-file package SHA-256 is `1868b77e2c53a33656461ae8a6b304367f8c167687b7002420fb02fb55bb2819`.
+  Lite upload `bb1916e26b45` was downloaded and hash-verified. No new Web upload or merge.
+- Bounded plan: exactly one Bookstack and one Keep generation, serial, same frozen package
+  and `deepseek-v4-flash`; no local gateway calls. Full preflight returned 544 runs with none
+  executing; two unrelated historical PENDING runs were unstarted and untouched. A second
+  full preflight ran before Keep. A polling timeout did not cause a duplicate launch.
+- **Bookstack `8418091af0b5`: 22/34 (64.7%)**, cost CNY 0.709980, 94,104 tokens.
+  **Keep `252a73d92695`: 15/32 (46.9%)**, cost CNY 1.052284, 159,480 tokens.
+  Both terminal with test failures, not generation failure. **Pooled 37/66 = 56.0606%**;
+  task-equal mean 55.7904%; total CNY 1.762264. Latest r27 controls were 22/34 + 14/32 =
+  36/66: only one net additional pass. Historical comparison, not a fresh paired test or
+  causal/generalization proof; do not promote this sample over main r27.
+- Bookstack's old/new failed-case sets differ by four cases in each direction. Keep loses
+  four old failures and gains three. All final case names and comparison boundaries are in
+  [official Lite evidence](evidence/2026-09-19-view-state-official-lite.json).
+- Fresh regression rerun: **91 passed, zero failures/errors/skips**, 89.194 seconds. Initial
+  fresh shell lacked Node and skipped 32; that receipt remains separate. Only the existing
+  Node 22 directory was added to PATH. The previously sandbox-denied LocalHTTPTests was not
+  rerun or counted; the legacy suite was not rerun in this scored continuation.
+- Downloaded immutable Bookstack bundle SHA-256
+  `832aea526d315d3006df2edecb3ffe51f45d813afd753d0e4f790e95cb7de9ee`.
+  Its source uses ARC.view for search/from-shelf context but omits shelf edit/delete dispatch.
+  An isolated Node VM with synthetic shelf state confirms both suffixed routes return exactly
+  the details output despite existing form/delete renderers. This is not an official browser
+  replay or proof of recovered points. Next lever: validate action/navigation outcomes, not
+  just absence of exceptions. No scored source, test or frozen package was changed.
+- Post-run board snapshots: Web **72.3%, rank 6**; Lite **69.5%, rank 9**. These are platform
+  leaderboard records, not this branch's sample score. All raw platform diagnostics and app
+  files remain under ignored `runs/2026-09-19-view-state-eval/`; only sanitized evidence and
+  documentation are versioned. Prior handoffs archived verbatim as `2026-09-19-0717.md` and
+  `2026-09-19-0751.md`; current handoff records both runs as finished.
+

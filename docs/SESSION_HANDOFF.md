@@ -1,59 +1,67 @@
-# Current handoff — 2026-09-19 (view-state isolation; read the last section of progress.md next)
+# Current handoff — 2026-09-19 08:07 UTC (official Lite complete; read the last section of progress.md next)
 
 ## Working line
 
-`volo-factory` remains the only main project. The live main checkout was clean at `248eb656d55a2888c3abd9afa00780471e848885`
-(PR #38 already merged), not the parked `minimal-feedback-v1` / thin line. Those historical Bookstack/Keep runs
-already have final receipts; do not repeat them from an old conversation memory.
+The owner requested checking pass rates and pushing the branch. Code commit
+`be89f837f8e0d5e5b0b395a71c255f70a523742c` was pushed and read back from
+`origin/fix/view-state-isolation-20260919`. This worktree is
+`../volo-factory-worktrees/view-state-isolation-20260919/`. Main remains
+`248eb656d55a2888c3abd9afa00780471e848885`; no merge or new Web submission was made.
 
-This continuation uses `fix/view-state-isolation-20260919` in
-`../volo-factory-worktrees/view-state-isolation-20260919/`, based on that main commit. Direct work through
-wanctl and WebCodex; no delegated coding agent or model dispatch. Do not merge or promote this experiment
-on deterministic tests alone. ADR 0001 and ADR 0002 remain in force.
+The experiment remains frozen at `runs/2026-09-19-view-state/candidate-a.zip`, 12 files,
+126748 bytes, SHA-256 `1868b77e2c53a33656461ae8a6b304367f8c167687b7002420fb02fb55bb2819`.
+It was uploaded once to Lite as `bb1916e26b45` (`volo-view-state-be89f83`, Flash), with
+matching uploaded/downloaded archive hashes. The saved Lite submission is now this
+experiment; that does not promote it over the main r27 source candidate.
 
-## Completed locally
+## Official result — both planned runs are finished; do not relaunch
 
-- Added `ARC.view`, a page-local deep copy of optional `window.VIEW_SEED`, separate from the shared
-  `ARC.state` serialized by `ARC.save`. Migrated the scaffold's search example; it preserves and escapes
-  the input on rerender and no longer uploads the query when a record is created/saved. The scaffold
-  definition gate detects a removed `ARC.view` assignment without requiring one whitespace style.
-- The original search-then-create regression failed before the change with `search leaked into shared
-  /api/state`. All 9 new tests now pass. The selected one-shot/Evolution/smoke suite passes 91 tests with
-  zero failures/errors/skips; the previously sandbox-denied `LocalHTTPTests` was not rerun or counted.
-  The frozen legacy suite completed 226 tests: 214 passed, 12 skipped, zero failures/errors (200.357 s).
-  Skipped integration coverage is not validated.
-- A separate two-page jsdom replay passed the actual delegated search/change, create click, form submit,
-  save and synchronous navigation path. Fetch responses remain synthetic; this is not a real-browser
-  or official-task replay. Source syntax checks passed. Two experimental builds are byte-identical.
-- Package: `runs/2026-09-19-view-state/candidate-a.zip` (12 files, 126748 bytes), SHA-256
-  `1868b77e2c53a33656461ae8a6b304367f8c167687b7002420fb02fb55bb2819`.
-  The sibling verification JSON and DOM replay retain local evidence; versioned evidence is
-  [evidence/2026-09-19-view-state.json](evidence/2026-09-19-view-state.json).
+One independent generation per task, serial, on the same package and configured
+`deepseek-v4-flash`. No local gateway/model calls or extra best-of retries were made.
 
-## Candidate and evidence boundaries
+- Bookstack `8418091af0b5`: **22/34 (64.7%)**, 94,104 tokens, CNY **0.709980**.
+- Keep `252a73d92695`: **15/32 (46.9%)**, 159,480 tokens, CNY **1.052284**.
+- Pooled cases: **37/66 = 56.0606%**. Task-equal mean: **55.7904%**. Total CNY **1.762264**.
+  Both platform statuses are FAILED because some tests failed; generation and testing completed.
 
-The official candidate remains **r27**, unchanged in the main worktree's `runs/2026-09-18-goal/`:
-Web submission `f1f64dec4e4c`, Lite `97082c9ded7c`. No new upload, model call, official run, score or
-leaderboard claim was made here. The page-local primitive does not automatically migrate arbitrary
-generated apps, enforce dataflow through aliases, or implement account-scoped persisted preferences.
+Latest retained r27 controls were Bookstack 22/34 and Keep 14/32, pooled 36/66. This sample
+adds one passed case overall, not established causal/generalizable improvement. Bookstack
+loses four old failures but gains four others; Keep loses four and gains three. This is a
+historical descriptive comparison, not a fresh paired experiment. Do not merge/promote it.
 
-Correction to the 01:35 attribution: the retained r26b Keep source confirms that `toggle-sidebar`
-stores `sidebarCollapsed` in `ARC.state` and uploads it. However, source inspection found no frontend
-GET `/api/state`, localStorage or sessionStorage read-back path. The claimed seven cross-worker failures
-are therefore **not established by this continuation**, and this fix does not claim to recover them.
+Final receipts and all failed-case names are in
+[evidence/2026-09-19-view-state-official-lite.json](evidence/2026-09-19-view-state-official-lite.json).
+Raw CLI outputs, diagnostic files and private billing receipts remain in ignored
+`runs/2026-09-19-view-state-eval/`. The final balance receipt has no pending billing events.
+The serial driver timed out once while Keep was still active; continuation only polled
+the existing run. There were exactly two new official run IDs, not duplicate launches.
 
-The live balance snapshot at `2026-09-19T07:03:08Z` was **CNY 238.450707**, with no pending billing events;
-the old approximate CNY 40 balance is obsolete. The latest 20 returned runs were terminal, but that is
-not an exhaustive active-run preflight. Use `~/.local/bin/arcbench --env-file
-~/.config/arcbench/volo.env`; never source or print the credential file.
+## Deterministic checks and diagnostic finding
 
-## Next
+Fresh selected regressions: **91/91 passed**, zero failures/errors/skips, 89.194 seconds.
+The first fresh-shell attempt lacked Node on PATH (59 passed, 32 skipped); the successful
+rerun added the existing Node 22 bin path, without permission changes. The previously
+sandbox-denied LocalHTTPTests remained excluded. No new legacy-suite result is claimed.
 
-Review this branch, then use runtime attribution and a fixed-package paired comparison before replacing
-r27. Any paid continuation needs a fresh full active-run/balance preflight and an explicit sampling plan;
-no round 28 was started here. Other unchanged levers: requirement-driven header navigation roles (do not
-nest interactive controls to satisfy both roles), the large-task planning stage, and seed-link heading
-walk validation. Keep official inputs and retained bundles immutable.
+The retained Bookstack app uses `ARC.view.globalQuery` and `ARC.view.fromShelf`. It also
+contains a concrete dispatch defect: shelf Edit/Delete buttons navigate to suffixed
+routes, but `shelvesScreen` ignores that suffix and returns the details page. An isolated
+Node VM replay with synthetic one-shelf state confirms both route outputs equal the
+details output even though edit/delete renderers exist. This is not a browser replay,
+not an evaluator modification, and not proof of how many official cases a fix recovers.
+Next useful experiment: requirement-driven navigation/action outcome validation, rather
+than treating a nonthrowing click or changed URL as sufficient. Keep the current scored
+package and generated bundle immutable; use a new branch/candidate for further changes.
 
-The previous handoff is archived verbatim at `archive/handoffs/2026-09-19-0210.md`; the index is
-`archive/README.md`. Historical board values, download/CLI status and deadlines must be rechecked before use.
+## Board and continuation boundaries
+
+Post-run platform snapshots still show **Web 72.3%, rank 6** and **Lite 69.5%, rank 9**
+for VOLO AI. Those are leaderboard records, separate from this branch's 37/66 sample.
+They must not be attributed to the view-state change or mixed with pooled case fractions.
+
+Initial full preflight returned 544 of a requested 1000 runs, none executing. Two old
+unstarted pending runs in other competitions were left untouched; a second full check
+ran before Keep. A future paid continuation needs a new live preflight and bounded plan.
+Previous handoffs are preserved verbatim at `archive/handoffs/2026-09-19-0717.md` and
+`archive/handoffs/2026-09-19-0751.md`. Final documentation belongs on this same branch,
+not main; verify live Git state before continuing.

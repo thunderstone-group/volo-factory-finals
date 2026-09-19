@@ -1,0 +1,356 @@
+{
+  "schema": "volo.official-lite-validation.v1",
+  "recorded_at_utc": "2026-09-19T08:07:12Z",
+  "repository": "thunderstone-group/volo-factory",
+  "branch": "fix/view-state-isolation-20260919",
+  "source_commit": "be89f837f8e0d5e5b0b395a71c255f70a523742c",
+  "main_commit_unchanged": "248eb656d55a2888c3abd9afa00780471e848885",
+  "source_push_verified": true,
+  "candidate_promoted_or_merged": false,
+  "package": {
+    "sha256": "1868b77e2c53a33656461ae8a6b304367f8c167687b7002420fb02fb55bb2819",
+    "downloaded_sha256": "1868b77e2c53a33656461ae8a6b304367f8c167687b7002420fb02fb55bb2819",
+    "archive_verified": true,
+    "file_count": 12,
+    "bytes": 126748
+  },
+  "submission": {
+    "id": "bb1916e26b45",
+    "display_name": "volo-view-state-be89f83",
+    "model_name": "deepseek-v4-flash",
+    "catalog": "competition",
+    "competition_id": "arc-bench-lite",
+    "requirement_id": "arc-bench-lite--__agent__",
+    "runtime": "python",
+    "agent_source": "upload",
+    "original_filename": "candidate-a.zip",
+    "created_at": "2026-09-19T07:38:18.266589"
+  },
+  "design": {
+    "samples_per_task": 1,
+    "serial": true,
+    "new_official_runs": 2,
+    "local_model_calls": 0,
+    "model": "deepseek-v4-flash",
+    "controls": "Retained r27 runs; historical descriptive comparison, not a fresh paired efficacy experiment.",
+    "max_new_runs": 2
+  },
+  "preflight": {
+    "run_limit_requested": 1000,
+    "run_count_returned": 544,
+    "executing_runs": 0,
+    "historical_unstarted_pending_in_other_competitions": 2,
+    "full_preflight_repeated_before_keep": true
+  },
+  "regression": {
+    "tests": 91,
+    "passed": 91,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 89.194,
+    "first_attempt": {
+      "passed": 59,
+      "skipped": 32,
+      "reason": "Fresh remote shell omitted existing Node installation from PATH."
+    },
+    "rerun_change": "Existing Node 22 bin directory added to command PATH; no permission changes.",
+    "excluded": "Previously sandbox-denied test_oneshot.LocalHTTPTests; not rerun or counted."
+  },
+  "runs": {
+    "bookstack": {
+      "run_id": "8418091af0b5",
+      "requirement_id": "arc-bench-lite--bookstack",
+      "submission_id": "bb1916e26b45",
+      "status": "FAILED",
+      "passed": 22,
+      "failed": 12,
+      "pass_rate": 64.7,
+      "tokens": 94104,
+      "duration_seconds": 480,
+      "finished_at": "2026-09-19T07:49:44.722116",
+      "cost": {
+        "amount": 0.70998,
+        "currency": "CNY"
+      },
+      "failed_tests": [
+        {
+          "name": "REQ-4.3.1: Create Shelf",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-4.4.1: Confirm Delete Shelf",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-4.4.2: Cancel Delete Shelf",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-4.5.1: Save Shelf Edits",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-4.5.2: Cancel Shelf Edits",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-5.3.1: Fill out and Save Book",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-5.3.2: Cancel Creating Book",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-5.4.1: Save Book Edits",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-5.5.1: Confirm Delete Book",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-5.6.1: Fill out and Save Book with Shelf",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-6.1.3: Delete Draft",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-8.2: Quick Navigation from Favorites",
+          "status": "timedOut"
+        }
+      ]
+    },
+    "keep": {
+      "run_id": "252a73d92695",
+      "requirement_id": "arc-bench-lite--keep",
+      "submission_id": "bb1916e26b45",
+      "status": "FAILED",
+      "passed": 15,
+      "failed": 17,
+      "pass_rate": 46.9,
+      "tokens": 159480,
+      "duration_seconds": 717,
+      "finished_at": "2026-09-19T08:05:23.146501",
+      "cost": {
+        "amount": 1.052284,
+        "currency": "CNY"
+      },
+      "failed_tests": [
+        {
+          "name": "REQ-2.3.3: Trash list",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.5.1: Archive",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.5.2: Archive Undo",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.5.3: Show archived notes",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.5.4: Unarchive",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.6.1: Change note color",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.6.2: Choose note color when created",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.7.1: Assign label to a note",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.7.2: Remove label from a note",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.7.6.1: View list filtered by label",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.7.6.2: View all notes",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.7.6.3: View Reminders",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-2.8.2: Unpin note",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-3.1: Initial suggested filters",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-4.1: Setting options list",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-6.1: Items and styling",
+          "status": "timedOut"
+        },
+        {
+          "name": "REQ-6.2: Collapsible Sidebar",
+          "status": "timedOut"
+        }
+      ]
+    }
+  },
+  "totals": {
+    "passed": 37,
+    "total": 66,
+    "pooled_case_pass_rate_percent": 56.06060606060606,
+    "task_equal_mean_pass_rate_percent": 55.79044117647059,
+    "cost_cny": 1.762264
+  },
+  "historical_latest_r27": {
+    "bookstack": {
+      "run_id": "1b3a6ea54535",
+      "passed": 22,
+      "failed": 12,
+      "pass_rate": 64.7
+    },
+    "keep": {
+      "run_id": "ec7fed97b047",
+      "passed": 14,
+      "failed": 18,
+      "pass_rate": 43.8
+    },
+    "pooled_passed": 36,
+    "pooled_total": 66,
+    "pooled_pass_rate_percent": 54.54545454545455
+  },
+  "failure_set_change_vs_historical": {
+    "bookstack": {
+      "old_failures_not_in_new": [
+        "REQ-6.1.2: Save Draft",
+        "REQ-7.1: Add to Recently Viewed",
+        "REQ-7.2: Quick Navigation from Recently Viewed",
+        "REQ-9.1: Quick Navigation from Recently Updated"
+      ],
+      "newly_failed": [
+        "REQ-4.4.1: Confirm Delete Shelf",
+        "REQ-4.4.2: Cancel Delete Shelf",
+        "REQ-4.5.2: Cancel Shelf Edits",
+        "REQ-5.5.1: Confirm Delete Book"
+      ]
+    },
+    "keep": {
+      "old_failures_not_in_new": [
+        "REQ-2.2: Create Note",
+        "REQ-2.4: Update Note",
+        "REQ-2.7.4: Assign default label when creating note",
+        "REQ-2.8.3: Pin note when creating it"
+      ],
+      "newly_failed": [
+        "REQ-2.7.6.1: View list filtered by label",
+        "REQ-2.7.6.2: View all notes",
+        "REQ-2.7.6.3: View Reminders"
+      ]
+    }
+  },
+  "leaderboard_snapshots": {
+    "web": [
+      {
+        "rank": 6,
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "track": "arc-bench-web",
+        "avg_pass_rate": 72.3,
+        "avg_feature_implementation_rate": 71.9,
+        "total_token_millions": 9.433,
+        "total_token_cost": 62.04617999999999,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": null,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": false,
+        "seniority_label": "junior",
+        "avg_runtime_seconds": 1134,
+        "submission_count": 1,
+        "task_id": null,
+        "task_title": null,
+        "is_complete": true
+      }
+    ],
+    "lite_before_pair_completed": [
+      {
+        "rank": 9,
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "track": "arc-bench-lite",
+        "avg_pass_rate": 69.5,
+        "avg_feature_implementation_rate": 69.5,
+        "total_token_millions": 4.173,
+        "total_token_cost": 25.014322,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": null,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": false,
+        "seniority_label": "junior",
+        "avg_runtime_seconds": 762,
+        "submission_count": 1,
+        "task_id": null,
+        "task_title": null,
+        "is_complete": true
+      }
+    ],
+    "lite_after_pair": [
+      {
+        "rank": 9,
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "track": "arc-bench-lite",
+        "avg_pass_rate": 69.5,
+        "avg_feature_implementation_rate": 69.5,
+        "total_token_millions": 4.173,
+        "total_token_cost": 25.014322,
+        "token_cost_currency": "CNY",
+        "cost_efficiency": null,
+        "efficiency_threshold": 80.0,
+        "efficiency_eligible": false,
+        "seniority_label": "junior",
+        "avg_runtime_seconds": 762,
+        "submission_count": 1,
+        "task_id": null,
+        "task_title": null,
+        "is_complete": true
+      }
+    ],
+    "note": "Platform leaderboard aggregates are separate facts, not the new branch's two-run test score."
+  },
+  "generated_app_diagnostic": {
+    "run_id": "8418091af0b5",
+    "source_sha256": "d4476856c2860ba04c329dca7531e938e30944b86d9a2a21457d0a0201873fd9",
+    "fixture": "synthetic one-shelf ARC state; direct APP.screen route dispatch",
+    "real_browser": false,
+    "official_tests_rerun": false,
+    "modified_candidate": false,
+    "edit_button_target_present": true,
+    "delete_button_target_present": true,
+    "edit_route_identical_to_details": true,
+    "delete_route_identical_to_details": true,
+    "intended_edit_and_delete_renderers_exist": true,
+    "observed_issue": "Shelf routes ignore the edit/delete suffix and render details instead.",
+    "scope": "Confirms this generated app dispatch defect; does not assign all official failures or prove score recovery."
+  },
+  "conclusions_boundary": [
+    "No claim of causal or generalizable score improvement from one generation per task.",
+    "Bookstack route-dispatch defect reproduced with synthetic state, not an official browser replay or a score recovery.",
+    "No Web submission, merge to main, or changes to official evaluators and frozen package."
+  ]
+}
