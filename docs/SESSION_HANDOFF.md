@@ -1,50 +1,59 @@
-# Current handoff — 2026-09-19 02:10 (Fable + owner; read this section, then progress.md from "23:35")
+# Current handoff — 2026-09-19 (view-state isolation; read the last section of progress.md next)
 
-Branch `goal/round-1` (head pushed) = main `ff686e3` + the day's commits; **PR #38** goal/round-1 → main is open.
-Doctrine: ADR 0001 (gate → scaffold → table → prose), ADR 0002 (model policy). Working mode set by the owner:
-Fable and the owner directly, no Codex/Opus dispatch. `arcbench` needs `--env-file ~/.config/arcbench/volo.env`
-(never `source` it in zsh: the cookie value contains `;`).
+## Working line
 
-## State
-- Web board 72.3% (rank 5), Lite board **68.0%** (rank 7, from 55.6). Candidate = **r27** (see below); r26 a
-  (68.7%) is the best single Web sample, r24 Lite a (68.2%) the best Lite sample.
-- Tonight's three fixes are all "the gate was right, the repair/acceptance threw the good part away":
-  (1) r23a Prestashop 0/86 = parse error the DOM probe caught but the repair could not locate → `node --check`
-  syntax gate with file:line + repairs that remove a whole-app failure are kept (`3cc0f24`, `d97509f`);
-  (2) r24b Keep 0/32 = `</think>=== FILE: … ===` glued on one line → marker at end of line opens the block (`8c96fe4`);
-  (3) r25a 12306 54/135 = collision repair renamed the quoted "From"/"To" → advice names the side to rename,
-  repair rejected if a quoted control name disappears (`0ba726d`). tests_oneshot 81 green.
-- Round 26 (r25 + fix 3): Web a 25/32/47/64/?/34, b **51.5%** (three bad samples, two of them repair-acceptance
-  faults, both fixed: `45a9182` strictly-fewer-problems repairs are kept; `e439539` quoted button names are not
-  collisions and only quoted control phrases are pinned). Lite 69.7 / 43.9 (Keep 21 = new high).
-- **Round 27 kept = candidate** (`r27-candidate.zip`, oneshot/ at `e439539`): Web 60.9 / 65.3, Lite 54.4 / 54.2
-  (Lite dip = Keep variance, same repair path as r26's 21/20; progress 02:10). r26 a finished at **68.7%** (12306 91),
-  best sample of the day. **PR #38 merged**; main carries everything. `python3 runs/2026-09-18-goal/finalize_round.py <n>`
-  rebuilds any round's summary from `arcbench status` (`arcbench wait` emits JSON lines and returns on the first FAILED).
-- **Balance CNY 56 before round 27** (a Web+Lite pair round costs CNY 15–20). Goal-mode guard: stop below 50.
-  No round 28 without the owner; ask the organizer for a top-up.
-- Downloads: the platform cuts bundle streams near the end; the installed `arcbench download` fails. Use the
-  scratchpad `resume_download.py <run> <out.zip>` (Range resume) until arcbench-cli **PR #8** is merged and reinstalled.
-- Local replays: `bigtask-keep/harness_lab/state_rehearsal.py --app <app> --app-dir <bundle>/template --profile
-  hosted --work-dir <dir> --json <file>`; failure reasons: `grep -h "waiting for" <dir>/artifacts/*/error-context.md | sort | uniq -c`.
-- Full run logs need `arcbench logs <run> --offset 0 --tail 100000 --out <dir>` (default is the last 42 lines);
-  the platform redacts `***` inside the smoke JSON, so parse it with regex, not json.loads.
+`volo-factory` remains the only main project. The live main checkout was clean at `248eb656d55a2888c3abd9afa00780471e848885`
+(PR #38 already merged), not the parked `minimal-feedback-v1` / thin line. Those historical Bookstack/Keep runs
+already have final receipts; do not repeat them from an old conversation memory.
+
+This continuation uses `fix/view-state-isolation-20260919` in
+`../volo-factory-worktrees/view-state-isolation-20260919/`, based on that main commit. Direct work through
+wanctl and WebCodex; no delegated coding agent or model dispatch. Do not merge or promote this experiment
+on deterministic tests alone. ADR 0001 and ADR 0002 remain in force.
+
+## Completed locally
+
+- Added `ARC.view`, a page-local deep copy of optional `window.VIEW_SEED`, separate from the shared
+  `ARC.state` serialized by `ARC.save`. Migrated the scaffold's search example; it preserves and escapes
+  the input on rerender and no longer uploads the query when a record is created/saved. The scaffold
+  definition gate detects a removed `ARC.view` assignment without requiring one whitespace style.
+- The original search-then-create regression failed before the change with `search leaked into shared
+  /api/state`. All 9 new tests now pass. The selected one-shot/Evolution/smoke suite passes 91 tests with
+  zero failures/errors/skips; the previously sandbox-denied `LocalHTTPTests` was not rerun or counted.
+  The frozen legacy suite completed 226 tests: 214 passed, 12 skipped, zero failures/errors (200.357 s).
+  Skipped integration coverage is not validated.
+- A separate two-page jsdom replay passed the actual delegated search/change, create click, form submit,
+  save and synchronous navigation path. Fetch responses remain synthetic; this is not a real-browser
+  or official-task replay. Source syntax checks passed. Two experimental builds are byte-identical.
+- Package: `runs/2026-09-19-view-state/candidate-a.zip` (12 files, 126748 bytes), SHA-256
+  `1868b77e2c53a33656461ae8a6b304367f8c167687b7002420fb02fb55bb2819`.
+  The sibling verification JSON and DOM replay retain local evidence; versioned evidence is
+  [evidence/2026-09-19-view-state.json](evidence/2026-09-19-view-state.json).
+
+## Candidate and evidence boundaries
+
+The official candidate remains **r27**, unchanged in the main worktree's `runs/2026-09-18-goal/`:
+Web submission `f1f64dec4e4c`, Lite `97082c9ded7c`. No new upload, model call, official run, score or
+leaderboard claim was made here. The page-local primitive does not automatically migrate arbitrary
+generated apps, enforce dataflow through aliases, or implement account-scoped persisted preferences.
+
+Correction to the 01:35 attribution: the retained r26b Keep source confirms that `toggle-sidebar`
+stores `sidebarCollapsed` in `ARC.state` and uploads it. However, source inspection found no frontend
+GET `/api/state`, localStorage or sessionStorage read-back path. The claimed seven cross-worker failures
+are therefore **not established by this continuation**, and this fix does not claim to recover them.
+
+The live balance snapshot at `2026-09-19T07:03:08Z` was **CNY 238.450707**, with no pending billing events;
+the old approximate CNY 40 balance is obsolete. The latest 20 returned runs were terminal, but that is
+not an exhaustive active-run preflight. Use `~/.local/bin/arcbench --env-file
+~/.config/arcbench/volo.env`; never source or print the credential file.
 
 ## Next
-1. Owner: top-up (balance ≈ CNY 40) and whether to keep sampling the board with the r27 package (the board keeps
-   the best submission average; r26 a's 68.7% package is r26, not r27 — resubmitting r27 is the honest lever).
-2. Remaining Web losses by size: Ctrip (25–45/125; login placeholders from a screenshot, more-services menu),
-   12306 bad samples (attribute each with the replay), SO 44–48/66, Prestashop 57–68/86. Lite Keep 19–20/32:
-   the families listed in progress 22:35 need a scaffold primitive or a gate, not prose. New scaffold candidate
-   (progress 01:35): view flags (sidebar collapsed, grid/list) must not ride in the saved state — one worker's
-   REQ-6.2 toggle hid the sidebar for the other three (Keep 18/32; Prestashop's collapsed category menu is the same shape).
-   12306 r27a: 49 tests want header entries as BUTTONS named exactly `Personal` / `Book` / `Information management`
-   while the scaffold renders header entries as links (progress 02:10).
-3. Planner stage for the large tasks (untried); seed-link heading walk gate (Bookstack r18a route bug).
-4. Formal round 2026-09-21: several submissions allowed, best or average counts (owner 09-18 18:42).
 
----
+Review this branch, then use runtime attribution and a fixed-package paired comparison before replacing
+r27. Any paid continuation needs a fresh full active-run/balance preflight and an explicit sampling plan;
+no round 28 was started here. Other unchanged levers: requirement-driven header navigation roles (do not
+nest interactive controls to satisfy both roles), the large-task planning stage, and seed-link heading
+walk validation. Keep official inputs and retained bundles immutable.
 
----
-
-Older handoff sections are in `archive/handoffs/` (one file per section, newest first in `README.md`).
+The previous handoff is archived verbatim at `archive/handoffs/2026-09-19-0210.md`; the index is
+`archive/README.md`. Historical board values, download/CLI status and deadlines must be rechecked before use.

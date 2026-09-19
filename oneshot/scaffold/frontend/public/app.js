@@ -1,7 +1,9 @@
 'use strict';
 // Your application: replace this file. LAYOUT feeds ARC.layout (every screen renders through it);
 // APP.screen(route) returns the main-content HTML for the current route; APP.actions handle
-// data-action controls and call ARC.render() after changing ARC.state.
+// data-action controls and call ARC.render() after changing ARC.state or ARC.view.
+// ARC.state holds domain records and ARC.save writes ONLY those; ARC.view holds page-local
+// presentation (filters, collapsed panels, display mode), never shared with another page.
 window.LAYOUT = {
   brand: 'App',
   nav: [{ label: 'Home', hash: '#/' }, { label: 'Items', hash: '#/items' }],
@@ -18,14 +20,14 @@ window.APP = {
       return `<h1>Home</h1><p>Welcome.</p>`;
     },
     items() {
-      const q = (ARC.state.query || '').toLowerCase();
+      const q = (ARC.view.query || '').toLowerCase();
       // Every repeated record is an <article>: suites scope a row's actions with getByRole('article').
       const rows = ARC.state.items.filter((it) => !q || it.title.toLowerCase().includes(q)).map((it) => `<article class="row">
   <h3>${ARC.esc(it.title)}</h3><p>${ARC.esc(it.body)}</p>
   ${ARC.rowActions([{ label: 'Edit', action: 'edit-item' }, { label: 'Delete', action: 'delete-item' }], it.id)}
 </article>`).join('');
       // A search field is a plain text input labelled exactly (role textbox, never type="search").
-      return `<h1>Items</h1><input type="text" aria-label="Search" data-change="search-items"><button type="button" data-action="new-item">New Item</button>${rows}`;
+      return `<h1>Items</h1><input type="text" aria-label="Search" value="${ARC.esc(ARC.view.query || '')}" data-change="search-items"><button type="button" data-action="new-item">New Item</button>${rows}`;
     },
     login() {
       return `<h1>Log in</h1><form data-action="login">
@@ -66,7 +68,7 @@ window.APP = {
   <label for="title">Title</label><input id="title" name="title" value="${ARC.esc(it.title)}">
   <button type="submit">Save</button> <button type="button" data-action="arc:close">Cancel</button></form>`, { title: 'Edit Item' });
     },
-    'search-items'({ el }) { ARC.state.query = el.value; ARC.render(); },
+    'search-items'({ el }) { ARC.view.query = el.value; ARC.render(); },
     'save-item'({ el, form }) {
       const it = ARC.state.items.find((x) => x.id === el.dataset.id);
       it.title = form.title; ARC.save(); ARC.closeDialog(); ARC.render(); ARC.notify('Item saved');

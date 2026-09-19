@@ -1,0 +1,122 @@
+{
+  "timestamp": "2026-09-19T07:11:56.098991+00:00",
+  "base_commit": "248eb656d55a2888c3abd9afa00780471e848885",
+  "model_calls": 0,
+  "official_runs": 0,
+  "syntax": [
+    {
+      "path": "oneshot/main.py",
+      "parser": "python_ast",
+      "passed": true
+    },
+    {
+      "path": "tests_oneshot/test_scaffold_view.py",
+      "parser": "python_ast",
+      "passed": true
+    },
+    {
+      "path": "oneshot/scaffold/frontend/public/lib/arc.js",
+      "parser": "node_check",
+      "passed": true
+    },
+    {
+      "path": "oneshot/scaffold/frontend/public/seed.js",
+      "parser": "node_check",
+      "passed": true
+    },
+    {
+      "path": "oneshot/scaffold/frontend/public/app.js",
+      "parser": "node_check",
+      "passed": true
+    }
+  ],
+  "package": {
+    "sha256": "1868b77e2c53a33656461ae8a6b304367f8c167687b7002420fb02fb55bb2819",
+    "bytes": 126748,
+    "file_count": 12,
+    "byte_identical_builds": true,
+    "source_sha256": "324add0510634cacbe14b23241bed011f29302efc02f6cd58c1d610262074a3d"
+  },
+  "dom_replay": {
+    "exit_code": 0,
+    "stdout": "{\"passed\":true,\"dom_engine\":\"jsdom\",\"real_browser_executed\":false,\"scenario\":\"two pages, delegated search/change, create click, form submit, domain save, synchronous navigation\",\"synthetic_save_requests\":1,\"shared_payload_has_query\":false,\"model_calls\":0}\n",
+    "stderr": ""
+  },
+  "source_files": {
+    "oneshot/main.py": "52b1e7f55597e0baea05080295cb50a1c2961f3f1135a4f1d0848d168f8e6a5e",
+    "oneshot/scaffold/README.md": "8ff1ec136e7e9c8053e9c8ed0f42f573cba701443e8308ca53710f2251036be8",
+    "oneshot/scaffold/frontend/public/lib/arc.js": "471d998fce9f2fee141dba9465d99e141bdf4914eb4bec84452443f9272720da",
+    "oneshot/scaffold/frontend/public/app.js": "c229179f3a68aec02e7e7e6258708bdd72b5ae4d48e58653d00f96b68e7e0ce1",
+    "oneshot/scaffold/frontend/public/seed.js": "8f67e6a2e41d8ab400abfc790dc315f324519e2046df8b1d134182aa3d4127c3",
+    "tests_oneshot/test_scaffold_view.py": "d215d68df84f2c8a7e429ffb796ff20f41f327ee8ba3afab6f3e02a557524435"
+  },
+  "regressions": {
+    "legacy_suite": {
+      "command": "python -B -m unittest discover -s tests -v",
+      "discovered_tests": 226,
+      "passed": 214,
+      "failures": 0,
+      "errors": 0,
+      "skips": 12,
+      "seconds": 200.357,
+      "job_id": "a1bfa9bd-6a59-46e8-82cd-531a771e9920",
+      "skips_count_as_pass": false
+    },
+    "new_view_tests": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "seconds": 0.75
+    },
+    "selected_oneshot_suite": {
+      "tests": 91,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "seconds": 141.112,
+      "job_id": "16320c79-5d5a-4c1e-9c69-b7fe53588dad",
+      "classes": [
+        "test_oneshot.OfflineCase",
+        "test_oneshot.PackageTests",
+        "test_evolution.EvolutionTests",
+        "test_arc_read.ArcReadTests",
+        "test_scaffold_view",
+        "test_smoke.SmokeCase"
+      ]
+    },
+    "excluded": [
+      "test_oneshot.LocalHTTPTests: previously sandbox-denied extracted-ZIP loopback test, not rerun or counted"
+    ],
+    "red_before_patch": {
+      "tests": 1,
+      "expected_failure": true,
+      "message": "search leaked into shared /api/state"
+    },
+    "workflow_session": "wc_sess_4747161a52f4424f930ca25e25df68ab"
+  },
+  "platform_read_only_snapshot": {
+    "as_of": "2026-09-19T07:03:08.791662486Z",
+    "available_balance": "238.450707",
+    "currency": "CNY",
+    "pending_billing_events": 0,
+    "latest_runs_limit": 20,
+    "all_returned_runs_terminal": true,
+    "all_account_active_runs_checked": false
+  },
+  "scope": {
+    "official_candidate_unchanged": "r27",
+    "main_base": "248eb656d55a2888c3abd9afa00780471e848885",
+    "branch": "fix/view-state-isolation-20260919",
+    "real_browser_replay_executed": false,
+    "official_task_replay_executed": false,
+    "verified_requirements": [],
+    "automatic_migration_of_generated_apps": false,
+    "static_gate_is_only_definition_presence": true
+  },
+  "historical_attribution": {
+    "retained_bundle": "runs/2026-09-18-goal/r26b-keep-bundle/template (main worktree)",
+    "confirmed": "app.js toggle-sidebar writes ARC.state.sidebarCollapsed and calls ARC.save; ARC.save serializes the whole state",
+    "not_established": "A cross-worker read-back route causing seven failed tests. Source inspection found PUT but no frontend GET /api/state, localStorage or sessionStorage use. Requires runtime attribution, not a claimed fix."
+  }
+}

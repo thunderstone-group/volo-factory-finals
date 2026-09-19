@@ -741,7 +741,11 @@ def scaffold_context(blobs):
             "including `/`; synchronous hash routing from an in-memory store seeded by `seed.js`; row actions hidden "
             "at rest; dialogs that make the page inert; `role=status` notifications with Undo; a backend with process "
             "guards, static serving and `/api/health`. Write the application as `frontend/public/seed.js` "
-            "(`window.SEED`, every seed row the requirement names), `frontend/public/app.js` (`window.LAYOUT`: brand, "
+            "(`window.SEED`, every seed row the requirement names; optional `window.VIEW_SEED` for page-local defaults). "
+            "Use `ARC.state` + `ARC.save()` only for shared domain data; use `ARC.view` for filters, collapsed panels, "
+            "display mode and other transient presentation state. Never copy `ARC.view` into shared API payloads. "
+            "Use explicit account-scoped domain preferences only when the requirement asks for persistence. "
+            "Write `frontend/public/app.js` (`window.LAYOUT`: brand, "
             "nav, sidebar, footer text, account controls; `window.APP`: `screens`, `screen(route)`, `actions`, "
             "optional `afterRender`), and additions to `frontend/public/styles.css`. Re-emit `backend/server.js` "
             "only to add API routes inside `api()`, keeping everything it does. Do not re-emit `index.html` or "
@@ -785,6 +789,8 @@ def scaffold_gaps(stage):
         path = stage / name
         text = path.read_text(encoding="utf-8", errors="replace") if path.is_file() else ""
         missing = [sym for sym in symbols if sym not in text]
+        if name == "frontend/public/lib/arc.js" and not re.search(r"\bARC\s*\.\s*view\s*=(?!=|>)", text):
+            missing.append("ARC.view")
         if not path.is_file():
             gaps.append(f"{name} is missing; the scaffold requires it")
         elif missing:

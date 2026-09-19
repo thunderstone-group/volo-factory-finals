@@ -11,6 +11,7 @@ question is whether a primitive here can absorb it (ADR 0001).
 | `frontend/public/index.html` | shell | `#dialog-root` / `#status-root` hidden while idle (never intercept pointer events); script order seed → arc → app |
 | `frontend/public/styles.css` | row actions, dialog, status | actions `display:none` at rest, shown on `:hover` / `:focus-within` BELOW the text, never over a title |
 | `lib/arc.js` §Store | in-memory state seeded from `seed.js`, write-through | screens render synchronously in the click's tick; the click ladder probes each rung for 500 ms |
+| `lib/arc.js` §Store, `ARC.view` | page-local presentation state, deep-copied from optional `window.VIEW_SEED` | filters, expanded/collapsed panels and grid/list choice survive renders/navigation but never enter `ARC.save()`'s shared `/api/state` payload; a new page resets them without affecting shared domain records |
 | `lib/arc.js` §Router | hash routes, `ARC.navigate`, in-app link interception | every screen reachable by clicking from `/`; navigation renders in the SAME task as the click — the click ladder probes each rung with `isVisible()` (no wait) right after the click resolves, and a render deferred to the `hashchange` task loses that race (Lite Bookstack 6 → 22 of 34 with this alone) |
 | `lib/arc.js` §Layout | one layout function | header (landmark) + navigation + account controls + sidebar + main + footer on EVERY route including `/`; logo button `"<Brand> logo"` beside the brand link (both suite generations' way home); footer ends with the layout nouns as visible words (`/header/i`, `/sidebar/i` layout tests) |
 | `lib/arc.js` §Dialog | `openDialog` / `closeDialog` | siblings `inert` + `aria-hidden` while open (Playwright ignores `aria-modal`); no outside textbox visible to the fill ladder |
@@ -19,8 +20,16 @@ question is whether a primitive here can absorb it (ADR 0001).
 | `lib/arc.js` §Row actions | `rowActions([...], id)` | at most one row's actions visible at any instant, bare-verb names |
 | `lib/arc.js` §Events | delegated `data-action` / `data-change` | forms submit with their fields as an object; actions call `ARC.render()` after changing state |
 
-Gates that protect it: `scaffold_gaps` (shell still loads seed/arc/app; primitives still defined),
+Gates that protect it: `scaffold_gaps` (shell still loads seed/arc/app; primitives, including `ARC.view`, still defined),
 the DOM smoke (no throw on load, text rendered, landmarks present), the collision and vocabulary gates.
+
+State boundary: `window.SEED` / `ARC.state` are shared domain data; `window.VIEW_SEED` / `ARC.view`
+are presentation state for one page. Call `ARC.render()` after view changes, not `ARC.save()`.
+The example search follows this boundary, including its escaped value after rerender. Defaults are
+optional, so old seeds still work. This is not account-preference storage or authentication isolation:
+when requirements explicitly demand persisted preferences, implement an account-scoped domain API.
+The presence gate does not prove arbitrary generated code respects this boundary; do not claim that
+it detects aliases, manual copies into `ARC.state`, or custom fetch payloads.
 
 Validation: local Keep probe 2026-09-18 — model wrote only `app.js` + `seed.js`, primitives byte-identical,
 replay 31/32 (previous best 30/32). Platform pair = round 17.

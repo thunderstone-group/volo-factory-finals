@@ -500,3 +500,34 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - **r27 is the candidate** (`r27-candidate.zip` = oneshot/ at `e439539`); **PR #38 merged** into main (owner
   authorised). Balance about CNY 40 after r27; no round 28 without the owner.
 
+## 2026-09-19 — Page-local view state, zero-model continuation (not a new scored round)
+
+- Resumed from live main `248eb656`, not the parked thin/minimal worktree. Development is on
+  `fix/view-state-isolation-20260919`; main and the frozen r27 package remain unchanged. wanctl and
+  WebCodex were used directly; no delegated coding agent, paid model request, upload or official run.
+- Concrete reproduction in the shipped scaffold: search assigns `ARC.state.query`; creating a record
+  calls `ARC.save` and uploads that query. A new regression failed first with `search leaked into shared
+  /api/state`. Added `ARC.view`, cloned per page from optional `window.VIEW_SEED`, and migrated the search
+  example. Local view survives renders/navigation but resets on a new page; business records remain in
+  `ARC.state`. The input value also survives rerender with escaping. Persisted account preferences and
+  authentication isolation are not implemented by this primitive.
+- Validation: 9 new tests pass; the selected existing-plus-new one-shot/Evolution/smoke suite passes
+  **91 tests, zero failures/errors/skips** (141.112 s). The previously sandbox-denied extracted-ZIP
+  `test_oneshot.LocalHTTPTests` was excluded, not retried or counted. A separate jsdom replay passed the
+  actual delegated search/change, create, submit, save and navigation path using synthetic fetch. No real
+  browser or official-task replay ran. Source syntax checks passed; two 12-file, 126748-byte packages are
+  identical, SHA-256 `1868b77e2c53a33656461ae8a6b304367f8c167687b7002420fb02fb55bb2819`.
+- Retained r26b Keep source confirms `sidebarCollapsed` is uploaded, but a source search found no
+  frontend GET `/api/state` or local/session storage read-back. The 01:35 claim that this caused seven
+  other-worker failures remains unproved here. The new primitive and presence gate do not migrate or
+  prove correct arbitrary generated applications; do not count these regressions as recovered tests.
+- Balance read at `2026-09-19T07:03:08Z`: CNY **238.450707**, pending billing 0. Latest 20 runs were terminal,
+  not an exhaustive active-run check. The old CNY 40 estimate is obsolete; there is still no round 28.
+- Evidence: [2026-09-19 view-state validation](evidence/2026-09-19-view-state.json); local builds, syntax
+  receipt and DOM replay in `runs/2026-09-19-view-state/` in the new worktree. Previous handoff archived
+  byte-for-byte as `archive/handoffs/2026-09-19-0210.md`. The maintained one-shot reference now identifies
+  the scaffold package inventory and marks the superseded import-era retry/runtime claims as historical.
+- Frozen legacy regression suite: `python -B -m unittest discover -s tests -v` completed 226 tests in
+  200.357 s: **214 passed, 12 skipped, zero failures/errors**. Skips are not passes; this does not establish
+  isolated verifier/container or real-browser task coverage.
+

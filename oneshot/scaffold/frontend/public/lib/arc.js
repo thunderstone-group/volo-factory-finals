@@ -8,6 +8,11 @@
   // 500 ms, so data fetched after navigation is never found). Seed comes from seed.js; writes go
   // through to /api/state in the background and never gate rendering.
   ARC.state = JSON.parse(JSON.stringify(window.SEED || {}));
+  // Page-local presentation state: filters, expanded panels, grid/list choice and open menus.
+  // It survives ARC.render/navigation, resets on a new page, and is NEVER sent by ARC.save.
+  // Keep domain records in ARC.state; an explicit account preference belongs in the domain only
+  // when the requirement asks for it. Do not copy ARC.view into ARC.state or a shared API body.
+  ARC.view = JSON.parse(JSON.stringify(window.VIEW_SEED || {}));
   ARC.save = function () {
     try { fetch('/api/state', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ARC.state) }).catch(() => {}); } catch (e) {}
   };
@@ -66,7 +71,7 @@
     return (s.users || []).find((u) => u.id === s.session) || null;
   };
 
-  // --- Render: rebuild #app from the store in the same tick as the click. Views are unmounted, never
+  // --- Render: rebuild #app from ARC.state and ARC.view in the same tick as the click. Views are unmounted, never
   // cross-faded. Text typed into a form survives in-form clicks because actions call ARC.render()
   // only after they change state, and forms keep their values via ARC.preserveInputs.
   ARC.render = function () {

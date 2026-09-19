@@ -1,5 +1,7 @@
 # One-shot candidate inside VOLO
 
+last-reviewed: 2026-09-19 (package inventory and page-local state boundary).
+
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
 The original three source hashes and Git head are in `oneshot/source_manifest.json`.
@@ -12,7 +14,8 @@ The original three source hashes and Git head are in `oneshot/source_manifest.js
 ```
 
 The default artifact is `oneshot/dist/oneshot.zip`, with a sibling `.zip.manifest.json`.
-Only `main.py`, `dialect.md`, and `requirements.txt` are in the ZIP, flattened to its root.
+The ZIP contains `main.py`, `dialect.md`, and `requirements.txt` at its root, plus the regular,
+non-hidden scaffold files under `scaffold/`, as selected by `scripts/package_oneshot.py`.
 Timestamps, order, permissions and uncompressed ZIP encoding are fixed. The external
 manifest binds every current source file to the ZIP hash and retains import provenance.
 Neither forum tools nor platform sessions, test fixtures, or run evidence are packaged.
@@ -25,7 +28,25 @@ its bounded source snapshot to the same one-shot call. For a separate immutable 
 `--template-dir EXISTING_APP --output-dir EMPTY_DIR`. The Python `generate()` API retains its
 empty-output default unless `template=` is supplied explicitly.
 
-## Boundaries
+## Current scaffold and validation
+
+Fresh generation starts from `oneshot/scaffold/`. `ARC.state` holds shared domain data and
+`ARC.save()` serializes it; `ARC.view` is an independent, page-local deep copy of optional
+`window.VIEW_SEED`. Search text and other transient presentation choices belong in `ARC.view`.
+It survives render/navigation, resets on a new page, and is not included in the scaffold's save.
+This is not authentication isolation, automatic migration of generated apps, or persisted
+account-preference storage. See `oneshot/scaffold/README.md` for the interface and gate limits.
+
+Current delivery validation includes syntax checks and an optional Node/npm/DOM smoke with a
+bounded repair, in addition to static gates. Synthetic regression success is not official task
+acceptance. Current model/retry policy is maintained in `docs/adr/0002-model-policy.md` and the
+constants in `oneshot/main.py`; the import-era statements below are not the current contract.
+
+## Historical boundary notes (2026-09-16)
+
+The following boundary paragraphs are retained as the original import/Evolution description.
+Their three-request cap and static-only runtime-check statements were superseded by the current
+model policy and smoke-check pipeline; do not use them as present-day operational guidance.
 
 Paths must be relative and resolve within the output tree. Generation is staged and the
 validated new-build directory is published by one rename. New builds reject nonempty output
