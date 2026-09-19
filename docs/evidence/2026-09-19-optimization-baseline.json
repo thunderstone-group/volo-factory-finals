@@ -1,0 +1,34 @@
+{
+  "round_id": "r27",
+  "change_id": "r27-candidate",
+  "source": "docs/progress.md:485-501",
+  "metric_note": "The reported round average is task-equal. Pooled metrics below are computed from the six task totals. Failure families are included only where a local replay attributed them.",
+  "local_gate": {
+    "passed": true,
+    "problems": []
+  },
+  "samples": [
+    {
+      "id": "a",
+      "tasks": {
+        "keep": {"passed": 27, "total": 32, "delivered": true},
+        "bookstack": {"passed": 30, "total": 34, "delivered": true},
+        "stackoverflow": {"passed": 41, "total": 66, "delivered": true},
+        "prestashop": {"passed": 55, "total": 86, "delivered": true},
+        "12306": {"passed": 62, "total": 135, "delivered": true, "failures": {"header-role": 49}},
+        "ctrip": {"passed": 26, "total": 125, "delivered": true}
+      }
+    },
+    {
+      "id": "b",
+      "tasks": {
+        "keep": {"passed": 25, "total": 32, "delivered": true},
+        "bookstack": {"passed": 33, "total": 34, "delivered": true},
+        "stackoverflow": {"passed": 47, "total": 66, "delivered": true},
+        "prestashop": {"passed": 55, "total": 86, "delivered": true},
+        "12306": {"passed": 75, "total": 135, "delivered": true},
+        "ctrip": {"passed": 32, "total": 125, "delivered": true}
+      }
+    }
+  ]
+}

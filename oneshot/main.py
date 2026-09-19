@@ -496,6 +496,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
   // and 17 checkout tests waited for the dialog). jsdom's own gaps are not the app's errors.
   const loadErrors = errors.slice();  // what the page threw while loading; the walk's exceptions are reported apart
   const clickErrors = [];
+  const outcomeErrors = [];
   const win = dom.window;
   const isGap = (m) => /not implemented|navigation|Cannot navigate|canvas|getContext|localStorage/i.test(m);
   const onError = (ev) => {
@@ -510,6 +511,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
   const walkStart = Date.now();
   const seen = new Set(); const queue = ['#/'];
   const tick = () => new Promise((r) => setTimeout(r, 0));
+  const settle = () => new Promise((r) => setTimeout(r, 50));
   while (queue.length && seen.size < 40 && Date.now() - walkStart < 15000) {
     const hash = queue.shift();
     if (seen.has(hash)) continue;
@@ -523,24 +525,42 @@ const { JSDOM, VirtualConsole } = require('jsdom');
     // Every click may rebuild the screen (innerHTML render), so re-query after each one and walk by key.
     const done = new Set();
     const keyOf = (b) => ({ action: b.getAttribute('data-action') || '',
-                            label: (b.getAttribute('aria-label') || b.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 40) });
+                              label: (b.getAttribute('aria-label') || b.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 40) });
+    const surface = () => {
+      const main = win.document.querySelector('main, [role="main"]') || win.document.getElementById('app') || body;
+      return { hash: win.location.hash || '#/', main: main ? main.innerHTML : '', body: body ? body.innerHTML : '' };
+    };
     for (let guard = 0; guard < 60; guard++) {
       const b = Array.from(win.document.querySelectorAll('button, [role="button"]'))
         .find((x) => { const k = keyOf(x); const key = k.action || k.label; return key && !done.has(key); });
       if (!b) break;
       current = keyOf(b);
       done.add(current.action || current.label);
-      const before = errors.length;
+      const beforeSurface = surface();
+      const errorCountBefore = errors.length;
       try { b.click(); } catch (e) { onError(e); }
-      await tick();
-      for (const m of errors.slice(before)) onError(m);  // jsdom reports listener exceptions on its console too
+      await settle();
+      for (const m of errors.slice(errorCountBefore)) onError(m);  // jsdom reports listener exceptions on its console too
+      const after = surface();
+      // Navigation, close and undo are infrastructure actions whose visible effect is handled by the
+      // scaffold. Product actions must either change the main screen, change the hash and screen, or
+      // expose a dialog/status/selection. A silent handler creates the same cascade as a thrown handler,
+      // but otherwise leaves no diagnostic in the smoke check (Ctrip login entry and Bookstack routes).
+      if (current.action && !current.action.startsWith('arc:') && !errors.slice(errorCountBefore).length) {
+        if (beforeSurface.hash === after.hash && beforeSurface.main === after.main && beforeSurface.body === after.body) {
+          outcomeErrors.push({ hash: beforeSurface.hash, action: current.action, label: current.label, kind: 'no-op' });
+        } else if (beforeSurface.hash !== after.hash && beforeSurface.main === after.main) {
+          outcomeErrors.push({ hash: after.hash, action: current.action, label: current.label, kind: 'route-no-op' });
+        }
+      }
       if (win.location.hash !== hash) { win.location.hash = hash; await tick(); }
-      if (clickErrors.length >= 8 || Date.now() - walkStart > 15000) break;
+      if (clickErrors.length + outcomeErrors.length >= 8 || Date.now() - walkStart > 15000) break;
     }
-    if (clickErrors.length >= 8) break;
+    if (clickErrors.length + outcomeErrors.length >= 8) break;
   }
   console.log(JSON.stringify({ text_chars: text.length, errors: loadErrors.slice(0, 5), landmarks, screens: seen.size,
-                               click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e) }));
+                               click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e),
+                               outcome_errors: outcomeErrors.slice(0, 6) }));
   dom.window.close();
 })();
 """
@@ -601,6 +621,14 @@ def _check_dom(stage, port, problems, requirements=None):
         problems.append(f"clicking {who} on screen `{err.get('hash', '#/')}` throws: {err.get('message')}. A click handler "
                         f"that throws renders nothing, so the suite's next step waits for a result that never comes; guard "
                         f"every lookup (a missing record must not dereference undefined) and never throw from a handler")
+    for issue in report.get("outcome_errors", []):
+        who = f"`{issue.get('label') or issue.get('action')}`" + (f" (data-action `{issue['action']}`)" if issue.get("action") and issue.get("label") else "")
+        if issue.get("kind") == "route-no-op":
+            problems.append(f"clicking {who} changed the hash to `{issue.get('hash', '#/')}` but left the main screen unchanged; "
+                            f"dispatch the target route and render its requested outcome instead of only changing the URL")
+        else:
+            problems.append(f"clicking {who} on screen `{issue.get('hash', '#/')}` produced no observable outcome; "
+                            f"render the requested screen, dialog, status, selection or state change from the handler")
     present = report.get("landmarks") or {}
     for name, (pattern, element) in LANDMARKS.items():
         if requirements and re.search(pattern, requirements, re.I) and name in present and not present[name]:
@@ -1228,6 +1256,16 @@ def _fatal(problem):
     return not (problem.startswith("clicking ") or "renders no <" in problem)
 
 
+def _problem_weight(problem):
+    """A thrown handler is a harder blocker than an action with no visible result."""
+    lowered = problem.lower()
+    if "throws:" in lowered:
+        return 3
+    if "produced no observable outcome" in lowered or "left the main screen unchanged" in lowered:
+        return 1
+    return 1
+
+
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
     """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
     at most one model call on a fix and keep it only if the smoke check then passes and the
@@ -1268,8 +1306,10 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         if needed:
             raise ValueError("repair broke delivery: " + "; ".join(needed))
         after, _ = smoke_check(stage, requirements)
+        before_weight = sum(_problem_weight(problem) for problem in smoke_before)
+        after_weight = sum(_problem_weight(problem) for problem in after)
         improved = not any(_fatal(p) for p in after) and (
-            not after or any(_fatal(p) for p in smoke_before) or len(after) < len(smoke_before))
+            not after or any(_fatal(p) for p in smoke_before) or after_weight < before_weight)
         if not improved:
             # A repair is kept when the app is clean, or when nothing whole-app remains and it is strictly
             # better than before: it removed a whole-app failure (round 23 Prestashop: the parse-error repair

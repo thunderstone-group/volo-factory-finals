@@ -189,6 +189,20 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("`Add to cart` (data-action `add-to-cart`)", flagged[0])
         self.assertIn("reading 'id'", flagged[0])
 
+    def test_click_that_changes_only_the_hash_is_reported_as_a_route_noop(self):
+        route_noop = app(server()).replace(
+            block("frontend/public/app.js", "console.log('synthetic');"),
+            block("frontend/public/app.js",
+                  "document.body.innerHTML = '<main><h1>Same screen</h1><button type=\"button\" data-action=\"edit\">Edit</button></main>';\n"
+                  "document.addEventListener('click', (e) => { if (e.target.dataset.action === 'edit') location.hash = '#/edit'; });"))
+        self.replies(events(route_noop))
+        files, budget = self.generate(limit=1)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        flagged = [p for p in budget.smoke["problems"] if "left the main screen unchanged" in p]
+        self.assertEqual(len(flagged), 1, budget.smoke)
+        self.assertIn("data-action `edit`", flagged[0])
+
     def test_script_that_never_returns_is_reported_not_skipped(self):
         # Round 23 Prestashop: every test timed out at "Visit Homepage" while the gate stayed silent, because
         # the probe's own timeout returned without a problem. A page that never settles is the app's fault.
