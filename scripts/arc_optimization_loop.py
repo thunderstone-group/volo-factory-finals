@@ -256,6 +256,7 @@ def evaluate_round(
         reasons.append(f"target task gain {target_gain_value:+.1%} is below {target_gain:.1%}")
 
     decision = "keep" if not reasons else "reject"
+    next_source = candidate if _failure_totals(candidate) else baseline
     return {
         "decision": decision,
         "baseline": {"round_id": baseline.round_id, **baseline_metrics},
@@ -265,7 +266,7 @@ def evaluate_round(
         "target_gain": round(target_gain_value, 4),
         "non_target_regressions": regressions,
         "reasons": reasons,
-        "next_action": choose_next_action(candidate if candidate.samples else baseline),
+        "next_action": choose_next_action(next_source),
     }
 
 

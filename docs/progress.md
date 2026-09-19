@@ -500,3 +500,19 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - **r27 is the candidate** (`r27-candidate.zip` = oneshot/ at `e439539`); **PR #38 merged** into main (owner
   authorised). Balance about CNY 40 after r27; no round 28 without the owner.
 
+## 2026-09-20 — Goal round: action-outcome gate rejected, planner becomes next carrier
+
+- Branch `feat/arc-optimization-loop` adds the measured round controller and extends the local DOM walk to flag
+  silent product actions and hash changes that leave the main screen unchanged. The real Lite Bookstack bundle
+  (`832aea526d315d3006df2edecb3ffe51f45d813afd753d0e4f790e95cb7de9ee`) reproduced six Edit route-no-op cases.
+- Candidate package `0378dde57c6e9ab00509a67aa49c71bb985c75295a9cc36e8cb76931eb935bb1` was uploaded as Web submission
+  `218a586c0c9a` and evaluated serially on all six tasks. Results: Keep 23/32 (`84ecc659d5ce`), Bookstack 31/34
+  (`5731b09783e3`), StackOverflow 35/66 (`e5dfdd1a6d77`), Prestashop 59/86 (`435556e82b15`), 12306 50/135
+  (`67195b0de1c0`), Ctrip 0/125 (`9a2cdc6656f3`). No task had a delivery/protocol zero; Ctrip was a whole-task
+  behavioral failure. Total passed 198/478 (41.4% pooled; 53.6% task-equal).
+- The controller rejected `action-outcome-gate-only` before any Lite run: one sample is insufficient, the lower
+  sample dropped 7.3 points versus r27, and the target-task mean dropped 18.4 points. The next action selected from
+  the attributed baseline failures is exactly one carrier: `12306/header-role`; Ctrip remains the second target.
+- Balance after the six serial Web runs: CNY 228.744207, pending billing 0. No Lite run was started for the rejected
+  candidate. The gate remains in the package as a diagnostic carrier; the next candidate must add a requirement
+  planner/contract table for 12306 and Ctrip before another platform pair.

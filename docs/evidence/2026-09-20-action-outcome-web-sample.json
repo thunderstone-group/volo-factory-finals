@@ -1,0 +1,26 @@
+{
+  "round_id": "action-outcome-web-20260919-a",
+  "change_id": "action-outcome-gate-only",
+  "submission_id": "218a586c0c9a",
+  "package_sha256": "0378dde57c6e9ab00509a67aa49c71bb985c75295a9cc36e8cb76931eb935bb1",
+  "competition": "arc-bench-web",
+  "model": "deepseek-v4-flash",
+  "sample_count": 1,
+  "account_balance_after": "228.744207 CNY",
+  "pending_billing_events": 0,
+  "local_gate": {"passed": true, "real_bundle_replay": "bookstack route-no-op reproduced"},
+  "samples": [
+    {
+      "id": "a",
+      "tasks": {
+        "keep": {"run_id": "84ecc659d5ce", "passed": 23, "total": 32, "delivered": true, "cost_cny": 1.279280},
+        "bookstack": {"run_id": "5731b09783e3", "passed": 31, "total": 34, "delivered": true, "cost_cny": 0.806578},
+        "stackoverflow": {"run_id": "e5dfdd1a6d77", "passed": 35, "total": 66, "delivered": true, "cost_cny": 1.069171},
+        "prestashop": {"run_id": "435556e82b15", "passed": 59, "total": 86, "delivered": true, "cost_cny": 1.889236},
+        "12306": {"run_id": "67195b0de1c0", "passed": 50, "total": 135, "delivered": true, "cost_cny": 1.572254},
+        "ctrip": {"run_id": "9a2cdc6656f3", "passed": 0, "total": 125, "delivered": true, "status": "completed_tests_failed", "cost_cny": 1.327717}
+      }
+    }
+  ],
+  "interpretation": "The action-outcome gate prevented no delivery zeros, but a gate-only candidate did not improve the large-task semantic families. Ctrip was a whole-task behavioral failure and 12306 remained below the r27 band. Reject before Lite or a second sample."
+}

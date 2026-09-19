@@ -42,6 +42,18 @@ The rule is intentionally conservative: a single high sample cannot promote a
 change, a protocol failure is never traded for score, and a large target gain
 cannot hide a regression in Bookstack, Keep, StackOverflow or Prestashop.
 
+The first platform sample of the action-outcome-only candidate was rejected
+before any Lite run. Web results were Keep 23/32, Bookstack 31/34,
+StackOverflow 35/66, Prestashop 59/86, 12306 50/135 and Ctrip 0/125.
+The task-equal mean was about 53.6% and the pooled pass rate was 41.4%.
+Ctrip was a whole-task behavioral failure and 12306 stayed below the r27 band.
+The controller's receipt and run IDs are in
+`docs/evidence/2026-09-20-action-outcome-web-sample.json`.
+
+Decision: reject `action-outcome-gate-only` as a candidate. Keep the gate as a
+diagnostic carrier, and make the next change a requirement planner/header-role
+carrier for 12306 and Ctrip. Do not spend a Lite pair on the rejected carrier.
+
 ## First-round acceptance
 
 - two independent samples exist for the candidate and baseline;

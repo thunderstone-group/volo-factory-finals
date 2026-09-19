@@ -88,6 +88,16 @@ class OptimizationLoopTests(unittest.TestCase):
             "rule": "change one carrier or gate for this family, then rerun local replay before platform evaluation",
         })
 
+    def test_rejected_candidate_without_attribution_falls_back_to_baseline_action(self):
+        baseline_rows = all_tasks({"12306": (60, {"header-role": 49})})
+        candidate_rows = all_tasks({"12306": (50, {})})
+        baseline = round_data("r27", "baseline", [("a", baseline_rows), ("b", baseline_rows)])
+        candidate = round_data("r28", "gate-only", [("a", candidate_rows)])
+        result = evaluate_round(Round.from_json(baseline), Round.from_json(candidate))
+        self.assertEqual(result["decision"], "reject")
+        self.assertEqual(result["next_action"]["task"], "12306")
+        self.assertEqual(result["next_action"]["family"], "header-role")
+
 
 if __name__ == "__main__":
     unittest.main()
