@@ -566,4 +566,10 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   files remain under ignored `runs/2026-09-19-view-state-eval/`; only sanitized evidence and
   documentation are versioned. Prior handoffs archived verbatim as `2026-09-19-0717.md` and
   `2026-09-19-0751.md`; current handoff records both runs as finished.
+- Recovery closeout: independently matched both official results to the retained terminal receipts
+  and the Keep Playwright log (15 passed, 17 failed). Final balance **CNY 236.688443** at 08:07:53 UTC,
+  pending billing 0. Final full account read returned 546 runs; only the same two unrelated old
+  PENDING entries remained. Clarification: the original poller stopped on a read-only HTTP 500,
+  not a terminal run failure; no duplicate launch occurred. Independent hash/accounting checks are
+  retained under ignored `runs/2026-09-19-view-state-eval/recovery-verification-20260919.json`.
 

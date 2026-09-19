@@ -32,9 +32,10 @@ historical descriptive comparison, not a fresh paired experiment. Do not merge/p
 Final receipts and all failed-case names are in
 [evidence/2026-09-19-view-state-official-lite.json](evidence/2026-09-19-view-state-official-lite.json).
 Raw CLI outputs, diagnostic files and private billing receipts remain in ignored
-`runs/2026-09-19-view-state-eval/`. The final balance receipt has no pending billing events.
-The serial driver timed out once while Keep was still active; continuation only polled
-the existing run. There were exactly two new official run IDs, not duplicate launches.
+`runs/2026-09-19-view-state-eval/`. The final balance at 08:07:53 UTC was CNY 236.688443, with no pending billing events.
+The serial driver stopped after a read-only platform GET returned HTTP 500 while Keep
+was still active; continuation only polled the existing run. This was not a terminal
+run failure or a reason to relaunch. There were exactly two new official run IDs.
 
 ## Deterministic checks and diagnostic finding
 
@@ -61,7 +62,9 @@ They must not be attributed to the view-state change or mixed with pooled case f
 
 Initial full preflight returned 544 of a requested 1000 runs, none executing. Two old
 unstarted pending runs in other competitions were left untouched; a second full check
-ran before Keep. A future paid continuation needs a new live preflight and bounded plan.
+ran before Keep. The final account-wide check returned 546 of 1000 requested runs;
+only those same two unrelated historical runs remained PENDING, with neither new run
+active. A future paid continuation needs a new live preflight and bounded plan.
 Previous handoffs are preserved verbatim at `archive/handoffs/2026-09-19-0717.md` and
 `archive/handoffs/2026-09-19-0751.md`. Final documentation belongs on this same branch,
 not main; verify live Git state before continuing.
