@@ -24,6 +24,12 @@ the r27 failed cases while representing only two of the six tasks. The first
 implementation experiment should validate action outcomes after navigation and
 form actions, then add a short requirement plan for those two tasks.
 
+The action-outcome gate has now been replayed against the immutable Lite Bookstack
+bundle `832aea526d315d3006df2edecb3ffe51f45d813afd753d0e4f790e95cb7de9ee`.
+It reported six `Edit` route-no-op cases, matching the independently observed
+`shelvesScreen` dispatch defect. The sanitized receipt is in
+`docs/evidence/2026-09-19-action-outcome-gate.json`.
+
 ## Evidence schema
 
 The CLI consumes a JSON object with `round_id`, `change_id`, two or more

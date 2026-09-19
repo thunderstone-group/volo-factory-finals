@@ -1,0 +1,27 @@
+{
+  "kind": "local_real_bundle_replay",
+  "date": "2026-09-19",
+  "task": "bookstack",
+  "competition": "arc-bench-lite",
+  "bundle_sha256": "832aea526d315d3006df2edecb3ffe51f45d813afd753d0e4f790e95cb7de9ee",
+  "source": "view-state-isolation-20260919 official Lite Bookstack download",
+  "method": "extract immutable bundle and run oneshot smoke_check with the action-outcome gate",
+  "executed": true,
+  "problem_count": 6,
+  "problems": [
+    {
+      "kind": "route-no-op",
+      "action": "goto",
+      "label": "Edit",
+      "routes": [
+        "#/shelves/s7_2/edit",
+        "#/shelves/s4_1/edit",
+        "#/shelves/s4_2_1/edit",
+        "#/shelves/s4_3_1/edit",
+        "#/shelves/s4_3_2/edit",
+        "#/shelves/s4_4_1/edit"
+      ]
+    }
+  ],
+  "interpretation": "The route changed while the main screen stayed identical. This reproduces the known Bookstack edit dispatch defect without evaluator changes or model calls."
+}
