@@ -1,0 +1,66 @@
+{
+  "round_id": "goal-round-20260919",
+  "date": "2026-09-20",
+  "subject": "12306 path family and Ctrip zero attribution; path table and repair-acceptance carriers",
+  "tools": {
+    "local_replay": "harness_lab/state_rehearsal.py --app 12306 --profile hosted",
+    "bundle_replayed": "runs/2026-09-18-goal/r27a-12306-bundle/template (sha256 in r27a-12306-bundle.zip)",
+    "ctrip_bundle": "runs/2026-09-20-goal/ctrip-goal-bundle.zip (run 9a2cdc6656f3, 21904774 bytes)"
+  },
+  "timezone_control": {
+    "claim": "the replay must run in the runner's timezone (UTC)",
+    "identical_bundle": {
+      "local_clock_utc_plus_8": {"passed": 48, "total": 135, "wall_seconds": 230.0},
+      "TZ_UTC": {"passed": 62, "total": 135, "wall_seconds": 189.3},
+      "platform_run_cb1e1d2f9aa0": {"passed": 62, "total": 135}
+    },
+    "mechanism": "helpers.ts TEST_DATE = new Date().toISOString().slice(0,10) is UTC; the app validated the search date against local midnight, so the suite's date was judged past and the search never navigated"
+  },
+  "platform_12306_run": {
+    "run_id": "cb1e1d2f9aa0",
+    "submission_id": "f1f64dec4e4c",
+    "passed": 62,
+    "failed": 73,
+    "families": {
+      "getByRole('button', { name: /^Personal$/i })": 18,
+      "getByRole('button', { name: /^Information management$/i })": 13
+    },
+    "mechanism": "after login the top \"My 12306\" entry opened role=menu with Order center/User information/Account security/My passengers; the requirement's personal center home (left menu Personal Center / Order center / Personal / Information management) never rendered",
+    "evidence": "/tmp/utc-replay-12306/artifacts/REQ-4.3.1-*/error-context.md (page snapshot of the popover)"
+  },
+  "platform_ctrip_run": {
+    "run_id": "9a2cdc6656f3",
+    "submission_id": "218a586c0c9a",
+    "passed": 0,
+    "failed": 125,
+    "statuses": {"timedOut": 125},
+    "local_reproduction": ["frontend script error on load (the page is blank for every test): Uncaught [TypeError: this.flights is not a function]"],
+    "local_reproduction_seconds": 3.4,
+    "platform_agent_log": "[oneshot] smoke problems included the same load error; \"repair\": {\"accepted\": false, \"reason\": \"repair renamed quoted control(s): + 添加返程\"}",
+    "interpretation": "the fixing repair was rejected by the pinned-name veto and the blank draft shipped"
+  },
+  "carriers_landed": {
+    "requirement_path_table": {
+      "prompt_bytes_12306": 4223,
+      "rows_12306": 42,
+      "executable_rows_12306": 12,
+      "gate_result_on_r27a_bundle": {
+        "true_positives": ["REQ-4.3.1 (Personal)", "REQ-4.3.5 (Personal)", "REQ-4.4.1 (Information management)"],
+        "false_positives": 0,
+        "probe_seconds": 12.8
+      }
+    },
+    "fixed_date_gate": {
+      "applies_when": "the requirement declares 'the current date ... fixed at YYYY-MM-DD' (Ctrip: 2026-07-19)",
+      "ctrip_goal_bundle": "passes: the literal appears in the frontend"
+    },
+    "repair_acceptance": {
+      "rule": "a repair that removes a whole-app failure is kept even when a quoted control name moved; recorded as repair.renamed_but_kept",
+      "unchanged": "the rename veto still rejects a repair of a family-level problem"
+    }
+  },
+  "tests": {
+    "command": "PYTHONPATH=. python3 -m unittest discover -s tests_oneshot -t tests_oneshot",
+    "note": "the documented .venv/bin/python has no pytest; the suite is unittest-based and tests_oneshot is not a package"
+  }
+}

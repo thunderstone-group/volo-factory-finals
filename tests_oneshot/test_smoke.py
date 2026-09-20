@@ -427,6 +427,82 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("renamed quoted control(s): from", budget.smoke["repair"]["reason"])
         self.assertIn("From <input", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
 
+    def test_requirement_path_that_a_false_menu_never_opens_is_reported(self):
+        # 12306 goal round: after login the top "My 12306" entry opened a popover with other names, so the
+        # requirement's personal-center menu ("Personal", "Information management") never existed on any
+        # screen and 31 tests died waiting for it. The path walk stands on the requirement's own rows.
+        popover = ("document.body.insertAdjacentHTML('beforeend', "
+                   "'<button type=\"button\" id=\"my\">My 12306</button><div id=\"menu\" hidden></div>');\n"
+                   "document.getElementById('my').addEventListener('click', () => {\n"
+                   "  const menu = document.getElementById('menu');\n"
+                   "  menu.hidden = false;\n"
+                   "  menu.innerHTML = '<button type=\"button\">Order center</button><button type=\"button\">User information</button>';\n"
+                   "});")
+        draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                      block("frontend/public/app.js", popover))
+        self.replies(events(draft))
+        req = ("- id: REQ-4.1\n  name: Personal Center Entry\n  type: FOLDER\n"
+               "  description: 'After login, open the personal center home page from the top \"My 12306\" entry. "
+               "The page shows the left-side menu items \"Personal Center\", \"Order center\", \"Personal\", and \"Information management\".'\n"
+               "- id: REQ-4.3.1\n  name: Open user information\n  type: ATOMIC\n"
+               "  scenarios:\n    - name: Open the user information page\n      steps:\n"
+               "        - keyword: GIVEN\n          content: 'The user is on the personal center.'\n"
+               "        - keyword: WHEN\n          content: 'Click \"Personal\" and then click \"User information\".'\n"
+               "        - keyword: THEN\n          content: 'The page shows \"Essential information\".'\n")
+        budget = adapter.CallBudget(limit=1)
+        adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        flagged = [p for p in budget.smoke["problems"] if p.startswith("the requirement's path REQ-4.3.1")]
+        self.assertEqual(len(flagged), 1, budget.smoke)
+        self.assertIn('no visible control or text named \u201cPersonal\u201d', flagged[0])
+        self.assertIn("reaches it by clicking My 12306 then that name", flagged[0])
+
+    def test_a_screen_the_requirement_offers_is_not_a_problem(self):
+        correct = ("document.body.insertAdjacentHTML('beforeend', "
+                   "'<button type=\"button\" id=\"my\">My 12306</button><div id=\"menu\" hidden></div>');\n"
+                   "document.getElementById('my').addEventListener('click', () => {\n"
+                   "  document.getElementById('menu').hidden = false;\n"
+                   "  document.getElementById('menu').innerHTML = '<nav><button type=\"button\">Personal</button>"
+                   "<button type=\"button\">Information management</button></nav>';\n"
+                   "});\n"
+                   "document.addEventListener('click', (e) => {\n"
+                   "  if (e.target.textContent === 'Personal') { document.body.insertAdjacentHTML('beforeend', "
+                   "'<p>Essential information</p>'); }\n"
+                   "});")
+        draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                      block("frontend/public/app.js", correct))
+        self.replies(events(draft))
+        req = ("- id: REQ-4.1\n  name: Personal Center Entry\n  type: FOLDER\n"
+               "  description: 'After login, open the personal center home page from the top \"My 12306\" entry.'\n"
+               "- id: REQ-4.3.1\n  name: Open user information\n  type: ATOMIC\n"
+               "  scenarios:\n    - name: Open the user information page\n      steps:\n"
+               "        - keyword: GIVEN\n          content: 'The user is on the personal center.'\n"
+               "        - keyword: WHEN\n          content: 'Click \"Personal\".'\n"
+               "        - keyword: THEN\n          content: 'The page shows \"Essential information\".'\n")
+        budget = adapter.CallBudget(limit=1)
+        adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        self.assertEqual([p for p in budget.smoke["problems"] if p.startswith("the requirement's path ")], [], budget.smoke)
+
+    def test_repair_that_removes_a_whole_app_failure_is_kept_when_a_quoted_name_moves(self):
+        # Ctrip goal round: the draft threw on load (0/125), the repair fixed it but moved a quoted Chinese
+        # name, and the rename veto rejected it, so the blank app shipped.
+        broken = ("document.body.insertAdjacentHTML('beforeend', '<label>出发城市 <input id=\"o\"></label>');\n"
+                  "this.flights();")
+        fixed = "document.body.insertAdjacentHTML('beforeend', '<label>出发城市 <input id=\"o\"></label>');\nconsole.log('renders');"
+        draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                      block("frontend/public/app.js", broken))
+        self.replies(events(draft), events(block("frontend/public/app.js", fixed)))
+        budget = adapter.CallBudget(adapter.MAX_CALLS)
+        files, _ = adapter.generate('Synthetic: the city field labeled "出发城市" and a booked flight list.',
+                                    "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
+            self.skipTest("jsdom could not be installed (offline)")
+        self.assertEqual(budget.smoke["repair"]["accepted"], True, budget.smoke)
+        self.assertIn("renders", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
+
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"
         requirement.mkdir()

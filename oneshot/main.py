@@ -104,7 +104,7 @@ REPAIR = ("The application you delivered failed the runner's delivery check befo
 SMOKE = True  # run the delivery smoke check (build, start, GET / and /api/health) before publishing
 SMOKE_BUILD_SECONDS = 90
 SMOKE_READY_SECONDS = 30
-DOM_PROBE_SECONDS = 60  # jsdom load of / plus the click walk; a page that never settles hits this
+DOM_PROBE_SECONDS = 75  # jsdom load of / plus the click walk and the requirement path walk; a page that never settles hits this
 HEALTH_BODY = {"code": 200, "message": "Backend Ready"}
 ASSET_REF = re.compile(r"""<(?:script|link)\b[^>]*?\b(?:src|href)\s*=\s*["']([^"']+)["']""", re.I)
 
@@ -558,9 +558,126 @@ const { JSDOM, VirtualConsole } = require('jsdom');
     }
     if (clickErrors.length + outcomeErrors.length >= 8) break;
   }
+  // Path walk: the requirement's own paths, executed on a fresh page so the click walk above cannot
+  // colour it. Each chain is a list of names the requirement clicks in order from the home screen (after
+  // signing in when the row needs it); the names after the last click must exist on the resulting screen.
+  // A chain that cannot be walked is a family of tests lost to one missing, renamed or unreachable
+  // control — an app can be free of script errors and still lose 31 tests here (12306 goal round: after
+  // login "My 12306" opened a popover, so the requirement's personal-center menu never existed).
+  async function contractWalk() {
+    const chains = JSON.parse(process.env.PROBE_CHAINS || '[]');
+    const fallbackAccount = JSON.parse(process.env.PROBE_ACCOUNT || 'null');
+    if (!chains.length) return {};
+    const contractErrors = [];
+    // The suite's own ladder: button, link, tab, menuitem, option, radio, checkbox, heading, then text.
+    // The order carries meaning — on the registration screen the submit button and the header link share
+    // the name "Register", and the suite resolves the button.
+    const LADDER = ['button, [role="button"], input[type="submit"], input[type="button"]',
+                    'a[href], [role="link"]', '[role="tab"]', '[role="menuitem"]', '[role="option"]',
+                    '[role="radio"]', '[role="checkbox"]', 'h1, h2, h3, h4, h5, h6, [role="heading"]'];
+    const norm = (v) => String(v == null ? '' : v).replace(/\s+/g, ' ').trim().toLowerCase();
+    let page, win2;
+    try {
+      page = await JSDOM.fromURL(process.env.PROBE_URL, { runScripts: 'dangerously', resources: 'usable',
+                                                        pretendToBeVisual: true, virtualConsole: vc, beforeParse });
+    } catch (e) { return {}; }
+    win2 = page.window;
+    await new Promise((r) => setTimeout(r, 1500));
+    const shown = (el) => {  // jsdom has no layout; only a rule that cannot change on its own counts as hidden
+      for (let n = el; n && n.nodeType === 1; n = n.parentElement) {
+        if (n.hasAttribute && (n.hasAttribute('hidden') || n.getAttribute('aria-hidden') === 'true')) return false;
+        const style = win2.getComputedStyle(n);
+        if (style && (style.display === 'none' || style.visibility === 'hidden')) return false;
+      }
+      return true;
+    };
+    const named = (el) => norm(el.getAttribute('aria-label') || el.getAttribute('title') ||
+                              el.getAttribute('placeholder') || el.value || el.textContent);
+    const pick = (selector, wanted) => {
+      const candidates = Array.from(win2.document.querySelectorAll(selector)).filter(shown);
+      return candidates.find((el) => named(el) === wanted) || candidates.find((el) => named(el).includes(wanted)) || null;
+    };
+    const find = (name) => {
+      const wanted = norm(name);
+      for (const selector of LADDER) {
+        const hit = pick(selector, wanted);
+        if (hit) return hit;
+      }
+      return Array.from(win2.document.querySelectorAll('body *')).filter(shown)
+        .find((el) => norm(el.textContent) === wanted) || null;
+    };
+    const clickName = async (name) => {
+      const el = find(name);
+      if (!el) return null;
+      try { el.click(); } catch (e) { /* the click walk reports handler exceptions */ }
+      await new Promise((r) => setTimeout(r, 80));
+      return el;
+    };
+    const signedIn = () => !!pick(LADDER[0], 'sign out') || !!pick(LADDER[0], 'logout') || !!pick(LADDER[0], 'log out');
+    const signIn = async (account) => {
+      if (!account || signedIn()) return;
+      if (!await clickName('Login')) return;
+      await new Promise((r) => setTimeout(r, 120));
+      const password = win2.document.querySelector('input[type="password"]');
+      if (!password) return;
+      const inputs = Array.from(win2.document.querySelectorAll('input'))
+        .filter((el) => el !== password && el.type !== 'password' && el.type !== 'hidden' && el.type !== 'submit');
+      const set = (el, value) => { el.value = value;
+                                   el.dispatchEvent(new win2.Event('input', { bubbles: true }));
+                                   el.dispatchEvent(new win2.Event('change', { bubbles: true })); };
+      if (inputs[0]) set(inputs[0], account.id);
+      set(password, account.password);
+      const form = password.form;
+      if (form && form.requestSubmit) form.requestSubmit();
+      else if (form && form.dispatchEvent) form.dispatchEvent(new win2.Event('submit', { bubbles: true, cancelable: true }));
+      await new Promise((r) => setTimeout(r, 250));
+    };
+    const namesOnScreen = () => {
+      const text = norm(win2.document.body ? win2.document.body.textContent : '');
+      const labels = Array.from(win2.document.querySelectorAll(LADDER.join(', '))).filter(shown)
+        .map(named).join(' | ');
+      return { text, labels };
+    };
+    const home = async () => {
+      win2.location.hash = '#/';
+      await new Promise((r) => setTimeout(r, 80));
+    };
+    const signInSurface = () => !!win2.document.querySelector('input[type="password"]') || !!pick(LADDER[0], 'login')
+                                                                                     || !!pick(LADDER[1], 'login');
+    const attempt = async (chain, account) => {
+      await home();
+      if (account) await signIn(account);
+      let step = 'the home screen', clicks = [];
+      for (const name of chain.clicks) {
+        if (!await clickName(name)) {
+          return { id: chain.id, kind: 'click', name, after: step, clicks: clicks.join(' -> '),
+                   hash: win2.location.hash || '#/' };
+        }
+        clicks.push(name);
+        step = '`' + name + '`';
+      }
+      const { text, labels } = namesOnScreen();
+      const absent = (chain.names || []).filter((name) => { const wanted = norm(name);
+        return wanted && !text.includes(wanted) && !labels.includes(wanted); });
+      return absent.length ? { id: chain.id, kind: 'screen', missing: absent.slice(0, 4).join(' / '),
+                               clicks: clicks.join(' -> '), hash: win2.location.hash || '#/' } : null;
+    };
+    for (const chain of chains) {
+      let issue = await attempt(chain, chain.account);
+      // A row whose requirement names no account can still need one (the suite's own fixtures sign in for
+      // it). Meeting a sign-in surface at a dead end means "try it signed in" — not a defect.
+      if (issue && !chain.account && fallbackAccount && signInSurface()) {
+        issue = await attempt(chain, fallbackAccount);
+      }
+      if (issue) contractErrors.push(issue);
+    }
+    page.window.close();
+    return { contract_errors: contractErrors.slice(0, 8), contract_walked: chains.length };
+  }
   console.log(JSON.stringify({ text_chars: text.length, errors: loadErrors.slice(0, 5), landmarks, screens: seen.size,
                                click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e),
-                               outcome_errors: outcomeErrors.slice(0, 6) }));
+                               outcome_errors: outcomeErrors.slice(0, 6),
+                               ...(await contractWalk()) }));
   dom.window.close();
 })();
 """
@@ -591,9 +708,13 @@ def _check_dom(stage, port, problems, requirements=None):
             print("[oneshot] jsdom install failed; DOM probe skipped", file=sys.stderr)
             return
     try:
+        chains = contract_chain_specs(requirements or "")
+        account = contract_login(requirements or "") if chains else None
         run = subprocess.run([node, "-e", DOM_PROBE],
                              env={**_child_env(), "NODE_PATH": str(prefix / "node_modules"),
-                                  "PROBE_URL": f"http://127.0.0.1:{port}/"},
+                                  "PROBE_URL": f"http://127.0.0.1:{port}/",
+                                  "PROBE_CHAINS": json.dumps(chains),
+                                  "PROBE_ACCOUNT": json.dumps({"id": account[0], "password": account[1]} if account else None)},
                              capture_output=True, timeout=DOM_PROBE_SECONDS, text=True)
         report = json.loads(run.stdout.strip().splitlines()[-1])
     except subprocess.TimeoutExpired:
@@ -636,6 +757,21 @@ def _check_dom(stage, port, problems, requirements=None):
                             f"{name}; every screen, including the home screen, must render through the one shared "
                             f"layout (header, navigation, main content, footer) so the suite finds the same "
                             f"landmarks and controls on every route")
+    for issue in report.get("contract_errors", []):
+        clicks = issue.get("clicks") or "(nothing clicked)"
+        if issue.get("kind") == "click":
+            problems.append(
+                f"the requirement's path {issue.get('id')} cannot be walked: after {issue.get('after')} the screen "
+                f"`{issue.get('hash')}` has no visible control or text named \u201c{issue.get('name')}\u201d, and the "
+                f"requirement reaches it by clicking {clicks} then that name. Render every name the requirement clicks "
+                f"as a visible control on the screen the requirement puts it on (open the submenu it names first); a "
+                f"name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every "
+                f"test that walks through it")
+        else:
+            problems.append(
+                f"the requirement's path {issue.get('id')} ends on `{issue.get('hash')}` without "
+                f"\u201c{issue.get('missing')}\u201d: the requirement's THEN step requires those names on that screen, "
+                f"reached by {clicks}. Show each one verbatim on the destination screen")
 
 
 def smoke_check(stage, requirements=None):
@@ -799,6 +935,37 @@ def readonly_gaps(stage):
     return gaps
 
 
+def fixed_date_gaps(stage, requirements):
+    """When the requirement fixes 'the current date', the app's date logic must run on that date. An app
+    that keeps the machine clock treats every date the suite supplies as past and rejects it, which costs
+    every date-sensitive scenario at once (Ctrip declares the date fixed at 2026-07-19)."""
+    date = fixed_current_date(requirements)
+    if not date:
+        return []
+    if date in _frontend_sources(stage):
+        return []
+    clock = []
+    for directory, dirs, names in os.walk(Path(stage) / "frontend", followlinks=False):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d not in TEMPLATE_ARTIFACTS]
+        for name in names:
+            if not name.endswith((".js", ".mjs", ".html")) or name == "package-lock.json":
+                continue
+            path = Path(directory) / name
+            try:
+                lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+            except OSError:
+                continue
+            for number, line in enumerate(lines, 1):
+                if re.search(r"new Date\(\s*\)|Date\.now\(\)", line):
+                    clock.append(f"{path.relative_to(stage).as_posix()}:{number}")
+                    break
+    where = f" (the frontend reads the clock at {', '.join(clock[:3])})" if clock else ""
+    return [f"the requirement fixes the current date at {date}, and {date} appears in no frontend source{where}: the "
+            f"app is running on the machine clock, so every date the suite supplies (the requirement's own fixtures "
+            f"around {date}) is judged past and rejected, and every date-sensitive scenario fails. Define today once "
+            f"from the fixed date and use it for date bounds, defaults and validation"]
+
+
 def scaffold_gaps(stage):
     """The delivered app must still load and define the scaffold primitives it was built on."""
     stage = Path(stage)
@@ -867,6 +1034,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     snapshot = read_template(template) if template is not None else {}
     out.parent.mkdir(parents=True, exist_ok=True)
     user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
+            contract_table(requirements) +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
     scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
     if scaffold:
@@ -1001,6 +1169,42 @@ def vocabulary_table(requirements):
     return "\n".join(lines)
 
 
+STEP_YAML = re.compile(r"^\s*-\s*keyword:\s*(GIVEN|WHEN|THEN)\s*$")
+STEP_MD = re.compile(r"^\s*-\s*\*\*(GIVEN|WHEN|THEN):?\*\*:?\s*(.*)$")
+STEP_CONTENT = re.compile(r"^\s*content:\s*(.*)$")
+REQ_HEAD = re.compile(r"^#{2,4}\s+(REQ-[A-Za-z0-9._-]+)\b")
+CLICK_VERB = re.compile(r"\b(click|clicks|clicking|press|tap|select|choose|open|opens|opening|hover|hovers|expand|"
+                        r"navigate|return)\b[^.\n\u201c\u201d\"']{0,26}$", re.I)
+CHANGE_FROM = re.compile(r"\b(from|no longer|instead of|removes?|replaces?|changes?)\b[^.\n\u201c\u201d\"']{0,26}$", re.I)
+ENTRY_FROM = re.compile(r"\bfrom\b[^\n]{0,60}?[\u201c\"]([^\u201d\"\n]{2,60})[\u201d\"]", re.I)
+SCREEN_NOUN = re.compile(r"\b([A-Za-z][A-Za-z /'-]{2,42}?(?:page|screen|home page|home|view))\b", re.I)
+SCREEN_CORE_STRIP = re.compile(r"^(?:open|opens|display|displays|provide|provides|show|shows|navigate|navigates|enter|"
+                               r"reach|reaches|go|view|access|locate|locates|visit|render|include|have|allow|allows|"
+                               r"let|lets|enable|enables|contain|contains|containing|and|or|then|"
+                               r"when|while|after|before|section|button|link|user|our|your|their|its|it|this|that|"
+                               r"which|where|with|from|on|in|at|to|of|for|by|as|is|are|was|were|be|has|had|can|may|"
+                               r"must|should|will|would|does|do|did|there|here|the|a|an)\b[\s]+", re.I)
+SCREEN_TAIL = re.compile(r"\s*(?:pages|page|screens|screen|views|view)\s*$", re.I)
+HOME_START = re.compile(r"\b(home page|home screen|landing page|application entry|the system is accessible)\b", re.I)
+STATE_HINT = re.compile(r"\b(fill|fills|filling|filled|enter|enters|entering|entered|type|types|typing|typed|upload|"
+                        r"submits|submitting|with a valid|with valid|with an invalid|with invalid|with mismatched|"
+                        r"do(?:es)? not match|without|already exists|in use|exists|first step|second step|third step)\b",
+                        re.I)
+SCREEN_GIVEN = re.compile(r"^\s*(?:the user|a visitor|the visitor|an? [a-z]+) is (?:logged in and is )?(?:on|at|viewing)\b",
+                          re.I)
+LOGIN_HINT = re.compile(r"\b(logged in|signed in|authenticated|verif\w+ account|after login)\b", re.I)
+LOGGED_OUT = re.compile(r"\b(not logged in|without logging in|logged out|signed out|guest|visitor|anonymous)\b", re.I)
+ACCOUNT = re.compile(r"(?<![A-Za-z])username\s*[\u201c\"]([^\"\u201d\n]{3,60})[\u201d\"]"
+                     r"(?:[^\n]{0,60}?email\s*[\u201c\"]([^\"\u201d\n]{3,80})[\u201d\"])?"
+                     r"[^\n]{0,160}?password\s*[\u201c\"]([^\"\u201d\n]{4,60})[\u201d\"]", re.I)
+FIXED_DATE = re.compile(r"current date[^.\n]{0,80}?fixed at\s*(\d{4}-\d{2}-\d{2})", re.I)
+CONTRACT_MAX_CLICKS = 3
+CONTRACT_MAX_NAMES = 8
+CONTRACT_MAX_ROWS = 60
+CONTRACT_MAX_BYTES = 9000
+CONTRACT_MAX_CHAINS = 24
+CONTRACT_MAX_LOGIN_CHAINS = 12
+
 NAME_MAX_WORDS = 5
 CONTROL_CONTEXT = re.compile(r"\b(click|press|tap|button|link|field|input|textbox|tab|menu|dialog|editor|label|option|"
                              r"checkbox|radio|toggle|named|called|titled|heading|section|sidebar|nav|navigation|entry|"
@@ -1023,6 +1227,261 @@ def quoted_control_phrases(requirements):
         seen.add(phrase.lower())
         phrases.append(phrase)
     return phrases
+
+
+def _step_events(requirements):
+    """(requirement id, GIVEN|WHEN|THEN, text) in document order, for both the runner's
+    requirements.yaml and the same document as markdown."""
+    events, current, pending = [], None, None
+    for line in (requirements or "").splitlines():
+        m = REQ_HEAD.match(line) or REQ_ID.match(line)
+        if m:
+            current = m.group(1)
+            continue
+        m = STEP_YAML.match(line)
+        if m:
+            pending = m.group(1)
+            continue
+        m = STEP_MD.match(line)
+        if m:
+            pending = None
+            events.append((current, m.group(1), m.group(2).strip()))
+            continue
+        if pending and (m := STEP_CONTENT.match(line)):
+            events.append((current, pending, m.group(1).strip().strip("'\"")))
+            pending = None
+    return events
+
+
+def scenario_steps(requirements):
+    """The requirement's scenarios as {id, given, when, then}. Deterministic, no model."""
+    scenarios, current = [], None
+    for req_id, keyword, content in _step_events(requirements):
+        if current is None or keyword == "GIVEN" or current["id"] != req_id:
+            if current and (current["when"] or current["then"]):
+                scenarios.append(current)
+            current = {"id": req_id, "given": "", "when": "", "then": ""}
+        key = keyword.lower()
+        current[key] = f"{current[key]} {content}".strip()
+    if current and (current["when"] or current["then"]):
+        scenarios.append(current)
+    return scenarios
+
+
+def _screen_core(phrase):
+    """'open the personal center home page' -> 'personal center'; 'the page' -> ''."""
+    core = re.sub(r"\s+", " ", phrase or "").strip().lower()
+    while True:
+        stripped = SCREEN_CORE_STRIP.sub("", core)
+        if stripped == core:
+            break
+        core = stripped
+    core = SCREEN_TAIL.sub("", core).strip()
+    core = re.sub(r"\s+home$", "", core).strip() or core
+    return core if len(core) >= 3 else ""
+
+
+def screen_entries(requirements):
+    """Screen core -> the entries that open it, from the requirement's own sentences ("open the personal
+    center home page from the top \"My 12306\" entry"). Only a name introduced by "from" counts: a name
+    clicked on a screen is not a way into it."""
+    entries = {}
+    for line in (requirements or "").splitlines():
+        for match in ENTRY_FROM.finditer(line):
+            screens = SCREEN_NOUN.findall(line[:match.start()])
+            if not screens:
+                continue
+            core = _screen_core(screens[-1])
+            name = re.sub(r"\s+", " ", match.group(1)).strip()
+            if (not core or core == "home" or not re.search(r"[A-Za-z\u4e00-\u9fff]{2}", name)
+                    or not re.search(r"[A-Za-z\u4e00-\u9fff]{3}", core)):
+                continue
+            entries.setdefault(core, [])
+            if name not in entries[core]:
+                entries[core].append(name)
+    return entries
+
+
+def screen_requires_login(requirements):
+    """Screens the requirement only offers after login ("After login, open the personal center home page
+    from the top \"My 12306\" entry"): a walk to them must sign in first."""
+    out = {}
+    for line in (requirements or "").splitlines():
+        for match in ENTRY_FROM.finditer(line):
+            screens = SCREEN_NOUN.findall(line[:match.start()])
+            if not screens:
+                continue
+            core = _screen_core(screens[-1])
+            if core and LOGIN_HINT.search(line):
+                out[core] = True
+    return out
+
+
+def _start_screen(given, entries):
+    """The screen a scenario starts on, when the requirement names one. '' means an unnamed state the
+    local walk cannot set up (a filled form, an order that exists): the row is prompt-only."""
+    text = (given or "").lower()
+    best = ""
+    for core in entries:
+        if core in text and len(core) > len(best):
+            best = core
+    if best:
+        return best
+    return "home" if HOME_START.search(text) else ""
+
+
+def _click_phrases(when):
+    """Quoted names a WHEN step clicks, in order. Only a phrase whose own context carries a click verb
+    is a step: prose inside a WHEN ("Review the tab content") is not a path."""
+    phrases, seen = [], set()
+    for match in QUOTED.finditer(when or ""):
+        phrase = re.sub(r"\s+", " ", match.group(1)).strip().strip(".")
+        context = when[max(0, match.start() - 60):match.start()]
+        if (not CLICK_VERB.search(context) or len(phrase) < 2 or len(phrase.split()) > NAME_MAX_WORDS
+                or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
+                or phrase.lower() in seen):
+            continue
+        seen.add(phrase.lower())
+        phrases.append(phrase)
+    return phrases
+
+
+def _required_names(then):
+    """Quoted names a THEN step requires on screen (controls, headings, messages, tabs), in order. A name
+    the step only mentions as the thing it changes away from ("changes the link from \"Sign Out\" to
+    \"Register\"") is not required on the screen."""
+    names, seen = [], set()
+    for match in QUOTED.finditer(then or ""):
+        phrase = re.sub(r"\s+", " ", match.group(1)).strip().strip(".")
+        context = (then or "")[max(0, match.start() - 40):match.start()]
+        if (len(phrase) < 2 or len(phrase) > 60 or re.fullmatch(r"[\W_]+", phrase)
+                or re.match(r"^(https?:|//|/|\.|#)", phrase) or re.fullmatch(r"[\d\s:\-.,]+", phrase)
+                or CHANGE_FROM.search(context) or phrase.lower() in seen):
+            continue
+        seen.add(phrase.lower())
+        names.append(phrase)
+    return names
+
+
+def requirement_blocks(requirements):
+    """Requirement id -> its own text (up to the next id at any depth). Descriptions carry the account a
+    scenario depends on, which decides whether the walk must sign in first."""
+    text, blocks, found = requirements or "", {}, []
+    for match in re.finditer(r"^\s*-?\s*id:\s*['\"]?(REQ-[A-Za-z0-9._-]+)['\"]?\s*$|^#{2,4}\s+(REQ-[A-Za-z0-9._-]+)\b",
+                             text, re.M):
+        found.append((match.group(1) or match.group(2), match.start(), match.end()))
+    for index, (name, _, end) in enumerate(found):
+        stop = found[index + 1][1] if index + 1 < len(found) else len(text)
+        blocks.setdefault(name, text[end:stop])
+    return blocks
+
+
+def _requirement_block(requirements, req_id):
+    if not req_id:
+        return ""
+    return requirement_blocks(requirements).get(req_id, "")
+
+
+def scenario_contract(requirements):
+    """The requirement's own paths as rows: start screen, the names clicked in order, the names the
+    destination screen must show, and whether the row can be walked locally. The suite reaches a screen
+    by clicking the names the requirement names, on the screen the requirement puts them on."""
+    entries, loginy, blocks = screen_entries(requirements), screen_requires_login(requirements), requirement_blocks(requirements)
+    rows, seen = [], set()
+    for scenario in scenario_steps(requirements):
+        clicks = _click_phrases(scenario["when"])
+        given = scenario["given"] or ""
+        if not clicks or STATE_HINT.search(scenario["when"]) or STATE_HINT.search(given):
+            continue
+        start = _start_screen(given, entries)
+        prefix = entries.get(start, [])[:1] if start and start != "home" else []
+        chain = (prefix + clicks)[:CONTRACT_MAX_CLICKS]
+        if not chain:
+            continue
+        block = blocks.get(scenario["id"], "")
+        login = (bool(LOGIN_HINT.search(given)) or bool(loginy.get(start))
+                 or bool(ACCOUNT.search(block)) and not LOGGED_OUT.search(block))
+        # Only a row that starts on a screen the walk can stand on is executed locally: a screen the
+        # requirement names, or the home screen. A state it cannot set up stays prompt-only.
+        walk = bool(start) and bool(SCREEN_GIVEN.match(given) or LOGIN_HINT.search(given))
+        key = (tuple(chain), login)
+        if key in seen:
+            continue
+        seen.add(key)
+        rows.append({"id": scenario["id"], "start": start or "?", "clicks": chain, "login": login,
+                     "walk": bool(start),
+                     "names": _required_names(scenario["then"])[:CONTRACT_MAX_NAMES]})
+        if len(rows) >= CONTRACT_MAX_ROWS:
+            break
+    return rows
+
+
+def contract_chain_specs(requirements):
+    """The rows the local walk can execute: from the home screen (after login when the row needs it), or
+    from a screen the requirement says is opened by a named entry. Everything else stays prompt-only."""
+    rows = [row for row in scenario_contract(requirements) if row["walk"] and row["names"]]
+    anonymous = [row for row in rows if not row["login"]]
+    logged = [row for row in rows if row["login"]]
+    picked = anonymous[:CONTRACT_MAX_CHAINS - min(len(logged), CONTRACT_MAX_LOGIN_CHAINS)]
+    picked += logged[:CONTRACT_MAX_LOGIN_CHAINS]
+    specs = []
+    for row in picked[:CONTRACT_MAX_CHAINS]:
+        for spec in specs:
+            if spec["id"] == row["id"]:
+                break
+        else:
+            account = contract_login(_requirement_block(requirements, row["id"])) if row["login"] else None
+            account = account or (contract_login(requirements) if row["login"] else None)
+            specs.append({"id": row["id"], "clicks": row["clicks"], "names": row["names"], "login": row["login"],
+                          "account": {"id": account[0], "password": account[1]} if account else None})
+    return specs
+
+
+def contract_login(requirements):
+    """The first verified account of the requirement: (identifier, password), or None. The identifier is
+    the account's email when the requirement states one; used only by the local walk, never prompted."""
+    match = ACCOUNT.search(requirements or "")
+    if not match:
+        return None
+    login_id = (match.group(2) or match.group(1)).strip()
+    if not re.fullmatch(r"[\w.@+-]{3,80}", login_id):
+        return None
+    return (login_id, match.group(3).strip())
+
+
+def fixed_current_date(requirements):
+    """The date the requirement fixes as 'the current date', when it declares one. Date-sensitive
+    scenarios run against that date, not the machine clock (Ctrip: fixed at 2026-07-19)."""
+    match = FIXED_DATE.search(requirements or "")
+    return match.group(1) if match else None
+
+
+def contract_table(requirements):
+    """The path table handed to the model before it writes (ladder level 2). Compact by construction:
+    the requirement's own click names and screen names, nothing paraphrased."""
+    rows = scenario_contract(requirements)
+    date = fixed_current_date(requirements)
+    if not rows and not date:
+        return ""
+    lines = ["\n\n## Requirement path table (deterministic, extracted from the requirement's own scenarios)",
+             "The acceptance suite walks these paths with the locator ladder. Read every row as: from the start "
+             "screen, each click name must be a visible control on the screen the previous step left behind, and "
+             "after the last click the listed names must be on screen, verbatim. A name that only exists behind "
+             "another screen, inside a collapsed submenu, or renamed (`Personal` -> `Personal center`) fails every "
+             "row that walks through it, and each row stands for a whole family of tests."]
+    if date:
+        lines.append(f"- The requirement fixes the current date at {date} for date-sensitive scenarios: derive "
+                     f"\"today\" from that date, never from the machine clock, and treat it as the lower bound of "
+                     f"selectable dates. The literal {date} must appear in the frontend source.")
+    for row in rows:
+        names = ", ".join(f"\u201c{n}\u201d" for n in row["names"])
+        lines.append(f"- {row['id']} [from {row['start']}{' + login' if row['login'] else ''}] click "
+                     + " -> ".join(f"\u201c{c}\u201d" for c in row["clicks"])
+                     + (f" | screen shows: {names}" if names else ""))
+    text = "\n".join(lines)
+    if len(text.encode("utf-8")) > CONTRACT_MAX_BYTES:
+        text = text[:CONTRACT_MAX_BYTES].rsplit("\n", 1)[0] + "\n(the path table is truncated)"
+    return text
 
 
 def exact_name_gaps(stage, requirements):
@@ -1252,8 +1711,10 @@ def process_guard_gaps(stage):
 
 def _fatal(problem):
     """A smoke problem that zeroes the whole app (nothing renders or serves), as opposed to one that
-    costs a family of tests (a click handler that throws, a missing landmark)."""
-    return not (problem.startswith("clicking ") or "renders no <" in problem)
+    costs a family of tests (a click handler that throws, a missing landmark, a path the requirement
+    cannot walk)."""
+    return not (problem.startswith("clicking ") or problem.startswith("the requirement's path ")
+                or "renders no <" in problem)
 
 
 def _problem_weight(problem):
@@ -1274,7 +1735,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     smoke_before = list(problems)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
     static = (process_guard_gaps(stage) + aria_collision_gaps(stage, requirements) + exact_name_gaps(stage, requirements)
-              + readonly_gaps(stage) + (scaffold_gaps(stage) if scaffold else []))
+              + readonly_gaps(stage) + fixed_date_gaps(stage, requirements) + (scaffold_gaps(stage) if scaffold else []))
     budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
                     "repair": None}
     problems = problems + static + vocab
@@ -1321,14 +1782,21 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         if missing_after > missing_before:
             raise ValueError(f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
         renamed = sorted(pinned_before - control_names(stage))
-        if renamed:
+        whole_app_before = any(_fatal(p) for p in smoke_before)
+        whole_app_after = any(_fatal(p) for p in after)
+        if renamed and not (whole_app_before and not whole_app_after):
             # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
             # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).
+            # But a repair that removes a whole-app failure is kept even when a name moved with it: a blank page
+            # or a dead backend is zero on every test, and the draft that had it is not a safe fallback (Ctrip
+            # goal round: a `this.flights is not a function` load error shipped because the fixing repair was
+            # rejected for renaming 添加返程 — 0/125).
             raise ValueError("repair renamed quoted control(s): " + ", ".join(renamed[:8]))
         for item in batch:
             files[:] = [f for f in files if f["path"] != item["path"]] + [item]
         budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch],
-                                  "vocabulary_missing_after": missing_after}
+                                  "vocabulary_missing_after": missing_after,
+                                  **({"renamed_but_kept": renamed[:8]} if renamed else {})}
     except Exception as exc:
         # Keep the original delivery: a half-applied fix could be worse than the known state.
         shutil.rmtree(stage)

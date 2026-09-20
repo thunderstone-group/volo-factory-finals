@@ -195,3 +195,21 @@ text field first in DOM order). Exception: a requirement that names a region lit
   `process.on('unhandledRejection', …)` handlers that log and keep serving, and wrap every request handler in
   try/catch that answers HTTP 500. One thrown handler otherwise ends the Node process and every later test
   fails with ERR_CONNECTION_REFUSED (a 12306 run died at test 6 of 135 on "Assignment to constant variable").
+
+## 9. The requirement path table is the reachability contract
+The runner extracts a path table from the requirement's own scenarios and places it above the requirement.
+Each row is: the screen it starts on, the names the suite clicks in order, then the names that must be on
+screen afterwards. Your app is walked through every executable row locally before it is graded, so:
+- A name the requirement clicks must be a VISIBLE control on the screen the previous click left behind, and
+  the screen it opens must show the names the requirement's THEN step lists. Clicking the top "My 12306"
+  entry must open the personal center home with its left menu ("Personal Center", "Order center",
+  "Personal", "Information management"), not a popover whose items are named differently: a name that only
+  exists on another screen, inside a collapsed submenu, or under another name costs every row that walks
+  through it (one 12306 run lost 31 of 135 tests to that one popover).
+- A collapsed submenu is opened by clicking its own entry first; entries the requirement lists as shown are
+  visible without a click.
+- When the requirement fixes the current date ("the current date ... is fixed at 2026-07-19"), define today
+  from that literal once and use it for defaults, bounds and validation. The suite's fixture dates sit
+  around it; the machine clock would judge every one of them past.
+- Both rules are checked locally: the path walk reports the row id, the name, and the screen it failed on,
+  and the fixed-date rule reports when the declared date appears nowhere in the frontend.

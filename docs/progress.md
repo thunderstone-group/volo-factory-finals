@@ -516,3 +516,37 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - Balance after the six serial Web runs: CNY 228.744207, pending billing 0. No Lite run was started for the rejected
   candidate. The gate remains in the package as a diagnostic carrier; the next candidate must add a requirement
   planner/contract table for 12306 and Ctrip before another platform pair.
+
+## 2026-09-20 [11:30] — Path table + path walk landed; Ctrip's zero was a rejected repair
+
+- **The replay timezone matters.** The same r27a 12306 bundle replays 48/135 on this machine's clock (UTC+8) and
+  **62/135 under `TZ=UTC`** — exactly the platform's `cb1e1d2f9aa0`. `helpers.ts` takes TEST_DATE from
+  `toISOString().slice(0,10)` (UTC) while the app validated dates against local midnight, so the suite's own date
+  was judged past and the search never navigated. Every replay from here runs `TZ=UTC`; the earlier 48/135 families
+  were part artifact.
+- **12306's 31 failures are one unreachable menu**, not a role question. 18 × `button /^Personal$/` (REQ-4.3.x) and
+  13 × `button /^Information management$/` (REQ-4.4.x): after login the top "My 12306" opened a popover
+  (`menu "My 12306"` with Order center / User information / Account security / My passengers), so the requirement's
+  personal-center home — left menu "Personal Center", "Order center", "Personal", "Information management", with
+  "Personal" expanding to its three entries — never existed. `firstVisible` fell through all six rungs.
+- **Ctrip 0/125 was a repair thrown away.** All 125 tests `timedOut`; the local gate reproduces
+  `Uncaught [TypeError: this.flights is not a function]` (blank page) in 3.4 s, and the platform log shows the
+  smoke check caught it, the repair ran and was **rejected by the pinned-name veto**
+  (`repair renamed quoted control(s): + 添加返程`), shipping the blank draft. Fourth instance of "a right gate, and
+  an acceptance rule that discards the good part".
+- Carrier 1 (`oneshot/main.py`): `scenario_contract()` reads the requirement's own GIVEN/WHEN/THEN (yaml and
+  markdown shapes) into a **path table** — start screen, click names in order, required names on the destination —
+  prepended to the prompt (4.2 KB, 42 rows for 12306); rows that need application state stay prompt-only.
+- Carrier 2: the DOM probe now **walks those rows** on a fresh jsdom page with the suite's own ladder order
+  (button → link → tab → menuitem → option → radio → checkbox → heading → text), signing in with the account the
+  requirement names for that row and retrying signed in when a row dead-ends at a sign-in surface. On the r27a
+  bundle it reports exactly three problems, all true (REQ-4.3.1 / REQ-4.3.5 at "Personal", REQ-4.4.1 at
+  "Information management") and none for the nine other executable rows; 12.8 s. False positives removed while
+  building it are now rules: state scenarios, change-from mentions, shared entry/submit names, sign-in walls.
+- Carrier 3: `fixed_date_gaps()` fires when the requirement declares "the current date … fixed at 2026-07-19"
+  (Ctrip) and the literal is absent from the frontend; it names the `new Date()`/`Date.now()` lines.
+- Carrier 4 (acceptance): a repair that removes a whole-app failure is kept even when a quoted control name moved
+  with it (`repair.renamed_but_kept`); the rename veto still applies to family-level repairs.
+- `tests_oneshot` 98 green (5 new). Report `docs/reports/2026-09-20-path-table-and-repair-acceptance.md`, evidence
+  `docs/evidence/2026-09-20-path-walk-and-acceptance-fix.json`. Balance CNY 191.278679, pending 0, no run started:
+  the platform pair waits for a clean local gate on the next candidate.

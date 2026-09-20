@@ -1,5 +1,7 @@
 # One-shot candidate inside VOLO
 
+last-reviewed: 2026-09-20。
+
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
 The original three source hashes and Git head are in `oneshot/source_manifest.json`.
@@ -8,8 +10,12 @@ The original three source hashes and Git head are in `oneshot/source_manifest.js
 
 ```sh
 .venv/bin/python scripts/package_oneshot.py
-.venv/bin/python -m unittest discover -s tests_oneshot -v
+PYTHONPATH=. python3 -m unittest discover -s tests_oneshot -t tests_oneshot
 ```
+
+`tests_oneshot` is unittest-based and is not a package: run it with `-t tests_oneshot`, or
+`PYTHONPATH=.:tests_oneshot python -m unittest test_oneshot ...` for a single module. The documented
+`.venv/bin/python` has no `pytest`.
 
 The default artifact is `oneshot/dist/oneshot.zip`, with a sibling `.zip.manifest.json`.
 Only `main.py`, `dialect.md`, and `requirements.txt` are in the ZIP, flattened to its root.
@@ -51,6 +57,24 @@ nonempty frontend HTML and the zero-dependency contract. It does NOT run npm bui
 start the generated application or establish health/behavior correctness. A successful
 exit is therefore not an official acceptance result. The original root `main.py` / `volo/`
 are a frozen legacy baseline; this change does not silently replace that entrypoint.
+
+## Local gates and the path walk (2026-09-20)
+
+Before publishing, the smoke check builds and starts the app, then a jsdom probe loads `/` with scripts
+running: it reports load errors, blank pages, a page that never settles, landmark gaps, thrown click
+handlers, silent handlers, and — since 2026-09-20 — it walks the requirement's own paths. The path table
+is extracted deterministically from the requirement's GIVEN/WHEN/THEN (both the yaml the platform passes
+and the same document as markdown): start screen, the names clicked in order, the names required on the
+destination screen. Rows whose precondition is application state stay in the prompt and out of the walk.
+The walk resolves names with the suite's ladder order (button, link, tab, menuitem, option, radio,
+checkbox, heading, text), signs in with the account the requirement names for that row, and retries
+signed in when a row dead-ends at a sign-in surface. `fixed_date_gaps()` fires when a requirement declares
+"the current date … fixed at YYYY-MM-DD" and the literal is absent from the frontend.
+
+**Replays must run `TZ=UTC`.** The official helper derives its date from
+`new Date().toISOString().slice(0, 10)`; a replay in another timezone feeds the app a date it judges
+past, and the measured score differs from the platform's (the same 12306 bundle: 48/135 locally, 62/135
+under `TZ=UTC` = the platform's 62/135).
 
 ## Continuation validation on 2026-09-16
 

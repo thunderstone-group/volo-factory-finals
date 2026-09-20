@@ -352,6 +352,79 @@ class OfflineCase(unittest.TestCase):
         prompt = budget.attempts[0]["messages"][1]["content"]
         self.assertLess(prompt.index("## Quoted vocabulary checklist"), prompt.index("## Requirements (the application to build)"))
 
+    def test_path_table_reads_the_requirements_own_scenarios(self):
+        req = ("- id: REQ-4.1\n  name: Personal Center Entry\n  type: FOLDER\n"
+               "  description: 'After login, open the personal center home page from the top \"My 12306\" entry. "
+               "The page shows the left-side menu items \"Personal Center\", \"Order center\", \"Personal\", and \"Information management\".'\n"
+               "  children:\n"
+               "    - id: REQ-4.3.1\n      name: Open user information\n      type: ATOMIC\n"
+               "      scenarios:\n        - name: Open the user information page\n          steps:\n"
+               "            - keyword: GIVEN\n              content: 'The user is on the personal center.'\n"
+               "            - keyword: WHEN\n              content: 'Click \"Personal\" and then click \"User information\".'\n"
+               "            - keyword: THEN\n              content: 'The page shows \"Essential information\" and \"Contact information\".'\n")
+        rows = adapter.scenario_contract(req)
+        row = next(r for r in rows if r["id"] == "REQ-4.3.1")
+        self.assertEqual(row["clicks"], ["My 12306", "Personal", "User information"])
+        self.assertEqual(row["names"], ["Essential information", "Contact information"])
+        self.assertEqual(row["start"], "personal center")
+        self.assertTrue(row["login"])
+        self.assertTrue(row["walk"])
+        table = adapter.contract_table(req)
+        self.assertIn("REQ-4.3.1 [from personal center + login] click \u201cMy 12306\u201d -> \u201cPersonal\u201d -> \u201cUser information\u201d", table)
+        self.assertIn("screen shows: \u201cEssential information\u201d, \u201cContact information\u201d", table)
+
+    def test_path_table_skips_state_scenarios_and_prose(self):
+        req = ("- id: REQ-2.1.3\n  name: Register\n  type: ATOMIC\n"
+               "  scenarios:\n    - name: Submit\n      steps:\n"
+               "        - keyword: GIVEN\n          content: 'The user is on the registration page with all required fields filled with valid values.'\n"
+               "        - keyword: WHEN\n          content: 'Click the \"Register\" button.'\n"
+               "        - keyword: THEN\n          content: 'The system shows \"Registration successful.\".'\n"
+               "- id: REQ-9.1\n  name: Review\n  type: ATOMIC\n"
+               "  scenarios:\n    - name: Review\n      steps:\n"
+               "        - keyword: GIVEN\n          content: 'The user is on the home page.'\n"
+               "        - keyword: WHEN\n          content: 'Review the content below the banner area.'\n"
+               "        - keyword: THEN\n          content: 'The page shows a \"Quick Guide\" section.'\n")
+        self.assertEqual(adapter.scenario_contract(req), [])
+
+    def test_contract_login_ignores_field_labels_and_the_path_table_names_it(self):
+        req = ("- id: REQ-2.1\n  name: Register\n  type: FOLDER\n"
+               "  description: 'Collects labels \"Username\", \"Password\", \"Confirm Password\".'\n"
+               "- id: REQ-4.3\n  name: Profile\n  type: FOLDER\n"
+               "  description: 'The system contains the verified account profile_user with username \"profile_user\", "
+               "email \"profile_user@example.com\", mobile number \"13800000030\", and password \"Password123!\".'\n")
+        self.assertEqual(adapter.contract_login(req), ("profile_user@example.com", "Password123!"))
+        self.assertIsNone(adapter.contract_login("no accounts here"))
+
+    def test_path_table_precedes_the_requirements(self):
+        req = ("- id: REQ-4.1\n  name: Personal Center Entry\n  type: FOLDER\n"
+               "  description: 'After login, open the personal center home page from the top \"My 12306\" entry.'\n"
+               "- id: REQ-4.3.1\n  name: Open user information\n  type: ATOMIC\n"
+               "  scenarios:\n    - name: Open the user information page\n      steps:\n"
+               "        - keyword: GIVEN\n          content: 'The user is on the personal center.'\n"
+               "        - keyword: WHEN\n          content: 'Click \"Personal\" and then click \"User information\".'\n"
+               "        - keyword: THEN\n          content: 'The page shows \"Essential information\".'\n")
+        budget = adapter.CallBudget()
+        self.replies(events(application()))
+        adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        prompt = budget.attempts[0]["messages"][1]["content"]
+        self.assertLess(prompt.index("## Requirement path table"),
+                        prompt.index("## Requirements (the application to build)"))
+
+    def test_fixed_date_gate_requires_the_declared_date_in_the_frontend(self):
+        stage = self.root / "stage-date"
+        (stage / "frontend" / "public").mkdir(parents=True)
+        source = stage / "frontend" / "public" / "app.js"
+        source.write_text("const today = new Date().toISOString().slice(0, 10);\n")
+        req = "The current date in the date-sensitive scenarios is fixed at 2026-07-19."
+        self.assertEqual(adapter.fixed_current_date(req), "2026-07-19")
+        [problem] = adapter.fixed_date_gaps(stage, req)
+        self.assertIn("2026-07-19 appears in no frontend source", problem)
+        self.assertIn("frontend/public/app.js:1", problem)
+        source.write_text("const TODAY = '2026-07-19';\nconst d = new Date(TODAY);\n")
+        self.assertEqual(adapter.fixed_date_gaps(stage, req), [])
+        self.assertEqual(adapter.fixed_current_date("no fixed date here"), None)
+        self.assertEqual(adapter.fixed_date_gaps(stage, "no fixed date here"), [])
+
     def test_completed_calls_still_share_the_global_cap(self):
         budget = adapter.CallBudget(limit=1)
         prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')

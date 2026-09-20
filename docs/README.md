@@ -30,6 +30,7 @@ last-reviewed: 2026-09-18。本文只维护 docs/ 的结构与规则，不复述
 
 ## reports/ 索引（新在上）
 
+- `2026-09-20-path-table-and-repair-acceptance.md` — 需求路径表与本地路径走查；12306 的 31 个用例归因到一个打不开的菜单，Ctrip 0/125 归因到被否决的修复；replay 必须 `TZ=UTC`。
 - `2026-09-18-goal-ledger.md` — 甲方 01:53 定的「Web 聚合榜 ≥ 80%」目标模式：每轮一行的账本、护栏、判据。
 - `2026-09-18-distillation.md` — 把 know-how 压到弱模型能用的层级（门 → 骨架 → 表 → 散文）的叙事，ADR 0001 的背景。
 - `2026-09-16-workspace-consolidation.md` — 09-16 工作区收编决定：VOLO 唯一主项目、one-shot 与论坛 CLI 的边界。
