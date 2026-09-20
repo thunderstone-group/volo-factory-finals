@@ -1,0 +1,859 @@
+{
+  "schema": "volo.fixed-draft-repair.v1",
+  "recorded_at_utc": "2026-09-20T09:24:53Z",
+  "base_commit": "248eb656d55a2888c3abd9afa00780471e848885",
+  "run_ids": {
+    "12306": "01ea1a853d95",
+    "ctrip": "9a2cdc6656f3",
+    "bookstack": "8418091af0b5"
+  },
+  "method": {
+    "same_frozen_draft_per_comparison": true,
+    "fresh_application_and_data_per_arm": true,
+    "TZ": "UTC",
+    "profile": "hosted",
+    "workers": 4,
+    "test_timeout_ms": 10000,
+    "new_official_runs": 0,
+    "new_successful_model_calls": 0,
+    "failed_new_model_attempts": 5,
+    "candidate_changed": false
+  },
+  "comparisons": [
+    {
+      "app": "12306",
+      "before": "draft",
+      "after": "repair",
+      "repair_source": "recorded Flash repair",
+      "total": 135,
+      "passed_before": 73,
+      "passed_after": 74,
+      "gained": [
+        "REQ-4.4.3: Add a frequent passenger successfully"
+      ],
+      "regressed": [],
+      "before_report_sha256": "8bc23579443dc541431fad3d9223c37cabfad0d6e2276d3442f138059c14297b",
+      "after_report_sha256": "e899396d6367bc58296985ece7ace4a963df7451bd3367a3d42088a73b9fc7fc"
+    },
+    {
+      "app": "ctrip",
+      "before": "draft",
+      "after": "repair",
+      "repair_source": "recorded Flash repair",
+      "total": 125,
+      "passed_before": 0,
+      "passed_after": 42,
+      "gained": [
+        "REQ-0: Open System",
+        "REQ-1.1: Open Homepage",
+        "REQ-2.1: Open Registration Entry",
+        "REQ-2.2: Open Login Entry",
+        "REQ-2.3.1: Enter Login Page",
+        "REQ-2.3.2: Switch to Verification-Code Login",
+        "REQ-2.3.3: Switch to Password Login",
+        "REQ-2.4.2: Exception: Username Missing",
+        "REQ-2.4.3: Exception: Password Missing",
+        "REQ-2.5.2: Exception: Mobile Number Missing",
+        "REQ-2.6.1: Enter Registration Page",
+        "REQ-2.6.2.1: Trigger Registration Agreement",
+        "REQ-2.6.2.2: Decline Registration Agreement",
+        "REQ-3.2.1: Trip Type Selection",
+        "REQ-3.2.3: Exception: Same-City Validation",
+        "REQ-3.2.7.1: Enable Return Trip",
+        "REQ-3.2.7.2: Exception: Return Date Earlier Than Departure",
+        "REQ-3.5.3.1: Combined Filters",
+        "REQ-3.5.3.3: Sort by On-Time Performance",
+        "REQ-3.5.3.4: Sort by Departure Time",
+        "REQ-3.5.4.2: Select a Fare and Book",
+        "REQ-3.5.4.3: Exception: No Search Results",
+        "REQ-4.1.2.1: Quickly Select Passengers",
+        "REQ-4.1.3.1: Enter ID Information (Normal Flow)",
+        "REQ-4.1.3.2: Exception: Invalid ID Number Format",
+        "REQ-4.1.4.1: Trigger Add Passenger",
+        "REQ-4.1.5.1: Modify Contact Mobile Number",
+        "REQ-4.1.6.1: Real-Time Fee Calculation",
+        "REQ-4.2.1.2: View Insurance Terms",
+        "REQ-4.2.2.1: View Free Baggage Allowance",
+        "REQ-4.2.2.2: Purchase Extra Baggage Allowance",
+        "REQ-4.2.3.1: Reserve an Airport Drop-Off Service",
+        "REQ-4.2.5.2: Auto Deduction When Removing Services",
+        "REQ-4.3.1: Payment Countdown Reminder",
+        "REQ-4.3.2: Select Payment Method",
+        "REQ-7.1: Enter Flight Status Page",
+        "REQ-7.2.2.2: Swap Origin and Destination",
+        "REQ-7.2.3.1: Use History",
+        "REQ-9.1: Enter Airport Guide",
+        "REQ-9.2.1.1: Browse Popular Airports",
+        "REQ-9.2.1.2: Find via Alphabet Index",
+        "REQ-9.2.2.1: View Travel Weather"
+      ],
+      "regressed": [],
+      "before_report_sha256": "ee19b8979cf6ee38c3620d9aa41cc5c946e8c9be6ae65c83514f4d468dea1533",
+      "after_report_sha256": "7eb6636bdf3eca1f4080556b6fd5d071b8c619a513be0bfd19ba1de272b495be"
+    },
+    {
+      "app": "12306",
+      "before": "draft",
+      "after": "reference-patch",
+      "repair_source": "manual diagnostic reference",
+      "total": 135,
+      "passed_before": 73,
+      "passed_after": 87,
+      "gained": [
+        "REQ-3.1.5: Search tickets from the home page",
+        "REQ-3.2.1: Display the populated ticket search results page",
+        "REQ-3.2.12: Filter the result list by departure time range",
+        "REQ-3.2.13: Enter the results page from the home quick search module",
+        "REQ-3.2.2: Show ticket prices and booking actions in each result row",
+        "REQ-3.2.4: Search again from the results page",
+        "REQ-3.2.5: Search with another date from the date-switching bar",
+        "REQ-3.2.6: Toggle sorting by departure time",
+        "REQ-3.2.7: Toggle sorting by travel time",
+        "REQ-3.2.8: Toggle sorting by arrival time",
+        "REQ-3.2.9: Filter the result list by train type",
+        "REQ-3.3.3: Toggle transfer plan sorting by first-segment departure time",
+        "REQ-3.3.4: Toggle transfer plan sorting by total travel time",
+        "REQ-3.3.5: Toggle transfer plan sorting by second-segment arrival time",
+        "REQ-5.1.1: Show the quick login form for an unauthenticated booking attempt",
+        "REQ-5.1.3: Open the registration page from the quick login form"
+      ],
+      "regressed": [
+        "REQ-4.2.10: Display upcoming trips in a table",
+        "REQ-4.2.9: Reject an invalid upcoming trips search condition"
+      ],
+      "before_report_sha256": "8bc23579443dc541431fad3d9223c37cabfad0d6e2276d3442f138059c14297b",
+      "after_report_sha256": "1a53b0e3bbd3984a85ab3959a97df6c1610d5efed722be080cf5670c2e747dca"
+    },
+    {
+      "app": "bookstack",
+      "before": "draft-lite",
+      "after": "reference-patch",
+      "repair_source": "manual diagnostic reference",
+      "total": 34,
+      "passed_before": 16,
+      "passed_after": 18,
+      "gained": [
+        "REQ-4.4.2: Cancel Delete Shelf",
+        "REQ-4.5.2: Cancel Shelf Edits"
+      ],
+      "regressed": [],
+      "before_report_sha256": "57d40e5d49642004036127308a3cab3418b2b8035cd873b5bdebcf01db4f0ca5",
+      "after_report_sha256": "beaf377973f8cd3db4d511deaa8d3af28b169ae964b432a4d398f0a6cf451a4b"
+    }
+  ],
+  "reconstruction": {
+    "12306": {
+      "log_sha256": "0302588c3ba1cb31a740fbfe3102be39b4203c81eec40599aef465bd65f98a4a",
+      "parser_sha256": "aec800d7ff88b9bdba500f85795214f32c5ef631a84a0b4508c50417121ac9a9",
+      "bundle": "~/projects/volo-factory/runs/2026-09-20-goal/r28a-12306-bundle.zip",
+      "delivered_arm": "repair",
+      "delivered_source_match": true,
+      "calls": [
+        {
+          "call": 1,
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 47420,
+            "completion_tokens": 83746
+          },
+          "elapsed_seconds": 573.869
+        },
+        {
+          "call": 2,
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 75410,
+            "completion_tokens": 55131
+          },
+          "elapsed_seconds": 358.571
+        }
+      ],
+      "original_smoke": {
+        "executed": true,
+        "problems": [
+          "clicking `May 31 Sun` (data-action `switch-date`) on screen `#/search` produced no observable outcome; render the requested screen, dialog, status, selection or state change from the handler",
+          "clicking `Departure Time` (data-action `sort-results`) on screen `#/search` produced no observable outcome; render the requested screen, dialog, status, selection or state change from the handler",
+          "clicking `Ticketing` (data-action `guide-tab`) on screen `#/guide` produced no observable outcome; render the requested screen, dialog, status, selection or state change from the handler",
+          "the requirement's path REQ-4.4.1 ends on `#/passengers` without “All”: the requirement's THEN step requires those names on that screen, reached by My 12306 -> Information management -> My Passengers. Show each one verbatim on the destination screen",
+          "7 field label(s) are substrings of another field label, so getByLabel('To') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"Date\" is contained in \"End date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"End date\"; \"Date\" is contained in \"Start date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Start date\"; \"Date\" is contained in \"Search by date type\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Search by date type\"; \"Name\" is contained in \"Select ${esc(p.name)}\" — keep \"Name\" exactly (quoted in the requirement) and rename \"Select ${esc(p.name)}\"; \"Password\" is contained in \"New password\" — keep \"Password\" exactly (quoted in the requirement) and rename \"New password\"; \"New password\" is contained in \"New password:\" — keep \"New password:\" exactly (quoted in the requirement) and rename \"New password\"; \"New password\" is contained in \"Confirm new password:\" — keep \"Confirm new password:\" exactly (quoted in the requirement) and rename \"New password\"",
+          "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"${esc(s.name)}\" shares esc with a field label; button aria-label \"${ARC.esc(L.brand || \" shares esc with a field label",
+          "2 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “, and a” appears only as `Fill in the form, and a confirmation message will appear.`; “Account number” appears only as `Account number: ${esc(user.username)}`",
+          "12 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"assets/logo.png\", \"May 31 Sun\", \"xx results\", \"You don''t have uncompleted orders.\", \"You don''t have any bookings or we can''t access your bookings at this time.\", \"Please enter a valid search condition.\", \"business-class seat ( ￥1870.0 ) 32% off 1 left\", \"first-class seat ( ￥967.0 ) 24% off None left\", \"second-class seat ( ￥576.0 ) 27% off None left\", \"standing ticket ( ￥576.0 ) 27% off Enough left\", \"MM:SS\", \"Total: ￥xxxx.xx\""
+        ],
+        "vocabulary_missing": 12,
+        "repair": {
+          "accepted": true,
+          "files": [
+            "frontend/public/lib/arc.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "vocabulary_missing_after": 0
+        }
+      },
+      "snapshots": {
+        "draft": {
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "135f6f00a01c6b163593b40df2ccee6753e6a80347f2b9925cecf8c03300882c",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "96ec1d2837bb490e0e0a20dc66d78d15c66c7bf1b6fd58bc7618deec6a52e8e3",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/lib/arc.js": "6b877afcfa8500ca8f7e734e200099e9f3c0db19244bc4193803ef196568e7a2",
+          "frontend/public/seed.js": "9ec920f13d3cc472a4273f593f21e42eb3e3fd988fbd85561a1347c512678f85",
+          "frontend/public/styles.css": "f77da1f1420e06bb144d43d72430a6dcbde5a7610208fd55660d9eaebae85c70"
+        },
+        "repair": {
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "135f6f00a01c6b163593b40df2ccee6753e6a80347f2b9925cecf8c03300882c",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "398032362f2f1b238dac18bfcb2f71c0004f8981ea7197cb768d982717ab5126",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/lib/arc.js": "5ede12c179d16e879c73b5d306a2088e21203506083cd7f965263d57e1fbed0e",
+          "frontend/public/seed.js": "9ec920f13d3cc472a4273f593f21e42eb3e3fd988fbd85561a1347c512678f85",
+          "frontend/public/styles.css": "ef4dcbc280a86869f680126eef148376e9dd26e65d31d279eb67db8e8a843470"
+        }
+      }
+    },
+    "ctrip": {
+      "log_sha256": "ccf90ddafd891acc52d80da40b3151676e7212e66a793f777d74912a79f28c54",
+      "parser_sha256": "aec800d7ff88b9bdba500f85795214f32c5ef631a84a0b4508c50417121ac9a9",
+      "bundle": "~/projects/volo-factory/runs/2026-09-20-goal/ctrip-goal-bundle.zip",
+      "delivered_arm": "draft",
+      "delivered_source_match": true,
+      "calls": [
+        {
+          "call": 1,
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 44560,
+            "completion_tokens": 73212
+          },
+          "elapsed_seconds": 461.1
+        },
+        {
+          "call": 2,
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 72701,
+            "completion_tokens": 50403
+          },
+          "elapsed_seconds": 289.99
+        }
+      ],
+      "original_smoke": {
+        "executed": true,
+        "problems": [
+          "frontend script error on load (the page is blank for every test): Uncaught [TypeError: this.flights is not a function]",
+          "the first screen (/) renders no <nav> (or role=navigation) although the requirement describes a navigation; every screen, including the home screen, must render through the one shared layout (header, navigation, main content, footer) so the suite finds the same landmarks and controls on every route",
+          "3 field label(s) are substrings of another field label, so getByLabel('日期 Date') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"日期 Date\" is contained in \"出生日期 Date of birth\"; \"密码 Password\" is contained in \"登录密码 Password\"; \"密码 Password\" is contained in \"设置密码 Password\"",
+          "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Phone change form\" shares phone with a field label; button aria-label \"${ARC.esc(L.brand || \" shares esc with a field label",
+          "3 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “返回日期” appears only as `返回日期 Return date`; “添加返程” appears only as `+ 添加返程`; “010-” appears only as `机场问讯：010-64541100`",
+          "frontend/public/app.js:209 marks an input readonly (<input id=\"origin\" name=\"origin\" data-city-field=\"origin\" data-city-picker=\"orig); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "frontend/public/app.js:212 marks an input readonly (<input id=\"destination\" name=\"destination\" data-city-field=\"destination\" data-ci); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "frontend/public/app.js:216 marks an input readonly (<input id=\"departDate\" name=\"departDate\" data-date-field=\"departDate\" data-date-); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "frontend/public/app.js:218 marks an input readonly (<input id=\"returnDate\" name=\"returnDate\" data-date-field=\"returnDate\" data-date-); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "3 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"4天\", \"火星城\", \"aa\""
+        ],
+        "vocabulary_missing": 3,
+        "repair": {
+          "accepted": false,
+          "reason": "repair renamed quoted control(s): + 添加返程"
+        }
+      },
+      "snapshots": {
+        "draft": {
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "135f6f00a01c6b163593b40df2ccee6753e6a80347f2b9925cecf8c03300882c",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "c4c18a7c2578029cea7ff97a3bc3cd8915257c72f1b101aeb34b89237b4957b2",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/lib/arc.js": "6b877afcfa8500ca8f7e734e200099e9f3c0db19244bc4193803ef196568e7a2",
+          "frontend/public/seed.js": "8ccbf6d5ed0ddfc67b0580260601c4705b37d9facd38bf1aa2bebdda3b2c1815",
+          "frontend/public/styles.css": "963dbf1da8568db031c44385d47bcc36c5906cc403bf08988890ecdf78fa44bd"
+        },
+        "repair": {
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "135f6f00a01c6b163593b40df2ccee6753e6a80347f2b9925cecf8c03300882c",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "55bae768d1abe6727d0c43d16f421b8ac8a509f06dd7c9db776bc011846c817e",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/lib/arc.js": "5086fdf94eae42cbf209fe83807371a9388f6bdd8758ca7b9f0084c9b1ca264b",
+          "frontend/public/seed.js": "5d9dee93ddfa896b10e3c1241ef5ad89fe03ef397f43eeb9171c8b876dcbe73a",
+          "frontend/public/styles.css": "0cd6d14c65c5fb1b9e23002ee2c561a40e5b80950fd770cbe3ce671c5057b7a8"
+        }
+      }
+    },
+    "bookstack": {
+      "log_sha256": "be23a018a724c4ccb5ae9281a33f09ec7b2c632534605d54caaf50cd873918e7",
+      "parser_sha256": "aec800d7ff88b9bdba500f85795214f32c5ef631a84a0b4508c50417121ac9a9",
+      "bundle": "~/projects/volo-factory-worktrees/view-state-isolation-20260919/runs/2026-09-19-view-state-eval/bookstack-bundle.zip",
+      "delivered_arm": "draft",
+      "delivered_source_match": true,
+      "calls": [
+        {
+          "call": 1,
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 22826,
+            "completion_tokens": 71278
+          },
+          "elapsed_seconds": 469.812
+        }
+      ],
+      "original_smoke": {
+        "executed": true,
+        "problems": [],
+        "vocabulary_missing": 0,
+        "repair": null
+      },
+      "snapshots": {
+        "draft": {
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "135f6f00a01c6b163593b40df2ccee6753e6a80347f2b9925cecf8c03300882c",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "d4476856c2860ba04c329dca7531e938e30944b86d9a2a21457d0a0201873fd9",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/lib/arc.js": "471d998fce9f2fee141dba9465d99e141bdf4914eb4bec84452443f9272720da",
+          "frontend/public/seed.js": "87a852f7277bc236ffc747d2cdb8784727f271056a0c49c7f326c2d7d8d8b15c",
+          "frontend/public/styles.css": "1d08ee81c82ea659ebda3760b5be08ce5caef1196260fa482947720b60c62bb3"
+        }
+      }
+    }
+  },
+  "current_published_suites": {
+    "12306": {
+      "files": {
+        "REQ-1.1.spec.ts": "9eb24adce6298f8d7e99c38395c2512158b4a9efbbee5def37592ccd69bae4c1",
+        "REQ-1.2.spec.ts": "d5bfb5919a7e3e93a1cb9e0769bb7fddd650d20c7ffb2b390678b87ec8d119c3",
+        "REQ-2.1.1.spec.ts": "5d13e2614619f05b3f36d27a138aec5c6e83f27b2f749adca2aaffbab5d700a1",
+        "REQ-2.1.2.spec.ts": "a417a72007fcce5242f9840efc5e9de06efd93bc6f069400e69884e522630f6b",
+        "REQ-2.1.3.spec.ts": "b4724ce051f825b9bedc4721ad5b20505ebda0ed11ccf9c662cafab94b0fef44",
+        "REQ-2.1.4.spec.ts": "a24365ddf4050b5b77056a3add50cac604badb232b316934deddd403eb600bca",
+        "REQ-2.1.5.spec.ts": "506542df72b4a136a0fca8d4b742087ba8343924d976e8c8b59b4e4430fe0495",
+        "REQ-2.1.6.spec.ts": "3767323bc78701d3226ab4c172338e027e80462b4be29bb4c49aad470efb0356",
+        "REQ-2.1.7.spec.ts": "743b966a9f1989c9da2bfe31958376b2ba7d2d7491562dbfbaeff697e897abce",
+        "REQ-2.1.8.spec.ts": "db58de4e70aa4a6e30ae3ff949c1595a4d786f6d32699455c98163c2c6c0d545",
+        "REQ-2.1.9.spec.ts": "c1b4c0ca7c9a243805a0e02473eca7ad9bccc4ae4e3039b75f2a95d87ede7cc8",
+        "REQ-2.2.1.spec.ts": "9d30cb08b3ee0ccee6be1864a5f4de7db310f2ead163ac9f2e228b901d6cba99",
+        "REQ-2.2.2.spec.ts": "78145c2d9698d3ad06d5a3ddeb07e320f7423f5a0783467cb999e470e756dd18",
+        "REQ-2.2.3.spec.ts": "7e9be8aa3350adb6ea592c1bc7201ca0983872ca7c849e38648b1e08c740f626",
+        "REQ-2.2.4.spec.ts": "05bf7059db3951a441dbaf454d11fd5c82b51a6e3cf4396628544d83857e54f5",
+        "REQ-2.2.5.spec.ts": "abca79cbc7dca6453cb832d0dc8faea20a43bf308b5d544891205413e06a49ec",
+        "REQ-2.2.6.spec.ts": "fd41826d9400c1ff87ce99d815f92b28a5bae5eb2beef2982cde73e0ac280880",
+        "REQ-2.2.7.spec.ts": "ae1e11574c9a63a1d5f93fba69e6bfd3c8dcc8cd116b4b016bb223d34514f966",
+        "REQ-2.3.1.spec.ts": "4a44f695112d7aa1cb69496a2e5917a80d24d668b99c39c93fa7657cd4ee9116",
+        "REQ-2.4.1.spec.ts": "acf31acff4a1ba7b5d6735cfc82ea77cdbbe1b2217361d153c39826acd9dad68",
+        "REQ-2.4.2.spec.ts": "2a6f4dbe72b759139916f989fe2af80d49f3027bfaa63c4b2e2688f24fba1a61",
+        "REQ-2.4.3.spec.ts": "ff2c3ec3042e3cdb9e504b0955aed9499abf36f208af70adda3b5c696837a04c",
+        "REQ-2.4.4.spec.ts": "fd72bd81be9aa1ad847e20f9d2cf917798ff59fc96c146ce8f1b794ae2817a6f",
+        "REQ-2.4.5.spec.ts": "7881301f95db0d1adfbfb5cd8d1035a8c689e044725ea7c6f20bd842ada60ba8",
+        "REQ-2.4.6.spec.ts": "08d55f7d7accf14f37fdf3a186b2481ca9ab607e48d42a7f2362713bec6f38d3",
+        "REQ-2.5.1.spec.ts": "71f52e1c780ab22970c8a72a42bb9852dd5715b5a288b65e8c795a9a4d0fbde4",
+        "REQ-2.5.2.spec.ts": "b59d27cced0a96740f68b7aa3fa405191e4f91664531dbd1be2b056408291e5f",
+        "REQ-3.1.1.spec.ts": "d8552963fa068fa42946e62da1dccb6ef2cd19259fc1a4ce836006cd3dfc50d5",
+        "REQ-3.1.2.spec.ts": "8a23d8bcd91c2fa4c7b607a0db4f09a3af49867b7a626848a27b018d66040f4b",
+        "REQ-3.1.3.spec.ts": "77e7251cffcee8d44c461448a9780682c79ed1cbfb20aa0d82a117c20006d095",
+        "REQ-3.1.4.spec.ts": "110bb6bbc97b63a57d2f5aa6b619ede1d98483a648ab0b1c4647ed3d5f208817",
+        "REQ-3.1.5.spec.ts": "70749bc74ed3dcc321165a389aca2713602fa35d91e8b63523d02c4201fa860e",
+        "REQ-3.1.6.spec.ts": "486b7a0ce733c7a390d3141cc4a6db614849ca1dca55f15e89a4999642a3adf5",
+        "REQ-3.1.7.spec.ts": "074447ebaefdf6392d6aec37d41f8f38f04c60fc623cc8464be50746be80bf2b",
+        "REQ-3.2.1.spec.ts": "d005f5c6bb2309bfde91880ed45812620af9ffe44da7dc4a7144cfe641f58fcc",
+        "REQ-3.2.10.spec.ts": "b4ca5f899f40dfa39285b28e9ae6751c2e59390599bffacfef1185b0319c1ead",
+        "REQ-3.2.11.spec.ts": "44969f42d4b8a99a098990359d7a9bb2a30022f1f79ea7562bcbe5f7c103d738",
+        "REQ-3.2.12.spec.ts": "cfd30865a6a1556333e11766b9371a961a46c08ad037e07df241bab180e3a864",
+        "REQ-3.2.13.spec.ts": "a4de36abbc165a77f75324352946fbfee3a891058ccc2acf776f1422a8535fe5",
+        "REQ-3.2.14.spec.ts": "b4b2f38f6fdc695a44853205591657ade1b8ee4f7bf8082779e87413e580eb07",
+        "REQ-3.2.2.spec.ts": "01f36fa143c1a9d232b9f15312d3da4d6e133d350c4352ec5b06a186d8df3947",
+        "REQ-3.2.3.spec.ts": "026214bf17e22df1038ea9e19c5df6391f1dcb72e4c9b4988ba1a973be340eb6",
+        "REQ-3.2.4.spec.ts": "b8c612c873729edae53e9677e9e68c08724fa455fec2686f9e83ca628c1d09eb",
+        "REQ-3.2.5.spec.ts": "bd3a05375f726c64ca371d0f984d123ef7df4cca855a1a80d74f6cdbf05b6c28",
+        "REQ-3.2.6.spec.ts": "af2ac94dd5cf61f2f39ce8b874a1732047367d1824b06e1c3e26c454eb063023",
+        "REQ-3.2.7.spec.ts": "a404a0ae12ad7e79b20891dfa96c2374d7ae80d4fc25e2cfc60236f079efabd6",
+        "REQ-3.2.8.spec.ts": "982935c574df8fed974bfda66259387ba0f4740bb0426c901d7d3d2fd14dfe54",
+        "REQ-3.2.9.spec.ts": "b4e534f8422155efbffc2c084f9e0161dcead342c46c450450acb8d52e387418",
+        "REQ-3.3.1.spec.ts": "49004a9e24cff3d5d07cccc245a81042a766928e264fe46c0940a53b46fbe2bf",
+        "REQ-3.3.2.spec.ts": "4f61958ba4a1b1091069c17e7e4c30fde20d5803935f14d30a6aa6cde133ef18",
+        "REQ-3.3.3.spec.ts": "203fcc85d2aec7200527b1d8e4ccc17b40ef6c71d0dc0e54560ff6c816400871",
+        "REQ-3.3.4.spec.ts": "9dd8756f3396b38f00b1f9d53c00a2006c156424910c3f0a717a94dcc1d50485",
+        "REQ-3.3.5.spec.ts": "e9b613230e0781c0bc3e1fc94fb61e7ae762e70adee10db37ebcd069a7f45d27",
+        "REQ-4.1.1.spec.ts": "e6dd64824f24ebb19d8347ff605e4fbe4fd4f1af8d57059b004405830acfba0e",
+        "REQ-4.1.2.spec.ts": "d69c72c3eae5deec618d0333e53d40d406f44e4381a8f772787a912b7e75e3c2",
+        "REQ-4.1.3.spec.ts": "15f9ae2108c8e4fdd46527605a65951c0a1096372e7fbc316ab38aec05d42116",
+        "REQ-4.2.1.spec.ts": "c103383d4e39ab4a1a4b04b22a2976fc12239a0fe599a4d1300d9abb5829d901",
+        "REQ-4.2.10.spec.ts": "7d1c4657bf168019fe447fe96de637d1f09bb5dbffbcef2759a1404dad8dff6a",
+        "REQ-4.2.11.spec.ts": "de0f116e3a1cccf65f10151ccbc92c25f810431fbd4afa373feaad3111cfbb79",
+        "REQ-4.2.12.spec.ts": "04724840480dd0251609af3b4d6510d80e505b6a5abc73550baa996b3099b2db",
+        "REQ-4.2.13.spec.ts": "1494266731d5f31a046e30c12d4cc488da3fbec8d8ad6b08449445dd96ac5010",
+        "REQ-4.2.14.spec.ts": "a5f4ca40310d3267464f5b54ff1108543a94170044b2aabfab6f7adc42f728b6",
+        "REQ-4.2.15.spec.ts": "0ad564df38dbb3dec0fc91ce9d34c8daf7dbe1a2155a21be32518a936ac8a888",
+        "REQ-4.2.16.spec.ts": "e28630f1215d4ba105d9cdec961ce9c730cc22da4540c68ab5bdedc2a6b558ca",
+        "REQ-4.2.17.spec.ts": "3e3b8c774290d4df508e6fdcae7723c51dd2087f55323339d75b4b80ce2539da",
+        "REQ-4.2.2.spec.ts": "ee08eea5d7d73ceb34d916a9e8e2038d05ade7e98f16ccdea4addbf11b48bab7",
+        "REQ-4.2.3.spec.ts": "b14fdc1ea3411e92eacb1d718ff35aec3c622fdebafab38b674d44129563003f",
+        "REQ-4.2.4.spec.ts": "e607c27fcf246b84d02524c6a4170af97396442bc9f08e387124077ad8c0dd3c",
+        "REQ-4.2.5.spec.ts": "813d1d0429b4b604c36b238d5205f49be41ab831e42ce86cc3f04f505042b344",
+        "REQ-4.2.6.spec.ts": "f57e8473878d17de807a8598a1e45bec51b02d71ee006e6161719f0448b0913d",
+        "REQ-4.2.7.spec.ts": "07b441768752fc2ba3d0f934ec023b5a04b93cb135a1c9a7be31909a3fe15f93",
+        "REQ-4.2.8.spec.ts": "ee7f404e6aa55c99b930b1f4356228a1e4ca0098b2aff28092d6e57d9863e912",
+        "REQ-4.2.9.spec.ts": "13b55e4a0bffe0736e80a17b670fd5d47d1cf80c34753b0bc74519938ba536eb",
+        "REQ-4.3.1.spec.ts": "4e4089df8f6780a9d6d297309d126d2fed7a20475c2f3577f15ea69b001cb094",
+        "REQ-4.3.2.spec.ts": "da7f877a7935e15342b81c1df0409ab2c9ec316b4ea65fa42dd71a202c1ca57c",
+        "REQ-4.3.3.spec.ts": "ea81a30aacb74f553c931b65121f4f7d6f5d7d4cbb9e3ee02a757af1f4021504",
+        "REQ-4.3.4.spec.ts": "51a88687e58337d71045ef561dc18f131aef9d4b71ff78b5463a991d37bae084",
+        "REQ-4.3.5.spec.ts": "d39e6cdbfe3da2b31e50b1f7f18fd06785986c64d66552e3252512acc150b8c5",
+        "REQ-4.3.6.spec.ts": "723948ae36fa11a111c765f246d17d699dffe04f70a986828361e305d5c228ed",
+        "REQ-4.3.7.spec.ts": "ebbb906bd80d0b0bce413a794865bb203d3f9c58a62766de1967d1b6374d2ad8",
+        "REQ-4.3.8.spec.ts": "246a50cc2bc412e2232ef160275c576c14a85768f230140d8c8f3aa1057b2fa9",
+        "REQ-4.4.1.spec.ts": "39a44f123592939a371d74f40e93b932873d016600d3b18e931d814c61505a58",
+        "REQ-4.4.10.spec.ts": "7241b5b40f8d5cef4c13061b983c2b3ec258535b9f3f0fdf255a73a4486d84a4",
+        "REQ-4.4.11.spec.ts": "873577980c13aa45ef5003aabce3ed53788036d1cc3065e4501c209f05f5e6b8",
+        "REQ-4.4.2.spec.ts": "ef8e4cf9e9ff776135338d4b0601b19dd4ad182c4b05a875e4c2c15b3527d4ae",
+        "REQ-4.4.3.spec.ts": "6a5d63c6094fb679ce5ff2c1d373efda76ad49c75468a90a071786074ee3b7eb",
+        "REQ-4.4.4.spec.ts": "0da53bb8d63e3fdf578342dc25c7f604d63b9e2dcf1e6b57dd7f40fd9e4085d1",
+        "REQ-4.4.5.spec.ts": "0d44b6ce49ab2c0e173f3d909423b3d34317de5260fe12ced1b361ddca251cf0",
+        "REQ-4.4.6.spec.ts": "f7ab9a9e75e97c9f88471491bb75b3f70be10474b19a43e42a2dc26314fa7330",
+        "REQ-4.4.7.spec.ts": "45a9cdc6ddf081a9533a6a6ea222c2b123eba43d12baf54dbeb4b62bdcaa0e00",
+        "REQ-4.4.8.spec.ts": "43eaadeef8569fbc2dce81be46fc9f48978b025aabc20bb609087681fb2dbad3",
+        "REQ-4.4.9.spec.ts": "3ee86ef16aa682947a5b52f4a694b8b6900edf4d4d95e3092a34adaa5f002bcd",
+        "REQ-4.5.1.spec.ts": "19b6f6e950308df0811b3fd2ee4239692ffc7a76cd0e5c9be0d61d9d6eb841d8",
+        "REQ-5.1.1.spec.ts": "316123af8eab4e9a61440c8ee60f2c03b3df18f042566eb27305127398a2948a",
+        "REQ-5.1.2.spec.ts": "e11650037cce51531e7eee9ecddc726a49635d010e886876add4fcdaed78e6a6",
+        "REQ-5.1.3.spec.ts": "d86d7a934f7ea726011ef635e1f224359b2091f1d261e17540f13a69f92c6ab0",
+        "REQ-5.2.1.spec.ts": "5a2510f8a66f06722c3aa3d65f55e936f5f679620be34e615e27465ab2682f8e",
+        "REQ-5.2.2.spec.ts": "c383c296bbf1756f0f4ac36e125ef9e8de492729f03c4081aa8b152251913c60",
+        "REQ-5.2.3.spec.ts": "ef8bf6a801b8ccfc3e7a7737e55ab769d48f5ede554e50e23d0265a13f50e22d",
+        "REQ-5.2.4.spec.ts": "04e715883a53e8fc4429f1e92ebcf5d6074ad5369af488e6759e9a6df1cff2c7",
+        "REQ-5.2.5.spec.ts": "395cebdeea1d927d12849988f17ad094eebf83068b72ceb933f3c14cfebe631e",
+        "REQ-5.2.6.spec.ts": "deb7b976b718ec025dc06e5686aaf3f83619350520499dc669a17f57935e3b6f",
+        "REQ-5.2.7.spec.ts": "4e6438543e4dcbc26be1a2cb599afc223b9180adabc5133f69c6fc5efb8170ad",
+        "REQ-5.3.1.spec.ts": "779f740e93e8603b0a496c86df4a3f8f4299b5f271d6c87574b994954f8e4815",
+        "REQ-5.3.2.spec.ts": "0b0143373a7d89613eb3290a1686d1c88f1bc643fbe417020361847a3f4c62d6",
+        "REQ-5.3.3.spec.ts": "7f00756dd95ea2c64a9b07c9667696ddd5ac48652cd6853f7ec656147924596b",
+        "REQ-5.3.4.spec.ts": "fc90401ed94583cb041cdf3afe0cfc42a405860ad928d002a18aae1e0d37616c",
+        "REQ-5.3.5.spec.ts": "d7605e083f06314bd7cdf1372aec03e175a3e6cb003ba4f1e195cb3059e30f50",
+        "REQ-5.3.6.spec.ts": "486fa1dfb7090f2a5ff999728b794e2d549b5b5d45ed9beab3bcbfa9308a777c",
+        "REQ-5.3.7.spec.ts": "3c201d28d6187b6af17261b8494a8aedd8cb2a042a0010b88f4f7c1c6fde3347",
+        "REQ-5.3.8.spec.ts": "aa045daecb6dae6f179b832756b91969c64e3e778731497ac13e4856ddf4fdde",
+        "REQ-5.3.9.spec.ts": "05daea9403e64e52d7b24ac8bbf434118ead9cc177db8f3c75050ca415969489",
+        "REQ-6.1.1.spec.ts": "4b7646c6c993934a068a8c31bb51596426a1b84e0638cc95f1be96106af389a0",
+        "REQ-6.2.1.spec.ts": "06ddf46e40f02fd148382f58ee58f685ff32ef50c12321367ac84ddfb0c5aaf2",
+        "REQ-6.2.2.spec.ts": "0a8b1c22bf622ea15c2fa53fd07c4b2f660112e03a23b1d776789bd997526ca7",
+        "REQ-6.3.1.spec.ts": "8e32bb59a7aff4b4c5d85d7c2fce48c8b195e1d9869a148fb60a7a3e8b80b5e7",
+        "REQ-6.3.2.spec.ts": "7583e40e3d93188c7fbf37b870968a58a84bb04302f2310d6659e2fed8ce0781",
+        "helpers.ts": "9ac301f7cede4e00dd6216ae8f93d86483a89f70d38534d0dbff968221eb0b0b"
+      },
+      "manifest_sha256": "10bcb74942888951e5cbb2459819b17fc96fda3bbd022f3027a14c5e93e5ff51"
+    },
+    "ctrip": {
+      "files": {
+        "REQ-0.spec.ts": "10e6717d88ed84ee09e8248a762255ffd3157e1640a2a2081a7923fa6fb829c6",
+        "REQ-1.1.spec.ts": "e0fc3effc5c81347d97fac9ae4e391ba4fe95f70b809b1e559dc0d7a7d51860a",
+        "REQ-10.1.1.spec.ts": "100dee4444d7a8ec0406076ba225e5e236d9032cae42200566957d1259e10f61",
+        "REQ-10.2.1.spec.ts": "3b76ba75405c6057585a055e2b6fc46726041e68e9dc5021fceb0b1d1df1cbe3",
+        "REQ-2.1.spec.ts": "d3fcd83bc62b8a149917e8dfb524fef788e9e4591ca15f4bcb46cafe09a6f5de",
+        "REQ-2.2.spec.ts": "c51da9d82a3fcf160d9e28b376ae794db76460e9a9ee4c2e177d081b67f2fd0f",
+        "REQ-2.3.1.spec.ts": "2251c363595ffd667f976f161bcee26873ecd6613d4227a80b246dc26c64b539",
+        "REQ-2.3.2.spec.ts": "d06dff3a123df420b7d77bf749b30b019a436c609cb4706f8bbe3ed39e7d4ea5",
+        "REQ-2.3.3.spec.ts": "c0a5e5c2f00ecd49a8229b91a054c6e8b4c322275045b16159c8a2bb9c18a6d4",
+        "REQ-2.4.1.spec.ts": "06aca7b8bd26f74cdb29696ca26af5c0664e8b89f1a88b8c3fa392cc1ee0e4a4",
+        "REQ-2.4.2.spec.ts": "76f7735fe2ed21d3ed3c03793291c18f25cc0d2a81209e3c464b422c190d721e",
+        "REQ-2.4.3.spec.ts": "63698e31d55c4342a7b86c62372ad9339fa5846463fb2557081125f505590b6a",
+        "REQ-2.4.4.spec.ts": "b822f01ecafd51103d51fd5fe606fb8051dcdef756d1a206f1121384c1656ea2",
+        "REQ-2.4.5.spec.ts": "63777b33ef8006a173acb6c483ad4ba70bdf86f652d7917763354aef19b59115",
+        "REQ-2.5.1.spec.ts": "7051b9f626c7507b1f428091f4739a74d59c924ebce5074836a2003c18b856ff",
+        "REQ-2.5.2.spec.ts": "7cadcce716d8ec5ca1930308b8a9e7e7345519ac0839ca87cfa7873fc3fab1d3",
+        "REQ-2.5.3.spec.ts": "0344c7dcb031a1c7d0a8a80aa13f60d950e4c9661fa73c4b4b40d538ce2a43ad",
+        "REQ-2.5.4.spec.ts": "45540b081edfb638bb33ab7b7b2df7ffe93bbb0f75ad29486b2b2c91aa56fae5",
+        "REQ-2.5.5.spec.ts": "dcb21b3848386b39477bdfbe9f96cf6d33481a07d7b41d5917c5b81d48d858ea",
+        "REQ-2.6.1.spec.ts": "720c050bfb14fb1cd4d5489c4eb3b2e551a5adb760fb39a4ae11b9a448d4eb49",
+        "REQ-2.6.2.1.spec.ts": "d7ad3fb7ef67a550fe0b70d72d0a698f9f4acbddfb46729c96750da39a020e26",
+        "REQ-2.6.2.2.spec.ts": "96b76353992b8a93101e8f72bb98f93af47da9718c876a92c0b38c7073433f3d",
+        "REQ-2.6.3.1.spec.ts": "61a94257dc22eac05204a636ce963f4e4569c1ecc1b219c4759ab80a25ecae82",
+        "REQ-2.6.4.1.spec.ts": "0a8e37c754e1c908191e2222927f1e4c9bf1d828b5f6a420ae6ac727214aa624",
+        "REQ-2.6.4.2.spec.ts": "55eecbf242007ff0953cd7f1c4843ed150587e5167433fbbfad66673f20ce248",
+        "REQ-2.6.4.3.spec.ts": "5dbf74b5fe3631e2981fdb9292572effa5110f5634335a49a54cc7adc9c3178a",
+        "REQ-2.7.1.spec.ts": "6a1a69c9899e49d4c84a17c6f6224bb15da72cb0952bbe9cf9702d0036f1d731",
+        "REQ-3.2.1.spec.ts": "ed91773dfa375e8846d4bdf898325e1a2a35edda9fc5b9a98363f50d3f21caf6",
+        "REQ-3.2.2.spec.ts": "8cbf673d9ba88bbefa4bbb12735a3e74bba89913425e7bb5376ed13a407881e0",
+        "REQ-3.2.3.spec.ts": "14847beb4fb6c44d0ef75aecccb2e5b843b1339fbf684a6f20064ab70f9c78f1",
+        "REQ-3.2.4.spec.ts": "b6e1a61ab357064a8fe55247c2f50660bce3f3df6706ddda3df22b00bcfe37da",
+        "REQ-3.2.5.1.spec.ts": "639cf80feccdd58026728245463ee958875c8917205e7d15d86aaa5244c44bf4",
+        "REQ-3.2.5.2.spec.ts": "17552f135e211c9fe382bf0f453aaff94dcfad7b741e8036009c92921f11da9f",
+        "REQ-3.2.6.1.spec.ts": "3b91a5236cac04b7c9be70d79ac961fcafb2cb653c736113fb31d1156f30c52b",
+        "REQ-3.2.6.2.spec.ts": "b918d2007b013544300c5a68f901eaeacfadac0077a831c7eecec2dc95eff91d",
+        "REQ-3.2.7.1.spec.ts": "20a07d22808f6366a8c38221c31a950c76330904ea8582134f4b375690d9a686",
+        "REQ-3.2.7.2.spec.ts": "3154aba038a0079f0b2815ea73f98e9945411cbd7143b478465a805e983e4f6f",
+        "REQ-3.3.1.spec.ts": "8a3ca907e7363c873cb736ddc230c2def33ee6e040571ff870fa4a851d1eabe3",
+        "REQ-3.3.2.spec.ts": "5394b41317efbcc1b862090afc207703901ed2d5e645445661f6ff6675d73c8d",
+        "REQ-3.4.1.spec.ts": "5c2ddc9439b8e55a16611db007fe281efd8853058b816b93866ae284c69397b6",
+        "REQ-3.4.2.spec.ts": "9e0abe5cbc9951d95c333d1e0ee690edf29b5beda5f21d87c825e871fbfeed52",
+        "REQ-3.5.1.1.spec.ts": "a2e5fadd9be96183745eff1c307a90ec4189cffa4222e535bcc3a72b37ec329d",
+        "REQ-3.5.2.1.spec.ts": "ab6a19ec04f8cd2fe66ea3870264d487387a6a4de704ded0b171090f6b5a15e9",
+        "REQ-3.5.2.2.spec.ts": "85cf752f448f517d474812c6a2861eb3c7e7d0bfc9d9748eab03e7b38714d997",
+        "REQ-3.5.2.3.spec.ts": "bd2f1efa047dfdfbd7749a91c55dab8f160b514332b02c08354a51513d789e63",
+        "REQ-3.5.3.1.spec.ts": "28f1bbcbb17b9c091ff46dd2f4ab4bea3f7e8bddfb0fc2c66db0e5f33255d189",
+        "REQ-3.5.3.2.spec.ts": "6d659fba630473007a10cf0cc5d5d1cee21df6924cd2994dcfba80455ab42a5e",
+        "REQ-3.5.3.3.spec.ts": "b5cf45448ba519d50a1cf69ee7104863f422f6202a3bff7e833db7307d561385",
+        "REQ-3.5.3.4.spec.ts": "8949ab20323f4ef1fe219be6143b05b46bb9a29b7fad8016c2e7eb0e422b37a3",
+        "REQ-3.5.4.1.spec.ts": "433168a75f16287d957b25c25f222ba42604ed80eb20a773320b4d478ac5c1fd",
+        "REQ-3.5.4.2.spec.ts": "d9a23a593874471507c3905d44edcda28ad3a6caabf0ed4d8c3cd94bc13cec92",
+        "REQ-3.5.4.3.spec.ts": "546b103ac78a10e7ea2ade473c22440c16f0fd79791a95b2c03103911cf7c8ef",
+        "REQ-4.1.1.1.spec.ts": "1cab18a7e32f8ea64337bda335431c909ab0c7efc7227781634db5456a454bbd",
+        "REQ-4.1.2.1.spec.ts": "0b2d720e180e38bb44e15646278bd2ac67ad33280badbf9183675bc00345ccd8",
+        "REQ-4.1.3.1.spec.ts": "2005942d16c3faef3cba04a8e3ae13fa834d4d6bf5a30de84c00890f83618666",
+        "REQ-4.1.3.2.spec.ts": "5e20282d71fb9a4eae95db2b1dc12ce6ba71955b05d92e3ce3ce72528ce21109",
+        "REQ-4.1.4.1.spec.ts": "2a2a98a79e0d1695b47c284765e33babaf0bfd2615074c1b051a47d34c129ca7",
+        "REQ-4.1.5.1.spec.ts": "240814181975dead6a096421423fbdb366418309c946a302b60b07d5f34626f6",
+        "REQ-4.1.6.1.spec.ts": "feeb6713e13182345ded58fbd06418b4db1de8920a13f02d190317928d95bcd3",
+        "REQ-4.2.1.1.spec.ts": "533448f6b668eb4bc41cd758bc5a5e71b6020fcf64b943391388ede15b50d9bd",
+        "REQ-4.2.1.2.spec.ts": "88647d4225936b2b9beee6186a76ed123884f682d98daae9595fba930b61838e",
+        "REQ-4.2.2.1.spec.ts": "d968c3c2fb2688a3eca2f7b32e03a6789cda390aa3bb6359b106fbd238f8c719",
+        "REQ-4.2.2.2.spec.ts": "cd711b5764ac36ce3a18d74d16c97b411f60539378669fb9d487620182cbd7a6",
+        "REQ-4.2.3.1.spec.ts": "32a1e3a52c34fa12429b082c713412a577545d4c072611265e96305d7a2cafed",
+        "REQ-4.2.4.1.spec.ts": "279569fcfb97dfa4786ecf54c9ca216d433d47b470c6a4a200cdb2ae9dd45454",
+        "REQ-4.2.5.1.spec.ts": "6bfde52a89f6f4b9a73f49f5448a0c401efe6a5cc946505839f4b5f0dca06792",
+        "REQ-4.2.5.2.spec.ts": "da1c1bcc3a0f8f1eaf168c19829172247c30b9dae2594d937cbe2e6584cd385b",
+        "REQ-4.3.1.spec.ts": "9100c6b69e570657de11e17f3c3623db41710a53407892ac5b3af89e0b4d7f16",
+        "REQ-4.3.2.spec.ts": "0a72aad1ea5e42ca47a7d7e71e264127e4ea07f896e9aa99be57f30e5086c6c5",
+        "REQ-4.4.1.spec.ts": "96ad3be7e979890cc66ef9bf8687ec992a000fafacd1fb34db64073b72f2aa8c",
+        "REQ-4.4.2.1.spec.ts": "872af46772ec322bc9464d7a9e05e0984366fb89cf40e23ea196553a478e642a",
+        "REQ-4.4.2.2.spec.ts": "f3376574566254e0e3d2382b3125ef8c8d9b5310828ec2f7b905f00fea7d3018",
+        "REQ-4.4.2.3.spec.ts": "e95a0aefa30fcc8582b516e06eff82a31e2e4289983b39121e19bc207e0f44b3",
+        "REQ-4.4.2.4.spec.ts": "6a8ea8a8bda3ea8cbdf147f85d5a428df9c3e1d80b074431e34fa8f1f610e82f",
+        "REQ-4.4.3.1.spec.ts": "7359af26fa506aa0a47c0f0ab973c0f2600a68f30dea13b1bcc5f140e3aef655",
+        "REQ-4.4.4.1.spec.ts": "5de21a44394d2c2f8ad801bdffd9a1ce3a85927e79a4150afd4bbf43868f2dbb",
+        "REQ-4.5.1.1.spec.ts": "441148feeb015f0a30e7ab73fc6f3b63ab9698a483b797b50756f62af901051b",
+        "REQ-4.5.1.2.spec.ts": "2c694b7ed1a099285bca1547e720cca2c7a41941b0c71549f65cbdaf135ad31a",
+        "REQ-4.5.2.1.spec.ts": "94b93d511f1e90518417e705dc8eb4a169d89c0a4f797c5a7922a860cc5aedef",
+        "REQ-5.1.spec.ts": "fb9faea47ea6dcc2ff16e8906e5a7bcb0d4e825e74771ee27286e727a3db1291",
+        "REQ-5.2.spec.ts": "fb9b50d96ab06775e7c0e33fa18727c78863c61ae1709714967894edb5b80c7e",
+        "REQ-5.3.1.1.spec.ts": "460e5b6f07e970643b688af70a35abe757789b2419c1d3db88601370376c145e",
+        "REQ-5.3.1.2.spec.ts": "643a3de677fd9680794f73dd485c9bb4f0e648b604618ced01a9494614dde0f4",
+        "REQ-5.3.2.1.spec.ts": "e2511de49104fb17618677c9483d0bdc81a9394088e53f04ebfd3eb94c71fb2e",
+        "REQ-5.3.2.2.spec.ts": "6e8f8f5d84792ccb473c3dbb0456238077240baf62beed3fa6e4b58d7a0b9d73",
+        "REQ-5.3.3.1.spec.ts": "9b83cb0bacba9c7fef22a98e7a91f3fd68687bd2c8bdd18373acceaa0e071e27",
+        "REQ-5.3.3.2.spec.ts": "89f84857fa820d964df5d959fc1b88ab37206fb511f37a4ea7faa284e270e740",
+        "REQ-5.4.1.1.spec.ts": "fc0f613860932829895947d69539d8748ba157e103ea0643610a31f9dc56806c",
+        "REQ-5.4.2.1.spec.ts": "bc89eb3008b7a7a7d1a1e6dc4a3d244c25be392ce347495b525120e0fd7108df",
+        "REQ-5.4.3.1.spec.ts": "5db96488f176dc3b590f5d7c47e964c4ae3c40adbafa5392b165a5ee14a1ebeb",
+        "REQ-5.4.3.2.spec.ts": "7e655bcc43d0065dfe72716d4ca289665eb61bc25f408aca354442c6352be330",
+        "REQ-5.5.1.1.spec.ts": "8c163df58bed530520928070fa507325f166624426ccdb96f4aceadc2f27d9f1",
+        "REQ-5.5.1.2.spec.ts": "5adf870f8998a24bf08a8a346171b5e71dd7fe45386edf31e27dd6c701339a57",
+        "REQ-5.5.2.1.spec.ts": "b154d61542d4c2e3d41741bc9da6e5c0024a2788b7d97bea583039e8084ac450",
+        "REQ-5.5.3.1.spec.ts": "eb0f16d44022354db5f97c22a247716a486ab65b00c1eb1677ec0cced74720cd",
+        "REQ-5.5.3.2.spec.ts": "18060cb805940736673f95cfa5d824be0dd3fab0c5f68ab86b521ca553cd4afb",
+        "REQ-5.6.1.1.spec.ts": "fbbc77fcface6ab92e0e91d177f4e19a66eced554d149430b03f6c2db64e2360",
+        "REQ-5.6.2.1.spec.ts": "157093ff37684f7e4111b3389062fa7a740b2970608e3be2756735fbf1af79e8",
+        "REQ-5.6.2.2.spec.ts": "50308d0aa1e58b853b2d0e39a914295ac26b480977ea0e2e3e894b4b037c1d7a",
+        "REQ-5.6.3.1.spec.ts": "0c5e7fb0f30cb7b2325f3a99c4cadfa2cb00fff7d80dd58466a662054f5565fc",
+        "REQ-5.6.3.2.spec.ts": "e6c1237d0cbe623cae30676458e723884faacb1bdbe78db23891d619be0c1936",
+        "REQ-6.1.1.spec.ts": "e5d0651f87ed098b4adf02426ea5c42d3c3282e09d8e7e087f44a07e212df6bc",
+        "REQ-6.2.1.spec.ts": "4436fd1201854635811c6bb0028ee735e066c4320a0c4e25e0e3d11d8d99fd36",
+        "REQ-6.3.1.spec.ts": "76c4063d027863ff205786be9e2128c33aa98fe49026f72f0dcc6d700f532852",
+        "REQ-6.4.1.spec.ts": "bcddb23e7a9399b902efbcc86f041456e449a3324f5db929206a20f066dbe7ec",
+        "REQ-6.5.1.spec.ts": "be7668032b27eccd61f27908592c3ae571ffd03856f369c0021f8e4f9a2fb269",
+        "REQ-6.6.1.spec.ts": "faf8392a971fe2a2878a878427e288c8dd0da4d331269cc83d07990c7f69b561",
+        "REQ-7.1.spec.ts": "c4bc4efa2c775e3cbe11438552bfef57e84e25e6c93b548e90709ade76c8720b",
+        "REQ-7.2.1.1.spec.ts": "a407d246b8980e8f59cba34fe8e0624c714495ef255ab1d1167e9515732bfa9d",
+        "REQ-7.2.2.1.spec.ts": "8cfaa998721df587cae4afe36c9be7667231cae4a0993cdaa9a0cb3602d193a2",
+        "REQ-7.2.2.2.spec.ts": "d7756a55d59cee9072e0c598b2ca267541e3d6d24c729281c15c542af18537c7",
+        "REQ-7.2.3.1.spec.ts": "59aae4adb1de6ce0e5e848340643ce118fb85ba0f5561e3d00a334643164a84e",
+        "REQ-7.2.3.2.spec.ts": "7963bdfca2b76adf5adbaf9675e015a175731ac6c1cac78f0c17eaa286e3d0e4",
+        "REQ-7.3.1.1.spec.ts": "b17f085dfaaf7b55b831b157f670a163f262dc7b00bcb04e8f4b1de4f637d506",
+        "REQ-7.3.2.1.spec.ts": "a3a1fc6d759b134d6b6f15845e55a115d533962fedf0c553bc1571d5fc4bde92",
+        "REQ-8.1.1.1.spec.ts": "5339c1bd504b6a86418777a96f35b497a12c27e73e185346ceb7f64bc8f488ab",
+        "REQ-8.2.1.spec.ts": "aa680750d3c9b9552caebf22159cecc5bc3f09b9b62bb478b441dae0caa07218",
+        "REQ-8.2.2.spec.ts": "14840acc11181293c46317ea1ea784ecb130a1c227618a97150d977bbad0acd7",
+        "REQ-9.1.spec.ts": "adb34498e19bfc4ef3a663c95f3dcfb5d82965538c359959f757beca2ed4e538",
+        "REQ-9.2.1.1.spec.ts": "f3d49da2d4ca2012be4d1653a62faaf186430253ff1714cb1fedcd8e1e8016d0",
+        "REQ-9.2.1.2.spec.ts": "eb4a07ff7e1cc35029cf9fa97d6c7fe0a330f355de98aa6c2ad82496bdd2e1f1",
+        "REQ-9.2.2.1.spec.ts": "0e09fad9e4dd5a95ecbde656f144fc300bb7283d6cbd96fca3bdae1a9cee290c",
+        "REQ-9.3.1.1.spec.ts": "c88ba8df22c847414fdd3f53e12f1eb9355f91d11ee707bc393b7caa7ae4a99e",
+        "REQ-9.3.2.1.spec.ts": "f89def225ac8fa1722c4e478249733114c2a20927399b5e2375ceb982bbd1132",
+        "REQ-9.3.3.1.spec.ts": "90b2bed4dcdb0b15a1f802c790e3c6a50704ac00b04fbf2e26432bc64d32f5ef",
+        "helpers.ts": "a04223045a7602aa513c18e62da72f136a4d2fe7d088cca0962d78a60c5ec448"
+      },
+      "manifest_sha256": "d260e63d32955019b7b72b9f7d5673d11627624eb0fe8effc8adfa246b0abb6e"
+    },
+    "bookstack": {
+      "files": {
+        "REQ-1.1.spec.ts": "eebd97ab29999dff756690e3f7b24947fb05a628e9b15b77a200945428f09449",
+        "REQ-1.2.spec.ts": "ddbb10a468d22c653e44f1518a989adff6da733be15710e7c7aea21406c98497",
+        "REQ-2.1.spec.ts": "21b108f9f3d49b419ce4c575b60413fb0247a62c1cadc9ea32e7097311a73cc6",
+        "REQ-2.2.spec.ts": "90eaac17421008d211b61c28b061df3be942941b9bb47f0ee1cd761fa70783bd",
+        "REQ-3.1.spec.ts": "056f0165b7913e8d0c125317ac8a3518aacebf83db7f7a4735a2699cea2e76ad",
+        "REQ-4.1.spec.ts": "0a3587fb29a1ce861d28b123ee1a9a78ab7d4f165852cf63289ca35daa4a9fca",
+        "REQ-4.2.1.spec.ts": "34184977ae250dd780e084c6efa00dbc9227ed358ccd713fc74855a94aaf9188",
+        "REQ-4.3.1.spec.ts": "21e46fb8b0b822a290fb1319487ebc33f05894fc88a8602a064ed55035d5ddc4",
+        "REQ-4.3.2.spec.ts": "f7dde6c8df1ea6c03dd432ca4131ec8180d53c8107b54b5a663a02e1ceaf01bb",
+        "REQ-4.4.1.spec.ts": "634850556c00ac1990de8eea8c4b6478451a6f1209a36eab28932b854f3ac6b0",
+        "REQ-4.4.2.spec.ts": "a4d7734d0478baa00aeef7bf3d0803b74260243371a7328230cc164ca8fd170e",
+        "REQ-4.5.1.spec.ts": "fc2a47d43e7a01d18da03ea57e253dbc3d815f4a83e02e3b172e40d189ddb780",
+        "REQ-4.5.2.spec.ts": "e127712132e46c2cf3e2d709103432ecb29ef12489b916e4f0ef47a44bffe6b3",
+        "REQ-5.1.spec.ts": "03c4161fe5227d0d6221c184c8904f961d85d6c51d086bd1e0e0764f93fb485f",
+        "REQ-5.2.1.spec.ts": "3b6f51fe9224089752856dc91310197803c18095b25d0dce7ff2864f8d109662",
+        "REQ-5.2.2.spec.ts": "4af4db56246e5bded558bdabb4f6980d088dd34902e1241efe55226ada4a7a1c",
+        "REQ-5.3.1.spec.ts": "5a5a48d7325a8a11b05b610ccfde63f3e4a2a67c98c9c4e4351a6bea3a798c07",
+        "REQ-5.3.2.spec.ts": "a980a6267f186193604487e38403d6bb109140f66680ac1af4eb0bc1d65b228d",
+        "REQ-5.4.1.spec.ts": "7c9d74cf3bd41b39d6e44e1eb7b3089887ec880d5468b567574895f1cf09a4b4",
+        "REQ-5.4.2.spec.ts": "d63233c05b18bf465e351eb567db847c0bd749b67c577ea395acd2972300bc6a",
+        "REQ-5.5.1.spec.ts": "2ff579d8b30b60ae5688085f11c9cf6eb0c1cda635b530d4ac9fc5e895641217",
+        "REQ-5.5.2.spec.ts": "d86d374d11a8c1f5abddb093768910a97f636181bce18ff3f18d40cbab7dc3f8",
+        "REQ-5.6.1.spec.ts": "406e71c1fc57cab07916593ff9b7f9c515cd2ddbb7330f6176ff6a6330080fe1",
+        "REQ-6.1.1.spec.ts": "624f6be40f39f851e83a5a4e86dffc8f82cfdce63b3a1bfdbcb72d5a74c02738",
+        "REQ-6.1.2.spec.ts": "c19007cde8d498092e8ef62ee0526e70fad7cc310c98b0f18931e7856bf0aab9",
+        "REQ-6.1.3.spec.ts": "885b4323f65032d72e4343e44a5eb8f483783dcc35c54a1e70762a6670831bf6",
+        "REQ-6.2.1.spec.ts": "d4eb8664d40c30a6ef1eb4462bef2438ec33381fcf67e9d6367d12d17ddb4f66",
+        "REQ-6.3.1.spec.ts": "ea037d511d31ac8868c4be0f32f90299d2c8a06d34111144de186da7d9844944",
+        "REQ-6.3.2.spec.ts": "d008f6fe788c23c7ad4268d4124f3914a000d01f2d7a41d565d5178df4c56ff6",
+        "REQ-7.1.spec.ts": "d4893d7885ff717dfbbe06a0cb35509928c0e5b78d661a36c19f2ca6b9196750",
+        "REQ-7.2.spec.ts": "8dd510e5c9ff914678e6adea72e201f7cb5ecec9d1062bc678c2a4886df6c01a",
+        "REQ-8.1.spec.ts": "3b0432d51621446d0a0ebb77bc47d72e10b24f568652c9890d44e819d0baf98c",
+        "REQ-8.2.spec.ts": "8930a0bb61dd1494d30aa8e51d7706585b8671ffc6cbfd6bbfc3d003f5314d90",
+        "REQ-9.1.spec.ts": "acf54d4a2c23743847d875cfc707fd4fd67bf5aece255a93253dd595fba2a0a6",
+        "helpers.ts": "098ef14a993204de6c77ffaf1054fe7d7446070d16f0f30ddc193c2c8e24a7b0"
+      },
+      "manifest_sha256": "fcaf1025431d6fc863fba447717d65dc5a0e075a42cd109845b3b42c3bb153a5"
+    }
+  },
+  "acceptance": {
+    "historical": {
+      "fixture_calls": [
+        {
+          "provided_by": "historical platform response",
+          "new_model_call": false
+        }
+      ],
+      "smoke": {
+        "executed": true,
+        "problems": [
+          "frontend script error on load (the page is blank for every test): Uncaught [TypeError: this.flights is not a function]",
+          "the first screen (/) renders no <nav> (or role=navigation) although the requirement describes a navigation; every screen, including the home screen, must render through the one shared layout (header, navigation, main content, footer) so the suite finds the same landmarks and controls on every route",
+          "3 field label(s) are substrings of another field label, so getByLabel('日期 Date') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"日期 Date\" is contained in \"出生日期 Date of birth\"; \"密码 Password\" is contained in \"设置密码 Password\"; \"密码 Password\" is contained in \"登录密码 Password\"",
+          "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Phone change form\" shares phone with a field label; button aria-label \"${ARC.esc(L.brand || \" shares esc with a field label",
+          "3 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “返回日期” appears only as `返回日期 Return date`; “添加返程” appears only as `+ 添加返程`; “010-” appears only as `机场问讯：010-64541100`",
+          "frontend/public/app.js:209 marks an input readonly (<input id=\"origin\" name=\"origin\" data-city-field=\"origin\" data-city-picker=\"orig); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "frontend/public/app.js:212 marks an input readonly (<input id=\"destination\" name=\"destination\" data-city-field=\"destination\" data-ci); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "frontend/public/app.js:216 marks an input readonly (<input id=\"departDate\" name=\"departDate\" data-date-field=\"departDate\" data-date-); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "frontend/public/app.js:218 marks an input readonly (<input id=\"returnDate\" name=\"returnDate\" data-date-field=\"returnDate\" data-date-); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "3 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"4天\", \"火星城\", \"aa\""
+        ],
+        "vocabulary_missing": 3,
+        "repair": {
+          "accepted": false,
+          "reason": "repair renamed quoted control(s): + 添加返程"
+        }
+      }
+    },
+    "r28": {
+      "fixture_calls": [
+        {
+          "provided_by": "historical platform response",
+          "new_model_call": false
+        }
+      ],
+      "smoke": {
+        "executed": true,
+        "problems": [
+          "frontend script error on load (the page is blank for every test): Uncaught [TypeError: this.flights is not a function]",
+          "the first screen (/) renders no <nav> (or role=navigation) although the requirement describes a navigation; every screen, including the home screen, must render through the one shared layout (header, navigation, main content, footer) so the suite finds the same landmarks and controls on every route",
+          "the requirement's path REQ-2.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “注册” to be clicked, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+          "the requirement's path REQ-2.2 cannot be walked: after the home screen the screen `#/` has no visible control or text named “登录” to be clicked, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+          "the requirement's path REQ-3.2.2 cannot be walked: after the home screen the screen `#/` has no visible control or text named “双向箭头” to be clicked, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+          "the requirement's path REQ-4.4.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “订单” to be hovered, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+          "the requirement's path REQ-7.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “Flights” to be clicked, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+          "the requirement's path REQ-9.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “Flights” to be clicked, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+          "the requirement's path REQ-2.7.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “尊敬的” to be hovered, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+          "the requirement's path REQ-5.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “尊敬的” to be hovered, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+          "3 field label(s) are substrings of another field label, so getByLabel('日期 Date') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"日期 Date\" is contained in \"出生日期 Date of birth\"; \"密码 Password\" is contained in \"设置密码 Password\"; \"密码 Password\" is contained in \"登录密码 Password\"",
+          "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Phone change form\" shares phone with a field label; button aria-label \"${ARC.esc(L.brand || \" shares esc with a field label",
+          "3 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “返回日期” appears only as `返回日期 Return date`; “添加返程” appears only as `+ 添加返程`; “010-” appears only as `机场问讯：010-64541100`",
+          "frontend/public/app.js:209 marks an input readonly (<input id=\"origin\" name=\"origin\" data-city-field=\"origin\" data-city-picker=\"orig); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "frontend/public/app.js:212 marks an input readonly (<input id=\"destination\" name=\"destination\" data-city-field=\"destination\" data-ci); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "frontend/public/app.js:216 marks an input readonly (<input id=\"departDate\" name=\"departDate\" data-date-field=\"departDate\" data-date-); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "frontend/public/app.js:218 marks an input readonly (<input id=\"returnDate\" name=\"returnDate\" data-date-field=\"returnDate\" data-date-); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+          "3 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"4天\", \"火星城\", \"aa\""
+        ],
+        "vocabulary_missing": 3,
+        "repair": {
+          "accepted": true,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css",
+            "frontend/public/lib/arc.js"
+          ],
+          "vocabulary_missing_after": 2,
+          "renamed_but_kept": [
+            "+ 添加返程"
+          ]
+        }
+      }
+    },
+    "bookstack": {
+      "executed": true,
+      "problems": [
+        "clicking `Edit` (data-action `goto`) changed the hash to `#/shelves/s7_2/edit` but left the main screen unchanged; dispatch the target route and render its requested outcome instead of only changing the URL",
+        "clicking `Edit` (data-action `goto`) changed the hash to `#/shelves/s4_1/edit` but left the main screen unchanged; dispatch the target route and render its requested outcome instead of only changing the URL",
+        "clicking `Edit` (data-action `goto`) changed the hash to `#/shelves/s4_2_1/edit` but left the main screen unchanged; dispatch the target route and render its requested outcome instead of only changing the URL",
+        "clicking `Edit` (data-action `goto`) changed the hash to `#/shelves/s4_3_1/edit` but left the main screen unchanged; dispatch the target route and render its requested outcome instead of only changing the URL",
+        "clicking `Edit` (data-action `goto`) changed the hash to `#/shelves/s4_3_2/edit` but left the main screen unchanged; dispatch the target route and render its requested outcome instead of only changing the URL",
+        "clicking `Edit` (data-action `goto`) changed the hash to `#/shelves/s4_4_1/edit` but left the main screen unchanged; dispatch the target route and render its requested outcome instead of only changing the URL",
+        "the requirement's path REQ-4.4.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “Shelf 4.2.1” to be clicked, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+        "the requirement's path REQ-4.5.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “Shelf 4.2.1” to be clicked, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+        "the requirement's path REQ-5.4.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “Book 5.2.1” to be clicked, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it",
+        "the requirement's path REQ-5.5.1 cannot be walked: after the home screen the screen `#/` has no visible control or text named “Book 5.2.1” to be clicked, and the requirement reaches it by (nothing acted on) then that name. Render every name the requirement acts on as a visible control on the screen the requirement puts it on (open the submenu it names first, and open it the way the requirement does: a menu that only appears on mouseover is never reached by a click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every test that walks through it"
+      ],
+      "seconds": 9.05
+    },
+    "12306": {
+      "executed": true,
+      "problems": [
+        "clicking `Ticketing` (data-action `guide-tab`) on screen `#/guide` produced no observable outcome; render the requested screen, dialog, status, selection or state change from the handler",
+        "the requirement's path REQ-4.4.1 ends on `#/passengers` without “All”: the requirement's THEN step requires those names on that screen, reached by My 12306 -> Information management -> My Passengers. Show each one verbatim on the destination screen"
+      ],
+      "seconds": 22.43
+    }
+  },
+  "bookstack_calibration": {
+    "historical_lite_official": {
+      "passed": 22,
+      "total": 34
+    },
+    "local_web_exploratory": [
+      24,
+      24
+    ],
+    "local_current_published_lite": 16,
+    "web_to_lite_different_source_files": 21,
+    "historical_lite_score_reproduced": false,
+    "interpretation": "Only compare paired local results under the same saved suite. Neither 24/34 nor 16/34 is a new official score; current published Lite does not reproduce the historical official run."
+  },
+  "reference_patches": {
+    "12306": "--- a/frontend/public/seed.js\n+++ b/frontend/public/seed.js\n@@ -1,7 +1,12 @@\n 'use strict';\n (function () {\n-  var TODAY = '2026-05-31';\n-  var NEXT = '2026-06-01';\n+  var now = new Date();\n+  var next = new Date(now); next.setDate(next.getDate() + 1);\n+  function localDate(d) {\n+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');\n+  }\n+  var TODAY = localDate(now);\n+  var NEXT = localDate(next);\n \n   function U(id, username, email, mobile, idNumber, extra) {\n     var u = {\n",
+    "bookstack": "--- a/frontend/public/app.js\n+++ b/frontend/public/app.js\n@@ -145,6 +145,8 @@\n \n function shelvesScreen(params) {\n   if (params[0] === 'new') return shelfForm();\n+  if (params[0] && params[1] === 'edit') return shelfForm(params[0]);\n+  if (params[0] && params[1] === 'delete') return shelfDelete(params[0]);\n   if (params[0]) return shelfDetails(params[0]);\n   return shelfList();\n }\n"
+  },
+  "billing": {
+    "checked_at": 1789896176.7644072,
+    "initial_balance_cny": "83.889382",
+    "initial_balance_as_of": "2026-09-20T08:52:20.023630916Z",
+    "balance": {
+      "account": "qife....com",
+      "available_balance": "83.889382",
+      "currency": "CNY",
+      "as_of": "2026-09-20T09:22:55.467233766Z",
+      "pending_billing_events": 0
+    },
+    "configured_key_present": true,
+    "key_matches_configured": true,
+    "attempts": [
+      {
+        "app": "12306",
+        "file": "runs/fixed-draft/12306/oracle-trace-attempt1.json",
+        "started_at": 1789894890.517993,
+        "finished_at": 1789894935.775064,
+        "attempts": [
+          {
+            "call": 1,
+            "model": "deepseek-v4-flash",
+            "usage": {},
+            "status": "failed",
+            "finish_reason": null,
+            "error_type": "StreamError",
+            "elapsed_seconds": 45.255
+          }
+        ]
+      },
+      {
+        "app": "12306",
+        "file": "runs/fixed-draft/12306/oracle-trace-attempt3.json",
+        "started_at": 1789895276.344815,
+        "finished_at": 1789895323.333451,
+        "attempts": [
+          {
+            "call": 1,
+            "model": "deepseek-v4-flash",
+            "usage": {},
+            "status": "failed",
+            "finish_reason": null,
+            "error_type": "StreamError",
+            "elapsed_seconds": 46.987
+          }
+        ]
+      },
+      {
+        "app": "12306",
+        "file": "runs/fixed-draft/12306/oracle-trace-attempt2.json",
+        "started_at": 1789895143.232424,
+        "finished_at": 1789895156.565259,
+        "attempts": [
+          {
+            "call": 1,
+            "model": "deepseek-v4-flash",
+            "usage": {},
+            "status": "failed",
+            "finish_reason": null,
+            "error_type": "StreamError",
+            "elapsed_seconds": 13.332
+          }
+        ]
+      },
+      {
+        "app": "12306",
+        "file": "runs/fixed-draft/12306/oracle-trace-attempt4.json",
+        "started_at": 1789895440.5263722,
+        "finished_at": 1789895462.9815948,
+        "attempts": [
+          {
+            "call": 1,
+            "model": "deepseek-v4-flash",
+            "usage": {},
+            "status": "failed",
+            "finish_reason": null,
+            "error_type": "RemoteDisconnected",
+            "error_message": "Remote end closed connection without response",
+            "elapsed_seconds": 22.455
+          }
+        ]
+      },
+      {
+        "app": "bookstack",
+        "file": "runs/fixed-draft/bookstack/oracle-trace.json",
+        "started_at": 1789895642.6582909,
+        "finished_at": 1789895645.9078982,
+        "attempts": [
+          {
+            "call": 1,
+            "model": "deepseek-v4-flash",
+            "usage": {},
+            "status": "failed",
+            "finish_reason": null,
+            "error_type": "RuntimeError",
+            "error_message": "curl stream incomplete: exit=52 done=False",
+            "elapsed_seconds": 3.248
+          }
+        ]
+      }
+    ],
+    "billed_requests_since_first_attempt": [],
+    "run_count": 601,
+    "executing_runs": [],
+    "new_official_runs_created": 0
+  },
+  "limitations": [
+    "Fresh same-model repair with verified diagnostic evidence remains unmeasured because all five requests failed in transport.",
+    "Manual reference patches establish defect locality, not Flash repair capability or generalization.",
+    "The 12306 date-only reference patch gained sixteen tests and regressed two order tests; it must not be promoted unchanged.",
+    "Local replay uses four workers and ten-second timeouts but does not reproduce the hosted CPU quota."
+  ]
+}

@@ -500,3 +500,17 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - **r27 is the candidate** (`r27-candidate.zip` = oneshot/ at `e439539`); **PR #38 merged** into main (owner
   authorised). Balance about CNY 40 after r27; no round 28 without the owner.
 
+
+## 2026-09-20 [17:33] — Fixed-draft repairs separate feedback and acceptance faults
+
+- Isolated experiment on main `248eb65`; no candidate/package/official-run change.
+- Actual recorded Flash repairs: 12306 73/135 to 74/135 (+1, -0); Ctrip 0/125 to 42/125
+  (+42, -0), with historical rejection and r28 acceptance both reproduced on the same output.
+- Manual references: date repair 12306 73 to 87 (+16, -2), shelf routing Bookstack current
+  published Lite 16 to 18 (+2, -0). Manual patches do not establish Flash's repair ability.
+- Bookstack historical official 22/34 is not reproduced by current published Lite 16/34;
+  the preliminary Web replay 24/34 is a different suite and is excluded from Lite claims.
+- Fresh diagnostic Flash comparison blocked by five transport failures, no returned code.
+  At 09:22:55 UTC, no new bill was visible and balance remained CNY 83.889382 (pending 0).
+- Report: `docs/reports/2026-09-20-fixed-draft-repair.md`; machine-readable evidence and
+  test-level changes: `docs/evidence/2026-09-20-fixed-draft-repair.json`.
