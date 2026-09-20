@@ -456,7 +456,7 @@ class SmokeCase(unittest.TestCase):
         flagged = [p for p in budget.smoke["problems"] if p.startswith("the requirement's path REQ-4.3.1")]
         self.assertEqual(len(flagged), 1, budget.smoke)
         self.assertIn('no visible control or text named \u201cPersonal\u201d', flagged[0])
-        self.assertIn("reaches it by clicking My 12306 then that name", flagged[0])
+        self.assertIn("reaches it by My 12306 then that name", flagged[0])
 
     def test_a_screen_the_requirement_offers_is_not_a_problem(self):
         correct = ("document.body.insertAdjacentHTML('beforeend', "

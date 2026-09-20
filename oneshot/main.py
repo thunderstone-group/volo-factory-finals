@@ -603,20 +603,41 @@ const { JSDOM, VirtualConsole } = require('jsdom');
         const hit = pick(selector, wanted);
         if (hit) return hit;
       }
-      return Array.from(win2.document.querySelectorAll('body *')).filter(shown)
-        .find((el) => norm(el.textContent) === wanted) || null;
+      const exactText = Array.from(win2.document.querySelectorAll('body *')).filter(shown)
+        .find((el) => norm(el.textContent) === wanted);
+      if (exactText) return exactText;
+      // The requirement and the suite sometimes name the same control differently ("Forgot your password"
+      // in the requirement, /Forgot password\?/i in the suite). A control that shares two significant
+      // words with the step is that control; a step is only a problem when no candidate comes close.
+      const words = wanted.split(' ').filter((word) => word.length >= 3);
+      if (words.length < 2) return null;
+      const score = (el) => words.filter((word) => named(el).includes(word)).length;
+      const candidates = [];
+      for (const selector of LADDER) {
+        for (const el of Array.from(win2.document.querySelectorAll(selector)).filter(shown)) candidates.push(el);
+      }
+      return candidates.find((el) => score(el) >= 2) || null;
     };
-    const clickName = async (name) => {
-      const el = find(name);
+    const act = async (step) => {
+      const el = find(step.name);
       if (!el) return null;
-      try { el.click(); } catch (e) { /* the click walk reports handler exceptions */ }
+      try {
+        if (step.kind === 'hover') {
+          // The suite's hover() fires mouseover/mouseenter; a menu that only opens on mouseover is
+          // never reached by clicking its trigger.
+          el.dispatchEvent(new win2.MouseEvent('mouseover', { bubbles: true }));
+          el.dispatchEvent(new win2.MouseEvent('mouseenter', { bubbles: false }));
+        } else {
+          el.click();
+        }
+      } catch (e) { /* the click walk reports handler exceptions */ }
       await new Promise((r) => setTimeout(r, 80));
       return el;
     };
     const signedIn = () => !!pick(LADDER[0], 'sign out') || !!pick(LADDER[0], 'logout') || !!pick(LADDER[0], 'log out');
     const signIn = async (account) => {
       if (!account || signedIn()) return;
-      if (!await clickName('Login')) return;
+      if (!await act({ kind: 'click', name: 'Login' })) return;
       await new Promise((r) => setTimeout(r, 120));
       const password = win2.document.querySelector('input[type="password"]');
       if (!password) return;
@@ -644,32 +665,50 @@ const { JSDOM, VirtualConsole } = require('jsdom');
     };
     const signInSurface = () => !!win2.document.querySelector('input[type="password"]') || !!pick(LADDER[0], 'login')
                                                                                      || !!pick(LADDER[1], 'login');
+    const signOut = async () => {
+      // Every row starts from the anonymous home screen: a session left behind by an earlier row makes a
+      // sign-in row unwalkable ("Login" is not on the page while signed in).
+      for (const name of ['Sign Out', 'Log out', 'Logout', 'Sign out', '\u9000\u51fa\u767b\u5f55']) {
+        if (await act({ kind: 'click', name })) {
+          await new Promise((r) => setTimeout(r, 150));
+          return;
+        }
+      }
+    };
     const attempt = async (chain, account) => {
       await home();
+      await signOut();
       if (account) await signIn(account);
-      let step = 'the home screen', clicks = [];
-      for (const name of chain.clicks) {
-        if (!await clickName(name)) {
-          return { id: chain.id, kind: 'click', name, after: step, clicks: clicks.join(' -> '),
-                   hash: win2.location.hash || '#/' };
+      let at = 'the home screen', path = [];
+      for (const step of chain.steps) {
+        if (!await act(step)) {
+          return { progress: path.length, issue: { id: chain.id, kind: 'action', action: step.kind, name: step.name,
+                   after: at, clicks: path.join(' -> '), hash: win2.location.hash || '#/' } };
         }
-        clicks.push(name);
-        step = '`' + name + '`';
+        path.push(step.name);
+        at = '`' + step.name + '`';
       }
       const { text, labels } = namesOnScreen();
       const absent = (chain.names || []).filter((name) => { const wanted = norm(name);
         return wanted && !text.includes(wanted) && !labels.includes(wanted); });
-      return absent.length ? { id: chain.id, kind: 'screen', missing: absent.slice(0, 4).join(' / '),
-                               clicks: clicks.join(' -> '), hash: win2.location.hash || '#/' } : null;
+      return { progress: path.length,
+               issue: absent.length ? { id: chain.id, kind: 'screen', missing: absent.slice(0, 4).join(' / '),
+                                         clicks: path.join(' -> '), hash: win2.location.hash || '#/' } : null };
     };
     for (const chain of chains) {
-      let issue = await attempt(chain, chain.account);
-      // A row whose requirement names no account can still need one (the suite's own fixtures sign in for
-      // it). Meeting a sign-in surface at a dead end means "try it signed in" — not a defect.
-      if (issue && !chain.account && fallbackAccount && signInSurface()) {
-        issue = await attempt(chain, fallbackAccount);
+      // Walk every row from the anonymous home screen first: a row may be about the sign-in entry itself
+      // (clicking "Login" while already signed in cannot be walked), and a row that needs an account fails
+      // anonymously for exactly that reason. Only then retry signed in — a row whose requirement names no
+      // account can still need one, and the suite's own fixtures sign in for it. The attempt that got
+      // further is the honest reading: a signed-in retry that dies on step one says nothing about a row
+      // whose anonymous walk reached step two.
+      const first = await attempt(chain, null);
+      let best = first;
+      if (first.issue && fallbackAccount && (chain.account || signInSurface())) {
+        const retry = await attempt(chain, chain.account || fallbackAccount);
+        if (retry.progress >= first.progress) best = retry;
       }
-      if (issue) contractErrors.push(issue);
+      if (best.issue) contractErrors.push(best.issue);
     }
     page.window.close();
     return { contract_errors: contractErrors.slice(0, 8), contract_walked: chains.length };
@@ -677,7 +716,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
   console.log(JSON.stringify({ text_chars: text.length, errors: loadErrors.slice(0, 5), landmarks, screens: seen.size,
                                click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e),
                                outcome_errors: outcomeErrors.slice(0, 6),
-                               ...(await contractWalk()) }));
+                               ...(await contractWalk().catch((e) => ({ contract_probe_error: String(e && e.stack || e).slice(0, 300) }))) }));
   dom.window.close();
 })();
 """
@@ -758,20 +797,25 @@ def _check_dom(stage, port, problems, requirements=None):
                             f"layout (header, navigation, main content, footer) so the suite finds the same "
                             f"landmarks and controls on every route")
     for issue in report.get("contract_errors", []):
-        clicks = issue.get("clicks") or "(nothing clicked)"
-        if issue.get("kind") == "click":
-            problems.append(
-                f"the requirement's path {issue.get('id')} cannot be walked: after {issue.get('after')} the screen "
-                f"`{issue.get('hash')}` has no visible control or text named \u201c{issue.get('name')}\u201d, and the "
-                f"requirement reaches it by clicking {clicks} then that name. Render every name the requirement clicks "
-                f"as a visible control on the screen the requirement puts it on (open the submenu it names first); a "
-                f"name that only exists on another screen, behind a sign-in or inside a collapsed menu fails every "
-                f"test that walks through it")
-        else:
+        clicks = issue.get("clicks") or "(nothing acted on)"
+        if issue.get("kind") == "screen":
             problems.append(
                 f"the requirement's path {issue.get('id')} ends on `{issue.get('hash')}` without "
                 f"\u201c{issue.get('missing')}\u201d: the requirement's THEN step requires those names on that screen, "
                 f"reached by {clicks}. Show each one verbatim on the destination screen")
+        else:
+            verb = "hovered" if issue.get("action") == "hover" else "clicked"
+            problems.append(
+                f"the requirement's path {issue.get('id')} cannot be walked: after {issue.get('after')} the screen "
+                f"`{issue.get('hash')}` has no visible control or text named \u201c{issue.get('name')}\u201d to be {verb}, "
+                f"and the requirement reaches it by {clicks} then that name. Render every name the requirement acts on "
+                f"as a visible control on the screen the requirement puts it on (open the submenu it names first, and "
+                f"open it the way the requirement does: a menu that only appears on mouseover is never reached by a "
+                f"click); a name that only exists on another screen, behind a sign-in or inside a collapsed menu "
+                f"fails every test that walks through it")
+    if report.get("contract_probe_error"):
+        # A bug in the walk itself must be visible in the log, and must never be charged to the app.
+        print("[oneshot] the requirement path walk failed to run: " + str(report["contract_probe_error"]), file=sys.stderr)
 
 
 def smoke_check(stage, requirements=None):
@@ -1173,8 +1217,9 @@ STEP_YAML = re.compile(r"^\s*-\s*keyword:\s*(GIVEN|WHEN|THEN)\s*$")
 STEP_MD = re.compile(r"^\s*-\s*\*\*(GIVEN|WHEN|THEN):?\*\*:?\s*(.*)$")
 STEP_CONTENT = re.compile(r"^\s*content:\s*(.*)$")
 REQ_HEAD = re.compile(r"^#{2,4}\s+(REQ-[A-Za-z0-9._-]+)\b")
-CLICK_VERB = re.compile(r"\b(click|clicks|clicking|press|tap|select|choose|open|opens|opening|hover|hovers|expand|"
+CLICK_VERB = re.compile(r"\b(click|clicks|clicking|press|tap|select|choose|open|opens|opening|expand|"
                         r"navigate|return)\b[^.\n\u201c\u201d\"']{0,26}$", re.I)
+HOVER_VERB = re.compile(r"\b(hover|hovers|hovering|mouse over|mouseover|point at)\b[^.\n\u201c\u201d\"']{0,26}$", re.I)
 CHANGE_FROM = re.compile(r"\b(from|no longer|instead of|removes?|replaces?|changes?)\b[^.\n\u201c\u201d\"']{0,26}$", re.I)
 ENTRY_FROM = re.compile(r"\bfrom\b[^\n]{0,60}?[\u201c\"]([^\u201d\"\n]{2,60})[\u201d\"]", re.I)
 SCREEN_NOUN = re.compile(r"\b([A-Za-z][A-Za-z /'-]{2,42}?(?:page|screen|home page|home|view))\b", re.I)
@@ -1185,7 +1230,9 @@ SCREEN_CORE_STRIP = re.compile(r"^(?:open|opens|display|displays|provide|provide
                                r"which|where|with|from|on|in|at|to|of|for|by|as|is|are|was|were|be|has|had|can|may|"
                                r"must|should|will|would|does|do|did|there|here|the|a|an)\b[\s]+", re.I)
 SCREEN_TAIL = re.compile(r"\s*(?:pages|page|screens|screen|views|view)\s*$", re.I)
-HOME_START = re.compile(r"\b(home page|home screen|landing page|application entry|the system is accessible)\b", re.I)
+HOME_START = re.compile(r"\b(?:is on|are on|on|at|opens?|visits?|reach(?:es)?)\s+(?:the\s+)?"
+                        r"(home ?page|home ?screen|landing page|homepage)\b|首页", re.I)
+ARROW = re.compile(r"\s*(?:->|→|=>)\s*")
 STATE_HINT = re.compile(r"\b(fill|fills|filling|filled|enter|enters|entering|entered|type|types|typing|typed|upload|"
                         r"submits|submitting|with a valid|with valid|with an invalid|with invalid|with mismatched|"
                         r"do(?:es)? not match|without|already exists|in use|exists|first step|second step|third step)\b",
@@ -1330,20 +1377,50 @@ def _start_screen(given, entries):
     return "home" if HOME_START.search(text) else ""
 
 
-def _click_phrases(when):
-    """Quoted names a WHEN step clicks, in order. Only a phrase whose own context carries a click verb
-    is a step: prose inside a WHEN ("Review the tab content") is not a path."""
-    phrases, seen = [], set()
-    for match in QUOTED.finditer(when or ""):
-        phrase = re.sub(r"\s+", " ", match.group(1)).strip().strip(".")
-        context = when[max(0, match.start() - 60):match.start()]
-        if (not CLICK_VERB.search(context) or len(phrase) < 2 or len(phrase.split()) > NAME_MAX_WORDS
-                or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
-                or phrase.lower() in seen):
+def _arrow_phrases(when):
+    """A step written as a path: "Click Homepage -> Flights -> \u201c\u822a\u73ed\u52a8\u6001\u201d". Every segment is a click;
+    an unquoted segment keeps its words (minus the leading verb), a quoted one its exact name, and a
+    segment naming the start screen is where the step begins, not something to click there."""
+    steps, seen = [], set()
+    for segment in ARROW.split(when):
+        quoted = QUOTED.search(segment)
+        phrase = re.sub(r"\s+", " ", quoted.group(1) if quoted else segment).strip()
+        if not quoted:
+            phrase = re.sub(r"^(?:click|clicks|press|tap|select|choose|open|hover|expand|then|and)\b[\s:]*", "",
+                            phrase, flags=re.I).strip()
+            phrase = re.sub(r"^(?:the|a|an)\s+", "", phrase, flags=re.I).strip()
+        phrase = phrase.strip(".,;:")
+        if (len(phrase) < 2 or len(phrase) > 60 or len(phrase.split()) > NAME_MAX_WORDS
+                or phrase.lower() in ("home", "homepage", "\u9996\u9875", "\u4e3b\u9875") or re.fullmatch(r"[\W_]+", phrase)
+                or re.match(r"^(https?:|//|/|\.|#)", phrase) or phrase.lower() in seen):
             continue
         seen.add(phrase.lower())
-        phrases.append(phrase)
-    return phrases
+        steps.append({"kind": "click", "name": phrase})
+    return steps
+
+
+def _action_phrases(when):
+    """The controls a WHEN step acts on, in order, each with the action the requirement names for it.
+
+    Only a phrase whose own context carries an action verb is a step: prose inside a WHEN ("Review the
+    tab content") is not a path. Hover and click are different actions and both are steps — a Ctrip row
+    is "Hover the mouse over \u201c\u5c0a\u656c\u7684...\u201d ... Click \u201c\u9000\u51fa\u767b\u5f55\u201d": a menu that only opens on
+    mouseover is never reached by clicking its trigger."""
+    when = when or ""
+    if ARROW.search(when):
+        return _arrow_phrases(when)
+    steps, seen = [], set()
+    for match in QUOTED.finditer(when):
+        phrase = re.sub(r"\s+", " ", match.group(1)).strip().strip(".")
+        context = when[max(0, match.start() - 60):match.start()]
+        kind = "hover" if HOVER_VERB.search(context) else "click" if CLICK_VERB.search(context) else None
+        if (kind is None or len(phrase) < 2 or len(phrase.split()) > NAME_MAX_WORDS
+                or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
+                or (phrase.lower(), kind) in seen):
+            continue
+        seen.add((phrase.lower(), kind))
+        steps.append({"kind": kind, "name": phrase})
+    return steps
 
 
 def _required_names(then):
@@ -1389,13 +1466,13 @@ def scenario_contract(requirements):
     entries, loginy, blocks = screen_entries(requirements), screen_requires_login(requirements), requirement_blocks(requirements)
     rows, seen = [], set()
     for scenario in scenario_steps(requirements):
-        clicks = _click_phrases(scenario["when"])
+        steps = _action_phrases(scenario["when"])
         given = scenario["given"] or ""
-        if not clicks or STATE_HINT.search(scenario["when"]) or STATE_HINT.search(given):
+        if not steps or STATE_HINT.search(scenario["when"]) or STATE_HINT.search(given):
             continue
         start = _start_screen(given, entries)
-        prefix = entries.get(start, [])[:1] if start and start != "home" else []
-        chain = (prefix + clicks)[:CONTRACT_MAX_CLICKS]
+        prefix = [{"kind": "click", "name": name} for name in entries.get(start, [])[:1]] if start and start != "home" else []
+        chain = (prefix + steps)[:CONTRACT_MAX_CLICKS]
         if not chain:
             continue
         block = blocks.get(scenario["id"], "")
@@ -1404,12 +1481,11 @@ def scenario_contract(requirements):
         # Only a row that starts on a screen the walk can stand on is executed locally: a screen the
         # requirement names, or the home screen. A state it cannot set up stays prompt-only.
         walk = bool(start) and bool(SCREEN_GIVEN.match(given) or LOGIN_HINT.search(given))
-        key = (tuple(chain), login)
+        key = (tuple((step["kind"], step["name"]) for step in chain), login)
         if key in seen:
             continue
         seen.add(key)
-        rows.append({"id": scenario["id"], "start": start or "?", "clicks": chain, "login": login,
-                     "walk": bool(start),
+        rows.append({"id": scenario["id"], "start": start or "?", "steps": chain, "login": login, "walk": walk,
                      "names": _required_names(scenario["then"])[:CONTRACT_MAX_NAMES]})
         if len(rows) >= CONTRACT_MAX_ROWS:
             break
@@ -1419,7 +1495,7 @@ def scenario_contract(requirements):
 def contract_chain_specs(requirements):
     """The rows the local walk can execute: from the home screen (after login when the row needs it), or
     from a screen the requirement says is opened by a named entry. Everything else stays prompt-only."""
-    rows = [row for row in scenario_contract(requirements) if row["walk"] and row["names"]]
+    rows = [row for row in scenario_contract(requirements) if row["walk"]]
     anonymous = [row for row in rows if not row["login"]]
     logged = [row for row in rows if row["login"]]
     picked = anonymous[:CONTRACT_MAX_CHAINS - min(len(logged), CONTRACT_MAX_LOGIN_CHAINS)]
@@ -1432,7 +1508,7 @@ def contract_chain_specs(requirements):
         else:
             account = contract_login(_requirement_block(requirements, row["id"])) if row["login"] else None
             account = account or (contract_login(requirements) if row["login"] else None)
-            specs.append({"id": row["id"], "clicks": row["clicks"], "names": row["names"], "login": row["login"],
+            specs.append({"id": row["id"], "steps": row["steps"], "names": row["names"], "login": row["login"],
                           "account": {"id": account[0], "password": account[1]} if account else None})
     return specs
 
@@ -1475,8 +1551,8 @@ def contract_table(requirements):
                      f"selectable dates. The literal {date} must appear in the frontend source.")
     for row in rows:
         names = ", ".join(f"\u201c{n}\u201d" for n in row["names"])
-        lines.append(f"- {row['id']} [from {row['start']}{' + login' if row['login'] else ''}] click "
-                     + " -> ".join(f"\u201c{c}\u201d" for c in row["clicks"])
+        path = " -> ".join(f"{step['kind']} \u201c{step['name']}\u201d" for step in row["steps"])
+        lines.append(f"- {row['id']} [from {row['start']}{' + login' if row['login'] else ''}] {path}"
                      + (f" | screen shows: {names}" if names else ""))
     text = "\n".join(lines)
     if len(text.encode("utf-8")) > CONTRACT_MAX_BYTES:

@@ -364,13 +364,14 @@ class OfflineCase(unittest.TestCase):
                "            - keyword: THEN\n              content: 'The page shows \"Essential information\" and \"Contact information\".'\n")
         rows = adapter.scenario_contract(req)
         row = next(r for r in rows if r["id"] == "REQ-4.3.1")
-        self.assertEqual(row["clicks"], ["My 12306", "Personal", "User information"])
+        self.assertEqual([step["name"] for step in row["steps"]], ["My 12306", "Personal", "User information"])
         self.assertEqual(row["names"], ["Essential information", "Contact information"])
         self.assertEqual(row["start"], "personal center")
         self.assertTrue(row["login"])
         self.assertTrue(row["walk"])
         table = adapter.contract_table(req)
-        self.assertIn("REQ-4.3.1 [from personal center + login] click \u201cMy 12306\u201d -> \u201cPersonal\u201d -> \u201cUser information\u201d", table)
+        self.assertIn("REQ-4.3.1 [from personal center + login] click \u201cMy 12306\u201d -> click \u201cPersonal\u201d -> "
+                      "click \u201cUser information\u201d", table)
         self.assertIn("screen shows: \u201cEssential information\u201d, \u201cContact information\u201d", table)
 
     def test_path_table_skips_state_scenarios_and_prose(self):
