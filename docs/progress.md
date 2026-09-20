@@ -573,3 +573,11 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   is too broad. The reported no-regression result is empirical for this paired replay.
 - Three of six new-draft pairs complete. Candidate, evaluator sources and original
   snapshots still hash-match; current work is Ctrip-2 baseline repair. Goal remains active.
+
+## 2026-09-20 [21:04] — Fourth paired result neutral; discarded Ctrip repair has one missed gain
+
+- Ctrip-2 is 29/125 in both retained arms. Same model request/response; both reject
+  source-name change `+ 添加返程`. Discarded proposal replay is 30/125, +1/-0.
+- Kept candidate and retention rule frozen; this limitation does not retroactively
+  change the fourth pair. Third 12306 draft has completed, raw replay running.
+- Completed 4/6 pairs: one +60/-0 result, three neutral results. No official run/upload.

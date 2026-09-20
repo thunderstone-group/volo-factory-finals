@@ -11,7 +11,7 @@ existing balance; request funding only if insufficient. No official runs/uploads
 - Previous immutable evidence is retained in `runs/fixed-draft/` and commit `f87a728`.
 - Local/direct model calls were truncated. A temporary SSH SOCKS route through the existing
   user-owned `hk-zyl` host returned two complete Flash repairs. TLS credentials stay local;
-  no global proxy setting was changed. SOCKS `127.0.0.1:60513`, exec session `31290`.
+  no global proxy setting was changed. SOCKS `127.0.0.1:60513`, restored exec session `66098` (older tunnel stopped during turn interruption).
 - 12306 explicit-diagnostic repair: 91/135 vs the same draft's 73 (19 gains, 1 regression).
 - Automatic relative-date diagnostic candidate: 91/135 vs 73 (18 gains, 0 regressions),
   and 17 gains / 0 regressions against the historical automatic repair's 74.
@@ -24,11 +24,11 @@ existing balance; request funding only if insufficient. No official runs/uploads
 
 ## Running work — do not duplicate it
 
-- Serial batch exec session `20748` runs `runs/goal-20260920/holdout_batch.py`.
+- Serial batch exec session `66733` runs `runs/goal-20260920/holdout_batch.py`.
 - Inspect `runs/goal-20260920/holdout/state.json` and each active step's `progress.json`.
-  Three pairs are complete: 12306-1 60/135 vs 60/135; Ctrip-1 49/125 vs 49/125;
-  12306-2 **24/135 baseline vs 84/135 candidate (+60, -0)**. Current step is
-  `ctrip-2/baseline-repair` (raw draft 29/125); query live files before acting.
+  Four pairs are complete: 12306-1 60/135 vs 60/135; Ctrip-1 49/125 vs 49/125;
+  12306-2 **24/135 vs 84/135 (+60, -0)**; Ctrip-2 29/125 vs 29/125.
+  Current step is `12306-3/draft/replay`; query live files before acting.
 - Exactly three new draft attempts per task, alternating 12306/Ctrip, fixed baseline and
   candidate, same raw draft for both repairs. Identical feedback reuses the same actual
   model response, so differences in acceptance cannot be mistaken for model variance.
@@ -78,6 +78,14 @@ existing balance; request funding only if insufficient. No official runs/uploads
   replay therefore covers both outcomes. See each pair's `proposal-verification.json`.
 - The resumed batch inherits `ARC_EXPERIMENT_HTTP_VERSION=1.1` and `PYTHONHASHSEED=0`.
   `experiment_call.py` records the requested/response model and curl HTTP metadata.
+- Ctrip-2 baseline repair initially ended incomplete (431.386 s, no code/finish/usage,
+  HTTP 200/1.1). It is preserved under `baseline-attempt1-transport-failure`; one retry
+  completed. Both policies rejected the same reply for `+ 添加返程` source-name detection.
+  Supplemental replay of that discarded proposal gives 30/125 vs retained 29/125,
+  +1/-0. This is a remaining false-rejection limitation; the frozen candidate was NOT changed.
+- `audit.py` additionally verifies every scored draft against its real generation response
+  plus the frozen scaffold, and checks identical model parameters/initial repair contexts.
+  Partial aggregate means are computed equally per task even with uneven completed counts.
 - Derive final usage from step receipts/traces and the gateway bill, including failures
   and reuse provenance; the state counter covers completed calls in scored pairs only.
 
