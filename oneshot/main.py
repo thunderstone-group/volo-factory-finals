@@ -1233,12 +1233,14 @@ SCREEN_TAIL = re.compile(r"\s*(?:pages|page|screens|screen|views|view)\s*$", re.
 HOME_START = re.compile(r"\b(?:is on|are on|on|at|opens?|visits?|reach(?:es)?)\s+(?:the\s+)?"
                         r"(home ?page|home ?screen|landing page|homepage)\b|首页", re.I)
 ARROW = re.compile(r"\s*(?:->|→|=>)\s*")
+# The requirement names controls with double quotes, curly quotes or backticks (`Shelves` in Bookstack).
+NAME = re.compile(r"[\u201c\"`]([^\u201d\"`\n]{2,80})[\u201d\"`]")
 STATE_HINT = re.compile(r"\b(fill|fills|filling|filled|enter|enters|entering|entered|type|types|typing|typed|upload|"
                         r"submits|submitting|with a valid|with valid|with an invalid|with invalid|with mismatched|"
                         r"do(?:es)? not match|without|already exists|in use|exists|first step|second step|third step)\b",
                         re.I)
-SCREEN_GIVEN = re.compile(r"^\s*(?:the user|a visitor|the visitor|an? [a-z]+) is (?:logged in and is )?(?:on|at|viewing)\b",
-                          re.I)
+SCREEN_GIVEN = re.compile(r"^\s*(?:the\s+|a\s+|an\s+)?(?:user|visitor|customer|member|admin|shopper|guest)\b"
+                          r"[^.\n]{0,50}?\b(?:is|are|has|have|can see|sees|views|opens)\b", re.I)
 LOGIN_HINT = re.compile(r"\b(logged in|signed in|authenticated|verif\w+ account|after login)\b", re.I)
 LOGGED_OUT = re.compile(r"\b(not logged in|without logging in|logged out|signed out|guest|visitor|anonymous)\b", re.I)
 ACCOUNT = re.compile(r"(?<![A-Za-z])username\s*[\u201c\"]([^\"\u201d\n]{3,60})[\u201d\"]"
@@ -1383,7 +1385,7 @@ def _arrow_phrases(when):
     segment naming the start screen is where the step begins, not something to click there."""
     steps, seen = [], set()
     for segment in ARROW.split(when):
-        quoted = QUOTED.search(segment)
+        quoted = NAME.search(segment)
         phrase = re.sub(r"\s+", " ", quoted.group(1) if quoted else segment).strip()
         if not quoted:
             phrase = re.sub(r"^(?:click|clicks|press|tap|select|choose|open|hover|expand|then|and)\b[\s:]*", "",
@@ -1410,7 +1412,7 @@ def _action_phrases(when):
     if ARROW.search(when):
         return _arrow_phrases(when)
     steps, seen = [], set()
-    for match in QUOTED.finditer(when):
+    for match in NAME.finditer(when):
         phrase = re.sub(r"\s+", " ", match.group(1)).strip().strip(".")
         context = when[max(0, match.start() - 60):match.start()]
         kind = "hover" if HOVER_VERB.search(context) else "click" if CLICK_VERB.search(context) else None
@@ -1428,7 +1430,7 @@ def _required_names(then):
     the step only mentions as the thing it changes away from ("changes the link from \"Sign Out\" to
     \"Register\"") is not required on the screen."""
     names, seen = [], set()
-    for match in QUOTED.finditer(then or ""):
+    for match in NAME.finditer(then or ""):
         phrase = re.sub(r"\s+", " ", match.group(1)).strip().strip(".")
         context = (then or "")[max(0, match.start() - 40):match.start()]
         if (len(phrase) < 2 or len(phrase) > 60 or re.fullmatch(r"[\W_]+", phrase)
