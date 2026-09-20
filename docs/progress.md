@@ -552,3 +552,12 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - 12306-2 attempt 1 ended before code; preserved incomplete trace, one identical-input retry active.
 - 40 offline/package checks passed; review ZIP built from the frozen source (not uploaded).
 - Goal remains active; 2/6 new-draft pairs complete.
+
+## 2026-09-20 [19:49] — HTTP/1.1 recovery of the same second 12306 generation
+
+- The second HTTP/2 attempt again ended before application code or completion markers
+  after 275.793 seconds, curl exit 0, no usage. It remains an infrastructure interruption.
+- Started one HTTP/1.1 recovery through the existing SSH SOCKS route; request payload
+  bytes match the failed attempts, model/temperature/token cap/candidate/suite unchanged.
+- The call is confirmed live, identifies deepseek-v4-flash, and is returning reasoning.
+- Goal active, completed pairs remain 2/6 and neither shows candidate gain/regression.

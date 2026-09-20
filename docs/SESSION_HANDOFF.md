@@ -24,11 +24,12 @@ existing balance; request funding only if insufficient. No official runs/uploads
 
 ## Running work — do not duplicate it
 
-- Serial batch exec session `63713` runs `runs/goal-20260920/holdout_batch.py`.
+- Serial batch exec session `76874` runs `runs/goal-20260920/holdout_batch.py`.
 - Inspect `runs/goal-20260920/holdout/state.json` and each active step's `progress.json`.
   Two pairs are complete: 12306-1 is 60/135 for both arms; Ctrip-1 is 49/125
   for both arms (raw draft 24). Both have +0/-0 candidate gain versus baseline.
-  Current step is `12306-2/generate`, identical-request transport retry; inspect live files.
+  Current step is `12306-2/generate`, one HTTP/1.1 recovery attempt through the same
+  SSH route. Its request payload is byte-identical to both failed HTTP/2 attempts.
 - Exactly three new draft attempts per task, alternating 12306/Ctrip, fixed baseline and
   candidate, same raw draft for both repairs. Identical feedback reuses the same actual
   model response, so differences in acceptance cannot be mistaken for model variance.
@@ -54,7 +55,11 @@ existing balance; request funding only if insufficient. No official runs/uploads
   repair response is a real model/contract outcome and retains its original delivery.
 - `12306-2` generation attempt 1 also ended before code/completion markers (357.803 s,
   curl exit 0, usage unknown). Preserved under `draft-attempt1-transport-failure`.
-  One retry is running; its request bytes were verified identical. No scored pair was replaced.
+  Its identical HTTP/2 retry also ended before code after 275.793 seconds (curl exit 0,
+  unknown usage). Both failures are retained as `draft-attempt1-transport-failure` and
+  `draft-attempt2-transport-failure`. An HTTP/1.1 recovery call is now live; request bytes
+  match the failed calls, and the response identifies deepseek-v4-flash. No scored pair
+  was replaced. Do not blindly repeat this recovery if it also ends incompletely.
 - Required legacy suite: 226 tests, 214 passed / 12 skipped, zero failures, 80.185 seconds.
   Offline/package checks: 40 passed. These are engineering checks, not business-score improvement.
 - Review ZIP: `runs/goal-20260920/candidate-v1.zip`, SHA-256
@@ -62,6 +67,8 @@ existing balance; request funding only if insufficient. No official runs/uploads
   packaged main.py matches the frozen candidate. It was NOT uploaded or promoted.
 - Raw versus retained proposal hashes match on both completed pairs; their one source
   replay therefore covers both outcomes. See each pair's `proposal-verification.json`.
+- The resumed batch inherits `ARC_EXPERIMENT_HTTP_VERSION=1.1` and `PYTHONHASHSEED=0`.
+  `experiment_call.py` records the requested/response model and curl HTTP metadata.
 - Derive final usage from step receipts/traces and the gateway bill, including failures
   and reuse provenance; the state counter covers completed calls in scored pairs only.
 
