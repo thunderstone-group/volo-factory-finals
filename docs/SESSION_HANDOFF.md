@@ -24,12 +24,11 @@ existing balance; request funding only if insufficient. No official runs/uploads
 
 ## Running work — do not duplicate it
 
-- Serial batch exec session `76874` runs `runs/goal-20260920/holdout_batch.py`.
+- Serial batch exec session `20748` runs `runs/goal-20260920/holdout_batch.py`.
 - Inspect `runs/goal-20260920/holdout/state.json` and each active step's `progress.json`.
-  Two pairs are complete: 12306-1 is 60/135 for both arms; Ctrip-1 is 49/125
-  for both arms (raw draft 24). Both have +0/-0 candidate gain versus baseline.
-  Current step is `12306-2/generate`, one HTTP/1.1 recovery attempt through the same
-  SSH route. Its request payload is byte-identical to both failed HTTP/2 attempts.
+  Three pairs are complete: 12306-1 60/135 vs 60/135; Ctrip-1 49/125 vs 49/125;
+  12306-2 **24/135 baseline vs 84/135 candidate (+60, -0)**. Current step is
+  `ctrip-2/baseline-repair` (raw draft 29/125); query live files before acting.
 - Exactly three new draft attempts per task, alternating 12306/Ctrip, fixed baseline and
   candidate, same raw draft for both repairs. Identical feedback reuses the same actual
   model response, so differences in acceptance cannot be mistaken for model variance.
@@ -59,7 +58,17 @@ existing balance; request funding only if insufficient. No official runs/uploads
   unknown usage). Both failures are retained as `draft-attempt1-transport-failure` and
   `draft-attempt2-transport-failure`. An HTTP/1.1 recovery call is now live; request bytes
   match the failed calls, and the response identifies deepseek-v4-flash. No scored pair
-  was replaced. Do not blindly repeat this recovery if it also ends incompletely.
+  was replaced. HTTP/1.1 recovery completed (45,769 input / 92,703 output tokens).
+- 12306-2 baseline repair initially ended after partial code (202.627 seconds, 11,733
+  content characters, no finish/usage). Retained under `baseline-attempt1-transport-failure`.
+  One retry completed. Baseline rejected it for source-detected name changes to From
+  Station / To Station; candidate reused the EXACT same request and response and kept it.
+  The raw proposal and candidate delivery hashes match; scored 84/135 against baseline's
+  retained original 24/135, 60 new passes and no lost passes. Both station-filter tests
+  are among the gains. No new model generation accounts for this difference.
+- The original 24/135 draft had a startup ReferenceError, so the legacy `_fatal` label
+  does not imply literally zero functioning cases. Describe the rule as startup-error
+  recovery and report observed regressions; do not claim a universal zero-score guarantee.
 - Required legacy suite: 226 tests, 214 passed / 12 skipped, zero failures, 80.185 seconds.
   Offline/package checks: 40 passed. These are engineering checks, not business-score improvement.
 - Review ZIP: `runs/goal-20260920/candidate-v1.zip`, SHA-256

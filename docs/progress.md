@@ -561,3 +561,15 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   bytes match the failed attempts, model/temperature/token cap/candidate/suite unchanged.
 - The call is confirmed live, identifies deepseek-v4-flash, and is returning reasoning.
 - Goal active, completed pairs remain 2/6 and neither shows candidate gain/regression.
+
+## 2026-09-20 [20:39] — First independent acceptance-policy gain: 12306-2 adds 60 passes
+
+- Raw draft 24/135. The same completed Flash repair was rejected by baseline for
+  source-detected From Station / To Station name changes, accepted by candidate.
+- Identical model requests and one actual response, not two independent repair draws.
+  Baseline delivery remained 24/135; candidate reached 84/135 (+60, -0).
+- Both station-filter requirements newly pass; raw proposal equals candidate delivery.
+- The startup-error diagnostic coexists with 24 passing cases, so its “whole-app” label
+  is too broad. The reported no-regression result is empirical for this paired replay.
+- Three of six new-draft pairs complete. Candidate, evaluator sources and original
+  snapshots still hash-match; current work is Ctrip-2 baseline repair. Goal remains active.
