@@ -577,3 +577,10 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - Also this session: contract extraction widened to the phrasings the other tasks use (backticks in
   Bookstack, arrow chains and "User is on the homepage" in Ctrip), and the walk got a 25 s wall-clock budget
   with coverage reported, because the runner has one CPU. `tests_oneshot` 98 green.
+- Attribution of the round's remaining family, from the local replay of `01ea1a853d95` under `TZ=UTC` (74/135,
+  identical to the platform): 18 of the 61 failures wait for `button /^Book$/`, and the error context of
+  REQ-3.2.1 shows why — the home search form holds From/To/Date and a "Search" button, and clicking it never
+  leaves the home screen, so the results table (and every Book button in it) never renders. The app does
+  render `<button>Book</button>` per price line; the family is search-page reachability, not the button's
+  name or role. The path walk stays silent on it by construction: the row's precondition is a filled form,
+  which the walk does not set up (it is prompt-only in the path table).

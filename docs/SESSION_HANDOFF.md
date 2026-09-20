@@ -30,8 +30,12 @@ the controller still rejects the round, because the target pair did not gain thr
 
 ## Next
 
-1. Attribute the **REQ-3.2.x search-results family** on 12306 from the round's bundle
-   (`runs/2026-09-20-goal/r28a-12306-bundle`, replay under `TZ=UTC`; a local replay is running).
+1. Act on the **REQ-3.2.x search-results family**: already attributed — the local replay of the round's
+   bundle under `TZ=UTC` reproduces the platform's 74/135 exactly, and 18 of its 61 failures wait for
+   `button /^Book$/` because the home search form never leaves the home screen (REQ-3.2.1's snapshot shows
+   the filled form and no results table). The app renders `<button>Book</button>` per price line, so the
+   family is search-page reachability. The path walk cannot see it: the precondition is a filled form, and
+   that row is prompt-only.
 2. Check the Ctrip app of this round for the same class of fault (its `walk` carries hover and arrow paths
    now); Ctrip stayed at 22–26/125.
 3. Only then choose the next single carrier — the controller's rule for the next round is unchanged, and the
