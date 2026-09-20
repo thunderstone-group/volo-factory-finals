@@ -550,3 +550,30 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - `tests_oneshot` 98 green (5 new). Report `docs/reports/2026-09-20-path-table-and-repair-acceptance.md`, evidence
   `docs/evidence/2026-09-20-path-walk-and-acceptance-fix.json`. Balance CNY 191.278679, pending 0, no run started:
   the platform pair waits for a clean local gate on the next candidate.
+
+## 2026-09-20 [12:30] — Round r28 measured on the platform: the personal-center family is fixed, the controller still rejects
+
+- Candidate package `r28-candidate.zip` sha256 `c7a8bb9497e37b24a79f32edf715fa2be5e41ef9fbd9a42faf10b1da30a4d37e`, Web submission
+  `98cbfb0f4da4`, Lite `a2aac0fad435`, two samples each, all sixteen runs started 11:37 local. The first
+  upload (sha `cfaf1ea7`, 11:25) was **cancelled** before it finished: it predated the hover/arrow/retry
+  fixes, and measuring a package whose gate is known to be noisy is worse than spending twenty minutes.
+- Web pair **64.4 / 63.5** against r27's 60.9 / 65.3: lower sample +2.6 points, mean +0.8, **no delivery
+  failure and no non-target regression** (Prestashop +9.3 / +11.6, Bookstack +2.9 / −5.9, SO 0 / −3.0).
+  12306 **74 / 64** (r27 62 / 75), Ctrip 26 / 22 (r27 26 / 32).
+- **The carrier did its job where it fired.** On run `01ea1a853d95` the platform prompt contained the
+  requirement path table (2 traces) and the walk flagged `REQ-4.4.1 ends on #/passengers without "All"`;
+  the bounded repair was accepted and re-emitted `lib/arc.js`, `app.js`, `styles.css`. Test-level diff
+  against r27a: **27 tests fixed**, exactly the family this session attributed — REQ-4.1.2, REQ-4.1.3,
+  REQ-4.3.1, REQ-4.3.5, the three REQ-4.3.6 cases, REQ-4.3.7, REQ-4.3.8, REQ-4.4.x — and 15 new failures in a
+  different family (REQ-3.2.x: result rows, re-search, sort toggles).
+- The controller (r28 vs the r27 baseline in `docs/evidence/2026-09-19-optimization-baseline.json`) says
+  **reject**: target task gain −1.8 points against the +3 rule, no delivery failures, no non-target
+  regressions. Its next action is still computed from the baseline's stale family list, so it names
+  `12306/header-role` again; the measured state is that this family is now fixed and the next one is the
+  search-results family.
+- The change stays as a **diagnostic carrier** (like the action-outcome gate): the path table and the walk
+  are what produced the fix, they cost nothing on tasks without executable rows, and the round's Lite pair is
+  flat (bookstack 25 / 16, keep 16 + one run still queued at the platform).
+- Also this session: contract extraction widened to the phrasings the other tasks use (backticks in
+  Bookstack, arrow chains and "User is on the homepage" in Ctrip), and the walk got a 25 s wall-clock budget
+  with coverage reported, because the runner has one CPU. `tests_oneshot` 98 green.

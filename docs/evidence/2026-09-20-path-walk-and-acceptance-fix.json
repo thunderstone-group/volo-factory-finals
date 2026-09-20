@@ -10,9 +10,20 @@
   "timezone_control": {
     "claim": "the replay must run in the runner's timezone (UTC)",
     "identical_bundle": {
-      "local_clock_utc_plus_8": {"passed": 48, "total": 135, "wall_seconds": 230.0},
-      "TZ_UTC": {"passed": 62, "total": 135, "wall_seconds": 189.3},
-      "platform_run_cb1e1d2f9aa0": {"passed": 62, "total": 135}
+      "local_clock_utc_plus_8": {
+        "passed": 48,
+        "total": 135,
+        "wall_seconds": 230.0
+      },
+      "TZ_UTC": {
+        "passed": 62,
+        "total": 135,
+        "wall_seconds": 189.3
+      },
+      "platform_run_cb1e1d2f9aa0": {
+        "passed": 62,
+        "total": 135
+      }
     },
     "mechanism": "helpers.ts TEST_DATE = new Date().toISOString().slice(0,10) is UTC; the app validated the search date against local midnight, so the suite's date was judged past and the search never navigated"
   },
@@ -33,8 +44,12 @@
     "submission_id": "218a586c0c9a",
     "passed": 0,
     "failed": 125,
-    "statuses": {"timedOut": 125},
-    "local_reproduction": ["frontend script error on load (the page is blank for every test): Uncaught [TypeError: this.flights is not a function]"],
+    "statuses": {
+      "timedOut": 125
+    },
+    "local_reproduction": [
+      "frontend script error on load (the page is blank for every test): Uncaught [TypeError: this.flights is not a function]"
+    ],
     "local_reproduction_seconds": 3.4,
     "platform_agent_log": "[oneshot] smoke problems included the same load error; \"repair\": {\"accepted\": false, \"reason\": \"repair renamed quoted control(s): + 添加返程\"}",
     "interpretation": "the fixing repair was rejected by the pinned-name veto and the blank draft shipped"
@@ -45,7 +60,11 @@
       "rows_12306": 42,
       "executable_rows_12306": 12,
       "gate_result_on_r27a_bundle": {
-        "true_positives": ["REQ-4.3.1 (Personal)", "REQ-4.3.5 (Personal)", "REQ-4.4.1 (Information management)"],
+        "true_positives": [
+          "REQ-4.3.1 (Personal)",
+          "REQ-4.3.5 (Personal)",
+          "REQ-4.4.1 (Information management)"
+        ],
         "false_positives": 0,
         "probe_seconds": 12.8
       }
@@ -62,5 +81,122 @@
   "tests": {
     "command": "PYTHONPATH=. python3 -m unittest discover -s tests_oneshot -t tests_oneshot",
     "note": "the documented .venv/bin/python has no pytest; the suite is unittest-based and tests_oneshot is not a package"
+  },
+  "platform_round_r28": {
+    "package_sha256": "c7a8bb9497e37b24a79f32edf715fa2be5e41ef9fbd9a42faf10b1da30a4d37e",
+    "web_submission_id": "98cbfb0f4da4",
+    "lite_submission_id": "a2aac0fad435",
+    "superseded_upload": {
+      "package_sha256": "cfaf1ea767108722f353bbdf4dbf6ef1e694b2c81250294c1c8df553fb746b73",
+      "reason": "cancelled: predates the hover/arrow/retry fixes; sixteen runs stopped before finishing"
+    },
+    "samples": {
+      "a": {
+        "keep": [
+          "9928b9c95061",
+          27
+        ],
+        "bookstack": [
+          "f787793ce559",
+          31
+        ],
+        "stackoverflow": [
+          "2df0bfd60ae9",
+          41
+        ],
+        "prestashop": [
+          "a469b45aca1d",
+          63
+        ],
+        "12306": [
+          "01ea1a853d95",
+          74
+        ],
+        "ctrip": [
+          "820bc5bc4665",
+          26
+        ],
+        "lite-keep": [
+          "9c72d461b1a9",
+          null
+        ],
+        "lite-bookstack": [
+          "18d7bcd3d8c9",
+          25
+        ]
+      },
+      "b": {
+        "keep": [
+          "af64f7964076",
+          26
+        ],
+        "bookstack": [
+          "22ebe9018c98",
+          31
+        ],
+        "stackoverflow": [
+          "20d99918abf3",
+          45
+        ],
+        "prestashop": [
+          "dfefda5d7879",
+          65
+        ],
+        "12306": [
+          "f92f08a9b4bb",
+          64
+        ],
+        "ctrip": [
+          "7d392dd3b3af",
+          22
+        ],
+        "lite-keep": [
+          "a0c6773cc5e6",
+          16
+        ],
+        "lite-bookstack": [
+          "5883c912448f",
+          16
+        ]
+      }
+    },
+    "web_task_equal": {
+      "a": 0.6442,
+      "b": 0.6353,
+      "r27_baseline": {
+        "a": 0.609,
+        "b": 0.653
+      }
+    },
+    "carrier_evidence_on_run_01ea1a853d95": {
+      "prompt_contains_path_table_traces": 2,
+      "walk_problem": "REQ-4.4.1 ends on #/passengers without “All”",
+      "repair_accepted_files": [
+        "frontend/public/lib/arc.js",
+        "frontend/public/app.js",
+        "frontend/public/styles.css"
+      ],
+      "tests_fixed_vs_r27a": 27,
+      "tests_newly_failing_vs_r27a": 15,
+      "fixed_family": [
+        "REQ-4.1.2",
+        "REQ-4.1.3",
+        "REQ-4.3.1",
+        "REQ-4.3.5",
+        "REQ-4.3.6",
+        "REQ-4.3.7",
+        "REQ-4.3.8",
+        "REQ-4.4.x"
+      ],
+      "new_family": "REQ-3.2.x (result rows, re-search from the results page, sort toggles)"
+    },
+    "controller": {
+      "decision": "reject",
+      "target_gain": -0.0181,
+      "non_target_regressions": {},
+      "reasons": [
+        "target task gain -1.8% is below 3.0%"
+      ]
+    }
   }
 }

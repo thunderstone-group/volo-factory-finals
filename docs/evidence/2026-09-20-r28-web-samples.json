@@ -1,0 +1,97 @@
+{
+  "round_id": "r28",
+  "change_id": "r28-path-table-and-walk",
+  "submission_id": {
+    "arc-bench-web": "98cbfb0f4da4"
+  },
+  "package_sha256": "c7a8bb9497e37b24a79f32edf715fa2be5e41ef9fbd9a42faf10b1da30a4d37e",
+  "local_gate": {
+    "passed": true,
+    "problems": [],
+    "note": "path walk on the r27a bundle: four true positives, none false"
+  },
+  "samples": [
+    {
+      "id": "a",
+      "tasks": {
+        "keep": {
+          "run_id": "9928b9c95061",
+          "passed": 27,
+          "total": 32,
+          "delivered": true
+        },
+        "bookstack": {
+          "run_id": "f787793ce559",
+          "passed": 31,
+          "total": 34,
+          "delivered": true
+        },
+        "stackoverflow": {
+          "run_id": "2df0bfd60ae9",
+          "passed": 41,
+          "total": 66,
+          "delivered": true
+        },
+        "prestashop": {
+          "run_id": "a469b45aca1d",
+          "passed": 63,
+          "total": 86,
+          "delivered": true
+        },
+        "12306": {
+          "run_id": "01ea1a853d95",
+          "passed": 74,
+          "total": 135,
+          "delivered": true
+        },
+        "ctrip": {
+          "run_id": "820bc5bc4665",
+          "passed": 26,
+          "total": 125,
+          "delivered": true
+        }
+      }
+    },
+    {
+      "id": "b",
+      "tasks": {
+        "keep": {
+          "run_id": "af64f7964076",
+          "passed": 26,
+          "total": 32,
+          "delivered": true
+        },
+        "bookstack": {
+          "run_id": "22ebe9018c98",
+          "passed": 31,
+          "total": 34,
+          "delivered": true
+        },
+        "stackoverflow": {
+          "run_id": "20d99918abf3",
+          "passed": 45,
+          "total": 66,
+          "delivered": true
+        },
+        "prestashop": {
+          "run_id": "dfefda5d7879",
+          "passed": 65,
+          "total": 86,
+          "delivered": true
+        },
+        "12306": {
+          "run_id": "f92f08a9b4bb",
+          "passed": 64,
+          "total": 135,
+          "delivered": true
+        },
+        "ctrip": {
+          "run_id": "7d392dd3b3af",
+          "passed": 22,
+          "total": 125,
+          "delivered": true
+        }
+      }
+    }
+  ]
+}

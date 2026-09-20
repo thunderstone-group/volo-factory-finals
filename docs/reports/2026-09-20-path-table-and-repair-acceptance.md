@@ -106,10 +106,28 @@ a name mentioned as the thing a step changes *away from* is not required on scre
 entry and a submit control resolves to the button (the suite's ladder order); a row that dead-ends at a
 sign-in surface is retried signed in rather than reported.
 
-## 5. What this does not claim
+## 5. The platform round that followed (12:30)
 
-No platform run has been made with these carriers; the loop requires a clean local gate first, and the
-target pair is still 12306 + Ctrip. The path walk executes rows the extraction can stand on (12 for
-12306) — a row whose precondition is application state is prompt-only and unverified locally. The
-fixed-date gate proves presence of the literal, not that the app's bounds use it. Suite score claims
-remain the platform's, with run ids, and none is made here.
+Package `r28-candidate.zip` sha256 `c7a8bb94…` was uploaded as Web submission `98cbfb0f4da4` and Lite
+`a2aac0fad435`, two samples each (`docs/evidence/2026-09-20-r28-web-samples.json`). Web pair **64.4 / 63.5**
+against r27's 60.9 / 65.3: no delivery failure, no non-target regression, lower sample +2.6 points,
+Prestashop +9.3 / +11.6.
+
+On run `01ea1a853d95` (12306, 74/135 against r27a's 62/135) the carriers are visible in the platform's own
+log: the prompt carried the requirement path table, the walk reported `REQ-4.4.1 ends on #/passengers
+without "All"`, and the bounded repair was accepted. The test-level diff against r27a is **27 tests fixed**
+— REQ-4.1.2, REQ-4.1.3, REQ-4.3.1, REQ-4.3.5, REQ-4.3.6 (three cases), REQ-4.3.7, REQ-4.3.8, REQ-4.4.x, the
+whole family this report attributed — against 15 new failures in a different one (REQ-3.2.x: result rows,
+re-search from the results page, sort toggles).
+
+The controller still says **reject**: target task gain −1.8 points against the +3 rule (12306 74/64,
+Ctrip 26/22; r27 62/75 and 26/32). The carriers stay as diagnostics, and the next family to attribute is
+the search-results family this round exposed.
+
+## 6. What this does not claim
+
+The path walk executes only the rows the extraction can stand on (22 of 44 for 12306, 8 of 55 for Ctrip; the
+other four tasks are thinner) — a row whose precondition is application state stays prompt-only and is
+unverified locally. The fixed-date gate proves presence of the literal, not that the app's bounds use it.
+The round's own verdict is the controller's, and it is a rejection, not a gain; suite score claims remain the
+platform's, with run ids, and the Lite pair is flat.
