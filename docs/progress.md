@@ -523,3 +523,9 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - Ctrip recorded repair preserved by the narrow fatal-recovery exception; source identical to the 42/125 replay.
 - 30 smoke checks passed. Frozen candidate proceeds to three new draft pairs per target task.
 - Batch state and evidence live in `runs/goal-20260920/`; no official run or promotion.
+
+## 2026-09-20 [18:33] — First held-out generation transport retry
+
+- `12306-1` attempt 1 ended with no application code, finish marker or usage after 178.75 s; curl exited 0.
+- Preserved the incomplete SSE/trace; resumed the same request once through the same HK route.
+- No scored pair has been replaced; frozen candidate and retention criterion are unchanged.

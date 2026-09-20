@@ -24,7 +24,7 @@ existing balance; request funding only if insufficient. No official runs/uploads
 
 ## Running work — do not duplicate it
 
-- Serial batch exec session `99865` runs `runs/goal-20260920/holdout_batch.py`.
+- Serial batch exec session `93477` runs `runs/goal-20260920/holdout_batch.py`.
 - Inspect `runs/goal-20260920/holdout/state.json` and each active step's `progress.json`.
   First step was `12306-1/generate`; query the files for current progress.
 - Exactly three new draft attempts per task, alternating 12306/Ctrip, fixed baseline and
@@ -37,8 +37,11 @@ existing balance; request funding only if insufficient. No official runs/uploads
   interruption before resuming. Completed model calls/outputs must not be repeated.
 - Each replay uses the saved published Web suite, UTC, four workers and ten-second limits;
   source-identical applications reuse the same score. No hosted CPU quota is reproduced.
-- The batch's preliminary `completed_model_calls` counter is unused; derive final usage
-  from step receipts/traces and the gateway bill, including failures and reuse provenance.
+- `12306-1` generation attempt 1 ended with incomplete SSE after 178.75 seconds, before
+  application code. It is preserved as `draft-attempt1-transport-failure`; usage is unknown.
+  One retry of the identical request is now running. This is not a replacement of a scored pair.
+- Derive final usage from step receipts/traces and the gateway bill, including failures
+  and reuse provenance; the state counter covers completed calls in scored pairs only.
 
 ## Next
 
