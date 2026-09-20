@@ -24,9 +24,10 @@ existing balance; request funding only if insufficient. No official runs/uploads
 
 ## Running work — do not duplicate it
 
-- Serial batch exec session `93477` runs `runs/goal-20260920/holdout_batch.py`.
+- Serial batch exec session `7158` runs `runs/goal-20260920/holdout_batch.py`.
 - Inspect `runs/goal-20260920/holdout/state.json` and each active step's `progress.json`.
-  First step was `12306-1/generate`; query the files for current progress.
+  `12306-1` is complete: draft/baseline/candidate all 60/135, +0/-0.
+  Current step is `ctrip-1/generate`; query the files for live progress.
 - Exactly three new draft attempts per task, alternating 12306/Ctrip, fixed baseline and
   candidate, same raw draft for both repairs. Identical feedback reuses the same actual
   model response, so differences in acceptance cannot be mistaken for model variance.
@@ -37,9 +38,21 @@ existing balance; request funding only if insufficient. No official runs/uploads
   interruption before resuming. Completed model calls/outputs must not be repeated.
 - Each replay uses the saved published Web suite, UTC, four workers and ten-second limits;
   source-identical applications reuse the same score. No hosted CPU quota is reproduced.
-- `12306-1` generation attempt 1 ended with incomplete SSE after 178.75 seconds, before
-  application code. It is preserved as `draft-attempt1-transport-failure`; usage is unknown.
-  One retry of the identical request is now running. This is not a replacement of a scored pair.
+- `12306-1` generation attempt 1 ended with incomplete SSE after 178.75 seconds. The
+  identical-request retry completed (45,769 input / 108,884 output tokens). The failure
+  remains under `draft-attempt1-transport-failure`, with unknown usage.
+- A real experimental control issue was found BEFORE judging the first pair: Python hash
+  randomization changed the unchanged label diagnostic example from Date to Name. The
+  two original calls/replays are retained as `*-uncontrolled-hash`. Repair subprocesses
+  now use `PYTHONHASHSEED=0`; the generator prompt was verified unchanged under this setting.
+  The canonical prompt exactly matches the first baseline call, so both controlled arms
+  reuse that same real response and identical source/score. No better-scoring response
+  was selected, and candidate source/hash/retention criterion did not change.
+- `experiment_call.py` now stops the comparison on an incomplete provider request even
+  when the production repair function catches the exception. A completed but invalid
+  repair response is a real model/contract outcome and retains its original delivery.
+- Required legacy suite: 226 tests, 214 passed / 12 skipped, zero failures, 80.185 seconds.
+  These are engineering checks, not business-score improvement.
 - Derive final usage from step receipts/traces and the gateway bill, including failures
   and reuse provenance; the state counter covers completed calls in scored pairs only.
 

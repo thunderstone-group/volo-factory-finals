@@ -529,3 +529,17 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - `12306-1` attempt 1 ended with no application code, finish marker or usage after 178.75 s; curl exited 0.
 - Preserved the incomplete SSE/trace; resumed the same request once through the same HK route.
 - No scored pair has been replaced; frozen candidate and retention criterion are unchanged.
+
+## 2026-09-20 [19:13] — First new-draft pair neutral; repair feedback hashing controlled
+
+- 12306-1: raw 60/135, baseline 60/135, candidate 60/135, no gained/lost cases.
+- Date diagnostic did not trigger: this fresh app uses a runtime clock.
+- Python hash randomization changed a shared diagnostic example (Date vs Name). Kept
+  both original calls and fixed PYTHONHASHSEED=0 before judging the pair. Canonical
+  request matches the original baseline request exactly; both controlled arms reused
+  its real response and the same application/score. No candidate or metric change.
+- Production exception catching no longer lets a transport failure masquerade as a
+  measured repair comparison in the experiment runner. Invalid completed replies remain
+  real outcomes. Costs include the extra uncontrolled calls, not just scored pairs.
+- Legacy required suite: 214 passed, 12 skipped, zero failures (226 total).
+- Goal active; next independent pair is Ctrip-1. No official run or upload.

@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-09-20 [19:13]",
+  "goal_status": "active",
+  "completed_pairs": [
+    {
+      "id": "12306-1",
+      "draft": 60,
+      "baseline": 60,
+      "candidate": 60,
+      "total": 135,
+      "gained": [],
+      "regressed": []
+    }
+  ],
+  "control_adjustment": {
+    "at": 1789901907.666711,
+    "variable": "PYTHONHASHSEED",
+    "value": "0",
+    "reason": "The same unchanged diagnostic chose Date versus Name in its example across processes.",
+    "regenerate_draft": false,
+    "reuse_matching_existing_response": true,
+    "existing_generation_prompt_matches_hash0": true,
+    "canonical_existing_response": "baseline-uncontrolled-hash/trace.json"
+  },
+  "source_and_request_equality": {
+    "baseline_candidate_request_equal": true,
+    "baseline_source_sha256": "0a84ee7eb9460eb98c698ba00848361e37c3549a5fcffec749e0e5b9323d2a6c",
+    "candidate_source_sha256": "0a84ee7eb9460eb98c698ba00848361e37c3549a5fcffec749e0e5b9323d2a6c"
+  },
+  "legacy_tests": {
+    "total": 226,
+    "passed": 214,
+    "skipped": 12,
+    "failures": 0,
+    "seconds": 80.185
+  },
+  "running_session": 7158,
+  "remaining_pairs": 5
+}
