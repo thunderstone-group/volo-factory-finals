@@ -24,10 +24,11 @@ existing balance; request funding only if insufficient. No official runs/uploads
 
 ## Running work — do not duplicate it
 
-- Serial batch exec session `7158` runs `runs/goal-20260920/holdout_batch.py`.
+- Serial batch exec session `63713` runs `runs/goal-20260920/holdout_batch.py`.
 - Inspect `runs/goal-20260920/holdout/state.json` and each active step's `progress.json`.
-  `12306-1` is complete: draft/baseline/candidate all 60/135, +0/-0.
-  Current step is `ctrip-1/generate`; query the files for live progress.
+  Two pairs are complete: 12306-1 is 60/135 for both arms; Ctrip-1 is 49/125
+  for both arms (raw draft 24). Both have +0/-0 candidate gain versus baseline.
+  Current step is `12306-2/generate`, identical-request transport retry; inspect live files.
 - Exactly three new draft attempts per task, alternating 12306/Ctrip, fixed baseline and
   candidate, same raw draft for both repairs. Identical feedback reuses the same actual
   model response, so differences in acceptance cannot be mistaken for model variance.
@@ -51,8 +52,16 @@ existing balance; request funding only if insufficient. No official runs/uploads
 - `experiment_call.py` now stops the comparison on an incomplete provider request even
   when the production repair function catches the exception. A completed but invalid
   repair response is a real model/contract outcome and retains its original delivery.
+- `12306-2` generation attempt 1 also ended before code/completion markers (357.803 s,
+  curl exit 0, usage unknown). Preserved under `draft-attempt1-transport-failure`.
+  One retry is running; its request bytes were verified identical. No scored pair was replaced.
 - Required legacy suite: 226 tests, 214 passed / 12 skipped, zero failures, 80.185 seconds.
-  These are engineering checks, not business-score improvement.
+  Offline/package checks: 40 passed. These are engineering checks, not business-score improvement.
+- Review ZIP: `runs/goal-20260920/candidate-v1.zip`, SHA-256
+  `3991d48c14b19fd2bf1f277dfc4d1ea7d5b69aa665fa52006cbbe3aabb2c3043`; 12 files,
+  packaged main.py matches the frozen candidate. It was NOT uploaded or promoted.
+- Raw versus retained proposal hashes match on both completed pairs; their one source
+  replay therefore covers both outcomes. See each pair's `proposal-verification.json`.
 - Derive final usage from step receipts/traces and the gateway bill, including failures
   and reuse provenance; the state counter covers completed calls in scored pairs only.
 

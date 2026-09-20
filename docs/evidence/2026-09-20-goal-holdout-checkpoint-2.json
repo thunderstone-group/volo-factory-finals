@@ -1,0 +1,209 @@
+{
+  "recorded_at": "2026-09-20 [19:42]",
+  "goal_status": "active",
+  "completed_pairs": [
+    {
+      "id": "12306-1",
+      "draft": 60,
+      "baseline": 60,
+      "candidate": 60,
+      "total": 135,
+      "gained": [],
+      "regressed": []
+    },
+    {
+      "id": "ctrip-1",
+      "draft": 24,
+      "baseline": 49,
+      "candidate": 49,
+      "total": 125,
+      "gained": [],
+      "regressed": []
+    }
+  ],
+  "proposal_verification": {
+    "12306-1": {
+      "baseline": {
+        "raw_proposal_exists": true,
+        "raw_equals_retained": true,
+        "retained_score": 60
+      },
+      "candidate": {
+        "raw_proposal_exists": true,
+        "raw_equals_retained": true,
+        "retained_score": 60
+      }
+    },
+    "ctrip-1": {
+      "baseline": {
+        "raw_proposal_exists": true,
+        "raw_equals_retained": true,
+        "retained_score": 49
+      },
+      "candidate": {
+        "raw_proposal_exists": true,
+        "raw_equals_retained": true,
+        "retained_score": 49
+      }
+    }
+  },
+  "transport_retries": [
+    {
+      "pair": "12306-1",
+      "attempt": 1,
+      "retained": "12306-1/draft-attempt1-transport-failure",
+      "reason": "SSE ended without DONE or finish_reason, before application code; curl exit 0",
+      "usage": "unknown",
+      "same_request_retry_authorized": true
+    },
+    {
+      "pair": "12306-2",
+      "attempt": 1,
+      "retained": "12306-2/draft-attempt1-transport-failure",
+      "reason": "SSE ended without completion markers and before application code; curl exit 0",
+      "elapsed_seconds": 357.803,
+      "usage": "unknown",
+      "same_request_retry_authorized": true
+    }
+  ],
+  "offline_package_tests": {
+    "passed": 40,
+    "failures": 0
+  },
+  "package": {
+    "path": "runs/goal-20260920/candidate-v1.zip",
+    "sha256": "3991d48c14b19fd2bf1f277dfc4d1ea7d5b69aa665fa52006cbbe3aabb2c3043",
+    "uploaded": false
+  },
+  "accounting": {
+    "checked_at": 1789904480.666795,
+    "finished_model_attempts": 9,
+    "completed": 7,
+    "failed": 2,
+    "known_billed_cost_cny": "4.184690",
+    "unknown_usage_attempts": 2,
+    "unmatched_billing_attempts": 2,
+    "calls": [
+      {
+        "trace": "12306-candidate-fixed/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 75309,
+          "completion_tokens": 63342
+        },
+        "elapsed_seconds": 397.339,
+        "finished_at": 1789899595.902291,
+        "actual_cost_cny": "0.582194",
+        "billing_request_id": "2026092018131562869077137386",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "12306-oracle-hk/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 75643,
+          "completion_tokens": 60125
+        },
+        "elapsed_seconds": 415.002,
+        "finished_at": 1789898816.456796,
+        "actual_cost_cny": "0.554243",
+        "billing_request_id": "2026092018000268234839256401",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-1/baseline-uncontrolled-hash/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 78502,
+          "completion_tokens": 31514
+        },
+        "elapsed_seconds": 193.945,
+        "finished_at": 1789901507.910274,
+        "actual_cost_cny": "0.388470",
+        "billing_request_id": "2026092018483232365339511835",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-1/candidate-uncontrolled-hash/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 78502,
+          "completion_tokens": 31686
+        },
+        "elapsed_seconds": 182.695,
+        "finished_at": 1789901904.471333,
+        "actual_cost_cny": "0.294990",
+        "billing_request_id": "2026092018552063165080423892",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-1/draft/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 45769,
+          "completion_tokens": 108884
+        },
+        "elapsed_seconds": 764.174,
+        "finished_at": 1789901101.756821,
+        "actual_cost_cny": "0.986601",
+        "billing_request_id": "2026092018321866466453570174",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-1/draft-attempt1-transport-failure/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 178.75,
+        "finished_at": 1789900128.6516259,
+        "actual_cost_cny": null
+      },
+      {
+        "trace": "holdout/12306-2/draft-attempt1-transport-failure/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 357.803,
+        "finished_at": 1789904051.7886028,
+        "actual_cost_cny": null
+      },
+      {
+        "trace": "holdout/ctrip-1/baseline/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 74607,
+          "completion_tokens": 44818
+        },
+        "elapsed_seconds": 278.364,
+        "finished_at": 1789903489.440914,
+        "actual_cost_cny": "0.502460",
+        "billing_request_id": "2026092019200915937041125203",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/ctrip-1/draft/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 44560,
+          "completion_tokens": 83770
+        },
+        "elapsed_seconds": 590.933,
+        "finished_at": 1789902930.2318752,
+        "actual_cost_cny": "0.875732",
+        "billing_request_id": "2026092019054094589903565697",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      }
+    ],
+    "active_calls_not_included": true,
+    "no_official_run_created": true
+  },
+  "running_session": 63713,
+  "remaining_pairs": 4
+}

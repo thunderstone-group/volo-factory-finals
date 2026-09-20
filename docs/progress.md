@@ -543,3 +543,12 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   real outcomes. Costs include the extra uncontrolled calls, not just scored pairs.
 - Legacy required suite: 214 passed, 12 skipped, zero failures (226 total).
 - Goal active; next independent pair is Ctrip-1. No official run or upload.
+
+## 2026-09-20 [19:42] — Second new-draft pair neutral; Ctrip baseline repairs 25 cases
+
+- Ctrip-1: raw 24/125, baseline 49/125, candidate 49/125. Candidate adds no gain or loss.
+- Both completed pairs use the same real reply when prompts match; raw/retained source
+  fingerprints match their scored application. No extra score is inferred from a mock.
+- 12306-2 attempt 1 ended before code; preserved incomplete trace, one identical-input retry active.
+- 40 offline/package checks passed; review ZIP built from the frozen source (not uploaded).
+- Goal remains active; 2/6 new-draft pairs complete.
