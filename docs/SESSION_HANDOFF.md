@@ -1,35 +1,49 @@
-# Current handoff — 2026-09-20: fixed-draft repair experiment
+# Current handoff — 2026-09-20: goal active, independent draft comparison running
 
-Branch `exp/fixed-draft-repair-20260920` starts from main `248eb65`. Read
-[the experiment report](reports/2026-09-20-fixed-draft-repair.md) and its
-[evidence receipt](evidence/2026-09-20-fixed-draft-repair.json).
+Continue this same task. The user said to create and pursue the goal autonomously.
+The goal is active; do not mark it complete before the predefined new-draft comparisons
+finish or reject the tested candidate. User authorizes necessary ARC model spending from
+existing balance; request funding only if insufficient. No official runs/uploads under this goal.
 
-## Observed results
+## Verified checkpoint
 
-- Recovered three real platform traces and verified all eight delivered source files per
-  application against the downloaded ZIPs. Immutable drafts/repairs are in ignored
-  `runs/fixed-draft/`; local replays used disposable copies, fresh data and UTC.
-- 12306 original Flash repair: 73/135 before, 74/135 after, one new pass and no regression.
-- Ctrip original Flash repair: 0/125 before, 42/125 after. Historical acceptance rejects it;
-  r28 acceptance keeps the same response. This is a local, same-draft counterfactual.
-- Manual diagnostic references, explicitly not Flash outputs: 12306 date seed repair
-  73/135 to 87/135 (16 gained, 2 order regressions); Bookstack dispatch repair 16/34 to
-  18/34 under the saved current Lite suite (2 gained, no regressions).
-- Bookstack calibration is unresolved: historical official Lite was 22/34; upstream Web
-  replays 24/34 twice; current platform Lite pack replays 16/34. Do not mix these scores.
-- The fresh same-model diagnostic arm is incomplete: five transport failures and no code
-  returned. Preserve those attempts; do not classify them as model repair failures.
-- Last meter check 09:22:55 UTC: CNY 83.889382, zero pending events, no new billed requests.
-  Failed-request token usage is unknown. No official run or upload was created.
+- Read [checkpoint evidence](evidence/2026-09-20-goal-fixed-draft-checkpoint.json).
+- Previous immutable evidence is retained in `runs/fixed-draft/` and commit `f87a728`.
+- Local/direct model calls were truncated. A temporary SSH SOCKS route through the existing
+  user-owned `hk-zyl` host returned two complete Flash repairs. TLS credentials stay local;
+  no global proxy setting was changed. SOCKS `127.0.0.1:60513`, exec session `31290`.
+- 12306 explicit-diagnostic repair: 91/135 vs the same draft's 73 (19 gains, 1 regression).
+- Automatic relative-date diagnostic candidate: 91/135 vs 73 (18 gains, 0 regressions),
+  and 17 gains / 0 regressions against the historical automatic repair's 74.
+- Ctrip historical repair is accepted by the narrow fatal-recovery exception and its source
+  matches the previously replayed 42/125 repair exactly. No new Ctrip score is claimed.
+- `test_smoke`: 30 passed in 93.972 seconds. Candidate source SHA-256
+  `84f95fec6453b29e392be2b0553d217b71aac7e11f6c2cb3c85e428b3f966ed6`.
+- First successful repair bill: CNY 0.554243, 75,643 input / 60,125 output tokens.
+  Final goal cost is not settled yet; more calls are running.
+
+## Running work — do not duplicate it
+
+- Serial batch exec session `99865` runs `runs/goal-20260920/holdout_batch.py`.
+- Inspect `runs/goal-20260920/holdout/state.json` and each active step's `progress.json`.
+  First step was `12306-1/generate`; query the files for current progress.
+- Exactly three new draft attempts per task, alternating 12306/Ctrip, fixed baseline and
+  candidate, same raw draft for both repairs. Identical feedback reuses the same actual
+  model response, so differences in acceptance cannot be mistaken for model variance.
+- Sources are frozen under `runs/goal-20260920/baseline/oneshot/` and `candidate-v1/oneshot/`.
+  Do not change the candidate or acceptance criterion after inspecting held-out outcomes.
+- Retain only positive task-equal pass gain with no lost baseline-passing case. The batch
+  stops early on a regression; do not resample to replace it. Review any infrastructure
+  interruption before resuming. Completed model calls/outputs must not be repeated.
+- Each replay uses the saved published Web suite, UTC, four workers and ten-second limits;
+  source-identical applications reuse the same score. No hosted CPU quota is reproduced.
+- The batch's preliminary `completed_model_calls` counter is unused; derive final usage
+  from step receipts/traces and the gateway bill, including failures and reuse provenance.
 
 ## Next
 
-Use the evidence to prioritize filled-form/business-path feedback and retaining effective
-whole-app repairs. The date-only manual patch regresses order behavior and is not a
-candidate. The production harness/package remain unchanged. When model transport recovers,
-resume the explicit-diagnostic Flash arm from its saved prompts and original draft; the
-existing free replays do not need repeating unless their inputs/environment change.
-
-The user explicitly authorized ARC experiments to use the existing balance without
-per-call budget questions; ask about funding only when funds are insufficient. This does
-not authorize unrelated work or silently turning a diagnostic patch into the candidate.
+Finish/diagnose the running batch, compile per-pair gains/regressions and exact costs,
+then retain or reject the frozen candidate. Prepare reviewable changes/evidence, do not
+promote a candidate based on the fixed-draft result alone. Shut down the temporary SSH
+SOCKS process after all model work ends. Update the goal status only when its completion
+criteria are met. Earlier completed replays do not need repeating.

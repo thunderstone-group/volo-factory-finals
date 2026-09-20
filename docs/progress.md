@@ -514,3 +514,12 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   At 09:22:55 UTC, no new bill was visible and balance remained CNY 83.889382 (pending 0).
 - Report: `docs/reports/2026-09-20-fixed-draft-repair.md`; machine-readable evidence and
   test-level changes: `docs/evidence/2026-09-20-fixed-draft-repair.json`.
+
+## 2026-09-20 [18:30] — Goal: automatic date diagnostic passes fixed-draft gate
+
+- Goal active. HK SSH SOCKS restored complete Flash responses; local/global proxy settings unchanged.
+- 12306 automatic candidate 73 to 91/135 (+18, -0); historical automatic repair was 74.
+- Explicit manual diagnostic fed to Flash also reached 91, but with one regression; keep the arms distinct.
+- Ctrip recorded repair preserved by the narrow fatal-recovery exception; source identical to the 42/125 replay.
+- 30 smoke checks passed. Frozen candidate proceeds to three new draft pairs per target task.
+- Batch state and evidence live in `runs/goal-20260920/`; no official run or promotion.

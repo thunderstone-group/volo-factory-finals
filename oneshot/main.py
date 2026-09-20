@@ -1228,6 +1228,38 @@ def _fatal(problem):
     return not (problem.startswith("clicking ") or "renders no <" in problem)
 
 
+def relative_date_gaps(stage, requirements):
+    """Report a literal clock only when the requirement explicitly needs the current day.
+
+    Ordinary fixed fixture dates and an explicitly frozen scenario clock are legitimate.
+    This narrow source diagnostic does not claim to verify the application's date behavior.
+    """
+    requirements = requirements or ""
+    current = r"\b(?:current\s+(?:day|date)|today)\b"
+    if not re.search(current, requirements, re.I):
+        return []
+    if re.search(current + r"[^\n.!?]{0,120}\bfixed\b", requirements, re.I):
+        return []
+    literal_clock = re.compile(
+        r"^[ \t]*(?:const|let|var)[ \t]+(today|current_?date|now_?date)[ \t]*="
+        r"[ \t]*(['\"])(\d{4}-\d{2}-\d{2})\2[ \t]*;?[ \t]*(?://[^\n]*)?$", re.I | re.M)
+    public = Path(stage) / "frontend" / "public"
+    problems = []
+    for path in sorted(public.rglob("*.js")) if public.is_dir() else []:
+        source = path.read_text(encoding="utf-8", errors="replace")
+        for match in literal_clock.finditer(source):
+            line = source.count("\n", 0, match.start()) + 1
+            problems.append(
+                f"{path.relative_to(stage).as_posix()}:{line} assigns the clock `{match[1]}` to the fixed "
+                f"date `{match[3]}`, but the requirement uses the current day. A valid current-day input "
+                "can then be rejected against an obsolete date range. Derive the current day from the runtime "
+                "clock and keep validation, pickers and relative seed dates consistent. Preserve explicitly "
+                "specified fixture dates and their required status; re-check existing date-dependent paths.")
+            if len(problems) == 6:
+                return problems
+    return problems
+
+
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
     """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
     at most one model call on a fix and keep it only if the smoke check then passes and the
@@ -1235,7 +1267,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     problems, executed = smoke_check(stage, requirements)
     smoke_before = list(problems)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
-    static = (process_guard_gaps(stage) + aria_collision_gaps(stage, requirements) + exact_name_gaps(stage, requirements)
+    static = (relative_date_gaps(stage, requirements) + process_guard_gaps(stage) + aria_collision_gaps(stage, requirements) + exact_name_gaps(stage, requirements)
               + readonly_gaps(stage) + (scaffold_gaps(stage) if scaffold else []))
     budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
                     "repair": None}
@@ -1281,14 +1313,16 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         if missing_after > missing_before:
             raise ValueError(f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
         renamed = sorted(pinned_before - control_names(stage))
-        if renamed:
+        recovered = any(_fatal(p) for p in smoke_before) and not any(_fatal(p) for p in after)
+        if renamed and not recovered:
             # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
             # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).
             raise ValueError("repair renamed quoted control(s): " + ", ".join(renamed[:8]))
         for item in batch:
             files[:] = [f for f in files if f["path"] != item["path"]] + [item]
         budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch],
-                                  "vocabulary_missing_after": missing_after}
+                                  "vocabulary_missing_after": missing_after,
+                                  **({"renamed_but_kept": renamed[:8]} if renamed else {})}
     except Exception as exc:
         # Keep the original delivery: a half-applied fix could be worse than the known state.
         shutil.rmtree(stage)

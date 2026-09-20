@@ -1,0 +1,228 @@
+{
+  "recorded_at_utc": "2026-09-20T10:30:23.620396+00:00",
+  "goal_status": "active",
+  "candidate_source_sha256": "84f95fec6453b29e392be2b0553d217b71aac7e11f6c2cb3c85e428b3f966ed6",
+  "baseline_commit": "248eb65",
+  "transport": {
+    "route": "temporary loopback SSH SOCKS via existing hk-zyl host",
+    "port": 60513,
+    "session_id": 31290,
+    "global_proxy_configuration_changed": false
+  },
+  "oracle": {
+    "receipt": {
+      "app": "12306",
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 75643,
+        "completion_tokens": 60125
+      },
+      "finish_reason": "stop",
+      "files": [
+        "frontend/public/seed.js",
+        "frontend/public/app.js",
+        "frontend/public/styles.css",
+        "frontend/public/lib/arc.js"
+      ],
+      "seconds": 415.01,
+      "cost_upper_estimate_cny": 0.768054
+    },
+    "delta_vs_draft": {
+      "passed_before": 73,
+      "passed_after": 91,
+      "total": 135,
+      "gained": [
+        "REQ-3.1.5: Search tickets from the home page",
+        "REQ-3.2.1: Display the populated ticket search results page",
+        "REQ-3.2.12: Filter the result list by departure time range",
+        "REQ-3.2.13: Enter the results page from the home quick search module",
+        "REQ-3.2.2: Show ticket prices and booking actions in each result row",
+        "REQ-3.2.4: Search again from the results page",
+        "REQ-3.2.5: Search with another date from the date-switching bar",
+        "REQ-3.2.6: Toggle sorting by departure time",
+        "REQ-3.2.7: Toggle sorting by travel time",
+        "REQ-3.2.8: Toggle sorting by arrival time",
+        "REQ-3.2.9: Filter the result list by train type",
+        "REQ-3.3.3: Toggle transfer plan sorting by first-segment departure time",
+        "REQ-3.3.4: Toggle transfer plan sorting by total travel time",
+        "REQ-3.3.5: Toggle transfer plan sorting by second-segment arrival time",
+        "REQ-4.2.16: Reject an invalid history orders search condition",
+        "REQ-4.2.9: Search upcoming trips with a valid keyword",
+        "REQ-4.4.3: Add a frequent passenger successfully",
+        "REQ-5.1.1: Show the quick login form for an unauthenticated booking attempt",
+        "REQ-5.1.3: Open the registration page from the quick login form"
+      ],
+      "regressed": [
+        "REQ-4.4.11: Clear the passenger search results"
+      ]
+    }
+  },
+  "automatic_candidate": {
+    "receipt": {
+      "app": "12306",
+      "mode": "repair",
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 75309,
+        "completion_tokens": 63342
+      },
+      "finish_reason": "stop",
+      "files": [
+        "frontend/public/seed.js",
+        "frontend/public/app.js",
+        "frontend/public/lib/arc.js",
+        "frontend/public/styles.css"
+      ],
+      "seconds": 405.56,
+      "smoke": {
+        "executed": true,
+        "problems": [
+          "frontend/public/seed.js:3 assigns the clock `TODAY` to the fixed date `2026-05-31`, but the requirement uses the current day. A valid current-day input can then be rejected against an obsolete date range. Derive the current day from the runtime clock and keep validation, pickers and relative seed dates consistent. Preserve explicitly specified fixture dates and their required status; re-check existing date-dependent paths.",
+          "7 field label(s) are substrings of another field label, so getByLabel('To') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"Name\" is contained in \"Select ${esc(p.name)}\" — keep \"Name\" exactly (quoted in the requirement) and rename \"Select ${esc(p.name)}\"; \"Date\" is contained in \"End date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"End date\"; \"Date\" is contained in \"Start date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Start date\"; \"Date\" is contained in \"Search by date type\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Search by date type\"; \"Password\" is contained in \"New password\" — keep \"Password\" exactly (quoted in the requirement) and rename \"New password\"; \"New password\" is contained in \"New password:\" — keep \"New password:\" exactly (quoted in the requirement) and rename \"New password\"; \"New password\" is contained in \"Confirm new password:\" — keep \"Confirm new password:\" exactly (quoted in the requirement) and rename \"New password\"",
+          "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"${esc(s.name)}\" shares esc with a field label; button aria-label \"${ARC.esc(L.brand || \" shares esc with a field label",
+          "2 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “, and a” appears only as `Fill in the form, and a confirmation message will appear.`; “Account number” appears only as `Account number: ${esc(user.username)}`",
+          "12 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"assets/logo.png\", \"May 31 Sun\", \"xx results\", \"You don''t have uncompleted orders.\", \"You don''t have any bookings or we can''t access your bookings at this time.\", \"Please enter a valid search condition.\", \"business-class seat ( ￥1870.0 ) 32% off 1 left\", \"first-class seat ( ￥967.0 ) 24% off None left\", \"second-class seat ( ￥576.0 ) 27% off None left\", \"standing ticket ( ￥576.0 ) 27% off Enough left\", \"MM:SS\", \"Total: ￥xxxx.xx\""
+        ],
+        "vocabulary_missing": 12,
+        "repair": {
+          "accepted": true,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/lib/arc.js",
+            "frontend/public/styles.css"
+          ],
+          "vocabulary_missing_after": 0
+        }
+      },
+      "cost_upper_estimate_cny": 0.796005
+    },
+    "delta_vs_draft": {
+      "passed_before": 73,
+      "passed_after": 91,
+      "total": 135,
+      "gained": [
+        "REQ-3.1.2: Select a location from the fuzzy-matched list",
+        "REQ-3.1.2: Select a location by Chinese characters",
+        "REQ-3.1.5: Search tickets from the home page",
+        "REQ-3.2.1: Display the populated ticket search results page",
+        "REQ-3.2.12: Filter the result list by departure time range",
+        "REQ-3.2.13: Enter the results page from the home quick search module",
+        "REQ-3.2.2: Show ticket prices and booking actions in each result row",
+        "REQ-3.2.4: Search again from the results page",
+        "REQ-3.2.5: Search with another date from the date-switching bar",
+        "REQ-3.2.6: Toggle sorting by departure time",
+        "REQ-3.2.7: Toggle sorting by travel time",
+        "REQ-3.2.8: Toggle sorting by arrival time",
+        "REQ-3.3.3: Toggle transfer plan sorting by first-segment departure time",
+        "REQ-3.3.4: Toggle transfer plan sorting by total travel time",
+        "REQ-3.3.5: Toggle transfer plan sorting by second-segment arrival time",
+        "REQ-4.4.3: Add a frequent passenger successfully",
+        "REQ-5.1.1: Show the quick login form for an unauthenticated booking attempt",
+        "REQ-5.1.3: Open the registration page from the quick login form"
+      ],
+      "regressed": []
+    },
+    "delta_vs_historical_repair": {
+      "before": 74,
+      "after": 91,
+      "gained": [
+        "REQ-3.1.2: Select a location from the fuzzy-matched list",
+        "REQ-3.1.2: Select a location by Chinese characters",
+        "REQ-3.1.5: Search tickets from the home page",
+        "REQ-3.2.1: Display the populated ticket search results page",
+        "REQ-3.2.12: Filter the result list by departure time range",
+        "REQ-3.2.13: Enter the results page from the home quick search module",
+        "REQ-3.2.2: Show ticket prices and booking actions in each result row",
+        "REQ-3.2.4: Search again from the results page",
+        "REQ-3.2.5: Search with another date from the date-switching bar",
+        "REQ-3.2.6: Toggle sorting by departure time",
+        "REQ-3.2.7: Toggle sorting by travel time",
+        "REQ-3.2.8: Toggle sorting by arrival time",
+        "REQ-3.3.3: Toggle transfer plan sorting by first-segment departure time",
+        "REQ-3.3.4: Toggle transfer plan sorting by total travel time",
+        "REQ-3.3.5: Toggle transfer plan sorting by second-segment arrival time",
+        "REQ-5.1.1: Show the quick login form for an unauthenticated booking attempt",
+        "REQ-5.1.3: Open the registration page from the quick login form"
+      ],
+      "regressed": []
+    }
+  },
+  "ctrip_recorded_repair_acceptance": {
+    "candidate_sha256": "84f95fec6453b29e392be2b0553d217b71aac7e11f6c2cb3c85e428b3f966ed6",
+    "new_model_calls": 0,
+    "smoke": {
+      "executed": true,
+      "problems": [
+        "frontend script error on load (the page is blank for every test): Uncaught [TypeError: this.flights is not a function]",
+        "the first screen (/) renders no <nav> (or role=navigation) although the requirement describes a navigation; every screen, including the home screen, must render through the one shared layout (header, navigation, main content, footer) so the suite finds the same landmarks and controls on every route",
+        "3 field label(s) are substrings of another field label, so getByLabel('日期 Date') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"日期 Date\" is contained in \"出生日期 Date of birth\"; \"密码 Password\" is contained in \"登录密码 Password\"; \"密码 Password\" is contained in \"设置密码 Password\"",
+        "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Phone change form\" shares phone with a field label; button aria-label \"${ARC.esc(L.brand || \" shares esc with a field label",
+        "3 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “返回日期” appears only as `返回日期 Return date`; “添加返程” appears only as `+ 添加返程`; “010-” appears only as `机场问讯：010-64541100`",
+        "frontend/public/app.js:209 marks an input readonly (<input id=\"origin\" name=\"origin\" data-city-field=\"origin\" data-city-picker=\"orig); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+        "frontend/public/app.js:212 marks an input readonly (<input id=\"destination\" name=\"destination\" data-city-field=\"destination\" data-ci); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+        "frontend/public/app.js:216 marks an input readonly (<input id=\"departDate\" name=\"departDate\" data-date-field=\"departDate\" data-date-); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+        "frontend/public/app.js:218 marks an input readonly (<input id=\"returnDate\" name=\"returnDate\" data-date-field=\"returnDate\" data-date-); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+        "3 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"4天\", \"火星城\", \"aa\""
+      ],
+      "vocabulary_missing": 3,
+      "repair": {
+        "accepted": true,
+        "files": [
+          "frontend/public/seed.js",
+          "frontend/public/app.js",
+          "frontend/public/styles.css",
+          "frontend/public/lib/arc.js"
+        ],
+        "vocabulary_missing_after": 2,
+        "renamed_but_kept": [
+          "+ 添加返程"
+        ]
+      }
+    },
+    "matches_recorded_repair": {
+      "backend/package.json": true,
+      "backend/server.js": true,
+      "frontend/package.json": true,
+      "frontend/public/app.js": true,
+      "frontend/public/index.html": true,
+      "frontend/public/lib/arc.js": true,
+      "frontend/public/seed.js": true,
+      "frontend/public/styles.css": true
+    },
+    "known_same_source_local_result": {
+      "passed": 42,
+      "total": 125
+    }
+  },
+  "engineering_validation": {
+    "command": "PYTHONPATH=.:tests_oneshot python3 -m unittest test_smoke -v",
+    "passed": 30,
+    "seconds": 93.972
+  },
+  "holdout": {
+    "planned_pairs": 6,
+    "status": "running",
+    "driver": "runs/goal-20260920/holdout_batch.py",
+    "state": "runs/goal-20260920/holdout/state.json",
+    "exec_session": 99865,
+    "candidate_frozen": "runs/goal-20260920/candidate-v1/oneshot/main.py",
+    "same_response_reused_when_model_feedback_matches": true,
+    "early_stop": "reject on a lost baseline-passing case"
+  },
+  "first_successful_call_billing": {
+    "metrics": {
+      "amount": "0.554243",
+      "cached_tokens": 73728,
+      "currency": "CNY",
+      "input_tokens": 75643,
+      "output_tokens": 60125,
+      "total_tokens": 135768
+    },
+    "model": "deepseek-v4-flash",
+    "occurred_at": 1789898816,
+    "request_id": "2026092018000268234839256401"
+  },
+  "new_official_runs": 0,
+  "promoted": false
+}

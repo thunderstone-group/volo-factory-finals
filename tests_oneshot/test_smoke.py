@@ -413,6 +413,20 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("renamed quoted control(s): from", budget.smoke["repair"]["reason"])
         self.assertIn("From <input", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
 
+    def test_whole_app_recovery_survives_a_quoted_control_rename(self):
+        # The real Ctrip repair recovered 42 tests but was rejected for a control rename.
+        draft_js = "document.body.innerHTML += '<button>Add return</button>'; throw new Error('blank app');"
+        repaired_js = "document.body.innerHTML += '<p>Add return</p><button>Choose return trip</button>';"
+        draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                      block("frontend/public/app.js", draft_js))
+        self.replies(events(draft), events(block("frontend/public/app.js", repaired_js)))
+        budget = adapter.CallBudget()
+        files, _ = adapter.generate('Synthetic: click the "Add return" button.',
+                                   "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
+        self.assertEqual(budget.smoke["repair"]["renamed_but_kept"], ["add return"])
+        self.assertIn("Choose return trip", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
+
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"
         requirement.mkdir()
@@ -427,6 +441,34 @@ class SmokeCase(unittest.TestCase):
         line = [l for l in capture.getvalue().splitlines() if l.startswith("[oneshot] smoke ")][0]
         self.assertEqual(json.loads(line.split(" ", 2)[2]), {"executed": True, "problems": [], "vocabulary_missing": 0, "repair": None})
         self.assertNotIn(SYNTHETIC_KEY, capture.getvalue())
+
+
+class RelativeDateCase(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.stage = Path(self.temp.name)
+        self.source = self.stage / "frontend" / "public" / "seed.js"
+        self.source.parent.mkdir(parents=True)
+
+    def test_literal_clock_conflicts_with_current_day_requirement(self):
+        self.source.write_text("// Synthetic fixture\nvar TODAY = '2000-01-01';\n")
+        problems = adapter.relative_date_gaps(self.stage, "Allow dates from the current day through the next two weeks.")
+        self.assertEqual(len(problems), 1)
+        self.assertIn("frontend/public/seed.js:2", problems[0])
+        self.assertIn("2000-01-01", problems[0])
+
+    def test_explicitly_frozen_scenario_clock_is_preserved(self):
+        self.source.write_text("const TODAY = '2000-01-01';\n")
+        self.assertEqual(adapter.relative_date_gaps(self.stage,
+            "The current date in the date-sensitive scenarios is fixed at 2000-01-01."), [])
+        self.assertEqual(adapter.relative_date_gaps(self.stage, "An order was booked on 2000-01-01."), [])
+
+    def test_runtime_clock_and_ordinary_fixtures_are_not_reported(self):
+        self.source.write_text("const TODAY = new Date().toISOString().slice(0, 10);\n"
+                               "const bookingDate = '2000-01-01';\n"
+                               "// const TODAY = '2000-01-01';\n")
+        self.assertEqual(adapter.relative_date_gaps(self.stage, "Choose a date from today onward."), [])
 
 
 if __name__ == "__main__":
