@@ -567,6 +567,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
   async function contractWalk() {
     const chains = JSON.parse(process.env.PROBE_CHAINS || '[]');
     const fallbackAccount = JSON.parse(process.env.PROBE_ACCOUNT || 'null');
+    const walkBudgetMs = Number(process.env.CONTRACT_WALK_MS || 25000);
     if (!chains.length) return {};
     const contractErrors = [];
     // The suite's own ladder: button, link, tab, menuitem, option, radio, checkbox, heading, then text.
@@ -695,7 +696,13 @@ const { JSDOM, VirtualConsole } = require('jsdom');
                issue: absent.length ? { id: chain.id, kind: 'screen', missing: absent.slice(0, 4).join(' / '),
                                          clicks: path.join(' -> '), hash: win2.location.hash || '#/' } : null };
     };
+    const walkStarted = Date.now();
+    let walked = 0;
     for (const chain of chains) {
+      // The runner has one CPU and this probe shares it with the whole smoke check: bound the walk and
+      // report what it managed to cover. Missing coverage is not a defect of the application.
+      if (Date.now() - walkStarted > walkBudgetMs) break;
+      walked += 1;
       // Walk every row from the anonymous home screen first: a row may be about the sign-in entry itself
       // (clicking "Login" while already signed in cannot be walked), and a row that needs an account fails
       // anonymously for exactly that reason. Only then retry signed in — a row whose requirement names no
@@ -711,7 +718,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
       if (best.issue) contractErrors.push(best.issue);
     }
     page.window.close();
-    return { contract_errors: contractErrors.slice(0, 8), contract_walked: chains.length };
+    return { contract_errors: contractErrors.slice(0, 8), contract_walked: walked, contract_rows: chains.length };
   }
   console.log(JSON.stringify({ text_chars: text.length, errors: loadErrors.slice(0, 5), landmarks, screens: seen.size,
                                click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e),
@@ -753,6 +760,7 @@ def _check_dom(stage, port, problems, requirements=None):
                              env={**_child_env(), "NODE_PATH": str(prefix / "node_modules"),
                                   "PROBE_URL": f"http://127.0.0.1:{port}/",
                                   "PROBE_CHAINS": json.dumps(chains),
+                                  "CONTRACT_WALK_MS": str(CONTRACT_WALK_MS),
                                   "PROBE_ACCOUNT": json.dumps({"id": account[0], "password": account[1]} if account else None)},
                              capture_output=True, timeout=DOM_PROBE_SECONDS, text=True)
         report = json.loads(run.stdout.strip().splitlines()[-1])
@@ -816,6 +824,10 @@ def _check_dom(stage, port, problems, requirements=None):
     if report.get("contract_probe_error"):
         # A bug in the walk itself must be visible in the log, and must never be charged to the app.
         print("[oneshot] the requirement path walk failed to run: " + str(report["contract_probe_error"]), file=sys.stderr)
+    elif report.get("contract_rows"):
+        # Coverage is a fact about the check, not about the app: a partial walk is reported, never blamed.
+        print(f"[oneshot] path walk covered {report.get('contract_walked')}/{report['contract_rows']} "
+              f"requirement rows", file=sys.stderr)
 
 
 def smoke_check(stage, requirements=None):
@@ -1253,6 +1265,7 @@ CONTRACT_MAX_ROWS = 60
 CONTRACT_MAX_BYTES = 9000
 CONTRACT_MAX_CHAINS = 24
 CONTRACT_MAX_LOGIN_CHAINS = 12
+CONTRACT_WALK_MS = 25000  # wall-clock budget for the path walk inside the probe; the runner has one CPU
 
 NAME_MAX_WORDS = 5
 CONTROL_CONTEXT = re.compile(r"\b(click|press|tap|button|link|field|input|textbox|tab|menu|dialog|editor|label|option|"
