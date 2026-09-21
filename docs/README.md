@@ -30,6 +30,8 @@ last-reviewed: 2026-09-21。本文只维护 docs/ 的结构与规则，不复述
 
 ## reports/ 索引（新在上）
 
+- `2026-09-21-requirement-goal-comparison.md` — Goal 循环的两份草稿对照、SSH 中断归因及共享后端回归检查；无独立提分，拒绝回退候选。
+
 - `2026-09-21-business-feedback-pilot.md` — 两份冻结 Ctrip 草稿的业务反馈循环、输入契约补充、独立评分和费用证据。
 - `2026-09-18-goal-ledger.md` — 甲方 01:53 定的「Web 聚合榜 ≥ 80%」目标模式：每轮一行的账本、护栏、判据。
 - `2026-09-18-distillation.md` — 把 know-how 压到弱模型能用的层级（门 → 骨架 → 表 → 散文）的叙事，ADR 0001 的背景。

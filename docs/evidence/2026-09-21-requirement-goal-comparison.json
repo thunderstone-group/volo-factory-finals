@@ -1,0 +1,3248 @@
+{
+  "schema": "volo.requirement-goal-comparison.v1",
+  "recorded_at_utc": "2026-09-21T08:38:21.045849+00:00",
+  "official_runs": 0,
+  "official_uploads": 0,
+  "new_draft_generations": 0,
+  "native_codex_goal": false,
+  "external_harness_integrated": false,
+  "experiments": [
+    {
+      "sample": "a",
+      "plan": {
+        "hypothesis": "Separate broader calibrated feedback from additional goal-directed repairs, using the first accepted repair as the one-round checkpoint.",
+        "baseline_application": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-20260921/round-2/model/application",
+        "baseline_source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c",
+        "baseline_probe": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/calibration-a-v2/result.json",
+        "baseline_external_score": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-20260921/final-score/result.json",
+        "requirements": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/fixed-draft/ctrip/requirements.yaml",
+        "requirements_sha256": "f43556f06b933e954c732040041e0208f43aa00f5291bd38fb70ce8912dde2ce",
+        "adapter": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/goal-20260920/baseline/oneshot/main.py",
+        "probe_file": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/probe-v2.cjs",
+        "probe_count": 27,
+        "goal_catalogue": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/catalogue.json",
+        "goal_catalogue_sha256": "6151c7f19e46a9f937fe151abf879543eb459ed9bf900f19e503ed02e7e6a95f",
+        "include_readonly_diagnostics": true,
+        "max_rounds": 3,
+        "max_stalled_rounds": 2,
+        "model": "deepseek-v4-flash",
+        "temperature": 0.0,
+        "max_output_tokens": 131072,
+        "acceptance": "Strict calibrated probe gain without losing any prior successful case; rollback otherwise.",
+        "completion": "Selected checks can stop the loop but never establish full requirement verification; unknown coverage stays explicit. Three repairs maximum, or two stalled proposals.",
+        "retention": "Independent 125-case evaluation must improve without losing baseline passes. No test failures or scores are model feedback.",
+        "runtime": {
+          "node": "v20.19.3",
+          "playwright": "1.57.0",
+          "chromium": "143.0.7499.4",
+          "arch": "arm64",
+          "mode": "probe",
+          "workers": 1,
+          "cpu_max": "100000 100000",
+          "memory_max": "2147483648"
+        },
+        "official_runs_allowed": false,
+        "controls": "Original 14-check loop would stop immediately on both inputs. Preserve round 1 and compare to final selected output to measure additional iteration.",
+        "driver_hashes": {
+          "scripts/business_experiment/Dockerfile": "cc5dfb5b96ee0b5252ba6c5c0ffc12a54537996900bed79debc7256ed1ea8c16",
+          "scripts/business_experiment/container_runner.cjs": "6fedd33f60e313a2bfb21d76b98cc2b4b64d45368235253e36ba1f7271b45aab",
+          "scripts/business_experiment/ctrip_business.spec.cjs": "ddde5010c42f16657267e393cc670152cfbf5b80dde21e55009d769ce58047c5",
+          "scripts/business_experiment/ctrip_goal_checks.cjs": "1250b70464aaaf5f6eacbbc3df2bc72d9f407d2bb5653ba9ea7fd1445bc0dfa0",
+          "scripts/business_experiment/ctrip_keyboard_contract.spec.cjs": "7890eabc61479fb1a71dfc5b54157a9e7d5ae7787905421bdb479b3c297556a6",
+          "scripts/business_loop.py": "b3c8bd4e95f16b715aee90fee2c70c332a7e311d91a39b6f1f7f3b8385c49601",
+          "scripts/business_model_step.py": "b2ee2d84d98745e50f8fcb696bbf916c9ca4f6606fed0a9a97d54819518249b1",
+          "scripts/business_probe_audit.py": "08cd63e4bf8f072821e6e2f5b8734212fd13c6531e1c24be2301a198bac0fb50",
+          "scripts/business_replay.py": "aa7f5ce39df4db534ad5580748fd8f1c1315f181e57ac84a854e483c9686fb88",
+          "scripts/experiment_recovery.py": "2b4d2eb2b64ebd1c66cbf5d8706ffd10dd390865b041c0f152c052ce47d149b5",
+          "scripts/experiment_transport.py": "d055562668c73752c3dae0acae49d8976adb06e458af65a73d597c1cd5411076",
+          "scripts/goal_coverage.py": "bce8f0b9cde45be31a472717a591f4ce95d4348bce50235ba4d27b9305088b0c"
+        }
+      },
+      "rounds": [
+        {
+          "number": 1,
+          "before_passed": 22,
+          "proposal_passed": 25,
+          "accepted": true,
+          "gained": [
+            "REQ-2.6.4.1: registration creates an account that can actually log in",
+            "REQ-5.6.2.1: invoice creation rejects an invalid company tax identifier",
+            "REQ-5.6.2.2: selecting a special VAT invoice reveals registration fields"
+          ],
+          "regressed": [],
+          "usage": {
+            "prompt_tokens": 74504,
+            "completion_tokens": 37486
+          },
+          "source_sha256": "47b3659c101e3ab1bdaead467fe7efb790fe0d55e9914b286dbe3b7f639d3955"
+        }
+      ],
+      "terminal": "stalled",
+      "parent_terminal": "interrupted",
+      "continuation": {
+        "plan": {
+          "hypothesis": "Complete the interrupted second goal repair using the identical request over direct HTTPS, after three SSH streams ended with SSH exit 255. One transport attempt only.",
+          "baseline_application": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/round-1/model/application",
+          "baseline_source_sha256": "47b3659c101e3ab1bdaead467fe7efb790fe0d55e9914b286dbe3b7f639d3955",
+          "baseline_probe": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/round-1/probe/result.json",
+          "baseline_external_score": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/first-checkpoint-score/result.json",
+          "requirements": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/fixed-draft/ctrip/requirements.yaml",
+          "requirements_sha256": "f43556f06b933e954c732040041e0208f43aa00f5291bd38fb70ce8912dde2ce",
+          "adapter": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/goal-20260920/baseline/oneshot/main.py",
+          "probe_file": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/probe-v2.cjs",
+          "probe_count": 27,
+          "goal_catalogue": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/catalogue.json",
+          "goal_catalogue_sha256": "6151c7f19e46a9f937fe151abf879543eb459ed9bf900f19e503ed02e7e6a95f",
+          "include_readonly_diagnostics": true,
+          "max_rounds": 1,
+          "max_stalled_rounds": 1,
+          "model": "deepseek-v4-flash",
+          "temperature": 0.0,
+          "max_output_tokens": 131072,
+          "acceptance": "Strict calibrated probe gain without losing any prior successful case; rollback otherwise.",
+          "completion": "Selected checks can stop the loop but never establish full requirement verification; unknown coverage stays explicit. Three repairs maximum, or two stalled proposals.",
+          "retention": "Independent 125-case evaluation must improve without losing baseline passes. No test failures or scores are model feedback.",
+          "runtime": {
+            "node": "v20.19.3",
+            "playwright": "1.57.0",
+            "chromium": "143.0.7499.4",
+            "arch": "arm64",
+            "mode": "probe",
+            "workers": 1,
+            "cpu_max": "100000 100000",
+            "memory_max": "2147483648"
+          },
+          "official_runs_allowed": false,
+          "controls": "Request bytes, model, source and checks are unchanged from the interrupted second repair; only the route changes.",
+          "driver_hashes": {
+            "scripts/business_experiment/Dockerfile": "cc5dfb5b96ee0b5252ba6c5c0ffc12a54537996900bed79debc7256ed1ea8c16",
+            "scripts/business_experiment/container_runner.cjs": "6fedd33f60e313a2bfb21d76b98cc2b4b64d45368235253e36ba1f7271b45aab",
+            "scripts/business_experiment/ctrip_business.spec.cjs": "ddde5010c42f16657267e393cc670152cfbf5b80dde21e55009d769ce58047c5",
+            "scripts/business_experiment/ctrip_goal_checks.cjs": "1250b70464aaaf5f6eacbbc3df2bc72d9f407d2bb5653ba9ea7fd1445bc0dfa0",
+            "scripts/business_experiment/ctrip_keyboard_contract.spec.cjs": "7890eabc61479fb1a71dfc5b54157a9e7d5ae7787905421bdb479b3c297556a6",
+            "scripts/business_loop.py": "2f8e7bcdbc6f750ff7f70002a4698ba0f7eb936f238d26d607be955f52c46dc0",
+            "scripts/business_model_step.py": "7599c71271297f7b1c25b0fed0c6f0d4ee11d7838c3177cb9a6f13e009655cde",
+            "scripts/business_probe_audit.py": "08cd63e4bf8f072821e6e2f5b8734212fd13c6531e1c24be2301a198bac0fb50",
+            "scripts/business_replay.py": "aa7f5ce39df4db534ad5580748fd8f1c1315f181e57ac84a854e483c9686fb88",
+            "scripts/experiment_recovery.py": "29547ecf6a87d735577803dd6f082250dc0998f86ed6d73354f54c50bbb95b83",
+            "scripts/experiment_transport.py": "d055562668c73752c3dae0acae49d8976adb06e458af65a73d597c1cd5411076",
+            "scripts/goal_coverage.py": "bce8f0b9cde45be31a472717a591f4ce95d4348bce50235ba4d27b9305088b0c"
+          },
+          "parent_experiment": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a",
+          "preserved_failed_attempts": 3,
+          "direct_transport": true,
+          "max_transport_attempts": 1,
+          "expected_request_sha256": "911c06dba8bad7e8e76909e144005f57f3760cb179895f00b32fc0fa590f8f40"
+        },
+        "state": {
+          "status": "stalled",
+          "current_application": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/round-1/model/application",
+          "current_probe": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/round-1/probe/result.json",
+          "rounds": [
+            {
+              "number": 1,
+              "before_passed": 25,
+              "proposal_passed": 25,
+              "accepted": false,
+              "gained": [],
+              "regressed": [],
+              "usage": {
+                "prompt_tokens": 73526,
+                "completion_tokens": 28143
+              },
+              "source_sha256": "b112840318c02dc03d4815fdd64472b8ea97037f2b0a3b2ace59651e0712f306"
+            }
+          ],
+          "stalled_rounds": 1,
+          "finished_at": 1789979851.915508
+        },
+        "audit": {
+          "driver_hashes_preserved": true,
+          "driver_snapshot": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921",
+          "baseline_preserved": true,
+          "requirements_preserved": true,
+          "rounds": [
+            {
+              "round": 1,
+              "inputs_match_declared_sources_only": true,
+              "trace_matches_request": true,
+              "model_matches": true,
+              "parameters_match": true,
+              "transport_complete": true,
+              "application_is_exact_model_patch": true,
+              "source_hash_matches": true
+            }
+          ]
+        }
+      },
+      "goal_state": {
+        "requirements": [
+          {
+            "id": "REQ-0",
+            "name": "Open System",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-1",
+            "name": "Ctrip Homepage Navigation and Entry",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-1.1",
+            "name": "Open Homepage",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2",
+            "name": "User Authentication Module",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.1",
+            "name": "Open Registration Entry",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.2",
+            "name": "Open Login Entry",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.3",
+            "name": "Login Page Entry and Switching",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.3.1",
+            "name": "Enter Login Page",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.3.2",
+            "name": "Switch to Verification-Code Login",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.3.3",
+            "name": "Switch to Password Login",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.4",
+            "name": "Account/Password Login",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.4.1",
+            "name": "Password Login Flow",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.4.2",
+            "name": "Exception: Username Missing",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.4.3",
+            "name": "Exception: Password Missing",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.4.4",
+            "name": "Exception: Incorrect Username or Password",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.4.5",
+            "name": "Exception: Agreement Not Accepted",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.5",
+            "name": "Verification-Code Login",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.5.1",
+            "name": "Verification-Code Login Flow",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.5.2",
+            "name": "Exception: Mobile Number Missing",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.5.3",
+            "name": "Exception: Verification Code Missing",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.5.4",
+            "name": "Exception: Incorrect Verification Code",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.5.5",
+            "name": "Exception: Agreement Not Accepted",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6",
+            "name": "User Registration Flow",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.1",
+            "name": "Enter Registration Page",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.2",
+            "name": "Registration Agreement Confirmation",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.2.1",
+            "name": "Trigger Registration Agreement",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.2.2",
+            "name": "Decline Registration Agreement",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.3",
+            "name": "Mobile Number Verification",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.3.1",
+            "name": "Enter Verification Information",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.4",
+            "name": "Set Password and Complete Registration",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.4.1",
+            "name": "Set Password and Complete Registration",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.6.4.2",
+            "name": "Exception: Passwords Do Not Match",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.4.3",
+            "name": "Exception: Password Too Weak",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.7",
+            "name": "Log Out",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.7.1",
+            "name": "Log Out",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3",
+            "name": "Flight Search Module",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.1",
+            "name": "Homepage Quick Flight Search",
+            "type": "FOLDER",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.2",
+            "name": "Basic Trip Parameter Configuration",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.1",
+            "name": "Trip Type Selection",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.2",
+            "name": "Swap Origin and Destination",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.3",
+            "name": "Exception: Same-City Validation",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.2.4",
+            "name": "Exception: Past-Date Validation",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.2.5",
+            "name": "City Selector",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.5.1",
+            "name": "Select a Hot City",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.5.2",
+            "name": "Find Cities by Pinyin Group",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.6",
+            "name": "Date Picker",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.6.1",
+            "name": "Select Departure Date",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.6.2",
+            "name": "Select a Past Date",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.7",
+            "name": "Add Return Trip",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.7.1",
+            "name": "Enable Return Trip",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.7.2",
+            "name": "Exception: Return Date Earlier Than Departure",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.3",
+            "name": "Passenger and Cabin Preferences",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.3.1",
+            "name": "Configure Special Passengers",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.3.2",
+            "name": "Filter by Cabin Class",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.4",
+            "name": "Search Execution and History",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.4.1",
+            "name": "Run a Standard Search",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.4.2",
+            "name": "Quickly Reuse Search History",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.5",
+            "name": "Results Display and Advanced Filtering",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.1",
+            "name": "Top Search Criteria Bar",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.1.1",
+            "name": "Modify Search Criteria",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.2",
+            "name": "Low-Price Calendar and Date Switching",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.2.1",
+            "name": "Switch to a Nearby Date",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.2.2",
+            "name": "View More Dates",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.2.3",
+            "name": "Switch to Next Week",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3",
+            "name": "Filter and Sort Toolbar",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3.1",
+            "name": "Combined Filters",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3.2",
+            "name": "Sort by Price",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3.3",
+            "name": "Sort by On-Time Performance",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3.4",
+            "name": "Sort by Departure Time",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.4",
+            "name": "Flight List and Booking",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.4.1",
+            "name": "Expand/Collapse Flight Details",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.4.2",
+            "name": "Select a Fare and Book",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.5.4.3",
+            "name": "Exception: No Search Results",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4",
+            "name": "Order and Booking Module",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1",
+            "name": "Booking Page Information Entry and Display",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.1",
+            "name": "Top Travel Reminders",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.1.1",
+            "name": "View Reminder Details",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.2",
+            "name": "Select Frequent Passengers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.2.1",
+            "name": "Quickly Select Passengers",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.3",
+            "name": "Manual Passenger Entry",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.3.1",
+            "name": "Enter ID Information (Normal Flow)",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.3.2",
+            "name": "Exception: Invalid ID Number Format",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.4",
+            "name": "Add a New Passenger",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.4.1",
+            "name": "Trigger Add Passenger",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.5",
+            "name": "Contact Information",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.5.1",
+            "name": "Modify Contact Mobile Number",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.6",
+            "name": "Right-Side Flight Information",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.6.1",
+            "name": "Real-Time Fee Calculation",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2",
+            "name": "Value-Added Services and Trip Protection",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.1",
+            "name": "Trip Protection (Insurance Services)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.1.1",
+            "name": "Add Combo Insurance",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.1.2",
+            "name": "View Insurance Terms",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.2",
+            "name": "Baggage Allowance Service",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.2.1",
+            "name": "View Free Baggage Allowance",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.2.2",
+            "name": "Purchase Extra Baggage Allowance",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.3",
+            "name": "Airport Transfer and Transportation Services",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.3.1",
+            "name": "Reserve an Airport Drop-Off Service",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.4",
+            "name": "Airport Value-Added Services (Lounge/Security Check)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.4.1",
+            "name": "Purchase Lounge Service",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.5",
+            "name": "Real-Time Fee Breakdown Calculation",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.5.1",
+            "name": "Linked Pricing for Value-Added Services",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.5.2",
+            "name": "Auto Deduction When Removing Services",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.3",
+            "name": "Secure Payment Flow",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.3.1",
+            "name": "Payment Countdown Reminder",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.3.2",
+            "name": "Select Payment Method",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4",
+            "name": "Order Management Center (Order List)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.1",
+            "name": "Enter Order Center",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2",
+            "name": "Order Status Tabs",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2.1",
+            "name": "Switch to Pending Payment",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2.2",
+            "name": "Switch to Not Traveled",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2.3",
+            "name": "Switch to Pending Review",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2.4",
+            "name": "Switch to All Orders",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.3",
+            "name": "List Filter Toolbar",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.3.1",
+            "name": "Search Historical Orders",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.4",
+            "name": "Order List Card",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.4.1",
+            "name": "View Order Details",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5",
+            "name": "Order Details and Actions",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.1",
+            "name": "Order Status and Core Actions Area",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.1.1",
+            "name": "Pending Payment Countdown",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.1.2",
+            "name": "Cancel a Pending Payment Order",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-4.5.2",
+            "name": "Flight Itinerary Details",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.2.1",
+            "name": "View Refund/Change Rules",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.3",
+            "name": "Purchased Value-Added Services",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.4",
+            "name": "Travelers and Contact Information",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.5",
+            "name": "Payment Breakdown Sidebar",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5",
+            "name": "Common Information Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.1",
+            "name": "Enter Personal Center",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.2",
+            "name": "Expand/Collapse Common Information",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3",
+            "name": "Frequent Traveler Information Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.1",
+            "name": "Traveler List Display and Search",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.1.1",
+            "name": "Search for a Traveler",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.1.2",
+            "name": "No Matching Traveler Found",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.2",
+            "name": "Add and Edit Travelers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.2.1",
+            "name": "Create a New Traveler",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.3.2.2",
+            "name": "Exception: Required-Field Validation",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.3.3",
+            "name": "Delete Travelers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.3.1",
+            "name": "Delete a Traveler Record",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.3.2",
+            "name": "Batch Delete",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4",
+            "name": "Frequent Address Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.1",
+            "name": "Address List Display",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.1.1",
+            "name": "View Address List",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.2",
+            "name": "Add and Edit Addresses",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.2.1",
+            "name": "Save a New Address",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.4.3",
+            "name": "Delete Addresses",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.3.1",
+            "name": "Delete a Single Address",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.3.2",
+            "name": "Batch Delete Addresses",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.4",
+            "name": "Address Details Page",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5",
+            "name": "Frequent Contact Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.1",
+            "name": "Contact List and Search",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.1.1",
+            "name": "Search Contacts",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.1.2",
+            "name": "Batch Delete",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.2",
+            "name": "Add and Edit Contacts",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.2.1",
+            "name": "Add a Default Contact",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.5.3",
+            "name": "Delete Contacts",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.3.1",
+            "name": "Delete a Single Contact",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.5.3.2",
+            "name": "Batch Delete Contacts",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6",
+            "name": "Frequent Reimbursement Receipt Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.1",
+            "name": "Receipt List and Search",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.1.1",
+            "name": "Search Invoice Titles",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.2",
+            "name": "Add and Edit Receipts",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.2.1",
+            "name": "Add a Company Invoice Title",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.6.2.2",
+            "name": "Configure Special VAT Invoice",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.6.3",
+            "name": "Delete Receipts",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.3.1",
+            "name": "Delete a Single Receipt",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.3.2",
+            "name": "Batch Delete Receipts",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6",
+            "name": "Personal Center and Account Security",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.1",
+            "name": "Profile Information Display",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.1.1",
+            "name": "View Basic Profile Information",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.2",
+            "name": "Edit Profile",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.2.1",
+            "name": "Update Profile and Save",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-6.3",
+            "name": "Account Security Center Home",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.3.1",
+            "name": "Enter Security Center",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.4",
+            "name": "Change Login Password",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.4.1",
+            "name": "Standard Password Change Flow",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.5",
+            "name": "Change Bound Phone Number",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.5.1",
+            "name": "Verify Identity and Bind New Phone",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.6",
+            "name": "Change Bound Email",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.6.1",
+            "name": "Email Verification Flow",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7",
+            "name": "Flight Status",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.1",
+            "name": "Enter Flight Status Page",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2",
+            "name": "Search Criteria Configuration",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.1",
+            "name": "Search by Flight Number",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.1.1",
+            "name": "Exact Flight Number Query",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-7.2.2",
+            "name": "Search by Route (Origin/Destination)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.2.1",
+            "name": "Route Range Query",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.2.2",
+            "name": "Swap Origin and Destination",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.3",
+            "name": "Search History",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.3.1",
+            "name": "Use History",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.3.2",
+            "name": "Clear History",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-7.3",
+            "name": "Results Display",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.3.1",
+            "name": "Flight List Page (Route Result)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.3.1.1",
+            "name": "View Flight Status in List",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.3.2",
+            "name": "Flight Details Page (Flight Detail)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.3.2.1",
+            "name": "View Detailed Status",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-8",
+            "name": "Reimbursement Voucher Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.1",
+            "name": "Voucher Entry and Home",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.1.1",
+            "name": "Status Category Navigation",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.1.1.1",
+            "name": "Switch to Completed",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.1.2",
+            "name": "Rule Tips and Guidance",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.2",
+            "name": "Pending Voucher Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.2.1",
+            "name": "View Eligible Orders",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.2.2",
+            "name": "Find More Historical Orders",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.3",
+            "name": "Voucher Application and Progress",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.3.1",
+            "name": "In-Progress Vouchers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.3.2",
+            "name": "Completed Vouchers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9",
+            "name": "Airport Guide",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.1",
+            "name": "Enter Airport Guide",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2",
+            "name": "Airport List and Overview",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.1",
+            "name": "Popular Airports and Category Index",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.1.1",
+            "name": "Browse Popular Airports",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.1.2",
+            "name": "Find via Alphabet Index",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.2",
+            "name": "Destination Weather Card",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.2.1",
+            "name": "View Travel Weather",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3",
+            "name": "Airport Detail Services",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.1",
+            "name": "Airport Overview",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.1.1",
+            "name": "View Airport Overview",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.2",
+            "name": "Airport Transportation Guide",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.2.1",
+            "name": "Check Shuttle Bus Timetable",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-9.3.3",
+            "name": "Airport Service Phone Numbers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.3.1",
+            "name": "Find First Aid Phone Number",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10",
+            "name": "Airport Directory",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10.1",
+            "name": "Domestic Airport Directory",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10.1.1",
+            "name": "Enter Domestic Airport Directory",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10.2",
+            "name": "International Airport Directory",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10.2.1",
+            "name": "Enter International Airport Directory",
+            "type": "ATOMIC",
+            "status": "unverified"
+          }
+        ],
+        "counts": {
+          "unverified": 99,
+          "observed_pass": 26
+        },
+        "group_counts": {
+          "unverified": 99,
+          "observed_pass": 1
+        },
+        "checks_passed": 25,
+        "checks_total": 27,
+        "all_checks_pass": false,
+        "full_requirement_verification": false,
+        "completion": null,
+        "interpretation": "Observations cover selected behaviors, not every scenario of a requirement. Unverified is not passed."
+      },
+      "baseline_probe": {
+        "passed": 22,
+        "total": 27
+      },
+      "final_probe": {
+        "passed": 25,
+        "total": 27
+      },
+      "baseline_to_first": {
+        "before": 49,
+        "after": 42,
+        "gained": [],
+        "lost": [
+          "REQ-3.3.1: Configure Special Passengers",
+          "REQ-3.5.4.2: Select a Fare and Book",
+          "REQ-4.1.5.1: Modify Contact Mobile Number",
+          "REQ-4.2.2.1: View Free Baggage Allowance",
+          "REQ-4.2.3.1: Reserve an Airport Drop-Off Service",
+          "REQ-4.3.1: Payment Countdown Reminder",
+          "REQ-8.2.2: Find More Historical Orders"
+        ]
+      },
+      "baseline_to_final": {
+        "before": 49,
+        "after": 42,
+        "gained": [],
+        "lost": [
+          "REQ-3.3.1: Configure Special Passengers",
+          "REQ-3.5.4.2: Select a Fare and Book",
+          "REQ-4.1.5.1: Modify Contact Mobile Number",
+          "REQ-4.2.2.1: View Free Baggage Allowance",
+          "REQ-4.2.3.1: Reserve an Airport Drop-Off Service",
+          "REQ-4.3.1: Payment Countdown Reminder",
+          "REQ-8.2.2: Find More Historical Orders"
+        ]
+      },
+      "first_to_final": {
+        "before": 42,
+        "after": 42,
+        "gained": [],
+        "lost": []
+      },
+      "audit": {
+        "driver_hashes_preserved": true,
+        "driver_snapshot": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/driver-v1",
+        "baseline_preserved": true,
+        "requirements_preserved": true,
+        "rounds": [
+          {
+            "round": 1,
+            "inputs_match_declared_sources_only": true,
+            "trace_matches_request": true,
+            "model_matches": true,
+            "parameters_match": true,
+            "transport_complete": true,
+            "application_is_exact_model_patch": true,
+            "source_hash_matches": true
+          }
+        ]
+      },
+      "score_paths": {
+        "baseline": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-20260921/final-score/result.json",
+        "first": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/first-checkpoint-score/result.json",
+        "final": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/first-checkpoint-score/result.json"
+      }
+    },
+    {
+      "sample": "b",
+      "plan": {
+        "hypothesis": "Separate broader calibrated feedback from additional goal-directed repairs, using the first accepted repair as the one-round checkpoint.",
+        "baseline_application": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-input-contract-20260921/round-1/model/application",
+        "baseline_source_sha256": "a17cba4ba83393075de9d4a3eef353b808fc0516a773aaab8dd7871eb41a62d4",
+        "baseline_probe": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/calibration-b-v2/result.json",
+        "baseline_external_score": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-input-contract-20260921/final-score/result.json",
+        "requirements": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/fixed-draft/ctrip/requirements.yaml",
+        "requirements_sha256": "f43556f06b933e954c732040041e0208f43aa00f5291bd38fb70ce8912dde2ce",
+        "adapter": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/goal-20260920/baseline/oneshot/main.py",
+        "probe_file": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/probe-v2.cjs",
+        "probe_count": 27,
+        "goal_catalogue": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/catalogue.json",
+        "goal_catalogue_sha256": "6151c7f19e46a9f937fe151abf879543eb459ed9bf900f19e503ed02e7e6a95f",
+        "include_readonly_diagnostics": true,
+        "max_rounds": 3,
+        "max_stalled_rounds": 2,
+        "model": "deepseek-v4-flash",
+        "temperature": 0.0,
+        "max_output_tokens": 131072,
+        "acceptance": "Strict calibrated probe gain without losing any prior successful case; rollback otherwise.",
+        "completion": "Selected checks can stop the loop but never establish full requirement verification; unknown coverage stays explicit. Three repairs maximum, or two stalled proposals.",
+        "retention": "Independent 125-case evaluation must improve without losing baseline passes. No test failures or scores are model feedback.",
+        "runtime": {
+          "node": "v20.19.3",
+          "playwright": "1.57.0",
+          "chromium": "143.0.7499.4",
+          "arch": "arm64",
+          "mode": "probe",
+          "workers": 1,
+          "cpu_max": "100000 100000",
+          "memory_max": "2147483648"
+        },
+        "official_runs_allowed": false,
+        "controls": "Original 14-check loop would stop immediately on both inputs. Preserve round 1 and compare to final selected output to measure additional iteration.",
+        "driver_hashes": {
+          "scripts/business_experiment/Dockerfile": "cc5dfb5b96ee0b5252ba6c5c0ffc12a54537996900bed79debc7256ed1ea8c16",
+          "scripts/business_experiment/container_runner.cjs": "6fedd33f60e313a2bfb21d76b98cc2b4b64d45368235253e36ba1f7271b45aab",
+          "scripts/business_experiment/ctrip_business.spec.cjs": "ddde5010c42f16657267e393cc670152cfbf5b80dde21e55009d769ce58047c5",
+          "scripts/business_experiment/ctrip_goal_checks.cjs": "1250b70464aaaf5f6eacbbc3df2bc72d9f407d2bb5653ba9ea7fd1445bc0dfa0",
+          "scripts/business_experiment/ctrip_keyboard_contract.spec.cjs": "7890eabc61479fb1a71dfc5b54157a9e7d5ae7787905421bdb479b3c297556a6",
+          "scripts/business_loop.py": "b3c8bd4e95f16b715aee90fee2c70c332a7e311d91a39b6f1f7f3b8385c49601",
+          "scripts/business_model_step.py": "b2ee2d84d98745e50f8fcb696bbf916c9ca4f6606fed0a9a97d54819518249b1",
+          "scripts/business_probe_audit.py": "08cd63e4bf8f072821e6e2f5b8734212fd13c6531e1c24be2301a198bac0fb50",
+          "scripts/business_replay.py": "aa7f5ce39df4db534ad5580748fd8f1c1315f181e57ac84a854e483c9686fb88",
+          "scripts/experiment_recovery.py": "2b4d2eb2b64ebd1c66cbf5d8706ffd10dd390865b041c0f152c052ce47d149b5",
+          "scripts/experiment_transport.py": "d055562668c73752c3dae0acae49d8976adb06e458af65a73d597c1cd5411076",
+          "scripts/goal_coverage.py": "bce8f0b9cde45be31a472717a591f4ce95d4348bce50235ba4d27b9305088b0c"
+        }
+      },
+      "rounds": [
+        {
+          "number": 1,
+          "before_passed": 22,
+          "proposal_passed": 27,
+          "accepted": true,
+          "gained": [
+            "REQ-2.6.4.1: registration creates an account that can actually log in",
+            "REQ-5.6.2.1: invoice creation rejects an invalid company tax identifier",
+            "REQ-5.6.2.2: selecting a special VAT invoice reveals registration fields",
+            "account persistence: a saved contact is readable in an independent browser session",
+            "account persistence: a saved profile is readable in an independent browser session"
+          ],
+          "regressed": [],
+          "usage": {
+            "prompt_tokens": 73731,
+            "completion_tokens": 36229
+          },
+          "source_sha256": "87103b55b3da1f5cb7947b73a7279fee489a73e9060029ca5f875ebbcdd29f31"
+        }
+      ],
+      "terminal": "coverage_incomplete",
+      "parent_terminal": "coverage_incomplete",
+      "continuation": null,
+      "goal_state": {
+        "requirements": [
+          {
+            "id": "REQ-0",
+            "name": "Open System",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-1",
+            "name": "Ctrip Homepage Navigation and Entry",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-1.1",
+            "name": "Open Homepage",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2",
+            "name": "User Authentication Module",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.1",
+            "name": "Open Registration Entry",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.2",
+            "name": "Open Login Entry",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.3",
+            "name": "Login Page Entry and Switching",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.3.1",
+            "name": "Enter Login Page",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.3.2",
+            "name": "Switch to Verification-Code Login",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.3.3",
+            "name": "Switch to Password Login",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.4",
+            "name": "Account/Password Login",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.4.1",
+            "name": "Password Login Flow",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.4.2",
+            "name": "Exception: Username Missing",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.4.3",
+            "name": "Exception: Password Missing",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.4.4",
+            "name": "Exception: Incorrect Username or Password",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.4.5",
+            "name": "Exception: Agreement Not Accepted",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.5",
+            "name": "Verification-Code Login",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.5.1",
+            "name": "Verification-Code Login Flow",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.5.2",
+            "name": "Exception: Mobile Number Missing",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.5.3",
+            "name": "Exception: Verification Code Missing",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.5.4",
+            "name": "Exception: Incorrect Verification Code",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.5.5",
+            "name": "Exception: Agreement Not Accepted",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6",
+            "name": "User Registration Flow",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.1",
+            "name": "Enter Registration Page",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.2",
+            "name": "Registration Agreement Confirmation",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.2.1",
+            "name": "Trigger Registration Agreement",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.2.2",
+            "name": "Decline Registration Agreement",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.3",
+            "name": "Mobile Number Verification",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.3.1",
+            "name": "Enter Verification Information",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.4",
+            "name": "Set Password and Complete Registration",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.4.1",
+            "name": "Set Password and Complete Registration",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-2.6.4.2",
+            "name": "Exception: Passwords Do Not Match",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.6.4.3",
+            "name": "Exception: Password Too Weak",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.7",
+            "name": "Log Out",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-2.7.1",
+            "name": "Log Out",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3",
+            "name": "Flight Search Module",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.1",
+            "name": "Homepage Quick Flight Search",
+            "type": "FOLDER",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.2",
+            "name": "Basic Trip Parameter Configuration",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.1",
+            "name": "Trip Type Selection",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.2",
+            "name": "Swap Origin and Destination",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.3",
+            "name": "Exception: Same-City Validation",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.2.4",
+            "name": "Exception: Past-Date Validation",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.2.5",
+            "name": "City Selector",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.5.1",
+            "name": "Select a Hot City",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.5.2",
+            "name": "Find Cities by Pinyin Group",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.6",
+            "name": "Date Picker",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.6.1",
+            "name": "Select Departure Date",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.6.2",
+            "name": "Select a Past Date",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.7",
+            "name": "Add Return Trip",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.7.1",
+            "name": "Enable Return Trip",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.2.7.2",
+            "name": "Exception: Return Date Earlier Than Departure",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.3",
+            "name": "Passenger and Cabin Preferences",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.3.1",
+            "name": "Configure Special Passengers",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.3.2",
+            "name": "Filter by Cabin Class",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.4",
+            "name": "Search Execution and History",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.4.1",
+            "name": "Run a Standard Search",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.4.2",
+            "name": "Quickly Reuse Search History",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.5",
+            "name": "Results Display and Advanced Filtering",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.1",
+            "name": "Top Search Criteria Bar",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.1.1",
+            "name": "Modify Search Criteria",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.2",
+            "name": "Low-Price Calendar and Date Switching",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.2.1",
+            "name": "Switch to a Nearby Date",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.2.2",
+            "name": "View More Dates",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.2.3",
+            "name": "Switch to Next Week",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3",
+            "name": "Filter and Sort Toolbar",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3.1",
+            "name": "Combined Filters",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3.2",
+            "name": "Sort by Price",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3.3",
+            "name": "Sort by On-Time Performance",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.3.4",
+            "name": "Sort by Departure Time",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.4",
+            "name": "Flight List and Booking",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.4.1",
+            "name": "Expand/Collapse Flight Details",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-3.5.4.2",
+            "name": "Select a Fare and Book",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-3.5.4.3",
+            "name": "Exception: No Search Results",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4",
+            "name": "Order and Booking Module",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1",
+            "name": "Booking Page Information Entry and Display",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.1",
+            "name": "Top Travel Reminders",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.1.1",
+            "name": "View Reminder Details",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.2",
+            "name": "Select Frequent Passengers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.2.1",
+            "name": "Quickly Select Passengers",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.3",
+            "name": "Manual Passenger Entry",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.3.1",
+            "name": "Enter ID Information (Normal Flow)",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.3.2",
+            "name": "Exception: Invalid ID Number Format",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.4",
+            "name": "Add a New Passenger",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.4.1",
+            "name": "Trigger Add Passenger",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.5",
+            "name": "Contact Information",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.5.1",
+            "name": "Modify Contact Mobile Number",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.6",
+            "name": "Right-Side Flight Information",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.1.6.1",
+            "name": "Real-Time Fee Calculation",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2",
+            "name": "Value-Added Services and Trip Protection",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.1",
+            "name": "Trip Protection (Insurance Services)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.1.1",
+            "name": "Add Combo Insurance",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.1.2",
+            "name": "View Insurance Terms",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.2",
+            "name": "Baggage Allowance Service",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.2.1",
+            "name": "View Free Baggage Allowance",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.2.2",
+            "name": "Purchase Extra Baggage Allowance",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.3",
+            "name": "Airport Transfer and Transportation Services",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.3.1",
+            "name": "Reserve an Airport Drop-Off Service",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.4",
+            "name": "Airport Value-Added Services (Lounge/Security Check)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.4.1",
+            "name": "Purchase Lounge Service",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.5",
+            "name": "Real-Time Fee Breakdown Calculation",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.5.1",
+            "name": "Linked Pricing for Value-Added Services",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.2.5.2",
+            "name": "Auto Deduction When Removing Services",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.3",
+            "name": "Secure Payment Flow",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.3.1",
+            "name": "Payment Countdown Reminder",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.3.2",
+            "name": "Select Payment Method",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4",
+            "name": "Order Management Center (Order List)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.1",
+            "name": "Enter Order Center",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2",
+            "name": "Order Status Tabs",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2.1",
+            "name": "Switch to Pending Payment",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2.2",
+            "name": "Switch to Not Traveled",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2.3",
+            "name": "Switch to Pending Review",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.2.4",
+            "name": "Switch to All Orders",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.3",
+            "name": "List Filter Toolbar",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.3.1",
+            "name": "Search Historical Orders",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.4",
+            "name": "Order List Card",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.4.4.1",
+            "name": "View Order Details",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5",
+            "name": "Order Details and Actions",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.1",
+            "name": "Order Status and Core Actions Area",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.1.1",
+            "name": "Pending Payment Countdown",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.1.2",
+            "name": "Cancel a Pending Payment Order",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-4.5.2",
+            "name": "Flight Itinerary Details",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.2.1",
+            "name": "View Refund/Change Rules",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.3",
+            "name": "Purchased Value-Added Services",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.4",
+            "name": "Travelers and Contact Information",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-4.5.5",
+            "name": "Payment Breakdown Sidebar",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5",
+            "name": "Common Information Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.1",
+            "name": "Enter Personal Center",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.2",
+            "name": "Expand/Collapse Common Information",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3",
+            "name": "Frequent Traveler Information Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.1",
+            "name": "Traveler List Display and Search",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.1.1",
+            "name": "Search for a Traveler",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.1.2",
+            "name": "No Matching Traveler Found",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.2",
+            "name": "Add and Edit Travelers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.2.1",
+            "name": "Create a New Traveler",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.3.2.2",
+            "name": "Exception: Required-Field Validation",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.3.3",
+            "name": "Delete Travelers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.3.1",
+            "name": "Delete a Traveler Record",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.3.3.2",
+            "name": "Batch Delete",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4",
+            "name": "Frequent Address Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.1",
+            "name": "Address List Display",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.1.1",
+            "name": "View Address List",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.2",
+            "name": "Add and Edit Addresses",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.2.1",
+            "name": "Save a New Address",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.4.3",
+            "name": "Delete Addresses",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.3.1",
+            "name": "Delete a Single Address",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.3.2",
+            "name": "Batch Delete Addresses",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.4.4",
+            "name": "Address Details Page",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5",
+            "name": "Frequent Contact Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.1",
+            "name": "Contact List and Search",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.1.1",
+            "name": "Search Contacts",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.1.2",
+            "name": "Batch Delete",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.2",
+            "name": "Add and Edit Contacts",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.2.1",
+            "name": "Add a Default Contact",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.5.3",
+            "name": "Delete Contacts",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.5.3.1",
+            "name": "Delete a Single Contact",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.5.3.2",
+            "name": "Batch Delete Contacts",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6",
+            "name": "Frequent Reimbursement Receipt Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.1",
+            "name": "Receipt List and Search",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.1.1",
+            "name": "Search Invoice Titles",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.2",
+            "name": "Add and Edit Receipts",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.2.1",
+            "name": "Add a Company Invoice Title",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.6.2.2",
+            "name": "Configure Special VAT Invoice",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-5.6.3",
+            "name": "Delete Receipts",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.3.1",
+            "name": "Delete a Single Receipt",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-5.6.3.2",
+            "name": "Batch Delete Receipts",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6",
+            "name": "Personal Center and Account Security",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.1",
+            "name": "Profile Information Display",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.1.1",
+            "name": "View Basic Profile Information",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.2",
+            "name": "Edit Profile",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.2.1",
+            "name": "Update Profile and Save",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-6.3",
+            "name": "Account Security Center Home",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.3.1",
+            "name": "Enter Security Center",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.4",
+            "name": "Change Login Password",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.4.1",
+            "name": "Standard Password Change Flow",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.5",
+            "name": "Change Bound Phone Number",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.5.1",
+            "name": "Verify Identity and Bind New Phone",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.6",
+            "name": "Change Bound Email",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-6.6.1",
+            "name": "Email Verification Flow",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7",
+            "name": "Flight Status",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.1",
+            "name": "Enter Flight Status Page",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2",
+            "name": "Search Criteria Configuration",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.1",
+            "name": "Search by Flight Number",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.1.1",
+            "name": "Exact Flight Number Query",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-7.2.2",
+            "name": "Search by Route (Origin/Destination)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.2.1",
+            "name": "Route Range Query",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.2.2",
+            "name": "Swap Origin and Destination",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.3",
+            "name": "Search History",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.3.1",
+            "name": "Use History",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.2.3.2",
+            "name": "Clear History",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-7.3",
+            "name": "Results Display",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.3.1",
+            "name": "Flight List Page (Route Result)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.3.1.1",
+            "name": "View Flight Status in List",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.3.2",
+            "name": "Flight Details Page (Flight Detail)",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-7.3.2.1",
+            "name": "View Detailed Status",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-8",
+            "name": "Reimbursement Voucher Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.1",
+            "name": "Voucher Entry and Home",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.1.1",
+            "name": "Status Category Navigation",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.1.1.1",
+            "name": "Switch to Completed",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.1.2",
+            "name": "Rule Tips and Guidance",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.2",
+            "name": "Pending Voucher Management",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.2.1",
+            "name": "View Eligible Orders",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.2.2",
+            "name": "Find More Historical Orders",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.3",
+            "name": "Voucher Application and Progress",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.3.1",
+            "name": "In-Progress Vouchers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-8.3.2",
+            "name": "Completed Vouchers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9",
+            "name": "Airport Guide",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.1",
+            "name": "Enter Airport Guide",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2",
+            "name": "Airport List and Overview",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.1",
+            "name": "Popular Airports and Category Index",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.1.1",
+            "name": "Browse Popular Airports",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.1.2",
+            "name": "Find via Alphabet Index",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.2",
+            "name": "Destination Weather Card",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.2.2.1",
+            "name": "View Travel Weather",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3",
+            "name": "Airport Detail Services",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.1",
+            "name": "Airport Overview",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.1.1",
+            "name": "View Airport Overview",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.2",
+            "name": "Airport Transportation Guide",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.2.1",
+            "name": "Check Shuttle Bus Timetable",
+            "type": "ATOMIC",
+            "status": "observed_pass"
+          },
+          {
+            "id": "REQ-9.3.3",
+            "name": "Airport Service Phone Numbers",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-9.3.3.1",
+            "name": "Find First Aid Phone Number",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10",
+            "name": "Airport Directory",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10.1",
+            "name": "Domestic Airport Directory",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10.1.1",
+            "name": "Enter Domestic Airport Directory",
+            "type": "ATOMIC",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10.2",
+            "name": "International Airport Directory",
+            "type": "FOLDER",
+            "status": "unverified"
+          },
+          {
+            "id": "REQ-10.2.1",
+            "name": "Enter International Airport Directory",
+            "type": "ATOMIC",
+            "status": "unverified"
+          }
+        ],
+        "counts": {
+          "unverified": 99,
+          "observed_pass": 26
+        },
+        "group_counts": {
+          "unverified": 99,
+          "observed_pass": 1
+        },
+        "checks_passed": 27,
+        "checks_total": 27,
+        "all_checks_pass": true,
+        "full_requirement_verification": false,
+        "completion": "coverage_incomplete",
+        "interpretation": "Observations cover selected behaviors, not every scenario of a requirement. Unverified is not passed."
+      },
+      "baseline_probe": {
+        "passed": 22,
+        "total": 27
+      },
+      "final_probe": {
+        "passed": 27,
+        "total": 27
+      },
+      "baseline_to_first": {
+        "before": 48,
+        "after": 48,
+        "gained": [],
+        "lost": []
+      },
+      "baseline_to_final": {
+        "before": 48,
+        "after": 48,
+        "gained": [],
+        "lost": []
+      },
+      "first_to_final": {
+        "before": 48,
+        "after": 48,
+        "gained": [],
+        "lost": []
+      },
+      "audit": {
+        "driver_hashes_preserved": true,
+        "driver_snapshot": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-b/driver-v1",
+        "baseline_preserved": true,
+        "requirements_preserved": true,
+        "rounds": [
+          {
+            "round": 1,
+            "inputs_match_declared_sources_only": true,
+            "trace_matches_request": true,
+            "model_matches": true,
+            "parameters_match": true,
+            "transport_complete": true,
+            "application_is_exact_model_patch": true,
+            "source_hash_matches": true
+          }
+        ]
+      },
+      "score_paths": {
+        "baseline": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-input-contract-20260921/final-score/result.json",
+        "first": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-b/first-checkpoint-score/result.json",
+        "final": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-b/first-checkpoint-score/result.json"
+      }
+    }
+  ],
+  "accounting": {
+    "calls": [
+      {
+        "experiment": "goal-a",
+        "path": "round-1/model",
+        "outcome": "completed",
+        "provider_request_id": "021789978403297e2e425e7482a92db97bab17cb602abe8366763",
+        "request_sha256": "9b51ec9b0665bcca1069cc3e1e3682fb2f3f0e14abaa5abb34f0572f918e12fc",
+        "seconds": 267.726,
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "ssh_exit_before_cleanup": null,
+        "usage": {
+          "prompt_tokens": 74504,
+          "completion_tokens": 37486
+        },
+        "valid_patch": true,
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "cost_cny": "0.477737",
+        "billing_request_id": "2026092116132278083055670644",
+        "billing_match": "exact model/input/output tokens and completion within 120 seconds"
+      },
+      {
+        "experiment": "goal-a",
+        "path": "round-2/model-attempt1-incomplete_stream",
+        "outcome": "incomplete_stream",
+        "provider_request_id": "021789978789976fb87220ce050dbb1e4aff42e9a7ec1b19fe2d7",
+        "request_sha256": "911c06dba8bad7e8e76909e144005f57f3760cb179895f00b32fc0fa590f8f40",
+        "seconds": 79.177,
+        "http_status": 200,
+        "curl_exit_code": 18,
+        "ssh_exit_before_cleanup": 255,
+        "usage": null,
+        "cost_cny": null,
+        "reason": "Incomplete stream; no usage receipt or conclusively matched bill. Unknown is not zero."
+      },
+      {
+        "experiment": "goal-a",
+        "path": "round-2/model-attempt2-incomplete_stream",
+        "outcome": "incomplete_stream",
+        "provider_request_id": "021789978907963463b2e7ab2e4caf441b2615bb02bf158bfb624",
+        "request_sha256": "911c06dba8bad7e8e76909e144005f57f3760cb179895f00b32fc0fa590f8f40",
+        "seconds": 73.865,
+        "http_status": 200,
+        "curl_exit_code": 18,
+        "ssh_exit_before_cleanup": 255,
+        "usage": null,
+        "cost_cny": null,
+        "reason": "Incomplete stream; no usage receipt or conclusively matched bill. Unknown is not zero."
+      },
+      {
+        "experiment": "goal-a",
+        "path": "round-2/model",
+        "outcome": "incomplete_stream",
+        "provider_request_id": "0217899789868012de38e8299405d0a4d8e2bf74997350ed2108e",
+        "request_sha256": "911c06dba8bad7e8e76909e144005f57f3760cb179895f00b32fc0fa590f8f40",
+        "seconds": 64.214,
+        "http_status": 200,
+        "curl_exit_code": 18,
+        "ssh_exit_before_cleanup": 255,
+        "usage": null,
+        "cost_cny": null,
+        "reason": "Incomplete stream; no usage receipt or conclusively matched bill. Unknown is not zero."
+      },
+      {
+        "experiment": "goal-b",
+        "path": "round-1/model",
+        "outcome": "completed",
+        "provider_request_id": "021789978436615f952b6c252d6ae62c15909f77d85597eddd1ef",
+        "request_sha256": "a7a8e67cd8a0159373cf47166035c25d35d6c38ac719160ffcb916d288225146",
+        "seconds": 248.248,
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "ssh_exit_before_cleanup": null,
+        "usage": {
+          "prompt_tokens": 73731,
+          "completion_tokens": 36229
+        },
+        "valid_patch": true,
+        "files": [
+          "frontend/public/app.js",
+          "frontend/public/styles.css"
+        ],
+        "cost_cny": "0.458166",
+        "billing_request_id": "2026092116135616644883792174",
+        "billing_match": "exact model/input/output tokens and completion within 120 seconds"
+      },
+      {
+        "experiment": "goal-a-direct-continuation",
+        "path": "round-1/model",
+        "outcome": "completed",
+        "provider_request_id": "02178997955219920046ae414beaf31aee26023d1cfd94cc48bff",
+        "request_sha256": "911c06dba8bad7e8e76909e144005f57f3760cb179895f00b32fc0fa590f8f40",
+        "seconds": 193.262,
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "ssh_exit_before_cleanup": null,
+        "usage": {
+          "prompt_tokens": 73526,
+          "completion_tokens": 28143
+        },
+        "valid_patch": true,
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "cost_cny": "0.265993",
+        "billing_request_id": "2026092116323173044368804059",
+        "billing_match": "exact model/input/output tokens and completion within 120 seconds"
+      }
+    ],
+    "known_cost_cny": "1.201896",
+    "known_input_tokens": 221761,
+    "known_output_tokens": 101858,
+    "unmatched_completed_bills": [],
+    "unknown_usage_calls": [
+      "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/round-2/model-attempt1-incomplete_stream",
+      "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/round-2/model-attempt2-incomplete_stream",
+      "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/round-2/model"
+    ],
+    "requests_reached_gateway": 6,
+    "completed_calls": 3
+  },
+  "validation": {
+    "new_coverage_tests_passed": 8,
+    "inherited_loop_tests_passed": 7,
+    "legacy_passed": 214,
+    "legacy_skipped": 12,
+    "recovery_tests_passed": 16,
+    "requirement_catalogue_matches_yaml": true,
+    "changed_check_cache_reuse_rejected": true
+  },
+  "limits": [
+    "Two saved Ctrip drafts, not fresh-generation generalization.",
+    "27 manually authored checks leave 99 of 125 atomic requirements unobserved.",
+    "Observed requirement passes do not verify every scenario.",
+    "Local ARM64 differs from full official x86_64 lifecycle.",
+    "Independent replay jobs overlap; elapsed time is not a speed comparison.",
+    "Repair-only known cost excludes prior generation and earlier studies; three interrupted streams have unknown usage/cost.",
+    "Cross-session checks use fresh browser contexts; concurrent edits and stale existing-browser reconciliation remain unverified."
+  ]
+}

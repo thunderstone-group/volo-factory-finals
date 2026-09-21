@@ -27,12 +27,13 @@ async function main() {
   const browser = await chromium.launch();
   const metadata = {node: process.version, playwright: require('@playwright/test/package.json').version,
     chromium: browser.version(), arch: process.arch, mode, workers: 1,
+    server_lifecycle: mode === 'score' || process.env.ARC_PROBE_SHARED_SERVER === '1' ? 'shared' : 'per_check',
     cpu_max: fs.readFileSync('/sys/fs/cgroup/cpu.max', 'utf8').trim(),
     memory_max: fs.readFileSync('/sys/fs/cgroup/memory.max', 'utf8').trim()};
   await browser.close();
   fs.writeFileSync('/workspace/runtime.json', JSON.stringify(metadata, null, 2));
   let server;
-  if (mode === 'score') {
+  if (mode === 'score' || process.env.ARC_PROBE_SHARED_SERVER === '1') {
     const start = JSON.parse(fs.readFileSync(app + '/backend/package.json')).scripts.start.split(/\s+/);
     const log = fs.openSync('/workspace/server.log', 'a');
     server = spawn(start[0], start.slice(1), {cwd: app + '/backend', detached: true,

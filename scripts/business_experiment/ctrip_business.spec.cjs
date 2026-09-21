@@ -8,6 +8,7 @@ let server;
 test.beforeEach(async ({page}) => {
   page.observation = {actions: [], page_errors: []};
   page.on('pageerror', e => page.observation.page_errors.push(String(e.message)));
+  if (process.env.ARC_PROBE_SHARED_SERVER !== '1') {
   const start = JSON.parse(fs.readFileSync(app + '/backend/package.json')).scripts.start.split(/\s+/);
   const log = fs.openSync('/workspace/probe-server.log', 'a');
   server = spawn(start[0], start.slice(1), {cwd: app + '/backend', detached: true,
@@ -16,6 +17,7 @@ test.beforeEach(async ({page}) => {
   while (Date.now() < until) {
     try {if ((await fetch('http://127.0.0.1:3000')).ok) break;} catch {}
     await new Promise(r => setTimeout(r, 100));
+  }
   }
   await page.goto('/', {waitUntil: 'domcontentloaded'});
 });

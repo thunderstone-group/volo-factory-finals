@@ -69,14 +69,28 @@ def main():
     p.add_argument("--tests", type=Path)
     p.add_argument("--probe-source", type=Path)
     p.add_argument("--probe-count", type=int, default=13)
+    p.add_argument("--shared-server", action="store_true", help="Preserve backend state between probe cases, as in full-suite evaluation")
     p.add_argument("--image", default="arc-business-feedback:20260921")
     args = p.parse_args()
     source, out = args.application.resolve(), args.out.resolve()
     sha = fingerprint(source)
+    tools = Path(__file__).with_name("business_experiment")
+    if args.mode == "probe":
+        probe_file = args.probe_source or tools / "ctrip_business.spec.cjs"
+        checks = {"ctrip_business.spec.cjs": hashlib.sha256(probe_file.read_bytes()).hexdigest()}
+        expected_checks_sha = hashlib.sha256(json.dumps(checks, sort_keys=True).encode()).hexdigest()
+    else:
+        if not args.tests:
+            raise SystemExit("--tests is required for score mode")
+        expected_checks_sha = fingerprint(args.tests)
     if (out / "result.json").exists():
         saved = json.loads((out / "result.json").read_text())
-        if saved["source_sha256"] != sha or saved["mode"] != args.mode:
+        if saved["source_sha256"] != sha or saved["mode"] != args.mode or saved["checks_sha256"] != expected_checks_sha:
             raise SystemExit("existing result belongs to another input")
+        expected_lifecycle = "shared" if args.mode == "score" or args.shared_server else "per_check"
+        saved_lifecycle = saved.get("runtime", {}).get("server_lifecycle", "shared" if saved["mode"] == "score" else "per_check")
+        if saved_lifecycle != expected_lifecycle:
+            raise SystemExit("existing result belongs to another server lifecycle")
         print(
             json.dumps(
                 {
@@ -95,7 +109,6 @@ def main():
         out / "application",
         ignore=shutil.ignore_patterns("node_modules", "dist", "__pycache__"),
     )
-    tools = Path(__file__).with_name("business_experiment")
     if args.mode == "probe":
         (out / "checks").mkdir()
         shutil.copy2(
@@ -124,6 +137,8 @@ def main():
         "2g",
         "--network",
         "none",
+        "--env",
+        "ARC_PROBE_SHARED_SERVER=" + ("1" if args.shared_server else "0"),
         "--mount",
         f"type=bind,source={out},target=/workspace",
         "--mount",

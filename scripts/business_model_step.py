@@ -13,6 +13,7 @@ import time
 
 from experiment_recovery import atomic_json
 from experiment_transport import Response
+from goal_coverage import goal_feedback
 
 SYSTEM = """You implement application requirements through a feedback-driven repair loop.
 The user goal is working business behavior, including correct state changes and preserving existing behavior.
@@ -62,6 +63,8 @@ def main():
     p.add_argument("--out", required=True, type=Path)
     p.add_argument("--expected-request-sha256")
     p.add_argument("--include-readonly-diagnostics", action="store_true")
+    p.add_argument("--goal-catalogue", type=Path)
+    p.add_argument("--direct", action="store_true")
     args = p.parse_args()
     source, out = args.application.resolve(), args.out.resolve()
     if out.exists():
@@ -71,8 +74,15 @@ def main():
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
     os.environ["FALLBACK_MODEL"] = ""
-    os.environ["ARC_EXPERIMENT_SSH_HOST"] = "hk-zyl"
+    if args.direct:
+        os.environ.pop("ARC_EXPERIMENT_SSH_HOST", None)
+    else:
+        os.environ["ARC_EXPERIMENT_SSH_HOST"] = "hk-zyl"
     note = feedback(json.loads(args.probe.read_text()))
+    if args.goal_catalogue:
+        note["requirement_goal"] = goal_feedback(
+            json.loads(args.goal_catalogue.read_text()), json.loads(args.probe.read_text())
+        )
     if args.include_readonly_diagnostics:
         note["existing_input_contract_diagnostics"] = m.readonly_gaps(source)
         note["input_contract_instruction"] = (
@@ -137,7 +147,7 @@ def main():
         key,
         out,
         observed,
-        "socks5h://127.0.0.1:1",
+        "" if args.direct else "socks5h://127.0.0.1:1",
         "1.1",
         args.expected_request_sha256,
     )

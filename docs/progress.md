@@ -538,3 +538,27 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   [evidence](evidence/2026-09-21-business-feedback-pilot.json), and
   [execution reference](reference/business-feedback-loop.md) retain the three plans,
   exact outcomes, probe-calibration caveats and final decision.
+
+## 2026-09-21 17:04 — Test requirement-aware goal repair and fix batch regression verification
+
+- Added a requirement inventory and explicit observed/unverified states, rejecting
+  empty/stale evidence and preventing scoped probe success from claiming full completion.
+  Two saved Ctrip drafts were measured with the same Flash model and unchanged suite.
+- A: isolated probe 22/27 to 25/27; a second complete proposal made no gain and was
+  rolled back. Published score 49/125 to 42/125 (+0/-7); unchanged baseline recheck
+  reproduced the exact 49-case pass set. B: 22/27 to 27/27, published 48/125 unchanged.
+  Reject A promotion; retain original competition selections. No official run/upload.
+- A failing published passenger case passed in isolation. The candidate restores shared
+  session/view state, while old probes reset the backend per case. Added a shared-server
+  gate, now default for new goal plans: A baseline 22/27, candidate 14/27, B positive
+  control 27/27. The new gate rejects A before promotion. No post-hardening model calls.
+- Three partial SSH streams exhausted the unchanged cap. An explicitly separate direct
+  continuation used identical request bytes and exactly one attempt. Six gateway requests,
+  three complete; confirmed spend CNY 1.201896, 221,761 input / 101,858 output tokens;
+  three incomplete calls retain unknown usage/cost. No global proxy/SSH changes.
+- Tests: 10 goal + 7 loop + 16 recovery passed; legacy 214 passed, 12 skipped. Exact
+  request/patch audits and zero-call terminal resumes passed. Local ARM64 is not the
+  full official x86_64 lifecycle; 99 atomic requirements remain unobserved.
+- [Report](reports/2026-09-21-requirement-goal-comparison.md),
+  [pilot receipt](evidence/2026-09-21-requirement-goal-comparison.json), and
+  [later hardening receipt](evidence/2026-09-21-requirement-goal-hardening.json).

@@ -14,21 +14,23 @@ It does not invoke Codex's native goal tools inside the competition agent.
 
 ## Execution
 
-Use Python 3.11.15 and the preserved experiment plans:
+Use Python 3.11.15 and the exact driver snapshot named by a frozen plan. For example,
+inspect the finished direct continuation without making another model call:
 
 ```sh
-uv run --no-project --python 3.11.15 python scripts/business_loop.py \
-  --run-dir runs/business-loop-input-contract-20260921
+uv run --no-project --python 3.11.15 python \
+  runs/goal-comparison-20260921/goal-a-direct-continuation/driver-v2/scripts/business_loop.py \
+  --run-dir runs/goal-comparison-20260921/goal-a-direct-continuation
 ```
 
-All three saved runs are complete; this command reports terminal state without making
-another model call. The current scripts match the input-contract plan. Earlier plans
-must use their preserved `driver-v1/` or `driver-v2/` scripts because the hash guard
-intentionally rejects later driver versions.
+The first business pilots are preserved in their original worktree's `driver-v1/`,
+`driver-v2/` and `driver-v3/` folders. The first requirement-goal pilots use `driver-v1/`;
+the direct continuation uses `driver-v2/`. Current scripts include later shared-server
+hardening. Hash guards intentionally reject mixing driver versions with old plans.
 
-Each plan pins source/check/driver hashes, requirements and the baseline probe. The
-main pilots allow six completed repairs; the input-contract follow-up allows two.
-Two consecutive non-improving proposals are the stagnation limit.
+Each plan pins source/check/driver hashes, requirements and the baseline probe. Limits
+are experiment-specific: the first business pilots allowed six repairs, the requirement
+goal pilots allowed three, and the diagnosed direct continuation allowed one attempt.
 The inherited recovery module keeps three cumulative transport attempts per round,
 an inherited process lock, exact retry-request checks and atomic state/receipts.
 Completed calls are never repeated merely because the controller was interrupted.
@@ -85,3 +87,59 @@ The model-generated persistence changes observed in the pilot use browser localS
 Passing the reload journeys does not establish cross-browser account-data consistency.
 Keep that limitation visible when reviewing any generated patch or considering a
 production integration of this prototype.
+
+## Requirement-aware goal experiment
+
+The optional `goal_catalogue` plan field attaches a persistent requirement inventory
+built from the supplied requirement document. Atomic requirements and folder-level
+descriptions are retained separately. A passing folder observation never marks its
+children as checked. Each round records observed passes, observed failures and
+unverified requirements in `goal-state.json`; these are not full requirement claims.
+
+Terminal states distinguish `scoped_checks_passed` and `coverage_incomplete` from
+`stalled` and `round_limit`. Empty/duplicate evidence and application build failures
+cannot establish completion. Unknown requirements remain visible to the repair model;
+they are not permission for speculative unrelated rewrites. The existing strict
+no-regression acceptance, rollback and transport recovery apply unchanged.
+
+For the 2026-09-21 goal comparison, compose the frozen probe by concatenating
+`ctrip_keyboard_contract.spec.cjs` and `ctrip_goal_checks.cjs`. The latter adds
+registration, traveler/address/invoice flows, flight status, airport transport and
+independent browser-session persistence. Both valid and invalid company tax IDs are
+checked. These are opt-in experiment checks, not a general requirement compiler.
+
+The comparison preserves the previous app, the selected app after one proposal and
+the final selected app. If the first proposal is rejected, the one-proposal checkpoint
+is the baseline. Evaluator scores never enter model feedback or per-round selection.
+Use independent final case deltas before promoting any candidate. Parallel replay
+elapsed times are measurements, not a speed benchmark.
+
+This implements a goal workflow with the existing Flash gateway and browser tools.
+It does not invoke native Codex `/goal`. mini-SWE-agent is a researched alternative:
+its [DefaultAgent](https://mini-swe-agent.com/latest/reference/agents/default/) exposes
+step/cost limits and saved trajectories, and its
+[customization hooks](https://mini-swe-agent.com/v2/advanced/cookbook/) can support a
+verifier. This pilot retains the existing controller to measure verification and
+continuation changes before adding another model/environment adapter. No external
+harness integration or external-harness performance result is claimed.
+
+
+After the first goal pilot, a published case that failed in the complete sequence
+passed on its own. The generated repair restored and saved shared state, while the
+old business probe restarted the backend before every case. That isolation can hide
+cross-flow state regressions. New requirement-goal plans therefore default to a
+shared backend for the probe; use `business_replay.py --mode probe --shared-server`
+when collecting their baseline. `shared_probe_server: false` remains an explicit
+isolated diagnostic mode, not a substitute for the batch regression gate.
+
+Runtime records include `server_lifecycle`. Before a paid repair, the controller checks
+that the current application, check-source hash and server lifecycle match its saved
+observations. Cached replay results cannot cross check versions or lifecycle modes.
+The first pilots remain frozen under their preserved drivers; their outcomes are not
+rewritten as though they used this later hardening.
+
+`direct_transport: true` uses direct HTTPS instead of the user-owned SSH SOCKS route.
+`max_transport_attempts` can lower the persistent cap from three to one, but cannot
+raise it. A saved cap cannot change during resume. For the diagnosed SSH failures,
+a separately recorded one-attempt continuation required the original request hash;
+the prior three failures and their unknown usage remain in accounting.

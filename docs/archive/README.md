@@ -30,3 +30,5 @@
 工具与语料：`docs/archive/legacy-harness/acceptance.md` `docs/archive/legacy-harness/external-gate.md`（harness_lab 的独立验收门）`docs/archive/legacy-harness/corpus.md`（公司 GitLab 提供的任务语料，09-11）。
 
 - `handoffs/2026-09-21-before-business-feedback.md` — Recovery handoff before the business-feedback pilot.
+
+- `handoffs/2026-09-21-before-requirement-goal.md` — Completed business-feedback pilot before the requirement-aware goal comparison.

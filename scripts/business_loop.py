@@ -9,9 +9,28 @@ import time
 
 from business_replay import fingerprint
 from experiment_recovery import Recovery, RunLock, atomic_json, repair_pending_archives
+from goal_coverage import catalogue, coverage
+
+
+def validate_probe_input(plan, report, application):
+    """Reject stale observations before another paid request, not after its repair."""
+    if report.get("mode") != "probe" or report.get("source_sha256") != fingerprint(Path(application)):
+        raise ValueError("probe does not describe the current application")
+    probe = Path(plan.get("probe_file") or Path(__file__).with_name("business_experiment") / "ctrip_business.spec.cjs")
+    checks = {"ctrip_business.spec.cjs": hashlib.sha256(probe.read_bytes()).hexdigest()}
+    expected = hashlib.sha256(json.dumps(checks, sort_keys=True).encode()).hexdigest()
+    if report.get("checks_sha256") != expected:
+        raise ValueError("probe source changed since the observation")
+    lifecycle = "shared" if plan.get("shared_probe_server", bool(plan.get("goal_catalogue"))) else "per_check"
+    if report.get("runtime", {}).get("server_lifecycle", "per_check") != lifecycle:
+        raise ValueError("baseline probe uses another server lifecycle")
 
 
 def decision(before, after):
+    for report in (before, after):
+        cases = report.get("cases", [])
+        if report.get("mode") != "probe" or not cases or len({c["name"] for c in cases}) != len(cases):
+            raise ValueError("acceptance requires nonempty, unique probe cases")
     if before.get("checks_sha256") != after.get("checks_sha256") or before.get(
         "runtime"
     ) != after.get("runtime"):
@@ -47,8 +66,27 @@ def main():
         != plan["requirements_sha256"]
     ):
         raise SystemExit("requirements changed")
+    requirements = None
+    if plan.get("goal_catalogue"):
+        goal_path = Path(plan["goal_catalogue"])
+        if hashlib.sha256(goal_path.read_bytes()).hexdigest() != plan["goal_catalogue_sha256"]:
+            raise SystemExit("goal catalogue changed")
+        requirements = json.loads(goal_path.read_text())
+        if requirements != catalogue(Path(plan["requirements"]).read_text()):
+            raise SystemExit("goal catalogue does not cover the supplied requirements")
+
+    def completion(probe):
+        if requirements is not None:
+            result = coverage(requirements, probe)
+            atomic_json(root / "goal-state.json", result)
+            return result["completion"]
+        cases = probe.get("cases", [])
+        if probe.get("application_failure") or not cases:
+            raise ValueError("a failed/empty probe cannot establish completion")
+        return "scoped_checks_passed" if all(c["passed"] for c in cases) else None
+
     with RunLock(root) as lock:
-        recovery = Recovery(root, lock)
+        recovery = Recovery(root, lock, max_attempts=plan.get("max_transport_attempts", 3))
         repair_pending_archives(recovery)
         state_path = root / "loop-state.json"
         state = (
@@ -62,7 +100,7 @@ def main():
                 "stalled_rounds": 0,
             }
         )
-        if state["status"] in ("goal_checks_passed", "stalled", "round_limit"):
+        if state["status"] in ("goal_checks_passed", "scoped_checks_passed", "coverage_incomplete", "stalled", "round_limit"):
             print(json.dumps({"status": state["status"], "new_model_calls": 0}))
             return
         last_rejection = None
@@ -73,8 +111,10 @@ def main():
         try:
             for number in range(len(state["rounds"]) + 1, plan["max_rounds"] + 1):
                 before = json.loads(Path(state["current_probe"]).read_text())
-                if all(c["passed"] for c in before["cases"]):
-                    state["status"] = "goal_checks_passed"
+                validate_probe_input(plan, before, state["current_application"])
+                completed = completion(before)
+                if completed:
+                    state["status"] = completed
                     break
                 round_dir = root / f"round-{number}"
                 round_dir.mkdir(exist_ok=True)
@@ -97,6 +137,12 @@ def main():
                     cmd += ["--previous-rejection", str(last_rejection)]
                 if plan.get("include_readonly_diagnostics"):
                     cmd += ["--include-readonly-diagnostics"]
+                if requirements is not None:
+                    cmd += ["--goal-catalogue", plan["goal_catalogue"]]
+                if plan.get("direct_transport"):
+                    cmd += ["--direct"]
+                if plan.get("expected_request_sha256") and number == 1:
+                    cmd += ["--expected-request-sha256", plan["expected_request_sha256"]]
                 state.update(status="running", current_step=f"round-{number}/model")
                 atomic_json(state_path, state)
                 recovery.step(f"round-{number}/model", cmd, model_dir, scripts.parent)
@@ -118,6 +164,8 @@ def main():
                     if plan.get("probe_file"):
                         cmd += ["--probe-source", plan["probe_file"]]
                     cmd += ["--probe-count", str(plan["probe_count"])]
+                    if plan.get("shared_probe_server", bool(plan.get("goal_catalogue"))):
+                        cmd += ["--shared-server"]
                     code = recovery.run(cmd, round_dir / "probe.log", scripts.parent)
                     if code:
                         raise RuntimeError(
@@ -173,8 +221,9 @@ def main():
                     )
                 atomic_json(state_path, state)
                 print(json.dumps(row, ensure_ascii=False), flush=True)
-                if outcome["accepted"] and after["passed"] == after["total"]:
-                    state["status"] = "goal_checks_passed"
+                completed = completion(after if outcome["accepted"] else before)
+                if completed:
+                    state["status"] = completed
                     break
                 if state["stalled_rounds"] >= plan["max_stalled_rounds"]:
                     state["status"] = "stalled"

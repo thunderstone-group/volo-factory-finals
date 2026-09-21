@@ -66,6 +66,20 @@ class RecoveryTests(unittest.TestCase):
         self.lock = RunLock(self.root).__enter__()
         self.addCleanup(self.lock.__exit__, None, None, None)
 
+    def test_one_attempt_policy_cannot_retry_an_existing_failure(self):
+        failed(self.folder)
+        recovery = Recovery(self.root, self.lock, retry_delay=0, max_attempts=1)
+        with patch.object(recovery, "run") as run:
+            with self.assertRaisesRegex(RuntimeError, r"attempt limit reached \(1\)"):
+                recovery.step("single", [], self.folder, self.root)
+            run.assert_not_called()
+
+    def test_saved_one_attempt_policy_cannot_be_silently_raised(self):
+        recovery = Recovery(self.root, self.lock, max_attempts=1)
+        recovery.save()
+        with self.assertRaisesRegex(RuntimeError, "saved retry policy"):
+            Recovery(self.root, self.lock)
+
     def test_failed_atomic_replace_preserves_previous_state(self):
         path = self.root / "state.json"
         atomic_json(path, {"old": True})

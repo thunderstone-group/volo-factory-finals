@@ -1,60 +1,71 @@
-# Current handoff — 2026-09-21 15:40 CST: business-feedback pilot complete
+# Current handoff — 2026-09-21 17:04 CST: goal comparison complete, candidate promotion rejected
 
-Read [the frozen report](reports/2026-09-21-business-feedback-pilot.md),
-[evidence receipt](evidence/2026-09-21-business-feedback-pilot.json), then
+Read [the frozen report](reports/2026-09-21-requirement-goal-comparison.md),
+[initial evidence](evidence/2026-09-21-requirement-goal-comparison.json),
+[verifier hardening evidence](evidence/2026-09-21-requirement-goal-hardening.json), and
 [execution reference](reference/business-feedback-loop.md). The prior handoff is
-archived under `archive/handoffs/2026-09-21-before-business-feedback.md`.
+archived as `archive/handoffs/2026-09-21-before-requirement-goal.md`.
 
-The user authorized trying requirement-derived business feedback and repeated
-goal-style repair, and asked whether long competitor runtimes imply many model turns.
-This bounded local study is complete. It did not create a native Codex goal, submit
-an official run, generate new drafts or replace the default competition agent.
+The user authorized fixing incomplete/misleading verification and trying a goal-style
+harness or an external harness with our tools. This study added a requirement inventory
+to the existing Flash repair controller, researched mini-SWE-agent as an alternative,
+and completed two local saved-draft trials. No native Codex goal or external harness
+integration was performed. The default competition entrypoint and main are unchanged.
 
-Two immutable Ctrip drafts were repaired by four actual DeepSeek V4 Flash calls.
-The unchanged 125-case suite gave 33 to 49 passes for Ctrip-3 (+16/-0), and 29 to 48
-for Ctrip-2 (+19/-0). Ctrip-2's business-only repair first stayed at 29; a separately
-declared keyboard-input follow-up produced the 19-case gain. The evidence supports
-combining business and existing delivery/input-contract feedback, rather than merely
-raising the round limit. Broader requirements and independent fresh drafts are still
-unverified; do not promote this hand-authored probe as complete task verification.
+Independent results: Ctrip A 49/125 to 42/125 (+0/-7); Ctrip B 48/125 to 48/125 with
+identical passing cases. A's unchanged baseline was rerun and exactly reproduced all
+49 passes. Reject A's candidate and retain original competition selections. B's tested
+business behavior improved, but there is no independent score gain to promote.
 
-Pilot A's original probe reported 8/13, 11/13, 13/13. A separate post-run audit corrected
-an overly narrow contact label and hover/scoping of deletion: the corrected sequence
-is 8/13, 13/13, 13/13. Its first model feedback was unchanged. Round 2 still added 13
-published-suite passes, but those raw probe gains are not two newly implemented
-business capabilities. The later trials used calibrated probes and real positive
-controls. All original plans and results remain unchanged.
+The original 27-check isolated probe measured A 22 to 25, then 25 again; its second
+complete proposal was rejected for no progress. B reached 27/27 in one repair. The
+inventory contains 225 nodes / 125 atomic requirements; 99 atomic requirements remain
+unobserved. Group observations never imply verified children, and green scoped checks
+never assert full requirement verification.
 
-Local run roots are `runs/business-loop-20260921/`,
-`runs/business-loop-replication-20260921/`, and
-`runs/business-loop-input-contract-20260921/`. Each is terminal; no controller is left
-running. Their exact executed drivers are preserved in `driver-v1/`, `driver-v2/` and
-`driver-v3/` respectively. Use Python 3.11.15 and the matching snapshot when resuming
-or auditing a frozen plan. Terminal resume was checked to make zero new model calls.
-The current scripts match the third plan. Earlier drafts/evaluators were not edited.
+Post-run diagnosis: a lost passenger case passes alone but fails in the full sequence.
+The candidate restores every shared-state key and saves on render; failure pages show
+an earlier workflow's signed-in user in a fresh browser context. The old probe restarted
+the backend per case, hiding batch-state regressions. New goal plans now default to
+shared-backend probes. Real shared-gate replay: A baseline 22/27, A candidate 14/27
+(eight lost passes, no gains, rejected), correct B positive control 27/27. No model
+calls were made after this hardening. Individual causes of all seven public losses
+were not separately proved.
 
-Model spending settled at CNY 1.675812, 254,737 input / 131,645 output tokens, four
-completed calls, no unknown usage or unmatched bills. This excludes historical draft
-generation. Existing ARC balance remains authorized within scoped experiments; ask
-only if funds are insufficient. Public-suite code, scores and failed-case lists were
-not passed to the repair model or used for per-round selection. Request reconstruction
-and patch-provenance audits passed for all four calls; Codex did not edit app files.
+Before a paid call, the current controller validates application/check hashes and
+server lifecycle against the observations. Cached replays enforce the same boundary.
+Source/check/lifecycle changes require a new measured baseline. Keep the shared batch
+gate for acceptance; per-case server resets remain an explicit isolated diagnostic.
 
-Runtime: Node 20.19.3, Playwright 1.57.0, Chromium 143.0.7499.4, 1 CPU, 2GB, one worker,
-UTC, local ARM64. This is not the full official x86_64 submission lifecycle. Generated
-persistence uses localStorage; same-browser reload success does not prove multi-browser
-account consistency. Seven controller tests passed; required legacy suite had 214
-passes and 12 skips. No official score/rank change is claimed.
+Three SSH streams interrupted A's second repair: HTTP 200/1.1, curl 18, SSH exit 255,
+remote-closed stderr, no final usage. The three-attempt cap remains exhausted in the
+original trial. A separately declared one-attempt direct-HTTPS continuation completed
+with the identical request SHA and no probe gain; it stopped as stalled. Do not reset
+the parent trial or attribute the SSH failures solely to the provider. No global proxy
+or SSH setting changed, and the owned diagnostic tunnel was cleaned up.
 
-The worktree is `business-feedback-loop-20260921`, branch
-`exp/business-feedback-loop-20260921`, based on main plus recovery PR #39. Review as a
-stacked experimental PR; do not silently enable it in the competition entrypoint.
-The preliminary-notice update remains separate in PR #40; consult that report for
-the supplied formal rules instead of older campaign assumptions.
+Actual gateway requests: six, with three complete and three incomplete. Confirmed
+completed-call cost CNY 1.201896, 221,761 input / 101,858 output tokens. The three
+incomplete calls have unknown usage/cost, not zero. Existing ARC balance remains
+user-authorized within scoped experiments; ask only if funds are insufficient.
+Costs exclude prior studies and generation. No official run/upload occurred.
 
-The leaderboard duration snapshot supports investigating more iteration: nontrivial
-Lite 100% entries took about 33–114 minutes, compared with VOLO's 12.7 minutes; the
-Web 99.5% examples took 3.6–6.3 hours versus 18.9 minutes. These are aggregate timings,
-not call traces, so they cannot establish another team's turn count or goal feature.
-The next design priority is accurate, broader completion criteria that preserve
-existing interaction contracts, before production integration or additional spending.
+Run root: `runs/goal-comparison-20260921/`. Original pilots are `goal-a/` and `goal-b/`;
+continuation is `goal-a-direct-continuation/`. Parent A is intentionally interrupted at
+its persistent limit; B is coverage_incomplete; continuation is stalled. No workers or
+owned model tunnels remain. Exact paid-run drivers are preserved in parent `driver-v1/`
+folders and continuation `driver-v2/`. Current scripts include later verifier hardening;
+use matching snapshots for old plans. Completed terminal resumes make zero new calls.
+
+Validation: 10 goal/preflight tests, 7 loop tests, 16 recovery tests; required legacy
+suite 214 passed / 12 skipped in the local Python 3.11.15 venv. Request/patch provenance
+audits passed for all completed calls; interrupted and direct request hashes match.
+Runtime is pinned local ARM64, Node 20.19.3 / Playwright 1.57.0 / Chromium 143.0.7499.4,
+one CPU / 2GB / one worker / UTC. It is not the complete official x86_64 lifecycle.
+
+Branch `exp/requirement-goal-loop-20260921` is based on main plus PR #39 and #41 ancestry;
+review as a stacked experimental PR against #41's branch. Main remains on main. The
+preliminary-notice update remains separate in PR #40. Future harness comparisons should
+reuse these fixed verification/rollback/accounting boundaries. Longer iteration alone
+has not shown a scoring advantage in this study; 99 unobserved requirements and safe
+separation of account data from session/view state remain the concrete coverage gaps.

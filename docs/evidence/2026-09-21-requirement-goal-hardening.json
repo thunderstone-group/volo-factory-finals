@@ -1,0 +1,106 @@
+{
+  "schema": "volo.requirement-goal-hardening.v1",
+  "recorded_at_utc": "2026-09-21T09:02:34.880840+00:00",
+  "supersedes_no_raw_results": true,
+  "decision": "Reject A candidate; no independent score gain on either draft. Retain coverage/shared-backend regression controls as experimental tooling, preserving original competition candidates.",
+  "shared_gate_plan": {
+    "purpose": "Post-pilot verifier hardening after an isolated public case passed while the same case failed in the full sequence. No model calls.",
+    "applications": {
+      "baseline": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-20260921/round-2/model/application",
+      "candidate": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/round-1/model/application"
+    },
+    "probe_source": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/probe-shared-lifecycle.cjs",
+    "probe_sha256": "3a015a5b064001c49101e01e1dce2d75724086be81cadcf4e49fc3c3c172fa56",
+    "cases": 27,
+    "server_lifecycle": "shared",
+    "acceptance": "Compare exact passed-case sets, requiring strict gains and no lost previous passes. Do not mix lifecycle variants.",
+    "model_calls_allowed": 0
+  },
+  "shared_baseline": {
+    "passed": 22,
+    "total": 27,
+    "source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c"
+  },
+  "shared_candidate": {
+    "passed": 14,
+    "total": 27,
+    "source_sha256": "47b3659c101e3ab1bdaead467fe7efb790fe0d55e9914b286dbe3b7f639d3955"
+  },
+  "shared_positive_control": {
+    "passed": 27,
+    "total": 27,
+    "source_sha256": "87103b55b3da1f5cb7947b73a7279fee489a73e9060029ca5f875ebbcdd29f31"
+  },
+  "acceptance": {
+    "accepted": false,
+    "gained": [],
+    "regressed": [
+      "REQ-2.5.2: SMS login rejects a missing mobile number",
+      "REQ-4.5.1.2: cancel the seeded unpaid order and retain its closed status",
+      "REQ-5.3.2.1: a created traveler survives page reload",
+      "REQ-5.3.2.2: traveler save explains a missing name",
+      "REQ-5.4.2.1: a saved recipient address survives page reload",
+      "REQ-5.5.2.1 + REQ-5.5.3.1: create a default contact, reload it, then delete it",
+      "REQ-5.6.2.1: invoice creation accepts and retains a valid company identifier",
+      "REQ-6.2.1: edited profile values remain visible after save and re-entry"
+    ]
+  },
+  "runtime": {
+    "node": "v20.19.3",
+    "playwright": "1.57.0",
+    "chromium": "143.0.7499.4",
+    "arch": "arm64",
+    "mode": "probe",
+    "workers": 1,
+    "server_lifecycle": "shared",
+    "cpu_max": "100000 100000",
+    "memory_max": "2147483648"
+  },
+  "checks_sha256": "a86d9f81ee4a75f93b71a7b1be640accfbbe778565404a4ac9b1c121acffcf25",
+  "baseline_recheck": {
+    "passed": 49,
+    "total": 125,
+    "exact_pass_set_reproduced": true,
+    "source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c",
+    "path": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/goal-a/baseline-recheck-score/result.json"
+  },
+  "isolated_public_case": {
+    "requirement": "REQ-3.3.1",
+    "passed": true,
+    "path": "~/projects/volo-factory-worktrees/requirement-goal-loop-20260921/runs/goal-comparison-20260921/a-isolated-passenger-check-v2/result.json",
+    "interpretation": "Post-run attribution only; never model feedback or an aggregate score."
+  },
+  "failed_request_hashes": [
+    {
+      "path": "goal-a/round-2/model/request.json",
+      "sha256": "911c06dba8bad7e8e76909e144005f57f3760cb179895f00b32fc0fa590f8f40"
+    },
+    {
+      "path": "goal-a/round-2/model-attempt1-incomplete_stream/request.json",
+      "sha256": "911c06dba8bad7e8e76909e144005f57f3760cb179895f00b32fc0fa590f8f40"
+    },
+    {
+      "path": "goal-a/round-2/model-attempt2-incomplete_stream/request.json",
+      "sha256": "911c06dba8bad7e8e76909e144005f57f3760cb179895f00b32fc0fa590f8f40"
+    }
+  ],
+  "direct_request_sha256": "911c06dba8bad7e8e76909e144005f57f3760cb179895f00b32fc0fa590f8f40",
+  "validation": {
+    "goal_tests_passed": 10,
+    "loop_tests_passed": 7,
+    "recovery_tests_passed": 16,
+    "legacy_passed": 214,
+    "legacy_skipped": 12,
+    "stale_source_check_and_lifecycle_rejected_before_model": true,
+    "cross_lifecycle_cache_reuse_rejected": true,
+    "terminal_resume_new_model_calls": 0
+  },
+  "source_observation": "Candidate copies every persisted server-state key, including session/view state, then saves on render. Shared-run failure pages show the previous workflow user in a fresh browser context. Individual causes of all seven public-case losses were not separately proved.",
+  "post_hardening_model_calls": 0,
+  "limitations": [
+    "No new generation was run with the final shared-backend gate.",
+    "Published suite remains separate from repair feedback.",
+    "New goal plans require shared-backend baseline observations by default.",
+    "99 atomic requirements remain unobserved by the selected checks."
+  ]
+}

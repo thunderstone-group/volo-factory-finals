@@ -58,6 +58,10 @@ def audit(root):
         trace = json.loads((out / "trace.json").read_text())
         transport = json.loads((out / "transport.json").read_text())
         note = worker.feedback(json.loads(probe.read_text()))
+        if plan.get("goal_catalogue"):
+            note["requirement_goal"] = worker.goal_feedback(
+                json.loads(Path(plan["goal_catalogue"]).read_text()), json.loads(probe.read_text())
+            )
         if plan.get("include_readonly_diagnostics"):
             note["existing_input_contract_diagnostics"] = agent.readonly_gaps(current)
             for node in ast.walk(ast.parse(worker_path.read_text())):

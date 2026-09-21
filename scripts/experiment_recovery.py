@@ -105,21 +105,24 @@ class RunLock:
 
 
 class Recovery:
-    def __init__(self, root, lock, retry_delay=15):
+    def __init__(self, root, lock, retry_delay=15, max_attempts=MAX_ATTEMPTS):
         self.root = Path(root)
         self.lock = lock
         self.retry_delay = retry_delay
+        if not isinstance(max_attempts, int) or not 1 <= max_attempts <= MAX_ATTEMPTS:
+            raise ValueError("attempt limit must be between 1 and 3")
+        self.max_attempts = max_attempts
         self.path = self.root / "recovery.json"
         self.data = (
             read_json(self.path)
             if self.path.exists()
             else {
                 "schema": "volo.experiment-recovery.v1",
-                "max_attempts": MAX_ATTEMPTS,
+                "max_attempts": self.max_attempts,
                 "steps": {},
             }
         )
-        if self.data["max_attempts"] != MAX_ATTEMPTS:
+        if self.data["max_attempts"] != self.max_attempts:
             raise RuntimeError("saved retry policy differs from this driver")
 
     def save(self):
@@ -193,11 +196,11 @@ class Recovery:
                     raise RuntimeError(
                         name + ": " + kind + "; inspect retained evidence"
                     )
-            if len(records) >= MAX_ATTEMPTS:
+            if len(records) >= self.max_attempts:
                 entry["stopped_reason"] = "attempt_limit"
                 self.save()
                 raise RuntimeError(
-                    name + ": cumulative attempt limit reached (3); no new request"
+                    name + f": cumulative attempt limit reached ({self.max_attempts}); no new request"
                 )
             if folder.exists():
                 archived = folder.with_name(
@@ -237,7 +240,7 @@ class Recovery:
             self.save()  # A lost process still consumes its reserved attempt.
             print(
                 json.dumps(
-                    {"step": name, "attempt": len(records), "limit": MAX_ATTEMPTS}
+                    {"step": name, "attempt": len(records), "limit": self.max_attempts}
                 ),
                 flush=True,
             )
