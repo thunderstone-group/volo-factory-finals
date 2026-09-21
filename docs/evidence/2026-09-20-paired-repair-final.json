@@ -1,0 +1,1218 @@
+{
+  "schema": "volo.paired-repair-final.v1",
+  "recorded_at_utc": "2026-09-21T03:45:36Z",
+  "decision": "retain for review",
+  "official_score_claim": false,
+  "new_official_runs": 0,
+  "new_official_uploads": 0,
+  "pairs": [
+    {
+      "id": "12306-1",
+      "app": "12306",
+      "draft_passed": 60,
+      "baseline_passed": 60,
+      "candidate_passed": 60,
+      "total": 135,
+      "gained": [],
+      "regressed": [],
+      "receipts": {
+        "draft": {
+          "app": "12306",
+          "mode": "generate",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 45769,
+            "completion_tokens": 108884
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/lib/arc.js",
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "seconds": 764.19,
+          "smoke": null,
+          "cost_upper_estimate_cny": 1.117263
+        },
+        "baseline": {
+          "app": "12306",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 0,
+          "reused_response": true,
+          "usage": {},
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "seconds": 7.61,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "3 field label(s) are substrings of another field label, so getByLabel('Date') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"Date\" is contained in \"End date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"End date\"; \"Date\" is contained in \"Date type\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Date type\"; \"Date\" is contained in \"Start date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Start date\"",
+              "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Forgot password form\" shares password with a field label; button aria-label \"Verify mobile form\" shares mobile with a field label",
+              "1 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “Account number” appears only as `Account number:`",
+              "6 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"May 31 Sun\", \"xx results\", \"You don''t have uncompleted orders.\", \"You don''t have any bookings or we can''t access your bookings at this time.\", \"MM:SS\", \"Total: ￥xxxx.xx\""
+            ],
+            "vocabulary_missing": 6,
+            "repair": {
+              "accepted": true,
+              "files": [
+                "frontend/public/app.js"
+              ],
+              "vocabulary_missing_after": 0
+            }
+          },
+          "cost_upper_estimate_cny": 0
+        },
+        "candidate": {
+          "app": "12306",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 0,
+          "reused_response": true,
+          "usage": {},
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "seconds": 7.58,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "3 field label(s) are substrings of another field label, so getByLabel('Date') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"Date\" is contained in \"End date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"End date\"; \"Date\" is contained in \"Date type\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Date type\"; \"Date\" is contained in \"Start date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Start date\"",
+              "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Forgot password form\" shares password with a field label; button aria-label \"Verify mobile form\" shares mobile with a field label",
+              "1 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “Account number” appears only as `Account number:`",
+              "6 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"May 31 Sun\", \"xx results\", \"You don''t have uncompleted orders.\", \"You don''t have any bookings or we can''t access your bookings at this time.\", \"MM:SS\", \"Total: ￥xxxx.xx\""
+            ],
+            "vocabulary_missing": 6,
+            "repair": {
+              "accepted": true,
+              "files": [
+                "frontend/public/app.js"
+              ],
+              "vocabulary_missing_after": 0
+            }
+          },
+          "cost_upper_estimate_cny": 0
+        }
+      }
+    },
+    {
+      "id": "ctrip-1",
+      "app": "ctrip",
+      "draft_passed": 24,
+      "baseline_passed": 49,
+      "candidate_passed": 49,
+      "total": 125,
+      "gained": [],
+      "regressed": [],
+      "receipts": {
+        "draft": {
+          "app": "ctrip",
+          "mode": "generate",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 44560,
+            "completion_tokens": 83770
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "seconds": 590.96,
+          "smoke": null,
+          "cost_upper_estimate_cny": 0.88761
+        },
+        "baseline": {
+          "app": "ctrip",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 74607,
+            "completion_tokens": 44818
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "seconds": 286.44,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "clicking `成都 - 广州` (data-action `use-history`) on screen `#/` throws: Cannot read properties of undefined (reading 'item'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `经济舱` (data-action `cabin-select`) on screen `#/` throws: Cannot read properties of undefined (reading 'cabin'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `JD5162` (data-action `use-status-history`) on screen `#/status` throws: Cannot read properties of undefined (reading 'flight'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `A` (data-action `airport-letter`) on screen `#/airports` throws: Cannot read properties of undefined (reading 'letter'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `账号登录` (data-action `switch-login`) on screen `#/login` throws: Cannot read properties of undefined (reading 'mode'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `机场简介` (data-action `airport-tab`) on screen `#/airport/PEK` throws: Cannot read properties of undefined (reading 'tab'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "18 field label(s) are substrings of another field label, so getByLabel('验证码') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"验证码\" is contained in \"请输入验证码\" — keep \"请输入验证码\" exactly (quoted in the requirement) and rename \"验证码\"; \"验证码\" is contained in \"验证码 Verification code\"; \"手机号\" is contained in \"新手机号\"; \"手机号\" is contained in \"联系人手机号\"; \"手机号\" is contained in \"请输入手机号\" — keep \"请输入手机号\" exactly (quoted in the requirement) and rename \"手机号\"; \"手机号\" is contained in \"请输入新手机号\"; \"手机号\" is contained in \"手机号 Mobile\"; \"手机号\" is contained in \"邮箱/用户名/手机号\"; \"手机号\" is contained in \"联系人手机号 Contact mobile\"; \"登录密码\" is contained in \"请输入登录密码\" — keep \"请输入登录密码\" exactly (quoted in the requirement) and rename \"登录密码\"; \"确认密码\" is contained in \"确认密码 Confirm password\"; \"出发日期\" is contained in \"出发日期 Departure date\" — keep \"出发日期\" exactly (quoted in the requirement) and rename \"出发日期 Departure date\"",
+              "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Password form\" shares password with a field label",
+              "2 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “添加返程” appears only as `+ 添加返程`; “010-” appears only as `010-64541100`",
+              "7 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"成都(CTU)\", \"广州(CAN)\", \"2026-01-08 明天\", \"4天\", \"+ 新增乘机人\", \"剩余时间:00:09:27\", \"aa\""
+            ],
+            "vocabulary_missing": 7,
+            "repair": {
+              "accepted": true,
+              "files": [
+                "frontend/public/app.js",
+                "frontend/public/styles.css"
+              ],
+              "vocabulary_missing_after": 0
+            }
+          },
+          "cost_upper_estimate_cny": 0.627183
+        },
+        "candidate": {
+          "app": "ctrip",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 0,
+          "reused_response": true,
+          "usage": {},
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "seconds": 7.51,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "clicking `成都 - 广州` (data-action `use-history`) on screen `#/` throws: Cannot read properties of undefined (reading 'item'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `经济舱` (data-action `cabin-select`) on screen `#/` throws: Cannot read properties of undefined (reading 'cabin'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `JD5162` (data-action `use-status-history`) on screen `#/status` throws: Cannot read properties of undefined (reading 'flight'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `A` (data-action `airport-letter`) on screen `#/airports` throws: Cannot read properties of undefined (reading 'letter'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `账号登录` (data-action `switch-login`) on screen `#/login` throws: Cannot read properties of undefined (reading 'mode'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "clicking `机场简介` (data-action `airport-tab`) on screen `#/airport/PEK` throws: Cannot read properties of undefined (reading 'tab'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "18 field label(s) are substrings of another field label, so getByLabel('验证码') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"验证码\" is contained in \"请输入验证码\" — keep \"请输入验证码\" exactly (quoted in the requirement) and rename \"验证码\"; \"验证码\" is contained in \"验证码 Verification code\"; \"手机号\" is contained in \"新手机号\"; \"手机号\" is contained in \"联系人手机号\"; \"手机号\" is contained in \"请输入手机号\" — keep \"请输入手机号\" exactly (quoted in the requirement) and rename \"手机号\"; \"手机号\" is contained in \"请输入新手机号\"; \"手机号\" is contained in \"手机号 Mobile\"; \"手机号\" is contained in \"邮箱/用户名/手机号\"; \"手机号\" is contained in \"联系人手机号 Contact mobile\"; \"登录密码\" is contained in \"请输入登录密码\" — keep \"请输入登录密码\" exactly (quoted in the requirement) and rename \"登录密码\"; \"确认密码\" is contained in \"确认密码 Confirm password\"; \"出发日期\" is contained in \"出发日期 Departure date\" — keep \"出发日期\" exactly (quoted in the requirement) and rename \"出发日期 Departure date\"",
+              "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Password form\" shares password with a field label",
+              "2 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “添加返程” appears only as `+ 添加返程`; “010-” appears only as `010-64541100`",
+              "7 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"成都(CTU)\", \"广州(CAN)\", \"2026-01-08 明天\", \"4天\", \"+ 新增乘机人\", \"剩余时间:00:09:27\", \"aa\""
+            ],
+            "vocabulary_missing": 7,
+            "repair": {
+              "accepted": true,
+              "files": [
+                "frontend/public/app.js",
+                "frontend/public/styles.css"
+              ],
+              "vocabulary_missing_after": 0
+            }
+          },
+          "cost_upper_estimate_cny": 0
+        }
+      }
+    },
+    {
+      "id": "12306-2",
+      "app": "12306",
+      "draft_passed": 24,
+      "baseline_passed": 24,
+      "candidate_passed": 84,
+      "total": 135,
+      "gained": [
+        "REQ-2.1.3: Submit a valid registration form",
+        "REQ-2.1.5: Submit the form with an existing passport number",
+        "REQ-2.1.6: Submit the form with an existing username",
+        "REQ-2.1.9: Submit the form without accepting the agreement",
+        "REQ-2.2.3: Log in with valid credentials",
+        "REQ-2.2.6: Submit the login form with an incorrect password",
+        "REQ-2.3.1: Sign out from the home page",
+        "REQ-2.4.6: Submit the new password step with mismatched passwords",
+        "REQ-3.1.4: Prevent selection of an expired date",
+        "REQ-3.1.5: Search tickets from the home page",
+        "REQ-3.1.7: Search without a valid arrival place",
+        "REQ-3.2.1: Display the populated ticket search results page",
+        "REQ-3.2.10: Filter the result list by departure station",
+        "REQ-3.2.11: Filter the result list by arrival station",
+        "REQ-3.2.12: Filter the result list by departure time range",
+        "REQ-3.2.13: Enter the results page from the home quick search module",
+        "REQ-3.2.14: Enter the results page from the navigation dropdown",
+        "REQ-3.2.2: Show ticket prices and booking actions in each result row",
+        "REQ-3.2.4: Search again from the results page",
+        "REQ-3.2.5: Search with another date from the date-switching bar",
+        "REQ-3.2.6: Toggle sorting by departure time",
+        "REQ-3.2.7: Toggle sorting by travel time",
+        "REQ-3.2.8: Toggle sorting by arrival time",
+        "REQ-3.2.9: Filter the result list by train type",
+        "REQ-3.3.3: Toggle transfer plan sorting by first-segment departure time",
+        "REQ-3.3.4: Toggle transfer plan sorting by total travel time",
+        "REQ-3.3.5: Toggle transfer plan sorting by second-segment arrival time",
+        "REQ-4.1.2: Open the personal center home page after login",
+        "REQ-4.2.1: Open the ticket orders page from the order center menu",
+        "REQ-4.2.13: Display the empty state in history orders",
+        "REQ-4.2.14: Open the default ticket search from the empty history orders state",
+        "REQ-4.2.16: Search history orders with a valid keyword",
+        "REQ-4.2.17: Display historical orders in a table",
+        "REQ-4.2.2: Display the empty state in uncompleted orders",
+        "REQ-4.2.3: Open the default ticket search from the empty uncompleted orders state",
+        "REQ-4.2.6: Display the empty state in upcoming trips",
+        "REQ-4.2.7: Open the default ticket search from the empty upcoming trips state",
+        "REQ-4.2.9: Reject an invalid upcoming trips search condition",
+        "REQ-4.3.1: Open and view the user information page",
+        "REQ-4.3.5: Open and view the account security page",
+        "REQ-4.3.6: Save a valid password change from the account security page",
+        "REQ-4.3.6: Reject a password change with missing fields",
+        "REQ-4.3.6: Reject a password change with an incorrect current password",
+        "REQ-4.3.6: Reject a password change with mismatched new passwords",
+        "REQ-4.3.7: Save a valid security mailbox update",
+        "REQ-4.3.7: Reject a security mailbox update with missing fields",
+        "REQ-4.3.7: Reject a security mailbox update with an incorrect password",
+        "REQ-4.3.7: Reject a security mailbox update with an invalid email address",
+        "REQ-4.3.8: Save a valid mobile number update",
+        "REQ-4.3.8: Reject a mobile number update with missing fields",
+        "REQ-4.3.8: Reject a mobile number update with an incorrect password",
+        "REQ-4.3.8: Reject a mobile number update with an invalid mobile number",
+        "REQ-4.4.10: Search the passenger list by a fuzzy condition",
+        "REQ-4.4.11: Clear the passenger search results",
+        "REQ-4.4.2: Open the add passenger form from the passenger list page",
+        "REQ-4.4.4: Submit the add passenger form with missing required information",
+        "REQ-5.1.1: Show the quick login form for an unauthenticated booking attempt",
+        "REQ-5.1.3: Open the registration page from the quick login form",
+        "REQ-6.2.1: Open one guide category tab from the dropdown more link",
+        "REQ-6.2.2: Open one guide question from the navigation dropdown"
+      ],
+      "regressed": [],
+      "receipts": {
+        "draft": {
+          "app": "12306",
+          "mode": "generate",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 45769,
+            "completion_tokens": 92703
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "seconds": 711.43,
+          "smoke": null,
+          "cost_upper_estimate_cny": 0.971634
+        },
+        "baseline": {
+          "app": "12306",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 77172,
+            "completion_tokens": 52534
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/lib/arc.js"
+          ],
+          "seconds": 366.37,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "frontend script error on load (the page is blank for every test): Uncaught [ReferenceError: u_orders_cancelled is not defined]",
+              "clicking `Sep 20 Sun` (data-action `select-date`) on screen `#/search/default` throws: S.save is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "4 field label(s) are substrings of another field label, so getByLabel('To') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"Date\" is contained in \"End date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"End date\"; \"Date\" is contained in \"Start date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Start date\"; \"Date\" is contained in \"Search by date type\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Search by date type\"; \"Name\" is contained in \"Select ${esc(p.name)}\" — keep \"Name\" exactly (quoted in the requirement) and rename \"Select ${esc(p.name)}\"",
+              "3 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Forgot password form\" shares password with a field label; button aria-label \"New password form\" shares password with a field label; button aria-label \"${ARC.esc(L.brand || \" shares esc with a field label",
+              "1 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “, and a” appears only as `// layout tests assert /header/i, /sidebar/i as visible text`",
+              "frontend/public/app.js:534 marks an input readonly (<label for=\"ess-name\">Name</label><input id=\"ess-name\" value=\"${esc(user.name)}\"); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "frontend/public/app.js:1209 marks an input readonly (<label for=\"cur-email\">Current email address: </label><input id=\"cur-email\" valu); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "13 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"Travel guides\", \"assets/banner1.jpg\", \"assets/banner2.jpg\", \"assets/banner3.jpg\", \"xx results\", \"You don''t have uncompleted orders.\", \"You don''t have any bookings or we can''t access your bookings at this time.\", \"business-class seat ( ￥1870.0 ) 32% off 1 left\", \"first-class seat ( ￥967.0 ) 24% off None left\", \"second-class seat ( ￥576.0 ) 27% off None left\", \"standing ticket ( ￥576.0 ) 27% off Enough left\", \"MM:SS\", \"Total: ￥xxxx.xx\""
+            ],
+            "vocabulary_missing": 13,
+            "repair": {
+              "accepted": false,
+              "reason": "repair renamed quoted control(s): from station, to station"
+            }
+          },
+          "cost_upper_estimate_cny": 0.704322
+        },
+        "candidate": {
+          "app": "12306",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 0,
+          "reused_response": true,
+          "usage": {},
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/lib/arc.js"
+          ],
+          "seconds": 7.78,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "frontend script error on load (the page is blank for every test): Uncaught [ReferenceError: u_orders_cancelled is not defined]",
+              "clicking `Sep 20 Sun` (data-action `select-date`) on screen `#/search/default` throws: S.save is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "4 field label(s) are substrings of another field label, so getByLabel('To') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"Date\" is contained in \"End date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"End date\"; \"Date\" is contained in \"Start date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Start date\"; \"Date\" is contained in \"Search by date type\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Search by date type\"; \"Name\" is contained in \"Select ${esc(p.name)}\" — keep \"Name\" exactly (quoted in the requirement) and rename \"Select ${esc(p.name)}\"",
+              "3 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Forgot password form\" shares password with a field label; button aria-label \"New password form\" shares password with a field label; button aria-label \"${ARC.esc(L.brand || \" shares esc with a field label",
+              "1 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “, and a” appears only as `// layout tests assert /header/i, /sidebar/i as visible text`",
+              "frontend/public/app.js:534 marks an input readonly (<label for=\"ess-name\">Name</label><input id=\"ess-name\" value=\"${esc(user.name)}\"); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "frontend/public/app.js:1209 marks an input readonly (<label for=\"cur-email\">Current email address: </label><input id=\"cur-email\" valu); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "13 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"Travel guides\", \"assets/banner1.jpg\", \"assets/banner2.jpg\", \"assets/banner3.jpg\", \"xx results\", \"You don''t have uncompleted orders.\", \"You don''t have any bookings or we can''t access your bookings at this time.\", \"business-class seat ( ￥1870.0 ) 32% off 1 left\", \"first-class seat ( ￥967.0 ) 24% off None left\", \"second-class seat ( ￥576.0 ) 27% off None left\", \"standing ticket ( ￥576.0 ) 27% off Enough left\", \"MM:SS\", \"Total: ￥xxxx.xx\""
+            ],
+            "vocabulary_missing": 13,
+            "repair": {
+              "accepted": true,
+              "files": [
+                "frontend/public/seed.js",
+                "frontend/public/app.js",
+                "frontend/public/lib/arc.js"
+              ],
+              "vocabulary_missing_after": 0,
+              "renamed_but_kept": [
+                "from station",
+                "to station"
+              ]
+            }
+          },
+          "cost_upper_estimate_cny": 0
+        }
+      }
+    },
+    {
+      "id": "ctrip-2",
+      "app": "ctrip",
+      "draft_passed": 29,
+      "baseline_passed": 29,
+      "candidate_passed": 29,
+      "total": 125,
+      "gained": [],
+      "regressed": [],
+      "receipts": {
+        "draft": {
+          "app": "ctrip",
+          "mode": "generate",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 44560,
+            "completion_tokens": 77951
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "seconds": 561.16,
+          "smoke": null,
+          "cost_upper_estimate_cny": 0.835239
+        },
+        "baseline": {
+          "app": "ctrip",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 72051,
+            "completion_tokens": 40381
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "seconds": 295.84,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "21 field label(s) are substrings of another field label, so getByLabel('姓名') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"姓名\" is contained in \"姓名 Name\"; \"姓名\" is contained in \"真实姓名 Real name\"; \"邮箱\" is contained in \"新邮箱\"; \"邮箱\" is contained in \"请输入新邮箱\"; \"邮箱\" is contained in \"邮箱/用户名/手机号\"; \"验证码\" is contained in \"请输入验证码\" — keep \"请输入验证码\" exactly (quoted in the requirement) and rename \"验证码\"; \"验证码\" is contained in \"验证码 Verification code\"; \"新密码\" is contained in \"确认新密码\"; \"新邮箱\" is contained in \"请输入新邮箱\"; \"手机号\" is contained in \"新手机号\"; \"手机号\" is contained in \"请输入手机号\" — keep \"请输入手机号\" exactly (quoted in the requirement) and rename \"手机号\"; \"手机号\" is contained in \"请输入新手机号\"",
+              "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Change password form\" shares password with a field label; button aria-label \"Email verification form\" shares verification with a field label",
+              "3 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “返回日期” appears only as `返回日期 Return date`; “添加返程” appears only as `+ 添加返程`; “010-” appears only as `010-64541100`",
+              "frontend/public/app.js:100 marks an input readonly ('<label for=\"origin\">出发城市 Origin</label><input id=\"origin\" data-action=\"open-cit); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "frontend/public/app.js:102 marks an input readonly ('<label for=\"destination\">到达城市 Destination</label><input id=\"destination\" data-a); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "frontend/public/app.js:105 marks an input readonly ('<label for=\"departure\">出发日期 Departure date</label><input id=\"departure\" data-ac); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "frontend/public/app.js:107 marks an input readonly (? '<label for=\"return\">返回日期 Return date</label><input id=\"return\" data-action=\"o); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "7 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"尊敬的...\", \"4天\", \"¥320\", \"火星城\", \"已为你订单免费携带XXKG行李\", \"建议在...内完成支付\", \"aa\""
+            ],
+            "vocabulary_missing": 7,
+            "repair": {
+              "accepted": false,
+              "reason": "repair renamed quoted control(s): + 添加返程"
+            }
+          },
+          "cost_upper_estimate_cny": 0.579582
+        },
+        "candidate": {
+          "app": "ctrip",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 0,
+          "reused_response": true,
+          "usage": {},
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "seconds": 7.96,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "21 field label(s) are substrings of another field label, so getByLabel('姓名') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"姓名\" is contained in \"姓名 Name\"; \"姓名\" is contained in \"真实姓名 Real name\"; \"邮箱\" is contained in \"新邮箱\"; \"邮箱\" is contained in \"请输入新邮箱\"; \"邮箱\" is contained in \"邮箱/用户名/手机号\"; \"验证码\" is contained in \"请输入验证码\" — keep \"请输入验证码\" exactly (quoted in the requirement) and rename \"验证码\"; \"验证码\" is contained in \"验证码 Verification code\"; \"新密码\" is contained in \"确认新密码\"; \"新邮箱\" is contained in \"请输入新邮箱\"; \"手机号\" is contained in \"新手机号\"; \"手机号\" is contained in \"请输入手机号\" — keep \"请输入手机号\" exactly (quoted in the requirement) and rename \"手机号\"; \"手机号\" is contained in \"请输入新手机号\"",
+              "2 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Change password form\" shares password with a field label; button aria-label \"Email verification form\" shares verification with a field label",
+              "3 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “返回日期” appears only as `返回日期 Return date`; “添加返程” appears only as `+ 添加返程`; “010-” appears only as `010-64541100`",
+              "frontend/public/app.js:100 marks an input readonly ('<label for=\"origin\">出发城市 Origin</label><input id=\"origin\" data-action=\"open-cit); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "frontend/public/app.js:102 marks an input readonly ('<label for=\"destination\">到达城市 Destination</label><input id=\"destination\" data-a); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "frontend/public/app.js:105 marks an input readonly ('<label for=\"departure\">出发日期 Departure date</label><input id=\"departure\" data-ac); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "frontend/public/app.js:107 marks an input readonly (? '<label for=\"return\">返回日期 Return date</label><input id=\"return\" data-action=\"o); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+              "7 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"尊敬的...\", \"4天\", \"¥320\", \"火星城\", \"已为你订单免费携带XXKG行李\", \"建议在...内完成支付\", \"aa\""
+            ],
+            "vocabulary_missing": 7,
+            "repair": {
+              "accepted": false,
+              "reason": "repair renamed quoted control(s): + 添加返程"
+            }
+          },
+          "cost_upper_estimate_cny": 0
+        }
+      }
+    },
+    {
+      "id": "12306-3",
+      "app": "12306",
+      "draft_passed": 88,
+      "baseline_passed": 86,
+      "candidate_passed": 86,
+      "total": 135,
+      "gained": [],
+      "regressed": [],
+      "receipts": {
+        "draft": {
+          "app": "12306",
+          "mode": "generate",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 45769,
+            "completion_tokens": 82750
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css",
+            "frontend/public/assets/logo.png",
+            "frontend/public/assets/logo-icon.png",
+            "frontend/public/assets/banner1.jpg",
+            "frontend/public/assets/banner2.jpg",
+            "frontend/public/assets/banner3.jpg",
+            "frontend/public/assets/empty.png",
+            "frontend/public/assets/noticepic.png"
+          ],
+          "seconds": 589.87,
+          "smoke": null,
+          "cost_upper_estimate_cny": 0.882057
+        },
+        "baseline": {
+          "app": "12306",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 76190,
+            "completion_tokens": 32523
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "seconds": 217.73,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "5 field label(s) are substrings of another field label, so getByLabel('Date') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"Date\" is contained in \"End date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"End date\"; \"Date\" is contained in \"Start date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Start date\"; \"Password\" is contained in \"New password\" — keep \"Password\" exactly (quoted in the requirement) and rename \"New password\"; \"New password\" is contained in \"New password:\" — keep \"New password:\" exactly (quoted in the requirement) and rename \"New password\"; \"New password\" is contained in \"Confirm new password:\" — keep \"Confirm new password:\" exactly (quoted in the requirement) and rename \"New password\"",
+              "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Forgot password form\" shares password with a field label",
+              "1 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “, and a” appears only as `// layout tests assert /header/i, /sidebar/i as visible text`",
+              "11 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"May 31 Sun\", \"xx results\", \"You don''t have uncompleted orders.\", \"You don''t have any bookings or we can''t access your bookings at this time.\", \"Forgot your password\", \"business-class seat ( ￥1870.0 ) 32% off 1 left\", \"first-class seat ( ￥967.0 ) 24% off None left\", \"second-class seat ( ￥576.0 ) 27% off None left\", \"standing ticket ( ￥576.0 ) 27% off Enough left\", \"MM:SS\", \"Total: ￥xxxx.xx\""
+            ],
+            "vocabulary_missing": 11,
+            "repair": {
+              "accepted": true,
+              "files": [
+                "frontend/public/app.js"
+              ],
+              "vocabulary_missing_after": 0
+            }
+          },
+          "cost_upper_estimate_cny": 0.521277
+        },
+        "candidate": {
+          "app": "12306",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 0,
+          "reused_response": true,
+          "usage": {},
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "seconds": 7.64,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "5 field label(s) are substrings of another field label, so getByLabel('Date') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"Date\" is contained in \"End date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"End date\"; \"Date\" is contained in \"Start date\" — keep \"Date\" exactly (quoted in the requirement) and rename \"Start date\"; \"Password\" is contained in \"New password\" — keep \"Password\" exactly (quoted in the requirement) and rename \"New password\"; \"New password\" is contained in \"New password:\" — keep \"New password:\" exactly (quoted in the requirement) and rename \"New password\"; \"New password\" is contained in \"Confirm new password:\" — keep \"Confirm new password:\" exactly (quoted in the requirement) and rename \"New password\"",
+              "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Forgot password form\" shares password with a field label",
+              "1 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “, and a” appears only as `// layout tests assert /header/i, /sidebar/i as visible text`",
+              "11 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"May 31 Sun\", \"xx results\", \"You don''t have uncompleted orders.\", \"You don''t have any bookings or we can''t access your bookings at this time.\", \"Forgot your password\", \"business-class seat ( ￥1870.0 ) 32% off 1 left\", \"first-class seat ( ￥967.0 ) 24% off None left\", \"second-class seat ( ￥576.0 ) 27% off None left\", \"standing ticket ( ￥576.0 ) 27% off Enough left\", \"MM:SS\", \"Total: ￥xxxx.xx\""
+            ],
+            "vocabulary_missing": 11,
+            "repair": {
+              "accepted": true,
+              "files": [
+                "frontend/public/app.js"
+              ],
+              "vocabulary_missing_after": 0
+            }
+          },
+          "cost_upper_estimate_cny": 0
+        }
+      }
+    },
+    {
+      "id": "ctrip-3",
+      "app": "ctrip",
+      "draft_passed": 33,
+      "baseline_passed": 33,
+      "candidate_passed": 33,
+      "total": 125,
+      "gained": [],
+      "regressed": [],
+      "receipts": {
+        "draft": {
+          "app": "ctrip",
+          "mode": "generate",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 44560,
+            "completion_tokens": 75787
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "seconds": 502.88,
+          "smoke": null,
+          "cost_upper_estimate_cny": 0.815763
+        },
+        "baseline": {
+          "app": "ctrip",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 1,
+          "reused_response": false,
+          "usage": {
+            "prompt_tokens": 72902,
+            "completion_tokens": 30223
+          },
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "seconds": 200.12,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "clicking `成都 - 广州` (data-action `use-history`) on screen `#/results` throws: this.flightsList is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "16 field label(s) are substrings of another field label, so getByLabel('姓名') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"姓名\" is contained in \"真实姓名\"; \"姓名\" is contained in \"请输入姓名\"; \"邮箱\" is contained in \"邮箱/用户名/手机号\"; \"日期\" is contained in \"出生日期\"; \"日期\" is contained in \"出发日期\" — keep \"出发日期\" exactly (quoted in the requirement) and rename \"日期\"; \"日期\" is contained in \"返回日期\" — keep \"返回日期\" exactly (quoted in the requirement) and rename \"日期\"; \"订单号\" is contained in \"请输入订单号\" — keep \"订单号\" exactly (quoted in the requirement) and rename \"请输入订单号\"; \"验证码\" is contained in \"请输入验证码\" — keep \"请输入验证码\" exactly (quoted in the requirement) and rename \"验证码\"; \"验证码\" is contained in \"验证码 Verification code\"; \"新密码\" is contained in \"确认新密码\"; \"手机号\" is contained in \"新手机号\"; \"手机号\" is contained in \"请输入手机号\" — keep \"请输入手机号\" exactly (quoted in the requirement) and rename \"手机号\"",
+              "2 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “添加返程” appears only as `+ 添加返程`; “010-” appears only as `机场问询 010-64541100`",
+              "1 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"aa\""
+            ],
+            "vocabulary_missing": 1,
+            "repair": {
+              "accepted": false,
+              "reason": "repair renamed quoted control(s): + 添加返程, 请输入验证码"
+            }
+          },
+          "cost_upper_estimate_cny": 0.490713
+        },
+        "candidate": {
+          "app": "ctrip",
+          "mode": "repair",
+          "model": "deepseek-v4-flash",
+          "new_model_calls": 0,
+          "reused_response": true,
+          "usage": {},
+          "finish_reason": "stop",
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "seconds": 7.5,
+          "smoke": {
+            "executed": true,
+            "problems": [
+              "clicking `成都 - 广州` (data-action `use-history`) on screen `#/results` throws: this.flightsList is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+              "16 field label(s) are substrings of another field label, so getByLabel('姓名') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): \"姓名\" is contained in \"真实姓名\"; \"姓名\" is contained in \"请输入姓名\"; \"邮箱\" is contained in \"邮箱/用户名/手机号\"; \"日期\" is contained in \"出生日期\"; \"日期\" is contained in \"出发日期\" — keep \"出发日期\" exactly (quoted in the requirement) and rename \"日期\"; \"日期\" is contained in \"返回日期\" — keep \"返回日期\" exactly (quoted in the requirement) and rename \"日期\"; \"订单号\" is contained in \"请输入订单号\" — keep \"订单号\" exactly (quoted in the requirement) and rename \"请输入订单号\"; \"验证码\" is contained in \"请输入验证码\" — keep \"请输入验证码\" exactly (quoted in the requirement) and rename \"验证码\"; \"验证码\" is contained in \"验证码 Verification code\"; \"新密码\" is contained in \"确认新密码\"; \"手机号\" is contained in \"新手机号\"; \"手机号\" is contained in \"请输入手机号\" — keep \"请输入手机号\" exactly (quoted in the requirement) and rename \"手机号\"",
+              "2 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “添加返程” appears only as `+ 添加返程`; “010-” appears only as `机场问询 010-64541100`",
+              "1 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"aa\""
+            ],
+            "vocabulary_missing": 1,
+            "repair": {
+              "accepted": false,
+              "reason": "repair renamed quoted control(s): + 添加返程, 请输入验证码"
+            }
+          },
+          "cost_upper_estimate_cny": 0
+        }
+      }
+    }
+  ],
+  "scores_by_task": {
+    "12306": {
+      "draft": 0.4246913580246914,
+      "baseline": 0.4197530864197531,
+      "candidate": 0.5679012345679012
+    },
+    "ctrip": {
+      "draft": 0.22933333333333336,
+      "baseline": 0.296,
+      "candidate": 0.296
+    }
+  },
+  "task_equal_scores": {
+    "draft": 0.3270123456790124,
+    "baseline": 0.35787654320987655,
+    "candidate": 0.43195061728395057
+  },
+  "task_equal_gain": 0.07407407407407401,
+  "new_regressions_vs_baseline": 0,
+  "raw_draft_regressions": [
+    {
+      "pair": "12306-1",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    },
+    {
+      "pair": "ctrip-1",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    },
+    {
+      "pair": "12306-2",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    },
+    {
+      "pair": "ctrip-2",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    },
+    {
+      "pair": "12306-3",
+      "baseline_lost_raw_passes": [
+        "REQ-4.3.2: Save valid edits in the essential information section",
+        "REQ-4.3.2: Reject an invalid password in the essential information section",
+        "REQ-5.1.2: Open the forgot password page from the quick login form"
+      ],
+      "candidate_lost_raw_passes": [
+        "REQ-4.3.2: Save valid edits in the essential information section",
+        "REQ-4.3.2: Reject an invalid password in the essential information section",
+        "REQ-5.1.2: Open the forgot password page from the quick login form"
+      ]
+    },
+    {
+      "pair": "ctrip-3",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    }
+  ],
+  "audit": {
+    "frozen_candidate": true,
+    "review_package_source": true,
+    "original_sources_unchanged": {
+      "12306/draft": true,
+      "12306/repair": true,
+      "ctrip/draft": true,
+      "ctrip/repair": true,
+      "bookstack/draft": true
+    },
+    "evaluator_sources_unchanged": {
+      "12306": true,
+      "ctrip": true
+    },
+    "generated_sources_match_real_responses": {
+      "12306-1": true,
+      "ctrip-1": true,
+      "12306-2": true,
+      "ctrip-2": true,
+      "12306-3": true,
+      "ctrip-3": true
+    },
+    "repair_contexts_and_parameters_match": {
+      "12306-1": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "ctrip-1": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "12306-2": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "ctrip-2": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "12306-3": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "ctrip-3": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      }
+    },
+    "pairs": {
+      "12306-1": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "ctrip-1": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "12306-2": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "ctrip-2": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "12306-3": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "ctrip-3": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      }
+    },
+    "three_pairs_per_task": true,
+    "completed_pairs_by_task": {
+      "12306": 3,
+      "ctrip": 3
+    },
+    "current_batch_state": "retained",
+    "per_task_mean_gain": {
+      "12306": 0.14814814814814814,
+      "ctrip": 0.0
+    },
+    "new_sample_task_equal_gain": 0.07407407407407407,
+    "retention_not_proven": false
+  },
+  "accounting": {
+    "checked_at": 1789961882.021865,
+    "finished_transport_attempts": 24,
+    "finished_model_attempts": 22,
+    "local_setup_failures": 2,
+    "completed": 15,
+    "failed": 7,
+    "known_billed_cost_cny": "8.916223",
+    "unknown_usage_attempts": 7,
+    "unmatched_billing_attempts": 7,
+    "calls": [
+      {
+        "trace": "12306-candidate-fixed/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 75309,
+          "completion_tokens": 63342
+        },
+        "elapsed_seconds": 397.339,
+        "finished_at": 1789899595.902291,
+        "actual_cost_cny": "0.582194",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092018131562869077137386",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "12306-oracle-hk/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 75643,
+          "completion_tokens": 60125
+        },
+        "elapsed_seconds": 415.002,
+        "finished_at": 1789898816.456796,
+        "actual_cost_cny": "0.554243",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092018000268234839256401",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-1/baseline-uncontrolled-hash/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 78502,
+          "completion_tokens": 31514
+        },
+        "elapsed_seconds": 193.945,
+        "finished_at": 1789901507.910274,
+        "actual_cost_cny": "0.388470",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092018483232365339511835",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-1/candidate-uncontrolled-hash/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 78502,
+          "completion_tokens": 31686
+        },
+        "elapsed_seconds": 182.695,
+        "finished_at": 1789901904.471333,
+        "actual_cost_cny": "0.294990",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092018552063165080423892",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-1/draft/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 45769,
+          "completion_tokens": 108884
+        },
+        "elapsed_seconds": 764.174,
+        "finished_at": 1789901101.756821,
+        "actual_cost_cny": "0.986601",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092018321866466453570174",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-1/draft-attempt1-transport-failure/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 178.75,
+        "finished_at": 1789900128.6516259,
+        "actual_cost_cny": null,
+        "request_reached_gateway": true,
+        "usage_applicable": true
+      },
+      {
+        "trace": "holdout/12306-2/baseline/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 77172,
+          "completion_tokens": 52534
+        },
+        "elapsed_seconds": 358.189,
+        "finished_at": 1789906726.04093,
+        "actual_cost_cny": "0.484572",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092020124564899077038771",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-2/baseline-attempt1-transport-failure/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 202.627,
+        "finished_at": 1789906048.4217181,
+        "actual_cost_cny": null,
+        "request_reached_gateway": true,
+        "usage_applicable": true
+      },
+      {
+        "trace": "holdout/12306-2/draft/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 45769,
+          "completion_tokens": 92703
+        },
+        "elapsed_seconds": 711.417,
+        "finished_at": 1789905533.163393,
+        "actual_cost_cny": "0.840972",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092019470345031290861384",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-2/draft-attempt1-transport-failure/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 357.803,
+        "finished_at": 1789904051.7886028,
+        "actual_cost_cny": null,
+        "request_reached_gateway": true,
+        "usage_applicable": true
+      },
+      {
+        "trace": "holdout/12306-2/draft-attempt2-transport-failure/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 275.793,
+        "finished_at": 1789904547.042772,
+        "actual_cost_cny": null,
+        "request_reached_gateway": true,
+        "usage_applicable": true
+      },
+      {
+        "trace": "holdout/12306-3/baseline/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 76190,
+          "completion_tokens": 32523
+        },
+        "elapsed_seconds": 209.946,
+        "finished_at": 1789909712.8038669,
+        "actual_cost_cny": "0.390615",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092021050012895886579033",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/12306-3/draft/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 45769,
+          "completion_tokens": 82750
+        },
+        "elapsed_seconds": 589.846,
+        "finished_at": 1789909363.194367,
+        "actual_cost_cny": "0.751395",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092020525444990685302822",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/ctrip-1/baseline/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 74607,
+          "completion_tokens": 44818
+        },
+        "elapsed_seconds": 278.364,
+        "finished_at": 1789903489.440914,
+        "actual_cost_cny": "0.502460",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092019200915937041125203",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/ctrip-1/draft/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 44560,
+          "completion_tokens": 83770
+        },
+        "elapsed_seconds": 590.933,
+        "finished_at": 1789902930.2318752,
+        "actual_cost_cny": "0.875732",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092019054094589903565697",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/ctrip-2/baseline/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 72051,
+          "completion_tokens": 40381
+        },
+        "elapsed_seconds": 287.046,
+        "finished_at": 1789908758.103435,
+        "actual_cost_cny": "0.371710",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092020474804478320216928",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/ctrip-2/baseline-attempt1-transport-failure/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 431.386,
+        "finished_at": 1789908130.86448,
+        "actual_cost_cny": null,
+        "request_reached_gateway": true,
+        "usage_applicable": true
+      },
+      {
+        "trace": "holdout/ctrip-2/draft/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 44560,
+          "completion_tokens": 77951
+        },
+        "elapsed_seconds": 561.099,
+        "finished_at": 1789907441.257419,
+        "actual_cost_cny": "0.710516",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092020212160289157453222",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/ctrip-3/baseline/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 72902,
+          "completion_tokens": 30223
+        },
+        "elapsed_seconds": 192.615,
+        "finished_at": 1789961805.289833,
+        "actual_cost_cny": "0.490713",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092111333375958909698041",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/ctrip-3/baseline-attempt1-incomplete_stream/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 668.051,
+        "finished_at": 1789914222.0685499,
+        "actual_cost_cny": null,
+        "request_reached_gateway": true,
+        "usage_applicable": true
+      },
+      {
+        "trace": "holdout/ctrip-3/baseline-attempt2-request_mismatch/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 0.0,
+        "finished_at": 1789961284.285079,
+        "actual_cost_cny": "0",
+        "request_reached_gateway": false,
+        "billing_match": "local connection failed before reaching the gateway; no model request",
+        "usage_applicable": false
+      },
+      {
+        "trace": "holdout/ctrip-3/draft/trace.json",
+        "status": "completed",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "prompt_tokens": 44560,
+          "completion_tokens": 75787
+        },
+        "elapsed_seconds": 502.856,
+        "finished_at": 1789913306.8357818,
+        "actual_cost_cny": "0.691040",
+        "request_reached_gateway": true,
+        "usage_applicable": true,
+        "billing_request_id": "2026092022000779728334665101",
+        "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+      },
+      {
+        "trace": "holdout/ctrip-3/draft-attempt1-transport-failure/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 501.587,
+        "finished_at": 1789910372.2535,
+        "actual_cost_cny": null,
+        "request_reached_gateway": true,
+        "usage_applicable": true
+      },
+      {
+        "trace": "holdout/ctrip-3/draft-attempt2-local-proxy-failure/trace.json",
+        "status": "failed",
+        "model": "deepseek-v4-flash",
+        "usage": null,
+        "elapsed_seconds": 0.012,
+        "finished_at": 1789911670.251423,
+        "actual_cost_cny": "0",
+        "request_reached_gateway": false,
+        "billing_match": "local connection failed before reaching the gateway; no model request",
+        "usage_applicable": false
+      }
+    ],
+    "active_calls_not_included": true,
+    "no_official_run_created": true
+  },
+  "known_model_tokens": {
+    "prompt_tokens": 951865,
+    "completion_tokens": 908991
+  },
+  "unknown_usage_attempts": 7,
+  "package_sha256": "3991d48c14b19fd2bf1f277dfc4d1ea7d5b69aa665fa52006cbbe3aabb2c3043",
+  "limitations": [
+    "Local Chromium with four workers and 10-second budgets; hosted CPU quota is not reproduced.",
+    "Three new drafts per task, not proof of generalization beyond these tasks.",
+    "No additional regressions means versus the baseline agent delivery; raw-draft regressions shared by both arms are reported separately.",
+    "Cached actual responses are counted once in experimental expense; a reused response does not imply a free production model call.",
+    "Startup errors can coexist with passing cases; the legacy whole-app label is not a zero-score guarantee."
+  ]
+}

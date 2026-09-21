@@ -1,0 +1,494 @@
+{
+  "schema": "volo.repair-recovery-20260921.v1",
+  "recorded_at_utc": "2026-09-21T03:47:28Z",
+  "source_session": "01a0bdea-8d3a-70c2-b486-8fd819c4d404",
+  "experiment_worktree": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920",
+  "frozen_candidate_sha256": "84f95fec6453b29e392be2b0553d217b71aac7e11f6c2cb3c85e428b3f966ed6",
+  "package_sha256": "3991d48c14b19fd2bf1f277dfc4d1ea7d5b69aa665fa52006cbbe3aabb2c3043",
+  "decision": "retain frozen candidate for review; no official promotion",
+  "pairs": [
+    {
+      "id": "12306-1",
+      "draft_passed": 60,
+      "baseline_passed": 60,
+      "candidate_passed": 60,
+      "total": 135,
+      "gained": 0,
+      "regressed_vs_baseline": 0
+    },
+    {
+      "id": "ctrip-1",
+      "draft_passed": 24,
+      "baseline_passed": 49,
+      "candidate_passed": 49,
+      "total": 125,
+      "gained": 0,
+      "regressed_vs_baseline": 0
+    },
+    {
+      "id": "12306-2",
+      "draft_passed": 24,
+      "baseline_passed": 24,
+      "candidate_passed": 84,
+      "total": 135,
+      "gained": 60,
+      "regressed_vs_baseline": 0
+    },
+    {
+      "id": "ctrip-2",
+      "draft_passed": 29,
+      "baseline_passed": 29,
+      "candidate_passed": 29,
+      "total": 125,
+      "gained": 0,
+      "regressed_vs_baseline": 0
+    },
+    {
+      "id": "12306-3",
+      "draft_passed": 88,
+      "baseline_passed": 86,
+      "candidate_passed": 86,
+      "total": 135,
+      "gained": 0,
+      "regressed_vs_baseline": 0
+    },
+    {
+      "id": "ctrip-3",
+      "draft_passed": 33,
+      "baseline_passed": 33,
+      "candidate_passed": 33,
+      "total": 125,
+      "gained": 0,
+      "regressed_vs_baseline": 0
+    }
+  ],
+  "task_equal_scores": {
+    "draft": 0.3270123456790124,
+    "baseline": 0.35787654320987655,
+    "candidate": 0.43195061728395057
+  },
+  "task_equal_gain": 0.07407407407407401,
+  "audit": {
+    "frozen_candidate": true,
+    "review_package_source": true,
+    "original_sources_unchanged": {
+      "12306/draft": true,
+      "12306/repair": true,
+      "ctrip/draft": true,
+      "ctrip/repair": true,
+      "bookstack/draft": true
+    },
+    "evaluator_sources_unchanged": {
+      "12306": true,
+      "ctrip": true
+    },
+    "generated_sources_match_real_responses": {
+      "12306-1": true,
+      "ctrip-1": true,
+      "12306-2": true,
+      "ctrip-2": true,
+      "12306-3": true,
+      "ctrip-3": true
+    },
+    "repair_contexts_and_parameters_match": {
+      "12306-1": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "ctrip-1": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "12306-2": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "ctrip-2": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "12306-3": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      },
+      "ctrip-3": {
+        "same_initial_context": true,
+        "same_parameters": true,
+        "same_feedback": true
+      }
+    },
+    "pairs": {
+      "12306-1": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "ctrip-1": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "12306-2": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "ctrip-2": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "12306-3": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      },
+      "ctrip-3": {
+        "all_cases_present": true,
+        "counts_match": true,
+        "reported_delta_matches": true,
+        "no_regression": true
+      }
+    },
+    "three_pairs_per_task": true,
+    "completed_pairs_by_task": {
+      "12306": 3,
+      "ctrip": 3
+    },
+    "current_batch_state": "retained",
+    "per_task_mean_gain": {
+      "12306": 0.14814814814814814,
+      "ctrip": 0.0
+    },
+    "new_sample_task_equal_gain": 0.07407407407407407,
+    "retention_not_proven": false
+  },
+  "mechanism_activation": [
+    {
+      "pair": "12306-1",
+      "date_diagnostic_count": 0,
+      "startup_name_exception": [],
+      "gained_vs_baseline": 0,
+      "lost_vs_baseline": 0
+    },
+    {
+      "pair": "ctrip-1",
+      "date_diagnostic_count": 0,
+      "startup_name_exception": [],
+      "gained_vs_baseline": 0,
+      "lost_vs_baseline": 0
+    },
+    {
+      "pair": "12306-2",
+      "date_diagnostic_count": 0,
+      "startup_name_exception": [
+        "from station",
+        "to station"
+      ],
+      "gained_vs_baseline": 60,
+      "lost_vs_baseline": 0
+    },
+    {
+      "pair": "ctrip-2",
+      "date_diagnostic_count": 0,
+      "startup_name_exception": [],
+      "gained_vs_baseline": 0,
+      "lost_vs_baseline": 0
+    },
+    {
+      "pair": "12306-3",
+      "date_diagnostic_count": 0,
+      "startup_name_exception": [],
+      "gained_vs_baseline": 0,
+      "lost_vs_baseline": 0
+    },
+    {
+      "pair": "ctrip-3",
+      "date_diagnostic_count": 0,
+      "startup_name_exception": [],
+      "gained_vs_baseline": 0,
+      "lost_vs_baseline": 0
+    }
+  ],
+  "proposal_audit": {
+    "supplemental": [
+      {
+        "pair": "ctrip-2",
+        "proposal_passed": 30,
+        "retained_passed": 29,
+        "gained": [
+          "REQ-3.2.2: Swap Origin and Destination"
+        ],
+        "regressed": [],
+        "same_proposal_in_both_arms": true,
+        "source_sha256": "6198c31909ab0da64181ff6684c73ea5716cba00dbddaa1ddf90c5816664be0e",
+        "source_verified_with_standard_launcher_manifest_rewrite": true
+      },
+      {
+        "pair": "ctrip-3",
+        "proposal_passed": 36,
+        "retained_passed": 33,
+        "gained": [
+          "REQ-3.5.3.1: Combined Filters",
+          "REQ-3.5.3.3: Sort by On-Time Performance",
+          "REQ-3.5.3.4: Sort by Departure Time"
+        ],
+        "regressed": [],
+        "same_proposal_in_both_arms": true,
+        "source_sha256": "bfd02ba17c712ce2222bc018940f249f315a55471e8050d290ccf40ac49189a5",
+        "source_verified_with_standard_launcher_manifest_rewrite": true
+      }
+    ],
+    "all_proposals": [
+      {
+        "pair": "12306-1",
+        "arm": "baseline",
+        "source_sha256": "0a84ee7eb9460eb98c698ba00848361e37c3549a5fcffec749e0e5b9323d2a6c",
+        "matching_replay": {
+          "passed": 60,
+          "result": "holdout/12306-1/score-candidate/result.json"
+        }
+      },
+      {
+        "pair": "12306-1",
+        "arm": "candidate",
+        "source_sha256": "0a84ee7eb9460eb98c698ba00848361e37c3549a5fcffec749e0e5b9323d2a6c",
+        "matching_replay": {
+          "passed": 60,
+          "result": "holdout/12306-1/score-candidate/result.json"
+        }
+      },
+      {
+        "pair": "ctrip-1",
+        "arm": "baseline",
+        "source_sha256": "8b9ea6c8a3538be2d7271a964af1f6adc50488d2acbe78ea4c6e42b1e4823d65",
+        "matching_replay": {
+          "passed": 49,
+          "result": "holdout/ctrip-1/score-candidate/result.json"
+        }
+      },
+      {
+        "pair": "ctrip-1",
+        "arm": "candidate",
+        "source_sha256": "8b9ea6c8a3538be2d7271a964af1f6adc50488d2acbe78ea4c6e42b1e4823d65",
+        "matching_replay": {
+          "passed": 49,
+          "result": "holdout/ctrip-1/score-candidate/result.json"
+        }
+      },
+      {
+        "pair": "12306-2",
+        "arm": "baseline",
+        "source_sha256": "80466e2b9b23c9002e2f9519ac1815e1d83e74af07b51a9603416617e3c2cf0f",
+        "matching_replay": {
+          "passed": 84,
+          "result": "holdout/12306-2/score-candidate/result.json"
+        }
+      },
+      {
+        "pair": "12306-2",
+        "arm": "candidate",
+        "source_sha256": "80466e2b9b23c9002e2f9519ac1815e1d83e74af07b51a9603416617e3c2cf0f",
+        "matching_replay": {
+          "passed": 84,
+          "result": "holdout/12306-2/score-candidate/result.json"
+        }
+      },
+      {
+        "pair": "ctrip-2",
+        "arm": "baseline",
+        "source_sha256": "6198c31909ab0da64181ff6684c73ea5716cba00dbddaa1ddf90c5816664be0e",
+        "matching_replay": {
+          "passed": 30,
+          "result": "holdout/ctrip-2/score-discarded-proposal/result.json"
+        }
+      },
+      {
+        "pair": "ctrip-2",
+        "arm": "candidate",
+        "source_sha256": "6198c31909ab0da64181ff6684c73ea5716cba00dbddaa1ddf90c5816664be0e",
+        "matching_replay": {
+          "passed": 30,
+          "result": "holdout/ctrip-2/score-discarded-proposal/result.json"
+        }
+      },
+      {
+        "pair": "12306-3",
+        "arm": "baseline",
+        "source_sha256": "cde3e243722f2a568558697be096936d8f248c6478c96efecb6c3d27ab5a8038",
+        "matching_replay": {
+          "passed": 86,
+          "result": "holdout/12306-3/score-candidate/result.json"
+        }
+      },
+      {
+        "pair": "12306-3",
+        "arm": "candidate",
+        "source_sha256": "cde3e243722f2a568558697be096936d8f248c6478c96efecb6c3d27ab5a8038",
+        "matching_replay": {
+          "passed": 86,
+          "result": "holdout/12306-3/score-candidate/result.json"
+        }
+      },
+      {
+        "pair": "ctrip-3",
+        "arm": "baseline",
+        "source_sha256": "bfd02ba17c712ce2222bc018940f249f315a55471e8050d290ccf40ac49189a5",
+        "matching_replay": {
+          "passed": 36,
+          "result": "holdout/ctrip-3/score-discarded-proposal/result.json"
+        }
+      },
+      {
+        "pair": "ctrip-3",
+        "arm": "candidate",
+        "source_sha256": "bfd02ba17c712ce2222bc018940f249f315a55471e8050d290ccf40ac49189a5",
+        "matching_replay": {
+          "passed": 36,
+          "result": "holdout/ctrip-3/score-discarded-proposal/result.json"
+        }
+      }
+    ]
+  },
+  "recovery": {
+    "schema": "volo.experiment-recovery.v1",
+    "max_attempts": 3,
+    "steps": {
+      "ctrip-3/baseline-repair": {
+        "attempts": [
+          {
+            "path": "ctrip-3/baseline-attempt1-incomplete_stream",
+            "imported": true,
+            "outcome": "incomplete_stream"
+          },
+          {
+            "path": "ctrip-3/baseline-attempt2-request_mismatch",
+            "started_at": 1789961276.589355,
+            "outcome": "request_mismatch",
+            "exit_code": 1,
+            "finished_at": 1789961284.293865
+          },
+          {
+            "path": "ctrip-3/baseline",
+            "started_at": 1789961603.409885,
+            "outcome": "completed",
+            "python_version": "3.11.15",
+            "python_executable": "~/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/bin/python3",
+            "exit_code": 0,
+            "finished_at": 1789961805.3065338
+          }
+        ],
+        "request_sha256": "4732178b4bd008b890c18e223a89c1128903b500e2316cd973f42357d5abe98b",
+        "stopped_reason": "request_mismatch"
+      },
+      "ctrip-3/candidate-repair": {
+        "attempts": [
+          {
+            "path": "ctrip-3/candidate",
+            "started_at": 1789961805.309147,
+            "outcome": "completed",
+            "python_version": "3.11.15",
+            "python_executable": "~/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/bin/python3",
+            "exit_code": 0,
+            "finished_at": 1789961815.075835
+          }
+        ],
+        "request_sha256": "4732178b4bd008b890c18e223a89c1128903b500e2316cd973f42357d5abe98b"
+      }
+    }
+  },
+  "runtime_check": {
+    "python": "3.11.15",
+    "python_executable": "~/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/bin/python3",
+    "request_sha256": "4732178b4bd008b890c18e223a89c1128903b500e2316cd973f42357d5abe98b",
+    "matches_original": true,
+    "new_model_calls": 0
+  },
+  "this_recovery_model_call": {
+    "trace": "holdout/ctrip-3/baseline/trace.json",
+    "status": "completed",
+    "model": "deepseek-v4-flash",
+    "usage": {
+      "prompt_tokens": 72902,
+      "completion_tokens": 30223
+    },
+    "elapsed_seconds": 192.615,
+    "finished_at": 1789961805.289833,
+    "actual_cost_cny": "0.490713",
+    "request_reached_gateway": true,
+    "usage_applicable": true,
+    "billing_request_id": "2026092111333375958909698041",
+    "billing_match": "exact model/token counts and nearest completion timestamp within 120 seconds"
+  },
+  "new_model_calls": 1,
+  "local_preparation_failures": 1,
+  "new_official_runs": 0,
+  "new_official_uploads": 0,
+  "raw_draft_regressions": [
+    {
+      "pair": "12306-1",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    },
+    {
+      "pair": "ctrip-1",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    },
+    {
+      "pair": "12306-2",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    },
+    {
+      "pair": "ctrip-2",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    },
+    {
+      "pair": "12306-3",
+      "baseline_lost_raw_passes": [
+        "REQ-4.3.2: Save valid edits in the essential information section",
+        "REQ-4.3.2: Reject an invalid password in the essential information section",
+        "REQ-5.1.2: Open the forgot password page from the quick login form"
+      ],
+      "candidate_lost_raw_passes": [
+        "REQ-4.3.2: Save valid edits in the essential information section",
+        "REQ-4.3.2: Reject an invalid password in the essential information section",
+        "REQ-5.1.2: Open the forgot password page from the quick login form"
+      ]
+    },
+    {
+      "pair": "ctrip-3",
+      "baseline_lost_raw_passes": [],
+      "candidate_lost_raw_passes": []
+    }
+  ],
+  "known_goal_cost_cny": "8.916223",
+  "unknown_goal_usage_attempts": 7,
+  "pre_goal_failed_usage_unknown_attempts": 5,
+  "validation": {
+    "recovery_tests_passed": 14,
+    "legacy_total": 226,
+    "legacy_passed": 214,
+    "legacy_skipped": 12,
+    "terminal_resume_new_model_calls": 0,
+    "wrong_runtime_rejected_before_state_access": true
+  },
+  "frozen_driver_files": {
+    "scripts/experiment_recovery.py": "2b4d2eb2b64ebd1c66cbf5d8706ffd10dd390865b041c0f152c052ce47d149b5",
+    "scripts/experiment_transport.py": "d055562668c73752c3dae0acae49d8976adb06e458af65a73d597c1cd5411076",
+    "scripts/repair_experiment_call.py": "ee3fd642595be3053050a00a1aefb5b1800679a5a1863a56cf97f293c1927dad",
+    "scripts/resume_repair_experiment.py": "dea037758973b6545fa87326cebfa5c8df661b792b43c2ccf29857499a7a246f"
+  }
+}

@@ -581,3 +581,18 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - Kept candidate and retention rule frozen; this limitation does not retroactively
   change the fourth pair. Third 12306 draft has completed, raw replay running.
 - Completed 4/6 pairs: one +60/-0 result, three neutral results. No official run/upload.
+
+## 2026-09-21 — Recover the paired repair experiment and finish its predefined comparison
+
+- Added a versioned recovery driver with atomic state, inherited process lock, cumulative
+  three-attempt cap, request-byte guard and owned SSH/curl cleanup. New tests: 14 passed;
+  required legacy suite: 214 passed, 12 skipped.
+- The guard caught Python 3.9.6 versus 3.11.15 diagnostic ordering drift before spending.
+  Restored the original runtime and exact request; one real call cost CNY 0.490713
+  (72,902 input / 30,223 output tokens). Terminal resume makes no model calls.
+- All six pairs finished. Frozen-candidate local macro score: 35.79% to 43.20%, +60/-0
+  versus baseline deliveries. Ctrip-3 retained 33/125 in both arms; its rejected proposal
+  scored 36/125 (+3/-0). First five pairs preserved; no official run/upload or promotion.
+- [Report](reports/2026-09-21-repair-experiment-recovery.md) and
+  [evidence](evidence/2026-09-21-repair-experiment-recovery.json) retain the exact scope,
+  known expenses, unknown historical usage and remaining acceptance limitations.

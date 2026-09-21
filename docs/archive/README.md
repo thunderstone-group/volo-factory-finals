@@ -26,3 +26,5 @@
 调查与实验：`docs/archive/legacy-harness/experiments.md`（09-12 前的全部实验记录）`docs/archive/legacy-harness/model-comparison-2026-09-12.md` `docs/archive/legacy-harness/logout-calibration-2026-09-12.md` `docs/archive/legacy-harness/ticket-booking-platform-report.md` `docs/archive/legacy-harness/registration-timing-2026-09-14.md` `docs/archive/legacy-harness/repair-loop-autopsy-2026-09-14.md` `docs/archive/legacy-harness/selfcheck-deadend-2026-09-14.md` `docs/archive/legacy-harness/small-board-tokens-2026-09-14.md` `docs/archive/legacy-harness/image-ablation-2026-09-14.md` `docs/archive/legacy-harness/ticket-regression-2026-09-14.md`。
 
 工具与语料：`docs/archive/legacy-harness/acceptance.md` `docs/archive/legacy-harness/external-gate.md`（harness_lab 的独立验收门）`docs/archive/legacy-harness/corpus.md`（公司 GitLab 提供的任务语料，09-11）。
+
+- `handoffs/2026-09-21-before-experiment-completion.md` — Saved five-pair recovery context before the final comparison completed.
