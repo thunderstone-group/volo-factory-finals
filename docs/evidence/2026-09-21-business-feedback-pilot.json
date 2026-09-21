@@ -1,0 +1,613 @@
+{
+  "schema": "volo.business-feedback-pilot.v1",
+  "recorded_at_utc": "2026-09-21T07:36:46Z",
+  "decision": "Keep the bounded controller as an experimental candidate; combine business and delivery-contract feedback. Do not promote this hand-authored probe as complete task verification.",
+  "official_runs": 0,
+  "official_uploads": 0,
+  "new_draft_generations": 0,
+  "model": "deepseek-v4-flash",
+  "experiments": [
+    {
+      "id": "business-loop-20260921",
+      "baseline_passed": 33,
+      "final_passed": 49,
+      "total": 125,
+      "newly_passing": [
+        "REQ-3.5.3.1: Combined Filters",
+        "REQ-3.5.3.3: Sort by On-Time Performance",
+        "REQ-3.5.3.4: Sort by Departure Time",
+        "REQ-3.5.4.2: Select a Fare and Book",
+        "REQ-4.1.1.1: View Reminder Details",
+        "REQ-4.1.4.1: Trigger Add Passenger",
+        "REQ-4.1.5.1: Modify Contact Mobile Number",
+        "REQ-4.1.6.1: Real-Time Fee Calculation",
+        "REQ-4.2.1.2: View Insurance Terms",
+        "REQ-4.2.2.1: View Free Baggage Allowance",
+        "REQ-4.2.2.2: Purchase Extra Baggage Allowance",
+        "REQ-4.2.3.1: Reserve an Airport Drop-Off Service",
+        "REQ-4.2.4.1: Purchase Lounge Service",
+        "REQ-4.2.5.2: Auto Deduction When Removing Services",
+        "REQ-4.3.1: Payment Countdown Reminder",
+        "REQ-4.3.2: Select Payment Method"
+      ],
+      "newly_failing": [],
+      "verdict": "local_gain_without_regression",
+      "model_rounds": [
+        {
+          "number": 1,
+          "before_passed": 8,
+          "proposal_passed": 11,
+          "accepted": true,
+          "gained": [
+            "REQ-3.4.2: saved history runs a valid search instead of only changing the route",
+            "REQ-4.5.1.2: cancel the seeded unpaid order and retain its closed status",
+            "REQ-6.2.1: edited profile values remain visible after save and re-entry"
+          ],
+          "regressed": [],
+          "usage": {
+            "prompt_tokens": 65082,
+            "completion_tokens": 29643
+          },
+          "source_sha256": "58af63f67e75dc0302d114bf212cb08dc925d4b8c4255894f003430733014a0a"
+        },
+        {
+          "number": 2,
+          "before_passed": 11,
+          "proposal_passed": 13,
+          "accepted": true,
+          "gained": [
+            "REQ-3.4.1 + REQ-3.5.4.2: a valid search opens fares and a usable booking page",
+            "REQ-5.5.2.1 + REQ-5.5.3.1: create a default contact, reload it, then delete it"
+          ],
+          "regressed": [],
+          "usage": {
+            "prompt_tokens": 64080,
+            "completion_tokens": 39469
+          },
+          "source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c"
+        }
+      ],
+      "probe_stop_status": "goal_checks_passed",
+      "plan": {
+        "frozen_at_utc": "2026-09-21T05:31:53Z",
+        "hypothesis": "Requirement-derived business feedback plus bounded repeated repair improves a fixed draft beyond a single business-feedback repair without losing baseline-passing public cases.",
+        "baseline_application": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/goal-20260920/holdout/ctrip-3/draft/application",
+        "baseline_source_sha256": "14f39a6650d2aa2f042ff8188fee40483991b8dd2f4933a1ab0a16fa5ca0a2d3",
+        "baseline_probe": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-20260921/baseline-probe-v3/result.json",
+        "baseline_external_score": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-20260921/baseline-score/result.json",
+        "requirements": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/fixed-draft/ctrip/requirements.yaml",
+        "requirements_sha256": "f43556f06b933e954c732040041e0208f43aa00f5291bd38fb70ce8912dde2ce",
+        "adapter": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/goal-20260920/baseline/oneshot/main.py",
+        "model": "deepseek-v4-flash",
+        "temperature": 0.0,
+        "max_output_tokens": 131072,
+        "max_rounds": 6,
+        "max_stalled_rounds": 2,
+        "transport_attempts_per_round_including_prior": 3,
+        "probe_count": 13,
+        "acceptance": "Strict probe gain with no lost previously passed probe; otherwise rollback. Full public evaluation never feeds the repair loop.",
+        "completion": "All frozen probe journeys pass, two consecutive unproductive proposals, or six completed repair rounds. Report first-round and final selected outcomes, full-suite gains/regressions, calls, cost and timing.",
+        "retention": "Any prototype promotion requires a public-suite gain over baseline with no lost baseline-passing case; raw proposal and retained delivery remain separate.",
+        "followup": "If first fixed draft improves externally without regression, validate on saved Ctrip-2 as a separate replication; no new draft generation.",
+        "scope": "Exploratory fixed-Ctrip pilot, not a general probe generator or official submission.",
+        "runtime": {
+          "node": "v20.19.3",
+          "playwright": "1.57.0",
+          "chromium": "143.0.7499.4",
+          "arch": "arm64",
+          "mode": "probe",
+          "workers": 1,
+          "cpu_max": "100000 100000",
+          "memory_max": "2147483648"
+        },
+        "image": "arc-business-feedback:20260921",
+        "image_build_manifest": "sha256:d07f2f6e61faa9e95bff17c589c00e115f7512422a1570751f64e391247d5c05",
+        "driver_hashes": {
+          "scripts/business_loop.py": "6591a464f38817ded7b4a668ccbd57bc07c2c75a722f79fb7557de8a9352e962",
+          "scripts/business_model_step.py": "ccd215b1fb344bb72b6eb8ce5ddef1d639444ad45e37bfce27b1a2c63c89277f",
+          "scripts/business_replay.py": "8dfde932b554d9c2c7b52975b4265bc1b0f68170db345c73dae3e8270164c2f6",
+          "scripts/experiment_recovery.py": "2b4d2eb2b64ebd1c66cbf5d8706ffd10dd390865b041c0f152c052ce47d149b5",
+          "scripts/experiment_transport.py": "d055562668c73752c3dae0acae49d8976adb06e458af65a73d597c1cd5411076",
+          "scripts/business_experiment/Dockerfile": "cc5dfb5b96ee0b5252ba6c5c0ffc12a54537996900bed79debc7256ed1ea8c16",
+          "scripts/business_experiment/container_runner.cjs": "6fedd33f60e313a2bfb21d76b98cc2b4b64d45368235253e36ba1f7271b45aab",
+          "scripts/business_experiment/ctrip_business.spec.cjs": "93be8257ad54e6602708964448a3c52584130f0cdede75c27e654b52e76bc8a0"
+        },
+        "calibration": {
+          "initial_probe_count": 10,
+          "expanded_before_any_model_call": true,
+          "corrected_before_any_model_call": [
+            "Cancellation requirement maps to REQ-4.5.1.2 and may say closed or cancelled.",
+            "A default marker sharing a contact name text node does not mean the contact is missing."
+          ],
+          "baseline_probe_passed": 8,
+          "baseline_public_passed": 33,
+          "old_four_worker_vs_new_one_worker_new_passes": [],
+          "old_four_worker_vs_new_one_worker_lost_passes": []
+        },
+        "authorized_model_balance_cny_at_start": "71.061870",
+        "official_runs_allowed": false
+      },
+      "audit": {
+        "driver_hashes_preserved": true,
+        "driver_snapshot": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-20260921/driver-v1",
+        "baseline_preserved": true,
+        "requirements_preserved": true,
+        "rounds": [
+          {
+            "round": 1,
+            "inputs_match_declared_sources_only": true,
+            "trace_matches_request": true,
+            "model_matches": true,
+            "parameters_match": true,
+            "transport_complete": true,
+            "application_is_exact_model_patch": true,
+            "source_hash_matches": true
+          },
+          {
+            "round": 2,
+            "inputs_match_declared_sources_only": true,
+            "trace_matches_request": true,
+            "model_matches": true,
+            "parameters_match": true,
+            "transport_complete": true,
+            "application_is_exact_model_patch": true,
+            "source_hash_matches": true
+          }
+        ]
+      },
+      "source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c",
+      "runtime": {
+        "node": "v20.19.3",
+        "playwright": "1.57.0",
+        "chromium": "143.0.7499.4",
+        "arch": "arm64",
+        "mode": "score",
+        "workers": 1,
+        "cpu_max": "100000 100000",
+        "memory_max": "2147483648"
+      },
+      "baseline_score_seconds": 936.622,
+      "final_score_seconds": 777.601,
+      "first_round_passed": 36,
+      "final_vs_first_newly_passing": [
+        "REQ-3.5.4.2: Select a Fare and Book",
+        "REQ-4.1.1.1: View Reminder Details",
+        "REQ-4.1.4.1: Trigger Add Passenger",
+        "REQ-4.1.5.1: Modify Contact Mobile Number",
+        "REQ-4.1.6.1: Real-Time Fee Calculation",
+        "REQ-4.2.1.2: View Insurance Terms",
+        "REQ-4.2.2.1: View Free Baggage Allowance",
+        "REQ-4.2.2.2: Purchase Extra Baggage Allowance",
+        "REQ-4.2.3.1: Reserve an Airport Drop-Off Service",
+        "REQ-4.2.4.1: Purchase Lounge Service",
+        "REQ-4.2.5.2: Auto Deduction When Removing Services",
+        "REQ-4.3.1: Payment Countdown Reminder",
+        "REQ-4.3.2: Select Payment Method"
+      ],
+      "final_vs_first_newly_failing": []
+    },
+    {
+      "id": "business-loop-replication-20260921",
+      "baseline_passed": 29,
+      "final_passed": 29,
+      "total": 125,
+      "newly_passing": [],
+      "newly_failing": [],
+      "verdict": "neutral",
+      "model_rounds": [
+        {
+          "number": 1,
+          "before_passed": 10,
+          "proposal_passed": 13,
+          "accepted": true,
+          "gained": [
+            "REQ-4.5.1.2: cancel the seeded unpaid order and retain its closed status",
+            "REQ-5.5.2.1 + REQ-5.5.3.1: create a default contact, reload it, then delete it",
+            "REQ-6.2.1: edited profile values remain visible after save and re-entry"
+          ],
+          "regressed": [],
+          "usage": {
+            "prompt_tokens": 63385,
+            "completion_tokens": 33311
+          },
+          "source_sha256": "9aa98ea0277529fe43cf69bb50cbd3db902ad23bb941eed5cba61b5ca7ec6ab3"
+        }
+      ],
+      "probe_stop_status": "goal_checks_passed",
+      "plan": {
+        "frozen_at_utc": "2026-09-21T06:29:26Z",
+        "hypothesis": "Replicate requirement-driven business repair with calibrated human-valid UI actions on a second immutable draft.",
+        "baseline_application": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/goal-20260920/holdout/ctrip-2/draft/application",
+        "baseline_source_sha256": "d4a8f330be032f97a428f849f032de830349bccf932b77c67cf28e9a2dcbd06e",
+        "baseline_probe": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-replication-20260921/baseline-probe-v6/result.json",
+        "baseline_external_score": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-replication-20260921/baseline-score/result.json",
+        "requirements": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/fixed-draft/ctrip/requirements.yaml",
+        "requirements_sha256": "f43556f06b933e954c732040041e0208f43aa00f5291bd38fb70ce8912dde2ce",
+        "adapter": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/goal-20260920/baseline/oneshot/main.py",
+        "probe_file": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/scripts/business_experiment/ctrip_business.spec.cjs",
+        "model": "deepseek-v4-flash",
+        "temperature": 0,
+        "max_output_tokens": 131072,
+        "max_rounds": 6,
+        "max_stalled_rounds": 2,
+        "probe_count": 13,
+        "acceptance": "Strict business probe gain and zero loss of previously successful probe cases. Full public evaluation is not model feedback.",
+        "completion": "All 13 probe journeys pass, two consecutive proposals make no acceptable progress, or six completed repairs.",
+        "retention": "External pass gain with zero lost baseline-passing cases. Report first-round and final selected results separately.",
+        "runtime": {
+          "node": "v20.19.3",
+          "playwright": "1.57.0",
+          "chromium": "143.0.7499.4",
+          "arch": "arm64",
+          "mode": "probe",
+          "workers": 1,
+          "cpu_max": "100000 100000",
+          "memory_max": "2147483648"
+        },
+        "driver_hashes": {
+          "scripts/business_loop.py": "bae44324e85eb7aa984092b3f7e45e04a8d700689eacdee9cccc4c543d68ca62",
+          "scripts/business_model_step.py": "ccd215b1fb344bb72b6eb8ce5ddef1d639444ad45e37bfce27b1a2c63c89277f",
+          "scripts/business_replay.py": "e1fa1787698a4a24ba2f679be57f88ba1722f4da362be22d2c0885e8f063a5e2",
+          "scripts/experiment_recovery.py": "2b4d2eb2b64ebd1c66cbf5d8706ffd10dd390865b041c0f152c052ce47d149b5",
+          "scripts/experiment_transport.py": "d055562668c73752c3dae0acae49d8976adb06e458af65a73d597c1cd5411076",
+          "scripts/business_experiment/Dockerfile": "cc5dfb5b96ee0b5252ba6c5c0ffc12a54537996900bed79debc7256ed1ea8c16",
+          "scripts/business_experiment/container_runner.cjs": "6fedd33f60e313a2bfb21d76b98cc2b4b64d45368235253e36ba1f7271b45aab",
+          "scripts/business_experiment/ctrip_business.spec.cjs": "ddde5010c42f16657267e393cc670152cfbf5b80dde21e55009d769ce58047c5"
+        },
+        "calibration": [
+          "Same business outcomes, but accept bilingual field labels and normal picker interaction.",
+          "Submit within the login form, rather than confusing the header entry with its submit button.",
+          "Accept menuitem/link/tab navigation roles and use the required GHIJ tab for Guangzhou when needed.",
+          "Open order details through an actual interactive order-number or status control.",
+          "Positive control is the first pilot final app: 13/13."
+        ],
+        "official_runs_allowed": false
+      },
+      "audit": {
+        "driver_hashes_preserved": true,
+        "driver_snapshot": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-replication-20260921/driver-v2",
+        "baseline_preserved": true,
+        "requirements_preserved": true,
+        "rounds": [
+          {
+            "round": 1,
+            "inputs_match_declared_sources_only": true,
+            "trace_matches_request": true,
+            "model_matches": true,
+            "parameters_match": true,
+            "transport_complete": true,
+            "application_is_exact_model_patch": true,
+            "source_hash_matches": true
+          }
+        ]
+      },
+      "source_sha256": "9aa98ea0277529fe43cf69bb50cbd3db902ad23bb941eed5cba61b5ca7ec6ab3",
+      "runtime": {
+        "node": "v20.19.3",
+        "playwright": "1.57.0",
+        "chromium": "143.0.7499.4",
+        "arch": "arm64",
+        "mode": "score",
+        "workers": 1,
+        "cpu_max": "100000 100000",
+        "memory_max": "2147483648"
+      },
+      "baseline_score_seconds": 999.028,
+      "final_score_seconds": 996.865
+    },
+    {
+      "id": "business-loop-input-contract-20260921",
+      "baseline_passed": 29,
+      "final_passed": 48,
+      "total": 125,
+      "newly_passing": [
+        "REQ-3.2.2: Swap Origin and Destination",
+        "REQ-3.2.3: Exception: Same-City Validation",
+        "REQ-3.5.2.2: View More Dates",
+        "REQ-3.5.3.1: Combined Filters",
+        "REQ-3.5.3.3: Sort by On-Time Performance",
+        "REQ-3.5.3.4: Sort by Departure Time",
+        "REQ-3.5.4.2: Select a Fare and Book",
+        "REQ-3.5.4.3: Exception: No Search Results",
+        "REQ-4.1.2.1: Quickly Select Passengers",
+        "REQ-4.1.3.1: Enter ID Information (Normal Flow)",
+        "REQ-4.1.3.2: Exception: Invalid ID Number Format",
+        "REQ-4.1.4.1: Trigger Add Passenger",
+        "REQ-4.1.5.1: Modify Contact Mobile Number",
+        "REQ-4.1.6.1: Real-Time Fee Calculation",
+        "REQ-4.2.2.1: View Free Baggage Allowance",
+        "REQ-4.2.3.1: Reserve an Airport Drop-Off Service",
+        "REQ-4.2.5.2: Auto Deduction When Removing Services",
+        "REQ-4.3.1: Payment Countdown Reminder",
+        "REQ-4.3.2: Select Payment Method"
+      ],
+      "newly_failing": [],
+      "verdict": "local_gain_without_regression",
+      "model_rounds": [
+        {
+          "number": 1,
+          "before_passed": 13,
+          "proposal_passed": 14,
+          "accepted": true,
+          "gained": [
+            "input contract: flight search accepts keyboard entry and opens real results"
+          ],
+          "regressed": [],
+          "usage": {
+            "prompt_tokens": 62190,
+            "completion_tokens": 29222
+          },
+          "source_sha256": "a17cba4ba83393075de9d4a3eef353b808fc0516a773aaab8dd7871eb41a62d4"
+        }
+      ],
+      "probe_stop_status": "goal_checks_passed",
+      "plan": {
+        "frozen_at_utc": "2026-09-21T07:10:57Z",
+        "hypothesis": "Restore the existing input-contract diagnostic alongside business feedback, rather than replacing it, and verify keyboard interaction with a real browser.",
+        "baseline_application": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-replication-20260921/round-1/model/application",
+        "baseline_source_sha256": "9aa98ea0277529fe43cf69bb50cbd3db902ad23bb941eed5cba61b5ca7ec6ab3",
+        "baseline_probe": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-input-contract-20260921/baseline-probe/result.json",
+        "baseline_external_score": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-replication-20260921/final-score/result.json",
+        "requirements": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/fixed-draft/ctrip/requirements.yaml",
+        "requirements_sha256": "f43556f06b933e954c732040041e0208f43aa00f5291bd38fb70ce8912dde2ce",
+        "adapter": "~/projects/volo-factory-worktrees/fixed-draft-repair-20260920/runs/goal-20260920/baseline/oneshot/main.py",
+        "probe_file": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/scripts/business_experiment/ctrip_keyboard_contract.spec.cjs",
+        "include_readonly_diagnostics": true,
+        "probe_count": 14,
+        "max_rounds": 2,
+        "max_stalled_rounds": 2,
+        "model": "deepseek-v4-flash",
+        "temperature": 0.0,
+        "max_output_tokens": 131072,
+        "acceptance": "Strict probe gain without losing prior successful business cases; otherwise rollback.",
+        "completion": "All 14 frozen checks pass, two non-progress rounds, or two completed repairs.",
+        "retention": "Full-suite gain without lost baseline-passing cases.",
+        "feedback_boundary": "Only requirements, current source, existing readonly_gaps source diagnostics and our frozen browser checks. No published test code or failed-case list sent to model.",
+        "runtime": {
+          "node": "v20.19.3",
+          "playwright": "1.57.0",
+          "chromium": "143.0.7499.4",
+          "arch": "arm64",
+          "mode": "probe",
+          "workers": 1,
+          "cpu_max": "100000 100000",
+          "memory_max": "2147483648"
+        },
+        "driver_hashes": {
+          "scripts/business_loop.py": "61f9dfc114d6f6c3f43f4ae970c3c6faab1089969bd2bd6d67bad53129cfd7f6",
+          "scripts/business_model_step.py": "4a2f68ecaf910859b50fbd2f226dde55f5bb071ebcb5eb10356e6f294eee1e05",
+          "scripts/business_replay.py": "14edfba2634b4cd01697e5cacd83e9393b10eee30607235770858df56e45f361",
+          "scripts/experiment_recovery.py": "2b4d2eb2b64ebd1c66cbf5d8706ffd10dd390865b041c0f152c052ce47d149b5",
+          "scripts/experiment_transport.py": "d055562668c73752c3dae0acae49d8976adb06e458af65a73d597c1cd5411076",
+          "scripts/business_experiment/Dockerfile": "cc5dfb5b96ee0b5252ba6c5c0ffc12a54537996900bed79debc7256ed1ea8c16",
+          "scripts/business_experiment/container_runner.cjs": "6fedd33f60e313a2bfb21d76b98cc2b4b64d45368235253e36ba1f7271b45aab",
+          "scripts/business_experiment/ctrip_business.spec.cjs": "ddde5010c42f16657267e393cc670152cfbf5b80dde21e55009d769ce58047c5",
+          "scripts/business_experiment/ctrip_keyboard_contract.spec.cjs": "7890eabc61479fb1a71dfc5b54157a9e7d5ae7787905421bdb479b3c297556a6"
+        },
+        "existing_readonly_findings_count": 4,
+        "prior_trials_preserved": true,
+        "official_runs_allowed": false
+      },
+      "audit": {
+        "driver_hashes_preserved": true,
+        "driver_snapshot": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921",
+        "baseline_preserved": true,
+        "requirements_preserved": true,
+        "rounds": [
+          {
+            "round": 1,
+            "inputs_match_declared_sources_only": true,
+            "trace_matches_request": true,
+            "model_matches": true,
+            "parameters_match": true,
+            "transport_complete": true,
+            "application_is_exact_model_patch": true,
+            "source_hash_matches": true
+          }
+        ]
+      },
+      "source_sha256": "a17cba4ba83393075de9d4a3eef353b808fc0516a773aaab8dd7871eb41a62d4",
+      "runtime": {
+        "node": "v20.19.3",
+        "playwright": "1.57.0",
+        "chromium": "143.0.7499.4",
+        "arch": "arm64",
+        "mode": "score",
+        "workers": 1,
+        "cpu_max": "100000 100000",
+        "memory_max": "2147483648"
+      },
+      "baseline_score_seconds": 996.865,
+      "final_score_seconds": 799.284
+    }
+  ],
+  "accounting": {
+    "calls": [
+      {
+        "experiment": "business-loop-20260921",
+        "trace": "round-1/model/trace.json",
+        "status": "completed",
+        "usage": {
+          "prompt_tokens": 65082,
+          "completion_tokens": 29643
+        },
+        "elapsed_model_seconds": 176.419,
+        "provider_request_id": "02178996877065342d61436b42c4faf3c1605a49dd3caddb0d2bc",
+        "actual_cost_cny": "0.462033",
+        "billing_request_id": "2026092113325030317821989012",
+        "billing_match": "exact model/token counts and nearest completion within 120 seconds"
+      },
+      {
+        "experiment": "business-loop-20260921",
+        "trace": "round-2/model/trace.json",
+        "status": "completed",
+        "usage": {
+          "prompt_tokens": 64080,
+          "completion_tokens": 39469
+        },
+        "elapsed_model_seconds": 235.347,
+        "provider_request_id": "021789969016654e9cb6370e1c023d3432663e680fc5c293527ea",
+        "actual_cost_cny": "0.464312",
+        "billing_request_id": "2026092113365624676352143661",
+        "billing_match": "exact model/token counts and nearest completion within 120 seconds"
+      },
+      {
+        "experiment": "business-loop-replication-20260921",
+        "trace": "round-1/model/trace.json",
+        "status": "completed",
+        "usage": {
+          "prompt_tokens": 63385,
+          "completion_tokens": 33311
+        },
+        "elapsed_model_seconds": 214.868,
+        "provider_request_id": "021789972176942c65202e590747a44f6b901a7b0655cff35995d",
+        "actual_cost_cny": "0.406805",
+        "billing_request_id": "2026092114293653248125271547",
+        "billing_match": "exact model/token counts and nearest completion within 120 seconds"
+      },
+      {
+        "experiment": "business-loop-input-contract-20260921",
+        "trace": "round-1/model/trace.json",
+        "status": "completed",
+        "usage": {
+          "prompt_tokens": 62190,
+          "completion_tokens": 29222
+        },
+        "elapsed_model_seconds": 195.979,
+        "provider_request_id": "02178997467074999f913e5b3ccf9b27055ed446253232989ee44",
+        "actual_cost_cny": "0.342662",
+        "billing_request_id": "2026092115111035391472772884",
+        "billing_match": "exact model/token counts and nearest completion within 120 seconds"
+      }
+    ],
+    "known_cost_cny": "1.675812",
+    "unknown_usage_calls": 0,
+    "unmatched_bills": 0,
+    "known_input_tokens": 254737,
+    "known_output_tokens": 131645
+  },
+  "leaderboard_duration_evidence": {
+    "source": "Official leaderboard snapshots queried earlier in this conversation on 2026-09-21; not a model-call trace.",
+    "filter": "runtime > 10 seconds and pass rate >= 98%, plus VOLO AI",
+    "rows": [
+      {
+        "board": "arc-bench-web",
+        "username": "chrislearn",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 99.5,
+        "avg_runtime_seconds": 22735
+      },
+      {
+        "board": "arc-bench-web",
+        "username": "MoQiiiii",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 99.5,
+        "avg_runtime_seconds": 13036
+      },
+      {
+        "board": "arc-bench-web",
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 72.3,
+        "avg_runtime_seconds": 1134
+      },
+      {
+        "board": "arc-bench-lite",
+        "username": "推贤乐善",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 100.0,
+        "avg_runtime_seconds": 2890
+      },
+      {
+        "board": "arc-bench-lite",
+        "username": "JustSoSO",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 100.0,
+        "avg_runtime_seconds": 1968
+      },
+      {
+        "board": "arc-bench-lite",
+        "username": "非常队",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 100.0,
+        "avg_runtime_seconds": 6854
+      },
+      {
+        "board": "arc-bench-lite",
+        "username": "Aurora-X",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 100.0,
+        "avg_runtime_seconds": 5112
+      },
+      {
+        "board": "arc-bench-lite",
+        "username": "chrislearn",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 98.5,
+        "avg_runtime_seconds": 3778
+      },
+      {
+        "board": "arc-bench-lite",
+        "username": "你说的都对",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 98.5,
+        "avg_runtime_seconds": 3942
+      },
+      {
+        "board": "arc-bench-lite",
+        "username": "HAiKnow",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 98.5,
+        "avg_runtime_seconds": 5818
+      },
+      {
+        "board": "arc-bench-lite",
+        "username": "Golden-Cloud",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 100.0,
+        "avg_runtime_seconds": 2856
+      },
+      {
+        "board": "arc-bench-lite",
+        "username": "VOLO AI",
+        "model_name": "deepseek-v4-flash",
+        "avg_pass_rate": 69.5,
+        "avg_runtime_seconds": 762
+      }
+    ],
+    "interpretation": "Long runtimes are consistent with more iterations but do not establish the number of model calls or use of a particular goal feature."
+  },
+  "probe_validity_audit": {
+    "first_model_feedback_bytes_unchanged": true,
+    "original_trial_a_probe_scores": [
+      8,
+      11,
+      13
+    ],
+    "corrected_audit_scores": [
+      8,
+      13,
+      13
+    ],
+    "false_failures": [
+      "Contact phone field accepted a valid 联系方式 label.",
+      "Deletion needed hovering/scoping the actual contact row."
+    ],
+    "v1_probe_fixture_sha256": "93be8257ad54e6602708964448a3c52584130f0cdede75c27e654b52e76bc8a0"
+  },
+  "validation": {
+    "control_tests_passed": 7,
+    "legacy_passed": 214,
+    "legacy_skipped": 12,
+    "terminal_resume_new_model_calls": 0,
+    "suite_sha256": "1b17b370455154ec0f8c12335f3149fa2ed10b613bb1941de1dff86290b2dc3a"
+  },
+  "limitations": [
+    "Two saved Ctrip drafts; no fresh-generation generalization claim.",
+    "Probe cases are a subset of requirements and are manually authored.",
+    "Local ARM64 replay with pinned versions/quotas is not the complete official x86_64 submission lifecycle.",
+    "Model-generated localStorage persistence has not been verified across browsers/users.",
+    "Costs cover repair calls only; historical draft generation is excluded.",
+    "Aggregate competitor runtime does not reveal their model call count or implementation."
+  ]
+}

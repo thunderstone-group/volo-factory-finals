@@ -515,3 +515,26 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - [Report](reports/2026-09-21-repair-experiment-recovery.md) and
   [evidence](evidence/2026-09-21-repair-experiment-recovery.json) retain the exact scope,
   known expenses, unknown historical usage and remaining acceptance limitations.
+
+## 2026-09-21 15:40 — Complete the bounded business-feedback repair pilot
+
+- Built an opt-in controller around fixed requirements, immutable app drafts and
+  requirement-derived browser checks. Strict probe gains preserve previous passes;
+  stagnation, round limits and persistent transport caps stop the loop. Published
+  evaluator results are excluded from model feedback and per-round selection.
+- Ctrip-3: 33/125 to 49/125 (+16/-0) after two repairs. Its post-run probe audit found
+  label/hover false failures: corrected business coverage was already 13/13 after
+  round 1. Do not claim two new business capabilities from the second raw-probe gain.
+- Ctrip-2: calibrated business feedback improved 10/13 to 13/13 but stayed 29/125.
+  A separately declared follow-up retained those checks and added real keyboard entry
+  plus the existing readonly diagnostic: 48/125 (+19/-0) after one further repair.
+- Four real Flash calls cost CNY 1.675812, 254,737 input / 131,645 output tokens;
+  no unknown usage or unmatched bills. All model request/patch audits passed.
+  Seven controller tests passed; required legacy suite: 214 passed, 12 skipped.
+- All comparisons used unchanged tests and measured Node 20.19.3 / Playwright 1.57.0,
+  1 CPU / 2GB / one worker. Local ARM64 and same-browser localStorage checks remain
+  limitations. No official run/upload, default-agent promotion or main merge.
+- [Frozen report](reports/2026-09-21-business-feedback-pilot.md),
+  [evidence](evidence/2026-09-21-business-feedback-pilot.json), and
+  [execution reference](reference/business-feedback-loop.md) retain the three plans,
+  exact outcomes, probe-calibration caveats and final decision.

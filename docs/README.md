@@ -30,6 +30,7 @@ last-reviewed: 2026-09-21。本文只维护 docs/ 的结构与规则，不复述
 
 ## reports/ 索引（新在上）
 
+- `2026-09-21-business-feedback-pilot.md` — 两份冻结 Ctrip 草稿的业务反馈循环、输入契约补充、独立评分和费用证据。
 - `2026-09-18-goal-ledger.md` — 甲方 01:53 定的「Web 聚合榜 ≥ 80%」目标模式：每轮一行的账本、护栏、判据。
 - `2026-09-18-distillation.md` — 把 know-how 压到弱模型能用的层级（门 → 骨架 → 表 → 散文）的叙事，ADR 0001 的背景。
 - `2026-09-16-workspace-consolidation.md` — 09-16 工作区收编决定：VOLO 唯一主项目、one-shot 与论坛 CLI 的边界。
@@ -43,6 +44,7 @@ last-reviewed: 2026-09-21。本文只维护 docs/ 的结构与规则，不复述
 
 ## reference/ 索引
 
+- `docs/reference/business-feedback-loop.md` — 有限轮次业务反馈实验的执行、探针校准、独立评分和边界。
 - `docs/reference/platform-cli.md` — `arcbench` 客户端的安装配置与绑定本 harness 的平台规则。
 - `docs/reference/oneshot.md` — one-shot 候选在仓库内的位置与边界、打包入口。
 - `docs/reference/forum-cli.md` — 独立的 Qiwoo 论坛 CLI（不进竞赛包）。
