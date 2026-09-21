@@ -1,0 +1,2802 @@
+{
+  "schema": "volo.mini-swe-comparison.v1",
+  "recorded_at_utc": "2026-09-21T16:59:57.698451+00:00",
+  "decision": "Do not migrate the competition agent to this mini-SWE integration under the measured conservative budget. Neither approach improves independent score; classic B regresses and mini retains unchanged baselines.",
+  "upstream": {
+    "repo": "https://github.com/SWE-agent/mini-swe-agent",
+    "version": "2.4.6",
+    "commit": "04d809ceab9df28f9adaed044884180159172930"
+  },
+  "budget": {
+    "per_arm_cny_uncached_allowance": 3,
+    "input_cny_per_million": 3,
+    "output_cny_per_million": 9,
+    "cache_discount_in_budget": false,
+    "output_cap": 131072,
+    "minimum_reserved_output_tokens": 8192,
+    "request_cap": 32,
+    "verification_cap": 6
+  },
+  "rows": [
+    {
+      "run": "classic-a-relay",
+      "mode": "classic",
+      "sample": "a",
+      "scope_before": 5,
+      "scope_after": 9,
+      "scope_total": 9,
+      "public_before": 49,
+      "public_after": 49,
+      "gained": [],
+      "lost": [],
+      "source_changed": true,
+      "status": "ScopedGoalPassed",
+      "calls": 1,
+      "actual_cost_cny": "0.281351",
+      "input_tokens": 66160,
+      "output_tokens": 30325,
+      "provider_http_seconds": 192.402,
+      "active_controller_seconds_including_recovery_invocations": 408.247,
+      "verification_count": 1,
+      "native_tool_counts": {},
+      "baseline_source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c",
+      "selected_source_sha256": "3061d002039ec58222dc31f0b714988dc1868d7354d5953a36740e3d3e124d56",
+      "probe_sha256": "8df6d51652492cae3c7e50aadd7036c8b1b9879a27d4f75847c8114be4cfee31",
+      "score_path": "~/projects/volo-factory-worktrees/mini-swe-goal-20260921/runs/mini-swe-20260921/classic-a-relay/external-score/result.json"
+    },
+    {
+      "run": "mini-a-native-tools",
+      "mode": "mini",
+      "sample": "a",
+      "scope_before": 5,
+      "scope_after": 5,
+      "scope_total": 9,
+      "public_before": 49,
+      "public_after": 49,
+      "gained": [],
+      "lost": [],
+      "source_changed": false,
+      "status": "BudgetLimit",
+      "calls": 22,
+      "actual_cost_cny": "0.298123",
+      "input_tokens": 782193,
+      "output_tokens": 4270,
+      "provider_http_seconds": 95.984,
+      "active_controller_seconds_including_recovery_invocations": 319.227,
+      "verification_count": 0,
+      "native_tool_counts": {
+        "bash": 21,
+        "arc_status": 1,
+        "arc_build": 1,
+        "arc_browser": 2
+      },
+      "baseline_source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c",
+      "selected_source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c",
+      "probe_sha256": "8df6d51652492cae3c7e50aadd7036c8b1b9879a27d4f75847c8114be4cfee31",
+      "score_path": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-20260921/final-score/result.json"
+    },
+    {
+      "run": "classic-b-relay",
+      "mode": "classic",
+      "sample": "b",
+      "scope_before": 6,
+      "scope_after": 9,
+      "scope_total": 9,
+      "public_before": 48,
+      "public_after": 46,
+      "gained": [],
+      "lost": [
+        "REQ-4.3.1: Payment Countdown Reminder",
+        "REQ-4.3.2: Select Payment Method"
+      ],
+      "source_changed": true,
+      "status": "ScopedGoalPassed",
+      "calls": 1,
+      "actual_cost_cny": "0.390647",
+      "input_tokens": 65532,
+      "output_tokens": 30800,
+      "provider_http_seconds": 218.811,
+      "active_controller_seconds_including_recovery_invocations": 439.204,
+      "verification_count": 1,
+      "native_tool_counts": {},
+      "baseline_source_sha256": "a17cba4ba83393075de9d4a3eef353b808fc0516a773aaab8dd7871eb41a62d4",
+      "selected_source_sha256": "01c45223b6af08f4938c4f2c773b761489b02ebd3db237d0169859e3dc1b0375",
+      "probe_sha256": "8df6d51652492cae3c7e50aadd7036c8b1b9879a27d4f75847c8114be4cfee31",
+      "score_path": "~/projects/volo-factory-worktrees/mini-swe-goal-20260921/runs/mini-swe-20260921/classic-b-relay/external-score/result.json"
+    },
+    {
+      "run": "mini-b-native-tools",
+      "mode": "mini",
+      "sample": "b",
+      "scope_before": 6,
+      "scope_after": 6,
+      "scope_total": 9,
+      "public_before": 48,
+      "public_after": 48,
+      "gained": [],
+      "lost": [],
+      "source_changed": false,
+      "status": "BudgetLimit",
+      "calls": 17,
+      "actual_cost_cny": "0.401176",
+      "input_tokens": 679317,
+      "output_tokens": 12645,
+      "provider_http_seconds": 146.648,
+      "active_controller_seconds_including_recovery_invocations": 357.166,
+      "verification_count": 0,
+      "native_tool_counts": {
+        "bash": 24,
+        "arc_build": 1
+      },
+      "baseline_source_sha256": "a17cba4ba83393075de9d4a3eef353b808fc0516a773aaab8dd7871eb41a62d4",
+      "selected_source_sha256": "a17cba4ba83393075de9d4a3eef353b808fc0516a773aaab8dd7871eb41a62d4",
+      "probe_sha256": "8df6d51652492cae3c7e50aadd7036c8b1b9879a27d4f75847c8114be4cfee31",
+      "score_path": "~/projects/volo-factory-worktrees/business-feedback-loop-20260921/runs/business-loop-input-contract-20260921/final-score/result.json"
+    }
+  ],
+  "final_comparison_known_cost_cny": "1.371297",
+  "all_phases_accounting": {
+    "requests": [
+      {
+        "run": "classic-a",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "ea840f80e1ea8ba61e0b626ee8626d589f94ee16696bc0708856be186f10c089",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000372586391b94d62e219899eaebadcce7b395a231ab696",
+        "http_status": 200,
+        "curl_exit_code": 18
+      },
+      {
+        "run": "classic-a-recovery1",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "ea840f80e1ea8ba61e0b626ee8626d589f94ee16696bc0708856be186f10c089",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      },
+      {
+        "run": "classic-a-relay",
+        "path": "call-001",
+        "status": "completed",
+        "request_sha256": "ea840f80e1ea8ba61e0b626ee8626d589f94ee16696bc0708856be186f10c089",
+        "usage": {
+          "completion_tokens": 30325,
+          "completion_tokens_details": {
+            "reasoning_tokens": 8982
+          },
+          "prompt_tokens": 66160,
+          "prompt_tokens_details": {
+            "cached_tokens": 65536
+          },
+          "total_tokens": 96485
+        },
+        "budget_charge_cny": 0.471405,
+        "recovered_without_new_inference": true,
+        "provider_request_id": "0217900064616699ccb9afc7f062b2675deaa60a1d1ba87a6b785",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.281351",
+        "billing_request_id": "2026092200005712587320133826",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "classic-b",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "fff4558b7789c139a33afb791b817f944b0d12d0e2e316e4d22d60c397efe55b",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      },
+      {
+        "run": "classic-b-relay",
+        "path": "call-001",
+        "status": "completed",
+        "request_sha256": "fff4558b7789c139a33afb791b817f944b0d12d0e2e316e4d22d60c397efe55b",
+        "usage": {
+          "completion_tokens": 30800,
+          "completion_tokens_details": {
+            "reasoning_tokens": 10131
+          },
+          "prompt_tokens": 65532,
+          "prompt_tokens_details": {
+            "cached_tokens": 28672
+          },
+          "total_tokens": 96332
+        },
+        "budget_charge_cny": 0.473796,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790006420542eaad90e368bae3f187447d9def39b90772abac",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.390647",
+        "billing_request_id": "2026092200001180345593135922",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "4f49d95ccbe4e571cab3d423eea8af803b4ec88e0adc1f1a7a2e1dd51b325c13",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-001",
+        "status": "completed",
+        "request_sha256": "f1d514f4ac1ce753564293ff2db066fc42e6a492d3865c802d1445e8f1268558",
+        "usage": {
+          "completion_tokens": 150,
+          "completion_tokens_details": {
+            "reasoning_tokens": 13
+          },
+          "prompt_tokens": 5725,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 5875
+        },
+        "budget_charge_cny": 0.018525,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008991123bfe35b6525b6a24c7ddbea7b420bd5584bbfae",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.018525",
+        "billing_request_id": "2026092200431102508777596307",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-002",
+        "status": "completed",
+        "request_sha256": "a2608d580e20fc6bd8f8865e3e8e000eb56ebff02c00b7061facae559050e58a",
+        "usage": {
+          "completion_tokens": 123,
+          "completion_tokens_details": {
+            "reasoning_tokens": 12
+          },
+          "prompt_tokens": 7924,
+          "prompt_tokens_details": {
+            "cached_tokens": 4096
+          },
+          "total_tokens": 8047
+        },
+        "budget_charge_cny": 0.024879,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009000952981eef1a5f6531812ca0302533eb09b380dc59",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.013001",
+        "billing_request_id": "2026092200432076298477718182",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-003",
+        "status": "completed",
+        "request_sha256": "9e93bdd4b292afea757c6a914afdc614e7d102e1e85790bad99a21d38f87a890",
+        "usage": {
+          "completion_tokens": 53,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 9033,
+          "prompt_tokens_details": {
+            "cached_tokens": 7680
+          },
+          "total_tokens": 9086
+        },
+        "budget_charge_cny": 0.027576,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000901094511f0f19ac6c045766b433dd71333664da1bc7c",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.005304",
+        "billing_request_id": "2026092200433074816713891294",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-004",
+        "status": "completed",
+        "request_sha256": "6e6680d353dc59749e9616f1270058441700671a0e6b32b13a395f7e7529ffb2",
+        "usage": {
+          "completion_tokens": 56,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 10145,
+          "prompt_tokens_details": {
+            "cached_tokens": 8960
+          },
+          "total_tokens": 10201
+        },
+        "budget_charge_cny": 0.030939,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009019304fba75098d9ee455dd9478ca57adcb3fd417143",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.004955",
+        "billing_request_id": "2026092200433919716974088258",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-005",
+        "status": "completed",
+        "request_sha256": "a3d3c7bc823128d3dd26d9d56ac63b6fa7859964034e08f55f8c9c15c0256762",
+        "usage": {
+          "completion_tokens": 142,
+          "completion_tokens_details": {
+            "reasoning_tokens": 17
+          },
+          "prompt_tokens": 14391,
+          "prompt_tokens_details": {
+            "cached_tokens": 9984
+          },
+          "total_tokens": 14533
+        },
+        "budget_charge_cny": 0.044451,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000903138976f8256debb8f03d2da9dea6cc2a650deea63a",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.015497",
+        "billing_request_id": "2026092200435121573386986257",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-006",
+        "status": "completed",
+        "request_sha256": "8546be25db0b577842331a4c0495c773d45c2e7496044f35d02c0c999781ab38",
+        "usage": {
+          "completion_tokens": 55,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 14850,
+          "prompt_tokens_details": {
+            "cached_tokens": 14336
+          },
+          "total_tokens": 14905
+        },
+        "budget_charge_cny": 0.045045,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009041289152c08225118e3e35cb95e4b33922c1c424d94",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.003471",
+        "billing_request_id": "2026092200440046709167327495",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-007",
+        "status": "completed",
+        "request_sha256": "d1e1e7d21edbf4482358f9f8f91c725a782df34b53ad29381728dca83096c660",
+        "usage": {
+          "completion_tokens": 81,
+          "completion_tokens_details": {
+            "reasoning_tokens": 18
+          },
+          "prompt_tokens": 21076,
+          "prompt_tokens_details": {
+            "cached_tokens": 14336
+          },
+          "total_tokens": 21157
+        },
+        "budget_charge_cny": 0.063957,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000907278314537b8110db3a4fe3c298b5fc7a850a27e003",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.022383",
+        "billing_request_id": "2026092200443235499899578896",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-008",
+        "status": "completed",
+        "request_sha256": "c35d1db3eea9de41f8a893c11927f66d0bbd8e85a4998d34b7405ccefe0d884d",
+        "usage": {
+          "completion_tokens": 63,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 27496,
+          "prompt_tokens_details": {
+            "cached_tokens": 20992
+          },
+          "total_tokens": 27559
+        },
+        "budget_charge_cny": 0.083055,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009083854165bc15045f54b6c23df9ed30a576e2110470a",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.022178",
+        "billing_request_id": "2026092200444344780207134997",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-009",
+        "status": "completed",
+        "request_sha256": "58827e89d62de8bcc3119616e870ab1f1afa8d4c1a068e1aa2c72ad0ff9ef9ff",
+        "usage": {
+          "completion_tokens": 63,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 33482,
+          "prompt_tokens_details": {
+            "cached_tokens": 27392
+          },
+          "total_tokens": 33545
+        },
+        "budget_charge_cny": 0.101013,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000909292693401d1cd864a49a938337b58c4876d676677e",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.021576",
+        "billing_request_id": "2026092200445194070893204353",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-010",
+        "status": "completed",
+        "request_sha256": "fd0261e3c70e127a25ce316b493a169fd698c2f818c1b263c9087e49b502da19",
+        "usage": {
+          "completion_tokens": 102,
+          "completion_tokens_details": {
+            "reasoning_tokens": 28
+          },
+          "prompt_tokens": 39481,
+          "prompt_tokens_details": {
+            "cached_tokens": 33280
+          },
+          "total_tokens": 39583
+        },
+        "budget_charge_cny": 0.119361,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009101890387f6448b05c0841f65d41c4cef73388950fd8",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.022849",
+        "billing_request_id": "2026092200450146226210826252",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-011",
+        "status": "completed",
+        "request_sha256": "85e4e88cc5a6e84c67f76333c574e9e9ed0279af28625765d23fb24a793b2eed",
+        "usage": {
+          "completion_tokens": 96,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 39614,
+          "prompt_tokens_details": {
+            "cached_tokens": 39168
+          },
+          "total_tokens": 39710
+        },
+        "budget_charge_cny": 0.119706,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900091120602f9349bea7dcfdfeb5ceeba9779d3baba5b4f3",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.006119",
+        "billing_request_id": "2026092200451137695702290476",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-012",
+        "status": "completed",
+        "request_sha256": "1ad643ad86c2f36e89b067b96349b990d1587877a1e9d1f9861514a2eeaa21fb",
+        "usage": {
+          "completion_tokens": 134,
+          "completion_tokens_details": {
+            "reasoning_tokens": 72
+          },
+          "prompt_tokens": 39784,
+          "prompt_tokens_details": {
+            "cached_tokens": 39424
+          },
+          "total_tokens": 39918
+        },
+        "budget_charge_cny": 0.120558,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009121948c1c60125965d8547be0192a9260db7d21c241f",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.006228",
+        "billing_request_id": "2026092200452150206663166946",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-013",
+        "status": "completed",
+        "request_sha256": "d3af55f2e262fd67668bab6eb36a60711920785ae7b5c780b4c8811dbd83b297",
+        "usage": {
+          "completion_tokens": 60,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 40908,
+          "prompt_tokens_details": {
+            "cached_tokens": 39680
+          },
+          "total_tokens": 40968
+        },
+        "budget_charge_cny": 0.123264,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009130974bfe35b6525b6a24c7ddbea7b420bd55879fece",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.008192",
+        "billing_request_id": "2026092200453050569677641095",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-014",
+        "status": "completed",
+        "request_sha256": "6e37f1bd75793bf66bd540a4142bf3b4dee4ca6221e36a4cef78d6ff395f26b7",
+        "usage": {
+          "completion_tokens": 1872,
+          "completion_tokens_details": {
+            "reasoning_tokens": 1815
+          },
+          "prompt_tokens": 44437,
+          "prompt_tokens_details": {
+            "cached_tokens": 40704
+          },
+          "total_tokens": 46309
+        },
+        "budget_charge_cny": 0.150159,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000914384914cea4691e83c1d7ab80acdae8752cedde5fe7",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.032117",
+        "billing_request_id": "2026092200454344813196153407",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-015",
+        "status": "completed",
+        "request_sha256": "857e75c8061fd9c2d5e8d2372464cb1ed3935ff56b3d7d50b4e833323baa44bb",
+        "usage": {
+          "completion_tokens": 158,
+          "completion_tokens_details": {
+            "reasoning_tokens": 19
+          },
+          "prompt_tokens": 50029,
+          "prompt_tokens_details": {
+            "cached_tokens": 44288
+          },
+          "total_tokens": 50187
+        },
+        "budget_charge_cny": 0.151509,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009169048274564af00b8ed8c9fdfc012f2496079b5a61d",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.023074",
+        "billing_request_id": "2026092200460853673516577488",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-016",
+        "status": "completed",
+        "request_sha256": "5db476500af22e484287be30fa84a6fcfbe9c387e0ed210d029eb7dbc3126b7d",
+        "usage": {
+          "completion_tokens": 138,
+          "completion_tokens_details": {
+            "reasoning_tokens": 49
+          },
+          "prompt_tokens": 53926,
+          "prompt_tokens_details": {
+            "cached_tokens": 49920
+          },
+          "total_tokens": 54064
+        },
+        "budget_charge_cny": 0.16302,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900091776376e3e18ada636ec3efb106459ed37f59238164b",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.018252",
+        "billing_request_id": "2026092200461726894506509897",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-017",
+        "status": "completed",
+        "request_sha256": "3d579678d4933c7aa0fe5040d36678a521eb8a6730f6be6c6c22ffe9fbf8f9a1",
+        "usage": {
+          "completion_tokens": 58,
+          "completion_tokens_details": {
+            "reasoning_tokens": 30
+          },
+          "prompt_tokens": 54091,
+          "prompt_tokens_details": {
+            "cached_tokens": 53760
+          },
+          "total_tokens": 54149
+        },
+        "budget_charge_cny": 0.162795,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009193485afbd66db72a1f09b7f1057bdb7ad34d89161e5",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.006891",
+        "billing_request_id": "2026092200463246602801007638",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-018",
+        "status": "completed",
+        "request_sha256": "cc54657fae974f0b653526efba27a76147f2fa8c80633bf0a292494bcacef0a6",
+        "usage": {
+          "completion_tokens": 60,
+          "completion_tokens_details": {
+            "reasoning_tokens": 31
+          },
+          "prompt_tokens": 54359,
+          "prompt_tokens_details": {
+            "cached_tokens": 54016
+          },
+          "total_tokens": 54419
+        },
+        "budget_charge_cny": 0.163617,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900092042921671218e8484143d9389dc42eb9b9f1f6e560c",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.006971",
+        "billing_request_id": "2026092200464395537214871233",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-019",
+        "status": "completed",
+        "request_sha256": "3fb435a3e1f2cca2aecfc64ef4bcfe5bf9f40abac191d46bff192e07ff50f15f",
+        "usage": {
+          "completion_tokens": 90,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 54449,
+          "prompt_tokens_details": {
+            "cached_tokens": 54272
+          },
+          "total_tokens": 54539
+        },
+        "budget_charge_cny": 0.164157,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900092142475fbc2824c96fe07bca989dad8a4db3a0396644",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.006768",
+        "billing_request_id": "2026092200465367047767786374",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-020",
+        "status": "completed",
+        "request_sha256": "e90b0c2e233d3d0ed0f9914eda23dc0f740ad8a5292b3277e211fcd341263ddb",
+        "usage": {
+          "completion_tokens": 54,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 54565,
+          "prompt_tokens_details": {
+            "cached_tokens": 54272
+          },
+          "total_tokens": 54619
+        },
+        "budget_charge_cny": 0.164181,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009236210ba9f922dd9222ae26d697747c3d02688728aba",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.006792",
+        "billing_request_id": "2026092200471558759981905608",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-021",
+        "status": "completed",
+        "request_sha256": "a478637b30e77e2a30f278c96212cb837dcfc6d0f3b4bacf6735a226ca65d80c",
+        "usage": {
+          "completion_tokens": 608,
+          "completion_tokens_details": {
+            "reasoning_tokens": 239
+          },
+          "prompt_tokens": 55897,
+          "prompt_tokens_details": {
+            "cached_tokens": 53248
+          },
+          "total_tokens": 56505
+        },
+        "budget_charge_cny": 0.173163,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900092600002ed1cec50adc32004fbc5d33f36667609c52b6",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.018744",
+        "billing_request_id": "2026092200473944317227618467",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-native-tools",
+        "path": "call-022",
+        "status": "completed",
+        "request_sha256": "2898a13b284c369227199acce2cf163696db0354f6990153ce6518514db86b0a",
+        "usage": {
+          "completion_tokens": 54,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 56531,
+          "prompt_tokens_details": {
+            "cached_tokens": 55808
+          },
+          "total_tokens": 56585
+        },
+        "budget_charge_cny": 0.170079,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009280781b19f2272b96096885d7095f98214c210901019",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.008236",
+        "billing_request_id": "2026092200480028477085051768",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-recovery1",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "4f49d95ccbe4e571cab3d423eea8af803b4ec88e0adc1f1a7a2e1dd51b325c13",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-001",
+        "status": "completed",
+        "request_sha256": "4f49d95ccbe4e571cab3d423eea8af803b4ec88e0adc1f1a7a2e1dd51b325c13",
+        "usage": {
+          "completion_tokens": 120,
+          "completion_tokens_details": {
+            "reasoning_tokens": 14
+          },
+          "prompt_tokens": 5452,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 5572
+        },
+        "budget_charge_cny": 0.017436,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790006244475b7d8c272fa1fe35aa5baeadeea4f72cc79e426",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.017436",
+        "billing_request_id": "2026092123572430589974048492",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-002",
+        "status": "completed",
+        "request_sha256": "31aeb07181ebdfce347134dbec4604bdaebadd615e8f9f5e8aa00ebbd40af7c0",
+        "usage": {
+          "completion_tokens": 145,
+          "completion_tokens_details": {
+            "reasoning_tokens": 21
+          },
+          "prompt_tokens": 10384,
+          "prompt_tokens_details": {
+            "cached_tokens": 4096
+          },
+          "total_tokens": 10529
+        },
+        "budget_charge_cny": 0.032457,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000823653331531f02f4f0092e9c8b48ace140f1c7bc68be",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.020579",
+        "billing_request_id": "2026092200303636057362574356",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-003",
+        "status": "completed",
+        "request_sha256": "c523de4cf4845e55921f542095f7014b85b0ec2ef1418d769ffbf3e5ab030275",
+        "usage": {
+          "completion_tokens": 125,
+          "completion_tokens_details": {
+            "reasoning_tokens": 17
+          },
+          "prompt_tokens": 11767,
+          "prompt_tokens_details": {
+            "cached_tokens": 10240
+          },
+          "total_tokens": 11892
+        },
+        "budget_charge_cny": 0.036426,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008253026b0569a3163ef1c14e46181870ffec997d745bc",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.006730",
+        "billing_request_id": "2026092200305293019899196938",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-004",
+        "status": "completed",
+        "request_sha256": "97cdbb63c56af9ee2b4429b74d5ad9ffb04abc970bad6aca1804187fbf8f05f4",
+        "usage": {
+          "completion_tokens": 86,
+          "completion_tokens_details": {
+            "reasoning_tokens": 23
+          },
+          "prompt_tokens": 22471,
+          "prompt_tokens_details": {
+            "cached_tokens": 11520
+          },
+          "total_tokens": 22557
+        },
+        "budget_charge_cny": 0.068187,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000827262533412155cdacfc777b8945c244aabe1ba194d2",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.034779",
+        "billing_request_id": "2026092200310525825325960138",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-005",
+        "status": "completed",
+        "request_sha256": "b462be997f43965c6851626d783ca86fae2c250535c7b87214fa631e8bdf5095",
+        "usage": {
+          "completion_tokens": 88,
+          "completion_tokens_details": {
+            "reasoning_tokens": 25
+          },
+          "prompt_tokens": 28876,
+          "prompt_tokens_details": {
+            "cached_tokens": 22272
+          },
+          "total_tokens": 28964
+        },
+        "budget_charge_cny": 0.08742,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008293102f23a7fd0932936f048493023b0222ca8975f7b",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.022831",
+        "billing_request_id": "2026092200313045989725154904",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-006",
+        "status": "completed",
+        "request_sha256": "99ac221db79d848baf7820f68ef36f321543516652ff3eb5a702c51439ec3631",
+        "usage": {
+          "completion_tokens": 63,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 35015,
+          "prompt_tokens_details": {
+            "cached_tokens": 28672
+          },
+          "total_tokens": 35078
+        },
+        "budget_charge_cny": 0.105612,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900083241502cb8822a4864991e162f30172d7ae7b6acba13",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.022463",
+        "billing_request_id": "2026092200320129209856478835",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-007",
+        "status": "completed",
+        "request_sha256": "5a5a96584a3c7f7b2291e33d36890f73ea1ec05fb24ffe181573aea221eeab6c",
+        "usage": {
+          "completion_tokens": 63,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 39572,
+          "prompt_tokens_details": {
+            "cached_tokens": 34816
+          },
+          "total_tokens": 39635
+        },
+        "budget_charge_cny": 0.119283,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008336538387f6448b05c0841f65d41c4cef7338896391f",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.018317",
+        "billing_request_id": "2026092200321544500720062543",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-008",
+        "status": "completed",
+        "request_sha256": "fff5dd42e3e9979bbf0460c227ff2237d82aa2fefe4c98b2dda37f4bf4275d4c",
+        "usage": {
+          "completion_tokens": 127,
+          "completion_tokens_details": {
+            "reasoning_tokens": 48
+          },
+          "prompt_tokens": 42519,
+          "prompt_tokens_details": {
+            "cached_tokens": 39424
+          },
+          "total_tokens": 42646
+        },
+        "budget_charge_cny": 0.1287,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008364719ff09694d6072d8a7d915e5534de6ce6773265b",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.014370",
+        "billing_request_id": "2026092200324417936195823340",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-009",
+        "status": "completed",
+        "request_sha256": "b53294c0f663f177566ab0cde75084232654ec0e34882a87f71a3602a3f4e1fc",
+        "usage": {
+          "completion_tokens": 84,
+          "completion_tokens_details": {
+            "reasoning_tokens": 24
+          },
+          "prompt_tokens": 43753,
+          "prompt_tokens_details": {
+            "cached_tokens": 42240
+          },
+          "total_tokens": 43837
+        },
+        "budget_charge_cny": 0.132015,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008377239618be72f3907769bd1896ffa0351d575133c30",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.009519",
+        "billing_request_id": "2026092200325656235645495579",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-010",
+        "status": "completed",
+        "request_sha256": "b796efde7a5f989309037d8fbddf7cfc4b71219c0baeb0e7f25aacdae8553d33",
+        "usage": {
+          "completion_tokens": 116,
+          "completion_tokens_details": {
+            "reasoning_tokens": 41
+          },
+          "prompt_tokens": 47868,
+          "prompt_tokens_details": {
+            "cached_tokens": 43520
+          },
+          "total_tokens": 47984
+        },
+        "budget_charge_cny": 0.144648,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008388359fa5ea4275a5d3d4c29bbd2274cbba1b3a5906c",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.018440",
+        "billing_request_id": "2026092200330662537049737092",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-011",
+        "status": "completed",
+        "request_sha256": "372c684d0e4fd72816b7731c9883f75f5c06bc578aa6ad2b45f599bf6c820a4e",
+        "usage": {
+          "completion_tokens": 1165,
+          "completion_tokens_details": {
+            "reasoning_tokens": 1108
+          },
+          "prompt_tokens": 48058,
+          "prompt_tokens_details": {
+            "cached_tokens": 47616
+          },
+          "total_tokens": 49223
+        },
+        "budget_charge_cny": 0.154659,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000839780097147f4f1a42e833cb78104cc60692b086e4bf",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.016573",
+        "billing_request_id": "2026092200331725984479113692",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-012",
+        "status": "completed",
+        "request_sha256": "48a15b5f4abca76d9a1704a8c06114f969d108c730ca8ddbfcb6de01376889c0",
+        "usage": {
+          "completion_tokens": 132,
+          "completion_tokens_details": {
+            "reasoning_tokens": 68
+          },
+          "prompt_tokens": 52944,
+          "prompt_tokens_details": {
+            "cached_tokens": 47872
+          },
+          "total_tokens": 53076
+        },
+        "budget_charge_cny": 0.16002,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900084268410b6a535eac4f8e78612710df2bd33e04daf286",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.021191",
+        "billing_request_id": "2026092200334591094617254782",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-013",
+        "status": "completed",
+        "request_sha256": "8412f022e899f574c9642a96517bcefde55e267437d6c763b61bfcb9d0a48dad",
+        "usage": {
+          "completion_tokens": 77,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 53099,
+          "prompt_tokens_details": {
+            "cached_tokens": 52736
+          },
+          "total_tokens": 53176
+        },
+        "budget_charge_cny": 0.15999,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900084364160abef843717a049b367df527ee7bcb35d2c3e9",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.007056",
+        "billing_request_id": "2026092200335500110076294755",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-014",
+        "status": "completed",
+        "request_sha256": "d767d7f10464dd49b293759560554c78a16e8519b1eaf3ee5db45ed68eb9d813",
+        "usage": {
+          "completion_tokens": 116,
+          "completion_tokens_details": {
+            "reasoning_tokens": 72
+          },
+          "prompt_tokens": 53398,
+          "prompt_tokens_details": {
+            "cached_tokens": 52992
+          },
+          "total_tokens": 53514
+        },
+        "budget_charge_cny": 0.161238,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008444935efa62bfca375794f3a9b85f4d703cfec3e6776",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.007561",
+        "billing_request_id": "2026092200340439740456843231",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-015",
+        "status": "completed",
+        "request_sha256": "c6ce6866e7c6746827d90fdf2ad58b2d603581eabeae3dff6f653b7d65e527b6",
+        "usage": {
+          "completion_tokens": 245,
+          "completion_tokens_details": {
+            "reasoning_tokens": 139
+          },
+          "prompt_tokens": 53724,
+          "prompt_tokens_details": {
+            "cached_tokens": 53248
+          },
+          "total_tokens": 53969
+        },
+        "budget_charge_cny": 0.163377,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008453534550bfab5f71280c58de086216775be5d29edf6",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.008958",
+        "billing_request_id": "2026092200341302603229292885",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-016",
+        "status": "completed",
+        "request_sha256": "7e7917598572812e7576c9b98f4aa137027416a11e5e2627e03f41bb0812cf95",
+        "usage": {
+          "completion_tokens": 81,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 54007,
+          "prompt_tokens_details": {
+            "cached_tokens": 53504
+          },
+          "total_tokens": 54088
+        },
+        "budget_charge_cny": 0.16275,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900084632318068cba8c70f5aabb039eacbfc6c69b0a6a28b",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.007588",
+        "billing_request_id": "2026092200342161198424853198",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-017",
+        "status": "completed",
+        "request_sha256": "9510703ddcdca5a359b0770bc61b77bf276585bfc687d8926887b1eea4e0dd3c",
+        "usage": {
+          "completion_tokens": 162,
+          "completion_tokens_details": {
+            "reasoning_tokens": 98
+          },
+          "prompt_tokens": 55028,
+          "prompt_tokens_details": {
+            "cached_tokens": 53760
+          },
+          "total_tokens": 55190
+        },
+        "budget_charge_cny": 0.166542,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008472132911e8ed2ab1522906e8f4201ada88c1c3f9be5",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.010638",
+        "billing_request_id": "2026092200342950123883040556",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-018",
+        "status": "completed",
+        "request_sha256": "5b4f04c8131be66e0884d95822ad8a90b374fc9a5c75a40fdec4c541f5f47238",
+        "usage": {
+          "completion_tokens": 117,
+          "completion_tokens_details": {
+            "reasoning_tokens": 62
+          },
+          "prompt_tokens": 55313,
+          "prompt_tokens_details": {
+            "cached_tokens": 54784
+          },
+          "total_tokens": 55430
+        },
+        "budget_charge_cny": 0.166992,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000848119031531f02f4f0092e9c8b48ace140f1c7e530c4",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.008118",
+        "billing_request_id": "2026092200344076749547841968",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-a-relay",
+        "path": "call-019",
+        "status": "completed",
+        "request_sha256": "96e3bef54ae8a95795c0af8b8e1a1fc3f12e1561710ec9b414785e9de5a1f311",
+        "usage": {
+          "completion_tokens": 5295,
+          "completion_tokens_details": {
+            "reasoning_tokens": 5239
+          },
+          "prompt_tokens": 59019,
+          "prompt_tokens_details": {
+            "cached_tokens": 55296
+          },
+          "total_tokens": 64314
+        },
+        "budget_charge_cny": 0.224712,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000849020888db556329240132465f0386a4fcfe59aa628a",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.064354",
+        "billing_request_id": "2026092200344881994549417231",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b",
+        "path": "call-001",
+        "status": "completed",
+        "request_sha256": "d66cc61719533970bdbb8b194024e24c5b1b3ec9b29d89c67eff36da12aa2fe3",
+        "usage": {
+          "completion_tokens": 139,
+          "completion_tokens_details": {
+            "reasoning_tokens": 16
+          },
+          "prompt_tokens": 5717,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 5856
+        },
+        "budget_charge_cny": 0.018402,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000403138638dad7317fdfd631ca8d09889ef8659d8d3e7f",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.018402",
+        "billing_request_id": "2026092123202995641298214323",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b",
+        "path": "call-002",
+        "status": "completed",
+        "request_sha256": "ae87b0adcf5d92d45c81587588c5335c9db70e765981d84e88231110bf33f364",
+        "usage": {
+          "completion_tokens": 172,
+          "completion_tokens_details": {
+            "reasoning_tokens": 13
+          },
+          "prompt_tokens": 10679,
+          "prompt_tokens_details": {
+            "cached_tokens": 5632
+          },
+          "total_tokens": 10851
+        },
+        "budget_charge_cny": 0.033585,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900040446746a861da7d15ce34477456226ae15cbba8bd952",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.017252",
+        "billing_request_id": "2026092123204446316481103898",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b",
+        "path": "call-003",
+        "status": "completed",
+        "request_sha256": "6c5c6a22b40b08b067e095e367075c9b4265e4f7dbf66f04a96c30c558f699d3",
+        "usage": {
+          "completion_tokens": 95,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 11990,
+          "prompt_tokens_details": {
+            "cached_tokens": 10496
+          },
+          "total_tokens": 12085
+        },
+        "budget_charge_cny": 0.036825,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790004068965f952b6c252d6ae62c15909f77d85597edaa465",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.006387",
+        "billing_request_id": "2026092123210879201170807462",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b",
+        "path": "call-004",
+        "status": "completed",
+        "request_sha256": "df29998ee344b355e1011c74f19429b901aa1d8a122cba5703573541ff4d4c27",
+        "usage": {
+          "completion_tokens": 74,
+          "completion_tokens_details": {
+            "reasoning_tokens": 19
+          },
+          "prompt_tokens": 18117,
+          "prompt_tokens_details": {
+            "cached_tokens": 11776
+          },
+          "total_tokens": 18191
+        },
+        "budget_charge_cny": 0.055017,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790004104164d43c98a3a6422f05688e398a72cec5f4b92954",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.020867",
+        "billing_request_id": "2026092123212533629987960830",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b",
+        "path": "call-005",
+        "status": "failed",
+        "request_sha256": "9baa4afe3136f869c51fca879c2f51c217b0a2ae79766fbdc96fe97ffaea0bfc",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-001",
+        "status": "completed",
+        "request_sha256": "e964e15dc7f43356358cb52ef62b92ef927f03edded832fc8a44e47180956745",
+        "usage": {
+          "completion_tokens": 131,
+          "completion_tokens_details": {
+            "reasoning_tokens": 13
+          },
+          "prompt_tokens": 5990,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 6121
+        },
+        "budget_charge_cny": 0.019149,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008989060653b4bec92add899389117fe46b333d8786f8a",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.019149",
+        "billing_request_id": "2026092200430897405669678662",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-002",
+        "status": "completed",
+        "request_sha256": "adb9e88721ae03e41b55472be0c2205fb903fa66edb9e5f4d5aaedd4e26c56dc",
+        "usage": {
+          "completion_tokens": 215,
+          "completion_tokens_details": {
+            "reasoning_tokens": 22
+          },
+          "prompt_tokens": 11151,
+          "prompt_tokens_details": {
+            "cached_tokens": 5888
+          },
+          "total_tokens": 11366
+        },
+        "budget_charge_cny": 0.035388,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009000501ff4b9c68174f3077bc610683236ee961a94ac0",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.018313",
+        "billing_request_id": "2026092200432041598244652983",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-003",
+        "status": "completed",
+        "request_sha256": "ca96df424a2c0f7049fcf907bbdbafbf5b4aa6ed2cd21f7d670b4849616c5ed9",
+        "usage": {
+          "completion_tokens": 75,
+          "completion_tokens_details": {
+            "reasoning_tokens": 16
+          },
+          "prompt_tokens": 13031,
+          "prompt_tokens_details": {
+            "cached_tokens": 11008
+          },
+          "total_tokens": 13106
+        },
+        "budget_charge_cny": 0.039768,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900090140349888986ffb34c69cf48a5af66589c30c91f531",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.007845",
+        "billing_request_id": "2026092200433380297295958055",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-004",
+        "status": "completed",
+        "request_sha256": "bd2e3bd39f5c55a642a431b0872c916cd740331f657963d8255931f47ef2a87b",
+        "usage": {
+          "completion_tokens": 93,
+          "completion_tokens_details": {
+            "reasoning_tokens": 36
+          },
+          "prompt_tokens": 17423,
+          "prompt_tokens_details": {
+            "cached_tokens": 12800
+          },
+          "total_tokens": 17516
+        },
+        "budget_charge_cny": 0.053106,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900090232647d96eb03402f8d23bede142cc170f12185b297",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.015986",
+        "billing_request_id": "2026092200434263580192201155",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-005",
+        "status": "completed",
+        "request_sha256": "3892e2f40305e644558652e8a61ff59bbef392bf1f93818d9862a78639d02d0f",
+        "usage": {
+          "completion_tokens": 193,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 17563,
+          "prompt_tokens_details": {
+            "cached_tokens": 17152
+          },
+          "total_tokens": 17756
+        },
+        "budget_charge_cny": 0.054426,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009035458f1037d74890b775cc53d3d2459e14d19c1923d",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.004685",
+        "billing_request_id": "2026092200435507057462205231",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-006",
+        "status": "completed",
+        "request_sha256": "dab20422cd7540a3870af14bc8dec3e44ae685fc8d939b16128695f668674135",
+        "usage": {
+          "completion_tokens": 97,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 17881,
+          "prompt_tokens_details": {
+            "cached_tokens": 17408
+          },
+          "total_tokens": 17978
+        },
+        "budget_charge_cny": 0.054516,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009046130c26ebaa89f61563ae66be53d1b05a6aa7c4d48",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.004033",
+        "billing_request_id": "2026092200440573814725083730",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-007",
+        "status": "completed",
+        "request_sha256": "3fb116ef3833e6e5861946226c23058e9893d96e8297aaa07a5ba58b77088522",
+        "usage": {
+          "completion_tokens": 77,
+          "completion_tokens_details": {
+            "reasoning_tokens": 23
+          },
+          "prompt_tokens": 26843,
+          "prompt_tokens_details": {
+            "cached_tokens": 17664
+          },
+          "total_tokens": 26920
+        },
+        "budget_charge_cny": 0.081222,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900090757063862fb1b5b304033b62047eb9aa7ba76558c04",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.029996",
+        "billing_request_id": "2026092200443526011131601465",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-008",
+        "status": "completed",
+        "request_sha256": "381d76dd6f037af097cf23d6892b7cf3c5577f1484137ca492b08d32e0c6fc12",
+        "usage": {
+          "completion_tokens": 91,
+          "completion_tokens_details": {
+            "reasoning_tokens": 29
+          },
+          "prompt_tokens": 33027,
+          "prompt_tokens_details": {
+            "cached_tokens": 26624
+          },
+          "total_tokens": 33118
+        },
+        "budget_charge_cny": 0.0999,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009088901b76ca2849f4285d135ef968890a9bdebbfd913",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.022690",
+        "billing_request_id": "2026092200444691383290579217",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-009",
+        "status": "completed",
+        "request_sha256": "7b98d30c4caa99ad4e55f2eb4061a015072841281ae9ac809c2b4e98e041093f",
+        "usage": {
+          "completion_tokens": 62,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 39547,
+          "prompt_tokens_details": {
+            "cached_tokens": 32768
+          },
+          "total_tokens": 39609
+        },
+        "budget_charge_cny": 0.119199,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000909739076f8256debb8f03d2da9dea6cc2a650ddaedb4",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.024172",
+        "billing_request_id": "2026092200445696930600685515",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-010",
+        "status": "completed",
+        "request_sha256": "c3a5560168b7ded41472ff99e3ae3aaa812bad3a23e6e079ff8b4a7bfad5b052",
+        "usage": {
+          "completion_tokens": 62,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 45815,
+          "prompt_tokens_details": {
+            "cached_tokens": 39424
+          },
+          "total_tokens": 45877
+        },
+        "budget_charge_cny": 0.138003,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900091064744ec3e2d763ce0a518bca21e33c72fe686085ed",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.023673",
+        "billing_request_id": "2026092200450596988979340297",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-011",
+        "status": "completed",
+        "request_sha256": "bad3220f70900dd30eaaa16325a3a73e147c7bf1689948e74f48b0e07a658cab",
+        "usage": {
+          "completion_tokens": 176,
+          "completion_tokens_details": {
+            "reasoning_tokens": 44
+          },
+          "prompt_tokens": 51658,
+          "prompt_tokens_details": {
+            "cached_tokens": 45568
+          },
+          "total_tokens": 51834
+        },
+        "budget_charge_cny": 0.156558,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900091177792d60f60bba313662d1f7bb8a224af9f48efd4e",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.024411",
+        "billing_request_id": "2026092200451735886896316381",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-012",
+        "status": "completed",
+        "request_sha256": "e39a74632da7f5fc7a6c0cebbb04e5f542cb4c0c0f60bbc1290a8941c3580d39",
+        "usage": {
+          "completion_tokens": 110,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 54888,
+          "prompt_tokens_details": {
+            "cached_tokens": 51456
+          },
+          "total_tokens": 54998
+        },
+        "budget_charge_cny": 0.165654,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009127701b0479337ddee81756514a17e7255424ef03e86",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.016432",
+        "billing_request_id": "2026092200452732178620384459",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-013",
+        "status": "completed",
+        "request_sha256": "a1fa4cb394e459c8bda9bb678485ded029919b2471ecf0f8a4919ec5e69c8939",
+        "usage": {
+          "completion_tokens": 10463,
+          "completion_tokens_details": {
+            "reasoning_tokens": 10386
+          },
+          "prompt_tokens": 57786,
+          "prompt_tokens_details": {
+            "cached_tokens": 54784
+          },
+          "total_tokens": 68249
+        },
+        "budget_charge_cny": 0.267525,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009141436f209293b0689fc4da4ccbf3e82cce55d42291e",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.108651",
+        "billing_request_id": "2026092200454111098945582907",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-014",
+        "status": "completed",
+        "request_sha256": "8bff89d12ee9fb8e21252fef4cbc1a0d7fcd4bdb1754e151e193c283811122c4",
+        "usage": {
+          "completion_tokens": 214,
+          "completion_tokens_details": {
+            "reasoning_tokens": 87
+          },
+          "prompt_tokens": 70598,
+          "prompt_tokens_details": {
+            "cached_tokens": 57344
+          },
+          "total_tokens": 70812
+        },
+        "budget_charge_cny": 0.21372,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009282179e47635ed4409d744027d1eb06218e83629df4b",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.047422",
+        "billing_request_id": "2026092200480174649284532944",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-015",
+        "status": "completed",
+        "request_sha256": "ebf564ed860d8b2f7e09177ca42f14e462c320a804e1abac23ba97a907891f53",
+        "usage": {
+          "completion_tokens": 57,
+          "completion_tokens_details": {
+            "reasoning_tokens": 28
+          },
+          "prompt_tokens": 71885,
+          "prompt_tokens_details": {
+            "cached_tokens": 70400
+          },
+          "total_tokens": 71942
+        },
+        "budget_charge_cny": 0.216168,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009295564cdb985060772518cf2b73708fa98016eb22b1b",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.012008",
+        "billing_request_id": "2026092200481315834710109313",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-016",
+        "status": "completed",
+        "request_sha256": "4f1a1619d48ac7afb99ea85c728290ddf7093649968350a7d0d36287b86a5b2e",
+        "usage": {
+          "completion_tokens": 249,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 71972,
+          "prompt_tokens_details": {
+            "cached_tokens": 71680
+          },
+          "total_tokens": 72221
+        },
+        "budget_charge_cny": 0.218157,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009316946c175de5f11b223efcc3ac4becea38bcf75fd57",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.010285",
+        "billing_request_id": "2026092200483651146115649248",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-native-tools",
+        "path": "call-017",
+        "status": "completed",
+        "request_sha256": "2955880fb678c3ffd9a2c77978ba6830f03fc2a2fee31b0ef8aff123439eda31",
+        "usage": {
+          "completion_tokens": 280,
+          "completion_tokens_details": {
+            "reasoning_tokens": 42
+          },
+          "prompt_tokens": 72259,
+          "prompt_tokens_details": {
+            "cached_tokens": 71680
+          },
+          "total_tokens": 72539
+        },
+        "budget_charge_cny": 0.219297,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790009328061beabf2da32de8288dd26a2be1ddd61269f6525",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.011425",
+        "billing_request_id": "2026092200484767548432192880",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-001",
+        "status": "completed",
+        "request_sha256": "d66cc61719533970bdbb8b194024e24c5b1b3ec9b29d89c67eff36da12aa2fe3",
+        "usage": {
+          "completion_tokens": 120,
+          "completion_tokens_details": {
+            "reasoning_tokens": 14
+          },
+          "prompt_tokens": 5717,
+          "prompt_tokens_details": {
+            "cached_tokens": 4096
+          },
+          "total_tokens": 5837
+        },
+        "budget_charge_cny": 0.018231,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000643849714537b8110db3a4fe3c298b5fc7a850a7c253b",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.006353",
+        "billing_request_id": "2026092200003831577523977506",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-002",
+        "status": "completed",
+        "request_sha256": "429ac1b716ecdcbadede218acdd0ade1f4a1d91e4f2b4f69d64a12b1ab554c86",
+        "usage": {
+          "completion_tokens": 182,
+          "completion_tokens_details": {
+            "reasoning_tokens": 45
+          },
+          "prompt_tokens": 10649,
+          "prompt_tokens_details": {
+            "cached_tokens": 5632
+          },
+          "total_tokens": 10831
+        },
+        "budget_charge_cny": 0.033585,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000645339980c56aa2c9b300d5cdd78b61f7b93dd67ae0e9",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.017252",
+        "billing_request_id": "2026092200005323569978019176",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-003",
+        "status": "completed",
+        "request_sha256": "7858f0481ff022a1ae743d39fbeb6617a68173c401c8ac2ae96f38e613be70af",
+        "usage": {
+          "completion_tokens": 100,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 11067,
+          "prompt_tokens_details": {
+            "cached_tokens": 10496
+          },
+          "total_tokens": 11167
+        },
+        "budget_charge_cny": 0.034101,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790006474673f4adc67380408827a42ccf664af7aaa2cb6f9b",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.003663",
+        "billing_request_id": "2026092200011250594964087753",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-004",
+        "status": "completed",
+        "request_sha256": "64b2f6930e081bf832f56ec8b6e36389a04c90f7875a344c1aa41db39e7f9673",
+        "usage": {
+          "completion_tokens": 76,
+          "completion_tokens_details": {
+            "reasoning_tokens": 20
+          },
+          "prompt_tokens": 17058,
+          "prompt_tokens_details": {
+            "cached_tokens": 10752
+          },
+          "total_tokens": 17134
+        },
+        "budget_charge_cny": 0.051858,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790006486256afbd66db72a1f09b7f1057bdb7ad34d831d625",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.020677",
+        "billing_request_id": "2026092200012584078522244556",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-005",
+        "status": "completed",
+        "request_sha256": "3fa19715d12f4e23fa9bf02f0f069ebb451af66010b3a4eed7ce61b7b7e9e72e",
+        "usage": {
+          "completion_tokens": 82,
+          "completion_tokens_details": {
+            "reasoning_tokens": 27
+          },
+          "prompt_tokens": 22111,
+          "prompt_tokens_details": {
+            "cached_tokens": 16896
+          },
+          "total_tokens": 22193
+        },
+        "budget_charge_cny": 0.067071,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790006528576cdb985060772518cf2b73708fa98016e741092",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.018073",
+        "billing_request_id": "2026092200020483328058209870",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-006",
+        "status": "completed",
+        "request_sha256": "c3aa67cea9c677e4dbdc2e4add20c162e2b283c1ea66b7aaf5d361b4f235e4ab",
+        "usage": {
+          "completion_tokens": 90,
+          "completion_tokens_details": {
+            "reasoning_tokens": 23
+          },
+          "prompt_tokens": 28300,
+          "prompt_tokens_details": {
+            "cached_tokens": 20480
+          },
+          "total_tokens": 28390
+        },
+        "budget_charge_cny": 0.08571,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900082386099ee13f605c3786670e0524dbc441cb7745f988",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.026318",
+        "billing_request_id": "2026092200303378603212830474",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-007",
+        "status": "completed",
+        "request_sha256": "2e5b7eb71c906cf9f1a96a6534b8499691abbd39ce1a13b533504c232d652350",
+        "usage": {
+          "completion_tokens": 67,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 34965,
+          "prompt_tokens_details": {
+            "cached_tokens": 28160
+          },
+          "total_tokens": 35032
+        },
+        "budget_charge_cny": 0.105498,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008252792db75dded7c19a7df720a76be3f48b559af0615",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.023834",
+        "billing_request_id": "2026092200304848740620139757",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-008",
+        "status": "completed",
+        "request_sha256": "ff607a43adf2c2d4c91dcd0b4ddb11804fea6c745a36409f51e35e86644f4955",
+        "usage": {
+          "completion_tokens": 67,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 41391,
+          "prompt_tokens_details": {
+            "cached_tokens": 34816
+          },
+          "total_tokens": 41458
+        },
+        "budget_charge_cny": 0.124776,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008277648d6bdab3051f46472bfd942e874cc5db0d12cd3",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.023810",
+        "billing_request_id": "2026092200311145022497946901",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-009",
+        "status": "completed",
+        "request_sha256": "8c8bbb06c58e4906a7985b72c9425d2ba93004dfe3eef80743ac2611c303574e",
+        "usage": {
+          "completion_tokens": 67,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 46915,
+          "prompt_tokens_details": {
+            "cached_tokens": 41216
+          },
+          "total_tokens": 46982
+        },
+        "budget_charge_cny": 0.141348,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008297070370bb23d252740693083f3a4ebee927f139941",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.021822",
+        "billing_request_id": "2026092200313481782933349134",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-010",
+        "status": "completed",
+        "request_sha256": "fc5e80cbf62f03e72d683a576ab21f8dc1a9dcb88795e7aecd2d992924e93e05",
+        "usage": {
+          "completion_tokens": 89,
+          "completion_tokens_details": {
+            "reasoning_tokens": 19
+          },
+          "prompt_tokens": 51446,
+          "prompt_tokens_details": {
+            "cached_tokens": 46848
+          },
+          "total_tokens": 51535
+        },
+        "budget_charge_cny": 0.155139,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000832491714cea4691e83c1d7ab80acdae8752cedfe14a4",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.019280",
+        "billing_request_id": "2026092200320254781282291531",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-011",
+        "status": "completed",
+        "request_sha256": "7a52b099b8a26371083d01b13c13341e29c0d041d034404c194b72aeb91a4c66",
+        "usage": {
+          "completion_tokens": 103,
+          "completion_tokens_details": {
+            "reasoning_tokens": 37
+          },
+          "prompt_tokens": 54700,
+          "prompt_tokens_details": {
+            "cached_tokens": 51200
+          },
+          "total_tokens": 54803
+        },
+        "budget_charge_cny": 0.165027,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900083380236a00aaadbf856d05e5e786a533a14422dc39dc",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.016547",
+        "billing_request_id": "2026092200321754096324692780",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-012",
+        "status": "completed",
+        "request_sha256": "4fc097d931d77da150217665e012e0dc3819a7bf1f65aa7be02f7b7c7b36c9fa",
+        "usage": {
+          "completion_tokens": 154,
+          "completion_tokens_details": {
+            "reasoning_tokens": 62
+          },
+          "prompt_tokens": 54834,
+          "prompt_tokens_details": {
+            "cached_tokens": 54528
+          },
+          "total_tokens": 54988
+        },
+        "budget_charge_cny": 0.165888,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900083658890b6a535eac4f8e78612710df2bd33e04f06670",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.007757",
+        "billing_request_id": "2026092200324553859467013450",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-013",
+        "status": "completed",
+        "request_sha256": "1d6f3973c8608f2f299a878d6373a89fe5b773bb2807cd5756eaecb9404419a7",
+        "usage": {
+          "completion_tokens": 174,
+          "completion_tokens_details": {
+            "reasoning_tokens": 78
+          },
+          "prompt_tokens": 55970,
+          "prompt_tokens_details": {
+            "cached_tokens": 54528
+          },
+          "total_tokens": 56144
+        },
+        "budget_charge_cny": 0.169476,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000837980115a741db9058723ed34b56d0ce5c7d9c258f76",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.011345",
+        "billing_request_id": "2026092200325902133540907137",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-014",
+        "status": "completed",
+        "request_sha256": "d7c05c43f7fba2cdce0246952fb763a1784118edda3de05a38ed0949a9a09824",
+        "usage": {
+          "completion_tokens": 164,
+          "completion_tokens_details": {
+            "reasoning_tokens": 75
+          },
+          "prompt_tokens": 56212,
+          "prompt_tokens_details": {
+            "cached_tokens": 55808
+          },
+          "total_tokens": 56376
+        },
+        "budget_charge_cny": 0.170112,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008391684a7468c13ae862cf181a1dbcac0db1f8299a4fe",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.008269",
+        "billing_request_id": "2026092200331118842112069430",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-015",
+        "status": "completed",
+        "request_sha256": "a714a957387c7b3a055cd331ffb17ad62dd5c54975486080ce14f04109ce30f5",
+        "usage": {
+          "completion_tokens": 182,
+          "completion_tokens_details": {
+            "reasoning_tokens": 79
+          },
+          "prompt_tokens": 56747,
+          "prompt_tokens_details": {
+            "cached_tokens": 56064
+          },
+          "total_tokens": 56929
+        },
+        "budget_charge_cny": 0.171879,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900084022475ff81645323f0060132cd8f23da37b476ab999",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.009293",
+        "billing_request_id": "2026092200332162303361724400",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-016",
+        "status": "completed",
+        "request_sha256": "c55948206cec6223c38e29adace2743a6aff1700c5a66eba3e46e578c69e978e",
+        "usage": {
+          "completion_tokens": 315,
+          "completion_tokens_details": {
+            "reasoning_tokens": 210
+          },
+          "prompt_tokens": 57197,
+          "prompt_tokens_details": {
+            "cached_tokens": 56576
+          },
+          "total_tokens": 57512
+        },
+        "budget_charge_cny": 0.174426,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000842681739f35c71c8ce3e4a3f933a145650ead91f5493",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.010356",
+        "billing_request_id": "2026092200334599096424381425",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-017",
+        "status": "completed",
+        "request_sha256": "78ee1ed435126dcea9f3ddccaf09a2b726333ce1962747e4c9473a9be80cac2a",
+        "usage": {
+          "completion_tokens": 75,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 57661,
+          "prompt_tokens_details": {
+            "cached_tokens": 57088
+          },
+          "total_tokens": 57736
+        },
+        "budget_charge_cny": 0.173658,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008436671c2531bd3ff98f8d456851518a83e6729d28566",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.008103",
+        "billing_request_id": "2026092200335552074438519235",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-018",
+        "status": "completed",
+        "request_sha256": "d47e4e17571b9514f26f49426bc473b5d23ad4fdcadbfa3bbfcc6f30dbfe8f3b",
+        "usage": {
+          "completion_tokens": 212,
+          "completion_tokens_details": {
+            "reasoning_tokens": 129
+          },
+          "prompt_tokens": 58445,
+          "prompt_tokens_details": {
+            "cached_tokens": 57344
+          },
+          "total_tokens": 58657
+        },
+        "budget_charge_cny": 0.177243,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "0217900084468269f692f7ff6be1138110b3bb1f50bdb06ad47ac",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.010945",
+        "billing_request_id": "2026092200340628315948400132",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-019",
+        "status": "completed",
+        "request_sha256": "54dde8be427f3970183d1f96ac77d7609c8fcc86f1d004b563eb8e88f7f2bda4",
+        "usage": {
+          "completion_tokens": 198,
+          "completion_tokens_details": {
+            "reasoning_tokens": 80
+          },
+          "prompt_tokens": 59016,
+          "prompt_tokens_details": {
+            "cached_tokens": 58368
+          },
+          "total_tokens": 59214
+        },
+        "budget_charge_cny": 0.17883,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "021790008457005c2531bd3ff98f8d456851518a83e6729ba379b",
+        "http_status": 200,
+        "curl_exit_code": 0,
+        "actual_cost_cny": "0.009563",
+        "billing_request_id": "2026092200341644443008535355",
+        "match_method": "exact model/token counts and nearest provider completion within 180 seconds"
+      }
+    ],
+    "confirmed_not_sent_setup_failures": [
+      {
+        "run": "mini-a-relay",
+        "path": "call-002-setup-failed-v2",
+        "logical_sha256": "e15dfa523100d4d9cdd4bf520dc4edf1691e066c8fe6f79929a9b93c0ed03d53",
+        "request_sha256": "31aeb07181ebdfce347134dbec4604bdaebadd615e8f9f5e8aa00ebbd40af7c0",
+        "status": "failed",
+        "started_at": 1790006268.0792,
+        "reserved_cny": 1.313646,
+        "input_token_bound": 44666,
+        "max_output_tokens": 131072,
+        "error": "relay SSH failed: Connection closed by 38.76.180.111 port 39217\n",
+        "usage": null,
+        "finished_at": 1790006283.672439,
+        "request_sent": false,
+        "resolution": "failed SSH launch; complete relay inventory has no matching job"
+      },
+      {
+        "run": "mini-b-relay",
+        "path": "call-006-setup-failed-v2",
+        "logical_sha256": "374aa3c441c278774f75687ed773cef509cdc7127de32b8c146724e4e887cef9",
+        "request_sha256": "c3aa67cea9c677e4dbdc2e4add20c162e2b283c1ea66b7aaf5d361b4f235e4ab",
+        "status": "failed",
+        "started_at": 1790006548.416115,
+        "reserved_cny": 1.493904,
+        "input_token_bound": 104752,
+        "max_output_tokens": 131072,
+        "error": "relay SSH failed: Connection timed out during banner exchange\nConnection to 38.76.180.111 port 39217 timed out\n",
+        "usage": null,
+        "finished_at": 1790006560.427308,
+        "request_sent": false,
+        "resolution": "failed SSH launch; complete relay inventory has no matching job"
+      }
+    ],
+    "unknown_usage_calls": [
+      {
+        "run": "classic-a",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "ea840f80e1ea8ba61e0b626ee8626d589f94ee16696bc0708856be186f10c089",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": "02179000372586391b94d62e219899eaebadcce7b395a231ab696",
+        "http_status": 200,
+        "curl_exit_code": 18
+      },
+      {
+        "run": "classic-a-recovery1",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "ea840f80e1ea8ba61e0b626ee8626d589f94ee16696bc0708856be186f10c089",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      },
+      {
+        "run": "classic-b",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "fff4558b7789c139a33afb791b817f944b0d12d0e2e316e4d22d60c397efe55b",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      },
+      {
+        "run": "mini-a",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "4f49d95ccbe4e571cab3d423eea8af803b4ec88e0adc1f1a7a2e1dd51b325c13",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      },
+      {
+        "run": "mini-a-recovery1",
+        "path": "call-001",
+        "status": "failed",
+        "request_sha256": "4f49d95ccbe4e571cab3d423eea8af803b4ec88e0adc1f1a7a2e1dd51b325c13",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      },
+      {
+        "run": "mini-b",
+        "path": "call-005",
+        "status": "failed",
+        "request_sha256": "9baa4afe3136f869c51fca879c2f51c217b0a2ae79766fbdc96fe97ffaea0bfc",
+        "usage": null,
+        "budget_charge_cny": null,
+        "recovered_without_new_inference": false,
+        "provider_request_id": null,
+        "http_status": 0,
+        "curl_exit_code": 52
+      }
+    ],
+    "unmatched_completed_calls": [],
+    "per_run": {
+      "classic-a": {
+        "completed": 0,
+        "unknown": 1,
+        "known_input_tokens": 0,
+        "known_output_tokens": 0,
+        "known_cost_cny": "0"
+      },
+      "classic-a-recovery1": {
+        "completed": 0,
+        "unknown": 1,
+        "known_input_tokens": 0,
+        "known_output_tokens": 0,
+        "known_cost_cny": "0"
+      },
+      "classic-a-relay": {
+        "completed": 1,
+        "unknown": 0,
+        "known_input_tokens": 66160,
+        "known_output_tokens": 30325,
+        "known_cost_cny": "0.281351"
+      },
+      "classic-b": {
+        "completed": 0,
+        "unknown": 1,
+        "known_input_tokens": 0,
+        "known_output_tokens": 0,
+        "known_cost_cny": "0"
+      },
+      "classic-b-relay": {
+        "completed": 1,
+        "unknown": 0,
+        "known_input_tokens": 65532,
+        "known_output_tokens": 30800,
+        "known_cost_cny": "0.390647"
+      },
+      "mini-a": {
+        "completed": 0,
+        "unknown": 1,
+        "known_input_tokens": 0,
+        "known_output_tokens": 0,
+        "known_cost_cny": "0"
+      },
+      "mini-a-native-tools": {
+        "completed": 22,
+        "unknown": 0,
+        "known_input_tokens": 782193,
+        "known_output_tokens": 4270,
+        "known_cost_cny": "0.298123"
+      },
+      "mini-a-recovery1": {
+        "completed": 0,
+        "unknown": 1,
+        "known_input_tokens": 0,
+        "known_output_tokens": 0,
+        "known_cost_cny": "0"
+      },
+      "mini-a-relay": {
+        "completed": 19,
+        "unknown": 0,
+        "known_input_tokens": 772267,
+        "known_output_tokens": 8407,
+        "known_cost_cny": "0.337501"
+      },
+      "mini-b": {
+        "completed": 4,
+        "unknown": 1,
+        "known_input_tokens": 46503,
+        "known_output_tokens": 480,
+        "known_cost_cny": "0.062908"
+      },
+      "mini-b-native-tools": {
+        "completed": 17,
+        "unknown": 0,
+        "known_input_tokens": 679317,
+        "known_output_tokens": 12645,
+        "known_cost_cny": "0.401176"
+      },
+      "mini-b-relay": {
+        "completed": 19,
+        "unknown": 0,
+        "known_input_tokens": 780401,
+        "known_output_tokens": 2517,
+        "known_cost_cny": "0.273260"
+      }
+    },
+    "known_total_cost_cny": "2.044966",
+    "billing_snapshots": [
+      "billing-snapshot.json",
+      "billing/1790009109.json",
+      "billing/1790009174.json",
+      "billing/1790009235.json",
+      "billing/1790009298.json",
+      "billing/1790009360.json",
+      "billing/1790009423.json",
+      "billing/1790009486.json",
+      "billing/1790009551.json"
+    ]
+  },
+  "audits": [
+    {
+      "run": "classic-a-relay",
+      "driver_snapshot": "~/projects/volo-factory-worktrees/mini-swe-goal-20260921/runs/mini-swe-20260921/classic-a-relay/driver-v3",
+      "verified_calls": [
+        {
+          "path": "call-001",
+          "request_sha256": "ea840f80e1ea8ba61e0b626ee8626d589f94ee16696bc0708856be186f10c089",
+          "provider_request_id": "0217900064616699ccb9afc7f062b2675deaa60a1d1ba87a6b785",
+          "verified_complete_capture": true
+        }
+      ],
+      "source_provenance": "selected application exactly equals the real model file patch",
+      "baseline_source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c",
+      "selected_source_sha256": "3061d002039ec58222dc31f0b714988dc1868d7354d5953a36740e3d3e124d56",
+      "budget_cny_upper_bound": 3.0
+    },
+    {
+      "run": "classic-b-relay",
+      "driver_snapshot": "~/projects/volo-factory-worktrees/mini-swe-goal-20260921/runs/mini-swe-20260921/classic-b-relay/driver-v2",
+      "verified_calls": [
+        {
+          "path": "call-001",
+          "request_sha256": "fff4558b7789c139a33afb791b817f944b0d12d0e2e316e4d22d60c397efe55b",
+          "provider_request_id": "021790006420542eaad90e368bae3f187447d9def39b90772abac",
+          "verified_complete_capture": true
+        }
+      ],
+      "source_provenance": "selected application exactly equals the real model file patch",
+      "baseline_source_sha256": "a17cba4ba83393075de9d4a3eef353b808fc0516a773aaab8dd7871eb41a62d4",
+      "selected_source_sha256": "01c45223b6af08f4938c4f2c773b761489b02ebd3db237d0169859e3dc1b0375",
+      "budget_cny_upper_bound": 3.0
+    },
+    {
+      "run": "mini-a-native-tools",
+      "driver_snapshot": "~/projects/volo-factory-worktrees/mini-swe-goal-20260921",
+      "verified_calls": [
+        {
+          "path": "call-001",
+          "request_sha256": "f1d514f4ac1ce753564293ff2db066fc42e6a492d3865c802d1445e8f1268558",
+          "provider_request_id": "021790008991123bfe35b6525b6a24c7ddbea7b420bd5584bbfae",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-002",
+          "request_sha256": "a2608d580e20fc6bd8f8865e3e8e000eb56ebff02c00b7061facae559050e58a",
+          "provider_request_id": "021790009000952981eef1a5f6531812ca0302533eb09b380dc59",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-003",
+          "request_sha256": "9e93bdd4b292afea757c6a914afdc614e7d102e1e85790bad99a21d38f87a890",
+          "provider_request_id": "02179000901094511f0f19ac6c045766b433dd71333664da1bc7c",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-004",
+          "request_sha256": "6e6680d353dc59749e9616f1270058441700671a0e6b32b13a395f7e7529ffb2",
+          "provider_request_id": "021790009019304fba75098d9ee455dd9478ca57adcb3fd417143",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-005",
+          "request_sha256": "a3d3c7bc823128d3dd26d9d56ac63b6fa7859964034e08f55f8c9c15c0256762",
+          "provider_request_id": "02179000903138976f8256debb8f03d2da9dea6cc2a650deea63a",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-006",
+          "request_sha256": "8546be25db0b577842331a4c0495c773d45c2e7496044f35d02c0c999781ab38",
+          "provider_request_id": "021790009041289152c08225118e3e35cb95e4b33922c1c424d94",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-007",
+          "request_sha256": "d1e1e7d21edbf4482358f9f8f91c725a782df34b53ad29381728dca83096c660",
+          "provider_request_id": "02179000907278314537b8110db3a4fe3c298b5fc7a850a27e003",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-008",
+          "request_sha256": "c35d1db3eea9de41f8a893c11927f66d0bbd8e85a4998d34b7405ccefe0d884d",
+          "provider_request_id": "021790009083854165bc15045f54b6c23df9ed30a576e2110470a",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-009",
+          "request_sha256": "58827e89d62de8bcc3119616e870ab1f1afa8d4c1a068e1aa2c72ad0ff9ef9ff",
+          "provider_request_id": "02179000909292693401d1cd864a49a938337b58c4876d676677e",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-010",
+          "request_sha256": "fd0261e3c70e127a25ce316b493a169fd698c2f818c1b263c9087e49b502da19",
+          "provider_request_id": "021790009101890387f6448b05c0841f65d41c4cef73388950fd8",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-011",
+          "request_sha256": "85e4e88cc5a6e84c67f76333c574e9e9ed0279af28625765d23fb24a793b2eed",
+          "provider_request_id": "0217900091120602f9349bea7dcfdfeb5ceeba9779d3baba5b4f3",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-012",
+          "request_sha256": "1ad643ad86c2f36e89b067b96349b990d1587877a1e9d1f9861514a2eeaa21fb",
+          "provider_request_id": "021790009121948c1c60125965d8547be0192a9260db7d21c241f",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-013",
+          "request_sha256": "d3af55f2e262fd67668bab6eb36a60711920785ae7b5c780b4c8811dbd83b297",
+          "provider_request_id": "021790009130974bfe35b6525b6a24c7ddbea7b420bd55879fece",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-014",
+          "request_sha256": "6e37f1bd75793bf66bd540a4142bf3b4dee4ca6221e36a4cef78d6ff395f26b7",
+          "provider_request_id": "02179000914384914cea4691e83c1d7ab80acdae8752cedde5fe7",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-015",
+          "request_sha256": "857e75c8061fd9c2d5e8d2372464cb1ed3935ff56b3d7d50b4e833323baa44bb",
+          "provider_request_id": "021790009169048274564af00b8ed8c9fdfc012f2496079b5a61d",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-016",
+          "request_sha256": "5db476500af22e484287be30fa84a6fcfbe9c387e0ed210d029eb7dbc3126b7d",
+          "provider_request_id": "0217900091776376e3e18ada636ec3efb106459ed37f59238164b",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-017",
+          "request_sha256": "3d579678d4933c7aa0fe5040d36678a521eb8a6730f6be6c6c22ffe9fbf8f9a1",
+          "provider_request_id": "021790009193485afbd66db72a1f09b7f1057bdb7ad34d89161e5",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-018",
+          "request_sha256": "cc54657fae974f0b653526efba27a76147f2fa8c80633bf0a292494bcacef0a6",
+          "provider_request_id": "0217900092042921671218e8484143d9389dc42eb9b9f1f6e560c",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-019",
+          "request_sha256": "3fb435a3e1f2cca2aecfc64ef4bcfe5bf9f40abac191d46bff192e07ff50f15f",
+          "provider_request_id": "0217900092142475fbc2824c96fe07bca989dad8a4db3a0396644",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-020",
+          "request_sha256": "e90b0c2e233d3d0ed0f9914eda23dc0f740ad8a5292b3277e211fcd341263ddb",
+          "provider_request_id": "021790009236210ba9f922dd9222ae26d697747c3d02688728aba",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-021",
+          "request_sha256": "a478637b30e77e2a30f278c96212cb837dcfc6d0f3b4bacf6735a226ca65d80c",
+          "provider_request_id": "0217900092600002ed1cec50adc32004fbc5d33f36667609c52b6",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-022",
+          "request_sha256": "2898a13b284c369227199acce2cf163696db0354f6990153ce6518514db86b0a",
+          "provider_request_id": "021790009280781b19f2272b96096885d7095f98214c210901019",
+          "verified_complete_capture": true
+        }
+      ],
+      "source_provenance": "application source unchanged; diagnostic scripts only",
+      "baseline_source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c",
+      "selected_source_sha256": "72403efbe9d3e6f361765ac161f35bb3587736da7d2622dc69ff7fc2accfcf1c",
+      "budget_cny_upper_bound": 3.0
+    },
+    {
+      "run": "mini-b-native-tools",
+      "driver_snapshot": "~/projects/volo-factory-worktrees/mini-swe-goal-20260921",
+      "verified_calls": [
+        {
+          "path": "call-001",
+          "request_sha256": "e964e15dc7f43356358cb52ef62b92ef927f03edded832fc8a44e47180956745",
+          "provider_request_id": "021790008989060653b4bec92add899389117fe46b333d8786f8a",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-002",
+          "request_sha256": "adb9e88721ae03e41b55472be0c2205fb903fa66edb9e5f4d5aaedd4e26c56dc",
+          "provider_request_id": "021790009000501ff4b9c68174f3077bc610683236ee961a94ac0",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-003",
+          "request_sha256": "ca96df424a2c0f7049fcf907bbdbafbf5b4aa6ed2cd21f7d670b4849616c5ed9",
+          "provider_request_id": "0217900090140349888986ffb34c69cf48a5af66589c30c91f531",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-004",
+          "request_sha256": "bd2e3bd39f5c55a642a431b0872c916cd740331f657963d8255931f47ef2a87b",
+          "provider_request_id": "0217900090232647d96eb03402f8d23bede142cc170f12185b297",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-005",
+          "request_sha256": "3892e2f40305e644558652e8a61ff59bbef392bf1f93818d9862a78639d02d0f",
+          "provider_request_id": "021790009035458f1037d74890b775cc53d3d2459e14d19c1923d",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-006",
+          "request_sha256": "dab20422cd7540a3870af14bc8dec3e44ae685fc8d939b16128695f668674135",
+          "provider_request_id": "021790009046130c26ebaa89f61563ae66be53d1b05a6aa7c4d48",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-007",
+          "request_sha256": "3fb116ef3833e6e5861946226c23058e9893d96e8297aaa07a5ba58b77088522",
+          "provider_request_id": "0217900090757063862fb1b5b304033b62047eb9aa7ba76558c04",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-008",
+          "request_sha256": "381d76dd6f037af097cf23d6892b7cf3c5577f1484137ca492b08d32e0c6fc12",
+          "provider_request_id": "021790009088901b76ca2849f4285d135ef968890a9bdebbfd913",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-009",
+          "request_sha256": "7b98d30c4caa99ad4e55f2eb4061a015072841281ae9ac809c2b4e98e041093f",
+          "provider_request_id": "02179000909739076f8256debb8f03d2da9dea6cc2a650ddaedb4",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-010",
+          "request_sha256": "c3a5560168b7ded41472ff99e3ae3aaa812bad3a23e6e079ff8b4a7bfad5b052",
+          "provider_request_id": "0217900091064744ec3e2d763ce0a518bca21e33c72fe686085ed",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-011",
+          "request_sha256": "bad3220f70900dd30eaaa16325a3a73e147c7bf1689948e74f48b0e07a658cab",
+          "provider_request_id": "0217900091177792d60f60bba313662d1f7bb8a224af9f48efd4e",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-012",
+          "request_sha256": "e39a74632da7f5fc7a6c0cebbb04e5f542cb4c0c0f60bbc1290a8941c3580d39",
+          "provider_request_id": "021790009127701b0479337ddee81756514a17e7255424ef03e86",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-013",
+          "request_sha256": "a1fa4cb394e459c8bda9bb678485ded029919b2471ecf0f8a4919ec5e69c8939",
+          "provider_request_id": "021790009141436f209293b0689fc4da4ccbf3e82cce55d42291e",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-014",
+          "request_sha256": "8bff89d12ee9fb8e21252fef4cbc1a0d7fcd4bdb1754e151e193c283811122c4",
+          "provider_request_id": "021790009282179e47635ed4409d744027d1eb06218e83629df4b",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-015",
+          "request_sha256": "ebf564ed860d8b2f7e09177ca42f14e462c320a804e1abac23ba97a907891f53",
+          "provider_request_id": "021790009295564cdb985060772518cf2b73708fa98016eb22b1b",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-016",
+          "request_sha256": "4f1a1619d48ac7afb99ea85c728290ddf7093649968350a7d0d36287b86a5b2e",
+          "provider_request_id": "021790009316946c175de5f11b223efcc3ac4becea38bcf75fd57",
+          "verified_complete_capture": true
+        },
+        {
+          "path": "call-017",
+          "request_sha256": "2955880fb678c3ffd9a2c77978ba6830f03fc2a2fee31b0ef8aff123439eda31",
+          "provider_request_id": "021790009328061beabf2da32de8288dd26a2be1ddd61269f6525",
+          "verified_complete_capture": true
+        }
+      ],
+      "source_provenance": "application source unchanged; diagnostic scripts only",
+      "baseline_source_sha256": "a17cba4ba83393075de9d4a3eef353b808fc0516a773aaab8dd7871eb41a62d4",
+      "selected_source_sha256": "a17cba4ba83393075de9d4a3eef353b808fc0516a773aaab8dd7871eb41a62d4",
+      "budget_cny_upper_bound": 3.0
+    }
+  ],
+  "validation": {
+    "adapter_relay_tests_passed": 12,
+    "legacy_passed": 214,
+    "legacy_skipped": 12
+  },
+  "official_runs": 0,
+  "official_uploads": 0,
+  "native_codex_goal_invoked": false,
+  "limitations": [
+    "Two saved Ctrip apps; no fresh-draft or full-task generalization.",
+    "Conservative uncached token-cost budget, not a requirement to spend CNY 3 in settled bills.",
+    "Next-request input/output reservation can stop an arm below the budget ceiling.",
+    "Classic and mini package context differently; this measures complete integrations, not a single isolated control-flow line.",
+    "Earlier virtual-command trials are integration diagnostics, not final evidence against upstream mini-SWE-agent.",
+    "Wall times include transport and recovery invocations; no official speed-ranking claim.",
+    "Local ARM64 is not the complete official x86_64 lifecycle.",
+    "Six incomplete direct streams have unknown usage/cost; two relay setup failures are confirmed not sent."
+  ]
+}

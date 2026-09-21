@@ -562,3 +562,24 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - [Report](reports/2026-09-21-requirement-goal-comparison.md),
   [pilot receipt](evidence/2026-09-21-requirement-goal-comparison.json), and
   [later hardening receipt](evidence/2026-09-21-requirement-goal-hardening.json).
+
+## 2026-09-22 01:08 — Complete the mini-SWE-agent comparison; retain current agent
+
+- Integrated pinned mini-SWE-agent 2.4.6 with native Flash tools, isolated source/browser
+  runtime, protected shared-backend checks, checkpoints and conservative budget accounting.
+  Scope: nine booking/payment checks plus 27 existing regressions, two saved drafts.
+- Corrected an observed adapter defect: virtual arc commands caused filesystem searches.
+  Final native-tool trials still stopped at the budget gate without app edits: 22/17
+  completed calls, scoped scores unchanged at 5/9 and 6/9, public baselines 49/125 and 48/125.
+- Fixed-feedback controls each reached 9/9 in one call; public A remained 49/125, B fell
+  from 48 to 46 (two payment cases lost). Reject B and do not migrate on these results.
+- Direct-stream failures and SSH delivery issues are separate infrastructure evidence.
+  Added idempotent detached relay and complete-response recovery; classic A was recovered
+  without new inference. Original failed artifacts and source versions are retained.
+- Settled final comparison cost CNY 1.371297; all phases confirmed CNY 2.044966, with six
+  incomplete calls still unknown. Two pre-launch SSH failures are confirmed not sent.
+- 45 control tests passed; required legacy 214 passed / 12 skipped. Audited 41 final
+  complete responses and source provenance. No official upload/run or entrypoint change.
+- [Report](reports/2026-09-22-mini-swe-comparison.md),
+  [receipt](evidence/2026-09-22-mini-swe-comparison.json), and
+  [execution reference](reference/mini-swe-experiment.md).

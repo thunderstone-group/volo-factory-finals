@@ -1,6 +1,6 @@
 # docs/ — 地图与管理规范
 
-last-reviewed: 2026-09-21。本文只维护 docs/ 的结构与规则，不复述任何文档的内容；某份文档说了什么，去读它。
+last-reviewed: 2026-09-22。本文只维护 docs/ 的结构与规则，不复述任何文档的内容；某份文档说了什么，去读它。
 
 ## 地图
 
@@ -30,6 +30,8 @@ last-reviewed: 2026-09-21。本文只维护 docs/ 的结构与规则，不复述
 
 ## reports/ 索引（新在上）
 
+- `2026-09-22-mini-swe-comparison.md` — mini-SWE-agent 接入与两份草稿同条件对照；未证明迁移收益，保留原候选。
+
 - `2026-09-21-requirement-goal-comparison.md` — Goal 循环的两份草稿对照、SSH 中断归因及共享后端回归检查；无独立提分，拒绝回退候选。
 
 - `2026-09-21-business-feedback-pilot.md` — 两份冻结 Ctrip 草稿的业务反馈循环、输入契约补充、独立评分和费用证据。
@@ -45,6 +47,8 @@ last-reviewed: 2026-09-21。本文只维护 docs/ 的结构与规则，不复述
 - `2026-09-14-token-accounting.md` — 官方 token 数的构成：共享 key 计量表差值，并发污染。
 
 ## reference/ 索引
+
+- `docs/reference/mini-swe-experiment.md` — 原生工具、共享后端验收、预算与远端请求恢复的实验执行方法。
 
 - `docs/reference/business-feedback-loop.md` — 有限轮次业务反馈实验的执行、探针校准、独立评分和边界。
 - `docs/reference/platform-cli.md` — `arcbench` 客户端的安装配置与绑定本 harness 的平台规则。

@@ -32,3 +32,5 @@
 - `handoffs/2026-09-21-before-business-feedback.md` — Recovery handoff before the business-feedback pilot.
 
 - `handoffs/2026-09-21-before-requirement-goal.md` — Completed business-feedback pilot before the requirement-aware goal comparison.
+
+- `handoffs/2026-09-21-before-mini-swe.md` — Completed requirement-goal study before external-harness comparison.
