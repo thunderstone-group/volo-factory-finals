@@ -500,3 +500,17 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - **r27 is the candidate** (`r27-candidate.zip` = oneshot/ at `e439539`); **PR #38 merged** into main (owner
   authorised). Balance about CNY 40 after r27; no round 28 without the owner.
 
+
+## 2026-09-21 — Capture the new preliminary notice and supersede stale planning assumptions
+
+- Saved the user's partial notice screenshot and a source receipt; extracted dates,
+  two-task visibility, practice/formal credits, captain-only submission and platform keys.
+- Marked the old campaign start date superseded. Kept unverified formal scoring/ranking
+  details separate from historical pre-competition observations.
+- Read the linked simulator at cfbbc287ee1bbffcf1e936545e4803145693a8d8: documented
+  1 CPU / 2 GB / 1 worker differs from the earlier four-worker local comparison; the
+  README also warns that custom deploy.sh currently differs from formal deployment.
+- The simulator contains a pass-rate/cost scoring function and describes combined
+  two-task accounting. Full formal notice remains required for ranking-policy claims.
+- [Review](reports/2026-09-21-preliminary-notice.md). No model call, image build,
+  configuration change or official submission was performed.

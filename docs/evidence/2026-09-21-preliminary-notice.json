@@ -1,0 +1,60 @@
+{
+  "recorded_date": "2026-09-21",
+  "source": "user-provided official participation-notice screenshot",
+  "scope": "Visible first page only; section 4 continues beyond the crop",
+  "screenshot_file": "2026-09-21-preliminary-notice.png",
+  "screenshot_sha256": "2ae0701adc3e7b1f34768ed0c470d5c653ae50dd6c6a1a039fbd504f4ba795c9",
+  "confirmed_from_screenshot": {
+    "preliminary_start": "09-24 00:00",
+    "preliminary_submission_close": "09-30 23:59",
+    "year_explicit_in_image": false,
+    "timezone_explicit_in_image": false,
+    "running_tasks_continue_until_finish_or_timeout": true,
+    "task_count": 2,
+    "task_names_visible": false,
+    "requirements_provided": true,
+    "official_tests_and_per_case_outcomes_hidden": true,
+    "aggregate_pass_rate_cost_and_score_visible": true,
+    "practice_credit_per_team": "CNY 100 x 5 grants, replenished when low",
+    "official_credit_per_team": "CNY 500, unlimited submission count within the balance",
+    "official_submitter": "team captain account only",
+    "formal_scoring_uses_independent_key": true,
+    "formal_model_key_provided_by_platform": true,
+    "local_simulation_does_not_include_formal_hidden_tests": true,
+    "local_score_is_not_official_score": true
+  },
+  "upstream_repository": {
+    "url": "https://github.com/code-philia/hackathon-local-simulation",
+    "commit": "cfbbc287ee1bbffcf1e936545e4803145693a8d8",
+    "committed_at": "2026-09-20T14:44:46Z",
+    "readme_checked_live": true,
+    "local_submit_checked_live": true,
+    "source_default_cpus": "1",
+    "source_default_memory": "2g",
+    "readme_playwright_workers": 1,
+    "readme_test_timeout_seconds": 10,
+    "readme_custom_deploy_only_local": true,
+    "scoring_code": {
+      "pass_rate_unit": "percentage points, 0 through 100",
+      "reference_cost": "1.2 * pass_rate",
+      "reward_exponent": 0.1,
+      "penalty_exponent": 0.2,
+      "formula": "pass_rate / (cost / (1.2 * pass_rate)) ** exponent",
+      "scope": "local implementation claims the notice formula; full formal notice not supplied"
+    }
+  },
+  "not_done": [
+    "No simulator build or execution",
+    "No model call",
+    "No official submission",
+    "No account or key changes"
+  ],
+  "open_items": [
+    "Full notice after the visible section 4",
+    "Date year and timezone",
+    "Task identities and release time",
+    "Overall task timeout",
+    "Key isolation granularity",
+    "Full formal scoring and leaderboard-selection rules"
+  ]
+}

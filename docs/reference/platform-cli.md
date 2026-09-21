@@ -33,6 +33,14 @@ export ARCBENCH_ENV_FILE=~/.config/arcbench/volo.env
 arcbench runs --limit 10
 ```
 
+## Preliminary notice received on 2026-09-21
+
+Read [the new notice review](../reports/2026-09-21-preliminary-notice.md) before formal
+preliminary submissions. It supersedes the older start date and introduces a separate
+formal-submission key/credit policy. The shared-key metering and latest-run behavior
+below are observations from the pre-competition platform; their scope must be checked
+against the full preliminary rules rather than assumed unchanged.
+
 ## Rules that bind this harness
 
 These are properties of the platform, not of the CLI. They hold no matter how a run
