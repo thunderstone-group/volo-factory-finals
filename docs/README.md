@@ -1,6 +1,6 @@
 # docs/ — 地图与管理规范
 
-last-reviewed: 2026-09-18。本文只维护 docs/ 的结构与规则，不复述任何文档的内容；某份文档说了什么，去读它。
+last-reviewed: 2026-09-21。本文只维护 docs/ 的结构与规则，不复述任何文档的内容；某份文档说了什么，去读它。
 
 ## 地图
 
@@ -47,3 +47,5 @@ last-reviewed: 2026-09-18。本文只维护 docs/ 的结构与规则，不复述
 - `docs/reference/oneshot.md` — one-shot 候选在仓库内的位置与边界、打包入口。
 - `docs/reference/forum-cli.md` — 独立的 Qiwoo 论坛 CLI（不进竞赛包）。
 - `docs/reference/arc-bench-corpus-2026-09-14.md` — 官方基准仓库六个 app 的目录：跑什么、要求什么、意味着什么（09-14 快照）。
+
+- `docs/reference/repair-experiment-recovery.md` — 已冻结修复对照的恢复命令、累计重试、请求一致性及运行时约束。
