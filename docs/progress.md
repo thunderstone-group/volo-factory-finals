@@ -666,3 +666,18 @@ A 15-line probe-only v6 change catches the three local label failures via two re
 observations, with no errors on positive Keep32/BookStack34 samples. No v6 model call or upload.
 V6 ZIP SHA-256 aba35a4ed761d15068de320b31da31a74054ab3607fcda2b0617a1db186f6d11.
 Evidence: `evidence/2026-09-22-lite-v5-official-start.json`. Goal remains active and incomplete.
+
+## 2026-09-22 16:17 — Same-tab state repair lifts frozen BookStack to33/34 without losses
+
+The Save Draft test does log in. Full navigation inside its helper exposed a scaffold bug: ARC.state
+was always re-seeded, losing login. Real Chromium reproduction observed signed-in true then false;
+the sessionStorage fix retains true after navigation and keeps a fresh context signed-out. Changing
+only this library primitive improves frozen BookStack32/34 to33/34 (+REQ-6.1.2/-0). Both full positive
+diagnostics retain Keep32/32 and BookStack34/34. One-shot91 passed; the strengthened real-browser
+fixture was rerun separately and passed. No local model calls and no official-test edits.
+
+Prepared session-store-v7 ZIP1d36d56969428487b98e4ee1aea72030acc96e7d372c2371dc867e373e96b693.
+V6 exact-response replay independently proves identical initial request/app bytes with newly detected
+label errors, at zero new model calls. Neither these replays nor manual library swaps count as Goal
+generations. Official v5 Keep remains running; waiter15024 safely retries a transient TLS read error.
+Evidence: `evidence/2026-09-22-lite-state-persistence.json`.

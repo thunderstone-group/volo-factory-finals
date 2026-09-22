@@ -34,3 +34,5 @@
 - `handoffs/2026-09-22-1528.md`: Lite v3/v4 generation handoff before packaged deterministic browser diagnostics.
 
 - `handoffs/2026-09-22-1600.md`: Lite controlled repair and independent Keep handoff before the official v5 trial.
+
+- `handoffs/2026-09-22-1617.md`: official v5 trial and prepared v6 probe before the confirmed session-persistence fix.

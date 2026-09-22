@@ -5,10 +5,16 @@
   const ARC = {};
 
   // --- Store: the whole app renders synchronously from memory (the click ladder probes each rung for
-  // 500 ms, so data fetched after navigation is never found). Seed comes from seed.js; writes go
-  // through to /api/state in the background and never gate rendering.
+  // 500 ms, so data fetched after navigation is never found). A new browsing session starts from
+  // seed.js. Full navigation in the same tab restores its state synchronously, including login.
+  // Writes also go to /api/state in the background and never gate rendering.
   ARC.state = JSON.parse(JSON.stringify(window.SEED || {}));
+  try {
+    const saved = JSON.parse(sessionStorage.getItem('arc:state:v1') || 'null');
+    if (saved && typeof saved === 'object' && !Array.isArray(saved)) ARC.state = saved;
+  } catch (e) {}
   ARC.save = function () {
+    try { sessionStorage.setItem('arc:state:v1', JSON.stringify(ARC.state)); } catch (e) {}
     try { fetch('/api/state', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ARC.state) }).catch(() => {}); } catch (e) {}
   };
   ARC.uid = function (prefix) { return (prefix || 'id') + '_' + Math.random().toString(36).slice(2, 9); };

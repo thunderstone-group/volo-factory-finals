@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-09-22T16:17:59.028538+08:00",
+  "new_model_calls": 0,
+  "classification": "scaffold repair plus controlled frozen-application measurements; not independent Goal passes",
+  "v6_cached_replay": {
+    "new_model_calls": 0,
+    "request_bytes_identical": true,
+    "application_source_hashes_identical": true,
+    "seconds": 9.083
+  },
+  "session_before": {
+    "before": {
+      "signedIn": true,
+      "session": "u1"
+    },
+    "after": {
+      "signedIn": false,
+      "session": null
+    },
+    "isolated": {
+      "signedIn": false,
+      "session": null
+    },
+    "source": "real browser login and full navigation; no evaluator mutation",
+    "seconds": 3.71
+  },
+  "session_after": {
+    "before": {
+      "signedIn": true,
+      "session": "u1"
+    },
+    "after": {
+      "signedIn": true,
+      "session": "u1"
+    },
+    "isolated": {
+      "signedIn": false,
+      "session": null
+    },
+    "source": "real browser login and full navigation; no evaluator mutation",
+    "seconds": 1.989
+  },
+  "candidate": {
+    "base": "semantic-browser-v6",
+    "changed_files": [
+      "scaffold/README.md",
+      "scaffold/frontend/public/lib/arc.js"
+    ],
+    "change": "Preserve app state and login across full navigation within a tab; fresh contexts remain isolated",
+    "generation_or_repair_model_calls": 0,
+    "official_upload_performed": false,
+    "package_sha256": "1d36d56969428487b98e4ee1aea72030acc96e7d372c2371dc867e373e96b693"
+  },
+  "checks": {
+    "oneshot_suite_passed": 91,
+    "updated_browser_fixture_passed": 1,
+    "updated_browser_fixture_is_a_rerun": true
+  },
+  "results": {
+    "bookstack_fixed_draft": {
+      "passed": 33,
+      "total": 34,
+      "remaining": [
+        "REQ-6.1.3"
+      ],
+      "path": "runs/lite-goal-20260922/replays/diagnostic/bookstack-session-persistence/result.json"
+    },
+    "keep_positive": {
+      "passed": 32,
+      "total": 32,
+      "remaining": [],
+      "path": "runs/lite-goal-20260922/replays/diagnostic/keep-session-preservation/result.json"
+    },
+    "bookstack_positive": {
+      "passed": 34,
+      "total": 34,
+      "remaining": [],
+      "path": "runs/lite-goal-20260922/replays/diagnostic/bookstack-session-preservation/result.json"
+    }
+  },
+  "confirmed_cause": "BookStack Save Draft test logs in; helper then navigates to / again. The scaffold previously re-seeded state on every page load, dropping the session. Same-tab synchronous storage fixes this while fresh contexts stay clean."
+}

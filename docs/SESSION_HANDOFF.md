@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-22 16:00: Lite v5 uploaded; official Keep running; v6 probe prepared
+# Current handoff — 2026-09-22 16:17: official v5 Keep running; v7 state persistence prepared
 
 The user requested the native Goal, focused solely on Keep (32) and BookStack (34), and explicitly
 said to submit to official Lite evaluation once a candidate looks promising. No repeat permission
@@ -40,16 +40,38 @@ It finds both real roots of the three v5 Keep failures: Change labels is a menui
 required button, and record field editing opens a Change labels dialog instead of Note editor.
 Positive Keep32/BookStack34 samples produce zero errors, while the action trace actually visits
 the label paths. Evidence `R/probe-v6/integrated-*/receipt.json`; packaging2/2 tests and JS syntax
-pass. Current working source is this PREPARED v6; it has NOT generated/repaired/uploaded anything.
+pass. V6 is a PREPARED snapshot; it has NOT generated/repaired/uploaded anything.
 V6 ZIP `R/candidates/semantic-browser-v6/candidate.zip`, SHA-256
 `aba35a4ed761d15068de320b31da31a74054ab3607fcda2b0617a1db186f6d11`.
-Do not confuse it with the frozen v5 source/ZIP used by the official pair.
+Current working source advances to PREPARED `session-store-v7`, SHA-256
+`1d36d56969428487b98e4ee1aea72030acc96e7d372c2371dc867e373e96b693`.
+Relative to v6, only scaffold/README.md and scaffold/frontend/public/lib/arc.js change. The library
+restores/saves ARC.state synchronously in sessionStorage. This preserves login and domain state
+within a tab across full navigation while independent browser contexts still start from seed.
+Do not confuse prepared v6/v7 with the frozen v5 source/ZIP used by the official pair.
 
-BookStack's earlier integrated fixed-draft repair32/34 (+4/-0) has remaining REQ-6.1.2/6.1.3 draft
-failures. Code reads show anonymous homepage still gates recent drafts, and draft links bypass
-the reading/Edit flow. Wait for official BookStack feedback before deciding the next change.
-The two prior controlled repairs total64/66 (+9/-0), but are NOT independent Goal passes. Goal
-still requires the same candidate/model to independently pass both full suites and repeat each.
+The earlier BookStack draft-save diagnosis is now confirmed by real browser reproduction, not an
+authentication-precondition guess: the official test DOES call login. Its helper then navigates to
+/ again; the old scaffold re-seeds state and loses that session. Before: signed-in true then false.
+After the storage fix: true then true; a separate browser context stays signed-out. Replacing ONLY
+this primitive improves the frozen BookStack32/34 to33/34 (+REQ-6.1.2/-0). The remaining draft-delete
+failure is REQ-6.1.3: its draft link opens the editor directly, whereas the standard record flow
+expects reading view then Edit. Do not hardcode a task answer or edit tests to work around it.
+Both positive diagnostic apps keep32/32 and34/34 after the store change. One-shot91 tests pass;
+the strengthened real-browser persistence fixture was individually rerun and passed. These manual
+library swaps do not count as independent Goal passes. No local model traffic occurred.
+
+V6 was also replayed OFFLINE against the exact recorded v5 request/response: initial request bytes
+and all delivered app source hashes are identical; the improved probe now reports the two label
+root causes. New model calls0; recorded usage is historical and must not be billed/count again.
+`R/diagnostics/keep-v6-exact-response-replay/receipt.json`.
+
+The official Keep waiter is live session15024:
+`arcbench ... --json wait 2eef0a0f987a --interval20 --timeout3600`.
+`R/official/semantic-browser-v5/keep-wait.json` is a JSON-lines progress stream, despite its suffix.
+It recorded one transient TLS EOF GET failure and retries the SAME run; an observation failure is
+not a terminal run. Poll the existing process or authoritative run API; never recreate the run.
+Goal still requires the same candidate/model to independently pass both full suites and repeat.
 
 ## Observed evidence
 
