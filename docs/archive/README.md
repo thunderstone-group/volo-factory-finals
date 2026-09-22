@@ -42,3 +42,5 @@
 - `handoffs/2026-09-22-1911.md`: official v5 pending and v8 preparation before completed official results and Kimi cohorts.
 
 - `handoffs/2026-09-22-1934.md`: completed official trial and v13 Kimi cohort before the paired61/66 result.
+
+- `handoffs/2026-09-22-2221.md`: v24 controlled BookStack 34/34 and the prepared official trial, before the official 9/34 result and the harness review.

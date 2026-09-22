@@ -847,3 +847,15 @@ User-authorized official BookStack trial is next, frozen v24 ZIP959890c1cfc7d8af
 modelKimi HighSpeed. Preflight no active/pending Lite;balance164.513819 CNY. Local inference must
 not overlap. Official input identity and full public artifact replay are required before counting
 any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
+
+## 2026-09-23 01:50 — Harness review; v24 official BookStack 9/34 recorded
+
+- Official v24 Lite BookStack fd8ba0b84fe7 (submission 64ca71667aa8, Kimi HighSpeed): 9/34, CNY 3.821024,
+  333 s, 25 timeouts. A two-line routing defect in the generated app (`#/shelves/<id>` rendered the list,
+  `#/books` rendered the details page); local replay 9/34, router-corrected copy 30/34. The package's own
+  self-check reported zero problems on the delivered app and six on the corrected one.
+- Read-only review of the candidate, the 09-19 to 09-22 branches, 389 official runs and large-task readiness:
+  reports/2026-09-23-harness-review.md; evidence files evidence/2026-09-23-*.
+- The full participation notice (PDF) settles the formal rules: best submission counts, 48 h per task,
+  S = p / (c/(1.2p))^e pooled over the two tasks, top 20 advance.
+- No model calls, uploads or runs in this session. The recommendations await the owner's decision.

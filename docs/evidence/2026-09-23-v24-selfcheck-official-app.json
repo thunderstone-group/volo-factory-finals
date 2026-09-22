@@ -1,0 +1,121 @@
+{
+ "app": "bookstack-official-v24",
+ "smoke_total_s": 7.46,
+ "phases": [
+  [
+   "npm run build",
+   0.141
+  ],
+  [
+   "_check_syntax",
+   0.057
+  ],
+  [
+   "_check_page",
+   0.007
+  ],
+  [
+   "npm run build",
+   3.182
+  ],
+  [
+   "_check_dom",
+   3.185
+  ],
+  [
+   "_check_semantic_browser",
+   3.661
+  ]
+ ],
+ "backend_start_to_health_s": 0.407,
+ "static_gates_s": 0.012,
+ "problems": [],
+ "static": [],
+ "vocab_missing": 0,
+ "probe_screens": [
+  [
+   "#/",
+   "#/shelves",
+   "#/books",
+   "#/favorites",
+   "#/login",
+   "#/pages/page_6_3_1",
+   "#/shelves/shelf_4_1",
+   "#/shelves/shelf_4_2_1",
+   "#/shelves/shelf_4_3_1",
+   "#/shelves/shelf_4_3_2",
+   "#/shelves/shelf_4_4_1",
+   "#/shelves/shelf_4_4_2"
+  ]
+ ],
+ "probe_actions": [
+  [
+   [
+    "Shelf 4.5.1",
+    "navigation"
+   ],
+   [
+    "Shelf 4.3.1",
+    "navigation"
+   ],
+   [
+    "Page 6.3.1",
+    "view-entity"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "Remember Me",
+    ""
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "Edit",
+    "edit-page"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ]
+  ]
+ ],
+ "probe_executed": [
+  true
+ ],
+ "probe_unavailable": [
+  null
+ ]
+}

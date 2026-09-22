@@ -1,0 +1,144 @@
+{
+ "app": "bookstack-router-fixed",
+ "smoke_total_s": 7.945,
+ "phases": [
+  [
+   "npm run build",
+   0.101
+  ],
+  [
+   "_check_syntax",
+   0.06
+  ],
+  [
+   "_check_page",
+   0.01
+  ],
+  [
+   "npm run build",
+   3.533
+  ],
+  [
+   "_check_dom",
+   3.535
+  ],
+  [
+   "_check_semantic_browser",
+   3.823
+  ]
+ ],
+ "backend_start_to_health_s": 0.415,
+ "static_gates_s": 0.012,
+ "problems": [
+  "clicking `Cancel` (data-action `cancel-nav`) on screen `#/pages/page_6_3_1` throws: Cannot read properties of undefined (reading 'id'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+  "clicking `BookStack` (data-action `arc:nav`) on screen `#/pages/page_6_3_1` throws: Cannot read properties of undefined (reading 'id'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+  "clicking `Draft 6.1.3` (data-action `view-entity`) on screen `#/pages/page_draft_6_1_3` throws: Cannot read properties of undefined (reading 'id'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+  "Requirement-derived UI observation: The requirement starts \"New Shelf\" from record \"Shelf 4.3.1\", but that action is absent on its details page. Keep creation actions available in the declared entry context.",
+  "Requirement-derived UI observation: Primary record entry \"Draft 6.1.3\" in \"Book 6.1.3\" opens an editor directly, bypassing the reading/details view and its Edit action. Preserve the normal primary-entry flow for drafts too.",
+  "Requirement-derived UI observation: Primary record link \"Draft 6.1.3\" opens an editor directly and bypasses the reading/details view with its Edit action. Preserve the normal primary-entry flow for draft records too; do not automatically redirect their reading route."
+ ],
+ "static": [],
+ "vocab_missing": 0,
+ "probe_screens": [
+  [
+   "#/",
+   "#/shelves",
+   "#/books",
+   "#/books/book_6_1_3",
+   "#/pages/page_draft_6_1_3/edit",
+   "#/favorites",
+   "#/login",
+   "#/pages/page_6_3_1",
+   "#/shelves/shelf_4_1",
+   "#/shelves/shelf_4_2_1",
+   "#/shelves/shelf_4_3_1",
+   "#/shelves/shelf_4_3_2"
+  ]
+ ],
+ "probe_actions": [
+  [
+   [
+    "Shelf 4.5.1",
+    "navigation"
+   ],
+   [
+    "Book 5.4.1",
+    "navigation"
+   ],
+   [
+    "Create New Book",
+    "navigation"
+   ],
+   [
+    "Shelf 4.3.1",
+    "navigation"
+   ],
+   [
+    "Book 6.1.3",
+    "navigation"
+   ],
+   [
+    "Book 8.1",
+    "navigation"
+   ],
+   [
+    "Page 6.3.1",
+    "view-entity"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "Edit",
+    "edit-book"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "Book 8.1",
+    "view-entity"
+   ],
+   [
+    "Remember Me",
+    ""
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "Edit",
+    "edit-page"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ]
+  ]
+ ],
+ "probe_executed": [
+  true
+ ],
+ "probe_unavailable": [
+  null
+ ]
+}
