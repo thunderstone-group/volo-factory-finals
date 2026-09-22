@@ -741,3 +741,15 @@ Independent v16 pair is next. Evidence: evidence/2026-09-22-lite-event-flow.json
 Validation update:102 one-shot tests passed; the1 browser skip was separately run with the existing
 Playwright cache and passed. Fresh v16 Keep started (session71835), live preflight no active official
 run, settled balance197.830879 CNY. No new recharge or purchase.
+
+## 2026-09-22 — v16 pair57/66 rejected; remaining failures calibrated for v17
+
+Independent v16 Keep31/32 (405.609s,CNY4.531208),BookStack26/34 (279.712s,CNY3.595937).
+Both used2 completed Kimi HighSpeed calls and no failed streams. BookStack materially regressed;
+do not promote v16. Generic sidebar deduplication restores frozen Keep32/32. BookStack's8 failures
+reduce to missing detail creation action, missing disclosure controls, draft entry and guest toggle.
+Minimal diagnostic corrections restore34/34 with0 losses. v17's requirement-derived browser checks
+catch those failures and remain clean on fixed/previous positive apps. No Goal full pass yet.
+Evidence: evidence/2026-09-22-lite-v16-pair.json. Next is one controlled model repair, then fresh pair.
+
+Validation update:all105 one-shot tests passed with0 skips (90.684s). Controlled v17 BookStack repair started; no fresh generation or new official run yet.

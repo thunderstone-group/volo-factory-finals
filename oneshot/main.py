@@ -551,11 +551,33 @@ def semantic_contracts(requirements):
             if qualifier in ("trashed", "deleted"):
                 states["deleted"] = True
             seed_states.append({"name": name, "qualifier": qualifier, "states": states})
+    form_reveals, record_actions, pressed_transitions = [], [], []
+    for description in re.findall(r"(?m)^\s*description:\s*(.+)$", text):
+        form = re.search(r"\bform\b[`\"]?\s+named\s+" + quoted, description, re.I)
+        if form:
+            reveals = re.findall(
+                    r"control\s+named\s+" + quoted + r"\s+that\s+reveals\s+a\s+textbox\s+with\s+(?:exact\s+)?placeholder\s+" + quoted,
+                    description, re.I)
+            reveals += re.findall(quoted + r"\s+control\s+(?:that\s+reveals|with)\s+a\s+" + quoted + r"\s+textbox", description, re.I)
+            for control, placeholder in reveals:
+                form_reveals.append({"form": form.group(1), "control": control, "placeholder": placeholder})
+    for block in re.split(r"(?m)^\s*(?:-\s*)?id:\s*", text):
+        seed = re.search(r"Seed data:\s*[\w -]+\s+" + quoted, block, re.I)
+        if not seed or re.search(r"\bauthenticated\b|after\s+(?:a\s+successful\s+)?login", block, re.I):
+            continue
+        when = re.search(r"keyword:\s*WHEN\s*\n\s*content:\s*The user activates (?:the )?(?:unique )?button named\s+" + quoted, block, re.I)
+        if when and re.search(r"\b(?:details page|content page|page view)\b", block, re.I) and re.match(r"(?:New|Create|Add)\b", when.group(1), re.I):
+            record_actions.append({"record": seed.group(1), "action": when.group(1)})
+        pressed = re.search(r"button named\s+" + quoted + r"\s+with\s+aria-pressed=false\.\s*Activating it changes the same control to name\s+" + quoted + r"\s+with\s+aria-pressed=true", block, re.I)
+        if pressed:
+            pressed_transitions.append({"record": seed.group(1), "before": pressed.group(1), "after": pressed.group(2)})
     return {"homeLists": sorted(set(home_lists)), "home": pairs(atomic) if opens_entry else [],
             "roles": {name: sorted(values) for name, values in names.items()},
             "recordEditors": sorted(set(editors)), "seedStates": seed_states,
             "recordTitles": sorted(set(record_titles)), "readingEntries": reading_entries,
-            "emptyFavorites": bool(unselected_favorite and not declared_favorites)}
+            "emptyFavorites": bool(unselected_favorite and not declared_favorites),
+            "formReveals": form_reveals, "recordActions": record_actions,
+            "pressedTransitions": pressed_transitions}
 
 
 DOM_PROBE = r"""

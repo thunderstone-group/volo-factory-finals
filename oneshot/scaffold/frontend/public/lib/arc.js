@@ -53,7 +53,8 @@
     const link = (n) => `<a href="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</a>`;
     const entry = (n) => `<button type="button" data-action="arc:nav" data-hash="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</button>`;
     const nav = (L.nav || []).map(link).join('');
-    const side = (L.sidebar || []).map(entry).join('');
+    // Built-in and data-derived destinations may overlap; render each identical entry once.
+    const side = [...new Set((L.sidebar || []).map(entry))].join('');
     return `<header class="app-header">
   <button type="button" class="brand-logo" aria-label="${ARC.esc(L.brand || 'App')}" data-action="arc:nav" data-hash="#/"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="2"/></svg></button>
   <a class="brand" href="#/">${ARC.esc(L.brand || 'App')}</a>

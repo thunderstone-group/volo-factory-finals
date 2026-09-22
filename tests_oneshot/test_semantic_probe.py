@@ -5,6 +5,31 @@ from oneshot import main as adapter
 
 
 class SemanticContractsCase(unittest.TestCase):
+    def test_record_entry_actions_disclosures_and_pressed_transitions_are_requirement_derived(self):
+        text = '''
+- id: CREATE
+  type: ATOMIC
+  description: A form named `Create collection` contains a control named `Attributes` that reveals a textbox with exact placeholder `key, value`. Seed data: collection "Collection A".
+  steps:
+    - keyword: GIVEN
+      content: The user is on the collection details page.
+    - keyword: WHEN
+      content: The user activates the unique button named `New Collection` and fills the form.
+- id: EDIT
+  description: The form named `Edit collection` contains an `Attributes` control with a `key, value` textbox.
+- id: TOGGLE
+  description: A button named `Watch` with aria-pressed=false. Activating it changes the same control to name `Unwatch` with aria-pressed=true. Seed data: collection "Collection B".
+- id: PRIVATE
+  description: Authenticated users see a button named `Save` with aria-pressed=false. Activating it changes the same control to name `Unsave` with aria-pressed=true. Seed data: collection "Private".
+'''
+        result = adapter.semantic_contracts(text)
+        self.assertEqual(result['recordActions'], [{'record':'Collection A','action':'New Collection'}])
+        self.assertEqual(result['pressedTransitions'], [{'record':'Collection B','before':'Watch','after':'Unwatch'}])
+        self.assertEqual(result['formReveals'], [
+            {'form':'Create collection','control':'Attributes','placeholder':'key, value'},
+            {'form':'Edit collection','control':'Attributes','placeholder':'key, value'},
+        ])
+
     def test_draft_entry_checks_keep_parent_context_and_explicit_favorite_seeds(self):
         text = '''
 description: A reading page has a button named `Edit`.

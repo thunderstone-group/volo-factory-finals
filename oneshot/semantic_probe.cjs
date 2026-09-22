@@ -88,6 +88,14 @@ function scanSemantics(data) {
       if (expected.includes('button') && !expected.includes(roleOf(el)))
         issue(`Required button "${name}" is rendered with role=${roleOf(el)}; preserve the explicitly required button role.`);
     }
+    for (const contract of contracts.formReveals || []) {
+      for (const form of win.document.querySelectorAll('form, [role="form"]')) {
+        if (!active(form) || nameOf(form) !== contract.form) continue;
+        const controls = Array.from(form.querySelectorAll('button, a, [role="button"]'));
+        if (!controls.some(el => active(el) && nameOf(el) === contract.control))
+          issue(`Form "${contract.form}" requires a separate "${contract.control}" control to reveal its "${contract.placeholder}" textbox. A label attached to an always-visible input does not implement that activation flow.`);
+      }
+    }
     for (const dialog of win.document.querySelectorAll('[role="dialog"]')) {
       if (!active(dialog)) continue;
       const seen = new Map();
@@ -141,6 +149,51 @@ async function observe(page, url, contracts) {
   }
   await page.reload({waitUntil: 'domcontentloaded', timeout: 10000});
   await page.waitForTimeout(100);
+  // Visit named requirement records using only navigation destinations exposed by the app.
+  // These focused observations cover controls the general walk may never reach.
+  const navigation = await page.locator('nav a[href^="#/"], aside [data-hash^="#/"], nav [data-hash^="#/"]').evaluateAll(es =>
+    [...new Set(es.map(el => el.getAttribute('href') || el.getAttribute('data-hash')))]);
+  const focusDeadline = Date.now() + 8000;
+  const namedEntry = name => page.getByRole('link', {name, exact:true}).or(page.getByRole('button', {name, exact:true})).first();
+  const visitRecord = async name => {
+    for (const hash of ['#/', ...navigation]) {
+      if (Date.now() >= focusDeadline) return false;
+      await page.goto(new URL(hash, url).href, {waitUntil:'domcontentloaded', timeout:1500});
+      await page.waitForTimeout(40);
+      const entry = namedEntry(name);
+      if (!await entry.isVisible()) continue;
+      await entry.click({timeout:500}); await page.waitForTimeout(60);
+      actions.push({scope:'record-entry',name,action:'navigation'});
+      return true;
+    }
+    return false;
+  };
+  for (const contract of (contracts.recordActions || []).slice(0,3)) {
+    if (!await visitRecord(contract.record)) continue;
+    const action = namedEntry(contract.action);
+    if (!await action.isVisible())
+      errors.add(`The requirement starts "${contract.action}" from record "${contract.record}", but that action is absent on its details page. Keep creation actions available in the declared entry context.`);
+    else { await action.click({timeout:500});await page.waitForTimeout(50);await scan(false); }
+  }
+  for (const contract of (contracts.readingEntries || []).slice(0,3)) {
+    if (!await visitRecord(contract.parent)) continue;
+    const entry = page.getByRole('link', {name:contract.record}).or(page.getByRole('button', {name:contract.record})).first();
+    if (!await entry.isVisible()) continue;
+    await entry.click({timeout:500});await page.waitForTimeout(60);
+    const edit = namedEntry('Edit');const save = page.getByRole('button', {name:/^Save(?:\s|$)/i}).first();
+    if (!await edit.isVisible() && await save.isVisible())
+      errors.add(`Primary record entry "${contract.record}" in "${contract.parent}" opens an editor directly, bypassing the reading/details view and its Edit action. Preserve the normal primary-entry flow for drafts too.`);
+  }
+  for (const contract of (contracts.pressedTransitions || []).slice(0,3)) {
+    if (!await visitRecord(contract.record)) continue;
+    const before = page.getByRole('button', {name:contract.before,exact:true}).first();
+    if (!await before.isVisible() || await before.getAttribute('aria-pressed') !== 'false') continue;
+    await before.click({timeout:500});await page.waitForTimeout(80);
+    const after = page.getByRole('button', {name:contract.after,exact:true}).first();
+    if (!await after.isVisible() || await after.getAttribute('aria-pressed') !== 'true')
+      errors.add(`Activating "${contract.before}" on "${contract.record}" does not produce "${contract.after}" with aria-pressed=true as declared. Do not add an unstated login prerequisite or leave the visible toggle inert.`);
+  }
+  await page.goto(url,{waitUntil:'domcontentloaded',timeout:10000});await page.waitForTimeout(50);
   const end=Date.now()+16000;const queue=['#/'];const seen=new Set();const done=new Set();
   const routeNames = new Map(); const readingRoutes = new Map();
   const readingEntries = contracts.readingEntries || [];

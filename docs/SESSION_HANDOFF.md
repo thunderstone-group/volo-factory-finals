@@ -1,38 +1,43 @@
-# Current handoff — 2026-09-22: v16 event and entry flow candidate calibrated
+# Current handoff — 2026-09-22: v16 pair57/66 rejected; v17 calibrated
 
-The native Goal remains active: only Keep32 and BookStack34. The same candidate/model must independently generate full passes for both and independently repeat each. Manual diagnostics and cached responses never count. User authorized necessary calls from existing ARC balance and an official Lite trial when promising; no recharge/purchase or six-task Web batch.
+Native Goal active: Keep32 and BookStack34 only, same portable candidate/model independently
+passes both and independently repeats each. Diagnostic edits/cached responses do not count.
+Existing ARC balance and promising official Lite trials are authorized; no recharge/purchase or
+six-task Web batch. Worktree lite-first-20260922, branch exp/lite-first-20260922.
+R = runs/lite-goal-20260922. No current official run. Inspect R/state.json for live subprocess status.
 
-## Current execution
+## Current execution and decision
 
-Worktree lite-first-20260922, branch exp/lite-first-20260922. R = runs/lite-goal-20260922.
-Frozen candidate event-flow-v16, ZIP SHA-256
-7ec29c1d42535c2b7529246b6e0f562132ee1d6873ec823c25391a15fcecc6bb.
+Frozen new candidate entry-contract-v17, ZIP SHA-256
+5cc0d54294edbbe68ae5bcbd3069544b08c23eaefde5f1d7d10a07403222615b.
 Model kimi-k2.7-code-highspeed, temperature1.0, max_tokens131072, no cross-model fallback.
-Fresh Keep is running, session71835; log R/keep-v16-highspeed-a.log. Inspect R/state.json and the
-generation receipt for live status.
-No official run is active. Never duplicate an in-flight model request.
+All105 one-shot regressions passed with0 skips, log R/v17-full-tests.log. Now running
+R/repair_v17.py for ONE controlled BookStack repair from the existing v16 output, without official
+tests/results in the prompt. If the full replay improves without loss, proceed to a fresh v17 pair.
+No independent full Goal pass exists for v17. Do not reissue requests on observation timeouts.
 
-v13 independently scored Keep29/32 and BookStack32/34,61/66. Details and real usage are retained in
-evidence/2026-09-22-lite-v13-pair.json. v14 fresh Keep regressed to23/32 after an accepted repair:
-422.480s,2 completed calls,48,892 input/75,990 output. Its application added a document capture
-listener that stops every popover click before the scaffold's delegated handler. Nested popover hosts
-also lost their enclosing article's record ID. Removing only that listener and supplying the corrected
-generic popover library yields32/32 with no lost case; this is a frozen-app diagnostic, not a Goal pass.
-R/replays/diagnostic/keep-v14-event-flow/result.json retains every result.
+v16 independent pair: Keep31/32, BookStack26/34 (57/66). This candidate is rejected for promotion:
+BookStack regressed from v13's32/34. Keep405.609s,2 completed calls,52,359 input/75,152 output,
+settled CNY4.531208. BookStack279.712s,2 completed calls,57,935 input/57,821 output,CNY3.595937.
+No failed/incomplete stream in this pair. Details: evidence/2026-09-22-lite-v16-pair.json.
 
-v16 inherits ancestor article IDs for nested popover hosts and diagnoses real clicks that reach neither
-a registered APP handler nor a UI/state change. It also checks requirement-declared empty Favorite
-state and primary draft links that bypass the reading/Edit flow. BookStack v13's two remaining causes
-were reproduced; the minimal frozen correction passes34/34 without losses. The combined new browser
-probe catches both negative apps and stays clean on four fixed/previously passing controls. All six
-Docker receipts under R/probe-v16/verified-*/receipt.json match the exact shipped helper hash. No model
-call was used for calibration. Evidence: evidence/2026-09-22-lite-event-flow.json.
+Keep's only failure: fixed navigation and generated labels both added the identical Reminders
+sidebar entry. The generic scaffold now deduplicates identical rendered sidebar destinations;
+it preserves distinct labels/destinations and the source array. Frozen replay32/32 (+1/-0).
+Four scaffold tests pass. No model-generated source was edited for that diagnostic.
 
-Suite:102 passed and1 browser test skipped for a missing environment variable; the targeted
-real-browser rerun then passed (R/v16-persistence-tests.log). All103 tests were executed successfully
-across these runs. Full suite log R/v16-full-tests.log. Run the frozen v16 pair.
-If both pass, independently repeat each before completing the Goal. Reject material regressions and
-attribute errors before changing another prompt. No test or corpus edit is allowed.
+BookStack's eight failures reduce to four defects: New Shelf missing on shelf detail pages; Shelf/
+Book Tags are plain field labels instead of disclosure controls; primary draft buttons go directly
+to editing; anonymous Favorite does nothing because it silently requires login. Four corresponding
+manual corrections on a frozen copy score34/34 (+8/-0), never an independent Goal pass.
+
+v17 derives form disclosure controls, record creation entry actions and explicit aria-pressed
+transitions from requirements. Focused real-browser visits follow navigation destinations exposed
+by the app and handle both record links and buttons. They catch all four failure classes, including
+the draft flow that v16's link-only discovery missed. Raw/fixed BookStack and independent positive
+BookStack/Keep controls are calibrated with identical helper hashes. Four real receipts under
+R/probe-v17/verified-*/receipt.json; extractor tests7 pass. Public tests remain read-only and absent
+from the candidate/model prompt. No new generic behavior claim is proved by calibration alone.
 
 ## Current candidate changes and validation
 

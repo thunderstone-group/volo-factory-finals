@@ -14,6 +14,34 @@ MODULES = Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules"
 
 @unittest.skipUnless(shutil.which("node") and (MODULES / "jsdom").is_dir(), "Node and jsdom are required")
 class NativeControlTests(unittest.TestCase):
+    def test_sidebar_merges_identical_destinations_without_losing_distinct_entries(self):
+        script = r'''
+const fs = require('fs');
+const {JSDOM} = require('jsdom');
+const w = new JSDOM('', {url:'http://localhost/',runScripts:'outside-only'}).window;
+w.SEED = {};
+w.eval(fs.readFileSync(process.argv[1], 'utf8'));
+w.LAYOUT = {sidebar:[
+  {label:'Home', hash:'#/'}, {label:'Saved', hash:'#/saved'},
+  {label:'Saved', hash:'#/saved'}, {label:'Saved', hash:'#/other'},
+  {label:'Other name', hash:'#/saved'}
+]};
+w.document.body.innerHTML = w.ARC.layout('', {hash:'#/saved'});
+const entries = Array.from(w.document.querySelectorAll('aside button'), el => [el.textContent,el.dataset.hash,el.getAttribute('aria-current')]);
+console.log(JSON.stringify({entries, originalCount:w.LAYOUT.sidebar.length}));
+w.close();
+'''
+        result = subprocess.run(
+            ['node', '-e', script, str(ROOT / 'oneshot/scaffold/frontend/public/lib/arc.js')],
+            env={**os.environ, 'NODE_PATH': str(MODULES)}, capture_output=True, text=True,
+            timeout=20, check=True,
+        )
+        self.assertEqual(json.loads(result.stdout.strip().splitlines()[-1]), {
+            'entries': [['Home', '#/', None], ['Saved', '#/saved', 'page'],
+                        ['Saved', '#/other', None], ['Other name', '#/saved', 'page']],
+            'originalCount': 5,
+        })
+
     def test_nested_popover_host_inherits_record_id_and_respects_explicit_overrides(self):
         script = r'''
 const fs = require('fs');
