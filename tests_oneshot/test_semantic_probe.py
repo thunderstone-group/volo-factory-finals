@@ -26,7 +26,7 @@ class SemanticContractsCase(unittest.TestCase):
         self.assertEqual(result['recordActions'], [{'record':'Collection A','action':'New Collection'}])
         self.assertEqual(result['pressedTransitions'], [{'record':'Collection B','before':'Watch','after':'Unwatch'}])
         self.assertEqual(result['formReveals'], [
-            {'form':'Create collection','control':'Attributes','placeholder':'key, value'},
+            {'form':'Create collection','control':'Attributes','placeholder':'key, value','record':'Collection A'},
             {'form':'Edit collection','control':'Attributes','placeholder':'key, value'},
         ])
 

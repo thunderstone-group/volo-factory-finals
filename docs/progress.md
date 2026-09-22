@@ -766,3 +766,19 @@ Keep v17 preflight failed GET /runs with500 three times before ANY model call. N
 read-only follow-ups also returned500. No new generation/upload until current run activity can be
 verified. Goal active; substantial progress this turn, external read recovery is the next dependency.
 Evidence: evidence/2026-09-22-lite-v17-initial-control.json. Controlled v17 repair settled CNY1.347189.
+
+## 2026-09-22 — Platform read recovered; independent v18 pair started
+
+GET /runs returned604 records with no active execution or pending Lite run. Known official BookStack also reads terminal. The two old pending smoke/ticket records are outside this task. Fresh v18 BookStack launched(session92126); follow the same live request, then full replay and same-candidate Keep. No score yet.
+
+## 2026-09-22 — v18 independent58/66; v20 uses remaining repair budget and actual disclosure observations
+
+V18 Keep30/32 (358.160s,49,327/64,297 tokens),BookStack28/34 (244.352s,59,571/48,935 tokens),
+2 completed calls each,0 failed streams. No full Goal pass. BookStack startup repair revealed UI
+failures but did not spend its remaining allowed third call. V20 follows up only on observed remaining
+problems after an accepted repair, within the original3-call cap, with per-iteration rollback and
+history. Added real disclosure activation checks and implementation-independent record-checkbox scope.
+Four current-helper browser calibrations catch both actual failed apps and leave full-score controls
+clean. Staged tests4 pass; full107 had106 passes plus1 EADDRINUSE failure, exact rerun passed;
+latest extractor7 pass. Controlled third BookStack call is running (session68097), not independent.
+Evidence: evidence/2026-09-22-lite-v18-pair.json. V20 ZIP213962945b57950b0c842c403ab392c8a9d289a6dd085802079d482f907a4ebe.

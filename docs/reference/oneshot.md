@@ -60,8 +60,10 @@ the zero-dependency application contract. With Node/npm available, it builds the
 starts the backend, checks health and assets, and executes a jsdom crash probe. Requirements
 with explicit UI declarations also receive a deterministic Chromium diagnostic: declared home
 controls, accessible roles, dialog action ambiguity, editor scope and native checkbox behavior.
-It supplies observations to the existing bounded repair call; no model-generated test or extra
-planning call is added. Probe output and whether it actually executed are retained in the trace.
+It supplies observations to the bounded repair flow; no model-generated test or planning call is
+added. If an accepted repair exposes remaining runtime problems, a remaining call within the same
+three-call global cap can address them. A regressing follow-up restores the previous accepted stage.
+Each repair and whether its browser check actually executed are retained in the trace.
 Missing browser infrastructure is reported separately and cannot approve a previously observed
 repair. These checks are diagnostic; only the unchanged acceptance suite establishes test scores.
 

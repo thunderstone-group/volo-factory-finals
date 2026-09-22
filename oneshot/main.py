@@ -560,7 +560,11 @@ def semantic_contracts(requirements):
                     description, re.I)
             reveals += re.findall(quoted + r"\s+control\s+(?:that\s+reveals|with)\s+a\s+" + quoted + r"\s+textbox", description, re.I)
             for control, placeholder in reveals:
-                form_reveals.append({"form": form.group(1), "control": control, "placeholder": placeholder})
+                contract = {"form": form.group(1), "control": control, "placeholder": placeholder}
+                seed = re.search(r"Seed data:\s*[\w -]+\s+" + quoted, description, re.I)
+                if seed:
+                    contract["record"] = seed.group(1)
+                form_reveals.append(contract)
     for block in re.split(r"(?m)^\s*(?:-\s*)?id:\s*", text):
         seed = re.search(r"Seed data:\s*[\w -]+\s+" + quoted, block, re.I)
         if not seed or re.search(r"\bauthenticated\b|after\s+(?:a\s+successful\s+)?login", block, re.I):
@@ -1419,9 +1423,9 @@ def _fatal(problem):
 
 
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
-    """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
-    at most one model call on a fix and keep it only if the smoke check then passes and the
-    vocabulary did not get worse. Records the outcome in budget.smoke."""
+    """Repair observed problems within the existing global call budget, preserving every accepted
+    improvement. A repaired crash can expose a further UI problem; use a remaining call for it
+    and retain the prior working version if that follow-up regresses. Records every repair."""
     diagnostics = []
     problems, executed = smoke_check(stage, requirements, diagnostics)
     smoke_before = list(problems)
@@ -1463,6 +1467,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         after_diagnostics = []
         budget.progress("checking_repair", force=True)
         after, _ = smoke_check(stage, requirements, after_diagnostics)
+        budget.smoke["problems_after"] = list(after)
         if after_diagnostics:
             budget.smoke["browser_after"] = after_diagnostics
         if any(r.get("executed") for r in diagnostics) and not any(
@@ -1502,6 +1507,13 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         budget.smoke["repair"] = {"accepted": False, "reason": str(exc)[:600]}
     finally:
         shutil.rmtree(backup, ignore_errors=True)
+    if budget.smoke["repair"].get("accepted") and after and not budget.exhausted():
+        previous = budget.smoke
+        history = previous.pop("previous_repairs", [])
+        repair_delivery(stage, files, messages + [{"role": "user", "content": ask},
+                                                {"role": "assistant", "content": fixed}],
+                        model, base, key, budget, template, requirements, scaffold=scaffold)
+        budget.smoke["previous_repairs"] = history + [previous] + budget.smoke.get("previous_repairs", [])
 
 
 def main(argv=None):

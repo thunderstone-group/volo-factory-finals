@@ -109,10 +109,11 @@ function scanSemantics(data) {
         issue(`Dialog "${nameOf(dialog)}" contains ${count} active "${name}" buttons. Keep one completion action in the editor; nested field choosers must not duplicate it.`);
     }
     if (contracts.recordEditors.length === 1) {
-      for (const popup of win.document.querySelectorAll('[data-popover]')) {
-        if (!active(popup)) continue;
-        const fields = Array.from(popup.querySelectorAll('input[type="checkbox"]'));
-        if (fields.length && popup.closest('article, [role="article"]') && !popup.closest('[role="dialog"]'))
+      for (const record of win.document.querySelectorAll('article, [role="article"]')) {
+        if (!active(record) || record.closest('[role="dialog"]')) continue;
+        const fields = Array.from(record.querySelectorAll('input[type="checkbox"]')).filter(el =>
+          active(el) && (contracts.roles[nameOf(el).toLowerCase()] || []).includes('checkbox'));
+        if (fields.length)
           issue(`Record field chooser (${fields.map(nameOf).slice(0, 5).join(', ')}) is outside the declared record editor "${contracts.recordEditors[0]}". Reuse that named entity editor for field editing and preserve the checkbox elements until explicit completion.`);
       }
     }
@@ -168,6 +169,19 @@ async function observe(page, url, contracts) {
     }
     return false;
   };
+  for (const contract of (contracts.formReveals || []).filter(c => c.record && /^Edit\b/i.test(c.form)).slice(0,3)) {
+    if (!await visitRecord(contract.record)) continue;
+    const edit = namedEntry('Edit');
+    if (!await edit.isVisible()) continue;
+    await edit.click({timeout:500});await page.waitForTimeout(50);await scan(false);
+    const form = page.getByRole('form', {name:contract.form,exact:true});
+    if (!await form.isVisible()) continue;
+    const reveal = form.getByRole('button', {name:contract.control,exact:true}).or(form.getByRole('link', {name:contract.control,exact:true})).first();
+    if (!await reveal.isVisible()) continue;
+    await reveal.click({timeout:500});await page.waitForTimeout(40);
+    if (!await form.getByPlaceholder(contract.placeholder,{exact:true}).isVisible())
+      errors.add(`Activating "${contract.control}" in "${contract.form}" leaves the "${contract.placeholder}" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.`);
+  }
   for (const contract of (contracts.recordActions || []).slice(0,3)) {
     if (!await visitRecord(contract.record)) continue;
     const action = namedEntry(contract.action);
@@ -262,6 +276,12 @@ async function observe(page, url, contracts) {
           return {calls: state.calls, registered: typeof actions[el.getAttribute('data-action')] === 'function'};
         });
         await c.el.click({timeout:700});await page.waitForTimeout(20);
+        for (const contract of contracts.formReveals || []) {
+          if (c.name !== contract.control) continue;
+          const form = page.getByRole('form', {name:contract.form,exact:true});
+          if (await form.isVisible() && !await form.getByPlaceholder(contract.placeholder,{exact:true}).isVisible())
+            errors.add(`Activating "${contract.control}" in "${contract.form}" leaves the "${contract.placeholder}" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.`);
+        }
         if (delivery.registered) {
           const reached = await page.evaluate(previous => {
             const state = window.__arcProbeDelivery;

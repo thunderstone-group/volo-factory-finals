@@ -1,0 +1,122 @@
+{
+  "candidate": "initial-control-v18",
+  "model": "kimi-k2.7-code-highspeed",
+  "independent_results": {
+    "keep": {
+      "passed": 30,
+      "total": 32,
+      "failed": [
+        "REQ-2.7.1",
+        "REQ-2.7.2"
+      ],
+      "seconds": 358.16,
+      "usage": {
+        "calls": 2,
+        "call_limit": 3,
+        "completed_calls": 2,
+        "failed_calls": 0,
+        "failure_limit": 1,
+        "known_prompt_tokens": 49327,
+        "prompt_tokens": 49327,
+        "known_completion_tokens": 64297,
+        "completion_tokens": 64297,
+        "unknown_usage_calls": [],
+        "fallback_model": null,
+        "billing_status": "tokens_reported_cost_not_estimated"
+      },
+      "result": "replays/initial-control-v18/keep-highspeed-a/result.json",
+      "settled_cny": "3.855036"
+    },
+    "bookstack": {
+      "passed": 28,
+      "total": 34,
+      "failed": [
+        "REQ-4.5.1",
+        "REQ-5.3.1",
+        "REQ-5.4.1",
+        "REQ-5.6.1",
+        "REQ-6.1.3",
+        "REQ-9.1"
+      ],
+      "seconds": 244.352,
+      "usage": {
+        "calls": 2,
+        "call_limit": 3,
+        "completed_calls": 2,
+        "failed_calls": 0,
+        "failure_limit": 1,
+        "known_prompt_tokens": 59571,
+        "prompt_tokens": 59571,
+        "known_completion_tokens": 48935,
+        "completion_tokens": 48935,
+        "unknown_usage_calls": [],
+        "fallback_model": null,
+        "billing_status": "tokens_reported_cost_not_estimated"
+      },
+      "result": "replays/initial-control-v18/bookstack-highspeed-a/result.json",
+      "settled_cny": "3.185284"
+    }
+  },
+  "goal_passes": [],
+  "next_candidate": "remaining-repair-v20",
+  "next_package_sha256": "213962945b57950b0c842c403ab392c8a9d289a6dd085802079d482f907a4ebe",
+  "calibrations": {
+    "verified-docker-book-v17-model-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "probe_sha256": "74f9ad62f6f5244e42256b95fe7e9087f758280914e16a1d94b80b4aef0d9488",
+      "seconds": 5.783
+    },
+    "verified-docker-book-v18": {
+      "executed": true,
+      "errors": [
+        "The requirement describes a \"My Most Viewed Favorites\" list on the homepage; its heading is absent on the initial page. Make the described list and its navigation available, including after returning from a content view.",
+        "The requirement describes a \"My Recently Viewed\" list on the homepage; its heading is absent on the initial page. Make the described list and its navigation available, including after returning from a content view.",
+        "Activating \"Shelf Tags\" in \"Edit shelf form\" leaves the \"tag1, tag2\" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.",
+        "Activating \"Book Tags\" in \"Edit book form\" leaves the \"tag1, tag2\" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.",
+        "Primary record entry \"Draft 6.1.3\" in \"Book 6.1.3\" opens an editor directly, bypassing the reading/details view and its Edit action. Preserve the normal primary-entry flow for drafts too."
+      ],
+      "page_errors": [],
+      "probe_sha256": "74f9ad62f6f5244e42256b95fe7e9087f758280914e16a1d94b80b4aef0d9488",
+      "seconds": 6.138
+    },
+    "verified-docker-keep-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "probe_sha256": "74f9ad62f6f5244e42256b95fe7e9087f758280914e16a1d94b80b4aef0d9488",
+      "seconds": 7.734
+    },
+    "verified-docker-keep-v18": {
+      "executed": true,
+      "errors": [
+        "Record field chooser (Work) is outside the declared record editor \"Note editor\". Reuse that named entity editor for field editing and preserve the checkbox elements until explicit completion."
+      ],
+      "page_errors": [],
+      "probe_sha256": "74f9ad62f6f5244e42256b95fe7e9087f758280914e16a1d94b80b4aef0d9488",
+      "seconds": 17.008
+    }
+  },
+  "validation": {
+    "staged_repair_tests": {
+      "passed": 4,
+      "log": "v19-staged-repair-tests.log"
+    },
+    "full_suite": {
+      "passed": 106,
+      "failed": 1,
+      "skipped": 0,
+      "log": "v19-full-tests.log",
+      "failure": "EADDRINUSE during quoted-name regression check"
+    },
+    "failed_case_rerun": {
+      "passed": 1,
+      "log": "v20-rename-guard-retry.log"
+    },
+    "current_contract_tests": {
+      "passed": 7,
+      "log": "v20-contract-tests.log"
+    }
+  }
+}

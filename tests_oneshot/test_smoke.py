@@ -222,7 +222,7 @@ class SmokeCase(unittest.TestCase):
                                 "document.body.insertAdjacentHTML('beforeend', '<button type=\"button\" data-action=\"add-to-cart\">Add to cart</button>');\n"
                                 "document.addEventListener('click', (e) => { if (e.target.dataset.action === 'add-to-cart') { const p = undefined; p.id; } });")
         self.replies(events(broken), events(throwing_button))
-        files, budget = self.generate()
+        files, budget = self.generate(limit=2)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         self.assertEqual(budget.smoke["repair"]["accepted"], True, budget.smoke)
@@ -239,11 +239,42 @@ class SmokeCase(unittest.TestCase):
         draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
                                       block("frontend/public/app.js", buttons("one", "two")))
         self.replies(events(draft), events(block("frontend/public/app.js", buttons("three"))))
-        files, budget = self.generate()
+        files, budget = self.generate(limit=2)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         self.assertEqual(budget.smoke["repair"]["accepted"], True, budget.smoke)
         self.assertIn("=== 'three'", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
+
+    def test_remaining_budget_repairs_a_click_error_exposed_after_a_syntax_fix(self):
+        broken = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                       block("frontend/public/app.js", "function f( { }"))
+        partial = ("document.body.insertAdjacentHTML('beforeend', '<button data-action=\"open\">Open</button>');\n"
+                   "document.addEventListener('click', () => { const missing = undefined; missing.id; });")
+        complete = partial.replace("const missing = undefined; missing.id;", "document.body.dataset.opened = 'true';")
+        self.replies(events(broken), events(block("frontend/public/app.js", partial)),
+                     events(block("frontend/public/app.js", complete)))
+        files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertTrue(budget.exhausted())
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertEqual(budget.smoke['problems_after'], [])
+        self.assertTrue(budget.smoke['previous_repairs'][0]['repair']['accepted'])
+        self.assertIn('clicking `Open`', budget.attempts[2]['messages'][-1]['content'])
+        self.assertEqual(next(f for f in files if f['path'] == 'frontend/public/app.js')['content'], complete + '\n')
+
+    def test_regressing_followup_keeps_the_prior_accepted_application(self):
+        broken = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                       block("frontend/public/app.js", "function f( { }"))
+        partial = ("document.body.insertAdjacentHTML('beforeend', '<button data-action=\"open\">Open</button>');\n"
+                   "document.addEventListener('click', () => { const missing = undefined; missing.id; });")
+        self.replies(events(broken), events(block("frontend/public/app.js", partial)),
+                     events(block("frontend/public/app.js", "function f( { }")))
+        files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertTrue(budget.smoke['previous_repairs'][0]['repair']['accepted'])
+        self.assertEqual((self.out / 'frontend/public/app.js').read_text(), partial + '\n')
+        self.assertEqual(next(f for f in files if f['path'] == 'frontend/public/app.js')['content'], partial + '\n')
 
     def test_repair_that_leaves_a_click_error_is_rejected_when_the_app_was_never_broken_whole(self):
         # Unchanged rule for the ordinary path: a repair for a family-level problem must leave the app clean.

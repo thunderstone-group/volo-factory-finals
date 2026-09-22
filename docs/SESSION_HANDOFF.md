@@ -1,30 +1,56 @@
-# Current handoff — 2026-09-22: independent BookStack33/34; v18 ready, platform /runs HTTP500
+# Current handoff — 2026-09-22: v18 pair58/66; controlled v20 final-budget repair running
 
-Native Goal active: Keep32 and BookStack34 only, same portable candidate/model independently
-passes both and independently repeats each. Diagnostic edits/cached responses do not count.
-Existing ARC balance and promising official Lite trials are authorized; no recharge/purchase or
-six-task Web batch. Worktree lite-first-20260922, branch exp/lite-first-20260922.
-R = runs/lite-goal-20260922. Inspect R/state.json for live process status.
+Native Goal remains active: only Keep32 and BookStack34. The SAME portable candidate/model must
+independently pass both and independently repeat each. Frozen edits and controlled/cached repairs
+never count. Existing ARC balance and promising official Lite trials are authorized; no recharge,
+purchase or six-task Web batch. Worktree lite-first-20260922, branch exp/lite-first-20260922.
+R = runs/lite-goal-20260922. Use R/state.json and actual subprocess/receipts for live state.
 
-## Current execution and next step
+## Current candidate, execution and next step
 
-Prepared candidate initial-control-v18, ZIP SHA-256
-2aa980e96b67408e585c36101240ebea5cc3d7359b6374976f1a106c2c03906f.
-Model kimi-k2.7-code-highspeed, temperature1.0, max_tokens131072, no cross-model fallback.
-No active local model request. Fresh v17 Keep never reached the gateway: preflight GET /runs
-returned HTTP500 three times. A subsequent normal list and submission-filtered list both also
-returned500 after about31s. This is a platform read failure, not Kimi model instability or a Keep
-score. Evidence R/generations/entry-contract-v17/keep-highspeed-a/preflight-failure.json and
-R/platform-runs-after-v17-preflight.err, R/platform-filtered-runs-v18.err. Never reissue a model
-request merely on observation timeout; in this failed preflight there was explicitly no model call.
+Frozen remaining-repair-v20, ZIP SHA-256
+213962945b57950b0c842c403ab392c8a9d289a6dd085802079d482f907a4ebe.
+Kimi HighSpeed,temperature1.0,max_tokens131072,no fallback. V19 was prepared but never paid-called;
+v20 includes its improvements plus the Keep custom-container observation. No v20 independent pass.
 
-Next: read platform status through existing arcbench-cli. Once active/pending runs are ruled out,
-start NEW independent v18 generations for both tasks (the v17 Keep attempt sent no model request,
-so do not spend on the superseded candidate). Replay all32/34 unchanged public cases. If both pass,
-independently repeat each; submit the promising candidate for official Lite as already authorized.
-Official v5 was terminal at the last successful read, but do not pretend current activity was checked
-when /runs is returning500. No user approval is needed to resume after the read service recovers.
-This turn made substantive progress; Goal is active, not paused/completed/blocked.
+Controlled BookStack repair is running (session68097), R/repair-bookstack-v20.log and
+R/repairs/v20-bookstack-third-call. Driver R/repair_v20.py --app bookstack starts from the exact v18
+final app and inherits its two real completed calls; at most ONE new model call remains. Its receipt
+separates inherited cumulative usage from new usage. This validates a possible third-call gain, not
+an independent generation. GET /runs temporarily returned500 twice before the third preflight read
+succeeded. Never duplicate the same request on an observation timeout. No official run is active at
+the last successful read. Old pending smoke/ticket-booking runs are unrelated and unchanged.
+
+Next: finish this same model request, replay ALL34 cases and compare gained/lost IDs against v18.
+Then run the controlled Keep scope repair via the same driver --app keep and full32-case replay.
+Only promote after actual gains with no losses; fresh v20 pair and independent repeats remain
+required. Official Lite trial is authorized once promising. Keep official/public input cohorts apart.
+
+## Current results and bounded changes
+
+V18 independently generated Keep30/32 (358.160s,2 completed calls49,327 input/64,297 output) and
+BookStack28/34 (244.352s,2 completed calls59,571 input/48,935 output),58/66 combined,0 stream failures.
+Keep fails label assignment/removal: custom inline card chooser puts the declared Work checkbox
+outside Note editor. Previous detector inspected only scaffold data-popover markup. The new probe
+recognizes visible requirement-named checkboxes in articles independent of that implementation detail.
+
+BookStack first draft had invalid await in a non-async backend handler; first repair fixed only the
+backend. The now-reachable browser diagnostic reported missing public homepage lists and draft
+entry, but the old one-repair flow delivered without using its remaining third call. Four further
+form failures have a shared cause: rendering reinitializes form disclosure state, so Shelf/Book Tags
+buttons leave inputs hidden. The new probe opens declared seeded edit forms and activates disclosure
+controls, then checks actual visibility. Homepage gating also explains the recently updated list loss.
+
+Repair flow now follows up on remaining runtime problems after an accepted improvement while the
+EXISTING global3-call budget permits. Each iteration takes its own backup; a worse follow-up restores
+the immediately preceding accepted app, not the original broken draft. Every repair is retained in
+previous_repairs. No call is added once clean or exhausted. Four real-browser calibrations catch both
+negative v18 apps and leave known full-score controls clean (R/probe-v20/verified-*/receipt.json).
+
+Validation: four staged-repair regressions passed. Full107 suite had106 passes and1 environmental
+EADDRINUSE failure; that exact name-preservation test reran successfully. Current extractor7 tests
+passed separately after adding record context. No skips. Logs and exact counts are in
+evidence/2026-09-22-lite-v18-pair.json. Latest main/helper changes are not yet committed.
 
 ## Latest independent and controlled results
 
