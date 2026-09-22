@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-22: v21 control rejected31/34; v22 form-state comparison running
+# Current handoff — 2026-09-22: v22 controlled BookStack34/34; four independent replays running
 
 Native Goal remains active: only Keep32 and BookStack34. The SAME portable candidate/model must
 independently pass both and independently repeat each. Frozen edits and controlled/cached repairs
@@ -27,13 +27,27 @@ Evidence: evidence/2026-09-22-lite-v21-control.json. Extractor8 tests passed for
 only the browser helper, calibrated against real applications. V20's full107 regression evidence
 and exact EADDRINUSE rerun remain recorded below.
 
-CURRENT: controlled v22 BookStack third call from the SAME v18 two-call output is running,
-session79418; R/repair-bookstack-v22.log and R/repairs/v22-bookstack-third-call. Driver repair_v22.py.
-Only ONE new request is permitted, total budget still3 including inherited actual prior calls.
-Finish this same request and replay ALL34 cases; preserve per-case v18/v20/v21 comparisons.
-If full without losses, start a fresh v22 independent pair and both repeats. Official Lite trial is
-already authorized when promising. Never duplicate in-flight inference or overlap official/local
-model usage. Platform /runs intermittently500s; its preflight must actually succeed.
+V22 controlled BookStack third call completed34/34 (+6/-0 from v18),107.595s,new41,241 input/
+16,667 output,CNY1.436151. Model-only app.js change; no manual app edits. One new call plus two
+inherited real v18 calls stays within the3-call cap. It is NOT an independent Goal pass. The first
+preflight failed /runs500 three times before inference; recovery1 followed a successful604-row/0-active
+read. Original zero-call evidence is retained. Full result R/replays/diagnostic/bookstack-v22-third-call.
+Evidence: evidence/2026-09-22-lite-v22-control.json.
+
+CURRENT: four independent replays are AUTOMATICALLY running under parent session51349.
+Driver R/v22_independent_series.py; main log R/v22-independent-series.log; live status
+R/series-v22/status.json. It runs frozen v22 with identical model/configuration in this order:
+BookStack highspeed-a, Keep highspeed-a, BookStack highspeed-b, Keep highspeed-b. Each generation
+has its own preflight and global request lock, then all34/32 unchanged public tests. It stops at the
+FIRST process failure or non-full score; it never retries inference. All logs and results are retained.
+Do not launch a second generation or an official run while this series is alive. Poll the SAME parent
+handle or inspect its live PID; a state file alone is not liveness proof. Check both the series status
+and its current child receipt. A process observation timeout never authorizes restart.
+
+If all4 pass, inspect each full result, identical package/configuration and corpus/runtime manifests;
+only then the Goal completion audit can pass. Official Lite trial is already authorized when promising,
+and must not overlap local inference. If any score fails, retain full per-case comparisons and continue
+controlled attribution. Never count the controlled34/34 or old Keep32/32 toward independent passes.
 
 ## Current results and bounded changes
 

@@ -802,3 +802,15 @@ Three real calibrations catch all remaining v21 failures and leave two full Book
 V22 control starts again from the SAME v18 two-call app, not v20/v21 outputs, with exactly1 new
 allowed call(session79418). Goal passes remain0. Evidence: evidence/2026-09-22-lite-v21-control.json.
 Settled controls:v20 Keep0.777920 CNY,BookStack1.407048;v21 BookStack1.280989.
+
+V22 first preflight failed /runs500×3 before inference. Subsequent read recovered604 rows/0 active runs. Original zero-call attempt retained; recovery1 launched(session18187), same frozen candidate/base/model. No model request was duplicated.
+
+## 2026-09-22 — v22 controlled BookStack34/34; four independent replays launched
+
+Controlled v22 from the same v18 two-call draft reaches34/34,+6/-0,model-only app.js edits.
+One new call41,241/16,667 tokens,107.595s,CNY1.436151. Failed initial preflight sent0 model calls;
+recovery1 followed a successful live /runs read. This is not an independent Goal pass.
+Frozen v22 series now running(parent51349):BookStack-a,Keep-a,BookStack-b,Keep-b, same package/model,
+sequential full public replays. Stops at first failure; no blind inference retries. Current state and
+step logs R/series-v22; completion still requires actual4-pass audit and authorized official follow-up.
+Evidence: evidence/2026-09-22-lite-v22-control.json.
