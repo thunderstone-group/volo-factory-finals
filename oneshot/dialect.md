@@ -164,7 +164,8 @@ text field first in DOM order). Exception: a requirement that names a region lit
 - A quoted field name is BOTH the `<label>` and the `placeholder` of its input, byte-exact ("Page title",
   "Write your page content here..."): one suite generation fills by `getByPlaceholder(/^Page title$/i)`
   only, the other by label first. Never a placeholder that differs from the label.
-- The logo is the scaffold's `<button aria-label="<Brand> logo">` beside the brand link; keep both.
+- The home button uses the brand as its accessible name. If a requirement specifies a name and role,
+  follow those exactly; do not append "logo" to an explicitly required brand name.
 - A record's own menu, colour palette or label picker opens INSIDE that record's `<article>` through
   `ARC.openPopover(card, items)` — the suites scope the lookup to the card (`article >> button /^Delete Note$/`,
   `article >> button /^Light green$/`, `article >> checkbox /^Work$/`). Never open it with `ARC.openDialog`: the

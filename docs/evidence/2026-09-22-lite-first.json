@@ -1,0 +1,3378 @@
+{
+  "scope": "arc-bench-lite only; no six-task Web runs",
+  "upstream_url": "https://github.com/code-philia/hackathon-local-simulation",
+  "upstream_commit": "cfbbc287ee1bbffcf1e936545e4803145693a8d8",
+  "agent_base_commit": "248eb656d55a2888c3abd9afa00780471e848885",
+  "official_score": false,
+  "model_calls": 0,
+  "apps": {
+    "keep": {
+      "requirement_count": 32,
+      "test_count": 32,
+      "all_requirement_ids_match": true,
+      "online_tests_match_exercise": true,
+      "online_fetched_at": "2026-09-22T03:43:24.120943+00:00",
+      "changes_vs_20260918": [
+        "helpers.ts"
+      ],
+      "requirements_sha256": "a16122a716461d6b4ff2cf5a9618d527eb3867c27e440a8df51f05d32b35a974",
+      "test_files": {
+        "REQ-1.1.spec.ts": {
+          "local_sha256": "8f3d22c1d108a5bda695608cb74a76c65b660fbcc303775424132688d8450717",
+          "online_sha256": "f1fca17e4816f41c49b4c04493aba3285737a3535823b7b2a01b18289434cbbb"
+        },
+        "REQ-2.1.spec.ts": {
+          "local_sha256": "8679ef41bf9c51a01194c2f3411b23be2c38bab0de3e7d1ad6bca8d0038ca3e5",
+          "online_sha256": "b92c8afbe1c3d1a86bb4d34ae84fa14e8d5175f2aad4b5566c21ee8a36b0ae97"
+        },
+        "REQ-2.2.spec.ts": {
+          "local_sha256": "679e8465232fd8f82a0b3e4be6d5f513b666eb8e5266830d4c9d6261b34aead8",
+          "online_sha256": "fcc644bf26428436b83485eec2f0482c8ef50fc987746522d562708eba387943"
+        },
+        "REQ-2.3.1.spec.ts": {
+          "local_sha256": "cf3c1edc7116394481b9de9fab92d8adb1ee6623dc5658acd22dbcd5afe2b062",
+          "online_sha256": "0e6deb689a7ab618c23f809afc144e79afd5a05fb05de49cbfe59d79a2d6a489"
+        },
+        "REQ-2.3.2.spec.ts": {
+          "local_sha256": "d6c34b684f16f7d901b39ef75cc3bbf8455a94cef9aee34240b9f7bcc3853387",
+          "online_sha256": "08dd3979847bb09d4161f7f2c1c65b72e93bd2fb11ac575a5b34bf411823c870"
+        },
+        "REQ-2.3.3.spec.ts": {
+          "local_sha256": "c6d0b3cd46ad4267e43071521ab6702e21d0bb30b1253ed6fe149307c1f5f789",
+          "online_sha256": "86ecd39c8b0dd6a2b6790e591b6732ec1d148f21736923e2fcbfb3247b9c0088"
+        },
+        "REQ-2.4.spec.ts": {
+          "local_sha256": "3f3cbda51059993f2abbc99c1cee7fe61d3b30d5a437b265426609622a801606",
+          "online_sha256": "cb8e3c4490dd3c80ef1c7856a0ccfc6f6076db2a53080e16dd2c5f1985f67ccc"
+        },
+        "REQ-2.5.1.spec.ts": {
+          "local_sha256": "442f8f5cdef0bc49e83449cb7e08f3bc96c932587caf17112d03b5a228776833",
+          "online_sha256": "038a32278f244bef228249b6ce20eb1edfce5838ff9a5584f19e9d7da0e4f9ad"
+        },
+        "REQ-2.5.2.spec.ts": {
+          "local_sha256": "d4c9aff5ef7e34fda5865cb54ec21c5c8a6284a5f7f7710b0ed201761b1eed9a",
+          "online_sha256": "185c69225db59c9a984ef00090479206e8f47885979e76ae59ec711c9ebd6d58"
+        },
+        "REQ-2.5.3.spec.ts": {
+          "local_sha256": "1cf9b2e7c12a50cb6e568ed87218f1ff27f2365bf2c34d793abffc8c5521b8c0",
+          "online_sha256": "659acc7c4c6d4f5e8ded60b1ddc3f0c30ee2aaea7d557bc21743126d44fdf7a6"
+        },
+        "REQ-2.5.4.spec.ts": {
+          "local_sha256": "1c6670438a112f0978a8a9c9bafb096d470594a0b264cb41c64e1f79cff32f5e",
+          "online_sha256": "c73b50d02221ec85ba39bfac21ac1effe507eafe071c5e5bde89d54f2a13eb3e"
+        },
+        "REQ-2.6.1.spec.ts": {
+          "local_sha256": "e0e5336a4431ab61a6404cf6484d176be6aadbfa441052ba96e7e1863ae725a9",
+          "online_sha256": "a45acae70c10737cf8923be0b0fffb6c806774ed889cc9e45fe26ed725b1f1fc"
+        },
+        "REQ-2.6.2.spec.ts": {
+          "local_sha256": "dd3e9c356f3ad6ef2e181af596d341f7779b8c512c06a6c9df08c8ebb52d5e47",
+          "online_sha256": "bfa4b3eac7461d02d1273d050a0e4dbbc1ede1343a20de40425e6852d575ec3b"
+        },
+        "REQ-2.7.1.spec.ts": {
+          "local_sha256": "a93e38038f91939bf2438c8dbb139617aba2a0b11ddf5dd197312c396771b904",
+          "online_sha256": "56585fcc8f06032563766893f0476942ee80ad90a296ada82a139b09e4031254"
+        },
+        "REQ-2.7.2.spec.ts": {
+          "local_sha256": "1f258ba9b92481ff82256cdcb23f7a5ed89000b9d25cf7ada045b929940dc7c6",
+          "online_sha256": "a21cdf7c4e2b8d4c287d1800c4e2c59e3f84825d66084bde6ead2e32f94b4eaa"
+        },
+        "REQ-2.7.3.spec.ts": {
+          "local_sha256": "bd769635a00ab4961d8a43f01301412749957076961455eca76fbc7ab151e723",
+          "online_sha256": "b5b1d81152fab4ec32c26baaa32bb1956283429ef450a850041a2e1510c23338"
+        },
+        "REQ-2.7.4.spec.ts": {
+          "local_sha256": "24d80807b8cca6e26cb907c9db7450dee53a2e72530f39147e7020470af40253",
+          "online_sha256": "cbd75be14ffc58908668afa2ec05e1e66be267658609cbfc4bb76b7522883ba8"
+        },
+        "REQ-2.7.5.spec.ts": {
+          "local_sha256": "39ca34b2d64ada49cde04936136a18f60305f40b9c5ef2eff8b776534aab924e",
+          "online_sha256": "ff715823eb43a140997e6ba5b524994e3215bdc3d64708b1545a4ffa8f114a50"
+        },
+        "REQ-2.7.6.1.spec.ts": {
+          "local_sha256": "50042b009cd5d2e2a1a11c3c25e087816485c22afb7185220d22c49a27e19b69",
+          "online_sha256": "436a03f7b41e40f12a751bae4a23cecbb44a04bf4088ef594ac1c14ff166b078"
+        },
+        "REQ-2.7.6.2.spec.ts": {
+          "local_sha256": "86b76840c9d21b6f9f3d98b44351d271be142f7d7d92db0d231c11c5c85156d7",
+          "online_sha256": "aa8738e48421fda1dbb6b5b612c2a33520f5523cf41870ed99d62a08b8134e38"
+        },
+        "REQ-2.7.6.3.spec.ts": {
+          "local_sha256": "ec60710341d17c16c53636ee50a9df0884616a09e245da6cc3bbfcbab44b4d66",
+          "online_sha256": "6e9c442a68083372416dcb25244a51696676d2bd59a36f10fdcb636f91b4ec43"
+        },
+        "REQ-2.8.1.spec.ts": {
+          "local_sha256": "230c72c48bee7da7910f4510941b12336ba77b718c5e428c20e3a603c6d89f35",
+          "online_sha256": "e4a971823953659b6ba6debc7074ec57541a4ac77f3d09db2e74cfdf9634309f"
+        },
+        "REQ-2.8.2.spec.ts": {
+          "local_sha256": "8afc17c85767131d43cdcac38d1cd289752f8b3dce19f0c35b308c10227b271e",
+          "online_sha256": "926f34bcafad8aa880044ec1bdae54f93e85b4035f87e7f99a97b6e010519109"
+        },
+        "REQ-2.8.3.spec.ts": {
+          "local_sha256": "6c76a8abea20db5a65fae2116b5b04a3c464bbeee914a2f5af0f01cf46cd0de1",
+          "online_sha256": "4eaf51617b0e7f63b99559b8f7e82c166a767ca166c539b46632dfbd038a8215"
+        },
+        "REQ-3.1.spec.ts": {
+          "local_sha256": "ab73a668b731124863da2db6a459d01c1d11b8136c9773305bfbd0d6b01375c5",
+          "online_sha256": "6a1264dcabdb2b1ecfd6555e7901d781d5a33448cab087dd93400d565d393965"
+        },
+        "REQ-3.2.spec.ts": {
+          "local_sha256": "2ca665128b7cdd92e451a1522767829848bbefc7a593678b7cb19eac9b1e72d2",
+          "online_sha256": "86526f6debcef11da94f997a829615d4ec23ca40bd295618df60174c717efb82"
+        },
+        "REQ-4.1.spec.ts": {
+          "local_sha256": "cecb82e048f70e7ac339039b7a25b7399f0d447796126657162e481d5d178f7c",
+          "online_sha256": "2ad66ad8e35fadd9fab26a54dcdae701ce486040d0776487fb23b6490fd05853"
+        },
+        "REQ-4.2.spec.ts": {
+          "local_sha256": "905077fa2976c856be83ba7f072467550b4b16e4cbca946ae30f8f174979baaf",
+          "online_sha256": "76fe24268700875facdb7860df7035dc86118525e872fda914d8b82af7cff3f3"
+        },
+        "REQ-5.1.spec.ts": {
+          "local_sha256": "c0f9ae0794f98ca659eb1d036690da257043b6c8bb80d2cff9b29819eaf186fa",
+          "online_sha256": "7a66d0892b4dffe0ef1a773f382dcce4284cb4bdc63badcfd54ff8dd7019aa46"
+        },
+        "REQ-5.2.spec.ts": {
+          "local_sha256": "1061675aae0df798cf665ea4a479d8f9687c1dc28568d9e8b4fb10bf7f916401",
+          "online_sha256": "7a4d0fbcd7a34f6790f39a5685265d203d94cd41d0ec59926cea76f4fb207ac5"
+        },
+        "REQ-6.1.spec.ts": {
+          "local_sha256": "1d22937793fe57d3d4284c057534628bcc8ce10e8b17d422862c85725e8ee2b0",
+          "online_sha256": "98501f0d319d91a055a3fde8a8ba4101f0717ead47a9f457944a9a871e44b68c"
+        },
+        "REQ-6.2.spec.ts": {
+          "local_sha256": "df65b8c08d44bb0019cc84112bcda980a2d98d91281b8691a97475ee4ec67b80",
+          "online_sha256": "016ffa8267c7211bd650bfee873cdbfe7eeb827f2f45b4e4b8b4aab67de6f2ae"
+        },
+        "helpers.ts": {
+          "local_sha256": "2a28fe0174b8630be4762124ac8b5cf5b51350877e37e5a6835cc5d74367f9e4",
+          "online_sha256": "073d52b2407a05400e9e7378aba894ca74d16468fddd75ee17ef66c98a6f2957"
+        }
+      },
+      "baseline": {
+        "passed": 15,
+        "failed": 17,
+        "source_receipt": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-20260922/baseline-keep/inputs.json",
+        "report": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-20260922/baseline-keep/report.json",
+        "report_sha256": "a839e98e24e6b89e4e5b98428af37e1b6319b1fb5fca7f19d2a7daa236c8ff38",
+        "runtime": {
+          "node": "v20.19.3",
+          "playwright": "1.57.0",
+          "chromium": "143.0.7499.4",
+          "arch": "arm64",
+          "mode": "score",
+          "workers": 1,
+          "cpu_max": "100000 100000",
+          "memory_max": "2147483648"
+        },
+        "stats": {
+          "startTime": "2026-09-22T03:45:38.472Z",
+          "duration": 180454.213,
+          "expected": 15,
+          "skipped": 0,
+          "unexpected": 17,
+          "flaky": 0
+        }
+      },
+      "cases": [
+        {
+          "id": "REQ-1.1",
+          "name": "Enter Website",
+          "description": "Open the application and display the home page. The page exposes a visible region named `Notes workspace`, a button named `Take a note`, and a textbox named `Search`.\n",
+          "scenarios": [
+            {
+              "name": "Enter Website",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User has a browser or app with network access."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Open the application entry URL."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The home page is displayed with the `Notes workspace` region, the `Take a note` button, and the `Search` textbox visible."
+                }
+              ]
+            }
+          ],
+          "dependencies": [],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-1.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "expectHomePage"
+          ],
+          "baseline": {
+            "id": "REQ-1.1",
+            "title": "REQ-1.1: Enter Website",
+            "status": "unexpected",
+            "duration_ms": 10032,
+            "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByRole('region', { name: /^Notes workspace$/i })\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('region', { name: /^Notes workspace$/i })\n\n\n   at helpers.ts:203\n\n  201 |\n  202 | export async function expectHomePage(page: Page): Promise<void> {\n> 203 |   await expect(page.getByRole('region', { name: /^Notes workspace$/i })).toBeVisible();\n      |                                                                          ^\n  204 |   await expect(page.getByRole('button', { name: /^Take a note$/i })).toBeVisible();\n  205 |   await expect(page.getByRole('textbox', { name: /^Search$/i })).toBeVisible();\n  206 | }\n    at Object.expectHomePage (/workspace/checks/helpers.ts:203:74)\n    at /workspace/checks/REQ-1.1.spec.ts:9:11"
+          }
+        },
+        {
+          "id": "REQ-2.1",
+          "name": "Note Listing",
+          "description": "Display the notes list on the home page with pinned notes shown separately from unpinned notes. The pinned section is a named region or heading `Pinned`, and the regular section is a named region or heading `Others`. Each note is exposed as a unique article named by its title. Seed data: pinned note \"Sprint goals\" and regular note \"Groceries\".",
+          "scenarios": [
+            {
+              "name": "Note Listing",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User has opened the application and the system is accessible."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "View the home page."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The page displays visible `Pinned` and `Others` sections, with `Sprint goals` in the pinned section and `Groceries` in the regular section."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "expectTextsVisible",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.1",
+            "title": "REQ-2.1: Note Listing",
+            "status": "expected",
+            "duration_ms": 237,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.2",
+          "name": "Create Note",
+          "description": "Create a note from the `Take a note` button. Activating it opens exactly one dialog named `Note editor` containing uniquely labelled textboxes `Title` and `Note content`, plus a button named `Close`. Closing the dialog autosaves the note. Take a note form from homepage image: ![image](./reference/create_note_home_page.png) Note form image: ![image](./reference/create_note_form.png)",
+          "scenarios": [
+            {
+              "name": "Create Note",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique button `Take a note`, fill the `Title` textbox with `Weekend plan`, fill the `Note content` textbox with `Visit the farmers market and prep lunches.`, and activate the `Close` button in the `Note editor` dialog."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The `Note editor` dialog closes, the note is autosaved, and exactly one note article named `Weekend plan` appears in the notes list."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "createNote",
+            "expectNoteVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.2",
+            "title": "REQ-2.2: Create Note",
+            "status": "unexpected",
+            "duration_ms": 10028,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.fill: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('dialog', { name: /^Note editor$/i }).getByRole('textbox', { name: /^Title$/i })\n\n\n   at helpers.ts:250\n\n  248 |   await openComposer(page);\n  249 |   const dialog = noteEditor(page);\n> 250 |   await dialog.getByRole('textbox', { name: /^Title$/i }).fill(title);\n      |                                                           ^\n  251 |   await dialog.getByRole('textbox', { name: /^Note content$/i }).fill(content);\n  252 | }\n  253 |\n    at fillComposer (/workspace/checks/helpers.ts:250:59)\n    at Object.createNote (/workspace/checks/helpers.ts:261:3)\n    at /workspace/checks/REQ-2.2.spec.ts:9:3"
+          }
+        },
+        {
+          "id": "REQ-2.3.1",
+          "name": "Delete",
+          "description": "Delete a note from its actions without an extra confirmation dialog. Each note is an article containing a button named `More options`; activating it exposes a button named `Delete Note` scoped to that note. Deletion exposes a status message `Note trashed` and a button named `Undo`. Dropdown image: ![image](./reference/note_more_options_dropdown.png) Seed data: deletable note \"Delete me 2.3.1\".",
+          "scenarios": [
+            {
+              "name": "Delete",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and can see at least one note."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Hover over the article for `Delete me 2.3.1`, activate its `More options` button, and activate its `Delete Note` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The `Delete me 2.3.1` article is absent from the main notes list, a visible status message displays exactly `Note trashed`, and a unique button named `Undo` is available."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.3.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "deleteNote",
+            "expectTextsVisible",
+            "expectNoteAbsent"
+          ],
+          "baseline": {
+            "id": "REQ-2.3.1",
+            "title": "REQ-2.3.1: Delete",
+            "status": "expected",
+            "duration_ms": 311,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.3.2",
+          "name": "Notification and Undo",
+          "description": "Show a delete status notification with a unique `Undo` button after a note is deleted. Activating `Undo` restores the same note article and displays a status message exactly `Action undone`. Reference image for notification: ![image](./reference/note_delete_notification.png) Seed data: deletable note \"Delete me 2.3.2\".",
+          "scenarios": [
+            {
+              "name": "Notification and Undo",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User has just deleted a note from the home page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique `Undo` button in the visible delete notification."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The `Delete me 2.3.2` note article is restored and the page shows a visible status message exactly `Action undone`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.3.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.3.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "deleteNote",
+            "clickUndo",
+            "expectTextsVisible",
+            "expectNoteVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.3.2",
+            "title": "REQ-2.3.2: Notification and Undo",
+            "status": "expected",
+            "duration_ms": 275,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.3.3",
+          "name": "Trash list",
+          "description": "Open the Trash view from the sidebar and display deleted notes. The sidebar is exposed as a complementary landmark and contains a unique button named `Trash`. Reference image: ![image](./reference/trash_list.png) Seed data: deletable note \"Delete me 2.3.3\".",
+          "scenarios": [
+            {
+              "name": "Trash list",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User can see the sidebar."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique button named `Trash` in the sidebar."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The Trash view displays the deleted note article named `Delete me 2.3.3`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.3.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.3.3.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "deleteNote",
+            "openTrash",
+            "expectNoteVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.3.3",
+            "title": "REQ-2.3.3: Trash list",
+            "status": "unexpected",
+            "duration_ms": 10021,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.hover: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('article').filter({ hasText: /Delete me 2\\.3\\.3/i }).first().getByRole('button', { name: /Delete\\s+me\\s+2\\.3\\.3/i }).first()\n\n\n   at helpers.ts:152\n\n  150 | export async function hoverNamed(scope: Scope, value: Match): Promise<void> {\n  151 |   const locator = await resolveNamed(scope, value);\n> 152 |   await locator.hover();\n      |                 ^\n  153 | }\n  154 |\n  155 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n    at hoverNamed (/workspace/checks/helpers.ts:152:17)\n    at Object.deleteNote (/workspace/checks/helpers.ts:273:3)\n    at /workspace/checks/REQ-2.3.3.spec.ts:9:3"
+          }
+        },
+        {
+          "id": "REQ-2.4",
+          "name": "Update Note",
+          "description": "Edit the content of an existing note and persist it after closing the editor. Activating the note article opens a dialog named `Note editor` containing a textbox named `Note content` and a button named `Close`. Reference image: ![image](./reference/note_editing.png) Seed data: note \"Project ideas\" with initial content \"Initial editable content\".",
+          "scenarios": [
+            {
+              "name": "Update Note",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and can see a note."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Open the `Project ideas` note article, replace `Note content` with `Updated editable content for the note editor.`, and activate `Close`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The `Note editor` dialog closes and the `Project ideas` article displays `Updated editable content for the note editor.`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.4.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openNote",
+            "closeEditor",
+            "expectNoteVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.4",
+            "title": "REQ-2.4: Update Note",
+            "status": "expected",
+            "duration_ms": 223,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.5.1",
+          "name": "Archive",
+          "description": "Archive a note using the button named `Archive` inside its note article and show a status message exactly `Note archived` with a unique `Undo` button. Reference image: ![image](./reference/archive_button.png) Seed data: active note \"Travel plans 2.5.1\".",
+          "scenarios": [
+            {
+              "name": "Archive",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and can see a note."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the `Archive` button inside the `Travel plans 2.5.1` note article."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The note is absent from the main list, is stored in the archive list, and the page shows `Note archived` with a unique `Undo` button."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.5.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "archiveNote",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.5.1",
+            "title": "REQ-2.5.1: Archive",
+            "status": "unexpected",
+            "duration_ms": 10025,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('article').filter({ has: getByText(/Travel plans 2\\.5\\.1/i) }).first().getByRole('button', { name: /^Archive$/i })\n\n\n   at helpers.ts:281\n\n  279 |   const card = await noteCard(page, title);\n  280 |   await hoverNamed(card, [title]);\n> 281 |   await card.getByRole('button', { name: /^Archive$/i }).click();\n      |                                                          ^\n  282 | }\n  283 |\n  284 | export async function openTrash(page: Page): Promise<void> {\n    at Object.archiveNote (/workspace/checks/helpers.ts:281:58)\n    at /workspace/checks/REQ-2.5.1.spec.ts:9:3"
+          }
+        },
+        {
+          "id": "REQ-2.5.2",
+          "name": "Archive Undo",
+          "description": "Restore an archived note by using the Undo action from the archive notification. Seed data: active note \"Travel plans 2.5.2\".",
+          "scenarios": [
+            {
+              "name": "Archive Undo",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The archive notification is visible after archiving a note."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique `Undo` button in the archive notification."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The note article named `Travel plans 2.5.2` returns to the main notes list."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.5.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.5.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "archiveNote",
+            "clickUndo",
+            "expectNoteVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.5.2",
+            "title": "REQ-2.5.2: Archive Undo",
+            "status": "unexpected",
+            "duration_ms": 10026,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('article').filter({ has: getByText(/Travel plans 2\\.5\\.2/i) }).first().getByRole('button', { name: /^Archive$/i })\n\n\n   at helpers.ts:281\n\n  279 |   const card = await noteCard(page, title);\n  280 |   await hoverNamed(card, [title]);\n> 281 |   await card.getByRole('button', { name: /^Archive$/i }).click();\n      |                                                          ^\n  282 | }\n  283 |\n  284 | export async function openTrash(page: Page): Promise<void> {\n    at Object.archiveNote (/workspace/checks/helpers.ts:281:58)\n    at /workspace/checks/REQ-2.5.2.spec.ts:9:3"
+          }
+        },
+        {
+          "id": "REQ-2.5.3",
+          "name": "Show archived notes",
+          "description": "Open the Archive view from the sidebar using the unique button named `Archive` and display archived note articles. Reference image: ![image](./reference/archived_notes_page.png) Seed data: active note \"Travel plans 2.5.3\".",
+          "scenarios": [
+            {
+              "name": "Show archived notes",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User can see the sidebar."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique `Archive` button in the sidebar."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The Archive view displays the note article named `Travel plans 2.5.3`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.5.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.5.3.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "archiveNote",
+            "openArchive",
+            "expectNoteVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.5.3",
+            "title": "REQ-2.5.3: Show archived notes",
+            "status": "unexpected",
+            "duration_ms": 10027,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.hover: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('article').filter({ hasText: /Travel plans 2\\.5\\.3/i }).first().getByRole('button', { name: /Travel\\s+plans\\s+2\\.5\\.3/i }).first()\n\n\n   at helpers.ts:152\n\n  150 | export async function hoverNamed(scope: Scope, value: Match): Promise<void> {\n  151 |   const locator = await resolveNamed(scope, value);\n> 152 |   await locator.hover();\n      |                 ^\n  153 | }\n  154 |\n  155 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n    at hoverNamed (/workspace/checks/helpers.ts:152:17)\n    at Object.archiveNote (/workspace/checks/helpers.ts:280:3)\n    at /workspace/checks/REQ-2.5.3.spec.ts:9:3"
+          }
+        },
+        {
+          "id": "REQ-2.5.4",
+          "name": "Unarchive",
+          "description": "Restore an archived note using the button named `Unarchive` inside its note article. Reference image: ![image](./reference/unarchive_button.png) Seed data: active note \"Travel plans 2.5.4\".",
+          "scenarios": [
+            {
+              "name": "Unarchive",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is viewing the archived notes list."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the `Unarchive` button inside the `Travel plans 2.5.4` article."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The note is absent from the archived list and the `Travel plans 2.5.4` article is present in the main notes list."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.5.3"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.5.4.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "archiveNote",
+            "openArchive",
+            "unarchiveNote",
+            "openSidebar",
+            "clickNamed",
+            "expectNoteVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.5.4",
+            "title": "REQ-2.5.4: Unarchive",
+            "status": "unexpected",
+            "duration_ms": 10023,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.hover: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('article').filter({ hasText: /Travel plans 2\\.5\\.4/i }).first().getByRole('button', { name: /Travel\\s+plans\\s+2\\.5\\.4/i }).first()\n\n\n   at helpers.ts:152\n\n  150 | export async function hoverNamed(scope: Scope, value: Match): Promise<void> {\n  151 |   const locator = await resolveNamed(scope, value);\n> 152 |   await locator.hover();\n      |                 ^\n  153 | }\n  154 |\n  155 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n    at hoverNamed (/workspace/checks/helpers.ts:152:17)\n    at Object.archiveNote (/workspace/checks/helpers.ts:280:3)\n    at /workspace/checks/REQ-2.5.4.spec.ts:9:3"
+          }
+        },
+        {
+          "id": "REQ-2.6.1",
+          "name": "Change note color",
+          "description": "Change the color of an existing note using its `Change color` button and a color button named `Light green`. Light green is represented by computed background color `rgb(204, 255, 144)`. Seed data: regular note \"Garden tasks existing\" with a white background.",
+          "scenarios": [
+            {
+              "name": "Change note color",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and can see a note."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate `Change color` in the `Garden tasks existing` article and activate the color button named `Light green`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The note article background changes to computed color `rgb(204, 255, 144)`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.6.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "changeNoteColor",
+            "noteCard"
+          ],
+          "baseline": {
+            "id": "REQ-2.6.1",
+            "title": "REQ-2.6.1: Change note color",
+            "status": "expected",
+            "duration_ms": 288,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.6.2",
+          "name": "Choose note color when created",
+          "description": "Set the color of a note during creation using the `Change color` and `Light green` buttons in the `Note editor` dialog.",
+          "scenarios": [
+            {
+              "name": "Choose note color when created",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User has opened the \"Take a note\" editor."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate `Change color`, activate `Light green`, fill `Title` with `Garden tasks created`, fill `Note content` with `Color me later`, and activate `Close`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The `Garden tasks created` note article is saved with computed background color `rgb(204, 255, 144)`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.6.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "chooseColorDuringCreate",
+            "closeEditor",
+            "noteCard"
+          ],
+          "baseline": {
+            "id": "REQ-2.6.2",
+            "title": "REQ-2.6.2: Choose note color when created",
+            "status": "unexpected",
+            "duration_ms": 10020,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('dialog', { name: /^Note editor$/i }).getByRole('button', { name: /^Change color$/i })\n\n\n   at helpers.ts:318\n\n  316 |   await openComposer(page);\n  317 |   const dialog = noteEditor(page);\n> 318 |   await dialog.getByRole('button', { name: /^Change color$/i }).click();\n      |                                                                 ^\n  319 |   await dialog.getByRole('button', { name: /^Light green$/i }).click();\n  320 | }\n  321 |\n    at Object.chooseColorDuringCreate (/workspace/checks/helpers.ts:318:65)\n    at /workspace/checks/REQ-2.6.2.spec.ts:9:3"
+          }
+        },
+        {
+          "id": "REQ-2.7.1",
+          "name": "Assign label to a note",
+          "description": "Assign labels to an existing note. The note article has a `More options` button; its menu has a `Change labels` button; the label editor exposes a checkbox named `Work`. Reference image: ![image](./reference/assign_label_to_note.png) Seed data: regular note \"Team retro add label\" without the \"Work\" label; label \"Work\".",
+          "scenarios": [
+            {
+              "name": "Assign label to a note",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and can see a note."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "In the `Team retro add label` article, activate `More options`, activate `Change labels`, check the `Work` checkbox, and activate `Close`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The `Work` label is assigned and displayed inside the target note article."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.7.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openLabelDialogForNote",
+            "setLabel",
+            "closeEditor",
+            "noteCard"
+          ],
+          "baseline": {
+            "id": "REQ-2.7.1",
+            "title": "REQ-2.7.1: Assign label to a note",
+            "status": "unexpected",
+            "duration_ms": 10025,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.check: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('dialog', { name: /^Note editor$/i }).getByRole('checkbox', { name: /^Work$/i })\n\n\n   at helpers.ts:333\n\n  331 |     name: new RegExp(`^${escapeRegExp(label)}$`, 'i'),\n  332 |   });\n> 333 |   if (checked) await checkbox.check();\n      |                               ^\n  334 |   else await checkbox.uncheck();\n  335 | }\n  336 |\n    at Object.setLabel (/workspace/checks/helpers.ts:333:31)\n    at /workspace/checks/REQ-2.7.1.spec.ts:10:11"
+          }
+        },
+        {
+          "id": "REQ-2.7.2",
+          "name": "Remove label from a note",
+          "description": "Remove an assigned label from a note. The note article exposes `More options` and `Change labels`; the label editor exposes a checked checkbox named `Work` and a `Close` button. Seed data: regular note \"Team retro remove label\" with the \"Work\" label; label \"Work\".",
+          "scenarios": [
+            {
+              "name": "Remove label from a note",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and can see a note that already has a label."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "In the `Team retro remove label` article, activate `More options`, activate `Change labels`, uncheck `Work`, and activate `Close`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The `Work` label is absent from the target note article; other notes and the sidebar remain unchanged."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.7.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.7.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openLabelDialogForNote",
+            "setLabel",
+            "closeEditor",
+            "noteCard"
+          ],
+          "baseline": {
+            "id": "REQ-2.7.2",
+            "title": "REQ-2.7.2: Remove label from a note",
+            "status": "unexpected",
+            "duration_ms": 10027,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.uncheck: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('dialog', { name: /^Note editor$/i }).getByRole('checkbox', { name: /^Work$/i })\n\n\n   at helpers.ts:334\n\n  332 |   });\n  333 |   if (checked) await checkbox.check();\n> 334 |   else await checkbox.uncheck();\n      |                       ^\n  335 | }\n  336 |\n  337 | export async function pinNote(page: Page, title: string): Promise<void> {\n    at Object.setLabel (/workspace/checks/helpers.ts:334:23)\n    at /workspace/checks/REQ-2.7.2.spec.ts:10:11"
+          }
+        },
+        {
+          "id": "REQ-2.7.3",
+          "name": "Default label",
+          "description": "Provide `Reminders` as a default label in the sidebar. The sidebar exposes it as a unique button named `Reminders`. Seed data: default label \"Reminders\".",
+          "scenarios": [
+            {
+              "name": "Default label",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The system has been initialized."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "View the labels list."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The sidebar includes a unique button named `Reminders`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.7.3.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openSidebar",
+            "expectVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.7.3",
+            "title": "REQ-2.7.3: Default label",
+            "status": "expected",
+            "duration_ms": 178,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.7.4",
+          "name": "Assign default label when creating note",
+          "description": "Assign the default \"Reminders\" label during note creation. Seed data: default label \"Reminders\".",
+          "scenarios": [
+            {
+              "name": "Assign default label when creating note",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and the \"Take a note\" editor is open."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Open \"More options\", choose \"Change labels\", select the \"Reminders\" label, enter a title and content, and click \"Close\"."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The created note is saved with the \"Reminders\" label."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.7.3"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.7.4.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openComposer",
+            "setLabel",
+            "closeEditor",
+            "noteCard"
+          ],
+          "baseline": {
+            "id": "REQ-2.7.4",
+            "title": "REQ-2.7.4: Assign default label when creating note",
+            "status": "unexpected",
+            "duration_ms": 10010,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('dialog', { name: /^Note editor$/i }).getByRole('button', { name: /^More options$/i })\n\n\n   9 |   await h.openComposer(page);\n  10 |   const dialog = page.getByRole('dialog', { name: /^Note editor$/i });\n> 11 |   await dialog.getByRole('button', { name: /^More options$/i }).click();\n     |                                                                 ^\n  12 |   await dialog.getByRole('button', { name: /^Change labels$/i }).click();\n  13 |   await h.setLabel(page, h.FIXTURES.labels.default, true);\n  14 |   await dialog.getByRole('textbox', { name: /^Title$/i }).fill(h.FIXTURES.notes.reminderCreatedTitle);\n    at /workspace/checks/REQ-2.7.4.spec.ts:11:65"
+          }
+        },
+        {
+          "id": "REQ-2.7.5",
+          "name": "Edit labels",
+          "description": "Create, rename, and delete labels from the label management list. Each label row is a named group, for example `Label Work editable`, containing a textbox labelled `Label Work editable` and a unique `Save` button. Reference image: ![image](./reference/manage_labels.png) Seed data: editable label \"Work editable\".",
+          "scenarios": [
+            {
+              "name": "Edit labels",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User can see the sidebar."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique `Edit labels` sidebar button, replace the `Label Work editable` textbox value with `Projects`, and activate its `Save` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The label list contains a textbox named `Label Projects`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.7.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.7.5.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openSidebar",
+            "clickNamed",
+            "renameLabel"
+          ],
+          "baseline": {
+            "id": "REQ-2.7.5",
+            "title": "REQ-2.7.5: Edit labels",
+            "status": "expected",
+            "duration_ms": 279,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.7.6.1",
+          "name": "View list filtered by label",
+          "description": "Filter the notes list by a selected label. The sidebar exposes the label as a unique button named `Work`. Seed data: note \"Design review\" with the \"Work\" label and note \"Movie list\" without the \"Work\" or \"Reminders\" label; label \"Work\".",
+          "scenarios": [
+            {
+              "name": "View list filtered by label",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User can see the sidebar."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique `Work` button in the sidebar."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The notes list contains `Design review` and does not contain `Movie list`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.7.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.7.6.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openSidebar",
+            "clickSidebarLabel",
+            "expectNoteVisible",
+            "expectNoteAbsent"
+          ],
+          "baseline": {
+            "id": "REQ-2.7.6.1",
+            "title": "REQ-2.7.6.1: View list filtered by label",
+            "status": "expected",
+            "duration_ms": 139,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.7.6.2",
+          "name": "View all notes",
+          "description": "Return from a label-filtered view to the full notes list. Seed data: note \"Design review\" with the \"Work\" label and note \"Movie list\" without the \"Work\" or \"Reminders\" label; label \"Work\".",
+          "scenarios": [
+            {
+              "name": "View all notes",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User can see the sidebar."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique `Notes` button in the sidebar."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The notes list contains both `Design review` and `Movie list`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.7.6.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.7.6.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openSidebar",
+            "clickSidebarLabel",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.7.6.2",
+            "title": "REQ-2.7.6.2: View all notes",
+            "status": "expected",
+            "duration_ms": 156,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.7.6.3",
+          "name": "View Reminders",
+          "description": "Filter the notes list by the default \"Reminders\" label. Seed data: note \"Call dentist existing\" with the \"Reminders\" label and note \"Movie list\" without the \"Work\" or \"Reminders\" label; label \"Reminders\".",
+          "scenarios": [
+            {
+              "name": "View Reminders",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User can see the sidebar."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique `Reminders` button in the sidebar."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The notes list contains `Call dentist existing` and does not contain `Movie list`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.7.3"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.7.6.3.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openSidebar",
+            "clickSidebarLabel",
+            "expectNoteVisible",
+            "expectNoteAbsent"
+          ],
+          "baseline": {
+            "id": "REQ-2.7.6.3",
+            "title": "REQ-2.7.6.3: View Reminders",
+            "status": "expected",
+            "duration_ms": 113,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.8.1",
+          "name": "Pin note",
+          "description": "Pin an existing note from its article using a button named `Pin note`. The pinned article exposes a title attribute `Pinned`. Reference image: ![image](./reference/pin_button.png) Seed data: regular note \"Meeting agenda 2.8.1\" that is not pinned.",
+          "scenarios": [
+            {
+              "name": "Pin note",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and can see a note."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the `Pin note` button inside the `Meeting agenda 2.8.1` article."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The article has title `Pinned` and appears in the `Pinned` section."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.8.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "pinNote",
+            "expectVisible",
+            "noteCard"
+          ],
+          "baseline": {
+            "id": "REQ-2.8.1",
+            "title": "REQ-2.8.1: Pin note",
+            "status": "expected",
+            "duration_ms": 188,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.8.2",
+          "name": "Unpin note",
+          "description": "Remove the pinned state from a pinned note using its `Unpin note` button. The article no longer exposes title `Pinned`. Seed data: regular note \"Meeting agenda 2.8.2\" that is not pinned.",
+          "scenarios": [
+            {
+              "name": "Unpin note",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and the note is pinned."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the `Unpin note` button inside the `Meeting agenda 2.8.2` article."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The article is absent from the pinned section, is present in the regular notes list, and has no `Pinned` title."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.8.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.8.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "pinNote",
+            "unpinNote",
+            "noteCard"
+          ],
+          "baseline": {
+            "id": "REQ-2.8.2",
+            "title": "REQ-2.8.2: Unpin note",
+            "status": "expected",
+            "duration_ms": 266,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.8.3",
+          "name": "Pin note when creating it",
+          "description": "Create a note in the pinned state. The `Note editor` dialog contains a button named `Pin note` and a button named `Close`.",
+          "scenarios": [
+            {
+              "name": "Pin note when creating it",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and the \"Take a note\" editor is open."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Fill `Title` with `Meeting agenda created`, fill `Note content` with `Pin this note`, activate `Pin note`, and activate `Close`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The `Meeting agenda created` article is displayed in `Pinned` and exposes title `Pinned`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-2.8.3.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openComposer",
+            "closeEditor",
+            "noteCard"
+          ],
+          "baseline": {
+            "id": "REQ-2.8.3",
+            "title": "REQ-2.8.3: Pin note when creating it",
+            "status": "unexpected",
+            "duration_ms": 10021,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.fill: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('dialog', { name: /^Note editor$/i }).getByRole('textbox', { name: /^Title$/i })\n\n\n   9 |   await h.openComposer(page);\n  10 |   const dialog = page.getByRole('dialog', { name: /^Note editor$/i });\n> 11 |   await dialog.getByRole('textbox', { name: /^Title$/i }).fill(h.FIXTURES.notes.pinCreatedTitle);\n     |                                                           ^\n  12 |   await dialog.getByRole('textbox', { name: /^Note content$/i }).fill(h.FIXTURES.notes.pinContent);\n  13 |   await dialog.getByRole('button', { name: /^Pin note$/i }).click();\n  14 |   await h.closeEditor(page);\n    at /workspace/checks/REQ-2.8.3.spec.ts:11:59"
+          }
+        },
+        {
+          "id": "REQ-3.1",
+          "name": "Initial suggested filters",
+          "description": "Show suggested search filters after the textbox named `Search` is focused. The suggestions are exposed as a listbox containing a button named `Reminders`; activating it filters the notes list. Image reference: ![image](./reference/search_suggested_filters.png) Seed data: note \"Call dentist existing\" with the \"Reminders\" label; label \"Reminders\".",
+          "scenarios": [
+            {
+              "name": "Initial suggested filters",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Focus the `Search` textbox and activate the `Reminders` button in the visible suggestions listbox."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The notes list contains `Call dentist existing`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-3.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "expectNoteVisible"
+          ],
+          "baseline": {
+            "id": "REQ-3.1",
+            "title": "REQ-3.1: Initial suggested filters",
+            "status": "unexpected",
+            "duration_ms": 10023,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('listbox').getByRole('button', { name: /Reminders$/i })\n\n\n   8 |   await h.openHome(page);\n   9 |   await page.getByRole('textbox', { name: /^Search$/i }).click();\n> 10 |   await page.getByRole('listbox').getByRole('button', { name: /Reminders$/i }).click();\n     |                                                                                ^\n  11 |   await h.expectNoteVisible(page, h.FIXTURES.notes.reminderExistingTitle);\n  12 | });\n  13 |\n    at /workspace/checks/REQ-3.1.spec.ts:10:80"
+          }
+        },
+        {
+          "id": "REQ-3.2",
+          "name": "Search by keyword",
+          "description": "Search notes by keyword and highlight matching text in the results. The search control is a textbox named `Search`; matching occurrences are exposed in `mark` elements. Image reference: ![image](./reference/search_keyword.png) Seed data: note \"Study schedule\" whose title or content contains the keyword \"st\".",
+          "scenarios": [
+            {
+              "name": "Search by keyword",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Fill the `Search` textbox with `st`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The notes list contains `Study schedule` and at least one `mark` element contains `st`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-3.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-3.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "search",
+            "expectNoteVisible"
+          ],
+          "baseline": {
+            "id": "REQ-3.2",
+            "title": "REQ-3.2: Search by keyword",
+            "status": "unexpected",
+            "duration_ms": 10027,
+            "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toContainText(expected) failed\n\nLocator: locator('mark').first()\nExpected pattern: /st/i\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for locator('mark').first()\n\n\n   9 |   await h.search(page, h.FIXTURES.search.keyword);\n  10 |   await h.expectNoteVisible(page, h.FIXTURES.search.matchingTitle);\n> 11 |   await expect(page.locator('mark').first()).toContainText(/st/i);\n     |                                              ^\n  12 | });\n  13 |\n    at /workspace/checks/REQ-3.2.spec.ts:11:46"
+          }
+        },
+        {
+          "id": "REQ-4.1",
+          "name": "Setting options list",
+          "description": "Display the settings options menu from a unique button named `Settings`. The opened menu has role `menu` and contains unique menuitems named `Settings`, `Help & feedback`, and `Send feedback`. Reference image: ![image](./reference/settings_dropdown.png)",
+          "scenarios": [
+            {
+              "name": "Setting options list",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique `Settings` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "A visible `menu` displays menuitems `Settings`, `Help & feedback`, and `Send feedback`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-4.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openSettingsMenu"
+          ],
+          "baseline": {
+            "id": "REQ-4.1",
+            "title": "REQ-4.1: Setting options list",
+            "status": "unexpected",
+            "duration_ms": 10024,
+            "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByRole('menu').getByRole('menuitem', { name: /^Help & feedback$/i })\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('menu').getByRole('menuitem', { name: /^Help & feedback$/i })\n\n\n  10 |   const menu = page.getByRole('menu');\n  11 |   await expect(menu.getByRole('menuitem', { name: /^Settings$/i })).toBeVisible();\n> 12 |   await expect(menu.getByRole('menuitem', { name: /^Help & feedback$/i })).toBeVisible();\n     |                                                                            ^\n  13 |   await expect(menu.getByRole('menuitem', { name: /^Send feedback$/i })).toBeVisible();\n  14 | });\n  15 |\n    at /workspace/checks/REQ-4.1.spec.ts:12:76"
+          }
+        },
+        {
+          "id": "REQ-4.2",
+          "name": "Detailed settings",
+          "description": "Open the detailed settings page and display visible controls or text for `Move new notes to the bottom`, `Move checked items to the bottom`, `Save`, and `Cancel`. ![image](./reference/settings_settings.png)",
+          "scenarios": [
+            {
+              "name": "Detailed settings",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page and the settings options list is visible."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate the unique `Settings` menuitem."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The detailed settings page displays `Move new notes to the bottom`, `Move checked items to the bottom`, and unique controls named `Save` and `Cancel`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-4.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openSettingsMenu",
+            "openDetailedSettings",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-4.2",
+            "title": "REQ-4.2: Detailed settings",
+            "status": "expected",
+            "duration_ms": 214,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-5.1",
+          "name": "Toggle between list and grid views",
+          "description": "Switch between list view and grid view from the home page toolbar. The toolbar contains buttons named `List view` and `Grid view`; exactly one has aria-pressed=true at a time.",
+          "scenarios": [
+            {
+              "name": "Toggle between list and grid views",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User is on the home page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate `List view` and then activate `Grid view`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "`List view` has aria-pressed=true after the first activation; `Grid view` has aria-pressed=true after the second activation."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-5.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "toggleView",
+            "expectGridView",
+            "toggleView",
+            "expectGridView"
+          ],
+          "baseline": {
+            "id": "REQ-5.1",
+            "title": "REQ-5.1: Toggle between list and grid views",
+            "status": "expected",
+            "duration_ms": 184,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-5.2",
+          "name": "Grid View by default",
+          "description": "Display notes in grid view by default when the home page first loads. The `List view` button has aria-pressed=false and the `Grid view` button has aria-pressed=true.",
+          "scenarios": [
+            {
+              "name": "Grid View by default",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User has a browser or app with network access."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Open the application entry URL."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The notes page opens in grid view; `List view` has aria-pressed=false and `Grid view` has aria-pressed=true."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-5.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "expectGridView"
+          ],
+          "baseline": {
+            "id": "REQ-5.2",
+            "title": "REQ-5.2: Grid View by default",
+            "status": "expected",
+            "duration_ms": 105,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-6.1",
+          "name": "Items and styling",
+          "description": "Display an expanded complementary sidebar containing unique buttons named `Notes`, `Reminders`, `Edit labels`, `Archive`, and `Trash`. Reference image: ![image](./reference/sidebar.png)",
+          "scenarios": [
+            {
+              "name": "Items and styling",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "User has opened the application."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "View the page after the home page loads."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The page shows the expanded sidebar with unique buttons named `Notes`, `Reminders`, `Edit labels`, `Archive`, and `Trash`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-6.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openSidebar",
+            "expectVisible"
+          ],
+          "baseline": {
+            "id": "REQ-6.1",
+            "title": "REQ-6.1: Items and styling",
+            "status": "unexpected",
+            "duration_ms": 10022,
+            "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: /^Archive$/i }).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('button', { name: /^Archive$/i }).first()\n\n\n   at helpers.ts:157\n\n  155 | export async function expectVisible(scope: Scope, value: Match): Promise<void> {\n  156 |   const locator = await resolveNamed(scope, value);\n> 157 |   await expect(locator).toBeVisible();\n      |                         ^\n  158 | }\n  159 |\n  160 | export async function expectTextsVisible(scope: Scope, values: Array<string | RegExp>): Promise<void> {\n    at Object.expectVisible (/workspace/checks/helpers.ts:157:25)\n    at /workspace/checks/REQ-6.1.spec.ts:11:5"
+          }
+        },
+        {
+          "id": "REQ-6.2",
+          "name": "Collapsible Sidebar",
+          "description": "Collapse the sidebar to an icon-only view and expand it again using a unique button named `Toggle sidebar`. The button exposes aria-expanded=true when expanded and false when collapsed. Reference image: ![image](./reference/sidebar_collapsed.png)",
+          "scenarios": [
+            {
+              "name": "Collapsible Sidebar",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The sidebar is expanded."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "Activate `Toggle sidebar` twice."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The sidebar first has aria-expanded=false and then aria-expanded=true, with the named sidebar buttons visible again."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-6.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/tests/REQ-6.2.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "openSidebar",
+            "expectVisible",
+            "expectVisible",
+            "toggleSidebar",
+            "toggleSidebar",
+            "expectVisible",
+            "expectVisible"
+          ],
+          "baseline": {
+            "id": "REQ-6.2",
+            "title": "REQ-6.2: Collapsible Sidebar",
+            "status": "unexpected",
+            "duration_ms": 10027,
+            "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveAttribute(expected) failed\n\nLocator:  getByRole('button', { name: /^Toggle sidebar$/i })\nExpected: \"false\"\nReceived: \"\"\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 10000ms\n  - waiting for getByRole('button', { name: /^Toggle sidebar$/i })\n    13 × locator resolved to <button type=\"button\" class=\"sidebar-toggle\" aria-label=\"Toggle sidebar\" data-action=\"toggle-sidebar\">…</button>\n       - unexpected value \"null\"\n\n\n  11 |   await h.expectVisible(page, /^Trash$/i);\n  12 |   await h.toggleSidebar(page);\n> 13 |   await expect(page.getByRole('button', { name: /^Toggle sidebar$/i })).toHaveAttribute('aria-expanded', 'false');\n     |                                                                         ^\n  14 |   await h.toggleSidebar(page);\n  15 |   await expect(page.getByRole('button', { name: /^Toggle sidebar$/i })).toHaveAttribute('aria-expanded', 'true');\n  16 |   await h.expectVisible(page, /^Notes$/i);\n    at /workspace/checks/REQ-6.2.spec.ts:13:73"
+          }
+        }
+      ]
+    },
+    "bookstack": {
+      "requirement_count": 34,
+      "test_count": 34,
+      "all_requirement_ids_match": true,
+      "online_tests_match_exercise": true,
+      "online_fetched_at": "2026-09-22T03:43:23.005023+00:00",
+      "changes_vs_20260918": [
+        "REQ-4.4.1.spec.ts",
+        "REQ-5.5.1.spec.ts",
+        "REQ-6.1.3.spec.ts",
+        "REQ-8.1.spec.ts",
+        "helpers.ts"
+      ],
+      "requirements_sha256": "c460a49a0f33698a759232c6a0db7e23548845b372dfeebe209de02de2c53abc",
+      "test_files": {
+        "REQ-1.1.spec.ts": {
+          "local_sha256": "fd315bfe4ef80d409902384bf4c1018bff47027a006f70eb70a0664d4c387495",
+          "online_sha256": "eebd97ab29999dff756690e3f7b24947fb05a628e9b15b77a200945428f09449"
+        },
+        "REQ-1.2.spec.ts": {
+          "local_sha256": "f8cd0172bf6a9ca025174aaa499132679fd0302b7e051cf86e83d06cadfde6b7",
+          "online_sha256": "ddbb10a468d22c653e44f1518a989adff6da733be15710e7c7aea21406c98497"
+        },
+        "REQ-2.1.spec.ts": {
+          "local_sha256": "4615547effad0f3770edbacf10cb30a7c3bb95dbc2ce16b494466411e9e0d3fe",
+          "online_sha256": "21b108f9f3d49b419ce4c575b60413fb0247a62c1cadc9ea32e7097311a73cc6"
+        },
+        "REQ-2.2.spec.ts": {
+          "local_sha256": "dfcd818ac822905c33f176a76fc058f2d0a061b599f22c77a213763922535f93",
+          "online_sha256": "90eaac17421008d211b61c28b061df3be942941b9bb47f0ee1cd761fa70783bd"
+        },
+        "REQ-3.1.spec.ts": {
+          "local_sha256": "ec33df92b77002a35f244b51c632649a4e1ee8bac9e0d5f43dc7e98f1a7ea1e0",
+          "online_sha256": "056f0165b7913e8d0c125317ac8a3518aacebf83db7f7a4735a2699cea2e76ad"
+        },
+        "REQ-4.1.spec.ts": {
+          "local_sha256": "e07b1a3a47caa1ea7fc2b8238c27fa4c302b17f3989112ada48fb5962933a1fb",
+          "online_sha256": "0a3587fb29a1ce861d28b123ee1a9a78ab7d4f165852cf63289ca35daa4a9fca"
+        },
+        "REQ-4.2.1.spec.ts": {
+          "local_sha256": "bc83fda8d61aee31afbfa4c446381e48c2c53f112d56f69873590b49f08757fb",
+          "online_sha256": "34184977ae250dd780e084c6efa00dbc9227ed358ccd713fc74855a94aaf9188"
+        },
+        "REQ-4.3.1.spec.ts": {
+          "local_sha256": "e88d100c94aab9b7d2c7927fed092aec1967794c48ce62b1e74ea7effed0d786",
+          "online_sha256": "21e46fb8b0b822a290fb1319487ebc33f05894fc88a8602a064ed55035d5ddc4"
+        },
+        "REQ-4.3.2.spec.ts": {
+          "local_sha256": "3450337f6d7d801feaba3aef8147d932338fbedb3586d1ea27c3d4e351d7041f",
+          "online_sha256": "f7dde6c8df1ea6c03dd432ca4131ec8180d53c8107b54b5a663a02e1ceaf01bb"
+        },
+        "REQ-4.4.1.spec.ts": {
+          "local_sha256": "6d1f0e14cad69d6608b9d003672058cbdb7a361571e2eb1b01d674d14d008c7d",
+          "online_sha256": "634850556c00ac1990de8eea8c4b6478451a6f1209a36eab28932b854f3ac6b0"
+        },
+        "REQ-4.4.2.spec.ts": {
+          "local_sha256": "a4b2ae6a7b12b866a5c18a13045fef63fe31aadbcb29fb0bc17ee8f07a7b61d9",
+          "online_sha256": "a4d7734d0478baa00aeef7bf3d0803b74260243371a7328230cc164ca8fd170e"
+        },
+        "REQ-4.5.1.spec.ts": {
+          "local_sha256": "fe6d977283612f9ebb09bea48a38e82e0c623c9ebfc2e822cfae4418976d07a2",
+          "online_sha256": "fc2a47d43e7a01d18da03ea57e253dbc3d815f4a83e02e3b172e40d189ddb780"
+        },
+        "REQ-4.5.2.spec.ts": {
+          "local_sha256": "4f16b1afcf3bcc37f298842feab8d5b226ddc7fb29075086e84c4995917cd6cf",
+          "online_sha256": "e127712132e46c2cf3e2d709103432ecb29ef12489b916e4f0ef47a44bffe6b3"
+        },
+        "REQ-5.1.spec.ts": {
+          "local_sha256": "9a52302b1ea0eca222f96e45b3593c6cb02c5810070c342e6aa17f619b37acc9",
+          "online_sha256": "03c4161fe5227d0d6221c184c8904f961d85d6c51d086bd1e0e0764f93fb485f"
+        },
+        "REQ-5.2.1.spec.ts": {
+          "local_sha256": "b972e9234e1b4dfcd9e657789db66a2164d94994a926d0a8f114b190b88b9989",
+          "online_sha256": "3b6f51fe9224089752856dc91310197803c18095b25d0dce7ff2864f8d109662"
+        },
+        "REQ-5.2.2.spec.ts": {
+          "local_sha256": "2011617bb58be1dbd3f7794543a4381e4cd56ea7cb21b43e8e9a12df6aead5da",
+          "online_sha256": "4af4db56246e5bded558bdabb4f6980d088dd34902e1241efe55226ada4a7a1c"
+        },
+        "REQ-5.3.1.spec.ts": {
+          "local_sha256": "cf3f7a06a7a78a24640a612e1e116a93e3d9612a3c7d76069529de45e5ff7511",
+          "online_sha256": "5a5a48d7325a8a11b05b610ccfde63f3e4a2a67c98c9c4e4351a6bea3a798c07"
+        },
+        "REQ-5.3.2.spec.ts": {
+          "local_sha256": "4a159a21c93590da86264cfc8007b8f7575b37ad95f5620860526ebe05a7792c",
+          "online_sha256": "a980a6267f186193604487e38403d6bb109140f66680ac1af4eb0bc1d65b228d"
+        },
+        "REQ-5.4.1.spec.ts": {
+          "local_sha256": "2d1da85711d01e732b00656fafd65211f664dee420300178ea4d362d0b94c24e",
+          "online_sha256": "7c9d74cf3bd41b39d6e44e1eb7b3089887ec880d5468b567574895f1cf09a4b4"
+        },
+        "REQ-5.4.2.spec.ts": {
+          "local_sha256": "ef509bff404671027fcc26aefaaa0ae22c06a892209ab21c980455d551a38228",
+          "online_sha256": "d63233c05b18bf465e351eb567db847c0bd749b67c577ea395acd2972300bc6a"
+        },
+        "REQ-5.5.1.spec.ts": {
+          "local_sha256": "0ef3733c87afdf2f4e1531875dbc0eaa2c9f09747e140e17fb0a8ac8e95d4867",
+          "online_sha256": "2ff579d8b30b60ae5688085f11c9cf6eb0c1cda635b530d4ac9fc5e895641217"
+        },
+        "REQ-5.5.2.spec.ts": {
+          "local_sha256": "32dc3ff8e89b95f6d84ccfb8d4d46b4b176174d30dae8a9567b5cf0f728c8aa1",
+          "online_sha256": "d86d374d11a8c1f5abddb093768910a97f636181bce18ff3f18d40cbab7dc3f8"
+        },
+        "REQ-5.6.1.spec.ts": {
+          "local_sha256": "4150f9c628fe76a899d1b40428de0d1b4a592bf93242cf050bdbe868485225dc",
+          "online_sha256": "406e71c1fc57cab07916593ff9b7f9c515cd2ddbb7330f6176ff6a6330080fe1"
+        },
+        "REQ-6.1.1.spec.ts": {
+          "local_sha256": "5a65bb9cf0265f394da81bafbafd15681b556a6284aa545f8021493f2c41131b",
+          "online_sha256": "624f6be40f39f851e83a5a4e86dffc8f82cfdce63b3a1bfdbcb72d5a74c02738"
+        },
+        "REQ-6.1.2.spec.ts": {
+          "local_sha256": "673496a8f98cd57c2b6d507ff198d241d801f1550e0614133951588e01a353f4",
+          "online_sha256": "c19007cde8d498092e8ef62ee0526e70fad7cc310c98b0f18931e7856bf0aab9"
+        },
+        "REQ-6.1.3.spec.ts": {
+          "local_sha256": "cf377910d56273232f76719c5f3c52bd4cb090719a4cb08a3b2c7c412a20dc86",
+          "online_sha256": "885b4323f65032d72e4343e44a5eb8f483783dcc35c54a1e70762a6670831bf6"
+        },
+        "REQ-6.2.1.spec.ts": {
+          "local_sha256": "f6446ecd0882bf4744e33582dce19aba4f6c99523d88955a981975bbde79ae25",
+          "online_sha256": "d4eb8664d40c30a6ef1eb4462bef2438ec33381fcf67e9d6367d12d17ddb4f66"
+        },
+        "REQ-6.3.1.spec.ts": {
+          "local_sha256": "dfdc0dcd65e1077a4c7080a4050929437fd15e6db34e2954696b7d68d68f05b1",
+          "online_sha256": "ea037d511d31ac8868c4be0f32f90299d2c8a06d34111144de186da7d9844944"
+        },
+        "REQ-6.3.2.spec.ts": {
+          "local_sha256": "a5a17c8e2b0b05af5000c2f97150724b91ee3bdfe665d51365b4fcfe16037e8c",
+          "online_sha256": "d008f6fe788c23c7ad4268d4124f3914a000d01f2d7a41d565d5178df4c56ff6"
+        },
+        "REQ-7.1.spec.ts": {
+          "local_sha256": "25227a048dc0d2d4a5ef20f95c3fc9c1edffc15bad7443880048398ac566f2bc",
+          "online_sha256": "d4893d7885ff717dfbbe06a0cb35509928c0e5b78d661a36c19f2ca6b9196750"
+        },
+        "REQ-7.2.spec.ts": {
+          "local_sha256": "1c2709bc3cbf0bfab738f0d1efc93543d05e74797408179540ca9e3f1d93ec74",
+          "online_sha256": "8dd510e5c9ff914678e6adea72e201f7cb5ecec9d1062bc678c2a4886df6c01a"
+        },
+        "REQ-8.1.spec.ts": {
+          "local_sha256": "e64ab89501637357a3e132125eb0f9a0b0ba454aa2fdbae8a4f4356e3ddd2bb9",
+          "online_sha256": "3b0432d51621446d0a0ebb77bc47d72e10b24f568652c9890d44e819d0baf98c"
+        },
+        "REQ-8.2.spec.ts": {
+          "local_sha256": "a99f20358f0d927673fbdcbe76d6a0beec477721e1f4f8beac5eaea396d74a6a",
+          "online_sha256": "8930a0bb61dd1494d30aa8e51d7706585b8671ffc6cbfd6bbfc3d003f5314d90"
+        },
+        "REQ-9.1.spec.ts": {
+          "local_sha256": "0a7ac4c00079ae4cb6415fefaa5c68d827eca1d8c9b2fda77823f27c8d7fd2fa",
+          "online_sha256": "acf54d4a2c23743847d875cfc707fd4fd67bf5aece255a93253dd595fba2a0a6"
+        },
+        "helpers.ts": {
+          "local_sha256": "29ff4026e7e5cd05d763383d2bf61ee577389dfa6f353fde9da28882be42897f",
+          "online_sha256": "098ef14a993204de6c77ffaf1054fe7d7446070d16f0f30ddc193c2c8e24a7b0"
+        }
+      },
+      "baseline": {
+        "passed": 19,
+        "failed": 15,
+        "source_receipt": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-20260922/baseline-bookstack/inputs.json",
+        "report": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-20260922/baseline-bookstack/report.json",
+        "report_sha256": "81fa82b595ce792a83245b2e48238dbf84b7470efef8f9623327e6ae7d61c601",
+        "runtime": {
+          "node": "v20.19.3",
+          "playwright": "1.57.0",
+          "chromium": "143.0.7499.4",
+          "arch": "arm64",
+          "mode": "score",
+          "workers": 1,
+          "cpu_max": "100000 100000",
+          "memory_max": "2147483648"
+        },
+        "stats": {
+          "startTime": "2026-09-22T03:46:13.045Z",
+          "duration": 160671.43899999998,
+          "expected": 19,
+          "skipped": 0,
+          "unexpected": 15,
+          "flaky": 0
+        }
+      },
+      "cases": [
+        {
+          "id": "REQ-1.1",
+          "name": "Open Homepage",
+          "description": "Open the application and display the homepage. The page contains exactly one visible heading with accessible name `BookStack`.\n",
+          "scenarios": [
+            {
+              "name": "Open Homepage",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The system is accessible."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user opens the application URL."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The homepage is displayed as the default page with exactly one visible heading named `BookStack`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-1.1.spec.ts",
+          "helper_calls": [
+            "openHome",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-1.1",
+            "title": "REQ-1.1: Open Homepage",
+            "status": "expected",
+            "duration_ms": 188,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-1.2",
+          "name": "Back to Homepage from Other Pages",
+          "description": "Return to the homepage by activating exactly one button with accessible name `BookStack` in the global navigation. The button is keyboard accessible and is present on every non-homepage page used by this benchmark.\n",
+          "scenarios": [
+            {
+              "name": "Back to Homepage from Other Pages",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on a non-homepage page and the global navigation bar is visible."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique button named `BookStack` in the global navigation."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system navigates to the homepage, where exactly one visible heading named `BookStack` is present."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-1.2.spec.ts",
+          "helper_calls": [
+            "openShelves",
+            "returnHomeByLogo",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-1.2",
+            "title": "REQ-1.2: Back to Homepage from Other Pages",
+            "status": "unexpected",
+            "duration_ms": 10027,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^BookStack$/i }).first()\n\n\n   at helpers.ts:304\n\n  302 |     page.getByRole('button', { name: /^BookStack$/i }),\n  303 |   ]);\n> 304 |   await logo.click();\n      |              ^\n  305 | }\n  306 |\n    at Object.returnHomeByLogo (/workspace/checks/helpers.ts:304:14)\n    at /workspace/checks/REQ-1.2.spec.ts:9:3"
+          }
+        },
+        {
+          "id": "REQ-2.1",
+          "name": "Enter Login Page",
+          "description": "Open the login form from the homepage navigation bar. The login page contains exactly one visible heading named `Login` and exactly one form with role `form` and accessible name `Login form`.\n",
+          "scenarios": [
+            {
+              "name": "Enter Login Page",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the homepage and is not logged in."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named `Login` in the homepage navigation bar."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system displays the login form page with exactly one visible heading named `Login` and a form named `Login form`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-2.1.spec.ts",
+          "helper_calls": [
+            "openLoginPage",
+            "expectVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.1",
+            "title": "REQ-2.1: Enter Login Page",
+            "status": "expected",
+            "duration_ms": 165,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-2.2",
+          "name": "Log In Successfully",
+          "description": "Authenticate with valid credentials and enter the authenticated homepage state. Seed data: verified account with nickname \"BookStack User\", email \"bookstack_user@example.com\", and password \"Password123!\".",
+          "scenarios": [
+            {
+              "name": "Log In Successfully",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the login form page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user enters `bookstack_user@example.com` in the uniquely labelled email textbox `Email address`, enters `Password123!` in the uniquely labelled password textbox `Password`, checks the checkbox named `Remember Me`, and activates the `Login` button inside the `Login form`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system logs the user in, returns to the homepage, and displays the nickname `BookStack User` in the authenticated navigation area."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-2.2.spec.ts",
+          "helper_calls": [
+            "login",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-2.2",
+            "title": "REQ-2.2: Log In Successfully",
+            "status": "expected",
+            "duration_ms": 251,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-3.1",
+          "name": "Enter Authenticated Homepage",
+          "description": "Display the dashboard layout after a successful login, including four visible named regions or headings: \"My Recent Drafts\", \"My Recently Viewed\", \"My Most Viewed Favorites\", and \"Recently Updated Pages\". Seed data: verified account with nickname \"BookStack User\", email \"bookstack_user@example.com\", and password \"Password123!\".",
+          "scenarios": [
+            {
+              "name": "Enter Authenticated Homepage",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user has logged in successfully."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The system finishes the post-login navigation."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The authenticated homepage dashboard is displayed with visible headings or named regions exactly matching \"My Recent Drafts\", \"My Recently Viewed\", \"My Most Viewed Favorites\", and \"Recently Updated Pages\"."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-2.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-3.1.spec.ts",
+          "helper_calls": [
+            "login",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-3.1",
+            "title": "REQ-3.1: Enter Authenticated Homepage",
+            "status": "expected",
+            "duration_ms": 192,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-4.1",
+          "name": "View Shelf List",
+          "description": "Open the shelf list page from the global navigation bar. The navigation control may be a link or button named exactly \"Shelves\". The page exposes a visible heading \"Shelves\" and a named region \"Shelf list\" containing the seeded shelf \"Shelf 4.1\" as a unique link or button with that accessible name.",
+          "scenarios": [
+            {
+              "name": "View Shelf List",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on a page where the global navigation bar is visible."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named `Shelves` in the top navigation bar."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system displays the shelf list page with heading `Shelves` and a unique shelf entry named `Shelf 4.1` in the `Shelf list` region."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-4.1.spec.ts",
+          "helper_calls": [
+            "openShelves",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-4.1",
+            "title": "REQ-4.1: View Shelf List",
+            "status": "expected",
+            "duration_ms": 101,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-4.2.1",
+          "name": "Enter Shelf Details Page",
+          "description": "Open the details page of a shelf from the shelf list. The shelf list contains the shelf as a unique link or button named exactly \"Shelf 4.2.1\". The destination displays a visible heading named \"Shelf 4.2.1\" and a shelf action region.",
+          "scenarios": [
+            {
+              "name": "Enter Shelf Details Page",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the shelf list page and at least one shelf is visible."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named `Shelf 4.2.1` in the shelf list."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system displays the shelf details page with a visible heading named `Shelf 4.2.1`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-4.2.1.spec.ts",
+          "helper_calls": [
+            "openShelfDetails",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-4.2.1",
+            "title": "REQ-4.2.1: Enter Shelf Details Page",
+            "status": "expected",
+            "duration_ms": 130,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-4.3.1",
+          "name": "Create Shelf",
+          "description": "Create a shelf from the shelf creation form. The form is exposed as role `form` named `Create shelf form` and contains uniquely labelled textboxes `Name` and `Description`, a control named `Shelf Tags` that reveals a textbox with exact placeholder `tag1, tag2`, a button named `Save Shelf`, and a button named `Cancel`. Seed data: shelf \"Shelf 4.3.1\".",
+          "scenarios": [
+            {
+              "name": "Create Shelf",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the shelf details page and can access the action panel."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique button named `New Shelf`, fills `Name` with `Shelf Created 4.3.1`, fills `Description` with `Shelf created by REQ-4.3.1.`, activates `Shelf Tags`, fills the revealed `tag1, tag2` textbox with `created, shelf`, and activates the `Save Shelf` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system persists the shelf and displays the shelf list with exactly one entry named `Shelf Created 4.3.1`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-4.3.1.spec.ts",
+          "helper_calls": [
+            "openShelfDetails",
+            "clickNamed",
+            "fillShelfForm",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-4.3.1",
+            "title": "REQ-4.3.1: Create Shelf",
+            "status": "unexpected",
+            "duration_ms": 10017,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.fill: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: /^Create shelf form$/i }).getByLabel(/Name/i).first()\n\n\n   at helpers.ts:146\n\n  144 |     page.getByRole('searchbox', { name }),\n  145 |   ]);\n> 146 |   await locator.fill(value);\n      |                 ^\n  147 | }\n  148 |\n  149 | export async function expectSuccessFeedback(page: Page): Promise<void> {\n    at fillField (/workspace/checks/helpers.ts:146:17)\n    at Object.fillShelfForm (/workspace/checks/helpers.ts:261:3)\n    at /workspace/checks/REQ-4.3.1.spec.ts:10:3"
+          }
+        },
+        {
+          "id": "REQ-4.3.2",
+          "name": "Cancel Creation",
+          "description": "Exit the shelf creation flow without saving a new shelf. The creation form has a unique button named `Cancel`. Seed data: shelf \"Shelf 4.3.2\".",
+          "scenarios": [
+            {
+              "name": "Cancel Creation",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the shelf creation page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique `Cancel` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system returns to the shelf list and does not persist any shelf entered in the cancelled form."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-4.3.2.spec.ts",
+          "helper_calls": [
+            "openShelfDetails",
+            "clickNamed",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-4.3.2",
+            "title": "REQ-4.3.2: Cancel Creation",
+            "status": "expected",
+            "duration_ms": 262,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-4.4.1",
+          "name": "Confirm Delete Shelf",
+          "description": "Delete a shelf after the user confirms the action. The details action area contains a unique button named `Delete`. Confirmation displays a dialog or confirmation page containing a unique button named `Confirm Delete` and a unique button named `Cancel`. Seed data: deletable shelf \"Shelf 4.4.1\".",
+          "scenarios": [
+            {
+              "name": "Confirm Delete Shelf",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the shelf details page and can access the action panel."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates `Delete`, then activates the unique `Confirm Delete` control on the confirmation view."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system deletes the shelf, returns to the shelf list page, and the entry named `Shelf 4.4.1` is absent."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-4.4.1.spec.ts",
+          "helper_calls": [
+            "openShelfDetails",
+            "clickNamed",
+            "clickNamed",
+            "expectVisible",
+            "expectAbsent"
+          ],
+          "baseline": {
+            "id": "REQ-4.4.1",
+            "title": "REQ-4.4.1: Confirm Delete Shelf",
+            "status": "unexpected",
+            "duration_ms": 10024,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Confirm Delete$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (/workspace/checks/helpers.ts:119:17)\n    at /workspace/checks/REQ-4.4.1.spec.ts:10:3"
+          }
+        },
+        {
+          "id": "REQ-4.4.2",
+          "name": "Cancel Delete Shelf",
+          "description": "Exit the delete flow without deleting the shelf. The confirmation view contains a unique button named `Cancel`. Seed data: deletable shelf \"Shelf 4.4.2\".",
+          "scenarios": [
+            {
+              "name": "Cancel Delete Shelf",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the delete shelf confirmation page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique `Cancel` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system returns to the shelf details page and keeps the shelf named `Shelf 4.4.2` unchanged."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-4.4.2.spec.ts",
+          "helper_calls": [
+            "openShelfDetails",
+            "clickNamed",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-4.4.2",
+            "title": "REQ-4.4.2: Cancel Delete Shelf",
+            "status": "expected",
+            "duration_ms": 315,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-4.5.1",
+          "name": "Save Shelf Edits",
+          "description": "Save changes made in the shelf edit form. The form is exposed as role `form` named `Edit shelf form` and contains uniquely labelled textboxes `Name` and `Description`, a `Shelf Tags` control with a `tag1, tag2` textbox, and a button named `Save Shelf`. Seed data: editable shelf \"Shelf 4.5.1\" with valid initial description and tags.",
+          "scenarios": [
+            {
+              "name": "Save Shelf Edits",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the shelf details page and can access the action panel."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates `Edit`, fills `Name` with `Shelf Updated 4.5.1`, fills `Description` with `Shelf updated by REQ-4.5.1.`, activates `Shelf Tags`, fills `tag1, tag2` with `knowledge-base, docs`, and activates `Save Shelf`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system saves the changes and returns to a shelf details page displaying `Shelf Updated 4.5.1`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-4.5.1.spec.ts",
+          "helper_calls": [
+            "openShelfDetails",
+            "clickNamed",
+            "fillShelfForm",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-4.5.1",
+            "title": "REQ-4.5.1: Save Shelf Edits",
+            "status": "unexpected",
+            "duration_ms": 10024,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: /^Edit shelf form$/i }).getByRole('button', { name: /^Shelf Tags$/i })\n\n\n   at helpers.ts:263\n\n  261 |   await fillField(form, 'Name', mode === 'edit' ? data.updatedName ?? data.name : data.name);\n  262 |   await fillField(form, 'Description', mode === 'edit' ? data.updatedDescription ?? data.description : data.description);\n> 263 |   await form.getByRole('button', { name: /^Shelf Tags$/i }).click();\n      |                                                             ^\n  264 |   const tagsField = form.getByPlaceholder('tag1, tag2');\n  265 |   await expect(tagsField).toHaveCount(1);\n  266 |   await tagsField.fill(data.tags);\n    at Object.fillShelfForm (/workspace/checks/helpers.ts:263:61)\n    at /workspace/checks/REQ-4.5.1.spec.ts:10:3"
+          }
+        },
+        {
+          "id": "REQ-4.5.2",
+          "name": "Cancel Shelf Edits",
+          "description": "Exit the shelf editing flow without saving changes. The edit form has a unique button named `Cancel`. Seed data: editable shelf \"Shelf 4.5.2\" with valid initial description and tags.",
+          "scenarios": [
+            {
+              "name": "Cancel Shelf Edits",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the shelf edit page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique `Cancel` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system returns to the shelf details page without applying the edits; `Shelf 4.5.2` remains unchanged."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-4.5.2.spec.ts",
+          "helper_calls": [
+            "openShelfDetails",
+            "clickNamed",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-4.5.2",
+            "title": "REQ-4.5.2: Cancel Shelf Edits",
+            "status": "expected",
+            "duration_ms": 285,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-5.1",
+          "name": "View Books List",
+          "description": "Open the books list page from the global navigation bar. The navigation control may be a link or button named exactly \"Books\". The page exposes a visible heading \"Books\" and a named region \"Book list\" containing the seeded book \"Book 5.1\" as a unique link or button.",
+          "scenarios": [
+            {
+              "name": "View Books List",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on a page where the global navigation bar is visible."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named `Books` in the top navigation bar."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system displays the books list page with heading `Books`, a `Book list` region, and the seeded book `Book 5.1` as a unique link or button."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.1.spec.ts",
+          "helper_calls": [
+            "openBooks",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-5.1",
+            "title": "REQ-5.1: View Books List",
+            "status": "expected",
+            "duration_ms": 112,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-5.2.1",
+          "name": "Enter Book Details Page through Book List Page",
+          "description": "Open a book details page from the books list. The book list contains a unique link or button named exactly \"Book 5.2.1\". The destination displays a visible heading named \"Book 5.2.1\".",
+          "scenarios": [
+            {
+              "name": "Enter Book Details Page through Book List Page",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the books list page and at least one book card is visible."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named `Book 5.2.1` in the book list."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system displays the book details page with a visible heading named `Book 5.2.1`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.2.1.spec.ts",
+          "helper_calls": [
+            "openBookDetailsFromList",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-5.2.1",
+            "title": "REQ-5.2.1: Enter Book Details Page through Book List Page",
+            "status": "expected",
+            "duration_ms": 168,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-5.2.2",
+          "name": "Enter Book Details Page through Shelf Details Page",
+          "description": "Open a book details page from a shelf details page. The shelf contains a unique link or button named exactly \"Book 5.2.2\". The destination displays a visible heading named \"Book 5.2.2\". Seed data: shelf \"Shelf 5.2.2\" containing book \"Book 5.2.2\" with valid initial metadata.",
+          "scenarios": [
+            {
+              "name": "Enter Book Details Page through Shelf Details Page",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on a shelf details page and at least one book is listed on the shelf."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named `Book 5.2.2` in the shelf details page."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system displays the book details page with a visible heading named `Book 5.2.2`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.2.2.spec.ts",
+          "helper_calls": [
+            "openBookDetailsFromShelf",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-5.2.2",
+            "title": "REQ-5.2.2: Enter Book Details Page through Shelf Details Page",
+            "status": "expected",
+            "duration_ms": 163,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-5.3.1",
+          "name": "Fill out and Save Book",
+          "description": "Create a new book from the books list page. The form is exposed as role `form` named `Create book form` and contains uniquely labelled textboxes `Name` and `Description`, a `Book Tags` control that reveals a `tag1, tag2` textbox, and a button named `Save Book`.",
+          "scenarios": [
+            {
+              "name": "Fill out and Save Book",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the books list page and can access the action panel."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates `Create New Book`, fills `Name` with `Book Created 5.3.1`, fills `Description` with `Book created by REQ-5.3.1.`, activates `Book Tags`, fills `tag1, tag2` with `created, book`, and activates `Save Book`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system creates the book and opens its details page, displaying `Book Created 5.3.1` as a visible heading."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.3.1.spec.ts",
+          "helper_calls": [
+            "openBookCreationFromList",
+            "fillBookForm",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-5.3.1",
+            "title": "REQ-5.3.1: Fill out and Save Book",
+            "status": "unexpected",
+            "duration_ms": 10026,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Create New Book$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (/workspace/checks/helpers.ts:119:17)\n    at Object.openBookCreationFromList (/workspace/checks/helpers.ts:205:3)\n    at /workspace/checks/REQ-5.3.1.spec.ts:8:3"
+          }
+        },
+        {
+          "id": "REQ-5.3.2",
+          "name": "Cancel Creating Book",
+          "description": "Exit the book creation flow without creating a book. The creation form contains a unique button named `Cancel`.",
+          "scenarios": [
+            {
+              "name": "Cancel Creating Book",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the create new book page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique `Cancel` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system returns to the books list and does not persist a book entered in the cancelled form."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.3.2.spec.ts",
+          "helper_calls": [
+            "openBookCreationFromList",
+            "clickNamed",
+            "expectVisible"
+          ],
+          "baseline": {
+            "id": "REQ-5.3.2",
+            "title": "REQ-5.3.2: Cancel Creating Book",
+            "status": "unexpected",
+            "duration_ms": 10025,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Create New Book$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (/workspace/checks/helpers.ts:119:17)\n    at Object.openBookCreationFromList (/workspace/checks/helpers.ts:205:3)\n    at /workspace/checks/REQ-5.3.2.spec.ts:8:3"
+          }
+        },
+        {
+          "id": "REQ-5.4.1",
+          "name": "Save Book Edits",
+          "description": "Save changes made in the book edit form. The form is exposed as role `form` named `Edit book form` and contains uniquely labelled textboxes `Name` and `Description`, a `Book Tags` control with a `tag1, tag2` textbox, and a button named `Save Book`. Seed data: editable book \"Book 5.4.1\" with valid initial description and tags.",
+          "scenarios": [
+            {
+              "name": "Save Book Edits",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the book details page and can access the action panel."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates `Edit`, fills `Name` with `Book Updated 5.4.1`, fills `Description` with `Book updated by REQ-5.4.1.`, activates `Book Tags`, fills `tag1, tag2` with `manual, handbook`, and activates `Save Book`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system saves the changes and returns to a book details page displaying `Book Updated 5.4.1`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.4.1.spec.ts",
+          "helper_calls": [
+            "openBookDetailsFromList",
+            "clickNamed",
+            "fillBookForm",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-5.4.1",
+            "title": "REQ-5.4.1: Save Book Edits",
+            "status": "unexpected",
+            "duration_ms": 10024,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: /^Edit book form$/i }).getByRole('button', { name: /^Book Tags$/i })\n\n\n   at helpers.ts:247\n\n  245 |   await fillField(form, 'Name', mode === 'edit' ? data.updatedName ?? data.name : data.name);\n  246 |   await fillField(form, 'Description', mode === 'edit' ? data.updatedDescription ?? data.description : data.description);\n> 247 |   await form.getByRole('button', { name: /^Book Tags$/i }).click();\n      |                                                            ^\n  248 |   const tagsField = form.getByPlaceholder('tag1, tag2');\n  249 |   await expect(tagsField).toHaveCount(1);\n  250 |   await tagsField.fill(data.tags);\n    at Object.fillBookForm (/workspace/checks/helpers.ts:247:60)\n    at /workspace/checks/REQ-5.4.1.spec.ts:10:3"
+          }
+        },
+        {
+          "id": "REQ-5.4.2",
+          "name": "Cancel Book Edits",
+          "description": "Exit the book editing flow without saving changes. The edit form has a unique button named `Cancel`. Seed data: editable book \"Book 5.4.2\" with valid initial description and tags.",
+          "scenarios": [
+            {
+              "name": "Cancel Book Edits",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the book edit page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique `Cancel` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system returns to the book details page without applying the edits; `Book 5.4.2` remains unchanged."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.4.2.spec.ts",
+          "helper_calls": [
+            "openBookDetailsFromList",
+            "clickNamed",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-5.4.2",
+            "title": "REQ-5.4.2: Cancel Book Edits",
+            "status": "expected",
+            "duration_ms": 262,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-5.5.1",
+          "name": "Confirm Delete Book",
+          "description": "Delete a book after the user confirms the action. The details action area contains a unique button named `Delete`; the confirmation view contains a unique button named `Confirm Delete` and a unique button named `Cancel`. Seed data: deletable book \"Book 5.5.1\".",
+          "scenarios": [
+            {
+              "name": "Confirm Delete Book",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the book details page and can access the action panel."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates `Delete`, then activates the unique `Confirm Delete` control."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system deletes the book, returns to the books list page, and the entry named `Book 5.5.1` is absent."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.5.1.spec.ts",
+          "helper_calls": [
+            "openBookDetailsFromList",
+            "clickNamed",
+            "clickNamed",
+            "expectVisible",
+            "expectAbsent"
+          ],
+          "baseline": {
+            "id": "REQ-5.5.1",
+            "title": "REQ-5.5.1: Confirm Delete Book",
+            "status": "unexpected",
+            "duration_ms": 10016,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Confirm Delete$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (/workspace/checks/helpers.ts:119:17)\n    at /workspace/checks/REQ-5.5.1.spec.ts:10:3"
+          }
+        },
+        {
+          "id": "REQ-5.5.2",
+          "name": "Cancel Delete Book",
+          "description": "Exit the delete flow without deleting the book. The confirmation view contains a unique button named `Cancel`. Seed data: deletable book \"Book 5.5.2\".",
+          "scenarios": [
+            {
+              "name": "Cancel Delete Book",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the delete book confirmation page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique `Cancel` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system returns to the book details page and keeps `Book 5.5.2` unchanged."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.5.2.spec.ts",
+          "helper_calls": [
+            "openBookDetailsFromList",
+            "clickNamed",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-5.5.2",
+            "title": "REQ-5.5.2: Cancel Delete Book",
+            "status": "expected",
+            "duration_ms": 280,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-5.6.1",
+          "name": "Fill out and Save Book with Shelf",
+          "description": "Create a new book from the current shelf context. The form has uniquely labelled textboxes `Name` and `Description`, a `Book Tags` control with a `tag1, tag2` textbox, and a button named `Save Book`. The created book remains associated with the current shelf. Seed data: shelf \"Shelf 5.6.1\".",
+          "scenarios": [
+            {
+              "name": "Fill out and Save Book with Shelf",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on a shelf details page and can access the action panel."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates `New Book`, fills `Name` with `Book Created 5.6.1`, fills `Description` with `Book created by REQ-5.6.1.`, activates `Book Tags`, fills `tag1, tag2` with `created, shelf-book`, and activates `Save Book`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system creates the book, associates it with `Shelf 5.6.1`, and displays both names on the resulting page."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-5.6.1.spec.ts",
+          "helper_calls": [
+            "openBookCreationFromShelf",
+            "fillBookForm",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-5.6.1",
+            "title": "REQ-5.6.1: Fill out and Save Book with Shelf",
+            "status": "unexpected",
+            "duration_ms": 10025,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^New Book$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (/workspace/checks/helpers.ts:119:17)\n    at Object.openBookCreationFromShelf (/workspace/checks/helpers.ts:234:3)\n    at /workspace/checks/REQ-5.6.1.spec.ts:8:3"
+          }
+        },
+        {
+          "id": "REQ-6.1.1",
+          "name": "Save Page",
+          "description": "Create and save a new page in a book. The editor contains exactly one textbox with placeholder `Page title`, exactly one multiline textbox with placeholder `Write your page content here...`, and a button named `Save Page`. Seed data: book \"Book 6.1.1\".",
+          "scenarios": [
+            {
+              "name": "Save Page",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on a book details page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates `New Page`, fills `Page title` with `Page Created 6.1.1`, fills `Write your page content here...` with `Page content created by REQ-6.1.1.`, and activates `Save Page`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system saves the page, adds exactly one entry named `Page Created 6.1.1` to the book, and returns to the book details page."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-6.1.1.spec.ts",
+          "helper_calls": [
+            "openPageEditor",
+            "fillPageEditor",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-6.1.1",
+            "title": "REQ-6.1.1: Save Page",
+            "status": "expected",
+            "duration_ms": 310,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-6.1.2",
+          "name": "Save Draft",
+          "description": "Save the current page content as a draft. The editor contains a textbox with placeholder `Page title`, a multiline textbox with placeholder `Write your page content here...`, and a button named `Save Draft`. Seed data: book \"Book 6.1.2\"; verified account with nickname \"BookStack User\", email \"bookstack_user@example.com\", and password \"Password123!\".",
+          "scenarios": [
+            {
+              "name": "Save Draft",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The authenticated user is on the page edit page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user fills `Page title` with `Page Draft 6.1.2`, fills `Write your page content here...` with `Draft content created by REQ-6.1.2.`, and activates `Save Draft`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system stores the draft and shows exactly one entry named `Page Draft 6.1.2` in the `My Recent Drafts` list on the homepage."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-6.1.2.spec.ts",
+          "helper_calls": [
+            "login",
+            "openPageEditor",
+            "fillPageEditor",
+            "clickNamed",
+            "returnHomeByLogo",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-6.1.2",
+            "title": "REQ-6.1.2: Save Draft",
+            "status": "unexpected",
+            "duration_ms": 10015,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^BookStack$/i }).first()\n\n\n   at helpers.ts:304\n\n  302 |     page.getByRole('button', { name: /^BookStack$/i }),\n  303 |   ]);\n> 304 |   await logo.click();\n      |              ^\n  305 | }\n  306 |\n    at Object.returnHomeByLogo (/workspace/checks/helpers.ts:304:14)\n    at /workspace/checks/REQ-6.1.2.spec.ts:12:3"
+          }
+        },
+        {
+          "id": "REQ-6.1.3",
+          "name": "Delete Draft",
+          "description": "Delete an existing page draft. The draft editor exposes a unique control named `Delete Draft`; the confirmation view exposes a unique control named `Confirm Delete`. Seed data: book \"Book 6.1.3\" with existing draft page \"Draft 6.1.3\".",
+          "scenarios": [
+            {
+              "name": "Delete Draft",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the page edit page and a draft already exists."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user opens the draft actions, activates `Delete Draft`, and activates the unique `Confirm Delete` control."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system deletes the draft, returns to the related book details page, and the draft named `Draft 6.1.3` is absent."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-6.1.2"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-6.1.3.spec.ts",
+          "helper_calls": [
+            "openDraftPageEditor",
+            "clickNamed",
+            "clickNamed",
+            "expectTextsVisible",
+            "expectAbsent"
+          ],
+          "baseline": {
+            "id": "REQ-6.1.3",
+            "title": "REQ-6.1.3: Delete Draft",
+            "status": "unexpected",
+            "duration_ms": 10023,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Edit$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (/workspace/checks/helpers.ts:119:17)\n    at Object.openDraftPageEditor (/workspace/checks/helpers.ts:277:3)\n    at /workspace/checks/REQ-6.1.3.spec.ts:8:3"
+          }
+        },
+        {
+          "id": "REQ-6.2.1",
+          "name": "Create Chapter",
+          "description": "Create a new chapter within a book. The chapter form contains uniquely labelled textboxes `Name` and `Description` and a button named `Save Chapter`. Seed data: book \"Book 6.2.1\".",
+          "scenarios": [
+            {
+              "name": "Create Chapter",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the book details page."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates `New Chapter`, fills `Name` with `Chapter Created 6.2.1`, fills `Description` with `Chapter created by REQ-6.2.1.`, and activates `Save Chapter`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system creates the chapter and displays exactly one entry named `Chapter Created 6.2.1` in the current book."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-5.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-6.2.1.spec.ts",
+          "helper_calls": [
+            "openChapterCreation",
+            "fillChapterForm",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-6.2.1",
+            "title": "REQ-6.2.1: Create Chapter",
+            "status": "expected",
+            "duration_ms": 303,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-6.3.1",
+          "name": "Enter Page Reading Page",
+          "description": "Open the reading page for a selected page. The page entry is a unique link or button named exactly \"Page 6.3.1\"; activating it displays a visible heading named \"Page 6.3.1\" and the page content. Seed data: book \"Book 6.3.1\" with readable page \"Page 6.3.1\" and page content.",
+          "scenarios": [
+            {
+              "name": "Enter Page Reading Page",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is viewing a list of pages within a book or chapter."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named `Page 6.3.1`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system displays the page reading page with a visible heading named `Page 6.3.1`."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-6.1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-6.3.1.spec.ts",
+          "helper_calls": [
+            "openPageReading",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-6.3.1",
+            "title": "REQ-6.3.1: Enter Page Reading Page",
+            "status": "expected",
+            "duration_ms": 220,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-6.3.2",
+          "name": "Redirect to Page Edit Page",
+          "description": "Open the page edit flow from the page reading page. The action area contains a unique button named `Edit`. The editor contains a button named `Save Page`. Seed data: book \"Book 6.3.2\" with editable page \"Page 6.3.2\" and page content.",
+          "scenarios": [
+            {
+              "name": "Redirect to Page Edit Page",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on the page reading page and can access the action area."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique `Edit` button."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system opens the edit page for the current page, where the `Save Page` button is visible."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-6.3.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-6.3.2.spec.ts",
+          "helper_calls": [
+            "openPageReading",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-6.3.2",
+            "title": "REQ-6.3.2: Redirect to Page Edit Page",
+            "status": "expected",
+            "duration_ms": 212,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-7.1",
+          "name": "Add to Recently Viewed",
+          "description": "Add supported content to the recently viewed list after it is opened. Seed data: shelf \"Shelf 7.1\"; verified account with nickname \"BookStack User\", email \"bookstack_user@example.com\", and password \"Password123!\".",
+          "scenarios": [
+            {
+              "name": "Add to Recently Viewed",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is browsing supported content pages in the system."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user opens a shelf details page, book details page, page reading page, or chapter view."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system adds the item to `My Recently Viewed` on the homepage."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1",
+            "REQ-5.2.1",
+            "REQ-6.3.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-7.1.spec.ts",
+          "helper_calls": [
+            "login",
+            "openShelfDetails",
+            "returnHomeByLogo",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-7.1",
+            "title": "REQ-7.1: Add to Recently Viewed",
+            "status": "unexpected",
+            "duration_ms": 10019,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^BookStack$/i }).first()\n\n\n   at helpers.ts:304\n\n  302 |     page.getByRole('button', { name: /^BookStack$/i }),\n  303 |   ]);\n> 304 |   await logo.click();\n      |              ^\n  305 | }\n  306 |\n    at Object.returnHomeByLogo (/workspace/checks/helpers.ts:304:14)\n    at /workspace/checks/REQ-7.1.spec.ts:10:3"
+          }
+        },
+        {
+          "id": "REQ-7.2",
+          "name": "Quick Navigation from Recently Viewed",
+          "description": "Open a content page from the recently viewed list. Seed data: shelf \"Shelf 7.2\"; verified account with nickname \"BookStack User\", email \"bookstack_user@example.com\", and password \"Password123!\".",
+          "scenarios": [
+            {
+              "name": "Quick Navigation from Recently Viewed",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The authenticated homepage shows `My Recently Viewed` with at least one item."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named after the target item in `My Recently Viewed`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system opens the corresponding content page."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-7.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-7.2.spec.ts",
+          "helper_calls": [
+            "login",
+            "openShelfDetails",
+            "returnHomeByLogo",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-7.2",
+            "title": "REQ-7.2: Quick Navigation from Recently Viewed",
+            "status": "unexpected",
+            "duration_ms": 10025,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^BookStack$/i }).first()\n\n\n   at helpers.ts:304\n\n  302 |     page.getByRole('button', { name: /^BookStack$/i }),\n  303 |   ]);\n> 304 |   await logo.click();\n      |              ^\n  305 | }\n  306 |\n    at Object.returnHomeByLogo (/workspace/checks/helpers.ts:304:14)\n    at /workspace/checks/REQ-7.2.spec.ts:10:3"
+          }
+        },
+        {
+          "id": "REQ-8.1",
+          "name": "Favorite Items",
+          "description": "Add supported content items to the favorites list. The current content page contains exactly one button named `Favorite` with aria-pressed=false. Activating it changes the same control to name `Unfavorite` with aria-pressed=true. Seed data: book \"Book 8.1\".",
+          "scenarios": [
+            {
+              "name": "Favorite Items",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The user is on a supported shelf, book, chapter, or page view."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique button named `Favorite` for the current content item."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system adds the item to the favorites list and changes the control to `Unfavorite` with aria-pressed=true."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-4.2.1",
+            "REQ-5.2.1",
+            "REQ-6.3.1",
+            "REQ-6.2.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-8.1.spec.ts",
+          "helper_calls": [
+            "openBookDetailsFromList",
+            "clickNamed",
+            "expectVisible"
+          ],
+          "baseline": {
+            "id": "REQ-8.1",
+            "title": "REQ-8.1: Favorite Items",
+            "status": "expected",
+            "duration_ms": 262,
+            "error": ""
+          }
+        },
+        {
+          "id": "REQ-8.2",
+          "name": "Quick Navigation from Favorites",
+          "description": "Open a content page from a favorites list entry. Seed data: book \"Book 8.2\"; verified account with nickname \"BookStack User\", email \"bookstack_user@example.com\", and password \"Password123!\".",
+          "scenarios": [
+            {
+              "name": "Quick Navigation from Favorites",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The authenticated homepage or favorites page shows at least one favorite item."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named after the target item in `My Most Viewed Favorites`."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system opens the corresponding content page."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-8.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-8.2.spec.ts",
+          "helper_calls": [
+            "login",
+            "openBookDetailsFromList",
+            "clickNamed",
+            "returnHomeByLogo",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-8.2",
+            "title": "REQ-8.2: Quick Navigation from Favorites",
+            "status": "unexpected",
+            "duration_ms": 10024,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Favorite$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (/workspace/checks/helpers.ts:119:17)\n    at /workspace/checks/REQ-8.2.spec.ts:10:3"
+          }
+        },
+        {
+          "id": "REQ-9.1",
+          "name": "Quick Navigation from Recently Updated",
+          "description": "Open a page from the recently updated pages list. Seed data: book \"Book 9.1\".",
+          "scenarios": [
+            {
+              "name": "Quick Navigation from Recently Updated",
+              "steps": [
+                {
+                  "keyword": "GIVEN",
+                  "content": "The homepage shows `Recently Updated Pages` with at least one item."
+                },
+                {
+                  "keyword": "WHEN",
+                  "content": "The user activates the unique link or button named after the target page in the `Recently Updated Pages` list."
+                },
+                {
+                  "keyword": "THEN",
+                  "content": "The system opens the reading page for the selected page."
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            "REQ-6.1.1"
+          ],
+          "requirements_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+          "test_path": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/tests/REQ-9.1.spec.ts",
+          "helper_calls": [
+            "openPageEditor",
+            "fillPageEditor",
+            "clickNamed",
+            "returnHomeByLogo",
+            "clickNamed",
+            "expectTextsVisible"
+          ],
+          "baseline": {
+            "id": "REQ-9.1",
+            "title": "REQ-9.1: Quick Navigation from Recently Updated",
+            "status": "unexpected",
+            "duration_ms": 10023,
+            "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^BookStack$/i }).first()\n\n\n   at helpers.ts:304\n\n  302 |     page.getByRole('button', { name: /^BookStack$/i }),\n  303 |   ]);\n> 304 |   await logo.click();\n      |              ^\n  305 | }\n  306 |\n    at Object.returnHomeByLogo (/workspace/checks/helpers.ts:304:14)\n    at /workspace/checks/REQ-9.1.spec.ts:11:3"
+          }
+        }
+      ]
+    }
+  },
+  "bookstack_brand_fix": {
+    "before_passed": 19,
+    "after_passed": 20,
+    "total": 34,
+    "gained": [
+      "REQ-1.2"
+    ],
+    "lost": [],
+    "report": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-20260922/bookstack-brand-fix/report.json",
+    "report_sha256": "69b17a484ac8aa6aa26f7449f061a394209f2e3bde5597a401a761064ae4f8cc",
+    "change": {
+      "change": "Remove the extra logo suffix from the accessible home button name, as required by REQ-1.2.",
+      "path": "frontend/public/lib/arc.js",
+      "before_sha256": "6b877afcfa8500ca8f7e734e200099e9f3c0db19244bc4193803ef196568e7a2",
+      "after_sha256": "487ab66278dab3651301c8f91a7347af309d2947588eba7566bd7afbd4b35ce3"
+    },
+    "runtime": {
+      "node": "v20.19.3",
+      "playwright": "1.57.0",
+      "chromium": "143.0.7499.4",
+      "arch": "arm64",
+      "mode": "score",
+      "workers": 1,
+      "cpu_max": "100000 100000",
+      "memory_max": "2147483648"
+    },
+    "model_generated_improvement_verified": false,
+    "official_score": false,
+    "after_cases": [
+      {
+        "id": "REQ-1.1",
+        "title": "REQ-1.1: Open Homepage",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-1.2",
+        "title": "REQ-1.2: Back to Homepage from Other Pages",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-2.1",
+        "title": "REQ-2.1: Enter Login Page",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-2.2",
+        "title": "REQ-2.2: Log In Successfully",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-3.1",
+        "title": "REQ-3.1: Enter Authenticated Homepage",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-4.1",
+        "title": "REQ-4.1: View Shelf List",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-4.2.1",
+        "title": "REQ-4.2.1: Enter Shelf Details Page",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-4.3.1",
+        "title": "REQ-4.3.1: Create Shelf",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.fill: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: /^Create shelf form$/i }).getByLabel(/Name/i).first()\n\n\n   at helpers.ts:146\n\n  144 |     page.getByRole('searchbox', { name }),\n  145 |   ]);\n> 146 |   await locator.fill(value);\n      |                 ^\n  147 | }\n  148 |\n  149 | export async function expectSuccessFeedback(page: Page): Promise<void> {\n    at fillField (/workspace/checks/helpers.ts:146:17)\n    at Object.fillShelfForm (/workspace/checks/helpers.ts:261:3)\n    at /workspace/checks/REQ-4.3.1.spec.ts:10:3"
+      },
+      {
+        "id": "REQ-4.3.2",
+        "title": "REQ-4.3.2: Cancel Creation",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-4.4.1",
+        "title": "REQ-4.4.1: Confirm Delete Shelf",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Confirm Delete$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (/workspace/checks/helpers.ts:119:17)\n    at /workspace/checks/REQ-4.4.1.spec.ts:10:3"
+      },
+      {
+        "id": "REQ-4.4.2",
+        "title": "REQ-4.4.2: Cancel Delete Shelf",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-4.5.1",
+        "title": "REQ-4.5.1: Save Shelf Edits",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: /^Edit shelf form$/i }).getByRole('button', { name: /^Shelf Tags$/i })\n\n\n   at helpers.ts:263\n\n  261 |   await fillField(form, 'Name', mode === 'edit' ? data.updatedName ?? data.name : data.name);\n  262 |   await fillField(form, 'Description', mode === 'edit' ? data.updatedDescription ?? data.description : data.description);\n> 263 |   await form.getByRole('button', { name: /^Shelf Tags$/i }).click();\n      |                                                             ^\n  264 |   const tagsField = form.getByPlaceholder('tag1, tag2');\n  265 |   await expect(tagsField).toHaveCount(1);\n  266 |   await tagsField.fill(data.tags);\n    at Object.fillShelfForm (/workspace/checks/helpers.ts:263:61)\n    at /workspace/checks/REQ-4.5.1.spec.ts:10:3"
+      },
+      {
+        "id": "REQ-4.5.2",
+        "title": "REQ-4.5.2: Cancel Shelf Edits",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-5.1",
+        "title": "REQ-5.1: View Books List",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-5.2.1",
+        "title": "REQ-5.2.1: Enter Book Details Page through Book List Page",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-5.2.2",
+        "title": "REQ-5.2.2: Enter Book Details Page through Shelf Details Page",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-5.3.1",
+        "title": "REQ-5.3.1: Fill out and Save Book",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Create New Book$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (/workspace/checks/helpers.ts:119:17)\n    at Object.openBookCreationFromList (/workspace/checks/helpers.ts:205:3)\n    at /workspace/checks/REQ-5.3.1.spec.ts:8:3"
+      },
+      {
+        "id": "REQ-5.3.2",
+        "title": "REQ-5.3.2: Cancel Creating Book",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Create New Book$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (/workspace/checks/helpers.ts:119:17)\n    at Object.openBookCreationFromList (/workspace/checks/helpers.ts:205:3)\n    at /workspace/checks/REQ-5.3.2.spec.ts:8:3"
+      },
+      {
+        "id": "REQ-5.4.1",
+        "title": "REQ-5.4.1: Save Book Edits",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: /^Edit book form$/i }).getByRole('button', { name: /^Book Tags$/i })\n\n\n   at helpers.ts:247\n\n  245 |   await fillField(form, 'Name', mode === 'edit' ? data.updatedName ?? data.name : data.name);\n  246 |   await fillField(form, 'Description', mode === 'edit' ? data.updatedDescription ?? data.description : data.description);\n> 247 |   await form.getByRole('button', { name: /^Book Tags$/i }).click();\n      |                                                            ^\n  248 |   const tagsField = form.getByPlaceholder('tag1, tag2');\n  249 |   await expect(tagsField).toHaveCount(1);\n  250 |   await tagsField.fill(data.tags);\n    at Object.fillBookForm (/workspace/checks/helpers.ts:247:60)\n    at /workspace/checks/REQ-5.4.1.spec.ts:10:3"
+      },
+      {
+        "id": "REQ-5.4.2",
+        "title": "REQ-5.4.2: Cancel Book Edits",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-5.5.1",
+        "title": "REQ-5.5.1: Confirm Delete Book",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Confirm Delete$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (/workspace/checks/helpers.ts:119:17)\n    at /workspace/checks/REQ-5.5.1.spec.ts:10:3"
+      },
+      {
+        "id": "REQ-5.5.2",
+        "title": "REQ-5.5.2: Cancel Delete Book",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-5.6.1",
+        "title": "REQ-5.6.1: Fill out and Save Book with Shelf",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^New Book$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (/workspace/checks/helpers.ts:119:17)\n    at Object.openBookCreationFromShelf (/workspace/checks/helpers.ts:234:3)\n    at /workspace/checks/REQ-5.6.1.spec.ts:8:3"
+      },
+      {
+        "id": "REQ-6.1.1",
+        "title": "REQ-6.1.1: Save Page",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-6.1.2",
+        "title": "REQ-6.1.2: Save Draft",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: /My\\s+Recent\\s+Drafts/i }).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: /My\\s+Recent\\s+Drafts/i }).first()\n\n\n   at helpers.ts:134\n\n  132 |       page.getByPlaceholder(name),\n  133 |     ]);\n> 134 |     await expect(locator).toBeVisible();\n      |                           ^\n  135 |   }\n  136 | }\n  137 |\n    at Object.expectTextsVisible (/workspace/checks/helpers.ts:134:27)\n    at /workspace/checks/REQ-6.1.2.spec.ts:13:3"
+      },
+      {
+        "id": "REQ-6.1.3",
+        "title": "REQ-6.1.3: Delete Draft",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Edit$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at clickNamed (/workspace/checks/helpers.ts:119:17)\n    at Object.openDraftPageEditor (/workspace/checks/helpers.ts:277:3)\n    at /workspace/checks/REQ-6.1.3.spec.ts:8:3"
+      },
+      {
+        "id": "REQ-6.2.1",
+        "title": "REQ-6.2.1: Create Chapter",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-6.3.1",
+        "title": "REQ-6.3.1: Enter Page Reading Page",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-6.3.2",
+        "title": "REQ-6.3.2: Redirect to Page Edit Page",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-7.1",
+        "title": "REQ-7.1: Add to Recently Viewed",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: /My\\s+Recently\\s+Viewed/i }).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: /My\\s+Recently\\s+Viewed/i }).first()\n\n\n   at helpers.ts:134\n\n  132 |       page.getByPlaceholder(name),\n  133 |     ]);\n> 134 |     await expect(locator).toBeVisible();\n      |                           ^\n  135 |   }\n  136 | }\n  137 |\n    at Object.expectTextsVisible (/workspace/checks/helpers.ts:134:27)\n    at /workspace/checks/REQ-7.1.spec.ts:11:3"
+      },
+      {
+        "id": "REQ-7.2",
+        "title": "REQ-7.2: Quick Navigation from Recently Viewed",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /Shelf\\s+7\\.2/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (/workspace/checks/helpers.ts:119:17)\n    at /workspace/checks/REQ-7.2.spec.ts:11:3"
+      },
+      {
+        "id": "REQ-8.1",
+        "title": "REQ-8.1: Favorite Items",
+        "status": "expected",
+        "error": ""
+      },
+      {
+        "id": "REQ-8.2",
+        "title": "REQ-8.2: Quick Navigation from Favorites",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /^Favorite$/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (/workspace/checks/helpers.ts:119:17)\n    at /workspace/checks/REQ-8.2.spec.ts:10:3"
+      },
+      {
+        "id": "REQ-9.1",
+        "title": "REQ-9.1: Quick Navigation from Recently Updated",
+        "status": "unexpected",
+        "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: /Page\\s+Updated\\s+9\\.1/i }).first()\n\n\n   at helpers.ts:119\n\n  117 |     page.getByRole('link', { name }),\n  118 |   ]);\n> 119 |   await locator.click();\n      |                 ^\n  120 | }\n  121 |\n  122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {\n    at Object.clickNamed (/workspace/checks/helpers.ts:119:17)\n    at /workspace/checks/REQ-9.1.spec.ts:12:3"
+      }
+    ]
+  },
+  "validation": {
+    "legacy_tests": {
+      "run": 226,
+      "passed": 214,
+      "skipped": 12
+    },
+    "oneshot_tests": {
+      "run": 83,
+      "passed": 83
+    },
+    "package_sha256": "3a558ab1bb99ed78944b782eb5c08f8785022c400ee3cc0821ab0ab781ba7a0a",
+    "official_uploads": 0,
+    "official_runs": 0,
+    "model_calls": 0,
+    "code_diff_sha256": "f9eea7ec4427ac1f2cae338ac969887d3d5b6d8db4b56b1552a7bf73991d873a"
+  },
+  "runtime_image": "sha256:d07f2f6e61faa9e95bff17c589c00e115f7512422a1570751f64e391247d5c05"
+}

@@ -30,6 +30,7 @@ last-reviewed: 2026-09-18。本文只维护 docs/ 的结构与规则，不复述
 
 ## reports/ 索引（新在上）
 
+- `2026-09-22-lite-first.md` — Lite 优先：当前需求与测试核对、两题冻结应用基线、首页按钮修复的完整回放。
 - `2026-09-18-goal-ledger.md` — 甲方 01:53 定的「Web 聚合榜 ≥ 80%」目标模式：每轮一行的账本、护栏、判据。
 - `2026-09-18-distillation.md` — 把 know-how 压到弱模型能用的层级（门 → 骨架 → 表 → 散文）的叙事，ADR 0001 的背景。
 - `2026-09-16-workspace-consolidation.md` — 09-16 工作区收编决定：VOLO 唯一主项目、one-shot 与论坛 CLI 的边界。

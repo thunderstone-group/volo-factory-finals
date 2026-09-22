@@ -500,3 +500,20 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - **r27 is the candidate** (`r27-candidate.zip` = oneshot/ at `e439539`); **PR #38 merged** into main (owner
   authorised). Balance about CNY 40 after r27; no round 28 without the owner.
 
+
+## 2026-09-22 — Lite-first scope, current suite alignment and first targeted fix
+
+- Owner redirected work to the distributed Lite requirements/tests, suspending six-task Web batches.
+  New worktree starts at current main 248eb65; existing experiments remain preserved.
+- Upstream simulator cfbbc287 and freshly fetched official Lite tests agree across 68 TypeScript
+  files after newline normalization. 32 Keep plus 34 BookStack ATOMIC IDs match one spec each.
+  September 18 helper assumptions are stale; see the report for changed tests.
+- Frozen r27 local baseline: Keep 15/32, BookStack 19/34 under ARM64 / Node 20.19.3 /
+  Playwright 1.57.0 / one CPU / 2GB / one worker / 10-second budgets. Not a new generation or official score.
+- A single home-button accessible-name change (remove extra "logo") fixes BookStack REQ-1.2:
+  full replay 20/34, +1/-0. Four other logo-blocked cases expose missing subsequent business outcomes.
+  The generic scaffold and naming guidance carry the same fix. Other failure families remain open.
+- 83 one-shot tests passed; legacy 214 passed / 12 skipped. Packaged SHA-256
+  3a558ab1bb99ed78944b782eb5c08f8785022c400ee3cc0821ab0ab781ba7a0a. No model calls, uploads or official runs.
+- Next acceptance is both complete Lite suites plus independent fresh generations; not yet achieved.
+  Report: reports/2026-09-22-lite-first.md; evidence: evidence/2026-09-22-lite-first.json.

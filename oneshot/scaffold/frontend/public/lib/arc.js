@@ -35,8 +35,8 @@
   // The footer ends with the layout nouns as visible words ("Header · Sidebar · Main content · Footer"):
   // layout tests assert /header/i, /sidebar/i as visible text, and a landmark tag alone is invisible
   // (StackOverflow REQ-1.1 / 1.2 lost in both round-18 samples once the model stopped writing them).
-  // The brand is a logo BUTTON named "<Brand> logo" next to the brand link: one suite generation
-  // returns home through `button /^BookStack logo$/`, the other through `link /bookstack/i`.
+  // The home button uses the brand as its accessible name. Preserve an explicitly
+  // required name rather than decorating it with an extra "logo" suffix.
   // Header entries are links (navigation). Sidebar entries are BUTTONS inside <aside> (role
   // complementary): one suite generation resolves them as `complementary >> button /^Name$/`. The aside
   // comes AFTER <main> in DOM order (CSS puts it back on the left) so a page-wide `.first()` for a verb
@@ -49,7 +49,7 @@
     const nav = (L.nav || []).map(link).join('');
     const side = (L.sidebar || []).map(entry).join('');
     return `<header class="app-header">
-  <button type="button" class="brand-logo" aria-label="${ARC.esc(L.brand || 'App')} logo" data-action="arc:nav" data-hash="#/"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="2"/></svg></button>
+  <button type="button" class="brand-logo" aria-label="${ARC.esc(L.brand || 'App')}" data-action="arc:nav" data-hash="#/"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="2"/></svg></button>
   <a class="brand" href="#/">${ARC.esc(L.brand || 'App')}</a>
   <nav aria-label="Main navigation">${nav}</nav>
   <div class="account">${L.account ? L.account(user) : ''}</div>
