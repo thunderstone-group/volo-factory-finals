@@ -63,7 +63,7 @@
     }
   },
   "package_tests": {
-    "passed": 1,
+    "passed": 2,
     "skipped": 0,
     "log": "v18-package-tests.log"
   }
