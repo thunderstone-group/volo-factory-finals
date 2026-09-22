@@ -782,3 +782,13 @@ Four current-helper browser calibrations catch both actual failed apps and leave
 clean. Staged tests4 pass; full107 had106 passes plus1 EADDRINUSE failure, exact rerun passed;
 latest extractor7 pass. Controlled third BookStack call is running (session68097), not independent.
 Evidence: evidence/2026-09-22-lite-v18-pair.json. V20 ZIP213962945b57950b0c842c403ab392c8a9d289a6dd085802079d482f907a4ebe.
+
+## 2026-09-22 — Controlled third calls Keep32/32 and BookStack32/34; refine scenario context
+
+V20 controls from frozen v18: Keep+2/-0→32/32,BookStack+4/-0→32/34. One new model call each,
+within the original3-call cumulative budget; never independent Goal passes. BookStack remaining
+5.3.1 is null/undefined parent-ID reinitialization in no-parent create form;9.1 is a private-only home
+hiding the public recent-updates list. V21 respects authenticated scenario conditions and follows
+explicit create entry actions. Negative control reports exactly those2 causes; full Keep/BookStack
+controls stay clean, extractor8 pass. Paired v21 third-call control starts from the same v18 app,
+not the v20 output (session15410). Evidence: evidence/2026-09-22-lite-v20-controls.json.

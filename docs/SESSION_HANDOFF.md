@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-22: v18 pair58/66; controlled v20 final-budget repair running
+# Current handoff — 2026-09-22: controlled v20 Keep32/32, BookStack32/34; v21 comparison running
 
 Native Goal remains active: only Keep32 and BookStack34. The SAME portable candidate/model must
 independently pass both and independently repeat each. Frozen edits and controlled/cached repairs
@@ -8,23 +8,32 @@ R = runs/lite-goal-20260922. Use R/state.json and actual subprocess/receipts for
 
 ## Current candidate, execution and next step
 
-Frozen remaining-repair-v20, ZIP SHA-256
-213962945b57950b0c842c403ab392c8a9d289a6dd085802079d482f907a4ebe.
-Kimi HighSpeed,temperature1.0,max_tokens131072,no fallback. V19 was prepared but never paid-called;
-v20 includes its improvements plus the Keep custom-container observation. No v20 independent pass.
+Prepared scenario-context-v21, ZIP SHA-256
+875ff1ff8b08ccfc64b6a988396c678c40ebe6e5a2935940edc1eeb63d59dae0.
+Kimi HighSpeed,temperature1.0,max_tokens131072,no fallback. V19 prepared/unrun; v20 controlled only.
+No independent Goal pass from any current candidate. V21 has no independent generation yet.
 
-Controlled BookStack repair is running (session68097), R/repair-bookstack-v20.log and
-R/repairs/v20-bookstack-third-call. Driver R/repair_v20.py --app bookstack starts from the exact v18
-final app and inherits its two real completed calls; at most ONE new model call remains. Its receipt
-separates inherited cumulative usage from new usage. This validates a possible third-call gain, not
-an independent generation. GET /runs temporarily returned500 twice before the third preflight read
-succeeded. Never duplicate the same request on an observation timeout. No official run is active at
-the last successful read. Old pending smoke/ticket-booking runs are unrelated and unchanged.
+Controlled v20 remaining third calls completed: Keep30→32/32 (+2/-0),58.613s,new30,279 input/8,004
+output; BookStack28→32/34 (+4/-0),96.224s,new41,100/16,162. Each inherits two previous real v18 calls
+and makes only ONE new call; cumulative usage is never presented as new billing. Model-only app
+changes. Full results R/replays/diagnostic/{keep,bookstack}-v20-third-call/result.json.
 
-Next: finish this same model request, replay ALL34 cases and compare gained/lost IDs against v18.
-Then run the controlled Keep scope repair via the same driver --app keep and full32-case replay.
-Only promote after actual gains with no losses; fresh v20 pair and independent repeats remain
-required. Official Lite trial is authorized once promising. Keep official/public input cohorts apart.
+BookStack still fails5.3.1 and9.1. The repaired new-book form compares normalized null parent ID with
+undefined and resets its disclosure on every render; no-parent creation was not visited by the old
+focused edit-form walk. Homepage Recent Updated Pages is hidden without login. The old homeLists
+heuristic asked for two lists whose scenarios explicitly use authenticated homepages, while missing
+the explicitly public Recently Updated Pages scenario. V21 respects those scenario conditions and
+follows explicit create-form entry actions before checking disclosure. Its raw partial control now
+reports EXACTLY those two remaining causes; full BookStack and Keep controls remain clean.
+Extractor8 tests passed. Evidence: evidence/2026-09-22-lite-v20-controls.json.
+
+A controlled v21 BookStack call is now running (session15410), R/repair-bookstack-v21.log and
+R/repairs/v21-bookstack-third-call. It starts from the SAME v18 two-call final app, not from v20's
+three-call output: this is a paired third-call comparison within the original cap, not a fourth-call
+backfill. Driver R/repair_v21.py --app bookstack. Finish the SAME request and replay all34 cases.
+If complete with no losses, independently generate/replay both tasks with frozen v21, then repeat
+both after full passes. Official Lite trial remains authorized when promising. Do not duplicate a
+request after a polling timeout. Platform /runs has intermittent500s; preflight must actually succeed.
 
 ## Current results and bounded changes
 
@@ -50,7 +59,7 @@ negative v18 apps and leave known full-score controls clean (R/probe-v20/verifie
 Validation: four staged-repair regressions passed. Full107 suite had106 passes and1 environmental
 EADDRINUSE failure; that exact name-preservation test reran successfully. Current extractor7 tests
 passed separately after adding record context. No skips. Logs and exact counts are in
-evidence/2026-09-22-lite-v18-pair.json. Latest main/helper changes are not yet committed.
+evidence/2026-09-22-lite-v18-pair.json. V20 changes committed78ba2ab; v21 scenario-context refinements are being validated.
 
 ## Latest independent and controlled results
 

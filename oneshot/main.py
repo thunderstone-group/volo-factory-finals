@@ -526,6 +526,15 @@ def semantic_contracts(requirements):
     for description in re.findall(r"(?m)^\s*description:\s*(.+)$", text):
         if not re.search(r"authenticat|log(?:ged)?[ -]?in|after login", description, re.I):
             home_lists += re.findall(quoted + r"\s+list\s+on\s+the\s+home\s?page", description, re.I)
+    conditional_home, public_home = set(), set()
+    for block in re.split(r"(?m)^\s*(?:-\s*)?id:\s*", text):
+        if re.search(r"\bauthenticated\s+homepage\b", block, re.I):
+            conditional_home.update(re.findall(quoted, block))
+        for content in re.findall(r"(?m)^\s*content:\s*(.+)$", block):
+            if re.search(r"\bThe homepage shows\s+", content, re.I):
+                public_home.update(re.findall(quoted, content))
+    home_lists = [name for name in home_lists if name not in conditional_home or name in public_home]
+    home_lists.extend(sorted(public_home))
     seed_states = []
     declarations = re.findall(r"Seed data:\s*([^\n]+)", text, re.I)
     unselected_favorite = re.search(r"button\s+named\s+[`\"]Favou?rite[`\"]\s+with\s+aria-pressed=false", text, re.I)
@@ -566,6 +575,12 @@ def semantic_contracts(requirements):
                     contract["record"] = seed.group(1)
                 form_reveals.append(contract)
     for block in re.split(r"(?m)^\s*(?:-\s*)?id:\s*", text):
+        form = re.search(r"\bform\b[`\"]?\s+named\s+" + quoted, block, re.I)
+        entry = re.search(r"keyword:\s*WHEN\s*\n\s*content:\s*The user activates\s+(?:(?:the )?(?:unique )?(?:button named )?)?" + quoted, block, re.I)
+        if form and entry and re.match(r"(?:New|Create|Add)\b", entry.group(1), re.I):
+            for contract in form_reveals:
+                if contract['form'] == form.group(1):
+                    contract['entryAction'] = entry.group(1)
         seed = re.search(r"Seed data:\s*[\w -]+\s+" + quoted, block, re.I)
         if not seed or re.search(r"\bauthenticated\b|after\s+(?:a\s+successful\s+)?login", block, re.I):
             continue

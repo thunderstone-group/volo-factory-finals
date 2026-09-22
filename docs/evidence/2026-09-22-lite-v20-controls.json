@@ -1,0 +1,129 @@
+{
+  "candidate": "remaining-repair-v20",
+  "controls": {
+    "keep": {
+      "passed": 32,
+      "total": 32,
+      "gained": [
+        "REQ-2.7.1",
+        "REQ-2.7.2"
+      ],
+      "lost": [],
+      "receipt": {
+        "candidate": "remaining-repair-v20",
+        "app": "keep",
+        "source": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922/generations/initial-control-v18/keep-highspeed-a",
+        "model": "kimi-k2.7-code-highspeed",
+        "independent_generation": false,
+        "official_evaluator_results_supplied_to_model": false,
+        "inherited_prior_completed_calls": 2,
+        "new_model_requests": 1,
+        "new_usage": {
+          "prompt_tokens": 30279,
+          "completion_tokens": 8004
+        },
+        "cumulative_observed_usage": {
+          "calls": 3,
+          "call_limit": 3,
+          "completed_calls": 3,
+          "failed_calls": 0,
+          "failure_limit": 1,
+          "known_prompt_tokens": 79606,
+          "prompt_tokens": 79606,
+          "known_completion_tokens": 72301,
+          "completion_tokens": 72301,
+          "unknown_usage_calls": [],
+          "fallback_model": null,
+          "billing_status": "tokens_reported_cost_not_estimated"
+        },
+        "repair": {
+          "accepted": true,
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "vocabulary_missing_after": 0
+        },
+        "seconds": 58.613,
+        "error": null
+      }
+    },
+    "bookstack": {
+      "passed": 32,
+      "total": 34,
+      "gained": [
+        "REQ-4.5.1",
+        "REQ-5.4.1",
+        "REQ-5.6.1",
+        "REQ-6.1.3"
+      ],
+      "lost": [],
+      "receipt": {
+        "candidate": "remaining-repair-v20",
+        "app": "bookstack",
+        "source": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922/generations/initial-control-v18/bookstack-highspeed-a",
+        "model": "kimi-k2.7-code-highspeed",
+        "independent_generation": false,
+        "official_evaluator_results_supplied_to_model": false,
+        "inherited_prior_completed_calls": 2,
+        "new_model_requests": 1,
+        "new_usage": {
+          "prompt_tokens": 41100,
+          "completion_tokens": 16162
+        },
+        "cumulative_observed_usage": {
+          "calls": 3,
+          "call_limit": 3,
+          "completed_calls": 3,
+          "failed_calls": 0,
+          "failure_limit": 1,
+          "known_prompt_tokens": 100671,
+          "prompt_tokens": 100671,
+          "known_completion_tokens": 65097,
+          "completion_tokens": 65097,
+          "unknown_usage_calls": [],
+          "fallback_model": null,
+          "billing_status": "tokens_reported_cost_not_estimated"
+        },
+        "repair": {
+          "accepted": true,
+          "files": [
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "vocabulary_missing_after": 0
+        },
+        "seconds": 96.224,
+        "error": null
+      }
+    }
+  },
+  "independent_goal_pass": false,
+  "next_candidate": "scenario-context-v21",
+  "next_package_sha256": "875ff1ff8b08ccfc64b6a988396c678c40ebe6e5a2935940edc1eeb63d59dae0",
+  "calibrations": {
+    "verified-docker-book-v17-model-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 6.268,
+      "probe_sha256": "a8b37b775aece050ab5af2f5e4291c39b6f29a10ceea4ffdf4bb4a7f5e042cb4"
+    },
+    "verified-docker-book-v20-partial": {
+      "executed": true,
+      "errors": [
+        "The requirement describes a \"Recently Updated Pages\" list on the homepage; its heading is absent on the initial page. Make the described list and its navigation available, including after returning from a content view.",
+        "Activating \"Book Tags\" in \"Create book form\" leaves the \"tag1, tag2\" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render."
+      ],
+      "page_errors": [],
+      "seconds": 6.105,
+      "probe_sha256": "a8b37b775aece050ab5af2f5e4291c39b6f29a10ceea4ffdf4bb4a7f5e042cb4"
+    },
+    "verified-docker-keep-v20-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 9.572,
+      "probe_sha256": "a8b37b775aece050ab5af2f5e4291c39b6f29a10ceea4ffdf4bb4a7f5e042cb4"
+    }
+  }
+}

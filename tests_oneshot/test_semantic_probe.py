@@ -26,7 +26,7 @@ class SemanticContractsCase(unittest.TestCase):
         self.assertEqual(result['recordActions'], [{'record':'Collection A','action':'New Collection'}])
         self.assertEqual(result['pressedTransitions'], [{'record':'Collection B','before':'Watch','after':'Unwatch'}])
         self.assertEqual(result['formReveals'], [
-            {'form':'Create collection','control':'Attributes','placeholder':'key, value','record':'Collection A'},
+            {'form':'Create collection','control':'Attributes','placeholder':'key, value','record':'Collection A','entryAction':'New Collection'},
             {'form':'Edit collection','control':'Attributes','placeholder':'key, value'},
         ])
 
@@ -92,6 +92,17 @@ description: Authenticated users see the `Private items` list on the homepage.
 ''')
         self.assertEqual(result['homeLists'], ['Recent items'])
         self.assertEqual(result['home'], [])
+
+    def test_authenticated_home_scenarios_do_not_override_an_explicit_public_list(self):
+        result = adapter.semantic_contracts('''
+- id: LISTS
+  description: Display the `Recent visits` list on the homepage.
+- id: PRIVATE
+  content: The authenticated homepage shows `Recent visits` and `Updated items`.
+- id: PUBLIC
+  content: The homepage shows `Updated items` with at least one item.
+''')
+        self.assertEqual(result['homeLists'], ['Updated items'])
 
     def test_semantic_observations_are_not_whole_app_crashes(self):
         self.assertFalse(adapter._fatal('Requirement-derived UI observation: Missing editor role'))

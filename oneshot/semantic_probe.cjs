@@ -169,18 +169,24 @@ async function observe(page, url, contracts) {
     }
     return false;
   };
+  const activateDisclosure = async contract => {
+    const form = page.getByRole('form', {name:contract.form,exact:true});
+    if (!await form.isVisible()) return;
+    await scan(false);
+    const reveal = form.getByRole('button', {name:contract.control,exact:true}).or(form.getByRole('link', {name:contract.control,exact:true})).first();
+    if (!await reveal.isVisible()) return;
+    await reveal.click({timeout:500});await page.waitForTimeout(40);
+    if (!await form.getByPlaceholder(contract.placeholder,{exact:true}).isVisible())
+      errors.add(`Activating "${contract.control}" in "${contract.form}" leaves the "${contract.placeholder}" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.`);
+  };
   for (const contract of (contracts.formReveals || []).filter(c => c.record && /^Edit\b/i.test(c.form)).slice(0,3)) {
     if (!await visitRecord(contract.record)) continue;
     const edit = namedEntry('Edit');
     if (!await edit.isVisible()) continue;
-    await edit.click({timeout:500});await page.waitForTimeout(50);await scan(false);
-    const form = page.getByRole('form', {name:contract.form,exact:true});
-    if (!await form.isVisible()) continue;
-    const reveal = form.getByRole('button', {name:contract.control,exact:true}).or(form.getByRole('link', {name:contract.control,exact:true})).first();
-    if (!await reveal.isVisible()) continue;
-    await reveal.click({timeout:500});await page.waitForTimeout(40);
-    if (!await form.getByPlaceholder(contract.placeholder,{exact:true}).isVisible())
-      errors.add(`Activating "${contract.control}" in "${contract.form}" leaves the "${contract.placeholder}" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.`);
+    await edit.click({timeout:500});await page.waitForTimeout(50);await activateDisclosure(contract);
+  }
+  for (const contract of (contracts.formReveals || []).filter(c => c.entryAction && !c.record).slice(0,3)) {
+    if (await visitRecord(contract.entryAction)) await activateDisclosure(contract);
   }
   for (const contract of (contracts.recordActions || []).slice(0,3)) {
     if (!await visitRecord(contract.record)) continue;
