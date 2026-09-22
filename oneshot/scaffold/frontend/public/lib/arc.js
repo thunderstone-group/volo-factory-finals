@@ -108,13 +108,12 @@
     }
   };
 
-  // --- Popover: a menu, colour palette or label picker that belongs to ONE record opens INSIDE that
-  // record's element (the <article>), never in the dialog root: both suite generations scope the
-  // lookup to the card (`article >> button /^Delete Note$/`, `article >> button /^Light green$/`),
-  // and one of them anchors a header dropdown as `menu >> menuitem /^Settings$/`. `items` are
-  // { label, action, extra? }; kind 'buttons' (default, record menus and palettes) renders plain
-  // <button>s, kind 'menu' (header dropdowns) renders role="menu" with role="menuitem" buttons.
-  // The popover closes on the next render, on Escape, or on a click outside it.
+  // --- Popover: render contextual UI inside its supplied host. The requirement determines
+  // the host and whether the interaction is a popover or an entity editor/dialog.
+  // Command menus are not a replacement for the entity's named field editor.
+  // items are { label, action, extra? }; kind 'buttons' renders native buttons;
+  // kind 'menu' explicitly renders role=menu and role=menuitem.
+  // The popover closes on render, Escape, or a click outside it.
   ARC.openPopover = function (host, items, opts) {
     ARC.closePopover();
     if (!host) return;
@@ -168,8 +167,8 @@
   }
   document.addEventListener('click', (ev) => {
     if (ARC._popover && !ARC._popover.contains(ev.target) && !ev.target.closest('[data-action]')) ARC.closePopover();
-    const el = ev.target.closest('[data-action]');
-    if (!el || el.tagName === 'FORM') {
+    const el = ev.target.closest('[data-action], button, input, textarea, select, a, label');
+    if (!el || !el.hasAttribute('data-action') || el.tagName === 'FORM') {
       // In-app links render synchronously too (see ARC.navigate); the browser's own fragment
       // navigation would only render on the later hashchange task.
       const link = ev.target.closest('a[href^="#/"], a[href="#"]');
@@ -179,7 +178,9 @@
       }
       return;
     }
-    ev.preventDefault();
+    // Native controls must keep their own activation behavior. In particular,
+    // cancelling checkbox clicks reverts the checked state after our handler.
+    if (!el.matches('input, textarea, select, label')) ev.preventDefault();
     dispatch(el.dataset.action, el, ev, null);
   });
   document.addEventListener('submit', (ev) => {

@@ -30,3 +30,5 @@
 - `handoffs/2026-09-22-before-lite-first.md` — Main checkout handoff preserved before the owner redirected work to Lite.
 
 - `handoffs/2026-09-22-before-direct-v3.md` — Lite Goal state before direct v3 generation and the two measured generic fixes.
+
+- `handoffs/2026-09-22-1528.md`: Lite v3/v4 generation handoff before packaged deterministic browser diagnostics.

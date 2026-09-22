@@ -1,8 +1,9 @@
 # ARC-Bench evaluator dialect — how the official Playwright suite reads your app
-The suite sees ONLY the accessibility tree and visible text. It never uses CSS/id/data-* selectors, never
-navigates except `page.goto('/')`, never touches localStorage, never reads the URL, never calls `/api/*`,
-never runs `page.evaluate`. `data-testid` buys nothing. Build the DOM for a screen reader: semantic
-elements, `aria-label`, `<label for>`, real landmarks.
+The current requirements are authoritative. Their exact roles, names (including backticks), scope,
+initial seed states and attributes override historical conventions and scaffold examples below.
+Do not change explicit semantics merely to satisfy a guessed locator fallback.
+Use semantic HTML and accessible names. The requirements can also specify HTML elements and
+attributes such as mark, title, aria-pressed and aria-expanded; implement those literally.
 ## 1. The locator ladder (fixed and public)
 - Click: role `button`, then `link`, `tab`, `menuitem`, `option`, then `getByText` — FIRST VISIBLE WINS.
 - Assert visible: `getByText`, then roles `heading, button, link, tab, cell, columnheader, textbox, combobox`, then `getByLabel`, then `getByPlaceholder`.
@@ -35,31 +36,14 @@ logged-in scenario first waits for that button. Rules:
 `/archive/i` matches "Archive note". Whitespace runs are flexible. A few helpers ANCHOR the pattern:
 `/^archived?$/i` for the archive view, `/^settings$/i` for the settings screen. Assume any sidebar
 navigation target may be matched anchored.
-## 3. The ambiguity rule — this is where most points are lost
-The suite looks up row actions by BARE VERB — `/more/i`, `/options/i`, `/menu/i`, `/archive/i`, `/pin/i`,
-`/color/i`, `/delete/i`, `/labels/i`, `/close/i`, `/done/i`, `/save/i`, `/cancel/i` — then takes `.first()`
-in DOM order. Therefore: **at any instant at most ONE visible control may match each of those verbs.**
-Two shapes are fatal:
-- (a) Every note card shows its Archive button at rest → N matches, the first card always wins, so every
-  archive/pin/delete/colour test mutates the wrong note. Zero points across a whole requirement family.
-- (b) A row action named the bare word `Archive` while the sidebar has `Archived`: the anchored
-  `/^archived?$/i` matches that BUTTON, and button outranks link, so "open the archive view" archives a
-  second note instead — and destroys another test's fixture on the way.
-**The shape that works.** Row actions are `display:none`, revealed only on `:hover` / `:focus-within`, so
-exactly one row's actions are in the accessibility tree at a time. Name them `More options`, `Archive
-note`, `Unarchive note`, `Pin note`, `Unpin note`, `Change color`, `Change labels`, `Delete note` — the
-bare verb matches as a substring, the anchored sidebar pattern does not.
-**Name an action control EXACTLY the verb the requirement quotes.** Many helpers anchor the verb:
-`/^edit$/i`, `/^delete$/i`, `/^reply$/i`, `/^save$/i`, `/^cancel$/i`. "Edit question" or "Delete answer"
-does not match an anchored pattern and the whole edit/delete/reply family scores zero. The ONLY time
-to add a noun ("Archive note") is when a navigation entry shares the verb's stem (sidebar "Archived"
-vs action "Archive"): then the anchored navigation pattern would catch the bare button, because button
-outranks link. Otherwise: bare verb, nothing else. Where the requirement says "Edit" link, a link named
-exactly "Edit" is fine — the click ladder reaches links.
-**Never put a note's own title inside an action control's accessible name.** The suite hovers the title to
-reveal the actions; if a button also answers to the title it resolves to that hover-only button, the click
-re-renders the row, the button vanishes, and the test deadlocks. On an unhovered page
-`getByRole('button', {name: /<any note title>/i})` must have count 0 — titles live in plain text nodes.
+## 3. Preserve exact names within their declared scope
+A row action belongs inside its record; a form action belongs in its form; a sidebar action belongs
+inside the sidebar. Preserve required names even when the same verb appears in another scope.
+Never append an extra noun to an explicit name to satisfy a global-name heuristic. Keep actions
+unique within the required scope, including exactly one completion button in an editor. A nested
+chooser must not duplicate the editor's Close/Save button: reuse the existing completion action.
+Row actions can be revealed on hover/focus to reduce clutter, but must keep the record's layout
+stable. A record's title is plain text, not the accessible name of a secondary action button.
 ## 3c. Hover-revealed actions must never cover the thing that gets hovered
 The suite hovers the row TITLE (`getByRole('heading', {name})`) and then clicks an action. If the revealed
 action bar is absolutely positioned over the title, the hover lands on an icon (`<span aria-hidden>🎨</span>
@@ -68,33 +52,28 @@ hover-then-act test on that screen fails (13 of 15 Keep failures on one run). So
 block BELOW the text in the card's flow (`display:none` → `display:flex` on `:hover` / `:focus-within`),
 never `position:absolute` over the title, never overlapping any text a test may hover or click. Nothing
 else may sit on top of a title either: no full-card overlay links, no `::after` covers.
-## 4. An open chooser must make the rest of the page inert
-Playwright does NOT honour `aria-modal`. Put `inert` and `aria-hidden="true"` on every sibling while a
-dialog, dropdown, colour palette or label picker is open. In particular **no text input outside the open
-chooser may be visible**: the fill helper's last resort is the first bare textbox on the page, so a header
-Search box will silently swallow typing meant for the dialog.
-**An idle overlay root must not exist in the hit-test tree.** A permanent `<div id="dialog-root">` /
-toast root / backdrop that covers the viewport intercepts every hover and click even when empty
-(`<div id="dialog-root"></div> intercepts pointer events` killed 26 of 32 Keep tests on one run). Keep such
-roots `display:none` (or `pointer-events:none`) until a dialog actually opens, and remove the backdrop
-when it closes.
+When the requirement says the record/article itself opens its editor, make the whole article the
+primary target, including blank padding. Keep secondary action buttons away from the card centre;
+a generic article click must open the editor, not accidentally trigger a toolbar control.
+## 4. Modal editors isolate their background
+Use the scaffold's dialog primitive for named modal editors. While it is open, keep background
+siblings inert and aria-hidden. Ordinary contextual menus and palettes are not automatically modal;
+keep them in the scope the requirement describes. Label fields uniquely inside their actual editor.
+Idle dialog and notification roots remain hidden and must not intercept clicks.
 ## 5. A verb must resolve INSIDE the container the test is working in
 With the composer ("Take a note" editor) open the test still searches `/more|options|menu/i` and
 `/labels/i`. If the composer offers neither, the ladder escapes to the banner "Menu" button and the sidebar
 "Edit Labels" item and the test goes somewhere else entirely. Every action a requirement attaches to a row
 or to the composer must be reachable from inside it by the generic verb.
-## 6. Seed data is the contract
-93% of tests need pre-seeded rows and there is no reset API. Every quoted title in a requirement
-description ("The system contains …") is a literal seed row: create it at startup with that exact title,
-one dedicated row per mutating requirement, never shared between tests. Four workers hit one server at once.
-## 6a. Nothing is gated behind login or ownership
-Most tests never log in: 31 of 34 Bookstack tests open a shelf or book anonymously and expect the bare
-"Edit", "Delete", "New Shelf", "New Page", "Favorite" controls right there. Others log in as the seed account
-the requirement pairs with a row and expect "Edit" on that row. No test ever asserts that an anonymous
-user or a non-owner CANNOT see a control. So: every action control a requirement mentions is rendered for
-everyone, logged in or not, owner or not; login only changes the header (avatar / "Profile" / "Sign Out").
-Seed rows are owned by exactly the seed account the requirement names. A control hidden behind a
-condition the test does not perform scores zero for its whole family.
+## 6. Seed data describes the initial state
+Create every named seed record with its specified initial properties. An active/deletable record
+starts active; an unpinned record starts unpinned. Do not infer a final state from a scenario title,
+GIVEN state reached by dependencies, or THEN result. Operations such as archive, delete, pin and
+favorite must create their own results through the UI. Keep distinct named fixtures distinct.
+## 6a. Do not invent an authentication prerequisite
+Keep the content, actions and dashboard lists needed by a public browsing journey available without
+an extra login step. A seeded verified account does not itself make every list private. Authentication
+changes account controls; apply additional access restrictions only when the requirements state them.
 ## 7. Verbatim vocabulary — the largest family of lost points on big apps
 The assert-visible ladder ends in `getByRole('button', {name})`; when it fails it means NOTHING on the page
 carried the phrase. Every quoted string and every noun phrase in a THEN step must appear literally as
@@ -130,23 +109,13 @@ separate `<span aria-hidden="true">` and give the control `aria-label` equal to 
 follows the requirement's verb: click/press → `<button>`; field/enter → textbox labelled exactly;
 dialog/editor → `role="dialog"` named as the requirement calls it; menu → `role="menu"` with
 `menuitem`s. §3's "add a noun" applies only to names the requirement does NOT quote.
-## 7a. `aria-label` is reserved for form controls and icon-only buttons
-The fill ladder's FIRST rung is `getByLabel(/price/i)`, and `getByLabel` matches ANY element whose
-`aria-label` / `aria-labelledby` contains the pattern: `<section aria-label="Price">`,
-`<form aria-label="Search">`, `<div aria-label="Comments">`. The container precedes its own input in DOM
-order, so `.first()` returns the container and `fill()` fails ("Element is not an <input>"). One such
-container kills every test that types into that field. Therefore containers (`section`, `form`, `nav`,
-`div`, `ul`, `table`, `article`, `aside`) carry NO `aria-label` and NO `aria-labelledby`; only `input`,
-`textarea`, `select` and icon-only `button`s do, and no two visible controls on a screen share a label
-word. The stepper next to a "Quantity" field is the classic leak: a `<button aria-label="Decrease
-quantity">` placed before the input is what `getByLabel(/quantity/i).first()` returns, and
-`inputValue()` on a button fails. Name steppers "Minus" / "Plus" (or "Fewer" / "More"), never with the
-field's word, and put the input BEFORE its steppers in DOM order. The same leak with radios: a mode switch
-`<label><input type="radio"> 航班号</label>` placed before the "航班号" text field is what
-`getByLabel(/航班号/).first()` returns, and `fill()` on a radio fails. Mode/filter radios and checkboxes must
-not share a word with any text field on the screen (name the modes "按编号查询" vs field "航班号", or put the
-text field first in DOM order). Exception: a requirement that names a region literally ("the Contact information section") gets one
-`<section aria-label="Contact information">` whose name shares no word with any field label on that screen.
+## 7a. Named containers and fields
+Expose the forms, dialogs, regions and records explicitly named by the requirements using semantic
+roles and aria-label/aria-labelledby. There is no global ban on container names. Label inputs exactly;
+avoid accidental collisions with unrelated controls inside the same scope. Never rename an explicitly
+required field or container. Keep typed values and native input elements stable while editing.
+A checkbox change updates its checked state without removing the checkbox or closing its chooser.
+Native input semantics apply immediately; live filtering must not wait for a later blur event.
 ## 8. Mechanics
 - Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
 - Every repeated record (note, book, product, question, order) is an `<article>`; suites scope a row's
@@ -166,13 +135,14 @@ text field first in DOM order). Exception: a requirement that names a region lit
   only, the other by label first. Never a placeholder that differs from the label.
 - The home button uses the brand as its accessible name. If a requirement specifies a name and role,
   follow those exactly; do not append "logo" to an explicitly required brand name.
-- A record's own menu, colour palette or label picker opens INSIDE that record's `<article>` through
-  `ARC.openPopover(card, items)` — the suites scope the lookup to the card (`article >> button /^Delete Note$/`,
-  `article >> button /^Light green$/`, `article >> checkbox /^Work$/`). Never open it with `ARC.openDialog`: the
-  dialog root sits outside every article, so every item in it is invisible to those lookups (one Lite Keep
-  run lost 12 of 32). Header dropdowns (Settings, account) are `ARC.openPopover(button.parentNode, items,
-  {kind: 'menu'})` → `role="menu"` with `menuitem`s. The dialog root is for editors and confirmations only.
-- A record's state is shown by an element inside the card whose `title` is the state word (`<span
+- Put contextual command menus and color palettes in the scope explicitly required. Selecting a
+  command to edit an entity's fields enters that entity's existing named editor. Label/tag editing
+  inherits the same editor/dialog/form name unless the requirements explicitly name another editor;
+  do not leave editor fields in an unrelated record popover. Reuse the editor's unique Close/Save
+  control while a nested chooser is visible. Keep its checkboxes mounted after selection.
+- An explicit role is part of the contract. Do not override a required native button with role=option
+  merely because it appears in a listbox. Similarly, keep a required textbox as a textbox.
+- A record's state is shown by a visible DESCENDANT element inside the card whose `title` is the state word (`<span
   title="Pinned">`): suites read `article >> [title="Pinned"]`.
 - A settings list row that edits one value is a `<fieldset>` whose `<legend>` and the input's label are both
   `"<Noun> <value>"` (`Label Work`) with its own `Save` button: suites scope `group /^Label Work$/ >> getByLabel`.
@@ -196,3 +166,5 @@ text field first in DOM order). Exception: a requirement that names a region lit
   `process.on('unhandledRejection', …)` handlers that log and keep serving, and wrap every request handler in
   try/catch that answers HTTP 500. One thrown handler otherwise ends the Node process and every later test
   fails with ERR_CONNECTION_REFUSED (a 12306 run died at test 6 of 135 on "Assignment to constant variable").
+
+Nested route-table callbacks must bind to the table that owns their sibling methods, or use explicit object references.

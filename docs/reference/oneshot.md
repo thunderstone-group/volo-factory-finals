@@ -1,5 +1,7 @@
 # One-shot candidate inside VOLO
 
+Last reviewed: 2026-09-22.
+
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
 The original three source hashes and Git head are in `oneshot/source_manifest.json`.
@@ -12,7 +14,8 @@ The original three source hashes and Git head are in `oneshot/source_manifest.js
 ```
 
 The default artifact is `oneshot/dist/oneshot.zip`, with a sibling `.zip.manifest.json`.
-Only `main.py`, `dialect.md`, and `requirements.txt` are in the ZIP, flattened to its root.
+The root allowlist is `main.py`, `dialect.md`, `requirements.txt`, and `semantic_probe.cjs`;
+regular scaffold files are packaged under `scaffold/`.
 Timestamps, order, permissions and uncompressed ZIP encoding are fixed. The external
 manifest binds every current source file to the ZIP hash and retains import provenance.
 Neither forum tools nor platform sessions, test fixtures, or run evidence are packaged.
@@ -46,11 +49,20 @@ across all attempts; incomplete usage remains unknown and is not reported as zer
 True prompts, responses, usage and timings are logged with the key redacted.
 Missing delivery files or malformed output fail nonzero. There is no model backfill loop.
 
-The deterministic delivery check validates manifests, scripts, the backend entry file,
-nonempty frontend HTML and the zero-dependency contract. It does NOT run npm build,
-start the generated application or establish health/behavior correctness. A successful
-exit is therefore not an official acceptance result. The original root `main.py` / `volo/`
-are a frozen legacy baseline; this change does not silently replace that entrypoint.
+The delivery check validates manifests, scripts, the backend entry file, nonempty HTML and
+the zero-dependency application contract. With Node/npm available, it builds the frontend,
+starts the backend, checks health and assets, and executes a jsdom crash probe. Requirements
+with explicit UI declarations also receive a deterministic Chromium diagnostic: declared home
+controls, accessible roles, dialog action ambiguity, editor scope and native checkbox behavior.
+It supplies observations to the existing bounded repair call; no model-generated test or extra
+planning call is added. Probe output and whether it actually executed are retained in the trace.
+Missing browser infrastructure is reported separately and cannot approve a previously observed
+repair. These checks are diagnostic; only the unchanged acceptance suite establishes test scores.
+
+The browser helper uses Playwright 1.57.0. It reuses a reachable Node package and browser cache,
+or installs the pinned package and headless Chromium into runtime caches with bounded waits.
+`NODE_PATH` and `PLAYWRIGHT_BROWSERS_PATH` may supply existing installations. Generated apps still
+receive no gateway credentials. The root `main.py` / `volo/` remain frozen legacy components.
 
 ## Continuation validation on 2026-09-16
 

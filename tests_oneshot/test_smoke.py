@@ -401,6 +401,26 @@ class SmokeCase(unittest.TestCase):
         [generic] = adapter.aria_collision_gaps(stage)
         self.assertIn('"Date" is contained in "End date"', generic)
 
+    def test_a_form_after_a_button_is_not_a_button_label_collision(self):
+        # Reduced from the real v4 BookStack draft. The preceding button used
+        # to make the scanner misclassify this required named form.
+        stage = self.root / "form-label"
+        public = stage / "frontend" / "public"
+        public.mkdir(parents=True)
+        (public / "app.js").write_text(
+            '<button>New Book</button><form aria-label="Create book form">'
+            '<label>Book description<input></label></form>')
+        self.assertEqual(adapter.aria_collision_gaps(stage), [])
+
+    def test_backtick_control_names_are_not_renamed_by_collision_advice(self):
+        stage = self.root / "backtick-label"
+        public = stage / "frontend" / "public"
+        public.mkdir(parents=True)
+        (public / "app.js").write_text(
+            '<label>Tags<input></label><button aria-label="Book Tags">Tags</button>')
+        self.assertTrue(adapter.aria_collision_gaps(stage))
+        self.assertEqual(adapter.aria_collision_gaps(stage, 'A button named `Book Tags`.'), [])
+
     def test_quoted_button_names_are_not_collision_problems_and_only_control_phrases_are_pinned(self):
         stage = self.root / "stage3"
         (stage / "frontend" / "public").mkdir(parents=True)

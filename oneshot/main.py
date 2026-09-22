@@ -460,6 +460,33 @@ def _check_page(port, problems):
             problems.append(f"GET {path} returned an empty body")
 
 
+
+def semantic_contracts(requirements):
+    text = requirements or ""
+    role = r"(option|menuitem|textbox|checkbox|listbox|heading|region|button|dialog|form|radio|link|menu)"
+    quoted = r'[`"\u201c]([^`"\u201d\n]{1,80})[`"\u201d]'
+    forward = re.compile(r"\b" + role + r"(?:es|s)?\b[`\"\u201d]?\s+(?:with\s+(?:accessible\s+)?name|named)\s+" + quoted, re.I)
+    reverse = re.compile(quoted + r"\s+" + role + r"\b", re.I)
+    def pairs(value):
+        found = {(r.lower(), re.sub(r"\s+", " ", n).strip()) for r, n in forward.findall(value)}
+        found |= {(r.lower(), re.sub(r"\s+", " ", n).strip()) for n, r in reverse.findall(value)}
+        return sorted(found)
+    names = {}
+    for role_name, name in pairs(text):
+        names.setdefault(name.lower(), set()).add(role_name)
+    atomic = next((b for b in re.split(r"(?m)^\s*(?:-\s*)?id:\s*", text)
+                   if re.search(r"(?m)^\s*type:\s*ATOMIC\s*$", b)), "")
+    opens_entry = re.search(r"\bopen(?:s|ed)?\b[^\n]*(?:application(?:\s+entry)?\s+URL|entry\s+URL)", atomic, re.I)
+    editors = re.findall(r"\b(?:article|card|record)\b[^.\n]{0,100}\bopens?\b[^.\n]{0,40}\bdialog\s+named\s+" + quoted, text, re.I)
+    home_lists = []
+    for description in re.findall(r"(?m)^\s*description:\s*(.+)$", text):
+        if not re.search(r"authenticat|log(?:ged)?[ -]?in|after login", description, re.I):
+            home_lists += re.findall(quoted + r"\s+list\s+on\s+the\s+home\s?page", description, re.I)
+    return {"homeLists": sorted(set(home_lists)), "home": pairs(atomic) if opens_entry else [],
+            "roles": {name: sorted(values) for name, values in names.items()},
+            "recordEditors": sorted(set(editors))}
+
+
 DOM_PROBE = r"""
 const { JSDOM, VirtualConsole } = require('jsdom');
 (async () => {
@@ -610,7 +637,56 @@ def _check_dom(stage, port, problems, requirements=None):
                             f"landmarks and controls on every route")
 
 
-def smoke_check(stage, requirements=None):
+def _check_semantic_browser(port, problems, requirements, diagnostics):
+    """Observe declared roles and native interactions in an isolated browser context.
+
+    Only requirement text enters this deterministic probe. Runtime gaps are recorded
+    separately and never sent to the model as application failures.
+    """
+    contracts = semantic_contracts(requirements)
+    if not any(contracts.values()):
+        return
+    helper = Path(__file__).with_name("semantic_probe.cjs")
+    env = _child_env()
+    if "PLAYWRIGHT_BROWSERS_PATH" in os.environ:
+        env["PLAYWRIGHT_BROWSERS_PATH"] = os.environ["PLAYWRIGHT_BROWSERS_PATH"]
+    prefix = Path(tempfile.gettempdir()) / "oneshot-playwright-1.57.0"
+    module_dir = str(prefix / "node_modules")
+    env["NODE_PATH"] = os.pathsep.join(filter(None, [env.get("NODE_PATH"), module_dir]))
+    payload = json.dumps({"url": f"http://127.0.0.1:{port}/", "contracts": contracts})
+
+    def probe():
+        result = subprocess.run([shutil.which("node"), str(helper)], input=payload,
+                                env=env, capture_output=True, text=True, timeout=40)
+        return json.loads(result.stdout.strip().splitlines()[-1])
+
+    try:
+        report = probe()
+        if report.get("unavailable") == "module":
+            subprocess.run([shutil.which("npm"), "install", "--prefix", str(prefix),
+                            "playwright@1.57.0", "--no-audit", "--no-fund", "--silent"],
+                           env=env, capture_output=True, timeout=150)
+            report = probe()
+        if report.get("unavailable") == "browser":
+            # Official Playwright images may already contain the matching browsers.
+            # Otherwise install only this runtime's headless Chromium in its cache.
+            subprocess.run([shutil.which("node"), "-e",
+                            "process.argv=['node','cli','install','chromium','--only-shell'];"
+                            "require(require('path').join(require('path').dirname("
+                            "require.resolve('playwright/package.json')),'cli.js'))"],
+                           env=env, capture_output=True, timeout=150)
+            report = probe()
+    except (OSError, subprocess.TimeoutExpired, ValueError, IndexError) as exc:
+        report = {"executed": False, "diagnostic_only": True, "unavailable": "probe",
+                  "reason": f"{type(exc).__name__}: {str(exc)[:200]}"}
+    diagnostics.append(report)
+    print("[oneshot] semantic browser " + json.dumps(report, ensure_ascii=False), file=sys.stderr)
+    if report.get("executed"):
+        problems.extend("Requirement-derived UI observation: " + p for p in report.get("errors", []))
+        problems.extend("browser interaction error: " + p for p in report.get("page_errors", []))
+
+
+def smoke_check(stage, requirements=None, diagnostics=None):
     """Build the frontend, start the backend on a free port and read it the way the runner
     does. Returns (problems, executed). Never calls a model; skips when node/npm are absent."""
     node, npm = shutil.which("node"), shutil.which("npm")
@@ -671,6 +747,8 @@ def smoke_check(stage, requirements=None):
                 _check_page(port, problems)
                 if not problems:
                     _check_dom(stage, port, problems, requirements)
+                    _check_semantic_browser(port, problems, requirements,
+                                            diagnostics if diagnostics is not None else [])
             except Exception as exc:
                 problems.append(f"GET / failed: {str(exc)[:200]}")
     finally:
@@ -1122,7 +1200,10 @@ def _frontend_sources(stage):
 
 def _quoted_lower(requirements):
     """Every quoted phrase of the requirement, lower-cased and space-normalised."""
-    return {re.sub(r"\s+", " ", m.group(1)).strip().lower() for m in QUOTED.finditer(requirements or "")}
+    text = requirements or ""
+    phrases = [m.group(1) for m in QUOTED.finditer(text)]
+    phrases += re.findall(r"`([^`\n]{1,80})`", text)
+    return {re.sub(r"\s+", " ", phrase).strip().lower() for phrase in phrases}
 
 
 def control_names(stage):
@@ -1161,8 +1242,11 @@ def aria_collision_gaps(stage, requirements=None):
     for match in ARIA_LABEL.finditer(source):
         if "${" in match.group(1):
             continue
-        before = source[max(0, match.start() - 160):match.start()].lower()
-        if not ("<button" in before or "'button'" in before or '"button"' in before or "createelement('button')" in before):
+        tag_start = source.rfind("<", 0, match.start())
+        before = source[tag_start:match.start()] if tag_start >= 0 else ""
+        # An earlier button does not make a following form's aria-label a button
+        # label. Unknown JS-created attributes are outside this literal scan.
+        if not re.match(r"<button\b", before, re.I) or ">" in before:
             continue
         shared = _shared_words(match.group(1), field_words)
         if shared and match.group(1).strip().lower() not in quoted:
@@ -1233,20 +1317,24 @@ def process_guard_gaps(stage):
 def _fatal(problem):
     """A smoke problem that zeroes the whole app (nothing renders or serves), as opposed to one that
     costs a family of tests (a click handler that throws, a missing landmark)."""
-    return not (problem.startswith("clicking ") or "renders no <" in problem)
+    return not (problem.startswith(("clicking ", "Requirement-derived UI observation:",
+                                    "browser interaction error:")) or "renders no <" in problem)
 
 
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
     """Smoke-check the staged app and audit the requirement's quoted vocabulary; on failure spend
     at most one model call on a fix and keep it only if the smoke check then passes and the
     vocabulary did not get worse. Records the outcome in budget.smoke."""
-    problems, executed = smoke_check(stage, requirements)
+    diagnostics = []
+    problems, executed = smoke_check(stage, requirements, diagnostics)
     smoke_before = list(problems)
     vocab, missing_before = vocabulary_gaps(stage, requirements)
     static = (process_guard_gaps(stage) + aria_collision_gaps(stage, requirements) + exact_name_gaps(stage, requirements)
               + readonly_gaps(stage) + (scaffold_gaps(stage) if scaffold else []))
     budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
                     "repair": None}
+    if diagnostics:
+        budget.smoke["browser_before"] = diagnostics
     problems = problems + static + vocab
     if not problems:
         return
@@ -1275,7 +1363,13 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         needed = missing_required(stage)
         if needed:
             raise ValueError("repair broke delivery: " + "; ".join(needed))
-        after, _ = smoke_check(stage, requirements)
+        after_diagnostics = []
+        after, _ = smoke_check(stage, requirements, after_diagnostics)
+        if after_diagnostics:
+            budget.smoke["browser_after"] = after_diagnostics
+        if any(r.get("executed") for r in diagnostics) and not any(
+                r.get("executed") for r in after_diagnostics):
+            raise ValueError("browser recheck unavailable; cannot validate the repair")
         improved = not any(_fatal(p) for p in after) and (
             not after or any(_fatal(p) for p in smoke_before) or len(after) < len(smoke_before))
         if not improved:

@@ -1,0 +1,44 @@
+"""Requirement extraction regressions from observed Lite failures; no model calls."""
+import unittest
+
+from oneshot import main as adapter
+
+
+class SemanticContractsCase(unittest.TestCase):
+    def test_entry_roles_and_editor_scope_come_from_requirement_text(self):
+        # Reduced requirement wording; names deliberately differ from the corpus.
+        text = '''
+- id: START
+  type: ATOMIC
+  description: A region named `Workspace` and a button named "New item".
+  content: The user opens the application entry URL.
+- id: EDIT
+  type: ATOMIC
+  description: Clicking an article opens a dialog named `Item editor`.
+  content: A button named `Tag` and a checkbox named `Tag`.
+'''
+        result = adapter.semantic_contracts(text)
+        self.assertEqual(result['home'], [('button', 'New item'), ('region', 'Workspace')])
+        self.assertEqual(result['recordEditors'], ['Item editor'])
+        self.assertEqual(result['roles']['tag'], ['button', 'checkbox'])
+
+    def test_conditional_dashboard_is_not_an_initial_page_contract(self):
+        result = adapter.semantic_contracts('''
+description: Display the `Recent items` list on the homepage.
+description: Authenticated users see the `Private items` list on the homepage.
+- id: LOGIN
+  type: ATOMIC
+  description: A button named `Login`.
+  content: The user is on the login page.
+''')
+        self.assertEqual(result['homeLists'], ['Recent items'])
+        self.assertEqual(result['home'], [])
+
+    def test_semantic_observations_are_not_whole_app_crashes(self):
+        self.assertFalse(adapter._fatal('Requirement-derived UI observation: Missing editor role'))
+        self.assertFalse(adapter._fatal('browser interaction error: Missing record'))
+        self.assertTrue(adapter._fatal('frontend script error on load: undefined'))
+
+
+if __name__ == '__main__':
+    unittest.main()

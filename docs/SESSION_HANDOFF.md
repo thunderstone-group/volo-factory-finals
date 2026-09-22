@@ -1,58 +1,69 @@
-# Current handoff — 2026-09-22: Lite Goal active; first v3 candidate generating directly
+# Current handoff — 2026-09-22: Lite Goal active; automated Keep repair 32/32, packaged v5 ready
 
-The owner explicitly opened a native Goal. Complete only when one fixed candidate/model configuration
-independently generates Keep 32/32 and BookStack 34/34 and each task independently passes again.
-No token budget was requested. Existing ARC account balance authorizes necessary model calls; no
-purchase/recharge is authorized. Do not launch the six-task Web batch. Goal is ACTIVE and incomplete.
+The user requested the native Goal, focused solely on Keep (32) and BookStack (34), and explicitly
+said to submit to official Lite evaluation once a candidate looks promising. No repeat permission
+is needed. Complete the Goal only when the same candidate/model independently generates both full
+passes and repeats each. Official full passes may count as independent repeats with exact package,
+model and corpus identity. Manual diagnostic full passes and frozen-draft repairs do not count.
+Existing ARC balance is authorized for necessary calls; no recharge/purchase. No six-task Web batch.
 
 ## Current execution
 
-Work in this worktree; inspect live Git state. `runs/lite-goal-20260922/state.json` is the execution
-pointer. Current process: `generate.py --candidate requirements-first-v3 --app keep --sample direct-a
---model qwen3.7-plus --transport direct`, log `keep-v3-direct-a.log`. The request has produced valid
-Qwen SSE through direct HTTPS; use its process/receipt, not a new generation, to resume observation.
-Plan: `direct-v3-plan.json`. Candidate ZIP SHA-256:
-f286d4e4a09abc7168ed5402638c8c38f06f012c4f7d941f64450947391cb511.
+Worktree: `lite-first-20260922`, branch `exp/lite-first-20260922`. Main remains untouched.
+Live pointer: `runs/lite-goal-20260922/state.json` (R below). Current candidate `semantic-browser-v5`,
+ZIP SHA-256 `43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137`.
+It retains the full targeted v4 card, fixes native checkbox/control clicks and literal label scanning,
+and adds a deterministic real Chromium diagnostic to the existing one-repair flow. There is no
+model-generated probe or extra planning call. The packaged helper is allowlisted. Runtime gaps are
+recorded separately, never called app failures; an unavailable browser recheck cannot approve a repair.
 
-The candidate contains compact requirement-first guidance, a literal-label diagnostic fix and native
-input dispatch. After Keep is delivered, run the complete unchanged suite using `replay.py`; then
-independently generate BookStack with the same package/model. No official upload/run has occurred.
-Only requirements and the generic scaffold enter generation. Tests and diagnostic hand-fixed apps
-remain outside the model's generation input. A second independent full success per app is still required.
+Current process: `R/generate.py --candidate semantic-browser-v5 --app keep --sample direct-a
+--model qwen3.7-plus --transport direct`, log `R/keep-v5-direct-a.log`, output
+`R/generations/semantic-browser-v5/keep-direct-a`. This is a fresh independent generation.
 
-## Evidence to retain
+BookStack's packaged fixed-draft repair completed32/34 (+4/-0) in178.697s with one real Qwen call;
+remaining failures are REQ-6.1.2/REQ-6.1.3 (draft workflows). No official evaluator is fed to repair.
+Full replay: `R/replays/diagnostic/bookstack-v5-integrated-repair/result.json`.
+The two controlled repairs now total64/66 (+9/-0). The user wants an official trial when promising:
+after the independent Keep replay shows no material regression, submit the exact v5 ZIP to official
+Lite and use those runs as the next independent generation evidence. Do not wait for every local
+Goal repeat before this first authorized trial. Official Keep/BookStack runs must be sequential;
+stop local model traffic for their entire lifecycle. Verify no active/pending conflicting submission
+before upload, verify archived ZIP identity, and retain task/model/run/cost evidence. No new official
+upload/run has occurred yet. Goal still requires both independent full passes and repeats.
 
-- Current public corpus was fixed from upstream cfbbc287ee1bbffcf1e936545e4803145693a8d8; current Lite
-  API packs match 68 TypeScript files after newline normalization. Keep has 32 cases, BookStack 34.
-  Tests stay unchanged and read-only. See reports/2026-09-22-lite-first.md and its evidence.
-- Frozen 01fa275 DeepSeek generation: Keep 23/32, BookStack 5/34. Two DeepSeek repair requests returned
-  HTTP 429 insufficient_quota despite positive meter balance. Known completed costs: CNY 1.909076.
-- Separate Qwen baseline Keep: first draft 27/32 and automatic repair 27/32. Repair was triggered by
-  a false arc/esc label collision in interpolated JS. Settled cost 0.552576 + 0.147340 CNY; usage
-  52,030 input / 74,482 output. Do not mix model cohorts when attributing improvements.
-- Removing that false diagnostic preserves the exact first request and byte-identical draft in an
-  offline response replay, skips the unnecessary repair, and inherits the existing 27/32 replay.
-  It is not a new independent generation. Native input dispatch separately yields 28/32 (+1/-0).
-- Hand-corrected diagnostic apps achieve Keep 32/32 and BookStack 34/34; both retain full pass with
-  the input change. They establish failure causes but NEVER satisfy Goal generation requirements.
-- Current code validation: one-shot 84 passed; legacy 214 passed / 12 skipped. Evidence:
-  evidence/2026-09-22-lite-gates.json, evidence/2026-09-22-lite-goal-baselines.json and raw run files.
+## Observed evidence
 
-## Runtime and transport
+- Current public corpus: upstream cfbbc287ee1bbffcf1e936545e4803145693a8d8; API packs match all
+  68 TypeScript files after newline normalization. Requirements/tests remain read-only.
+- Qwen original Keep: first draft27/32, false automatic repair27/32; native input dispatch alone28/32.
+- V3 compact card rejected: fresh Keep25/32, BookStack28/34. `docs/evidence/2026-09-22-lite-v3-pair.json`.
+- V4 targeted card: fresh Keep27/32; BookStack first draft28/34, false form-label repair23/34.
+  Corrected the scanner's preceding-button heuristic and protected backtick names in current v5.
+- Real browser observations from Keep v4 exposed missing region, button-role overrides, field chooser
+  outside the named editor, native checkbox cancellation and a focus recursion error. One model repair
+  reached32/32 (+5/-0), with no manual app code edits: `R/repairs/v5-keep-browser-feedback` and
+  `R/replays/diagnostic/keep-v5-browser-repair/result.json`. This is fixed-draft evidence, not independent.
+  Usage30,638 input /7,263 output,116.632sec; settled cost CNY0.119380.
+- Packaged diagnostics match positive Keep32 and BookStack34 samples with zero errors on macOS and
+  Linux; catch two missing homepage lists on raw v4 BookStack. `R/probe-v5/integrated-*/receipt.json`.
+- One-shot90/90 deterministic regressions passed, log `R/semantic-v5-tests.log`; legacy214 passed/12 skipped
+  under `~/projects/volo-factory/.venv/bin/python`, log `R/semantic-v5-legacy-tests.log`.
 
-Local replay is pinned image sha256:d07f2f6e61faa9e95bff17c589c00e115f7512422a1570751f64e391247d5c05,
-ARM64, Node 20.19.3, Playwright 1.57.0, one CPU, 2GB, one worker, 10-second test/expect timeout.
-This is not the full official x86_64 lifecycle. Complete reports and immutable input hashes are retained.
+## Runtime and recovery
 
-The baseline-gate-v2 BookStack qwen-a request has an UNCONFIRMED remote launch at
-/tmp/arc-mini-transport-a27697eaccdd4569958eec21d6b776ce. Mac SSH had banner timeouts; a read-only
-probe through currently verified wanctl bms reached HK and LS SSH banners. Direct/jump/local SOCKS
-from Mac failed. No server configuration changed. Do not regenerate the uncertain request merely
-because observation failed. Resume its idempotent job or inspect the marker when SSH becomes reachable.
-The new direct-v3 Keep request is a different candidate/request, not a retry of that uncertain job.
+Local replay image sha256:d07f2f6e61faa9e95bff17c589c00e115f7512422a1570751f64e391247d5c05,
+ARM64, Node20.19.3, Playwright1.57.0, Chromium143.0.7499.4, 1CPU/2GB, worker1,10s timeouts.
+This is not the complete official x86_64 lifecycle. `R/replay.py` preserves test identity and refuses
+overwrite. Current generator `R/generate.py` freezes source, retains raw SSE/requests/usage, and uses
+existing arcbench-cli for platform preflight. Prefer direct transport; credentials stay off logs.
+For local v5 execution, set NODE_PATH=R/browser-runtime/node_modules and
+PLAYWRIGHT_BROWSERS_PATH=R/browser-cache. Production helper installs pinned Playwright if unavailable.
 
-Generation-driver snapshots v1 through v5 and transport provenance live under the run root's tools/.
-v4 adds bounded safe API-read retries; v5 selects direct or detached relay transport and retains raw
-SSE. Direct credentials stay in curl stdin and traces are redacted. Current accounting is in
-runs/lite-goal-20260922/accounting.json. Last confirmed preflight balance was CNY 218.377885 with no
-active official runs; recheck before new paid traffic. Do not silently overwrite failed receipts.
+DeepSeek repair twice returned429 insufficient_quota despite positive meter balance; keep the Qwen
+cohort separate. Latest meter CNY216.253653, pending billing0, no active official runs (see
+`R/billing-semantic-v5`). Actual settled costs are in `R/accounting.json`.
+One older relay request remains UNCONFIRMED: baseline-gate-v2/bookstack-qwen-a,
+/tmp/arc-mini-transport-a27697eaccdd4569958eec21d6b776ce. No SSE received; SSH banner failed.
+Never reissue it merely because observation failed. Inspect/resume that same idempotent job when
+SSH recovers. Do not expand infrastructure work. The later direct runs are different requests.

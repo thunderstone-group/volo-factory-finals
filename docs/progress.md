@@ -591,3 +591,55 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   not an isolated prompt-effect claim. The old uncertain job is not restarted by this request.
 - Evidence: evidence/2026-09-22-lite-gates.json. All full diagnostic passes remain distinct from
   independent generated passes required by the active Goal.
+
+## 2026-09-22 — v3 Keep regresses; official Lite evaluation authorized when ready
+
+- Independently generated v3 Keep: 25/32, one Qwen request, 17,436 input / 60,170 output tokens,
+  CNY 0.516232. The compact-card variant is rejected for promotion: compared with the Qwen baseline
+  it loses editor, pin-indicator and suggestion-role behavior despite correcting initial states/search.
+- v3 BookStack generation completed; complete suite replay is running. Prepared targeted-contract-v4
+  returns to the established card, corrects only contradictory scope/seed/role advice, and removes the
+  stale mandatory label-popover claim from scaffold context. Shared code fixes remain. V4 Keep started.
+- User explicitly authorized uploading to official Lite once the candidate looks sufficiently improved.
+  Run a concrete complete local comparison and package preflight, then upload/evaluate both Lite tasks
+  sequentially. Pause local gateway traffic during official runs. No additional submission permission needed.
+- Full Goal completion remains independent generated 32/32 and 34/34 with another independent full-pass
+  generation of each; diagnostic hand-fixed scores do not satisfy it. Official independent full passes
+  may provide that repeat evidence if package/model/requirements match.
+
+## 2026-09-22 — v3 pair complete: 53/66, rejected for promotion
+
+- Complete independently generated v3 pair: Keep 25/32 and BookStack 28/34, total 53/66.
+  Keep loses four previously passing behaviors while gaining two, so the compact-card ablation
+  is not promoted or selected for official submission. BookStack still loses dashboard/draft/
+  favorites journeys; the complete failures are preserved in evidence/2026-09-22-lite-v3-pair.json.
+- V4 Keep is generating. It starts from the established full card and only corrects demonstrated
+  conflicts: exact roles/scopes, initial states, entity editor ownership, and misleading scaffold
+  popover comments. Input and literal-label code fixes remain. No new self-test authority or
+  model-generated browser probe has been enabled.
+- User's official Lite submission authorization is retained; execute once a complete local pair
+  supports promotion. Manual diagnostic full scores remain explicitly excluded from Goal success.
+
+## 2026-09-22 15:28 — Keep reaches32/32 with observed browser repair; portable v5 diagnostics
+
+One real Qwen fixed-draft repair uses only requirements, original generation conversation and real
+Chromium observations. Keep v4 improves27/32 to32/32, +5/-0, without manual app edits. This is not
+an independent Goal pass. Input30,638/output7,263,116.632s, billed CNY0.119380. Full replay:
+`runs/lite-goal-20260922/replays/diagnostic/keep-v5-browser-repair/result.json`.
+
+Packaged the calibrated deterministic probe, native control click fixes, actual-button literal
+collision scan, and backtick name protection in `semantic-browser-v5`. ZIP SHA-256:
+`43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137`.
+macOS and Linux positive calibrations report no errors for full Keep/BookStack samples; BookStack
+v4 first draft yields two missing homepage-list observations. Runtime gaps remain explicit.
+One-shot90 tests pass. Controlled BookStack repair is in flight; official evaluation remains pending.
+
+## 2026-09-22 15:34 — BookStack automatic repair32/34; independent Keep v5 running
+
+The packaged v5 flow repairs raw BookStack28/34 to32/34 (+REQ-7.1,7.2,8.2,9.1; zero losses).
+One real Qwen call uses31,976 input/9,702 output,178.697s. Cost pending meter reconciliation.
+Remaining cases REQ-6.1.2 and6.1.3 concern draft workflows. Both controlled repairs total64/66;
+these are not independent Goal passes. Evidence: `evidence/2026-09-22-lite-semantic-repair.json`.
+One-shot90 passed, legacy214 passed/12 skipped. Fresh v5 Keep is generating now. After its complete
+replay shows no material regression, proceed with the already authorized official Lite trial;
+use the official runs for independent generation evidence, and keep local model traffic paused.

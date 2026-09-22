@@ -1,0 +1,168 @@
+{
+  "candidate": "semantic-browser-v5",
+  "package_sha256": "43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137",
+  "model": "qwen3.7-plus",
+  "classification": "controlled frozen-draft model repairs; not independent Goal passes",
+  "official_evaluator_supplied_to_model": false,
+  "manual_application_edits": false,
+  "official_runs": [],
+  "repairs": {
+    "keep": {
+      "before": 27,
+      "after": 32,
+      "total": 32,
+      "gained": [
+        "REQ-1.1",
+        "REQ-2.7.1",
+        "REQ-2.7.2",
+        "REQ-2.7.4",
+        "REQ-3.1"
+      ],
+      "lost": [],
+      "remaining": [],
+      "usage": {
+        "prompt_tokens": 30638,
+        "completion_tokens": 7263
+      },
+      "seconds": 116.632,
+      "source_receipt": "runs/lite-goal-20260922/repairs/v5-keep-browser-feedback/receipt.json",
+      "full_replay": "runs/lite-goal-20260922/replays/diagnostic/keep-v5-browser-repair/result.json"
+    },
+    "bookstack": {
+      "before": 28,
+      "after": 32,
+      "total": 34,
+      "gained": [
+        "REQ-7.1",
+        "REQ-7.2",
+        "REQ-8.2",
+        "REQ-9.1"
+      ],
+      "lost": [],
+      "remaining": [
+        "REQ-6.1.2",
+        "REQ-6.1.3"
+      ],
+      "usage": {
+        "calls": 1,
+        "call_limit": 1,
+        "completed_calls": 1,
+        "failed_calls": 0,
+        "failure_limit": 1,
+        "known_prompt_tokens": 31976,
+        "prompt_tokens": 31976,
+        "known_completion_tokens": 9702,
+        "completion_tokens": 9702,
+        "unknown_usage_calls": [],
+        "fallback_model": null,
+        "billing_status": "tokens_reported_cost_not_estimated"
+      },
+      "seconds": 178.697,
+      "source_receipt": "runs/lite-goal-20260922/repairs/v5-bookstack-integrated/receipt.json",
+      "full_replay": "runs/lite-goal-20260922/replays/diagnostic/bookstack-v5-integrated-repair/result.json"
+    }
+  },
+  "checks": {
+    "oneshot": {
+      "passed": 90,
+      "skipped": 0
+    },
+    "legacy": {
+      "passed": 214,
+      "skipped": 12
+    }
+  },
+  "calibrations": {
+    "integrated-docker-keep-fixed": {
+      "source": "runs/lite-goal-20260922/probe-v5/integrated-docker-keep-fixed/receipt.json",
+      "reports": [
+        {
+          "executed": true,
+          "errors": [],
+          "page_errors": [],
+          "unavailable": null,
+          "playwright": "1.57.0",
+          "browser": "143.0.7499.4"
+        }
+      ]
+    },
+    "integrated-docker-bookstack-v4": {
+      "source": "runs/lite-goal-20260922/probe-v5/integrated-docker-bookstack-v4/receipt.json",
+      "reports": [
+        {
+          "executed": true,
+          "errors": [
+            "The requirement describes a \"My Most Viewed Favorites\" list on the homepage; its heading is absent on the initial page. Make the described list and its navigation available, including after returning from a content view.",
+            "The requirement describes a \"My Recently Viewed\" list on the homepage; its heading is absent on the initial page. Make the described list and its navigation available, including after returning from a content view."
+          ],
+          "page_errors": [],
+          "unavailable": null,
+          "playwright": "1.57.0",
+          "browser": "143.0.7499.4"
+        }
+      ]
+    },
+    "integrated-docker-bookstack-positive": {
+      "source": "runs/lite-goal-20260922/probe-v5/integrated-docker-bookstack-positive/receipt.json",
+      "reports": [
+        {
+          "executed": true,
+          "errors": [],
+          "page_errors": [],
+          "unavailable": null,
+          "playwright": "1.57.0",
+          "browser": "143.0.7499.4"
+        }
+      ]
+    },
+    "integrated-local-keep-fixed": {
+      "source": "runs/lite-goal-20260922/probe-v5/integrated-local-keep-fixed/receipt.json",
+      "reports": [
+        {
+          "executed": true,
+          "errors": [],
+          "page_errors": [],
+          "unavailable": null,
+          "playwright": "1.57.0",
+          "browser": "143.0.7499.4"
+        }
+      ]
+    },
+    "integrated-local-bookstack-positive": {
+      "source": "runs/lite-goal-20260922/probe-v5/integrated-local-bookstack-positive/receipt.json",
+      "reports": [
+        {
+          "executed": true,
+          "errors": [],
+          "page_errors": [],
+          "unavailable": null,
+          "playwright": "1.57.0",
+          "browser": "143.0.7499.4"
+        }
+      ]
+    },
+    "integrated-local-keep-v4": {
+      "source": "runs/lite-goal-20260922/probe-v5/integrated-local-keep-v4/receipt.json",
+      "reports": [
+        {
+          "executed": true,
+          "errors": [
+            "Opening the entry URL requires a visible region named \"Notes workspace\", but it is absent. Preserve the declared role and accessible name.",
+            "Required button \"Work\" is rendered with role=option; preserve the explicitly required button role.",
+            "Required button \"Reminders\" is rendered with role=option; preserve the explicitly required button role.",
+            "Record field chooser (Work, Reminders, Work editable) is outside the declared record editor \"Note editor\". Reuse that named entity editor for field editing and preserve the checkbox elements until explicit completion.",
+            "Checkbox \"Work editable\" did not change state on native activation. Do not preventDefault its click or undo the checked state.",
+            "Checkbox \"Work\" did not change state on native activation. Do not preventDefault its click or undo the checked state.",
+            "Checkbox \"Reminders\" did not change state on native activation. Do not preventDefault its click or undo the checked state."
+          ],
+          "page_errors": [
+            "Maximum call stack size exceeded."
+          ],
+          "unavailable": null,
+          "playwright": "1.57.0",
+          "browser": "143.0.7499.4"
+        }
+      ]
+    }
+  }
+}
