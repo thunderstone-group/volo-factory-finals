@@ -11,10 +11,18 @@ R = runs/lite-goal-20260922. No current official run. Inspect R/state.json for l
 Frozen new candidate entry-contract-v17, ZIP SHA-256
 5cc0d54294edbbe68ae5bcbd3069544b08c23eaefde5f1d7d10a07403222615b.
 Model kimi-k2.7-code-highspeed, temperature1.0, max_tokens131072, no cross-model fallback.
-All105 one-shot regressions passed with0 skips, log R/v17-full-tests.log. Now running
-R/repair_v17.py for ONE controlled BookStack repair from the existing v16 output, without official
-tests/results in the prompt. If the full replay improves without loss, proceed to a fresh v17 pair.
-No independent full Goal pass exists for v17. Do not reissue requests on observation timeouts.
+All105 one-shot regressions passed with0 skips (R/v17-full-tests.log). Controlled v17 repair on
+frozen v16 BookStack now scores34/34 (+8/-0), model-only app edits,1 call44,259 input/14,293 output,
+81.440s. The local experimental driver initially supplied a dict instead of a list to repair_delivery,
+causing rollback after successful checks. Production candidate was unaffected. Corrected offline
+replay used byte-identical request and saved raw SSE,0 additional calls, repair accepted. Receipt
+R/diagnostics/bookstack-v17-repair-replay; full result R/replays/diagnostic/bookstack-v17-model-repair.
+This is a controlled repair, not an independent Goal pass.
+
+A FRESH v17 BookStack generation is now running: R/bookstack-v17-highspeed-a.log,
+R/generations/entry-contract-v17/bookstack-highspeed-a. Finish/replay this same request, then generate
+and fully replay Keep with the identical package/model. If both pass, independently repeat each.
+Inspect R/state.json for the active session. Never reissue a request on observation timeouts.
 
 v16 independent pair: Keep31/32, BookStack26/34 (57/66). This candidate is rejected for promotion:
 BookStack regressed from v13's32/34. Keep405.609s,2 completed calls,52,359 input/75,152 output,

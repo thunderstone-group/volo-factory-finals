@@ -753,3 +753,5 @@ catch those failures and remain clean on fixed/previous positive apps. No Goal f
 Evidence: evidence/2026-09-22-lite-v16-pair.json. Next is one controlled model repair, then fresh pair.
 
 Validation update:all105 one-shot tests passed with0 skips (90.684s). Controlled v17 BookStack repair started; no fresh generation or new official run yet.
+
+Controlled repair result:BookStack26/34→34/34,+8/-0,model-only app edits,1 call44,259/14,293 tokens,81.440s. Experiment driver passed a dict for the file list; corrected offline replay preserved exact request bytes and raw SSE,0 extra calls. Production candidate unaffected. Fresh v17 BookStack is now generating; it must pass independently before counting toward Goal.

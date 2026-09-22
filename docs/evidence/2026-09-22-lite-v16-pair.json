@@ -117,5 +117,19 @@
       "seconds": 4.912,
       "probe_sha256": "88f03cce7786bae1e79f09a47b9f135e33b89194d76b500700aedc3d240ff931"
     }
+  },
+  "v17_controlled_model_repair": {
+    "passed": 34,
+    "total": 34,
+    "gained": 8,
+    "lost": 0,
+    "manual_app_edits": false,
+    "additional_replay_calls": 0,
+    "request_bytes_identical": true,
+    "input_tokens": 44259,
+    "output_tokens": 14293,
+    "seconds": 81.44,
+    "driver_error": "file-list type corrected in experiment driver only",
+    "independent_goal_pass": false
   }
 }
