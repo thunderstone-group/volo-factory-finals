@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-09-22T16:00:06.962612+08:00",
+  "candidate": "semantic-browser-v5",
+  "package_sha256": "43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137",
+  "model": "qwen3.7-plus",
+  "local_independent_keep": {
+    "passed": 29,
+    "total": 32,
+    "gained": [
+      "REQ-1.1",
+      "REQ-3.1"
+    ],
+    "lost": [],
+    "remaining": [
+      "REQ-2.7.1",
+      "REQ-2.7.2",
+      "REQ-2.7.4"
+    ],
+    "seconds": 1021.063,
+    "input_tokens": 20296,
+    "output_tokens": 53707,
+    "amount_cny": "0.470248",
+    "source": "runs/lite-goal-20260922/replays/semantic-browser-v5/keep-direct-a/result.json"
+  },
+  "official_submission": {
+    "submission": {
+      "id": "9331665b18ae",
+      "display_name": "volo-lite-semantic-v5",
+      "model_name": "qwen3.7-plus",
+      "catalog": "competition",
+      "competition_id": "arc-bench-lite",
+      "requirement_id": "arc-bench-lite--__agent__",
+      "runtime": "python",
+      "agent_source": "upload",
+      "original_filename": "candidate.zip",
+      "created_at": "2026-09-22T07:49:48.190092"
+    },
+    "uploaded_sha256": "43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137",
+    "archive_verified": true,
+    "downloaded_sha256": "43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137"
+  },
+  "official_keep_run": {
+    "id": "2eef0a0f987a",
+    "status": "RUNNING",
+    "url": "https://arc-bench.com/runs/2eef0a0f987a",
+    "model": "qwen3.7-plus"
+  },
+  "local_model_traffic_paused": true,
+  "prepared_v6": {
+    "base": "semantic-browser-v5",
+    "changed_files": [
+      "semantic_probe.cjs"
+    ],
+    "generator_card_and_scaffold_unchanged": true,
+    "generation_or_repair_model_calls": 0,
+    "official_upload_performed": false,
+    "package_sha256": "aba35a4ed761d15068de320b31da31a74054ab3607fcda2b0617a1db186f6d11"
+  },
+  "v6_diagnostic_calibrations": {
+    "integrated-docker-keep-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 7.877
+    },
+    "integrated-docker-keep-v5": {
+      "executed": true,
+      "errors": [
+        "Required button \"Change labels\" is rendered with role=menuitem; preserve the explicitly required button role.",
+        "Record field editing opened dialog \"Change labels\" instead of the declared editor \"Note editor\". Reuse the named entity editor for these fields."
+      ],
+      "page_errors": [],
+      "seconds": 9.563
+    },
+    "integrated-docker-bookstack-positive": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 3.682
+    }
+  }
+}

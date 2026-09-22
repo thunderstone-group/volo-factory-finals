@@ -101,6 +101,8 @@ async function observe(page, url, contracts) {
   for(const input of (await page.locator('input[type="text"], input:not([type])').elementHandles()).slice(0,3)){
     if(await input.isVisible()){try{await input.focus();await page.waitForTimeout(30);await scan(false);}catch{}}
   }
+  await page.reload({waitUntil: 'domcontentloaded', timeout: 10000});
+  await page.waitForTimeout(100);
   const end=Date.now()+16000;const queue=['#/'];const seen=new Set();const done=new Set();
   while(queue.length && seen.size<12 && Date.now()<end){
     const hash=queue.shift();if(seen.has(hash))continue;seen.add(hash);
@@ -116,11 +118,12 @@ async function observe(page, url, contracts) {
       const candidates=[];
       for(const el of await scope.locator('button, [role="button"], input[type="checkbox"]').elementHandles()){
         if(!await el.isVisible() || !await el.isEnabled())continue;
-        const name=await label(el);const meta=await el.evaluate(e=>({action:e.getAttribute('data-action')||e.getAttribute('data-change')||'',type:e.type||'',id:e.getAttribute('data-id')||''}));
+        const name=await label(el);const meta=await el.evaluate(e=>({action:e.getAttribute('data-action')||e.getAttribute('data-change')||'',type:e.type||'',id:e.getAttribute('data-id')||'',inRecord:!!e.closest('article, [role="article"]')}));
         const key=hash+'|'+scopeName+'|'+meta.action+'|'+name+'|'+meta.id;
         if(done.has(key))continue;
-        let priority=0;if(contracts.home.some(([r,n])=>r==='button'&&n===name))priority+=10;
+        let priority=0;if(contracts.home.some(([r,n])=>r==='button'&&n===name))priority+=100;
         if(/more|option|edit|label|tag/i.test(name))priority+=20;
+        if(meta.inRecord)priority+=40;
         if(meta.type==='checkbox')priority+=30;
         if(/close|cancel|save|done/i.test(name))priority-=5;
         candidates.push({el,name,meta,key,priority});
@@ -133,6 +136,14 @@ async function observe(page, url, contracts) {
         if(before!==null && await c.el.evaluate(e=>e.isConnected)){
           const after=await c.el.isChecked();
           if(after===before)errors.add('Checkbox "'+c.name+'" did not change state on native activation. Do not preventDefault its click or undo the checked state.');
+        }
+        if (c.meta.inRecord && contracts.recordEditors.length === 1) {
+          const editor = page.getByRole('dialog').first();
+          if (await editor.isVisible() && await editor.getByRole('checkbox').count()) {
+            const actual = await label(await editor.elementHandle());
+            if (actual.toLowerCase() !== contracts.recordEditors[0].toLowerCase())
+              errors.add(`Record field editing opened dialog "${actual}" instead of the declared editor "${contracts.recordEditors[0]}". Reuse the named entity editor for these fields.`);
+          }
         }
         actions.push({scope:scopeName,name:c.name,action:c.meta.action});await scan(false);
       }catch(e){actions.push({scope:scopeName,name:c.name,observation:String(e.message).slice(0,160)});}

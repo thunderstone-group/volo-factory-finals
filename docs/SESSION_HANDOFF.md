@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-22: Lite Goal active; automated Keep repair 32/32, packaged v5 ready
+# Current handoff — 2026-09-22 16:00: Lite v5 uploaded; official Keep running; v6 probe prepared
 
 The user requested the native Goal, focused solely on Keep (32) and BookStack (34), and explicitly
 said to submit to official Lite evaluation once a candidate looks promising. No repeat permission
@@ -17,20 +17,39 @@ and adds a deterministic real Chromium diagnostic to the existing one-repair flo
 model-generated probe or extra planning call. The packaged helper is allowlisted. Runtime gaps are
 recorded separately, never called app failures; an unavailable browser recheck cannot approve a repair.
 
-Current process: `R/generate.py --candidate semantic-browser-v5 --app keep --sample direct-a
---model qwen3.7-plus --transport direct`, log `R/keep-v5-direct-a.log`, output
-`R/generations/semantic-browser-v5/keep-direct-a`. This is a fresh independent generation.
+Current official submission `9331665b18ae`, name `volo-lite-semantic-v5`, model `qwen3.7-plus`.
+Remote archive was downloaded and exactly matches the v5 ZIP hash above. Official Keep run
+`2eef0a0f987a`, https://arc-bench.com/runs/2eef0a0f987a, is RUNNING: environment/dependencies passed,
+agent executing. Read `R/official/semantic-browser-v5/keep-status.json` and poll the existing run.
+CLI status exits1 while a run is still RUNNING; inspect its JSON status rather than treating exit1
+alone as a run failure. Stop all local model traffic until BOTH official tasks finish. When Keep
+is terminal, run BookStack from the SAME submission9331665b18ae with the existing arcbench CLI,
+retain its new run id, and wait. Never upload another package while this pair is pending/running.
+No BookStack official run has been created for this candidate yet.
 
-BookStack's packaged fixed-draft repair completed32/34 (+4/-0) in178.697s with one real Qwen call;
-remaining failures are REQ-6.1.2/REQ-6.1.3 (draft workflows). No official evaluator is fed to repair.
-Full replay: `R/replays/diagnostic/bookstack-v5-integrated-repair/result.json`.
-The two controlled repairs now total64/66 (+9/-0). The user wants an official trial when promising:
-after the independent Keep replay shows no material regression, submit the exact v5 ZIP to official
-Lite and use those runs as the next independent generation evidence. Do not wait for every local
-Goal repeat before this first authorized trial. Official Keep/BookStack runs must be sequential;
-stop local model traffic for their entire lifecycle. Verify no active/pending conflicting submission
-before upload, verify archived ZIP identity, and retain task/model/run/cost evidence. No new official
-upload/run has occurred yet. Goal still requires both independent full passes and repeats.
+Fresh independent v5 Keep finished29/32, +2/-0 versus v4 first draft27/32. Remaining failures are
+REQ-2.7.1/2.7.2/2.7.4, all label editor paths. One call20,296 input/53,707 output,1021.063s, settled
+CNY0.470248. The initial smoke/browser probe saw zero issues because search navigation displaced
+its record traversal; this does NOT prove full coverage. No independent full Goal pass yet.
+`R/generations/semantic-browser-v5/keep-direct-a` and full replay under `R/replays/semantic-browser-v5`.
+
+While official v5 runs, a separate unpaid v6 probe was prepared: only semantic_probe.cjs changes,
+card/main/scaffold unchanged. It resets focus side effects, prioritizes entry and record actions,
+and diagnoses field-editor dialogs opened from a record with the wrong declared editor name.
+It finds both real roots of the three v5 Keep failures: Change labels is a menuitem instead of the
+required button, and record field editing opens a Change labels dialog instead of Note editor.
+Positive Keep32/BookStack34 samples produce zero errors, while the action trace actually visits
+the label paths. Evidence `R/probe-v6/integrated-*/receipt.json`; packaging2/2 tests and JS syntax
+pass. Current working source is this PREPARED v6; it has NOT generated/repaired/uploaded anything.
+V6 ZIP `R/candidates/semantic-browser-v6/candidate.zip`, SHA-256
+`aba35a4ed761d15068de320b31da31a74054ab3607fcda2b0617a1db186f6d11`.
+Do not confuse it with the frozen v5 source/ZIP used by the official pair.
+
+BookStack's earlier integrated fixed-draft repair32/34 (+4/-0) has remaining REQ-6.1.2/6.1.3 draft
+failures. Code reads show anonymous homepage still gates recent drafts, and draft links bypass
+the reading/Edit flow. Wait for official BookStack feedback before deciding the next change.
+The two prior controlled repairs total64/66 (+9/-0), but are NOT independent Goal passes. Goal
+still requires the same candidate/model to independently pass both full suites and repeat each.
 
 ## Observed evidence
 
@@ -61,8 +80,8 @@ For local v5 execution, set NODE_PATH=R/browser-runtime/node_modules and
 PLAYWRIGHT_BROWSERS_PATH=R/browser-cache. Production helper installs pinned Playwright if unavailable.
 
 DeepSeek repair twice returned429 insufficient_quota despite positive meter balance; keep the Qwen
-cohort separate. Latest meter CNY216.253653, pending billing0, no active official runs (see
-`R/billing-semantic-v5`). Actual settled costs are in `R/accounting.json`.
+cohort separate. Latest settled balance CNY215.641837 before the official run, pending billing0 at that preflight.
+Keep v5 costs CNY0.470248; BookStack fixed repair CNY0.141568. `R/accounting.json` retains actual bills.
 One older relay request remains UNCONFIRMED: baseline-gate-v2/bookstack-qwen-a,
 /tmp/arc-mini-transport-a27697eaccdd4569958eec21d6b776ce. No SSE received; SSH banner failed.
 Never reissue it merely because observation failed. Inspect/resume that same idempotent job when

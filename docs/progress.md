@@ -654,3 +654,15 @@ these samples do not count as independent Goal passes. Evidence:
 Official read-only preflight found zero active account runs and zero pending Lite runs. BookStack
 v5 fixed-draft repair settled at CNY0.141568; available balance CNY216.112085 before the ongoing
 Keep generation settles. Exact preflight and accounting remain in the run tree. No upload yet.
+
+## 2026-09-22 16:00 — Independent v5 Keep29/32; official trial started; v6 probe calibrated
+
+Fresh v5 Keep29/32 improves v4 first draft by2 with zero losses. One Qwen call:20,296 input/53,707
+output,1021.063s, billed CNY0.470248. The unchanged v5 package was uploaded and downloaded with
+matching SHA-256; submission9331665b18ae, official Keep2eef0a0f987a is RUNNING. All local model
+traffic is stopped; official BookStack will run serially from the same submission.
+
+A 15-line probe-only v6 change catches the three local label failures via two real browser
+observations, with no errors on positive Keep32/BookStack34 samples. No v6 model call or upload.
+V6 ZIP SHA-256 aba35a4ed761d15068de320b31da31a74054ab3607fcda2b0617a1db186f6d11.
+Evidence: `evidence/2026-09-22-lite-v5-official-start.json`. Goal remains active and incomplete.
