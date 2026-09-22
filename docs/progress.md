@@ -681,3 +681,18 @@ V6 exact-response replay independently proves identical initial request/app byte
 label errors, at zero new model calls. Neither these replays nor manual library swaps count as Goal
 generations. Official v5 Keep remains running; waiter15024 safely retries a transient TLS read error.
 Evidence: `evidence/2026-09-22-lite-state-persistence.json`.
+
+## 2026-09-22 16:35 — Official input diverges from public Lite; last frozen BookStack failure diagnosed
+
+Current official Keep workspace download has85 semantic field differences versus the public exercise.
+The public file matches clean upstream HEAD; the runtime input omits explicit accessibility contracts.
+Both versions are retained separately and unchanged. This official run cannot count as identical-input
+public Goal replay. No runtime evaluator-source identity has been established. Upload key identity
+was checked without recording secret values; it matches the current account key. Workspace snapshot
+shows only unchanged scaffold files so far. Evidence: `evidence/2026-09-22-lite-requirement-divergence.json`.
+
+A one-line frozen BookStack navigation correction improves33/34 to34/34 with zero losses. It routes
+existing drafts through the normal reading/Edit flow. Added the corresponding generic rule to the
+v8 card; actual generation effect remains unmeasured. No model calls or official-test changes. V8
+ZIPb7b167f9e7e13bd281a0086367e493db7374c266669ac80522ed5129ffc76981. The official v5 run remains
+the same2eef0a0f987a; waiter15024 is live. Goal is active and not complete.

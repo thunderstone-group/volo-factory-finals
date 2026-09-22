@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-22 16:17: official v5 Keep running; v7 state persistence prepared
+# Current handoff — 2026-09-22 16:35: official v5 still running; runtime requirements differ; v8 prepared
 
 The user requested the native Goal, focused solely on Keep (32) and BookStack (34), and explicitly
 said to submit to official Lite evaluation once a candidate looks promising. No repeat permission
@@ -6,6 +6,23 @@ is needed. Complete the Goal only when the same candidate/model independently ge
 passes and repeats each. Official full passes may count as independent repeats with exact package,
 model and corpus identity. Manual diagnostic full passes and frozen-draft repairs do not count.
 Existing ARC balance is authorized for necessary calls; no recharge/purchase. No six-task Web batch.
+
+## Input identity: newly confirmed divergence
+
+The downloaded CURRENT official Keep workspace contains a different requirements.yaml from the public
+exercise used locally. Parsed comparison finds85 semantic FIELD differences, not whitespace changes.
+The public copy exactly matches clean upstream HEAD cfbbc287ee1bbffcf1e936545e4803145693a8d8.
+Public SHA-2565cbc81e3fe147070e3d5c226923cf097a60b23cb8bce73bc67a2d848b93965be;
+runtime SHA-256446b912bab64e30bb084e7c0d89f553ea9def59831b232de76b90b7bdfef810a.
+Official runtime omits many explicit roles/names/editor constraints found in the public version.
+Do NOT replace or edit the public corpus, silently pool input versions, or count this official run
+as an identical-input public Goal repeat. The public Lite objective remains the priority; the already
+authorized official trial is distinct evidence. Runtime evaluation-source identity is still unverified.
+The runtime input is separately frozen read-only at R/corpus-runtime/keep/requirements/requirements.yaml.
+Full comparison: R/official/semantic-browser-v5/requirement-comparison.json. The live workspace
+snapshot still contains only byte-identical scaffold application files, with no generated app content.
+This establishes the observed stage, not whether an upstream model request is live or failed.
+The configured upload key DOES equal the current account key; no key values/hashes were recorded.
 
 ## Current execution
 
@@ -43,20 +60,26 @@ the label paths. Evidence `R/probe-v6/integrated-*/receipt.json`; packaging2/2 t
 pass. V6 is a PREPARED snapshot; it has NOT generated/repaired/uploaded anything.
 V6 ZIP `R/candidates/semantic-browser-v6/candidate.zip`, SHA-256
 `aba35a4ed761d15068de320b31da31a74054ab3607fcda2b0617a1db186f6d11`.
-Current working source advances to PREPARED `session-store-v7`, SHA-256
+V7 snapshot `session-store-v7`, SHA-256
 `1d36d56969428487b98e4ee1aea72030acc96e7d372c2371dc867e373e96b693`.
 Relative to v6, only scaffold/README.md and scaffold/frontend/public/lib/arc.js change. The library
 restores/saves ARC.state synchronously in sessionStorage. This preserves login and domain state
 within a tab across full navigation while independent browser contexts still start from seed.
-Do not confuse prepared v6/v7 with the frozen v5 source/ZIP used by the official pair.
+Current working source is PREPARED `entity-flow-v8`, ZIP SHA-256
+`b7b167f9e7e13bd281a0086367e493db7374c266669ac80522ed5129ffc76981`.
+Relative to v7 only dialect.md changes: for entities with both reading/details and an Edit action,
+primary links consistently open the reading/details view for all states including drafts, unless
+requirements explicitly demand direct editor entry. No task IDs/answers are injected. This prompt
+change has NOT been tested with a fresh model call. V6/v7/v8 remain unuploaded; official uses v5.
+
 
 The earlier BookStack draft-save diagnosis is now confirmed by real browser reproduction, not an
 authentication-precondition guess: the official test DOES call login. Its helper then navigates to
 / again; the old scaffold re-seeds state and loses that session. Before: signed-in true then false.
 After the storage fix: true then true; a separate browser context stays signed-out. Replacing ONLY
-this primitive improves the frozen BookStack32/34 to33/34 (+REQ-6.1.2/-0). The remaining draft-delete
-failure is REQ-6.1.3: its draft link opens the editor directly, whereas the standard record flow
-expects reading view then Edit. Do not hardcode a task answer or edit tests to work around it.
+this primitive improves the frozen BookStack32/34 to33/34 (+REQ-6.1.2/-0). A one-line DIAGNOSTIC navigation change then improves33/34 to34/34 (+REQ-6.1.3/-0): draft links
+open the existing reading view, followed by its existing Edit action. The v8 card records the general
+entity-flow rule above. This hand-applied application diagnostic is NOT an independent Goal pass.
 Both positive diagnostic apps keep32/32 and34/34 after the store change. One-shot91 tests pass;
 the strengthened real-browser persistence fixture was individually rerun and passed. These manual
 library swaps do not count as independent Goal passes. No local model traffic occurred.

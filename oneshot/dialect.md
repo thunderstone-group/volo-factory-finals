@@ -118,6 +118,9 @@ A checkbox change updates its checked state without removing the checkbox or clo
 Native input semantics apply immediately; live filtering must not wait for a later blur event.
 ## 8. Mechanics
 - Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
+- When an entity has a reading/details view and a separate Edit action, its primary record links
+  open that view for every lifecycle state, including drafts. Keep the Edit action available there.
+  Enter an editor directly only when the requirements explicitly describe that activation.
 - Every repeated record (note, book, product, question, order) is an `<article>`; suites scope a row's
   actions as `getByRole('article').filter({has: getByText(title)}).getByRole('button', {name})`.
 - A search field is `<input type="text" aria-label="Search">` (role textbox), never `type="search"`: one

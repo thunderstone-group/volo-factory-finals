@@ -1,0 +1,100 @@
+{
+  "recorded_at": "2026-09-22T16:35:31.960939+08:00",
+  "public_upstream_commit": "cfbbc287ee1bbffcf1e936545e4803145693a8d8",
+  "upstream_worktree_clean": true,
+  "public_requirements_match_upstream_HEAD": true,
+  "public_requirements_sha256": "5cbc81e3fe147070e3d5c226923cf097a60b23cb8bce73bc67a2d848b93965be",
+  "official_runtime_requirements_sha256": "446b912bab64e30bb084e7c0d89f553ea9def59831b232de76b90b7bdfef810a",
+  "official_run_id": "2eef0a0f987a",
+  "semantic_field_difference_count": 85,
+  "examples": [
+    [
+      "root.children[0].children[0].description",
+      "value",
+      "Open the application and display the home page. The page exposes a visible region named `Notes workspace`, a button named `Take a note`, and a textbox named `Search`.\n",
+      "Open the application and display the home page."
+    ],
+    [
+      "root.children[0].children[0].scenarios[0].steps[2].content",
+      "value",
+      "The home page is displayed with the `Notes workspace` region, the `Take a note` button, and the `Search` textbox visible.",
+      "The home page is displayed."
+    ],
+    [
+      "root.children[1].children[0].description",
+      "value",
+      "Display the notes list on the home page with pinned notes shown separately from unpinned notes. The pinned section is a named region or heading `Pinned`, and the regular section is a named region or heading `Others`. Each note is exposed as a unique article named by its title. Seed data: pinned note \"Sprint goals\" and regular note \"Groceries\".",
+      "Display the notes list on the home page with pinned notes shown separately from unpinned notes. Seed data: pinned note \"Sprint goals\" and regular note \"Groceries\"."
+    ],
+    [
+      "root.children[1].children[0].scenarios[0].steps[2].content",
+      "value",
+      "The page displays visible `Pinned` and `Others` sections, with `Sprint goals` in the pinned section and `Groceries` in the regular section.",
+      "The page displays the available notes list, with pinned notes separated from regular notes."
+    ],
+    [
+      "root.children[1].children[1].description",
+      "value",
+      "Create a note from the `Take a note` button. Activating it opens exactly one dialog named `Note editor` containing uniquely labelled textboxes `Title` and `Note content`, plus a button named `Close`. Closing the dialog autosaves the note. Take a note form from homepage image: ![image](./reference/create_note_home_page.png) Note form image: ![image](./reference/create_note_form.png)",
+      "Create a note from the Take a note form, expand the editor for title and content, and autosave the note when the editor is closed. Take a note form from homepage image: ![image](./reference/create_note_home_page.png) Note form image: ![image](./reference/create_note_form.png)"
+    ]
+  ],
+  "full_comparison_path": "runs/lite-goal-20260922/official/semantic-browser-v5/requirement-comparison.json",
+  "live_workspace_observation": {
+    "requirements_identical_after_newline_normalization": false,
+    "observed_application_files": {
+      "backend/package.json": {
+        "bytes": 113,
+        "matches_unmodified_scaffold": true
+      },
+      "backend/server.js": {
+        "bytes": 3245,
+        "matches_unmodified_scaffold": true
+      },
+      "frontend/package.json": {
+        "bytes": 166,
+        "matches_unmodified_scaffold": true
+      },
+      "frontend/public/app.js": {
+        "bytes": 3810,
+        "matches_unmodified_scaffold": true
+      },
+      "frontend/public/index.html": {
+        "bytes": 722,
+        "matches_unmodified_scaffold": true
+      },
+      "frontend/public/lib/arc.js": {
+        "bytes": 12481,
+        "matches_unmodified_scaffold": true
+      },
+      "frontend/public/seed.js": {
+        "bytes": 367,
+        "matches_unmodified_scaffold": true
+      },
+      "frontend/public/styles.css": {
+        "bytes": 2603,
+        "matches_unmodified_scaffold": true
+      }
+    }
+  },
+  "key_identity": {
+    "configured_key_present": true,
+    "configured_key_matches_current_account_key": true,
+    "upload_uses_current_account_key": true,
+    "values_recorded": false
+  },
+  "official_runtime_test_sources_verified": false,
+  "official_result_eligible_as_identical_public_corpus_repeat": false,
+  "public_corpus_modified": false,
+  "prepared_candidate": {
+    "base": "session-store-v7",
+    "changed_files": [
+      "dialect.md"
+    ],
+    "change": "Existing entities with separate reading and editing flows retain the same primary navigation across lifecycle states",
+    "model_calls": 0,
+    "official_upload_performed": false,
+    "package_sha256": "b7b167f9e7e13bd281a0086367e493db7374c266669ac80522ed5129ffc76981",
+    "generation_effect_not_yet_tested": true
+  }
+}
