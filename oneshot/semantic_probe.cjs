@@ -3,9 +3,30 @@
 const fs = require('node:fs');
 function scanSemantics(data) {
 
-  const {contracts} = data; const win = window;
+  const {contracts, home} = data; const win = window;
   const semanticErrors = [];
   const issue = (message) => { if (!semanticErrors.includes(message) && semanticErrors.length < 12) semanticErrors.push(message); };
+  if (home && contracts.seedStates && win.SEED) {
+    const records = []; const visited = new Set();
+    const walk = value => {
+      if (!value || typeof value !== 'object' || visited.has(value)) return;
+      visited.add(value);
+      if (!Array.isArray(value) && (typeof value.name === 'string' || typeof value.title === 'string')) records.push(value);
+      Object.values(value).forEach(walk);
+    };
+    walk(win.SEED);
+    const aliases = {archived:'archived', isarchived:'archived', pinned:'pinned', ispinned:'pinned',
+      deleted:'deleted', isdeleted:'deleted', trashed:'deleted', istrashed:'deleted', intrash:'deleted'};
+    for (const contract of contracts.seedStates) {
+      const matches = records.filter(record => record.name === contract.name || record.title === contract.name);
+      if (matches.length !== 1) continue;
+      for (const [key, value] of Object.entries(matches[0])) {
+        const state = aliases[key.toLowerCase().replace(/_/g, '')];
+        if (typeof value === 'boolean' && state && state in contract.states && value !== contract.states[state])
+          issue(`Seed data declares "${contract.name}" as ${contract.qualifier}, but its generated ${key}=${value}. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.`);
+      }
+    }
+  }
   const norm = (value) => String(value || '').replace(/\s+/g, ' ').trim();
   const nameOf = (el) => {
     if (el.getAttribute('aria-label')) return norm(el.getAttribute('aria-label'));
@@ -89,7 +110,7 @@ async function observe(page, url, contracts) {
           errors.add(`The requirement describes a "${name}" list on the homepage; its heading is absent on the initial page. Make the described list and its navigation available, including after returning from a content view.`);
       }
     }
-    (await page.evaluate(scanSemantics, {contracts})).forEach(e => errors.add(e));
+    (await page.evaluate(scanSemantics, {contracts, home})).forEach(e => errors.add(e));
   };
   const label = async el => el.evaluate(e => {
     if(e.getAttribute('aria-label'))return e.getAttribute('aria-label');

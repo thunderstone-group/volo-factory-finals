@@ -1,133 +1,111 @@
-# Current handoff — 2026-09-22 16:35: official v5 still running; runtime requirements differ; v8 prepared
+# Current handoff — 2026-09-22 19:11: Kimi HighSpeed v13 independent Keep running; Goal active
 
-The user requested the native Goal, focused solely on Keep (32) and BookStack (34), and explicitly
-said to submit to official Lite evaluation once a candidate looks promising. No repeat permission
-is needed. Complete the Goal only when the same candidate/model independently generates both full
-passes and repeats each. Official full passes may count as independent repeats with exact package,
-model and corpus identity. Manual diagnostic full passes and frozen-draft repairs do not count.
-Existing ARC balance is authorized for necessary calls; no recharge/purchase. No six-task Web batch.
-
-## Input identity: newly confirmed divergence
-
-The downloaded CURRENT official Keep workspace contains a different requirements.yaml from the public
-exercise used locally. Parsed comparison finds85 semantic FIELD differences, not whitespace changes.
-The public copy exactly matches clean upstream HEAD cfbbc287ee1bbffcf1e936545e4803145693a8d8.
-Public SHA-2565cbc81e3fe147070e3d5c226923cf097a60b23cb8bce73bc67a2d848b93965be;
-runtime SHA-256446b912bab64e30bb084e7c0d89f553ea9def59831b232de76b90b7bdfef810a.
-Official runtime omits many explicit roles/names/editor constraints found in the public version.
-Do NOT replace or edit the public corpus, silently pool input versions, or count this official run
-as an identical-input public Goal repeat. The public Lite objective remains the priority; the already
-authorized official trial is distinct evidence. Runtime evaluation-source identity is still unverified.
-The runtime input is separately frozen read-only at R/corpus-runtime/keep/requirements/requirements.yaml.
-Full comparison: R/official/semantic-browser-v5/requirement-comparison.json. The live workspace
-snapshot still contains only byte-identical scaffold application files, with no generated app content.
-This establishes the observed stage, not whether an upstream model request is live or failed.
-The configured upload key DOES equal the current account key; no key values/hashes were recorded.
+The user explicitly requested this native Goal and authorized an official Lite trial when promising.
+Only Keep32 and BookStack34; never launch the six-task Web batch. Existing ARC balance is authorized
+for necessary scoped model calls, no recharge/purchase. Complete only when the same candidate/model
+independently generates both full passes and independently repeats each. Diagnostic edits and cached
+response replays do not count. No independent full pass has yet been established for the current v13.
 
 ## Current execution
 
-Worktree: `lite-first-20260922`, branch `exp/lite-first-20260922`. Main remains untouched.
-Live pointer: `runs/lite-goal-20260922/state.json` (R below). Current candidate `semantic-browser-v5`,
-ZIP SHA-256 `43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137`.
-It retains the full targeted v4 card, fixes native checkbox/control clicks and literal label scanning,
-and adds a deterministic real Chromium diagnostic to the existing one-repair flow. There is no
-model-generated probe or extra planning call. The packaged helper is allowlisted. Runtime gaps are
-recorded separately, never called app failures; an unavailable browser recheck cannot approve a repair.
+Worktree `lite-first-20260922`, branch `exp/lite-first-20260922`; main stays untouched. R is
+`runs/lite-goal-20260922`. Live pointer R/state.json. Source is current `runtime-retention-v13`.
+ZIP SHA-25601872ebe97ba4ac461fcceb8638510c780cc00e0e81fa3322f21292b3b837099.
+Model kimi-k2.7-code-highspeed, temperature1.0, max_tokens131072, cross-model fallback disabled.
+Current process (session96391): R/generate.py --candidate runtime-retention-v13 --app keep
+--sample highspeed-a --model kimi-k2.7-code-highspeed --transport direct.
+Log R/keep-v13-highspeed-a.log; output R/generations/runtime-retention-v13/keep-highspeed-a.
+The request is live and returning actual HighSpeed SSE. Do not repeat/restart it on an observation gap.
+When it finishes, run the complete public32-case replay. Then generate/replay BookStack with this
+SAME frozen candidate/model. If both full-pass, independently repeat each. If partial, diagnose from
+unchanged full test results and apply controlled fixes without calling diagnostic copies Goal passes.
 
-Current official submission `9331665b18ae`, name `volo-lite-semantic-v5`, model `qwen3.7-plus`.
-Remote archive was downloaded and exactly matches the v5 ZIP hash above. Official Keep run
-`2eef0a0f987a`, https://arc-bench.com/runs/2eef0a0f987a, is RUNNING: environment/dependencies passed,
-agent executing. Read `R/official/semantic-browser-v5/keep-status.json` and poll the existing run.
-CLI status exits1 while a run is still RUNNING; inspect its JSON status rather than treating exit1
-alone as a run failure. Stop all local model traffic until BOTH official tasks finish. When Keep
-is terminal, run BookStack from the SAME submission9331665b18ae with the existing arcbench CLI,
-retain its new run id, and wait. Never upload another package while this pair is pending/running.
-No BookStack official run has been created for this candidate yet.
+## Current candidate changes and validation
 
-Fresh independent v5 Keep finished29/32, +2/-0 versus v4 first draft27/32. Remaining failures are
-REQ-2.7.1/2.7.2/2.7.4, all label editor paths. One call20,296 input/53,707 output,1021.063s, settled
-CNY0.470248. The initial smoke/browser probe saw zero issues because search navigation displaced
-its record traversal; this does NOT prove full coverage. No independent full Goal pass yet.
-`R/generations/semantic-browser-v5/keep-direct-a` and full replay under `R/replays/semantic-browser-v5`.
+- Earlier common fixes: native input dispatch; native checkbox/control clicks; exact brand names;
+  template-expression/form false-collision fixes; backtick name protection; same-tab sessionStorage
+  restores login/domain state after full navigation, fresh browser contexts start from seed.
+- A real Kimi failure revealed openPopover(child-of-current-menu) detached its new controls when the
+  old menu was removed. The library now keeps the connected anchor and the selected record id.
+- The deterministic Chromium probe derives explicit initial states from Seed data (active/deletable/
+  regular/pinned/etc.), rather than GIVEN/THEN. It detects four wrong Kimi seed flags, plus label scope
+  and duplicate Close issues. Real positive Keep32/BookStack34 controls remain clean. Use ONLY
+  R/probe-v12/verified-*/receipt.json: earlier integrated-* accidentally loaded v6 (recorded, not erased).
+- Probe traversal resets focus side effects, prioritizes entry/record actions, observes native controls,
+  and checks explicit roles/editor scopes. No model-generated probe or extra planning call.
+- Live progress.json in the owned staging directory records phase, request hash and received/answer/
+  reasoning character counts. No raw prompts, answer text or credentials in that snapshot. Final true
+  traces remain logged; counts are not token estimates. v9 cached real-SSE replay preserved exact content
+  and usage, and request-byte comparison with v8 was identical.
+- v13 fixes a retention false positive: a literal Change labels button became a data-driven menu item.
+  Static source parsing lost its name, although Chromium successfully clicked it. Successful runtime
+  actions now establish retained names; failed/unexecuted observations do not waive the guard.
+- Current validation:98 tests passed before the retention change; its two new regressions and the
+  existing actual-rename rejection test passed. Raw logs: seed-popover-full-tests.log and
+  runtime-name-retention-tests.log. Earlier legacy214 passed/12 skipped; legacy remains unchanged.
 
-While official v5 runs, a separate unpaid v6 probe was prepared: only semantic_probe.cjs changes,
-card/main/scaffold unchanged. It resets focus side effects, prioritizes entry and record actions,
-and diagnoses field-editor dialogs opened from a record with the wrong declared editor name.
-It finds both real roots of the three v5 Keep failures: Change labels is a menuitem instead of the
-required button, and record field editing opens a Change labels dialog instead of Note editor.
-Positive Keep32/BookStack34 samples produce zero errors, while the action trace actually visits
-the label paths. Evidence `R/probe-v6/integrated-*/receipt.json`; packaging2/2 tests and JS syntax
-pass. V6 is a PREPARED snapshot; it has NOT generated/repaired/uploaded anything.
-V6 ZIP `R/candidates/semantic-browser-v6/candidate.zip`, SHA-256
-`aba35a4ed761d15068de320b31da31a74054ab3607fcda2b0617a1db186f6d11`.
-V7 snapshot `session-store-v7`, SHA-256
-`1d36d56969428487b98e4ee1aea72030acc96e7d372c2371dc867e373e96b693`.
-Relative to v6, only scaffold/README.md and scaffold/frontend/public/lib/arc.js change. The library
-restores/saves ARC.state synchronously in sessionStorage. This preserves login and domain state
-within a tab across full navigation while independent browser contexts still start from seed.
-Current working source is PREPARED `entity-flow-v8`, ZIP SHA-256
-`b7b167f9e7e13bd281a0086367e493db7374c266669ac80522ed5129ffc76981`.
-Relative to v7 only dialect.md changes: for entities with both reading/details and an Edit action,
-primary links consistently open the reading/details view for all states including drafts, unless
-requirements explicitly demand direct editor entry. No task IDs/answers are injected. This prompt
-change has NOT been tested with a fresh model call. V6/v7/v8 remain unuploaded; official uses v5.
+## Measurements, separated by cohort
 
+Qwen historical/public: original Keep27/32; v3 compact card25/32 and BookStack28/34 (rejected).
+v4 Keep27/32, BookStack first draft28/34; false form-label repair23/34. v5 fresh public Keep29/32,
+1021.063s, one call20,296 input/53,707 output, settled CNY0.470248.
+Controlled automatic repairs: earlier Keep32/32, BookStack32/34. Session-store-only library swap then
+BookStack33/34 (+REQ-6.1.2/-0); a diagnostic primary-link change gives34/34 (+REQ-6.1.3/-0).
+Those manual/frozen diagnostics never count as independent generations.
 
-The earlier BookStack draft-save diagnosis is now confirmed by real browser reproduction, not an
-authentication-precondition guess: the official test DOES call login. Its helper then navigates to
-/ again; the old scaffold re-seeds state and loses that session. Before: signed-in true then false.
-After the storage fix: true then true; a separate browser context stays signed-out. Replacing ONLY
-this primitive improves the frozen BookStack32/34 to33/34 (+REQ-6.1.2/-0). A one-line DIAGNOSTIC navigation change then improves33/34 to34/34 (+REQ-6.1.3/-0): draft links
-open the existing reading view, followed by its existing Edit action. The v8 card records the general
-entity-flow rule above. This hand-applied application diagnostic is NOT an independent Goal pass.
-Both positive diagnostic apps keep32/32 and34/34 after the store change. One-shot91 tests pass;
-the strengthened real-browser persistence fixture was individually rerun and passed. These manual
-library swaps do not count as independent Goal passes. No local model traffic occurred.
+Latest user steering: supplier notice says Kimi may be more stable/fluent. Live ARC catalogue confirms
+kimi-k2.7-code (input6.5/output27 CNY per1M) and highspeed (13/54). Provider docs require temperature1.0
+and always-on thinking. Adapter verified with real SSE through the organizer gateway; no new key or
+subscription. Default/HighSpeed configurations are tracked separately; do not credit model differences
+as code gains. Latest balance before Kimi calls was CNY214.391777, pending billing0.
 
-V6 was also replayed OFFLINE against the exact recorded v5 request/response: initial request bytes
-and all delivered app source hashes are identical; the improved probe now reports the two label
-root causes. New model calls0; recorded usage is historical and must not be billed/count again.
-`R/diagnostics/keep-v6-exact-response-replay/receipt.json`.
+Standard Kimi v11 (ZIP494c73eb2e1c9f49172b3b9c97f6cff8942289dc03b37c2e01918094c294b62c):
+Keep25/32, one call995.977s,20,031 input/45,187 output (35,204 reasoning). No retry. BookStack failed
+at the LOCAL curl1200s cap: exit28,178,046 reasoning chars,0 answer chars, no usage/DONE. This is not
+proved provider instability and no application was delivered. Preserve that attempt; never blindly
+reissue it. Its receipt is R/generations/kimi-adapter-v11/bookstack-direct-a/receipt.json.
 
-The official Keep waiter is live session15024:
-`arcbench ... --json wait 2eef0a0f987a --interval20 --timeout3600`.
-`R/official/semantic-browser-v5/keep-wait.json` is a JSON-lines progress stream, despite its suffix.
-It recorded one transient TLS EOF GET failure and retries the SAME run; an observation failure is
-not a terminal run. Poll the existing process or authoritative run API; never recreate the run.
-Goal still requires the same candidate/model to independently pass both full suites and repeat.
+HighSpeed v12 (ZIP966eda3309d2877ec20fa1a3d17fae177f437cbf89325a53e813e68d2a29da11):
+Keep finished generation+automatic repair in290.335s,2 completed calls, no failures,50,686 input/
+52,844 output. The static name guard rejected its otherwise clean repair and published25/32.
+Reconstructing ONLY the model's already-produced repair yields32/32 (+7/-0). No manual app edits.
+R/replays/diagnostic/keep-highspeed-rejected-repair/result.json is the full score. v13 cached exact-
+request/response replay automatically accepts the same repair and produces identical app hashes:
+R/diagnostics/keep-runtime-retention-replay/receipt.json. New calls0; not an independent v13 pass.
 
-## Observed evidence
+## Official v5 trial completed
 
-- Current public corpus: upstream cfbbc287ee1bbffcf1e936545e4803145693a8d8; API packs match all
-  68 TypeScript files after newline normalization. Requirements/tests remain read-only.
-- Qwen original Keep: first draft27/32, false automatic repair27/32; native input dispatch alone28/32.
-- V3 compact card rejected: fresh Keep25/32, BookStack28/34. `docs/evidence/2026-09-22-lite-v3-pair.json`.
-- V4 targeted card: fresh Keep27/32; BookStack first draft28/34, false form-label repair23/34.
-  Corrected the scanner's preceding-button heuristic and protected backtick names in current v5.
-- Real browser observations from Keep v4 exposed missing region, button-role overrides, field chooser
-  outside the named editor, native checkbox cancellation and a focus recursion error. One model repair
-  reached32/32 (+5/-0), with no manual app code edits: `R/repairs/v5-keep-browser-feedback` and
-  `R/replays/diagnostic/keep-v5-browser-repair/result.json`. This is fixed-draft evidence, not independent.
-  Usage30,638 input /7,263 output,116.632sec; settled cost CNY0.119380.
-- Packaged diagnostics match positive Keep32 and BookStack34 samples with zero errors on macOS and
-  Linux; catch two missing homepage lists on raw v4 BookStack. `R/probe-v5/integrated-*/receipt.json`.
-- One-shot90/90 deterministic regressions passed, log `R/semantic-v5-tests.log`; legacy214 passed/12 skipped
-  under `~/projects/volo-factory/.venv/bin/python`, log `R/semantic-v5-legacy-tests.log`.
+Submission9331665b18ae, Qwen3.7-plus, ZIP43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137.
+Remote archive matched exactly. Keep2eef0a0f987a finished14/32; run field3708s, wall clock65m26s,
+122,304 metered tokens, CNY0.665106. Two initial calls failed with StreamError at1200s each,0 answer
+chars and unknown usage. Third call completed (19,392 input/59,539 output,46,333 reasoning,
+1161.018s); fourth repaired (32,829/10,544,123.025s). All requested Qwen. The process/test steps
+completed; this was a functional partial result. Raw numeric traces (private) are in
+R/official/semantic-browser-v5/keep-model-trace-raw.json; CLI blanket string redaction masks token
+numbers inside console JSON, so use the existing client's get_run_logs and redact actual credentials
+when numeric trace fidelity is needed. Do not invent usage for the failed calls.
 
-## Runtime and recovery
+BookStack1f56fb1be7fc finished27/34,1003s reported agent duration,115,063 tokens,CNY0.584954.
+Both official runs are terminal; no official traffic is active. It is safe to resume scoped local model
+calls after each driver's live preflight. Official/public inputs are NOT globally interchangeable:
+Keep runtime requirements differ in85 semantic fields from clean public upstream cfbbc287ee1bbffcf1e936545e4803145693a8d8.
+The SAME official Keep application scores13/32 locally; only REQ-1.1 differs (public requires Notes
+workspace region, absent in source). Runtime evaluator source identity remains unproved. BookStack
+runtime requirements were fetched and parsed with0 semantic differences versus public. Preserve
+per-task identities; do not blame its seven failures on a requirement mismatch. Both runtime copies
+are frozen separately under R/corpus-runtime; public R/corpus stays unchanged/read-only.
 
-Local replay image sha256:d07f2f6e61faa9e95bff17c589c00e115f7512422a1570751f64e391247d5c05,
-ARM64, Node20.19.3, Playwright1.57.0, Chromium143.0.7499.4, 1CPU/2GB, worker1,10s timeouts.
-This is not the complete official x86_64 lifecycle. `R/replay.py` preserves test identity and refuses
-overwrite. Current generator `R/generate.py` freezes source, retains raw SSE/requests/usage, and uses
-existing arcbench-cli for platform preflight. Prefer direct transport; credentials stay off logs.
-For local v5 execution, set NODE_PATH=R/browser-runtime/node_modules and
-PLAYWRIGHT_BROWSERS_PATH=R/browser-cache. Production helper installs pinned Playwright if unavailable.
+## Runtime and next comparisons
 
-DeepSeek repair twice returned429 insufficient_quota despite positive meter balance; keep the Qwen
-cohort separate. Latest settled balance CNY215.641837 before the official run, pending billing0 at that preflight.
-Keep v5 costs CNY0.470248; BookStack fixed repair CNY0.141568. `R/accounting.json` retains actual bills.
-One older relay request remains UNCONFIRMED: baseline-gate-v2/bookstack-qwen-a,
-/tmp/arc-mini-transport-a27697eaccdd4569958eec21d6b776ce. No SSE received; SSH banner failed.
-Never reissue it merely because observation failed. Inspect/resume that same idempotent job when
-SSH recovers. Do not expand infrastructure work. The later direct runs are different requests.
+Local acceptance image sha256:d07f2f6e61faa9e95bff17c589c00e115f7512422a1570751f64e391247d5c05,
+ARM64, Node20.19.3, Playwright1.57.0, Chromium143.0.7499.4,1CPU/2GB, worker1,10s timeouts.
+R/replay.py checks all32/34 IDs and unchanged test hashes. This differs from official x86_64 lifecycle.
+Local browser env: NODE_PATH=R/browser-runtime/node_modules; PLAYWRIGHT_BROWSERS_PATH=R/browser-cache.
+Only existing arcbench-cli is the platform client. Credentials never enter arguments/output.
+Current generate.py adds confirmed Kimi model IDs; prior driver snapshots remain in R/tools.
+Qwen thinking16k-v10 is merely PREPARED/unrun; set aside while following the user's Kimi notice.
+Supplier supports thinking_budget but organizer forwarding/quality was not tested.
+
+An older UNCONFIRMED relay launch still exists: baseline-gate-v2/bookstack-qwen-a,
+/tmp/arc-mini-transport-a27697eaccdd4569958eec21d6b776ce. Never blindly reissue it. This is distinct
+from the now terminal standard-Kimi client timeout and from the current HighSpeed request.

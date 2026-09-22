@@ -43,10 +43,16 @@ normalization. In-place publication uses two renames with rollback, not an atomi
 exchange: a process kill between renames may leave the original at a sibling
 `.oneshot-backup-*` path. A failed rollback leaves that backup outside temporary cleanup.
 Gateway redirects are refused.
-A single global three-request limit includes stream retries and one truncation continuation.
+The budget permits three completed calls and at most five failed transport attempts; failures do
+not consume a completed-call slot. Each stream operation makes at most three attempts before a
+different configured fallback may be selected. Kimi K2.7 Code stays on its selected model and uses
+the provider-required temperature 1.0. Other current model settings are unchanged.
 Permanent HTTP failures (including 402) are not retried. Observed token usage is accumulated
 across all attempts; incomplete usage remains unknown and is not reported as zero cost.
 True prompts, responses, usage and timings are logged with the key redacted.
+During generation, the owned temporary staging directory also holds `progress.json`: phase,
+request hash, byte/event counts and output/reasoning character counts. It contains no prompts,
+response text or credentials and is removed with the temporary directory after completion.
 Missing delivery files or malformed output fail nonzero. There is no model backfill loop.
 
 The delivery check validates manifests, scripts, the backend entry file, nonempty HTML and

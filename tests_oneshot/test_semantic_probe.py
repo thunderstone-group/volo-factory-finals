@@ -5,6 +5,19 @@ from oneshot import main as adapter
 
 
 class SemanticContractsCase(unittest.TestCase):
+    def test_seed_states_come_from_declarations_not_scenario_setup(self):
+        text = '''
+description: Seed data: active record "Archive candidate"; pinned record "Priority"; regular record "Ordinary".
+content: GIVEN the record "Archive candidate" has already been archived.
+description: Seed data: deletable item `Remove candidate`.
+content: THEN the item `Remove candidate` is deleted.
+'''
+        states = {row['name']: row['states'] for row in adapter.semantic_contracts(text)['seedStates']}
+        self.assertEqual(states['Archive candidate'], {'archived': False, 'deleted': False})
+        self.assertEqual(states['Priority'], {'pinned': True})
+        self.assertEqual(states['Ordinary'], {'archived': False, 'deleted': False, 'pinned': False})
+        self.assertEqual(states['Remove candidate'], {'archived': False, 'deleted': False})
+
     def test_entry_roles_and_editor_scope_come_from_requirement_text(self):
         # Reduced requirement wording; names deliberately differ from the corpus.
         text = '''

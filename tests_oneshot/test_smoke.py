@@ -450,6 +450,52 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("renamed quoted control(s): from", budget.smoke["repair"]["reason"])
         self.assertIn("From <input", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
 
+    def test_rendered_control_name_survives_a_move_from_html_to_menu_data(self):
+        before_js = "document.body.innerHTML='<button>Choose fields</button>';"
+        after_js = "const item={label:'Choose fields',action:'choose'};document.body.innerHTML='<button>'+item.label+'</button>';"
+        draft = app(server()).replace(block('frontend/public/app.js', "console.log('synthetic');"),
+                                      block('frontend/public/app.js', before_js))
+        self.replies(events(draft), events(block('frontend/public/app.js', after_js)))
+        checks = []
+
+        def check(stage, requirements=None, diagnostics=None):
+            checks.append(stage)
+            if diagnostics is not None:
+                diagnostics.append({'executed': True, 'actions': [
+                    {'name': 'Choose fields', 'action': 'choose', 'scope': 'dialog-popover'}]})
+            return (['clicking a fixture control throws'] if len(checks) == 1 else []), True
+
+        budget = adapter.CallBudget()
+        with patch.object(adapter, 'smoke_check', side_effect=check):
+            adapter.generate('Synthetic: the button named "Choose fields" must remain available.',
+                             'synthetic-model', 'https://synthetic.invalid/v1', SYNTHETIC_KEY,
+                             self.out, budget)
+        self.assertNotIn('choose fields', adapter.control_names(self.out))
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+
+    def test_unexecuted_control_observation_does_not_waive_name_preservation(self):
+        before_js = "document.body.innerHTML='<button>Choose fields</button>';"
+        after_js = "const item={label:'Choose fields'};document.body.innerHTML='<button>Other action</button>';"
+        draft = app(server()).replace(block('frontend/public/app.js', "console.log('synthetic');"),
+                                      block('frontend/public/app.js', before_js))
+        self.replies(events(draft), events(block('frontend/public/app.js', after_js)))
+        checks = []
+
+        def check(stage, requirements=None, diagnostics=None):
+            checks.append(stage)
+            if diagnostics is not None:
+                diagnostics.append({'executed': True, 'actions': [
+                    {'name': 'Choose fields', 'observation': 'Synthetic click did not complete'}]})
+            return (['clicking a fixture control throws'] if len(checks) == 1 else []), True
+
+        budget = adapter.CallBudget()
+        with patch.object(adapter, 'smoke_check', side_effect=check):
+            adapter.generate('Synthetic: the button named "Choose fields" must remain available.',
+                             'synthetic-model', 'https://synthetic.invalid/v1', SYNTHETIC_KEY,
+                             self.out, budget)
+        self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertIn('repair renamed quoted control(s)', budget.smoke['repair']['reason'])
+
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"
         requirement.mkdir()

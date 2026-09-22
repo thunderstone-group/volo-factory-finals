@@ -14,6 +14,36 @@ MODULES = Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules"
 
 @unittest.skipUnless(shutil.which("node") and (MODULES / "jsdom").is_dir(), "Node and jsdom are required")
 class NativeControlTests(unittest.TestCase):
+    def test_menu_item_can_replace_its_popover_without_detaching_the_new_controls(self):
+        script = r'''
+const fs = require('fs');
+const {JSDOM} = require('jsdom');
+const w = new JSDOM('<div id="app"></div><div id="dialog-root" hidden></div><div id="status-root" hidden></div>', {url:'http://localhost/',runScripts:'outside-only'}).window;
+w.SEED = {};
+w.eval(fs.readFileSync(process.argv[1], 'utf8'));
+const host = w.document.createElement('section');
+host.dataset.id = 'parent-record';
+w.document.body.appendChild(host);
+w.ARC.openPopover(host, [{label:'Choose fields', action:'fields'}]);
+const old = w.ARC._popover;
+const item = old.querySelector('button');
+item.dataset.id = 'selected-record';
+w.ARC.openPopover(item, [{label:'Apply', action:'apply'}]);
+console.log(JSON.stringify({connected:w.ARC._popover.isConnected, inOriginalScope:host.contains(w.ARC._popover), oldRemoved:!old.isConnected, target:w.ARC._popover.querySelector('button').dataset.id, count:host.querySelectorAll('[data-popover]').length}));
+w.close();
+'''
+        result = subprocess.run(
+            ['node', '-e', script, str(ROOT / 'oneshot/scaffold/frontend/public/lib/arc.js')],
+            env={**os.environ, 'NODE_PATH': str(MODULES)}, capture_output=True, text=True,
+            timeout=20, check=True,
+        )
+        observed = json.loads(result.stdout.strip().splitlines()[-1])
+        self.assertTrue(observed['connected'])
+        self.assertTrue(observed['inOriginalScope'])
+        self.assertTrue(observed['oldRemoved'])
+        self.assertEqual(observed['target'], 'selected-record')
+        self.assertEqual(observed['count'], 1)
+
     def test_native_controls_do_not_trigger_their_record_action(self):
         # Synthetic DOM exercising the same actual scaffold used by the real apps.
         script = r'''

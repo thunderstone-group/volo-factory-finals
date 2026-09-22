@@ -31,6 +31,7 @@ HERE = Path(__file__).resolve().parent
 DEFAULT_BASE = "https://api.arc-bench.com/v1"
 DEFAULT_MODEL = "deepseek-v4-flash"
 FALLBACK_MODEL = "qwen3.7-plus"  # taken up for the rest of a run once the primary model's retries are spent on transport failures
+KIMI_CODE_MODELS = {"kimi-k2.7-code", "kimi-k2.7-code-highspeed"}
 MAX_TOKENS = 131072  # content cap per call; the gateway has metered >135k output tokens in one request
 MAX_CALLS = 3  # Completed calls: first draft, one truncation continuation, one smoke repair.
 MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
@@ -140,6 +141,31 @@ class CallBudget:
         self.attempts = []
         self.smoke = None
         self.model = None  # set once the run has switched to the fallback model
+        self.progress_path = None
+        self._progress_started = time.monotonic()
+        self._progress_written = 0
+
+    def progress(self, phase, record=None, force=False):
+        """Small live snapshot in the owned staging directory; no prompts, content or credentials."""
+        now = time.monotonic()
+        if self.progress_path is None or (not force and now - self._progress_written < 15):
+            return
+        record = record or (self.attempts[-1] if self.attempts else {})
+        snapshot = {"phase": phase, "updated_at": time.time(),
+                    "elapsed_seconds": round(now - self._progress_started, 3),
+                    "attempts": len(self.attempts), "completed_calls": len(self.completed()),
+                    "call": record.get("call"), "model": record.get("model"),
+                    "request_sha256": record.get("request_sha256"),
+                    "stream": record.get("stream_observation", {}),
+                    "error_type": record.get("error_type"), "http_status": record.get("http_status"),
+                    "finish_reason": record.get("finish_reason"), "usage": record.get("usage", {})}
+        try:
+            temporary = self.progress_path.with_suffix(".tmp")
+            temporary.write_text(json.dumps(snapshot, ensure_ascii=False), encoding="utf-8")
+            temporary.replace(self.progress_path)
+        except OSError:
+            pass  # A diagnostic write cannot break application delivery.
+        self._progress_written = now
 
     def completed(self):
         return [r for r in self.attempts if r["status"] == "completed"]
@@ -188,21 +214,30 @@ def stream_completion(messages, model, base, key, budget, tries=3):
     model is retried `tries` times on transport failures; when those are spent the run switches to
     FALLBACK_MODEL for this and every later call (a cut route rarely heals within one run)."""
     model = budget.model or model
-    fallback = fallback_model(budget)
+    fallback = "" if model in KIMI_CODE_MODELS else fallback_model(budget)
     payload = {"model": model, "messages": messages, "max_tokens": MAX_TOKENS,
                "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
+    if model in KIMI_CODE_MODELS:
+        payload["temperature"] = 1.0  # Fixed by the provider; other values are rejected.
     req = request.Request(base.rstrip("/") + "/chat/completions",
                           data=json.dumps(payload).encode("utf-8"),
                           headers={"Content-Type": "application/json",
                                    "Authorization": "Bearer " + key}, method="POST")
     for attempt in range(tries):
         record = budget.start(messages, model)
+        record["request_sha256"] = hashlib.sha256(req.data).hexdigest()
+        observed = {"received_bytes": 0, "sse_events": 0, "content_chars": 0, "reasoning_chars": 0}
+        record["stream_observation"] = observed
+        budget.progress("connecting", record, force=True)
         started = time.monotonic()
         retryable = False
         try:
             ended = False
             with _open_model(req, timeout=900) as response:
+                budget.progress("response_opened", record, force=True)
                 for line in response:
+                    observed["received_bytes"] += len(line)
+                    budget.progress("receiving", record)
                     if not line.startswith(b"data:"):
                         continue
                     chunk = line[5:].strip()
@@ -211,6 +246,7 @@ def stream_completion(messages, model, base, key, budget, tries=3):
                         break
                     try:
                         obj = json.loads(chunk)
+                        observed["sse_events"] += 1
                         if not isinstance(obj, dict) or "error" in obj:
                             raise ValueError("invalid stream object")
                         usage = obj.get("usage")
@@ -229,8 +265,13 @@ def stream_completion(messages, model, base, key, budget, tries=3):
                             if not isinstance(delta, str):
                                 raise ValueError("content must be text")
                             record["content"] += delta
+                            observed["content_chars"] += len(delta)
+                            reasoning = (choice.get("delta") or {}).get("reasoning_content")
+                            if isinstance(reasoning, str):
+                                observed["reasoning_chars"] += len(reasoning)
                             if choice.get("finish_reason"):
                                 record["finish_reason"] = choice["finish_reason"]
+                        budget.progress("receiving", record, force=observed["sse_events"] == 1)
                     except (ValueError, TypeError, AttributeError) as exc:
                         raise StreamError("malformed SSE event") from exc
             if not ended or record["finish_reason"] is None:
@@ -254,6 +295,8 @@ def stream_completion(messages, model, base, key, budget, tries=3):
             failure = RuntimeError(f"model stream failed ({type(exc).__name__})")
         finally:
             record["elapsed_seconds"] = round(time.monotonic() - started, 3)
+            budget.progress("completed" if record["status"] == "completed" else "call_failed",
+                            record, force=True)
         if not retryable or budget.exhausted():
             raise failure
         if attempt + 1 >= tries:
@@ -482,9 +525,23 @@ def semantic_contracts(requirements):
     for description in re.findall(r"(?m)^\s*description:\s*(.+)$", text):
         if not re.search(r"authenticat|log(?:ged)?[ -]?in|after login", description, re.I):
             home_lists += re.findall(quoted + r"\s+list\s+on\s+the\s+home\s?page", description, re.I)
+    seed_states = []
+    seed_pattern = re.compile(r"\b(active|deletable|regular|unpinned|pinned|archived|trashed|deleted)"
+                              r"\s+[\w-]+\s+" + quoted, re.I)
+    for declaration in re.findall(r"Seed data:\s*([^\n]+)", text, re.I):
+        for qualifier, name in seed_pattern.findall(declaration):
+            qualifier = qualifier.lower()
+            states = {"archived": False, "deleted": False} if qualifier in ("active", "deletable", "regular") else {}
+            if qualifier in ("regular", "unpinned", "pinned"):
+                states["pinned"] = qualifier == "pinned"
+            if qualifier == "archived":
+                states["archived"] = True
+            if qualifier in ("trashed", "deleted"):
+                states["deleted"] = True
+            seed_states.append({"name": name, "qualifier": qualifier, "states": states})
     return {"homeLists": sorted(set(home_lists)), "home": pairs(atomic) if opens_entry else [],
             "roles": {name: sorted(values) for name, values in names.items()},
-            "recordEditors": sorted(set(editors))}
+            "recordEditors": sorted(set(editors)), "seedStates": seed_states}
 
 
 DOM_PROBE = r"""
@@ -926,6 +983,8 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
     files, expected = [], None
     with tempfile.TemporaryDirectory(prefix=".oneshot-", dir=out.parent) as temp:
+        budget.progress_path = Path(temp) / "progress.json"
+        budget.progress("preparing", force=True)
         stage = Path(temp) / "app"
         stage.mkdir()
         if template is not None:
@@ -993,8 +1052,10 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
         if template is not None and all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files):
             raise ValueError("upgrade did not change any files")
         if SMOKE:
+            budget.progress("checking_application", force=True)
             repair_delivery(stage, files, messages + [{"role": "assistant", "content": content}],
                             model, base, key, budget, template, requirements, scaffold=bool(scaffold))
+        budget.progress("publishing", force=True)
         publish(stage, out, template, snapshot, stamp)
     return files, budget.summary()
 
@@ -1208,7 +1269,7 @@ def _quoted_lower(requirements):
 
 def control_names(stage):
     """Lower-cased exact names the frontend gives its controls: label text, placeholder, aria-label,
-    button text. A quoted requirement name that is in this set before a repair must still be in it after."""
+    button text. Repair retention combines these static names with successful browser observations."""
     source = _frontend_sources(stage)
     names = set()
     for l, p, a in FIELD_LABEL.findall(source):
@@ -1364,6 +1425,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         if needed:
             raise ValueError("repair broke delivery: " + "; ".join(needed))
         after_diagnostics = []
+        budget.progress("checking_repair", force=True)
         after, _ = smoke_check(stage, requirements, after_diagnostics)
         if after_diagnostics:
             budget.smoke["browser_after"] = after_diagnostics
@@ -1382,7 +1444,13 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         _, missing_after = vocabulary_gaps(stage, requirements)
         if missing_after > missing_before:
             raise ValueError(f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
-        renamed = sorted(pinned_before - control_names(stage))
+        # A literal button can become a data-driven menu entry. Successful activation
+        # proves the name still exists even when this static HTML scan cannot resolve it.
+        observed_after = {re.sub(r"\s+", " ", action["name"]).strip().lower()
+                          for report in after_diagnostics if report.get("executed")
+                          for action in report.get("actions", [])
+                          if action.get("name") and "observation" not in action}
+        renamed = sorted(pinned_before - control_names(stage) - observed_after)
         if renamed:
             # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
             # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).

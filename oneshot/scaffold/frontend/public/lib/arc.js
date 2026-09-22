@@ -121,10 +121,12 @@
   // kind 'menu' explicitly renders role=menu and role=menuitem.
   // The popover closes on render, Escape, or a click outside it.
   ARC.openPopover = function (host, items, opts) {
+    const id = (opts && opts.id) != null ? String(opts.id) : (host && host.dataset && host.dataset.id) || '';
+    // A menu item may replace its own menu. Keep the connected anchor before removing it.
+    if (host && ARC._popover && ARC._popover.contains(host)) host = ARC._popover.parentElement;
     ARC.closePopover();
     if (!host) return;
     const kind = (opts && opts.kind) || 'buttons';
-    const id = (opts && opts.id) != null ? String(opts.id) : (host.dataset && host.dataset.id) || '';
     const button = (a) => `<button type="button"${kind === 'menu' ? ' role="menuitem"' : ''} data-action="${ARC.esc(a.action)}" data-id="${ARC.esc(id)}"${a.extra ? ' ' + a.extra : ''}>${ARC.esc(a.label)}</button>`;
     const body = typeof items === 'string' ? items : items.map(button).join('');
     const wrap = document.createElement('div');

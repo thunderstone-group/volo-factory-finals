@@ -696,3 +696,21 @@ existing drafts through the normal reading/Edit flow. Added the corresponding ge
 v8 card; actual generation effect remains unmeasured. No model calls or official-test changes. V8
 ZIPb7b167f9e7e13bd281a0086367e493db7374c266669ac80522ed5129ffc76981. The official v5 run remains
 the same2eef0a0f987a; waiter15024 is live. Goal is active and not complete.
+
+## 2026-09-22 19:11 — Official pair finished; Kimi cohorts and a false repair rollback resolved
+
+Official v5 Qwen: Keep14/32,CNY0.665106,122,304 tokens; BookStack27/34,CNY0.584954,115,063 tokens.
+Keep had two1200s incomplete streams before a successful draft and repair. Same official Keep app
+replays13/32 on public tests, differing only atREQ-1.1. Keep inputs differ85 fields; BookStack inputs
+have0 semantic differences. No official run remains active.
+
+User supplied a provider notice favoring Kimi stability. Standard Kimi v11 Keep25/32 in995.977s;
+BookStack hit local curl1200s cap with no answer/usage. It is not a scored BookStack app or proved
+provider outage. HighSpeed v12 completes draft+repair in290.335s, but the retention guard falsely
+rolled back a data-driven Change labels menu. The model repair itself passes32/32 (+7/-0). v13
+uses successful browser observations to retain the name; cached exact-response replay preserves
+identical full-score app bytes with0 new calls. Fresh v13 Keep is running, session96391.
+
+Generic fixes include connected popover replacement anchors and explicit seed-state diagnostics.
+98 regressions passed; both new retention tests plus actual-rename protection passed. No independent
+full v13 Goal pass yet. Evidence: `evidence/2026-09-22-lite-kimi-transition.json`.
