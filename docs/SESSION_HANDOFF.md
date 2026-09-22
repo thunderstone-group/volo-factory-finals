@@ -1,32 +1,43 @@
-# Current handoff — 2026-09-22: two v22 repair transport failures; v23 bounded-retry recovery running
+# Current handoff — 2026-09-22: v24 controlled BookStack34/34; preparing authorized official BookStack trial
 
-Native Goal active: only Keep32/BookStack34. Same portable candidate/model independently passes
-both and independently repeats each. Controlled/frozen/cached repairs do not count. Existing ARC
-balance and promising official Lite trial authorized; no recharge/purchase or Web six-task batch.
-Worktree lite-first-20260922, branch exp/lite-first-20260922. R = runs/lite-goal-20260922.
+Native Goal active: only Keep32/BookStack34. SAME portable candidate/model must independently
+pass each task and independently repeat each. Controlled/frozen/cached repairs never count.
+User authorized necessary calls from existing ARC balance and official Lite trials when promising;
+no recharge/purchase or six-task Web batch. Worktree lite-first-20260922, branch exp/lite-first-20260922.
+R = runs/lite-goal-20260922. No full independent Goal pass yet.
 
-## Current candidate and live execution
+## Current candidate and next execution
 
-Prepared repair-retry-v23, ZIP74e377581ffac54808b3f900d1687ecc85c1cf1b88121abf6040d823f2617a61.
-Kimi HighSpeed,temp1.0,max_tokens131072,no fallback. Completed-call cap remains3; failure cap remains5
-in the actual submitted code. The local generate.py driver is NOW aligned to that5-failure cap (it
-previously imposed1). Its exact old version is R/tools/generate-before-v23.py. V23 changes only main.py:
-repair streams now use the same bounded3-attempt policy as initial generation. It retries only a
-terminal transport/protocol error, never a polling timeout; failed attempts keep their true trace and
-unknown usage. Permanent HTTP errors and shared global budgets still stop retries.110 tests passed,
-0 skips (R/v23-full-tests.log), including same-request retry/partial-file discard and failure-budget
-stop. No v23 independent generation yet. No current candidate has the four required Goal passes.
+Frozen nested-seed-v24, ZIP959890c1cfc7d8af8e17c7c9c969103936c55c7829f91b32b35294887cabb998.
+Kimi HighSpeed,temp1.0,max_tokens131072,no fallback,3 completed/5 failed global budget, each repair
+stream now up to3 attempts. Local generate.py matches submitted failure cap5; old driver retained
+at R/tools/generate-before-v23.py.110 tests passed for the retry change; v24's only additional change
+is recursive inspection of undeclared favorite collections in seed users/records. Three real-browser
+positive/negative calibrations pass; a one-array diagnostic correction passes34/34.
 
-CURRENT controlled recovery: session95474, R/repair-bookstack-v23-recovery.log,
-R/repairs/v23-bookstack-stream-recovery; driver R/repair_v23_recovery.py --app bookstack.
-Starts from the unchanged v22 BookStack highspeed-r1a draft. It inherits1 complete and1 failed call,
-uses the submitted3-completed/5-failed limits, and asserts the first retry body exactly equals the
-previously failed request SHA34bd582ab4876cd9d4b91a1fd02a58ccc761d96c3002bc4260c3be06868a3368.
-Following automatic retries retain that hash until a repair completes. A subsequent diagnostic
-follow-up may use the remaining completed slot. Model calls/usage incurred now are separate from
-inherited history. This control can validate recovery but cannot count as an independent Goal pass.
-Poll this SAME process; do not start overlapping local/official model work. After completion replay
-all34 cases, then begin a fresh v23 pair/repeats only when this recovery actually works.
+V23 controlled exact-request recovery completed33/34, preserving the prior failed call's unknown
+usage. It used one new call37,978/16,368 tokens,CNY1.377586,91.408s. Only8.2 remained: root favorites
+was empty but SEED.users[0].favorites preselected Book8.2. V24 catches that nested initial state.
+One final allowed completed call repaired it:34/34 (+1/-0),new52,190/7,166 tokens,CNY1.065434,
+53.498s. Cumulative3 COMPLETED calls plus1 failed attempt stays within the original budget. This is
+still controlled evidence, not independent generation. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
+
+CURRENT NEXT: perform the user-authorized official BookStack trial on this exact v24 archive.
+Read-only preflight succeeded: no active runs or pending Lite, balance164.513819 CNY,pending
+billing events0. R/official/nested-seed-v24/preflight.json; local source/archive hashes match all13
+allowlisted files. Key identity is checked without printing values. No local model process is active.
+Upload with --model kimi-k2.7-code-highspeed, --competition arc-bench-lite; start ONLY
+arc-bench-lite--bookstack, never --all-tasks. Record submission/run IDs and verify remote archive.
+Do not run local model calls while the official run is active. Read-only/offline work is fine.
+
+After completion, download the actual generated workspace, verify runtime requirement semantic
+identity against frozen public BookStack, and replay all34 public cases. Only an independently
+generated official app with matching input and a full public replay could contribute one BookStack
+Goal sample. Keep official requirements differ85 fields and must NOT silently count as public Keep
+samples. Two independent Keep generations and a second independent BookStack remain required,
+all using the same final candidate/model. If the official app fails, classify actual evidence first.
+Official scores, public replays and controlled repairs remain distinct. Do not declare the Goal done
+from a submission, diagnostics or this single trial.
 
 ## Stopped v22 independent attempts, preserved evidence
 

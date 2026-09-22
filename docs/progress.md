@@ -836,3 +836,14 @@ Local driver now matches submitted failure limit5; previous driver frozen.110 re
 0 skips. Controlled recovery of the same draft is running(session95474), importing original1
 complete+1 failed calls and asserting exact retry body. New usage remains separate. Still not an
 independent Goal pass. Evidence:evidence/2026-09-22-lite-v23-repair-retry.json.
+
+## 2026-09-22 — Nested seed-state fix completes controlled BookStack34/34; official trial prepared
+
+V23 recovery33/34 left a nested user favorite preselected for8.2. V24 checks collections throughout
+SEED; positive/negative calibration and minimal diagnostic replay confirm the cause. Final allowed
+completed model call clears it:34/34,+1/-0,new52,190/7,166 tokens,53.498s,CNY1.065434. Cumulative
+3 completed+1 failed requests; unknown failed usage retained. No independent Goal pass yet.
+User-authorized official BookStack trial is next, frozen v24 ZIP959890c1cfc7d8af8e17c7c9c969103936c55c7829f91b32b35294887cabb998,
+modelKimi HighSpeed. Preflight no active/pending Lite;balance164.513819 CNY. Local inference must
+not overlap. Official input identity and full public artifact replay are required before counting
+any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.

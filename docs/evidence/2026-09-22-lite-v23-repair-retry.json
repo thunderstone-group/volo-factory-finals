@@ -39,5 +39,22 @@
     "skipped": 0,
     "log": "v23-full-tests.log"
   },
-  "independent_goal_passes": []
+  "independent_goal_passes": [],
+  "controlled_recovery": {
+    "passed": 33,
+    "total": 34,
+    "failed": [
+      "REQ-8.2"
+    ],
+    "gained_vs_source": 3,
+    "lost": 0,
+    "request_matches_previous_failed_bytes": true,
+    "new_input_tokens": 37978,
+    "new_output_tokens": 16368,
+    "new_call_seconds": 74.295,
+    "control_seconds": 91.408,
+    "settled_cny": "1.377586",
+    "inherited_failure_usage_remains_unknown": true,
+    "independent_goal_pass": false
+  }
 }

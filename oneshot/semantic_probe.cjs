@@ -16,7 +16,8 @@ function scanSemantics(data) {
     };
     walk(win.SEED);
     if (contracts.emptyFavorites) {
-      const collections = ['favorites', 'favourites'].flatMap(key => Array.isArray(win.SEED[key]) ? win.SEED[key] : []);
+      const collections = [...visited].flatMap(value => ['favorites', 'favourites']
+        .flatMap(key => Array.isArray(value[key]) ? value[key] : []));
       const marked = records.filter(record => Object.entries(record).some(([key, value]) =>
         value === true && /^(?:is)?favou?rit(?:e|ed)$/.test(key.toLowerCase().replace(/_/g, ''))));
       if (collections.length || marked.length)
