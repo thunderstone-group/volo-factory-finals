@@ -1,0 +1,56 @@
+{
+  "candidate": "scenario-context-v21",
+  "controlled_bookstack": {
+    "passed": 31,
+    "total": 34,
+    "failed": [
+      "REQ-4.5.1",
+      "REQ-5.4.1",
+      "REQ-9.1"
+    ],
+    "comparison_to_v20": {
+      "gained": [
+        "REQ-5.3.1"
+      ],
+      "lost": [
+        "REQ-4.5.1",
+        "REQ-5.4.1"
+      ]
+    },
+    "promoted": false,
+    "seconds": 76.138,
+    "new_input_tokens": 41096,
+    "new_output_tokens": 14716,
+    "settled_cny": "1.280989",
+    "independent_goal_pass": false
+  },
+  "next_candidate": "form-state-v22",
+  "next_package_sha256": "aa72083a94e9ccece60aa7145e43e4545e0a913020fb00b8aefb5e966ee9ac98",
+  "calibrations": {
+    "verified-docker-book-v17-model-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 6.105,
+      "probe_sha256": "521b128233bbd5b83d5047106f8ddb2216083da22a66497af7ddfaecbf97bced"
+    },
+    "verified-docker-book-v21-partial": {
+      "executed": true,
+      "errors": [
+        "The homepage scenario requires the \"Recently Updated Pages\" list without an authentication prerequisite, but it is absent for the current unauthenticated visitor. Render this public list without requiring login, including after returning from a content view; keep separately authenticated dashboard lists conditional.",
+        "Typing into \"Edit shelf form\" and then activating \"Shelf Tags\" discards the entered field value. Preserve the current form inputs and edit state when a disclosure or render updates the UI.",
+        "Typing into \"Edit book form\" and then activating \"Book Tags\" discards the entered field value. Preserve the current form inputs and edit state when a disclosure or render updates the UI."
+      ],
+      "page_errors": [],
+      "seconds": 6.114,
+      "probe_sha256": "521b128233bbd5b83d5047106f8ddb2216083da22a66497af7ddfaecbf97bced"
+    },
+    "verified-docker-bookstack-positive": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 5.836,
+      "probe_sha256": "521b128233bbd5b83d5047106f8ddb2216083da22a66497af7ddfaecbf97bced"
+    }
+  }
+}

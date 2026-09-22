@@ -792,3 +792,13 @@ hiding the public recent-updates list. V21 respects authenticated scenario condi
 explicit create entry actions. Negative control reports exactly those2 causes; full Keep/BookStack
 controls stay clean, extractor8 pass. Paired v21 third-call control starts from the same v18 app,
 not the v20 output (session15410). Evidence: evidence/2026-09-22-lite-v20-controls.json.
+
+## 2026-09-22 — v21 control rejected; field-value preservation added to v22 diagnostics
+
+Paired v21 third BookStack call31/34: +5.3.1 but -4.5.1/-5.4.1 versus v20. No promotion. It exposed
+fields but discarded entered values on disclosure render; public recent updates still hidden.
+V22 probes fill then reveal and verify retention, plus explicit unauthenticated-home feedback.
+Three real calibrations catch all remaining v21 failures and leave two full BookStack controls clean.
+V22 control starts again from the SAME v18 two-call app, not v20/v21 outputs, with exactly1 new
+allowed call(session79418). Goal passes remain0. Evidence: evidence/2026-09-22-lite-v21-control.json.
+Settled controls:v20 Keep0.777920 CNY,BookStack1.407048;v21 BookStack1.280989.

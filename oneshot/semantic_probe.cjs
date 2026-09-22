@@ -133,7 +133,7 @@ async function observe(page, url, contracts) {
       }
       for (const name of contracts.homeLists || []) {
         if (!await page.getByText(name, {exact: true}).first().isVisible())
-          errors.add(`The requirement describes a "${name}" list on the homepage; its heading is absent on the initial page. Make the described list and its navigation available, including after returning from a content view.`);
+          errors.add(`The homepage scenario requires the "${name}" list without an authentication prerequisite, but it is absent for the current unauthenticated visitor. Render this public list without requiring login, including after returning from a content view; keep separately authenticated dashboard lists conditional.`);
       }
     }
     (await page.evaluate(scanSemantics, {contracts, home})).forEach(e => errors.add(e));
@@ -175,9 +175,27 @@ async function observe(page, url, contracts) {
     await scan(false);
     const reveal = form.getByRole('button', {name:contract.control,exact:true}).or(form.getByRole('link', {name:contract.control,exact:true})).first();
     if (!await reveal.isVisible()) return;
+    let field = null;
+    for (const input of await form.locator('input[type="text"], input:not([type]), textarea').elementHandles()) {
+      if (!await input.isVisible() || !await input.isEditable()) continue;
+      const meta = await input.evaluate(el => ({id:el.id,name:el.name,placeholder:el.getAttribute('placeholder')}));
+      if (!meta.id && !meta.name && !meta.placeholder) continue;
+      field = meta;
+      await input.fill('Diagnostic edited value');
+      break;
+    }
     await reveal.click({timeout:500});await page.waitForTimeout(40);
     if (!await form.getByPlaceholder(contract.placeholder,{exact:true}).isVisible())
       errors.add(`Activating "${contract.control}" in "${contract.form}" leaves the "${contract.placeholder}" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.`);
+    if (field) {
+      const value = await form.evaluate((root,meta) => {
+        const input = Array.from(root.querySelectorAll('input,textarea')).find(el =>
+          meta.id ? el.id===meta.id : meta.name ? el.name===meta.name : el.getAttribute('placeholder')===meta.placeholder);
+        return input ? input.value : null;
+      },field);
+      if (value !== 'Diagnostic edited value')
+        errors.add(`Typing into "${contract.form}" and then activating "${contract.control}" discards the entered field value. Preserve the current form inputs and edit state when a disclosure or render updates the UI.`);
+    }
   };
   for (const contract of (contracts.formReveals || []).filter(c => c.record && /^Edit\b/i.test(c.form)).slice(0,3)) {
     if (!await visitRecord(contract.record)) continue;

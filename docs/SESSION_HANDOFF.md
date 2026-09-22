@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-22: controlled v20 Keep32/32, BookStack32/34; v21 comparison running
+# Current handoff — 2026-09-22: v21 control rejected31/34; v22 form-state comparison running
 
 Native Goal remains active: only Keep32 and BookStack34. The SAME portable candidate/model must
 independently pass both and independently repeat each. Frozen edits and controlled/cached repairs
@@ -8,32 +8,32 @@ R = runs/lite-goal-20260922. Use R/state.json and actual subprocess/receipts for
 
 ## Current candidate, execution and next step
 
-Prepared scenario-context-v21, ZIP SHA-256
-875ff1ff8b08ccfc64b6a988396c678c40ebe6e5a2935940edc1eeb63d59dae0.
-Kimi HighSpeed,temperature1.0,max_tokens131072,no fallback. V19 prepared/unrun; v20 controlled only.
-No independent Goal pass from any current candidate. V21 has no independent generation yet.
+Prepared form-state-v22, ZIP SHA-256
+aa72083a94e9ccece60aa7145e43e4545e0a913020fb00b8aefb5e966ee9ac98.
+Kimi HighSpeed,temperature1.0,max_tokens131072,no fallback. No v22 independent generation yet.
 
-Controlled v20 remaining third calls completed: Keep30→32/32 (+2/-0),58.613s,new30,279 input/8,004
-output; BookStack28→32/34 (+4/-0),96.224s,new41,100/16,162. Each inherits two previous real v18 calls
-and makes only ONE new call; cumulative usage is never presented as new billing. Model-only app
-changes. Full results R/replays/diagnostic/{keep,bookstack}-v20-third-call/result.json.
+V20 controlled third calls: Keep32/32 (+2/-0 vs v18),58.613s,new30,279/8,004 tokens,CNY0.777920;
+BookStack32/34 (+4/-0),96.224s,new41,100/16,162,CNY1.407048. Both model-only changes; not Goal passes.
+V21 paired BookStack third call from the SAME v18 two-call app scored31/34. It gained5.3.1 but lost
+4.5.1 and5.4.1 versus v20; do not promote. It kept fields visible but discarded typed values during
+disclosure rendering.9.1 still fails because the public recent-updates list remains hidden without
+login. V21 control76.138s,new41,096/14,716,CNY1.280989. This was not a fourth-call backfill.
 
-BookStack still fails5.3.1 and9.1. The repaired new-book form compares normalized null parent ID with
-undefined and resets its disclosure on every render; no-parent creation was not visited by the old
-focused edit-form walk. Homepage Recent Updated Pages is hidden without login. The old homeLists
-heuristic asked for two lists whose scenarios explicitly use authenticated homepages, while missing
-the explicitly public Recently Updated Pages scenario. V21 respects those scenario conditions and
-follows explicit create-form entry actions before checking disclosure. Its raw partial control now
-reports EXACTLY those two remaining causes; full BookStack and Keep controls remain clean.
-Extractor8 tests passed. Evidence: evidence/2026-09-22-lite-v20-controls.json.
+V22 now fills an existing text field before activating each declared disclosure and verifies its
+value survives. Homepage feedback explicitly states the unauthenticated visitor condition; the
+extractor already excludes separately authenticated dashboard lists. Real calibration reports all
+three v21 failures and stays clean on two full BookStack controls (R/probe-v22/verified-*).
+Evidence: evidence/2026-09-22-lite-v21-control.json. Extractor8 tests passed for v21; v22 changes
+only the browser helper, calibrated against real applications. V20's full107 regression evidence
+and exact EADDRINUSE rerun remain recorded below.
 
-A controlled v21 BookStack call is now running (session15410), R/repair-bookstack-v21.log and
-R/repairs/v21-bookstack-third-call. It starts from the SAME v18 two-call final app, not from v20's
-three-call output: this is a paired third-call comparison within the original cap, not a fourth-call
-backfill. Driver R/repair_v21.py --app bookstack. Finish the SAME request and replay all34 cases.
-If complete with no losses, independently generate/replay both tasks with frozen v21, then repeat
-both after full passes. Official Lite trial remains authorized when promising. Do not duplicate a
-request after a polling timeout. Platform /runs has intermittent500s; preflight must actually succeed.
+CURRENT: controlled v22 BookStack third call from the SAME v18 two-call output is running,
+session79418; R/repair-bookstack-v22.log and R/repairs/v22-bookstack-third-call. Driver repair_v22.py.
+Only ONE new request is permitted, total budget still3 including inherited actual prior calls.
+Finish this same request and replay ALL34 cases; preserve per-case v18/v20/v21 comparisons.
+If full without losses, start a fresh v22 independent pair and both repeats. Official Lite trial is
+already authorized when promising. Never duplicate in-flight inference or overlap official/local
+model usage. Platform /runs intermittently500s; its preflight must actually succeed.
 
 ## Current results and bounded changes
 
