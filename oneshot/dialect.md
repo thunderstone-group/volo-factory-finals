@@ -70,6 +70,8 @@ Create every named seed record with its specified initial properties. An active/
 starts active; an unpinned record starts unpinned. Do not infer a final state from a scenario title,
 GIVEN state reached by dependencies, or THEN result. Operations such as archive, delete, pin and
 favorite must create their own results through the UI. Keep distinct named fixtures distinct.
+Use the supplied initial text exactly. Leave optional record bodies empty when no content is
+specified; do not turn scenario descriptions or action instructions into stored user content.
 ## 6a. Do not invent an authentication prerequisite
 Keep the content, actions and dashboard lists needed by a public browsing journey available without
 an extra login step. A seeded verified account does not itself make every list private. Authentication
@@ -145,7 +147,8 @@ Native input semantics apply immediately; live filtering must not wait for a lat
   control while a nested chooser is visible. Keep its checkboxes mounted after selection.
 - An explicit role is part of the contract. Do not override a required native button with role=option
   merely because it appears in a listbox. Similarly, keep a required textbox as a textbox.
-- A record's state is shown by a visible DESCENDANT element inside the card whose `title` is the state word (`<span
+- Keep any explicitly requested root attributes. Also expose each record state on a visible DESCENDANT
+  element inside the card whose `title` is the state word (`<span
   title="Pinned">`): suites read `article >> [title="Pinned"]`.
 - A settings list row that edits one value is a `<fieldset>` whose `<legend>` and the input's label are both
   `"<Noun> <value>"` (`Label Work`) with its own `Save` button: suites scope `group /^Label Work$/ >> getByLabel`.

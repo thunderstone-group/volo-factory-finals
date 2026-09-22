@@ -65,6 +65,16 @@ function scanSemantics(data) {
     return true;
   };
   const scanSemantics = () => {
+    for (const record of win.document.querySelectorAll('article[title], [role="article"][title]')) {
+      const marker = record.getAttribute('title');
+      if (!active(record) || !(contracts.recordTitles || []).includes(marker)) continue;
+      const visible = Array.from(record.querySelectorAll('[title]')).some(el => {
+        const box = el.getBoundingClientRect();
+        return el.getAttribute('title') === marker && box.width > 0 && box.height > 0 &&
+          win.getComputedStyle(el).visibility !== 'hidden';
+      });
+      if (!visible) issue(`Record root has title "${marker}", but no visible descendant exposes it. Preserve the requested root attribute and also expose a visible state marker inside the record for scoped lookup.`);
+    }
     for (const el of win.document.querySelectorAll('button[role]')) {
       if (!active(el)) continue;
       const name = nameOf(el); const expected = contracts.roles[name.toLowerCase()] || [];

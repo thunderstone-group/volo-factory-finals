@@ -521,6 +521,7 @@ def semantic_contracts(requirements):
                    if re.search(r"(?m)^\s*type:\s*ATOMIC\s*$", b)), "")
     opens_entry = re.search(r"\bopen(?:s|ed)?\b[^\n]*(?:application(?:\s+entry)?\s+URL|entry\s+URL)", atomic, re.I)
     editors = re.findall(r"\b(?:article|card|record)\b[^.\n]{0,100}\bopens?\b[^.\n]{0,40}\bdialog\s+named\s+" + quoted, text, re.I)
+    record_titles = re.findall(r"\b(?:article|card|record)\b[^.\n]{0,100}\btitle(?:\s+attribute)?\s+" + quoted, text, re.I)
     home_lists = []
     for description in re.findall(r"(?m)^\s*description:\s*(.+)$", text):
         if not re.search(r"authenticat|log(?:ged)?[ -]?in|after login", description, re.I):
@@ -541,7 +542,8 @@ def semantic_contracts(requirements):
             seed_states.append({"name": name, "qualifier": qualifier, "states": states})
     return {"homeLists": sorted(set(home_lists)), "home": pairs(atomic) if opens_entry else [],
             "roles": {name: sorted(values) for name, values in names.items()},
-            "recordEditors": sorted(set(editors)), "seedStates": seed_states}
+            "recordEditors": sorted(set(editors)), "seedStates": seed_states,
+            "recordTitles": sorted(set(record_titles))}
 
 
 DOM_PROBE = r"""

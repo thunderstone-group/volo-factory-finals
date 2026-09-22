@@ -5,6 +5,14 @@ from oneshot import main as adapter
 
 
 class SemanticContractsCase(unittest.TestCase):
+    def test_record_state_title_is_distinct_from_an_input_title_field(self):
+        result = adapter.semantic_contracts('''
+description: The flagged article exposes a title attribute `Flagged`.
+content: The article has title `Flagged`.
+description: The editor contains a textbox named `Title`.
+''')
+        self.assertEqual(result['recordTitles'], ['Flagged'])
+
     def test_seed_states_come_from_declarations_not_scenario_setup(self):
         text = '''
 description: Seed data: active record "Archive candidate"; pinned record "Priority"; regular record "Ordinary".

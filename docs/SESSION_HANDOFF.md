@@ -1,24 +1,45 @@
-# Current handoff — 2026-09-22 19:11: Kimi HighSpeed v13 independent Keep running; Goal active
+# Current handoff — 2026-09-22 19:34: v13 pair61/66; independent v14 Keep running
 
 The user explicitly requested this native Goal and authorized an official Lite trial when promising.
 Only Keep32 and BookStack34; never launch the six-task Web batch. Existing ARC balance is authorized
 for necessary scoped model calls, no recharge/purchase. Complete only when the same candidate/model
 independently generates both full passes and independently repeats each. Diagnostic edits and cached
-response replays do not count. No independent full pass has yet been established for the current v13.
+response replays do not count. No independent full pass has yet been established for the current v14.
 
 ## Current execution
 
-Worktree `lite-first-20260922`, branch `exp/lite-first-20260922`; main stays untouched. R is
-`runs/lite-goal-20260922`. Live pointer R/state.json. Source is current `runtime-retention-v13`.
-ZIP SHA-25601872ebe97ba4ac461fcceb8638510c780cc00e0e81fa3322f21292b3b837099.
-Model kimi-k2.7-code-highspeed, temperature1.0, max_tokens131072, cross-model fallback disabled.
-Current process (session96391): R/generate.py --candidate runtime-retention-v13 --app keep
+Worktree lite-first-20260922, branch exp/lite-first-20260922. R = runs/lite-goal-20260922.
+Current source/candidate: record-contract-v14, ZIP SHA-256
+b533ba11a13a9dca37e771c016c84da44af47324736d81995db7c4804ccc5b5e.
+Model kimi-k2.7-code-highspeed, temperature1.0, max_tokens131072, no cross-model fallback.
+Current generation session86629: generate.py --candidate record-contract-v14 --app keep
 --sample highspeed-a --model kimi-k2.7-code-highspeed --transport direct.
-Log R/keep-v13-highspeed-a.log; output R/generations/runtime-retention-v13/keep-highspeed-a.
-The request is live and returning actual HighSpeed SSE. Do not repeat/restart it on an observation gap.
-When it finishes, run the complete public32-case replay. Then generate/replay BookStack with this
-SAME frozen candidate/model. If both full-pass, independently repeat each. If partial, diagnose from
-unchanged full test results and apply controlled fixes without calling diagnostic copies Goal passes.
+Log R/keep-v14-highspeed-a.log; output R/generations/record-contract-v14/keep-highspeed-a.
+The request is live. When completed, run ALL32 public cases; then generate/replay BookStack with
+this same package/configuration. No official run is active. Do not repeat an in-flight model request.
+
+v13 completed its fresh independent pair: Keep29/32, BookStack32/34,61/66 combined. Neither is full.
+Keep285.277s,2 completed calls48,907 input/54,205 output. Remaining REQ-2.7.2,2.8.1,2.8.3:
+- A fabricated seed body says "Remove the Work label from this note", so Work remains in article
+  text even after its actual label is removed. The requirement supplies no such initial body.
+- The model put title=Pinned on the article itself, while the scoped lookup searches descendants.
+  Requirement wording says the article has/exposes this title; preserve the root attribute AND a
+  visible descendant marker to satisfy both instead of treating it as a model-only misunderstanding.
+A TWO-EDIT diagnostic (one seed body cleared, same title applied to the visible record heading)
+replays32/32 with zero losses. Not an independent Goal pass.
+
+v14 therefore adds a generic card rule: optional undeclared record bodies stay empty; scenario prose
+is not user data. Its requirement-derived browser diagnostic catches a requested state title on a
+record root with no visible descendant marker. It preserves the root attribute and asks for a visible
+child too. Real calibration catches the v13 defect, leaves the two-edit fixed app and prior full
+Keep positive clean. R/probe-v14/verified-*/receipt.json; record-title-tests.log. Source changes versus
+v13 are only dialect.md/main.py/semantic_probe.cjs. No v14 independent result yet.
+
+v13 BookStack generated in333.866s with2 completed calls56,798 input/65,835 output. Remaining:
+REQ-6.1.3 (draft entry bypasses the reading/Edit flow) and REQ-8.2 (Favorite control unavailable at
+setup, likely initial favorite state; inspect current seed/source before attributing it). Generic
+navigation card advice did not eliminate the draft problem in this sample. Do not claim this pair
+is full or pool it with the older cached32/32 Keep repair. Evidence docs/evidence/2026-09-22-lite-v13-pair.json.
 
 ## Current candidate changes and validation
 

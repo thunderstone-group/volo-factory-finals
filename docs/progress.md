@@ -714,3 +714,16 @@ identical full-score app bytes with0 new calls. Fresh v13 Keep is running, sessi
 Generic fixes include connected popover replacement anchors and explicit seed-state diagnostics.
 98 regressions passed; both new retention tests plus actual-rename protection passed. No independent
 full v13 Goal pass yet. Evidence: `evidence/2026-09-22-lite-kimi-transition.json`.
+
+## 2026-09-22 19:34 — Fresh v13 pair61/66; v14 targets remaining Keep contracts
+
+Same v13 package and Kimi HighSpeed configuration: Keep29/32, BookStack32/34. Both used2 completed
+calls with no stream failures. This is a real independent pair, but not a full Goal pass. Keep failures
+come from invented seed operation text and a root-only title=Pinned marker. Two diagnostic edits
+produce32/32 without losses. v14 adds empty optional seed text guidance and a visible descendant
+state-title diagnostic while preserving explicitly requested root attributes. Real positive/negative
+calibration passed; the fresh v14 Keep request is running (session86629).
+
+BookStack still fails draft entry and Favorite setup; inspect live generated source before changing
+those. Evidence: `evidence/2026-09-22-lite-v13-pair.json`. Latest settled balance snapshot206.381505 CNY
+predates the newest generation; actual per-call bills are retained in R/accounting.json. Goal active.

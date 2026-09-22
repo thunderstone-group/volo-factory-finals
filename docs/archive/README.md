@@ -40,3 +40,5 @@
 - `handoffs/2026-09-22-1635.md`: prepared persistence fix before official/public requirement divergence and draft-entry diagnosis.
 
 - `handoffs/2026-09-22-1911.md`: official v5 pending and v8 preparation before completed official results and Kimi cohorts.
+
+- `handoffs/2026-09-22-1934.md`: completed official trial and v13 Kimi cohort before the paired61/66 result.
