@@ -1,0 +1,20 @@
+{
+  "classification": "common interaction library preservation on manual diagnostic applications; not Goal passes",
+  "candidate": "semantic-browser-v5",
+  "package_sha256": "43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137",
+  "model_calls": 0,
+  "results": {
+    "keep": {
+      "passed": 32,
+      "total": 32,
+      "result": "runs/lite-goal-20260922/replays/diagnostic/keep-native-v5-preservation/result.json",
+      "source_change_receipt": "runs/lite-goal-20260922/diagnostics/keep-native-v5-preservation/receipt.json"
+    },
+    "bookstack": {
+      "passed": 34,
+      "total": 34,
+      "result": "runs/lite-goal-20260922/replays/diagnostic/bookstack-native-v5-preservation/result.json",
+      "source_change_receipt": "runs/lite-goal-20260922/diagnostics/bookstack-native-v5-preservation/receipt.json"
+    }
+  }
+}

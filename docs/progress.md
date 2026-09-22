@@ -643,3 +643,14 @@ these are not independent Goal passes. Evidence: `evidence/2026-09-22-lite-seman
 One-shot90 passed, legacy214 passed/12 skipped. Fresh v5 Keep is generating now. After its complete
 replay shows no material regression, proceed with the already authorized official Lite trial;
 use the official runs for independent generation evidence, and keep local model traffic paused.
+
+## 2026-09-22 15:41 — Common native-control change preserves all66 diagnostic cases
+
+Replacing only the ARC library on the previously full diagnostic applications retains Keep32/32
+and BookStack34/34 in complete frozen-suite replays. No model call, no evaluator modification;
+these samples do not count as independent Goal passes. Evidence:
+`evidence/2026-09-22-lite-native-v5-preservation.json`.
+
+Official read-only preflight found zero active account runs and zero pending Lite runs. BookStack
+v5 fixed-draft repair settled at CNY0.141568; available balance CNY216.112085 before the ongoing
+Keep generation settles. Exact preflight and accounting remain in the run tree. No upload yet.
