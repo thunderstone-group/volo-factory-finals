@@ -121,7 +121,9 @@
   // kind 'menu' explicitly renders role=menu and role=menuitem.
   // The popover closes on render, Escape, or a click outside it.
   ARC.openPopover = function (host, items, opts) {
-    const id = (opts && opts.id) != null ? String(opts.id) : (host && host.dataset && host.dataset.id) || '';
+    const record = host && host.closest('article[data-id], [role="article"][data-id]');
+    const id = (opts && opts.id) != null ? String(opts.id) :
+      (host && host.dataset && host.dataset.id) || (record && record.dataset.id) || '';
     // A menu item may replace its own menu. Keep the connected anchor before removing it.
     if (host && ARC._popover && ARC._popover.contains(host)) host = ARC._popover.parentElement;
     ARC.closePopover();

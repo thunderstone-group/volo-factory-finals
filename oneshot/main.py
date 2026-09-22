@@ -527,9 +527,20 @@ def semantic_contracts(requirements):
         if not re.search(r"authenticat|log(?:ged)?[ -]?in|after login", description, re.I):
             home_lists += re.findall(quoted + r"\s+list\s+on\s+the\s+home\s?page", description, re.I)
     seed_states = []
+    declarations = re.findall(r"Seed data:\s*([^\n]+)", text, re.I)
+    unselected_favorite = re.search(r"button\s+named\s+[`\"]Favou?rite[`\"]\s+with\s+aria-pressed=false", text, re.I)
+    declared_favorites = any(re.search(r"\bfavou?rit(?:e|ed|es)\b", re.sub(quoted, "", value), re.I)
+                             for value in declarations)
+    reading_entries = []
+    if re.search(r"\breading\s+(?:page|view)\b", text, re.I) and 'edit' in names:
+        for declaration in declarations:
+            for draft in re.finditer(r"\bdraft\s+[\w-]+\s+" + quoted, declaration, re.I):
+                parents = re.findall(quoted, declaration[:draft.start()])
+                if parents:
+                    reading_entries.append({"parent": parents[-1], "record": draft.group(1)})
     seed_pattern = re.compile(r"\b(active|deletable|regular|unpinned|pinned|archived|trashed|deleted)"
                               r"\s+[\w-]+\s+" + quoted, re.I)
-    for declaration in re.findall(r"Seed data:\s*([^\n]+)", text, re.I):
+    for declaration in declarations:
         for qualifier, name in seed_pattern.findall(declaration):
             qualifier = qualifier.lower()
             states = {"archived": False, "deleted": False} if qualifier in ("active", "deletable", "regular") else {}
@@ -543,7 +554,8 @@ def semantic_contracts(requirements):
     return {"homeLists": sorted(set(home_lists)), "home": pairs(atomic) if opens_entry else [],
             "roles": {name: sorted(values) for name, values in names.items()},
             "recordEditors": sorted(set(editors)), "seedStates": seed_states,
-            "recordTitles": sorted(set(record_titles))}
+            "recordTitles": sorted(set(record_titles)), "readingEntries": reading_entries,
+            "emptyFavorites": bool(unselected_favorite and not declared_favorites)}
 
 
 DOM_PROBE = r"""

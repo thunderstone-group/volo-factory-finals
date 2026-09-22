@@ -727,3 +727,17 @@ calibration passed; the fresh v14 Keep request is running (session86629).
 BookStack still fails draft entry and Favorite setup; inspect live generated source before changing
 those. Evidence: `evidence/2026-09-22-lite-v13-pair.json`. Latest settled balance snapshot206.381505 CNY
 predates the newest generation; actual per-call bills are retained in R/accounting.json. Goal active.
+
+## 2026-09-22 — v14 event regression attributed; v16 calibrated
+
+Fresh v14 Keep23/32,2 completed Kimi HighSpeed calls,422.480s,48,892 input/75,990 output.
+The app's capture listener blocked delegated menu actions; nested hosts lost record IDs. A frozen
+minimal correction scores32/32 with no loss. New general event-delivery checks detect the actual
+failure and remain clean on known passing apps. BookStack draft entry and preseeded favorites are
+also diagnosed; its minimal frozen correction scores34/34. These are diagnostic gains, never Goal
+passes. Six real-browser calibrations match the shipped helper hash. v16 ZIP7ec29c1d42535c2b7529246b6e0f562132ee1d6873ec823c25391a15fcecc6bb.
+Independent v16 pair is next. Evidence: evidence/2026-09-22-lite-event-flow.json.
+
+Validation update:102 one-shot tests passed; the1 browser skip was separately run with the existing
+Playwright cache and passed. Fresh v16 Keep started (session71835), live preflight no active official
+run, settled balance197.830879 CNY. No new recharge or purchase.

@@ -1,45 +1,38 @@
-# Current handoff — 2026-09-22 19:34: v13 pair61/66; independent v14 Keep running
+# Current handoff — 2026-09-22: v16 event and entry flow candidate calibrated
 
-The user explicitly requested this native Goal and authorized an official Lite trial when promising.
-Only Keep32 and BookStack34; never launch the six-task Web batch. Existing ARC balance is authorized
-for necessary scoped model calls, no recharge/purchase. Complete only when the same candidate/model
-independently generates both full passes and independently repeats each. Diagnostic edits and cached
-response replays do not count. No independent full pass has yet been established for the current v14.
+The native Goal remains active: only Keep32 and BookStack34. The same candidate/model must independently generate full passes for both and independently repeat each. Manual diagnostics and cached responses never count. User authorized necessary calls from existing ARC balance and an official Lite trial when promising; no recharge/purchase or six-task Web batch.
 
 ## Current execution
 
 Worktree lite-first-20260922, branch exp/lite-first-20260922. R = runs/lite-goal-20260922.
-Current source/candidate: record-contract-v14, ZIP SHA-256
-b533ba11a13a9dca37e771c016c84da44af47324736d81995db7c4804ccc5b5e.
+Frozen candidate event-flow-v16, ZIP SHA-256
+7ec29c1d42535c2b7529246b6e0f562132ee1d6873ec823c25391a15fcecc6bb.
 Model kimi-k2.7-code-highspeed, temperature1.0, max_tokens131072, no cross-model fallback.
-Current generation session86629: generate.py --candidate record-contract-v14 --app keep
---sample highspeed-a --model kimi-k2.7-code-highspeed --transport direct.
-Log R/keep-v14-highspeed-a.log; output R/generations/record-contract-v14/keep-highspeed-a.
-The request is live. When completed, run ALL32 public cases; then generate/replay BookStack with
-this same package/configuration. No official run is active. Do not repeat an in-flight model request.
+Fresh Keep is running, session71835; log R/keep-v16-highspeed-a.log. Inspect R/state.json and the
+generation receipt for live status.
+No official run is active. Never duplicate an in-flight model request.
 
-v13 completed its fresh independent pair: Keep29/32, BookStack32/34,61/66 combined. Neither is full.
-Keep285.277s,2 completed calls48,907 input/54,205 output. Remaining REQ-2.7.2,2.8.1,2.8.3:
-- A fabricated seed body says "Remove the Work label from this note", so Work remains in article
-  text even after its actual label is removed. The requirement supplies no such initial body.
-- The model put title=Pinned on the article itself, while the scoped lookup searches descendants.
-  Requirement wording says the article has/exposes this title; preserve the root attribute AND a
-  visible descendant marker to satisfy both instead of treating it as a model-only misunderstanding.
-A TWO-EDIT diagnostic (one seed body cleared, same title applied to the visible record heading)
-replays32/32 with zero losses. Not an independent Goal pass.
+v13 independently scored Keep29/32 and BookStack32/34,61/66. Details and real usage are retained in
+evidence/2026-09-22-lite-v13-pair.json. v14 fresh Keep regressed to23/32 after an accepted repair:
+422.480s,2 completed calls,48,892 input/75,990 output. Its application added a document capture
+listener that stops every popover click before the scaffold's delegated handler. Nested popover hosts
+also lost their enclosing article's record ID. Removing only that listener and supplying the corrected
+generic popover library yields32/32 with no lost case; this is a frozen-app diagnostic, not a Goal pass.
+R/replays/diagnostic/keep-v14-event-flow/result.json retains every result.
 
-v14 therefore adds a generic card rule: optional undeclared record bodies stay empty; scenario prose
-is not user data. Its requirement-derived browser diagnostic catches a requested state title on a
-record root with no visible descendant marker. It preserves the root attribute and asks for a visible
-child too. Real calibration catches the v13 defect, leaves the two-edit fixed app and prior full
-Keep positive clean. R/probe-v14/verified-*/receipt.json; record-title-tests.log. Source changes versus
-v13 are only dialect.md/main.py/semantic_probe.cjs. No v14 independent result yet.
+v16 inherits ancestor article IDs for nested popover hosts and diagnoses real clicks that reach neither
+a registered APP handler nor a UI/state change. It also checks requirement-declared empty Favorite
+state and primary draft links that bypass the reading/Edit flow. BookStack v13's two remaining causes
+were reproduced; the minimal frozen correction passes34/34 without losses. The combined new browser
+probe catches both negative apps and stays clean on four fixed/previously passing controls. All six
+Docker receipts under R/probe-v16/verified-*/receipt.json match the exact shipped helper hash. No model
+call was used for calibration. Evidence: evidence/2026-09-22-lite-event-flow.json.
 
-v13 BookStack generated in333.866s with2 completed calls56,798 input/65,835 output. Remaining:
-REQ-6.1.3 (draft entry bypasses the reading/Edit flow) and REQ-8.2 (Favorite control unavailable at
-setup, likely initial favorite state; inspect current seed/source before attributing it). Generic
-navigation card advice did not eliminate the draft problem in this sample. Do not claim this pair
-is full or pool it with the older cached32/32 Keep repair. Evidence docs/evidence/2026-09-22-lite-v13-pair.json.
+Suite:102 passed and1 browser test skipped for a missing environment variable; the targeted
+real-browser rerun then passed (R/v16-persistence-tests.log). All103 tests were executed successfully
+across these runs. Full suite log R/v16-full-tests.log. Run the frozen v16 pair.
+If both pass, independently repeat each before completing the Goal. Reject material regressions and
+attribute errors before changing another prompt. No test or corpus edit is allowed.
 
 ## Current candidate changes and validation
 

@@ -15,6 +15,13 @@ function scanSemantics(data) {
       Object.values(value).forEach(walk);
     };
     walk(win.SEED);
+    if (contracts.emptyFavorites) {
+      const collections = ['favorites', 'favourites'].flatMap(key => Array.isArray(win.SEED[key]) ? win.SEED[key] : []);
+      const marked = records.filter(record => Object.entries(record).some(([key, value]) =>
+        value === true && /^(?:is)?favou?rit(?:e|ed)$/.test(key.toLowerCase().replace(/_/g, ''))));
+      if (collections.length || marked.length)
+        issue('The requirements define initially unselected Favorite controls and declare no favorite seed memberships, but generated seeds already contain favorites. Start unmarked and let the prerequisite actions populate favorites instead of pre-applying a later GIVEN state.');
+    }
     const aliases = {archived:'archived', isarchived:'archived', pinned:'pinned', ispinned:'pinned',
       deleted:'deleted', isdeleted:'deleted', trashed:'deleted', istrashed:'deleted', intrash:'deleted'};
     for (const contract of contracts.seedStates) {
@@ -135,12 +142,31 @@ async function observe(page, url, contracts) {
   await page.reload({waitUntil: 'domcontentloaded', timeout: 10000});
   await page.waitForTimeout(100);
   const end=Date.now()+16000;const queue=['#/'];const seen=new Set();const done=new Set();
+  const routeNames = new Map(); const readingRoutes = new Map();
+  const readingEntries = contracts.readingEntries || [];
+  const priorityOfRoute = hash => readingEntries.some(entry => routeNames.get(hash) === entry.parent) ? 100 : readingRoutes.has(hash) ? 90 : 0;
   while(queue.length && seen.size<12 && Date.now()<end){
     const hash=queue.shift();if(seen.has(hash))continue;seen.add(hash);
     await page.evaluate(h=>{location.hash=h},hash);await page.waitForTimeout(30);
+    if (readingRoutes.has(hash)) {
+      await page.waitForTimeout(70);
+      const edit = page.getByRole('button', {name: 'Edit', exact: true}).or(page.getByRole('link', {name: 'Edit', exact: true})).first();
+      const save = page.getByRole('button', {name: /^Save(?:\s|$)/i}).first();
+      if (!await edit.isVisible() && await save.isVisible())
+        errors.add(`Primary record link "${readingRoutes.get(hash)}" opens an editor directly and bypasses the reading/details view with its Edit action. Preserve the normal primary-entry flow for draft records too; do not automatically redirect their reading route.`);
+    }
     for(let step=0;step<18 && Date.now()<end;step++){
-      const links=await page.locator('a[href^="#/"], [data-hash^="#/"]').evaluateAll(es=>es.map(e=>e.getAttribute('href')||e.getAttribute('data-hash')));
-      for(const h of links)if(h && !seen.has(h) && !queue.includes(h) && queue.length<100)queue.push(h);
+      const links=await page.locator('a[href^="#/"], [data-hash^="#/"]').evaluateAll(es=>es.map(e=>({hash:e.getAttribute('href')||e.getAttribute('data-hash'),name:(e.getAttribute('aria-label')||e.textContent||'').replace(/\s+/g,' ').trim()})));
+      const hasDraftLink = links.some(link => readingEntries.some(entry => link.name.includes(entry.record)));
+      const heading = hasDraftLink ? (await page.getByRole('main').getByRole('heading').first().textContent({timeout:200}).catch(()=>'' ) || '').replace(/\s+/g,' ').trim() : '';
+      for(const link of links){
+        const h=link.hash;if(!h)continue;
+        if (!routeNames.has(h)) routeNames.set(h, link.name);
+        const expected=readingEntries.find(entry=>entry.parent===heading && link.name.includes(entry.record));
+        if (expected) readingRoutes.set(h, expected.record);
+        if(!seen.has(h) && !queue.includes(h) && queue.length<100)queue.push(h);
+      }
+      queue.sort((a,b)=>priorityOfRoute(b)-priorityOfRoute(a));
       let scope=page;let scopeName='page';
       const dialog=page.getByRole('dialog').first();
       if(await dialog.isVisible()){scope=dialog;scopeName='dialog';}
@@ -163,7 +189,37 @@ async function observe(page, url, contracts) {
       let before=null;
       if(c.meta.type==='checkbox')before=await c.el.isChecked();
       try{
+        const delivery = await c.el.evaluate(el => {
+          const state = window.__arcProbeDelivery || (window.__arcProbeDelivery = {calls: 0, wrapped: new WeakSet()});
+          const actions = window.APP && window.APP.actions || {};
+          for (const [name, original] of Object.entries(actions)) {
+            if (typeof original !== 'function' || state.wrapped.has(original)) continue;
+            const wrapped = function () {
+              'use strict';
+              state.calls++;
+              return Reflect.apply(original, this, arguments);
+            };
+            state.wrapped.add(wrapped);
+            actions[name] = wrapped;
+          }
+          state.before = document.body.innerHTML + JSON.stringify(window.ARC && window.ARC.state) + location.href;
+          return {calls: state.calls, registered: typeof actions[el.getAttribute('data-action')] === 'function'};
+        });
         await c.el.click({timeout:700});await page.waitForTimeout(20);
+        if (delivery.registered) {
+          const reached = await page.evaluate(previous => {
+            const state = window.__arcProbeDelivery;
+            return state.calls > previous || state.before !== document.body.innerHTML + JSON.stringify(window.ARC && window.ARC.state) + location.href;
+          }, delivery.calls);
+          if (!reached) {
+            await page.waitForTimeout(200);
+            const stillBlocked = await page.evaluate(previous => {
+              const state = window.__arcProbeDelivery;
+              return state.calls === previous && state.before === document.body.innerHTML + JSON.stringify(window.ARC && window.ARC.state) + location.href;
+            }, delivery.calls);
+            if (stillBlocked) errors.add(`Clicking "${c.name}" (data-action ${c.meta.action}) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions.`);
+          }
+        }
         if(before!==null && await c.el.evaluate(e=>e.isConnected)){
           const after=await c.el.isChecked();
           if(after===before)errors.add('Checkbox "'+c.name+'" did not change state on native activation. Do not preventDefault its click or undo the checked state.');

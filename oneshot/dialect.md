@@ -70,6 +70,8 @@ Create every named seed record with its specified initial properties. An active/
 starts active; an unpinned record starts unpinned. Do not infer a final state from a scenario title,
 GIVEN state reached by dependencies, or THEN result. Operations such as archive, delete, pin and
 favorite must create their own results through the UI. Keep distinct named fixtures distinct.
+Do not pre-populate user-specific state such as favorites from a scenario's GIVEN clause; an initial
+membership needs an explicit seed-data declaration. Prerequisite actions establish later states.
 Use the supplied initial text exactly. Leave optional record bodies empty when no content is
 specified; do not turn scenario descriptions or action instructions into stored user content.
 ## 6a. Do not invent an authentication prerequisite
@@ -119,6 +121,8 @@ required field or container. Keep typed values and native input elements stable 
 A checkbox change updates its checked state without removing the checkbox or closing its chooser.
 Native input semantics apply immediately; live filtering must not wait for a later blur event.
 ## 8. Mechanics
+- Keep the scaffold's delegated events reachable. A capturing listener that stops propagation before
+  the delegated handler silently disables menu actions; implement actions through APP.actions.
 - Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
 - When an entity has a reading/details view and a separate Edit action, its primary record links
   open that view for every lifecycle state, including drafts. Keep the Edit action available there.

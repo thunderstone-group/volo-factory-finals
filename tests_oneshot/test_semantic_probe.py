@@ -5,6 +5,19 @@ from oneshot import main as adapter
 
 
 class SemanticContractsCase(unittest.TestCase):
+    def test_draft_entry_checks_keep_parent_context_and_explicit_favorite_seeds(self):
+        text = '''
+description: A reading page has a button named `Edit`.
+description: The button named `Favorite` with aria-pressed=false changes state.
+description: Seed data: book "Collection" with existing draft page "Unfinished".
+content: GIVEN a favorite item is already shown.
+'''
+        result = adapter.semantic_contracts(text)
+        self.assertEqual(result['readingEntries'], [{'parent': 'Collection', 'record': 'Unfinished'}])
+        self.assertTrue(result['emptyFavorites'])
+        explicit = adapter.semantic_contracts(text + '\ndescription: Seed data: favorite book "Saved".\n')
+        self.assertFalse(explicit['emptyFavorites'])
+
     def test_record_state_title_is_distinct_from_an_input_title_field(self):
         result = adapter.semantic_contracts('''
 description: The flagged article exposes a title attribute `Flagged`.

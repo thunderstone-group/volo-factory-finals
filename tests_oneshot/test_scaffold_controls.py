@@ -14,6 +14,35 @@ MODULES = Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules"
 
 @unittest.skipUnless(shutil.which("node") and (MODULES / "jsdom").is_dir(), "Node and jsdom are required")
 class NativeControlTests(unittest.TestCase):
+    def test_nested_popover_host_inherits_record_id_and_respects_explicit_overrides(self):
+        script = r'''
+const fs = require('fs');
+const {JSDOM} = require('jsdom');
+const w = new JSDOM('<article data-id="record"><div class="host"></div></article>', {url:'http://localhost/',runScripts:'outside-only'}).window;
+w.SEED = {};
+w.eval(fs.readFileSync(process.argv[1], 'utf8'));
+const host = w.document.querySelector('.host');
+const target = opts => {
+  w.ARC.openPopover(host, [{label:'Apply', action:'apply'}], opts);
+  return w.ARC._popover.querySelector('button').dataset.id;
+};
+const inherited = target();
+host.dataset.id = 'selected';
+const own = target();
+const explicit = target({id: 'override'});
+const empty = target({id: ''});
+console.log(JSON.stringify({inherited, own, explicit, empty}));
+w.close();
+'''
+        result = subprocess.run(
+            ['node', '-e', script, str(ROOT / 'oneshot/scaffold/frontend/public/lib/arc.js')],
+            env={**os.environ, 'NODE_PATH': str(MODULES)}, capture_output=True, text=True,
+            timeout=20, check=True,
+        )
+        self.assertEqual(json.loads(result.stdout.strip().splitlines()[-1]), {
+            'inherited': 'record', 'own': 'selected', 'explicit': 'override', 'empty': '',
+        })
+
     def test_menu_item_can_replace_its_popover_without_detaching_the_new_controls(self):
         script = r'''
 const fs = require('fs');
