@@ -755,3 +755,14 @@ Evidence: evidence/2026-09-22-lite-v16-pair.json. Next is one controlled model r
 Validation update:all105 one-shot tests passed with0 skips (90.684s). Controlled v17 BookStack repair started; no fresh generation or new official run yet.
 
 Controlled repair result:BookStack26/34→34/34,+8/-0,model-only app edits,1 call44,259/14,293 tokens,81.440s. Experiment driver passed a dict for the file list; corrected offline replay preserved exact request bytes and raw SSE,0 extra calls. Production candidate unaffected. Fresh v17 BookStack is now generating; it must pass independently before counting toward Goal.
+
+## 2026-09-22 — v17 fresh BookStack33/34; missing-toggle check calibrated, platform read unavailable
+
+Fresh Kimi HighSpeed BookStack249.058s,2 completed calls56,773/46,373 tokens,33/34. Only Favorite
+fails because generated code hides it unless logged in. V17's diagnostic skipped missing controls;
+v18 reports the explicit required initial state instead. Corrected frozen app34/34 (+1/-0), four real
+negative/positive calibrations passed. V18 ZIP2aa980e96b67408e585c36101240ebea5cc3d7359b6374976f1a106c2c03906f.
+Keep v17 preflight failed GET /runs with500 three times before ANY model call. Normal and filtered
+read-only follow-ups also returned500. No new generation/upload until current run activity can be
+verified. Goal active; substantial progress this turn, external read recovery is the next dependency.
+Evidence: evidence/2026-09-22-lite-v17-initial-control.json. Controlled v17 repair settled CNY1.347189.

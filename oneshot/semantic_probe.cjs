@@ -187,7 +187,10 @@ async function observe(page, url, contracts) {
   for (const contract of (contracts.pressedTransitions || []).slice(0,3)) {
     if (!await visitRecord(contract.record)) continue;
     const before = page.getByRole('button', {name:contract.before,exact:true}).first();
-    if (!await before.isVisible() || await before.getAttribute('aria-pressed') !== 'false') continue;
+    if (!await before.isVisible() || await before.getAttribute('aria-pressed') !== 'false') {
+      errors.add(`Record "${contract.record}" requires an initially visible "${contract.before}" button with aria-pressed=false, but it is absent or has the wrong state. Do not hide the declared action behind an unstated login prerequisite.`);
+      continue;
+    }
     await before.click({timeout:500});await page.waitForTimeout(80);
     const after = page.getByRole('button', {name:contract.after,exact:true}).first();
     if (!await after.isVisible() || await after.getAttribute('aria-pressed') !== 'true')

@@ -1,28 +1,51 @@
-# Current handoff — 2026-09-22: v16 pair57/66 rejected; v17 calibrated
+# Current handoff — 2026-09-22: independent BookStack33/34; v18 ready, platform /runs HTTP500
 
 Native Goal active: Keep32 and BookStack34 only, same portable candidate/model independently
 passes both and independently repeats each. Diagnostic edits/cached responses do not count.
 Existing ARC balance and promising official Lite trials are authorized; no recharge/purchase or
 six-task Web batch. Worktree lite-first-20260922, branch exp/lite-first-20260922.
-R = runs/lite-goal-20260922. No current official run. Inspect R/state.json for live subprocess status.
+R = runs/lite-goal-20260922. Inspect R/state.json for live process status.
 
-## Current execution and decision
+## Current execution and next step
 
-Frozen new candidate entry-contract-v17, ZIP SHA-256
-5cc0d54294edbbe68ae5bcbd3069544b08c23eaefde5f1d7d10a07403222615b.
+Prepared candidate initial-control-v18, ZIP SHA-256
+2aa980e96b67408e585c36101240ebea5cc3d7359b6374976f1a106c2c03906f.
 Model kimi-k2.7-code-highspeed, temperature1.0, max_tokens131072, no cross-model fallback.
-All105 one-shot regressions passed with0 skips (R/v17-full-tests.log). Controlled v17 repair on
-frozen v16 BookStack now scores34/34 (+8/-0), model-only app edits,1 call44,259 input/14,293 output,
-81.440s. The local experimental driver initially supplied a dict instead of a list to repair_delivery,
-causing rollback after successful checks. Production candidate was unaffected. Corrected offline
-replay used byte-identical request and saved raw SSE,0 additional calls, repair accepted. Receipt
-R/diagnostics/bookstack-v17-repair-replay; full result R/replays/diagnostic/bookstack-v17-model-repair.
-This is a controlled repair, not an independent Goal pass.
+No active local model request. Fresh v17 Keep never reached the gateway: preflight GET /runs
+returned HTTP500 three times. A subsequent normal list and submission-filtered list both also
+returned500 after about31s. This is a platform read failure, not Kimi model instability or a Keep
+score. Evidence R/generations/entry-contract-v17/keep-highspeed-a/preflight-failure.json and
+R/platform-runs-after-v17-preflight.err, R/platform-filtered-runs-v18.err. Never reissue a model
+request merely on observation timeout; in this failed preflight there was explicitly no model call.
 
-A FRESH v17 BookStack generation is now running: R/bookstack-v17-highspeed-a.log,
-R/generations/entry-contract-v17/bookstack-highspeed-a. Finish/replay this same request, then generate
-and fully replay Keep with the identical package/model. If both pass, independently repeat each.
-Inspect R/state.json for the active session. Never reissue a request on observation timeouts.
+Next: read platform status through existing arcbench-cli. Once active/pending runs are ruled out,
+start NEW independent v18 generations for both tasks (the v17 Keep attempt sent no model request,
+so do not spend on the superseded candidate). Replay all32/34 unchanged public cases. If both pass,
+independently repeat each; submit the promising candidate for official Lite as already authorized.
+Official v5 was terminal at the last successful read, but do not pretend current activity was checked
+when /runs is returning500. No user approval is needed to resume after the read service recovers.
+This turn made substantive progress; Goal is active, not paused/completed/blocked.
+
+## Latest independent and controlled results
+
+Fresh v17 BookStack33/34 in249.058s,2 completed calls56,773 input/46,373 output, no transport failures.
+Settled cost CNY2.818869. OnlyREQ-8.1 fails: favButton hides Favorite when there is no current user, and its handler would also
+refuse the action. No self-check state pollution: the button is conditionally absent in source and
+no persisted data file was shipped. v17's new transition check silently skipped absent initial
+controls, so its browser report missed this case. v18 changes only semantic_probe.cjs to report a
+missing/wrong-state required initial control. Four real calibrations: raw v17 fails with the expected
+observation; corrected v17 and two previous passing BookStack variants are clean. A minimal frozen
+application correction scores34/34 (+1/-0); not an independent Goal pass. Evidence:
+evidence/2026-09-22-lite-v17-initial-control.json. V18 has no independent generation yet.
+
+Before that, v17's controlled repair of the v16 BookStack draft reached34/34 (+8/-0), model-only app
+edits,1 call44,259 input/14,293 output,81.440s,CNY1.347189. The experiment driver initially supplied
+a dict instead of a list to repair_delivery, causing rollback after successful checks. Production
+candidate was unaffected. Corrected offline replay used byte-identical request and saved raw SSE,
+0 additional calls, repair accepted. R/diagnostics/bookstack-v17-repair-replay; full result
+R/replays/diagnostic/bookstack-v17-model-repair. It is controlled repair, not independent generation.
+All105 one-shot regressions passed with0 skips before the final missing-control branch; that branch
+was validated by the four real-browser controls above. Existing legacy214/12 skips is older evidence.
 
 v16 independent pair: Keep31/32, BookStack26/34 (57/66). This candidate is rejected for promotion:
 BookStack regressed from v13's32/34. Keep405.609s,2 completed calls,52,359 input/75,152 output,
