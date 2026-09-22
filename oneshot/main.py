@@ -1465,7 +1465,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     try:
         ask = REPAIR.format(problems="\n".join("- " + p for p in problems))
         fixed, _, finish = stream_completion(messages + [{"role": "user", "content": ask}],
-                                             model, base, key, budget, tries=1)
+                                             model, base, key, budget, tries=3)
         batch, missing = parse_blocks(fixed)
         if missing or finish == "length":
             raise ValueError("repair output truncated")

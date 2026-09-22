@@ -826,3 +826,13 @@ After checking terminal process/raw stream/meter, NEW independent retry1 series 
 same frozen v22/model/config; names r1a/r1b keep all evidence distinct. Old9/34 is retained and never
 counts as a pass. Evidence:evidence/2026-09-22-lite-v22-stream-reset.json. Completion audit prepared
 at R/audit_v22_series.py; it cannot approve an incomplete series or replace real billing/official checks.
+
+## 2026-09-22 — Second v22 repair transport failure; bounded repair retry validated for v23
+
+Retry1 stopped30/34 after repair got HTTP000/curl52 Empty reply after61.729s,0 SSE. First draft
+22,360/65,004 tokens,CNY3.800896; failed-call cost/usage unknown. No later series samples ran.
+V23 applies existing3-attempt stream retry to repair too; keeps3 completed and5 failed global caps.
+Local driver now matches submitted failure limit5; previous driver frozen.110 regressions passed,
+0 skips. Controlled recovery of the same draft is running(session95474), importing original1
+complete+1 failed calls and asserting exact retry body. New usage remains separate. Still not an
+independent Goal pass. Evidence:evidence/2026-09-22-lite-v23-repair-retry.json.

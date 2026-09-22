@@ -44,7 +44,7 @@ exchange: a process kill between renames may leave the original at a sibling
 `.oneshot-backup-*` path. A failed rollback leaves that backup outside temporary cleanup.
 Gateway redirects are refused.
 The budget permits three completed calls and at most five failed transport attempts; failures do
-not consume a completed-call slot. Each stream operation makes at most three attempts before a
+not consume a completed-call slot. Generation and repair streams each make at most three attempts before a
 different configured fallback may be selected. Kimi K2.7 Code stays on its selected model and uses
 the provider-required temperature 1.0. Other current model settings are unchanged.
 Permanent HTTP failures (including 402) are not retried. Observed token usage is accumulated

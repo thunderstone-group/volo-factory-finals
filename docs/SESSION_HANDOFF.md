@@ -1,66 +1,56 @@
-# Current handoff — 2026-09-22: v22 repair stream reset; same-candidate fresh series retry1 running
+# Current handoff — 2026-09-22: two v22 repair transport failures; v23 bounded-retry recovery running
 
-Native Goal remains active: only Keep32 and BookStack34. The SAME portable candidate/model must
-independently pass both and independently repeat each. Frozen edits and controlled/cached repairs
-never count. Existing ARC balance and promising official Lite trials are authorized; no recharge,
-purchase or six-task Web batch. Worktree lite-first-20260922, branch exp/lite-first-20260922.
-R = runs/lite-goal-20260922. Use R/state.json and actual subprocess/receipts for live state.
+Native Goal active: only Keep32/BookStack34. Same portable candidate/model independently passes
+both and independently repeats each. Controlled/frozen/cached repairs do not count. Existing ARC
+balance and promising official Lite trial authorized; no recharge/purchase or Web six-task batch.
+Worktree lite-first-20260922, branch exp/lite-first-20260922. R = runs/lite-goal-20260922.
 
-## Current candidate, execution and next step
+## Current candidate and live execution
 
-Prepared form-state-v22, ZIP SHA-256
-aa72083a94e9ccece60aa7145e43e4545e0a913020fb00b8aefb5e966ee9ac98.
-Kimi HighSpeed,temperature1.0,max_tokens131072,no fallback. No v22 independent generation yet.
+Prepared repair-retry-v23, ZIP74e377581ffac54808b3f900d1687ecc85c1cf1b88121abf6040d823f2617a61.
+Kimi HighSpeed,temp1.0,max_tokens131072,no fallback. Completed-call cap remains3; failure cap remains5
+in the actual submitted code. The local generate.py driver is NOW aligned to that5-failure cap (it
+previously imposed1). Its exact old version is R/tools/generate-before-v23.py. V23 changes only main.py:
+repair streams now use the same bounded3-attempt policy as initial generation. It retries only a
+terminal transport/protocol error, never a polling timeout; failed attempts keep their true trace and
+unknown usage. Permanent HTTP errors and shared global budgets still stop retries.110 tests passed,
+0 skips (R/v23-full-tests.log), including same-request retry/partial-file discard and failure-budget
+stop. No v23 independent generation yet. No current candidate has the four required Goal passes.
 
-V20 controlled third calls: Keep32/32 (+2/-0 vs v18),58.613s,new30,279/8,004 tokens,CNY0.777920;
-BookStack32/34 (+4/-0),96.224s,new41,100/16,162,CNY1.407048. Both model-only changes; not Goal passes.
-V21 paired BookStack third call from the SAME v18 two-call app scored31/34. It gained5.3.1 but lost
-4.5.1 and5.4.1 versus v20; do not promote. It kept fields visible but discarded typed values during
-disclosure rendering.9.1 still fails because the public recent-updates list remains hidden without
-login. V21 control76.138s,new41,096/14,716,CNY1.280989. This was not a fourth-call backfill.
+CURRENT controlled recovery: session95474, R/repair-bookstack-v23-recovery.log,
+R/repairs/v23-bookstack-stream-recovery; driver R/repair_v23_recovery.py --app bookstack.
+Starts from the unchanged v22 BookStack highspeed-r1a draft. It inherits1 complete and1 failed call,
+uses the submitted3-completed/5-failed limits, and asserts the first retry body exactly equals the
+previously failed request SHA34bd582ab4876cd9d4b91a1fd02a58ccc761d96c3002bc4260c3be06868a3368.
+Following automatic retries retain that hash until a repair completes. A subsequent diagnostic
+follow-up may use the remaining completed slot. Model calls/usage incurred now are separate from
+inherited history. This control can validate recovery but cannot count as an independent Goal pass.
+Poll this SAME process; do not start overlapping local/official model work. After completion replay
+all34 cases, then begin a fresh v23 pair/repeats only when this recovery actually works.
 
-V22 now fills an existing text field before activating each declared disclosure and verifies its
-value survives. Homepage feedback explicitly states the unauthenticated visitor condition; the
-extractor already excludes separately authenticated dashboard lists. Real calibration reports all
-three v21 failures and stays clean on two full BookStack controls (R/probe-v22/verified-*).
-Evidence: evidence/2026-09-22-lite-v21-control.json. Extractor8 tests passed for v21; v22 changes
-only the browser helper, calibrated against real applications. V20's full107 regression evidence
-and exact EADDRINUSE rerun remain recorded below.
+## Stopped v22 independent attempts, preserved evidence
 
-V22 controlled BookStack third call completed34/34 (+6/-0 from v18),107.595s,new41,241 input/
-16,667 output,CNY1.436151. Model-only app.js change; no manual app edits. One new call plus two
-inherited real v18 calls stays within the3-call cap. It is NOT an independent Goal pass. The first
-preflight failed /runs500 three times before inference; recovery1 followed a successful604-row/0-active
-read. Original zero-call evidence is retained. Full result R/replays/diagnostic/bookstack-v22-third-call.
-Evidence: evidence/2026-09-22-lite-v22-control.json.
+Original parent51349 exited2 after BookStack highspeed-a9/34. First draft22,360/51,453 tokens,
+CNY2.837513. Its method receiver bug was diagnosed, but repair call2 reset mid-SSE:HTTP200,curl56,
+7969 valid events then partial JSON,0 answer,31,210 reasoning chars,no completion or usage.
+Raw pipe capture and curl stderr prove connection reset by peer, not a file-tail parser race.
+Failed-call cost/usage are UNKNOWN, not0. Failure artifact and full score are retained unchanged.
 
-The first v22 independent series is TERMINAL, parent51349 exited2 at BookStack highspeed-a9/34.
-First draft call completed22,360 input/51,453 output,CNY2.837513. It has a method receiver bug:
-APP.screen calls screen functions with APP as this, but their this.bookDetails etc live in APP.screens.
-The candidate diagnosed it, but repair call2 was reset by peer after108.580s:curl56,HTTP200,
-7,969 valid JSON events then raw final `data: {"choices":[`,31,210 reasoning chars,0 answer chars,
-no finish/DONE/usage. Direct transport reads a blocking stdout pipe; the raw capture and curl stderr
-confirm an incomplete connection, not a file-tail parser race. The original9/34 is the delivered
-unrepaired draft's real functional score. Model usage/cost for failed call2 remain UNKNOWN, not0.
-Meter shows the first call only, pending billing events0; this is not proof the failed call was free.
-Artifacts: R/generations/form-state-v22/bookstack-highspeed-a/failure-classification.json,
-R/billing-v22-independent-a.json, evidence/2026-09-22-lite-v22-stream-reset.json. Do not erase/exclude
-this failure from reliability reporting, and never count it as a Goal pass.
+Retry1 parent58800 also exited2, BookStack highspeed-r1a30/34. First draft22,360/65,004 tokens,
+CNY3.800896. Repair call2 got no HTTP response or SSE:curl52 Empty reply from server after61.729s,
+unknown cost/usage. It delivered the original draft, failing6.1.3,8.1,8.2,9.1. No later planned
+samples ran. Both series are terminal; never restart those parent handles. The consecutive repair
+transport failures justify bounded retry instead of paying for another full draft each time.
+Latest meter snapshot166.956839 CNY,pending events0; the two failed requests have no matched bill,
+which does NOT establish zero cost. They are recorded in R/accounting.json unsettled_generations.
+Evidence:evidence/2026-09-22-lite-v23-repair-retry.json and lite-v22-stream-reset.json.
 
-CURRENT: a NEW fresh series with the SAME frozen v22/model/configuration is running, parent58800.
-Driver R/v22_independent_series_retry1.py; log R/v22-independent-series-retry1.log;
-R/series-v22-retry1/status.json. Samples in order:BookStack highspeed-r1a,Keep highspeed-r1a,
-BookStack highspeed-r1b,Keep highspeed-r1b. Every app is generated anew; no frozen draft rescue is
-being counted. Each stage has live preflight and a model lock; it stops on first failed process or
-non-full score. Never restart the terminal original51349 or duplicate the current58800 children.
-Poll the same live parent handle; a state file alone is not liveness proof. No official run may overlap.
-
-R/audit_v22_series.py --series series-v22-retry1 is a READ-ONLY completion-evidence check that
-requires four full independent scores, exact frozen package, requirement/test hashes, runtime,
-matching source manifests, model parameters and distinct real request IDs. It deliberately refuses
-an incomplete series. Billing reconciliation and native Goal audit still remain separate requirements.
-If any new score fails, preserve the full case matrix and classify it before another change/replay.
-Official Lite trial remains authorized when promising; runtime Keep requirements differ from public.
+Prior controlled evidence: v22 BookStack34/34 (+6/-0),107.595s,41,241/16,667 new tokens,CNY1.436151;
+v20 Keep32/32 (+2/-0),58.613s,30,279/8,004,CNY0.777920. Neither is an independent Goal pass.
+V22 candidate aa72083a94e9ccece60aa7145e43e4545e0a913020fb00b8aefb5e966ee9ac98 remains frozen.
+R/audit_v22_series.py is only a prepared read-only audit for those stopped series, not a successful
+audit result. Prepare the equivalent for v23 once real full results exist; billing and official input
+cohorts must still be inspected independently. All official/public corpus files stay read-only.
 
 ## Current results and bounded changes
 

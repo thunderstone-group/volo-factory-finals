@@ -86,6 +86,33 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(self.transport.call_count, 1)
         self.assertEqual(budget.smoke, {"executed": True, "problems": [], "vocabulary_missing": 0, "repair": None})
         self.assertTrue((self.out / "backend/server.js").is_file())
+
+    def test_interrupted_repair_retries_same_request_without_publishing_partial_files(self):
+        partial = events(block('frontend/public/failed-version.js', 'discard me'), finish=None, done=False)
+        partial.append(b'data: {"choices":[')  # Synthetic reduction of a connection reset mid-event.
+        self.replies(events(app(server(health='{}')), {'prompt_tokens':10,'completion_tokens':20}),
+                     partial, events(block('backend/server.js', server()), {'prompt_tokens':3,'completion_tokens':7}))
+        files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertEqual([a['status'] for a in budget.attempts], ['completed','failed','completed'])
+        self.assertEqual(self.transport.call_args_list[1].args[0].data,
+                         self.transport.call_args_list[2].args[0].data)
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertFalse((self.out / 'frontend/public/failed-version.js').exists())
+        self.assertNotIn('frontend/public/failed-version.js', [f['path'] for f in files])
+        self.assertEqual(budget.summary()['unknown_usage_calls'], [2])
+        self.assertIsNone(budget.summary()['prompt_tokens'])
+        self.assertEqual(budget.summary()['known_prompt_tokens'], 13)
+
+    def test_repair_retry_stops_at_the_shared_failure_budget(self):
+        self.replies(events(app(server(health='{}'))), [], events(block('backend/server.js', server())))
+        budget = adapter.CallBudget(limit=3, fail_limit=1)
+        adapter.generate('Synthetic requirements only', 'synthetic-model',
+                         'https://synthetic.invalid/v1', SYNTHETIC_KEY, self.out, budget)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertFalse(budget.smoke['repair']['accepted'])
+        self.assertEqual(len(budget.failed()), 1)
+        self.assertTrue(budget.exhausted())
         self.assertEqual(list(self.root.glob(".oneshot-*")), [])
 
     def test_root_404_is_repaired_and_repair_is_kept(self):
