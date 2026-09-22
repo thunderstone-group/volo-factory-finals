@@ -814,3 +814,15 @@ Frozen v22 series now running(parent51349):BookStack-a,Keep-a,BookStack-b,Keep-b
 sequential full public replays. Stops at first failure; no blind inference retries. Current state and
 step logs R/series-v22; completion still requires actual4-pass audit and authorized official follow-up.
 Evidence: evidence/2026-09-22-lite-v22-control.json.
+
+## 2026-09-22 — First v22 series stopped after repair connection reset; same-candidate fresh retry1 started
+
+BookStack highspeed-a9/34: complete first draft has wrong method receivers; diagnosed repair call
+ended HTTP200/curl56 Connection reset by peer after108.580s. Raw SSE7969 valid events then a partial
+JSON line;0 answer,31,210 reasoning chars,no usage/DONE. First call settled CNY2.837513,22,360/51,453
+tokens; failed-call usage/cost remain unknown even though meter pending events0. Parent51349 exited2
+and did not launch later samples. No parser change or candidate change is justified by this failure.
+After checking terminal process/raw stream/meter, NEW independent retry1 series started(parent58800),
+same frozen v22/model/config; names r1a/r1b keep all evidence distinct. Old9/34 is retained and never
+counts as a pass. Evidence:evidence/2026-09-22-lite-v22-stream-reset.json. Completion audit prepared
+at R/audit_v22_series.py; it cannot approve an incomplete series or replace real billing/official checks.

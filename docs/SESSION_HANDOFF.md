@@ -1,4 +1,4 @@
-# Current handoff — 2026-09-22: v22 controlled BookStack34/34; four independent replays running
+# Current handoff — 2026-09-22: v22 repair stream reset; same-candidate fresh series retry1 running
 
 Native Goal remains active: only Keep32 and BookStack34. The SAME portable candidate/model must
 independently pass both and independently repeat each. Frozen edits and controlled/cached repairs
@@ -34,20 +34,33 @@ preflight failed /runs500 three times before inference; recovery1 followed a suc
 read. Original zero-call evidence is retained. Full result R/replays/diagnostic/bookstack-v22-third-call.
 Evidence: evidence/2026-09-22-lite-v22-control.json.
 
-CURRENT: four independent replays are AUTOMATICALLY running under parent session51349.
-Driver R/v22_independent_series.py; main log R/v22-independent-series.log; live status
-R/series-v22/status.json. It runs frozen v22 with identical model/configuration in this order:
-BookStack highspeed-a, Keep highspeed-a, BookStack highspeed-b, Keep highspeed-b. Each generation
-has its own preflight and global request lock, then all34/32 unchanged public tests. It stops at the
-FIRST process failure or non-full score; it never retries inference. All logs and results are retained.
-Do not launch a second generation or an official run while this series is alive. Poll the SAME parent
-handle or inspect its live PID; a state file alone is not liveness proof. Check both the series status
-and its current child receipt. A process observation timeout never authorizes restart.
+The first v22 independent series is TERMINAL, parent51349 exited2 at BookStack highspeed-a9/34.
+First draft call completed22,360 input/51,453 output,CNY2.837513. It has a method receiver bug:
+APP.screen calls screen functions with APP as this, but their this.bookDetails etc live in APP.screens.
+The candidate diagnosed it, but repair call2 was reset by peer after108.580s:curl56,HTTP200,
+7,969 valid JSON events then raw final `data: {"choices":[`,31,210 reasoning chars,0 answer chars,
+no finish/DONE/usage. Direct transport reads a blocking stdout pipe; the raw capture and curl stderr
+confirm an incomplete connection, not a file-tail parser race. The original9/34 is the delivered
+unrepaired draft's real functional score. Model usage/cost for failed call2 remain UNKNOWN, not0.
+Meter shows the first call only, pending billing events0; this is not proof the failed call was free.
+Artifacts: R/generations/form-state-v22/bookstack-highspeed-a/failure-classification.json,
+R/billing-v22-independent-a.json, evidence/2026-09-22-lite-v22-stream-reset.json. Do not erase/exclude
+this failure from reliability reporting, and never count it as a Goal pass.
 
-If all4 pass, inspect each full result, identical package/configuration and corpus/runtime manifests;
-only then the Goal completion audit can pass. Official Lite trial is already authorized when promising,
-and must not overlap local inference. If any score fails, retain full per-case comparisons and continue
-controlled attribution. Never count the controlled34/34 or old Keep32/32 toward independent passes.
+CURRENT: a NEW fresh series with the SAME frozen v22/model/configuration is running, parent58800.
+Driver R/v22_independent_series_retry1.py; log R/v22-independent-series-retry1.log;
+R/series-v22-retry1/status.json. Samples in order:BookStack highspeed-r1a,Keep highspeed-r1a,
+BookStack highspeed-r1b,Keep highspeed-r1b. Every app is generated anew; no frozen draft rescue is
+being counted. Each stage has live preflight and a model lock; it stops on first failed process or
+non-full score. Never restart the terminal original51349 or duplicate the current58800 children.
+Poll the same live parent handle; a state file alone is not liveness proof. No official run may overlap.
+
+R/audit_v22_series.py --series series-v22-retry1 is a READ-ONLY completion-evidence check that
+requires four full independent scores, exact frozen package, requirement/test hashes, runtime,
+matching source manifests, model parameters and distinct real request IDs. It deliberately refuses
+an incomplete series. Billing reconciliation and native Goal audit still remain separate requirements.
+If any new score fails, preserve the full case matrix and classify it before another change/replay.
+Official Lite trial remains authorized when promising; runtime Keep requirements differ from public.
 
 ## Current results and bounded changes
 
