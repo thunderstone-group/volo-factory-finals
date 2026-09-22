@@ -517,3 +517,77 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
   3a558ab1bb99ed78944b782eb5c08f8785022c400ee3cc0821ab0ab781ba7a0a. No model calls, uploads or official runs.
 - Next acceptance is both complete Lite suites plus independent fresh generations; not yet achieved.
   Report: reports/2026-09-22-lite-first.md; evidence: evidence/2026-09-22-lite-first.json.
+
+## 2026-09-22 — Owner explicitly starts native Lite Goal
+
+- Native Goal active: same candidate completes Keep 32/32 and BookStack 34/34, each verified with
+  another independent generation. No token budget specified; existing ARC balance authorization applies.
+- Frozen candidate 01fa275, deepseek-v4-flash temperature 0, current official YAML snapshots, evaluator
+  isolated from generation. Fresh Keep A generation started; BookStack follows sequentially.
+- Preflight: no active official runs, CNY 220.986877. One setup-only meter-route error corrected before
+  any model call; logs preserved. Per-request raw SSE, request hash, usage and remote recovery job retained.
+- Execution plan/state: runs/lite-goal-20260922/{plan,state}.json; current log keep-a.log.
+
+## 2026-09-22 — Fresh Keep baseline and complete diagnostic replay
+
+- Frozen candidate 01fa275 independently generated Keep A from current YAML: one completed request,
+  21,791 input / 94,185 output tokens; 688.575 seconds including transport and smoke.
+  Metered cost CNY 0.913038, uniquely matched by model, exact usage and request time window.
+- Full unchanged Keep suite: 23/32. Delivery smoke reported no problems. Nine failures: four initial
+  seed states, two renamed archive controls, two label-editor scope failures, one checkbox removed on change.
+- A separate manual diagnostic copy correcting those contracts passes 32/32 in 7.671 seconds, +9/-0.
+  It is root-cause evidence only, not a generated success or completion of the Goal.
+- Prepared requirements-first-v1: only dialect.md changes, 2864 to 683 words; exact requirements,
+  initial state, editor scope and native control stability take priority over old global locator rules.
+  No new task-specific implementation or evaluator content is packaged. Candidate is unpromoted.
+- BookStack A baseline is generating sequentially after Keep's request finished. Full replay follows.
+  Next model comparison will use the same model and call cap with current requirements.
+- Runtime recovery: image tag lookup failed before test startup; replay was restored with the exact
+  previously measured image digest and explicit desktop-linux context. No test or model call was repeated
+  by that environment recovery. Logs and original incomplete replay directory remain preserved.
+
+## 2026-09-22 — Both causal diagnostics pass; separate Qwen comparison starts
+
+- Fresh DeepSeek BookStack A: first call 23,882 input / 104,030 output tokens, settled CNY 0.996038.
+  Its runtime probe found wrong `this` binding in the route table. Automatic repair was rejected with
+  HTTP 429 `insufficient_quota`; an exact-request recovery was also rejected. Current metered balance
+  remained CNY 219.077801, so this was not explained by the visible account balance.
+- Full original BookStack replay: 5/34. One callback-receiver correction: 29/34. Adding public dashboard
+  reachability and correcting the initial favorite state: 34/34, +29/-0 against the original.
+  Both diagnostic apps now pass all 66 tests, but they were manually corrected and do not satisfy Goal.
+- Confirmed DeepSeek costs total CNY 1.909076. Two rejected requests returned no usage; keep them
+  separately recorded rather than inventing token counts. Neither request regenerated the first draft.
+- Existing fallback qwen3.7-plus is listed available by the organizer and its first baseline Keep request
+  is receiving stream data. Start a separate same-model comparison: baseline and candidate both on Qwen.
+  Preserve the DeepSeek record separately; do not attribute cross-model differences to the prompt.
+- requirements-first-v1 remains unpromoted and only changes dialect.md, now 728 words including the
+  callback-owner rule. ZIP c92409dd8a89d764214138a9c338483a7b1cc612b089a72690b9f84e168fc608.
+  If the existing baseline reaches both full suites on Qwen, independently repeat it before making
+  unnecessary changes. Otherwise compare the compact candidate and retain only verified gains.
+- Evidence snapshot: evidence/2026-09-22-lite-goal-baselines.json; live state and all receipts under
+  runs/lite-goal-20260922. Goal stays active; independent generated full passes are still missing.
+
+## 2026-09-22 — Remove a measured false repair and fix live input dispatch
+
+- Qwen baseline Keep: first draft 27/32; automatic repair also 27/32. Costs CNY 0.552576 + 0.147340,
+  total 52,030 input / 74,482 output tokens. The repair was triggered solely because the static label
+  scan treated `${ARC.esc(...)}` code as accessible text, inventing an arc/esc label collision.
+- Fixed the literal-only scanner to exclude unresolved template expressions. A regression retains
+  true literal Quantity collisions. Replaying the identical saved request/response with the fixed
+  scanner produces byte-identical source at 27/32 and makes no repair request; no new model call.
+- Separate input-event diagnostic: delegated field changes previously waited for blur (`change`).
+  Native `input` dispatch fixes the actual search/highlight journey: Keep 27 to 28, +REQ-3.2/-0.
+  Both fully corrected diagnostic apps retain 32/32 and 34/34 with the event change. This is now in
+  the shared scaffold. One-shot 84 passed after both code fixes; legacy 214 passed / 12 skipped.
+- Qwen BookStack baseline-v2 hit transient platform read errors, then an SSH launch failure. Its
+  original reserved remote directory remains /tmp/arc-mini-transport-a27697eaccdd4569958eec21d6b776ce;
+  the launch is unconfirmed and is not counted as a zero-cost or completed model request.
+- Read-only external probe through wanctl bms confirmed HK and LS SSH banners. Mac direct SSH,
+  LS jump and explicit local SOCKS failed; no server/network configuration was changed.
+- To keep progressing, a DIFFERENT meaningful candidate request now uses direct HTTPS to the same
+  official gateway. requirements-first-v3, Qwen, Keep direct-a, package
+  f286d4e4a09abc7168ed5402638c8c38f06f012c4f7d941f64450947391cb511. It combines independently
+  measured gate/input fixes with the compact requirements card; evaluate the whole candidate,
+  not an isolated prompt-effect claim. The old uncertain job is not restarted by this request.
+- Evidence: evidence/2026-09-22-lite-gates.json. All full diagnostic passes remain distinct from
+  independent generated passes required by the active Goal.

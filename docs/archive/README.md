@@ -28,3 +28,5 @@
 工具与语料：`docs/archive/legacy-harness/acceptance.md` `docs/archive/legacy-harness/external-gate.md`（harness_lab 的独立验收门）`docs/archive/legacy-harness/corpus.md`（公司 GitLab 提供的任务语料，09-11）。
 
 - `handoffs/2026-09-22-before-lite-first.md` — Main checkout handoff preserved before the owner redirected work to Lite.
+
+- `handoffs/2026-09-22-before-direct-v3.md` — Lite Goal state before direct v3 generation and the two measured generic fixes.

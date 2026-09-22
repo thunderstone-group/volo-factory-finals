@@ -17,7 +17,7 @@ question is whether a primitive here can absorb it (ADR 0001).
 | `lib/arc.js` §Popover | `openPopover(host, items, {kind, id, label})` / `closePopover()` | a record's More options menu, colour palette or label picker opens INSIDE that record's `<article>` (suites scope: `article >> button /^Delete Note$/`); header dropdowns use `kind: 'menu'` → `role=menu` + `menuitem` (`menu >> menuitem /^Settings$/`). The dialog root is only for editors and confirmations (round 19 Lite Keep lost 12 of 32 by opening the note menu as a dialog) |
 | `lib/arc.js` §Notification | `notify(message, {undo})` | `role=status` with the literal message and an Undo button |
 | `lib/arc.js` §Row actions | `rowActions([...], id)` | at most one row's actions visible at any instant, bare-verb names |
-| `lib/arc.js` §Events | delegated `data-action` / `data-change` | forms submit with their fields as an object; actions call `ARC.render()` after changing state |
+| `lib/arc.js` §Events | delegated `data-action` / `data-change` | value changes use native `input` events so live search updates before blur; forms submit with their fields as an object; actions call `ARC.render()` after changing state |
 
 Gates that protect it: `scaffold_gaps` (shell still loads seed/arc/app; primitives still defined),
 the DOM smoke (no throw on load, text rendered, landmarks present), the collision and vocabulary gates.

@@ -189,7 +189,9 @@
     const form = Object.fromEntries(new FormData(formEl).entries());
     dispatch(formEl.dataset.action, formEl, ev, form);
   });
-  document.addEventListener('change', (ev) => {
+  // Value-change actions run while typing, not only after a control loses focus.
+  // Programmatic value updates should emit a bubbling input event too.
+  document.addEventListener('input', (ev) => {
     const el = ev.target.closest('[data-change]');
     if (!el) return;
     dispatch(el.dataset.change, el, ev, null);

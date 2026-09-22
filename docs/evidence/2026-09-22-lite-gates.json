@@ -1,0 +1,83 @@
+{
+  "kind": "controlled local diagnostics, not Goal completion",
+  "gate_fix": {
+    "kind": "offline replay of an existing real response, not an independent generation",
+    "new_model_calls": 0,
+    "request_sha256": "f7eff355a4bf77424dc6a2cf962620d7943375c45eefa451d4753e163e15d9bc",
+    "same_first_request": true,
+    "application_identical_to_scored_first_draft": true,
+    "inherited_full_suite_score": {
+      "passed": 27,
+      "total": 32
+    },
+    "smoke": {
+      "executed": true,
+      "problems": [],
+      "vocabulary_missing": 0,
+      "repair": null
+    },
+    "replayed_usage": {
+      "calls": 1,
+      "call_limit": 3,
+      "completed_calls": 1,
+      "failed_calls": 0,
+      "failure_limit": 5,
+      "known_prompt_tokens": 21272,
+      "prompt_tokens": 21272,
+      "known_completion_tokens": 63754,
+      "completion_tokens": 63754,
+      "unknown_usage_calls": [],
+      "fallback_model": null,
+      "billing_status": "tokens_reported_cost_not_estimated"
+    },
+    "calls": [
+      "f7eff355a4bf77424dc6a2cf962620d7943375c45eefa451d4753e163e15d9bc"
+    ]
+  },
+  "qwen_keep_before": {
+    "app": "keep",
+    "passed": 27,
+    "total": 32,
+    "seconds": 60.367
+  },
+  "qwen_keep_after_unnecessary_model_repair": {
+    "app": "keep",
+    "passed": 27,
+    "total": 32,
+    "seconds": 61.824
+  },
+  "qwen_keep_input_fix": {
+    "app": "keep",
+    "passed": 28,
+    "total": 32,
+    "seconds": 50.067
+  },
+  "protected_full_cases": {
+    "keep": {
+      "app": "keep",
+      "passed": 32,
+      "total": 32,
+      "seconds": 7.672
+    },
+    "bookstack": {
+      "app": "bookstack",
+      "passed": 34,
+      "total": 34,
+      "seconds": 9.2
+    }
+  },
+  "validation": {
+    "oneshot_passed": 84,
+    "legacy_passed": 214,
+    "legacy_skipped": 12
+  },
+  "direct_candidate_sha256": "f286d4e4a09abc7168ed5402638c8c38f06f012c4f7d941f64450947391cb511",
+  "network_observation": {
+    "observer": "bms-20558674 via current wanctl peer 8e894048-ee66-4e48-a57c-6934ffda66ba",
+    "hk_ssh_banner": "SSH-2.0-OpenSSH_10.2p1 Ubuntu-2ubuntu3.6",
+    "ls_ssh_banner": "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.13",
+    "local_ssh": "banner timeout; jump and explicit local SOCKS also failed",
+    "server_configuration_changed": false
+  },
+  "run_root": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922"
+}

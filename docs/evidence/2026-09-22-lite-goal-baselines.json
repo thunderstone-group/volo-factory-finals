@@ -1,0 +1,44 @@
+{
+  "scope": [
+    "keep",
+    "bookstack"
+  ],
+  "goal_status": "active",
+  "completed": false,
+  "baseline_commit": "01fa275",
+  "deepseek": {
+    "keep": {
+      "generated": 23,
+      "total": 32,
+      "manual_diagnostic": 32,
+      "cost_cny": "0.913038"
+    },
+    "bookstack": {
+      "generated": 5,
+      "total": 34,
+      "routing_diagnostic": 29,
+      "complete_manual_diagnostic": 34,
+      "first_call_cost_cny": "0.996038",
+      "automatic_repair_rejected": "HTTP 429 insufficient_quota; exact-request recovery also rejected"
+    }
+  },
+  "known_settled_cost_cny": "1.909076",
+  "meter_balance_cny": "219.077801",
+  "diagnostic_results_are_not_generated_success": true,
+  "current_comparison": {
+    "model": "qwen3.7-plus",
+    "baseline_candidate": "01fa275",
+    "candidate_only_changes": "dialect.md",
+    "candidate_sha256": "c92409dd8a89d764214138a9c338483a7b1cc612b089a72690b9f84e168fc608",
+    "available_catalogue_confirmed": true,
+    "valid_model_generation_not_yet_verified": true
+  },
+  "run_root": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922",
+  "source_reports": {
+    "baseline/keep-a": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922/replays/baseline/keep-a/result.json",
+    "diagnostic/keep-contract-fixes": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922/replays/diagnostic/keep-contract-fixes/result.json",
+    "baseline/bookstack-a": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922/replays/baseline/bookstack-a/result.json",
+    "diagnostic/bookstack-routing-fix": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922/replays/diagnostic/bookstack-routing-fix/result.json",
+    "diagnostic/bookstack-contract-fixes": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922/replays/diagnostic/bookstack-contract-fixes/result.json"
+  }
+}

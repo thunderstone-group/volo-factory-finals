@@ -1145,22 +1145,30 @@ def aria_collision_gaps(stage, requirements=None):
     'Decrease quantity' before the quantity input, 'Upvote comment' before the comment box."""
     source = _frontend_sources(stage)
     quoted = _quoted_lower(requirements)
+    # Template expressions are source code, not rendered accessible names. This
+    # literal-only check cannot infer their values; naming their JS identifiers
+    # as colliding words causes unnecessary, potentially destructive repairs.
+    field_labels = {(label or placeholder or aria).strip()
+                    for label, placeholder, aria in FIELD_LABEL.findall(source)
+                    if (label or placeholder or aria).strip()
+                    and "${" not in (label or placeholder or aria)}
     field_words = set()
-    for label, placeholder, aria in FIELD_LABEL.findall(source):
-        field_words |= _label_words(label or placeholder or aria)
+    for label in field_labels:
+        field_words |= _label_words(label)
     if not field_words:
         return []
     collisions = []
     for match in ARIA_LABEL.finditer(source):
+        if "${" in match.group(1):
+            continue
         before = source[max(0, match.start() - 160):match.start()].lower()
         if not ("<button" in before or "'button'" in before or '"button"' in before or "createelement('button')" in before):
             continue
         shared = _shared_words(match.group(1), field_words)
         if shared and match.group(1).strip().lower() not in quoted:
             collisions.append((match.group(1), shared))  # a quoted button name is mandated; renaming it loses tests
-    labels = sorted({(l or p or a).strip() for l, p, a in FIELD_LABEL.findall(source)
-                     if (l or p or a).strip() and len((l or p or a).strip()) <= 32
-                     and len((l or p or a).split()) <= 4}, key=len)
+    labels = sorted({label for label in field_labels
+                     if len(label) <= 32 and len(label.split()) <= 4}, key=len)
     nested = []
     for i, short in enumerate(labels):
         for long in labels[i + 1:]:

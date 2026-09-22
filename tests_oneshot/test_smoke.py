@@ -371,6 +371,23 @@ class SmokeCase(unittest.TestCase):
         (stage / "backend" / "server.js").write_text("process.on('uncaughtException', () => {}); process.on('unhandledRejection', () => {});\n")
         self.assertEqual(adapter.process_guard_gaps(stage), [])
 
+    def test_template_expressions_are_not_accessible_label_collisions(self):
+        # Reduced from the real Lite Keep Qwen draft: the old scan treated
+        # ARC.esc in both interpolated attributes as a shared accessible name.
+        stage = self.root / "dynamic-labels"
+        public = stage / "frontend" / "public"
+        public.mkdir(parents=True)
+        source = public / "app.js"
+        template = ('const html = `<button aria-label="${ARC.esc(L.brand || \'App\')}">Home</button>'
+                    '<input placeholder="${ARC.esc(field.placeholder)}">`;\n')
+        source.write_text(template)
+        self.assertEqual(adapter.aria_collision_gaps(stage), [])
+        source.write_text(template + '<label>Quantity<input></label>'
+                          '<button aria-label="Decrease quantity">-</button>')
+        [problem] = adapter.aria_collision_gaps(stage)
+        self.assertIn("Decrease quantity", problem)
+        self.assertNotIn("ARC.esc", problem)
+
     def test_nested_label_advice_keeps_the_quoted_name_and_renames_the_other(self):
         stage = self.root / "stage2"
         (stage / "frontend" / "public").mkdir(parents=True)
