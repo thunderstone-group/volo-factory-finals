@@ -500,3 +500,377 @@ Append-only ledger of the current one-shot line (from 2026-09-17). The legacy mu
 - **r27 is the candidate** (`r27-candidate.zip` = oneshot/ at `e439539`); **PR #38 merged** into main (owner
   authorised). Balance about CNY 40 after r27; no round 28 without the owner.
 
+
+## 2026-09-22 — Lite-first scope, current suite alignment and first targeted fix
+
+- Owner redirected work to the distributed Lite requirements/tests, suspending six-task Web batches.
+  New worktree starts at current main 248eb65; existing experiments remain preserved.
+- Upstream simulator cfbbc287 and freshly fetched official Lite tests agree across 68 TypeScript
+  files after newline normalization. 32 Keep plus 34 BookStack ATOMIC IDs match one spec each.
+  September 18 helper assumptions are stale; see the report for changed tests.
+- Frozen r27 local baseline: Keep 15/32, BookStack 19/34 under ARM64 / Node 20.19.3 /
+  Playwright 1.57.0 / one CPU / 2GB / one worker / 10-second budgets. Not a new generation or official score.
+- A single home-button accessible-name change (remove extra "logo") fixes BookStack REQ-1.2:
+  full replay 20/34, +1/-0. Four other logo-blocked cases expose missing subsequent business outcomes.
+  The generic scaffold and naming guidance carry the same fix. Other failure families remain open.
+- 83 one-shot tests passed; legacy 214 passed / 12 skipped. Packaged SHA-256
+  3a558ab1bb99ed78944b782eb5c08f8785022c400ee3cc0821ab0ab781ba7a0a. No model calls, uploads or official runs.
+- Next acceptance is both complete Lite suites plus independent fresh generations; not yet achieved.
+  Report: reports/2026-09-22-lite-first.md; evidence: evidence/2026-09-22-lite-first.json.
+
+## 2026-09-22 — Owner explicitly starts native Lite Goal
+
+- Native Goal active: same candidate completes Keep 32/32 and BookStack 34/34, each verified with
+  another independent generation. No token budget specified; existing ARC balance authorization applies.
+- Frozen candidate 01fa275, deepseek-v4-flash temperature 0, current official YAML snapshots, evaluator
+  isolated from generation. Fresh Keep A generation started; BookStack follows sequentially.
+- Preflight: no active official runs, CNY 220.986877. One setup-only meter-route error corrected before
+  any model call; logs preserved. Per-request raw SSE, request hash, usage and remote recovery job retained.
+- Execution plan/state: runs/lite-goal-20260922/{plan,state}.json; current log keep-a.log.
+
+## 2026-09-22 — Fresh Keep baseline and complete diagnostic replay
+
+- Frozen candidate 01fa275 independently generated Keep A from current YAML: one completed request,
+  21,791 input / 94,185 output tokens; 688.575 seconds including transport and smoke.
+  Metered cost CNY 0.913038, uniquely matched by model, exact usage and request time window.
+- Full unchanged Keep suite: 23/32. Delivery smoke reported no problems. Nine failures: four initial
+  seed states, two renamed archive controls, two label-editor scope failures, one checkbox removed on change.
+- A separate manual diagnostic copy correcting those contracts passes 32/32 in 7.671 seconds, +9/-0.
+  It is root-cause evidence only, not a generated success or completion of the Goal.
+- Prepared requirements-first-v1: only dialect.md changes, 2864 to 683 words; exact requirements,
+  initial state, editor scope and native control stability take priority over old global locator rules.
+  No new task-specific implementation or evaluator content is packaged. Candidate is unpromoted.
+- BookStack A baseline is generating sequentially after Keep's request finished. Full replay follows.
+  Next model comparison will use the same model and call cap with current requirements.
+- Runtime recovery: image tag lookup failed before test startup; replay was restored with the exact
+  previously measured image digest and explicit desktop-linux context. No test or model call was repeated
+  by that environment recovery. Logs and original incomplete replay directory remain preserved.
+
+## 2026-09-22 — Both causal diagnostics pass; separate Qwen comparison starts
+
+- Fresh DeepSeek BookStack A: first call 23,882 input / 104,030 output tokens, settled CNY 0.996038.
+  Its runtime probe found wrong `this` binding in the route table. Automatic repair was rejected with
+  HTTP 429 `insufficient_quota`; an exact-request recovery was also rejected. Current metered balance
+  remained CNY 219.077801, so this was not explained by the visible account balance.
+- Full original BookStack replay: 5/34. One callback-receiver correction: 29/34. Adding public dashboard
+  reachability and correcting the initial favorite state: 34/34, +29/-0 against the original.
+  Both diagnostic apps now pass all 66 tests, but they were manually corrected and do not satisfy Goal.
+- Confirmed DeepSeek costs total CNY 1.909076. Two rejected requests returned no usage; keep them
+  separately recorded rather than inventing token counts. Neither request regenerated the first draft.
+- Existing fallback qwen3.7-plus is listed available by the organizer and its first baseline Keep request
+  is receiving stream data. Start a separate same-model comparison: baseline and candidate both on Qwen.
+  Preserve the DeepSeek record separately; do not attribute cross-model differences to the prompt.
+- requirements-first-v1 remains unpromoted and only changes dialect.md, now 728 words including the
+  callback-owner rule. ZIP c92409dd8a89d764214138a9c338483a7b1cc612b089a72690b9f84e168fc608.
+  If the existing baseline reaches both full suites on Qwen, independently repeat it before making
+  unnecessary changes. Otherwise compare the compact candidate and retain only verified gains.
+- Evidence snapshot: evidence/2026-09-22-lite-goal-baselines.json; live state and all receipts under
+  runs/lite-goal-20260922. Goal stays active; independent generated full passes are still missing.
+
+## 2026-09-22 — Remove a measured false repair and fix live input dispatch
+
+- Qwen baseline Keep: first draft 27/32; automatic repair also 27/32. Costs CNY 0.552576 + 0.147340,
+  total 52,030 input / 74,482 output tokens. The repair was triggered solely because the static label
+  scan treated `${ARC.esc(...)}` code as accessible text, inventing an arc/esc label collision.
+- Fixed the literal-only scanner to exclude unresolved template expressions. A regression retains
+  true literal Quantity collisions. Replaying the identical saved request/response with the fixed
+  scanner produces byte-identical source at 27/32 and makes no repair request; no new model call.
+- Separate input-event diagnostic: delegated field changes previously waited for blur (`change`).
+  Native `input` dispatch fixes the actual search/highlight journey: Keep 27 to 28, +REQ-3.2/-0.
+  Both fully corrected diagnostic apps retain 32/32 and 34/34 with the event change. This is now in
+  the shared scaffold. One-shot 84 passed after both code fixes; legacy 214 passed / 12 skipped.
+- Qwen BookStack baseline-v2 hit transient platform read errors, then an SSH launch failure. Its
+  original reserved remote directory remains /tmp/arc-mini-transport-a27697eaccdd4569958eec21d6b776ce;
+  the launch is unconfirmed and is not counted as a zero-cost or completed model request.
+- Read-only external probe through wanctl bms confirmed HK and LS SSH banners. Mac direct SSH,
+  LS jump and explicit local SOCKS failed; no server/network configuration was changed.
+- To keep progressing, a DIFFERENT meaningful candidate request now uses direct HTTPS to the same
+  official gateway. requirements-first-v3, Qwen, Keep direct-a, package
+  f286d4e4a09abc7168ed5402638c8c38f06f012c4f7d941f64450947391cb511. It combines independently
+  measured gate/input fixes with the compact requirements card; evaluate the whole candidate,
+  not an isolated prompt-effect claim. The old uncertain job is not restarted by this request.
+- Evidence: evidence/2026-09-22-lite-gates.json. All full diagnostic passes remain distinct from
+  independent generated passes required by the active Goal.
+
+## 2026-09-22 — v3 Keep regresses; official Lite evaluation authorized when ready
+
+- Independently generated v3 Keep: 25/32, one Qwen request, 17,436 input / 60,170 output tokens,
+  CNY 0.516232. The compact-card variant is rejected for promotion: compared with the Qwen baseline
+  it loses editor, pin-indicator and suggestion-role behavior despite correcting initial states/search.
+- v3 BookStack generation completed; complete suite replay is running. Prepared targeted-contract-v4
+  returns to the established card, corrects only contradictory scope/seed/role advice, and removes the
+  stale mandatory label-popover claim from scaffold context. Shared code fixes remain. V4 Keep started.
+- User explicitly authorized uploading to official Lite once the candidate looks sufficiently improved.
+  Run a concrete complete local comparison and package preflight, then upload/evaluate both Lite tasks
+  sequentially. Pause local gateway traffic during official runs. No additional submission permission needed.
+- Full Goal completion remains independent generated 32/32 and 34/34 with another independent full-pass
+  generation of each; diagnostic hand-fixed scores do not satisfy it. Official independent full passes
+  may provide that repeat evidence if package/model/requirements match.
+
+## 2026-09-22 — v3 pair complete: 53/66, rejected for promotion
+
+- Complete independently generated v3 pair: Keep 25/32 and BookStack 28/34, total 53/66.
+  Keep loses four previously passing behaviors while gaining two, so the compact-card ablation
+  is not promoted or selected for official submission. BookStack still loses dashboard/draft/
+  favorites journeys; the complete failures are preserved in evidence/2026-09-22-lite-v3-pair.json.
+- V4 Keep is generating. It starts from the established full card and only corrects demonstrated
+  conflicts: exact roles/scopes, initial states, entity editor ownership, and misleading scaffold
+  popover comments. Input and literal-label code fixes remain. No new self-test authority or
+  model-generated browser probe has been enabled.
+- User's official Lite submission authorization is retained; execute once a complete local pair
+  supports promotion. Manual diagnostic full scores remain explicitly excluded from Goal success.
+
+## 2026-09-22 15:28 — Keep reaches32/32 with observed browser repair; portable v5 diagnostics
+
+One real Qwen fixed-draft repair uses only requirements, original generation conversation and real
+Chromium observations. Keep v4 improves27/32 to32/32, +5/-0, without manual app edits. This is not
+an independent Goal pass. Input30,638/output7,263,116.632s, billed CNY0.119380. Full replay:
+`runs/lite-goal-20260922/replays/diagnostic/keep-v5-browser-repair/result.json`.
+
+Packaged the calibrated deterministic probe, native control click fixes, actual-button literal
+collision scan, and backtick name protection in `semantic-browser-v5`. ZIP SHA-256:
+`43b071f8a8ed9b30064dd54f47b96196aee4c54a128b524d879f5e5adc347137`.
+macOS and Linux positive calibrations report no errors for full Keep/BookStack samples; BookStack
+v4 first draft yields two missing homepage-list observations. Runtime gaps remain explicit.
+One-shot90 tests pass. Controlled BookStack repair is in flight; official evaluation remains pending.
+
+## 2026-09-22 15:34 — BookStack automatic repair32/34; independent Keep v5 running
+
+The packaged v5 flow repairs raw BookStack28/34 to32/34 (+REQ-7.1,7.2,8.2,9.1; zero losses).
+One real Qwen call uses31,976 input/9,702 output,178.697s. Cost pending meter reconciliation.
+Remaining cases REQ-6.1.2 and6.1.3 concern draft workflows. Both controlled repairs total64/66;
+these are not independent Goal passes. Evidence: `evidence/2026-09-22-lite-semantic-repair.json`.
+One-shot90 passed, legacy214 passed/12 skipped. Fresh v5 Keep is generating now. After its complete
+replay shows no material regression, proceed with the already authorized official Lite trial;
+use the official runs for independent generation evidence, and keep local model traffic paused.
+
+## 2026-09-22 15:41 — Common native-control change preserves all66 diagnostic cases
+
+Replacing only the ARC library on the previously full diagnostic applications retains Keep32/32
+and BookStack34/34 in complete frozen-suite replays. No model call, no evaluator modification;
+these samples do not count as independent Goal passes. Evidence:
+`evidence/2026-09-22-lite-native-v5-preservation.json`.
+
+Official read-only preflight found zero active account runs and zero pending Lite runs. BookStack
+v5 fixed-draft repair settled at CNY0.141568; available balance CNY216.112085 before the ongoing
+Keep generation settles. Exact preflight and accounting remain in the run tree. No upload yet.
+
+## 2026-09-22 16:00 — Independent v5 Keep29/32; official trial started; v6 probe calibrated
+
+Fresh v5 Keep29/32 improves v4 first draft by2 with zero losses. One Qwen call:20,296 input/53,707
+output,1021.063s, billed CNY0.470248. The unchanged v5 package was uploaded and downloaded with
+matching SHA-256; submission9331665b18ae, official Keep2eef0a0f987a is RUNNING. All local model
+traffic is stopped; official BookStack will run serially from the same submission.
+
+A 15-line probe-only v6 change catches the three local label failures via two real browser
+observations, with no errors on positive Keep32/BookStack34 samples. No v6 model call or upload.
+V6 ZIP SHA-256 aba35a4ed761d15068de320b31da31a74054ab3607fcda2b0617a1db186f6d11.
+Evidence: `evidence/2026-09-22-lite-v5-official-start.json`. Goal remains active and incomplete.
+
+## 2026-09-22 16:17 — Same-tab state repair lifts frozen BookStack to33/34 without losses
+
+The Save Draft test does log in. Full navigation inside its helper exposed a scaffold bug: ARC.state
+was always re-seeded, losing login. Real Chromium reproduction observed signed-in true then false;
+the sessionStorage fix retains true after navigation and keeps a fresh context signed-out. Changing
+only this library primitive improves frozen BookStack32/34 to33/34 (+REQ-6.1.2/-0). Both full positive
+diagnostics retain Keep32/32 and BookStack34/34. One-shot91 passed; the strengthened real-browser
+fixture was rerun separately and passed. No local model calls and no official-test edits.
+
+Prepared session-store-v7 ZIP1d36d56969428487b98e4ee1aea72030acc96e7d372c2371dc867e373e96b693.
+V6 exact-response replay independently proves identical initial request/app bytes with newly detected
+label errors, at zero new model calls. Neither these replays nor manual library swaps count as Goal
+generations. Official v5 Keep remains running; waiter15024 safely retries a transient TLS read error.
+Evidence: `evidence/2026-09-22-lite-state-persistence.json`.
+
+## 2026-09-22 16:35 — Official input diverges from public Lite; last frozen BookStack failure diagnosed
+
+Current official Keep workspace download has85 semantic field differences versus the public exercise.
+The public file matches clean upstream HEAD; the runtime input omits explicit accessibility contracts.
+Both versions are retained separately and unchanged. This official run cannot count as identical-input
+public Goal replay. No runtime evaluator-source identity has been established. Upload key identity
+was checked without recording secret values; it matches the current account key. Workspace snapshot
+shows only unchanged scaffold files so far. Evidence: `evidence/2026-09-22-lite-requirement-divergence.json`.
+
+A one-line frozen BookStack navigation correction improves33/34 to34/34 with zero losses. It routes
+existing drafts through the normal reading/Edit flow. Added the corresponding generic rule to the
+v8 card; actual generation effect remains unmeasured. No model calls or official-test changes. V8
+ZIPb7b167f9e7e13bd281a0086367e493db7374c266669ac80522ed5129ffc76981. The official v5 run remains
+the same2eef0a0f987a; waiter15024 is live. Goal is active and not complete.
+
+## 2026-09-22 19:11 — Official pair finished; Kimi cohorts and a false repair rollback resolved
+
+Official v5 Qwen: Keep14/32,CNY0.665106,122,304 tokens; BookStack27/34,CNY0.584954,115,063 tokens.
+Keep had two1200s incomplete streams before a successful draft and repair. Same official Keep app
+replays13/32 on public tests, differing only atREQ-1.1. Keep inputs differ85 fields; BookStack inputs
+have0 semantic differences. No official run remains active.
+
+User supplied a provider notice favoring Kimi stability. Standard Kimi v11 Keep25/32 in995.977s;
+BookStack hit local curl1200s cap with no answer/usage. It is not a scored BookStack app or proved
+provider outage. HighSpeed v12 completes draft+repair in290.335s, but the retention guard falsely
+rolled back a data-driven Change labels menu. The model repair itself passes32/32 (+7/-0). v13
+uses successful browser observations to retain the name; cached exact-response replay preserves
+identical full-score app bytes with0 new calls. Fresh v13 Keep is running, session96391.
+
+Generic fixes include connected popover replacement anchors and explicit seed-state diagnostics.
+98 regressions passed; both new retention tests plus actual-rename protection passed. No independent
+full v13 Goal pass yet. Evidence: `evidence/2026-09-22-lite-kimi-transition.json`.
+
+## 2026-09-22 19:34 — Fresh v13 pair61/66; v14 targets remaining Keep contracts
+
+Same v13 package and Kimi HighSpeed configuration: Keep29/32, BookStack32/34. Both used2 completed
+calls with no stream failures. This is a real independent pair, but not a full Goal pass. Keep failures
+come from invented seed operation text and a root-only title=Pinned marker. Two diagnostic edits
+produce32/32 without losses. v14 adds empty optional seed text guidance and a visible descendant
+state-title diagnostic while preserving explicitly requested root attributes. Real positive/negative
+calibration passed; the fresh v14 Keep request is running (session86629).
+
+BookStack still fails draft entry and Favorite setup; inspect live generated source before changing
+those. Evidence: `evidence/2026-09-22-lite-v13-pair.json`. Latest settled balance snapshot206.381505 CNY
+predates the newest generation; actual per-call bills are retained in R/accounting.json. Goal active.
+
+## 2026-09-22 — v14 event regression attributed; v16 calibrated
+
+Fresh v14 Keep23/32,2 completed Kimi HighSpeed calls,422.480s,48,892 input/75,990 output.
+The app's capture listener blocked delegated menu actions; nested hosts lost record IDs. A frozen
+minimal correction scores32/32 with no loss. New general event-delivery checks detect the actual
+failure and remain clean on known passing apps. BookStack draft entry and preseeded favorites are
+also diagnosed; its minimal frozen correction scores34/34. These are diagnostic gains, never Goal
+passes. Six real-browser calibrations match the shipped helper hash. v16 ZIP7ec29c1d42535c2b7529246b6e0f562132ee1d6873ec823c25391a15fcecc6bb.
+Independent v16 pair is next. Evidence: evidence/2026-09-22-lite-event-flow.json.
+
+Validation update:102 one-shot tests passed; the1 browser skip was separately run with the existing
+Playwright cache and passed. Fresh v16 Keep started (session71835), live preflight no active official
+run, settled balance197.830879 CNY. No new recharge or purchase.
+
+## 2026-09-22 — v16 pair57/66 rejected; remaining failures calibrated for v17
+
+Independent v16 Keep31/32 (405.609s,CNY4.531208),BookStack26/34 (279.712s,CNY3.595937).
+Both used2 completed Kimi HighSpeed calls and no failed streams. BookStack materially regressed;
+do not promote v16. Generic sidebar deduplication restores frozen Keep32/32. BookStack's8 failures
+reduce to missing detail creation action, missing disclosure controls, draft entry and guest toggle.
+Minimal diagnostic corrections restore34/34 with0 losses. v17's requirement-derived browser checks
+catch those failures and remain clean on fixed/previous positive apps. No Goal full pass yet.
+Evidence: evidence/2026-09-22-lite-v16-pair.json. Next is one controlled model repair, then fresh pair.
+
+Validation update:all105 one-shot tests passed with0 skips (90.684s). Controlled v17 BookStack repair started; no fresh generation or new official run yet.
+
+Controlled repair result:BookStack26/34→34/34,+8/-0,model-only app edits,1 call44,259/14,293 tokens,81.440s. Experiment driver passed a dict for the file list; corrected offline replay preserved exact request bytes and raw SSE,0 extra calls. Production candidate unaffected. Fresh v17 BookStack is now generating; it must pass independently before counting toward Goal.
+
+## 2026-09-22 — v17 fresh BookStack33/34; missing-toggle check calibrated, platform read unavailable
+
+Fresh Kimi HighSpeed BookStack249.058s,2 completed calls56,773/46,373 tokens,33/34. Only Favorite
+fails because generated code hides it unless logged in. V17's diagnostic skipped missing controls;
+v18 reports the explicit required initial state instead. Corrected frozen app34/34 (+1/-0), four real
+negative/positive calibrations passed. V18 ZIP2aa980e96b67408e585c36101240ebea5cc3d7359b6374976f1a106c2c03906f.
+Keep v17 preflight failed GET /runs with500 three times before ANY model call. Normal and filtered
+read-only follow-ups also returned500. No new generation/upload until current run activity can be
+verified. Goal active; substantial progress this turn, external read recovery is the next dependency.
+Evidence: evidence/2026-09-22-lite-v17-initial-control.json. Controlled v17 repair settled CNY1.347189.
+
+## 2026-09-22 — Platform read recovered; independent v18 pair started
+
+GET /runs returned604 records with no active execution or pending Lite run. Known official BookStack also reads terminal. The two old pending smoke/ticket records are outside this task. Fresh v18 BookStack launched(session92126); follow the same live request, then full replay and same-candidate Keep. No score yet.
+
+## 2026-09-22 — v18 independent58/66; v20 uses remaining repair budget and actual disclosure observations
+
+V18 Keep30/32 (358.160s,49,327/64,297 tokens),BookStack28/34 (244.352s,59,571/48,935 tokens),
+2 completed calls each,0 failed streams. No full Goal pass. BookStack startup repair revealed UI
+failures but did not spend its remaining allowed third call. V20 follows up only on observed remaining
+problems after an accepted repair, within the original3-call cap, with per-iteration rollback and
+history. Added real disclosure activation checks and implementation-independent record-checkbox scope.
+Four current-helper browser calibrations catch both actual failed apps and leave full-score controls
+clean. Staged tests4 pass; full107 had106 passes plus1 EADDRINUSE failure, exact rerun passed;
+latest extractor7 pass. Controlled third BookStack call is running (session68097), not independent.
+Evidence: evidence/2026-09-22-lite-v18-pair.json. V20 ZIP213962945b57950b0c842c403ab392c8a9d289a6dd085802079d482f907a4ebe.
+
+## 2026-09-22 — Controlled third calls Keep32/32 and BookStack32/34; refine scenario context
+
+V20 controls from frozen v18: Keep+2/-0→32/32,BookStack+4/-0→32/34. One new model call each,
+within the original3-call cumulative budget; never independent Goal passes. BookStack remaining
+5.3.1 is null/undefined parent-ID reinitialization in no-parent create form;9.1 is a private-only home
+hiding the public recent-updates list. V21 respects authenticated scenario conditions and follows
+explicit create entry actions. Negative control reports exactly those2 causes; full Keep/BookStack
+controls stay clean, extractor8 pass. Paired v21 third-call control starts from the same v18 app,
+not the v20 output (session15410). Evidence: evidence/2026-09-22-lite-v20-controls.json.
+
+## 2026-09-22 — v21 control rejected; field-value preservation added to v22 diagnostics
+
+Paired v21 third BookStack call31/34: +5.3.1 but -4.5.1/-5.4.1 versus v20. No promotion. It exposed
+fields but discarded entered values on disclosure render; public recent updates still hidden.
+V22 probes fill then reveal and verify retention, plus explicit unauthenticated-home feedback.
+Three real calibrations catch all remaining v21 failures and leave two full BookStack controls clean.
+V22 control starts again from the SAME v18 two-call app, not v20/v21 outputs, with exactly1 new
+allowed call(session79418). Goal passes remain0. Evidence: evidence/2026-09-22-lite-v21-control.json.
+Settled controls:v20 Keep0.777920 CNY,BookStack1.407048;v21 BookStack1.280989.
+
+V22 first preflight failed /runs500×3 before inference. Subsequent read recovered604 rows/0 active runs. Original zero-call attempt retained; recovery1 launched(session18187), same frozen candidate/base/model. No model request was duplicated.
+
+## 2026-09-22 — v22 controlled BookStack34/34; four independent replays launched
+
+Controlled v22 from the same v18 two-call draft reaches34/34,+6/-0,model-only app.js edits.
+One new call41,241/16,667 tokens,107.595s,CNY1.436151. Failed initial preflight sent0 model calls;
+recovery1 followed a successful live /runs read. This is not an independent Goal pass.
+Frozen v22 series now running(parent51349):BookStack-a,Keep-a,BookStack-b,Keep-b, same package/model,
+sequential full public replays. Stops at first failure; no blind inference retries. Current state and
+step logs R/series-v22; completion still requires actual4-pass audit and authorized official follow-up.
+Evidence: evidence/2026-09-22-lite-v22-control.json.
+
+## 2026-09-22 — First v22 series stopped after repair connection reset; same-candidate fresh retry1 started
+
+BookStack highspeed-a9/34: complete first draft has wrong method receivers; diagnosed repair call
+ended HTTP200/curl56 Connection reset by peer after108.580s. Raw SSE7969 valid events then a partial
+JSON line;0 answer,31,210 reasoning chars,no usage/DONE. First call settled CNY2.837513,22,360/51,453
+tokens; failed-call usage/cost remain unknown even though meter pending events0. Parent51349 exited2
+and did not launch later samples. No parser change or candidate change is justified by this failure.
+After checking terminal process/raw stream/meter, NEW independent retry1 series started(parent58800),
+same frozen v22/model/config; names r1a/r1b keep all evidence distinct. Old9/34 is retained and never
+counts as a pass. Evidence:evidence/2026-09-22-lite-v22-stream-reset.json. Completion audit prepared
+at R/audit_v22_series.py; it cannot approve an incomplete series or replace real billing/official checks.
+
+## 2026-09-22 — Second v22 repair transport failure; bounded repair retry validated for v23
+
+Retry1 stopped30/34 after repair got HTTP000/curl52 Empty reply after61.729s,0 SSE. First draft
+22,360/65,004 tokens,CNY3.800896; failed-call cost/usage unknown. No later series samples ran.
+V23 applies existing3-attempt stream retry to repair too; keeps3 completed and5 failed global caps.
+Local driver now matches submitted failure limit5; previous driver frozen.110 regressions passed,
+0 skips. Controlled recovery of the same draft is running(session95474), importing original1
+complete+1 failed calls and asserting exact retry body. New usage remains separate. Still not an
+independent Goal pass. Evidence:evidence/2026-09-22-lite-v23-repair-retry.json.
+
+## 2026-09-22 — Nested seed-state fix completes controlled BookStack34/34; official trial prepared
+
+V23 recovery33/34 left a nested user favorite preselected for8.2. V24 checks collections throughout
+SEED; positive/negative calibration and minimal diagnostic replay confirm the cause. Final allowed
+completed model call clears it:34/34,+1/-0,new52,190/7,166 tokens,53.498s,CNY1.065434. Cumulative
+3 completed+1 failed requests; unknown failed usage retained. No independent Goal pass yet.
+User-authorized official BookStack trial is next, frozen v24 ZIP959890c1cfc7d8af8e17c7c9c969103936c55c7829f91b32b35294887cabb998,
+modelKimi HighSpeed. Preflight no active/pending Lite;balance164.513819 CNY. Local inference must
+not overlap. Official input identity and full public artifact replay are required before counting
+any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
+
+## 2026-09-23 01:50 — Harness review; v24 official BookStack 9/34 recorded
+
+- Official v24 Lite BookStack fd8ba0b84fe7 (submission 64ca71667aa8, Kimi HighSpeed): 9/34, CNY 3.821024,
+  333 s, 25 timeouts. A two-line routing defect in the generated app (`#/shelves/<id>` rendered the list,
+  `#/books` rendered the details page); local replay 9/34, router-corrected copy 30/34. The package's own
+  self-check reported zero problems on the delivered app and six on the corrected one.
+- Read-only review of the candidate, the 09-19 to 09-22 branches, 389 official runs and large-task readiness:
+  reports/2026-09-23-harness-review.md; evidence files evidence/2026-09-23-*.
+- The full participation notice (PDF) settles the formal rules: best submission counts, 48 h per task,
+  S = p / (c/(1.2p))^e pooled over the two tasks, top 20 advance.
+- No model calls, uploads or runs in this session. The recommendations await the owner's decision.
+
+## 2026-09-23 09:55 — Review archived in full; roadmap v1 and preliminary-rules reference
+
+- The four read-only sub-review reports are saved verbatim as appendices 1–4 of
+  reports/2026-09-23-harness-review.md. Appendix 0 records the method, seven main-session checks
+  (all confirmed), the disagreements and corrections between reviews, and how to reproduce.
+- Evidence added: the full participation notice (evidence/2026-09-20-participation-notice.pdf,
+  SHA-256 5da6b57e…314e, plus text), and the review's scripts and intermediate data under
+  evidence/2026-09-23-harness-review/. Scoring parameters were read from page 2 of the PDF itself:
+  b0 = 1.2, alpha = 0.1, beta = 0.2, cost in CNY.
+- New reference documents: reference/preliminary-rules.md (single source for competition rules) and
+  reference/roadmap.md (living plan: goal, strategy, eight workstreams with fixed completion
+  criteria, stage gates, evidence rules, decisions, iteration log). docs/README.md and AGENTS.md
+  now route new sessions through the roadmap after the handoff.
+- No model calls, uploads or runs. Current stage: pre-opening; all workstreams not started.

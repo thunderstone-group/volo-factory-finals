@@ -1,0 +1,60 @@
+{
+  "candidate": "form-state-v22",
+  "second_independent_attempt": {
+    "app": "bookstack",
+    "sample": "highspeed-r1a",
+    "passed": 30,
+    "total": 34,
+    "failed": [
+      "REQ-6.1.3",
+      "REQ-8.1",
+      "REQ-8.2",
+      "REQ-9.1"
+    ],
+    "generation_seconds": 402.873,
+    "completed_call": {
+      "input_tokens": 22360,
+      "output_tokens": 65004,
+      "settled_cny": "3.800896"
+    },
+    "repair_failure": {
+      "http_status": 0,
+      "curl_exit": 52,
+      "curl_error": "Empty reply from server",
+      "seconds": 61.729,
+      "sse_events": 0,
+      "answer_chars": 0,
+      "provider_usage": null,
+      "metered_cost": null
+    },
+    "series_terminal_exit": 2
+  },
+  "new_candidate": "repair-retry-v23",
+  "new_package_sha256": "74e377581ffac54808b3f900d1687ecc85c1cf1b88121abf6040d823f2617a61",
+  "change": "Repair streams now use existing bounded three-attempt retry; local failure limit aligns to unchanged submitted MAX_FAILURES=5",
+  "completed_call_limit": 3,
+  "validation": {
+    "tests": 110,
+    "passed": 110,
+    "skipped": 0,
+    "log": "v23-full-tests.log"
+  },
+  "independent_goal_passes": [],
+  "controlled_recovery": {
+    "passed": 33,
+    "total": 34,
+    "failed": [
+      "REQ-8.2"
+    ],
+    "gained_vs_source": 3,
+    "lost": 0,
+    "request_matches_previous_failed_bytes": true,
+    "new_input_tokens": 37978,
+    "new_output_tokens": 16368,
+    "new_call_seconds": 74.295,
+    "control_seconds": 91.408,
+    "settled_cny": "1.377586",
+    "inherited_failure_usage_remains_unknown": true,
+    "independent_goal_pass": false
+  }
+}

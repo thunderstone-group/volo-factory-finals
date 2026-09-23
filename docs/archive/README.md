@@ -26,3 +26,21 @@
 调查与实验：`docs/archive/legacy-harness/experiments.md`（09-12 前的全部实验记录）`docs/archive/legacy-harness/model-comparison-2026-09-12.md` `docs/archive/legacy-harness/logout-calibration-2026-09-12.md` `docs/archive/legacy-harness/ticket-booking-platform-report.md` `docs/archive/legacy-harness/registration-timing-2026-09-14.md` `docs/archive/legacy-harness/repair-loop-autopsy-2026-09-14.md` `docs/archive/legacy-harness/selfcheck-deadend-2026-09-14.md` `docs/archive/legacy-harness/small-board-tokens-2026-09-14.md` `docs/archive/legacy-harness/image-ablation-2026-09-14.md` `docs/archive/legacy-harness/ticket-regression-2026-09-14.md`。
 
 工具与语料：`docs/archive/legacy-harness/acceptance.md` `docs/archive/legacy-harness/external-gate.md`（harness_lab 的独立验收门）`docs/archive/legacy-harness/corpus.md`（公司 GitLab 提供的任务语料，09-11）。
+
+- `handoffs/2026-09-22-before-lite-first.md` — Main checkout handoff preserved before the owner redirected work to Lite.
+
+- `handoffs/2026-09-22-before-direct-v3.md` — Lite Goal state before direct v3 generation and the two measured generic fixes.
+
+- `handoffs/2026-09-22-1528.md`: Lite v3/v4 generation handoff before packaged deterministic browser diagnostics.
+
+- `handoffs/2026-09-22-1600.md`: Lite controlled repair and independent Keep handoff before the official v5 trial.
+
+- `handoffs/2026-09-22-1617.md`: official v5 trial and prepared v6 probe before the confirmed session-persistence fix.
+
+- `handoffs/2026-09-22-1635.md`: prepared persistence fix before official/public requirement divergence and draft-entry diagnosis.
+
+- `handoffs/2026-09-22-1911.md`: official v5 pending and v8 preparation before completed official results and Kimi cohorts.
+
+- `handoffs/2026-09-22-1934.md`: completed official trial and v13 Kimi cohort before the paired61/66 result.
+
+- `handoffs/2026-09-22-2221.md`: v24 controlled BookStack 34/34 and the prepared official trial, before the official 9/34 result and the harness review.

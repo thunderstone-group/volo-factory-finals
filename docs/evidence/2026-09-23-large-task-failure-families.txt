@@ -1,0 +1,112 @@
+=== 12306: 13 runs, 856 failures, mean failures/run 65.8
+   REQ-4.2     156  18.2%  Order Center / Personal Center and Frequent I
+   REQ-4.3     148  17.3%  Personal Information / Personal Center and Frequent I
+   REQ-5.3     134  15.7%  Order Confirmation and Payment / Ticket Booking
+   REQ-4.4     130  15.2%  Information Management / Personal Center and Frequent I
+   REQ-5.2      82   9.6%  Booking Form / Ticket Booking
+   REQ-3.2      68   7.9%  Ticket Search Results / Ticket Search and Display
+   REQ-3.1      35   4.1%  Home Quick Search / Ticket Search and Display
+   REQ-3.3      32   3.7%  Transfer Journey / Ticket Search and Display
+   REQ-2.4      19   2.2%  Forgot Password / User Authentication
+   REQ-5.1      17   2.0%  Login Interception and Quick Authentication / Ticket Booking
+   REQ-2.1      13   1.5%  User Registration / User Authentication
+   REQ-4.1      11   1.3%  Personal Center Entry / Personal Center and Frequent I
+   REQ-6.1       5   0.6%  Travel Guide Page / Travel Guide
+   REQ-6.2       4   0.5%  Travel Guide Dropdown Navigation / Travel Guide
+   top error lines:
+      104  waiting for getByRole('button', { name: /^Personal$/i }).first()
+       99  waiting for getByRole('checkbox').first()
+       77  waiting for getByRole('button', { name: /^order center$/i }).first()
+       75  waiting for getByRole('button', { name: /^Information management$/i }).first()
+       41  waiting for getByLabel(/From/i).first()
+       37  waiting for getByLabel('From')
+       21  waiting for getByRole('button', { name: /ticket orders/i }).first()
+       20  waiting for getByRole('row').filter({ has: getByRole('button', { name: 'Delete', exact: true }) }).first().getByRole('ce
+       18  waiting for getByText(/Train\s+Information/i).first()
+       18  waiting for getByRole('button', { name: /^Book$/i }).first()
+       17  Test timeout of #ms exceeded.
+       14  waiting for getByRole('dialog', { name: /Are\s+you\s+sure\s+you\s+want\s+to\s+cancel\s+this\s+order\?/i })
+=== ctrip: 12 runs, 1152 failures, mean failures/run 96.0
+   REQ-3.5     110   9.5%  Results Display and Advanced Filtering / Flight Search Module
+   REQ-4.2      93   8.1%  Value-Added Services and Trip Protection / Order and Booking Module
+   REQ-4.4      80   6.9%  Order Management Center (Order List) / Order and Booking Module
+   REQ-3.2      79   6.9%  Basic Trip Parameter Configuration / Flight Search Module
+   REQ-4.1      72   6.2%  Booking Page Information Entry and Display / Order and Booking Module
+   REQ-5.3      72   6.2%  Frequent Traveler Information Management / Common Information Management
+   REQ-5.5      60   5.2%  Frequent Contact Management / Common Information Management
+   REQ-5.6      60   5.2%  Frequent Reimbursement Receipt Management / Common Information Management
+   REQ-2.6      58   5.0%  User Registration Flow / User Authentication Module
+   REQ-5.4      48   4.2%  Frequent Address Management / Common Information Management
+   REQ-7.2      39   3.4%  Search Criteria Configuration / Flight Status
+   REQ-2.5      37   3.2%  Verification-Code Login / User Authentication Module
+   REQ-4.5      36   3.1%  Order Details and Actions / Order and Booking Module
+   REQ-2.4      33   2.9%  Account/Password Login / User Authentication Module
+   top error lines:
+      280  waiting for getByRole('button', { name: /个人中心/ }).first()
+      168  waiting for getByRole('button', { name: /出发城市/ }).first()
+       90  waiting for getByRole('button', { name: /订单中心/ }).first()
+       64  waiting for getByRole('button', { name: /登录/ }).first()
+       63  waiting for getByLabel(/出发城市/).first()
+       50  waiting for getByRole('button', { name: /邮箱.*用户名.*手机号/ }).first()
+       39  waiting for getByRole('button', { name: /倒计时/ }).first()
+       34  Test timeout of #ms exceeded.
+       24  waiting for getByRole('button', { name: /手机号/ }).first()
+       22  waiting for getByRole('button', { name: /航空公司/ }).first()
+       20  waiting for getByRole('button', { name: /价格/ }).first()
+       18  waiting for getByRole('button', { name: /乘机人/ }).first()
+=== prestashop: 12 runs, 314 failures, mean failures/run 26.2
+   REQ-8.6      42  13.4%  Wishlist Management / My Account
+   REQ-8.5      32  10.2%  Order History / My Account
+   REQ-6.3      23   7.3%  Addresses Step / Checkout Flow
+   REQ-8.4      23   7.3%  Address Management / My Account
+   REQ-4.5      14   4.5%  Quantity Selection / Product Detail Page
+   REQ-3.3      12   3.8%  Category Description / Category Page
+   REQ-4.11     12   3.8%  Related Products / Product Detail Page
+   REQ-4.2      12   3.8%  Product Image Area / Product Detail Page
+   REQ-6.4      12   3.8%  Shipping Method Step / Checkout Flow
+   REQ-6.5      12   3.8%  Payment Step / Checkout Flow
+   REQ-6.6      12   3.8%  Order Confirmation / Checkout Flow
+   REQ-6.7      12   3.8%  Order Complete Page / Checkout Flow
+   REQ-7.3      12   3.8%  User Registration / User Authentication
+   REQ-7.4      10   3.2%  Forgot Password / User Authentication
+   top error lines:
+       26  waiting for getByRole('button', { name: /bank wire/i }).first()
+       13  waiting for getByRole('button', { name: /deleted|removed|success/i }).first()
+       12  waiting for getByRole('button', { name: /you might also like/i }).first()
+       12  waiting for getByRole('button', { name: /birthday/i }).first()
+       12  waiting for getByRole('button', { name: /Favorites/i }).first()
+       11  waiting for getByRole('button', { name: /shopping cart|cart summary|your cart/i }).first()
+       10  Test timeout of #ms exceeded.
+       10  waiting for getByRole('button', { name: /reset password|password reset/i }).first()
+        9  waiting for getByRole('button', { name: /image/i }).first()
+        9  waiting for getByRole('button', { name: /reference/i }).first()
+        9  waiting for getByRole('button', { name: /shopping cart/i }).first()
+        8  waiting for getByRole('button', { name: /delivery/i }).first()
+=== stackoverflow: 12 runs, 278 failures, mean failures/run 23.2
+   REQ-3.4      47  16.9%  Edit Question / Question Module
+   REQ-5.2      24   8.6%  Edit and Delete Comments / Comments Module
+   REQ-4.5      23   8.3%  Edit Answer / Answer Module
+   REQ-2.5      14   5.0%  User Registration / User Authentication Module
+   REQ-3.2      14   5.0%  Ask Question / Question Module
+   REQ-2.4      12   4.3%  User Login / User Authentication Module
+   REQ-6.2      12   4.3%  Tag Detail Page / Tags Module
+   REQ-7.3      12   4.3%  Create Custom Filter / Search and Filter Module
+   REQ-9.6      12   4.3%  User Responses and Comments / User Activity Feed
+   REQ-1.5      10   3.6%  Right Sidebar Widgets / Homepage
+   REQ-5.1       9   3.2%  Question Comments / Comments Module
+   REQ-5.4       9   3.2%  Add Comment on Answer / Comments Module
+   REQ-6.3       9   3.2%  Follow Tags / Tags Module
+   REQ-3.5       8   2.9%  Delete Question / Question Module
+   top error lines:
+       24  waiting for getByRole('button', { name: /^edit$/i }).last()
+       20  waiting for getByText(/^edit$/i).first()
+       14  waiting for getByRole('button', { name: /^delete$/i }).last()
+       13  waiting for getByRole('button', { name: /Can\s+you\s+share\s+what\s+you\s+tried\s+so\s+far\?/i }).first()
+       12  waiting for getByRole('button', { name: /minimum # characters|password requirements/i }).first()
+       12  waiting for getByRole('button', { name: /tag info|description/i }).first()
+       11  waiting for getByRole('button', { name: /not a valid email address/i }).first()
+       10  waiting for getByRole('button', { name: /featured/i }).first()
+       10  waiting for getByRole('button', { name: /^edit$/i }).first()
+        9  waiting for getByRole('button', { name: /edited/i }).first()
+        8  waiting for getByRole('button', { name: /main question feed/i }).first()
+        8  waiting for getByRole('button', { name: /filter panel/i }).first()

@@ -1,0 +1,135 @@
+{
+  "candidate": "event-flow-v16",
+  "model": "kimi-k2.7-code-highspeed",
+  "independent_results": {
+    "keep": {
+      "passed": 31,
+      "total": 32,
+      "failures": [
+        "REQ-2.7.6.3"
+      ],
+      "seconds": 405.609,
+      "usage": {
+        "calls": 2,
+        "call_limit": 3,
+        "completed_calls": 2,
+        "failed_calls": 0,
+        "failure_limit": 1,
+        "known_prompt_tokens": 52359,
+        "prompt_tokens": 52359,
+        "known_completion_tokens": 75152,
+        "completion_tokens": 75152,
+        "unknown_usage_calls": [],
+        "fallback_model": null,
+        "billing_status": "tokens_reported_cost_not_estimated"
+      },
+      "settled_cny": "4.531208",
+      "billing_request_ids": [
+        "2026092220032215909447546783",
+        "2026092220081260177403620237"
+      ]
+    },
+    "bookstack": {
+      "passed": 26,
+      "total": 34,
+      "failures": [
+        "REQ-4.3.1",
+        "REQ-4.3.2",
+        "REQ-4.5.1",
+        "REQ-5.3.1",
+        "REQ-5.4.1",
+        "REQ-5.6.1",
+        "REQ-6.1.3",
+        "REQ-8.1"
+      ],
+      "seconds": 279.712,
+      "usage": {
+        "calls": 2,
+        "call_limit": 3,
+        "completed_calls": 2,
+        "failed_calls": 0,
+        "failure_limit": 1,
+        "known_prompt_tokens": 57935,
+        "prompt_tokens": 57935,
+        "known_completion_tokens": 57821,
+        "completion_tokens": 57821,
+        "unknown_usage_calls": [],
+        "fallback_model": null,
+        "billing_status": "tokens_reported_cost_not_estimated"
+      },
+      "settled_cny": "3.595937",
+      "billing_request_ids": [
+        "2026092220103199394351980176",
+        "2026092220142153576855367541"
+      ]
+    }
+  },
+  "goal_pass": false,
+  "promotion": "rejected: BookStack26/34 regresses versus v13 baseline32/34",
+  "next_candidate": "entry-contract-v17",
+  "next_sha256": "5cc0d54294edbbe68ae5bcbd3069544b08c23eaefde5f1d7d10a07403222615b",
+  "diagnostics": {
+    "keep": {
+      "result": "replays/diagnostic/keep-v16-sidebar/result.json",
+      "passed": 32,
+      "total": 32,
+      "lost_cases": []
+    },
+    "bookstack": {
+      "result": "replays/diagnostic/bookstack-v16-controls/result.json",
+      "passed": 34,
+      "total": 34,
+      "lost_cases": []
+    }
+  },
+  "calibrations": {
+    "verified-docker-book-v16-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 4.936,
+      "probe_sha256": "88f03cce7786bae1e79f09a47b9f135e33b89194d76b500700aedc3d240ff931"
+    },
+    "verified-docker-keep-v16-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 9.583,
+      "probe_sha256": "88f03cce7786bae1e79f09a47b9f135e33b89194d76b500700aedc3d240ff931"
+    },
+    "verified-docker-book-v16": {
+      "executed": true,
+      "errors": [
+        "The requirement starts \"New Shelf\" from record \"Shelf 4.3.1\", but that action is absent on its details page. Keep creation actions available in the declared entry context.",
+        "Primary record entry \"Draft 6.1.3\" in \"Book 6.1.3\" opens an editor directly, bypassing the reading/details view and its Edit action. Preserve the normal primary-entry flow for drafts too.",
+        "Activating \"Favorite\" on \"Book 8.1\" does not produce \"Unfavorite\" with aria-pressed=true as declared. Do not add an unstated login prerequisite or leave the visible toggle inert.",
+        "Form \"Edit shelf form\" requires a separate \"Shelf Tags\" control to reveal its \"tag1, tag2\" textbox. A label attached to an always-visible input does not implement that activation flow.",
+        "Form \"Edit book form\" requires a separate \"Book Tags\" control to reveal its \"tag1, tag2\" textbox. A label attached to an always-visible input does not implement that activation flow."
+      ],
+      "page_errors": [],
+      "seconds": 4.799,
+      "probe_sha256": "88f03cce7786bae1e79f09a47b9f135e33b89194d76b500700aedc3d240ff931"
+    },
+    "verified-docker-bookstack-positive": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 4.912,
+      "probe_sha256": "88f03cce7786bae1e79f09a47b9f135e33b89194d76b500700aedc3d240ff931"
+    }
+  },
+  "v17_controlled_model_repair": {
+    "passed": 34,
+    "total": 34,
+    "gained": 8,
+    "lost": 0,
+    "manual_app_edits": false,
+    "additional_replay_calls": 0,
+    "request_bytes_identical": true,
+    "input_tokens": 44259,
+    "output_tokens": 14293,
+    "seconds": 81.44,
+    "driver_error": "file-list type corrected in experiment driver only",
+    "independent_goal_pass": false
+  }
+}

@@ -1,0 +1,257 @@
+competition,task,model,harness,package,n,passed_list,mean_passed,min,max,sd,task_total,mean_pct,undelivered,own_cost_mean,own_cost_min,own_cost_max,meter_cost_mean,agent_s_median,run_ids
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r17,2,5/10,7.5,5,10,3.54,34,22.1,0,0.865,0.665,1.064,2.236,635.5,a7523e35a279 8ea91c95dfb3
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r18,2,7/6,6.5,6,7,0.71,34,19.1,0,0.896,0.86,0.931,14.635,665.5,ac491795eab1 fef05c369364
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r19,2,24/24,24,24,24,0.0,34,70.6,0,0.807,0.806,0.808,1.512,577.0,f99800d57773 d0b260f97a24
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r21,2,24/24,24,24,24,0.0,34,70.6,0,1.118,1.046,1.189,13.005,650.5,1d369ca44abe 9aab8906809c
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r22,2,25/24,24.5,24,25,0.71,34,72.1,0,1.221,1.119,1.323,15.245,753.5,0d3fe87d31d4 f7b716aaa115
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r23,2,25/24,24.5,24,25,0.71,34,72.1,0,1.211,1.127,1.294,7.847,1235.5,64ac641ce1ff c6ba1bd84a28
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r24,2,24/25,24.5,24,25,0.71,34,72.1,0,0.761,0.699,0.822,13.755,1066.0,e084b429ee59 4332d614ddce
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r25,2,24/24,24,24,24,0.0,34,70.6,0,0.975,0.935,1.015,10.433,506.5,3ecf2ff9f295 098322a226c9
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r26,2,9/25,17,9,25,11.31,34,50.0,0,1.017,1.005,1.029,10.386,549.5,c8a5cbbef61d fde7dc1f6755
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r27,2,22/20,21,20,22,1.41,34,61.8,0,0.698,0.663,0.733,10.345,467.5,1b3a6ea54535 62b302f9fb15
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,r28b,2,16/25,20.5,16,25,6.36,34,60.3,0,1.036,0.99,1.082,13.401,595.0,5883c912448f 18d7bcd3d8c9
+arc-bench-lite,bookstack,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-long-lite-bookstack,1,6,6,6,6,,34,17.6,0,3.509,3.509,3.509,31.015,2084,fc51edb40b4f
+arc-bench-lite,bookstack,deepseek-v4-flash,oneshot,view-state,1,22,22,22,22,,34,64.7,0,0.71,0.71,0.71,0.71,480,8418091af0b5
+arc-bench-lite,bookstack,deepseek-v4-pro,minimal-v2,volo-minimal-v2-low-effort-20260917,1,14,14,14,14,,34,41.2,0,0.784,0.784,0.784,0.784,320,b6aa0d040744
+arc-bench-lite,bookstack,deepseek-v4-pro,minimal-v2,volo-minimal-v2-platform-baseline-20260917,1,0,0,0,0,,34,0.0,1,0.0,0.0,0.0,0.0,0,f6654b3e6fa2
+arc-bench-lite,bookstack,deepseek-v4-pro,minimal-v2,volo-minimal-v2-platform-compat-20260917,1,4,4,4,4,,34,11.8,0,1.407,1.407,1.407,1.408,379,7bb7fe901ec3
+arc-bench-lite,bookstack,kimi-k2.7-code-highspeed,oneshot,lite-nested-seed-v24,1,9,9,9,9,,34,26.5,0,3.821,3.821,3.821,3.821,333,fd8ba0b84fe7
+arc-bench-lite,bookstack,qwen3.7-plus,oneshot,lite-semantic-v5,1,27,27,27,27,,34,79.4,0,0.585,0.585,0.585,0.585,1003,1f56fb1be7fc
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r17,2,5/5,5,5,5,0.0,32,15.6,0,1.329,1.32,1.338,3.928,862.0,37eb3cd66155 71c64ecb4e69
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r18,2,11/12,11.5,11,12,0.71,32,35.9,0,1.424,1.3,1.548,15.491,960.0,eb71d2bfe8f5 53e99ecda317
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r19,2,13/12,12.5,12,13,0.71,32,39.1,0,1.452,1.408,1.496,9.549,986.5,97a2a6154211 2ebc421f1db5
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r21,2,11/13,12,11,13,1.41,32,37.5,0,1.334,1.19,1.478,16.356,868.0,14f1fd82588d e148e66af7e5
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r22,2,16/17,16.5,16,17,0.71,32,51.6,0,1.564,1.548,1.579,18.515,1102.0,39b17ff31e1d 352336a95019
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r23,2,12/16,14,12,16,2.83,32,43.8,0,0.647,0.611,0.682,16.451,2577.0,86651d4b646a 83e3217677b0
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r24,2,16/20,18,16,20,2.83,32,56.2,0,1.145,1.003,1.286,18.865,1328.0,1056fe3b0665 8b81e4d10dc1
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r25,2,20/19,19.5,19,20,0.71,32,60.9,0,1.213,1.092,1.334,18.512,1115.5,a83a203b512c 1ed7efa37b84
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r26,2,20/21,20.5,20,21,0.71,32,64.1,0,1.365,1.28,1.451,15.141,900.5,77f44dde7cc2 f396659338b6
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r27,2,14/16,15,14,16,1.41,32,46.9,0,1.297,1.25,1.345,17.801,832.0,ec7fed97b047 48dc5978436c
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,r28b,2,16/18,17,16,18,1.41,32,53.1,0,1.55,1.512,1.587,14.665,1144.5,a0c6773cc5e6 9c72d461b1a9
+arc-bench-lite,keep,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-long-lite-keep,1,14,14,14,14,,32,43.8,0,3.289,3.289,3.289,30.118,1787,c75089aeede8
+arc-bench-lite,keep,deepseek-v4-flash,oneshot,view-state,1,15,15,15,15,,32,46.9,0,1.052,1.052,1.052,1.052,717,252a73d92695
+arc-bench-lite,keep,deepseek-v4-flash,thin-source,volo-thin-source-v1-flash-20260917,1,0,0,0,0,,32,0.0,1,0.476,0.476,0.476,4.222,617,97688ff8797b
+arc-bench-lite,keep,deepseek-v4-pro,minimal-v2,volo-minimal-v2-low-effort-20260917,1,7,7,7,7,,32,21.9,0,0.745,0.745,0.745,0.745,328,03c49a981b70
+arc-bench-lite,keep,deepseek-v4-pro,minimal-v2,volo-minimal-v2-platform-compat-20260917,1,0,0,0,0,,32,0.0,1,0.997,0.997,0.997,0.997,414,743da880638a
+arc-bench-lite,keep,qwen3.7-plus,oneshot,lite-semantic-v5,1,14,14,14,14,,32,43.8,0,0.665,0.665,0.665,0.665,3708,2eef0a0f987a
+arc-bench-web,12306,deepseek-v4-flash,oneshot,action-outcome,1,50,50,50,50,,135,37.0,0,1.572,1.572,1.572,1.572,1003,67195b0de1c0
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r00-callbudget,1,40,40,40,40,,135,29.6,0,0.859,0.859,0.859,6.046,622,9ef988eb2274
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r01,1,51,51,51,51,,135,37.8,0,0.741,0.741,0.741,5.827,504,1525d5fd7d07
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r02,1,64,64,64,64,,135,47.4,0,0.822,0.822,0.822,5.303,585,ea95252f47fc
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r03,1,61,61,61,61,,135,45.2,0,1.195,1.195,1.195,14.104,727,27c132cc5490
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r04,1,5,5,5,5,,135,3.7,0,1.257,1.257,1.257,12.572,788,be7918ad723c
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r05,1,46,46,46,46,,135,34.1,0,0.852,0.852,0.852,15.916,781,1ba0a4b30b5a
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r06,1,55,55,55,55,,135,40.7,0,1.336,1.336,1.336,17.351,868,b63dac75ec7c
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r07,1,5,5,5,5,,135,3.7,0,1.272,1.272,1.272,13.669,804,3b55b0eac0a0
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r08,1,74,74,74,74,,135,54.8,0,1.35,1.35,1.35,8.346,882,bee4b6bcc602
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r09,1,49,49,49,49,,135,36.3,0,1.447,1.447,1.447,15.099,980,45a2817ccad4
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r10,2,75/76,75.5,75,76,0.71,135,55.9,0,1.333,1.295,1.372,7.987,866.0,2d2b51f4233c c0e81dda8d50
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r12,1,50,50,50,50,,135,37.0,0,1.173,1.173,1.173,14.62,708,faedeeabf93d
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r13,2,77/85,81,77,85,5.66,135,60.0,0,1.361,1.359,1.363,10.253,1121.5,fa7c4c32b53f 16e1d7321f08
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r15,2,68/85,76.5,68,85,12.02,135,56.7,0,1.47,1.408,1.531,6.97,1004.0,df60e5072a9a 8f92145a3744
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r16,2,79/35,57,35,79,31.11,135,42.2,0,1.413,1.268,1.558,12.559,945.0,4f1f041e40f1 5614ef17a3ac
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r16g-ablation,2,47/47,47,47,47,0.0,135,34.8,0,1.48,1.468,1.492,18.468,1394.5,22f415b33177 9388c7bf1d25
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r17,2,85/69,77,69,85,11.31,135,57.0,0,1.449,1.366,1.532,7.463,1063.0,dc34a40bdd46 6b87abc24a07
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r18,2,58/66,62,58,66,5.66,135,45.9,0,1.391,1.326,1.456,16.787,1405.5,dd5e433ae750 8e1f0750256f
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r19,2,61/51,56,51,61,7.07,135,41.5,0,1.351,1.296,1.406,17.201,885.5,f26b26db42a9 985e3cf8f825
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r20,2,80/68,74,68,80,8.49,135,54.8,0,1.474,1.386,1.561,13.981,1335.5,5aa9d5269b47 bc5f679183cd
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r21,2,76/81,78.5,76,81,3.54,135,58.1,0,1.294,1.257,1.33,18.121,830.0,a0f6f598a165 ed20123f6466
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r22,2,76/61,68.5,61,76,10.61,135,50.7,0,1.268,1.097,1.439,18.515,801.5,b06d81da1152 8de33f5ace4a
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r23,2,0/45,22.5,0,45,31.82,135,16.7,1,0.329,0.236,0.423,13.376,2111.5,19573a3d7619 e2513db2b28a
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r24,2,87/90,88.5,87,90,2.12,135,65.6,0,1.438,1.371,1.505,19.659,1270.5,dc8eaa82e890 14a46b9e3c16
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r25,2,88/54,71,54,88,24.04,135,52.6,0,1.335,1.255,1.415,20.39,869.0,1afa8f5625fa 756ac7cf284d
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r26,2,48/91,69.5,48,91,30.41,135,51.5,0,2.156,1.305,3.007,22.878,1577.0,194ddc3c3f11 6cb486a4b5b2
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r27,2,75/62,68.5,62,75,9.19,135,50.7,0,1.282,1.146,1.417,17.884,815.5,3fee98a94012 cb1e1d2f9aa0
+arc-bench-web,12306,deepseek-v4-flash,oneshot,r28b,2,64/74,69,64,74,7.07,135,51.1,0,1.507,1.41,1.604,25.155,1086.0,f92f08a9b4bb 01ea1a853d95
+arc-bench-web,12306,deepseek-v4-flash,pi-agent,s2-names4-12306,1,62,62,62,62,,135,45.9,0,6.459,6.459,6.459,6.459,2460,57cf6c6841da
+arc-bench-web,12306,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-long-12306,1,54,54,54,54,,135,40.0,0,5.177,5.177,5.177,40.344,2337,a01719166800
+arc-bench-web,12306,deepseek-v4-flash,oneshot,volo-oneshot-labcard-hide-9f9028a7-flash,1,0,0,0,0,,135,0.0,0,1.478,1.478,1.478,5.29,1001,55b28a09b036
+arc-bench-web,12306,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash,1,0,0,0,0,,135,0.0,1,0.0,0.0,0.0,0.642,1184,0c72a07e49b2
+arc-bench-web,12306,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash2,1,0,0,0,0,,135,0.0,1,0.721,0.721,0.721,3.149,1122,b883fa97b031
+arc-bench-web,12306,qwen3.7-plus,oneshot,volo-oneshot-smoke-a414e22f-qwen37plus,1,63,63,63,63,,135,46.7,0,0.435,0.435,0.435,2.904,677,ae507f83ee7a
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,action-outcome,1,31,31,31,31,,34,91.2,0,0.807,0.807,0.807,0.807,562,5731b09783e3
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r00-callbudget,1,28,28,28,28,,34,82.4,0,0.883,0.883,0.883,3.189,646,755275bae18c
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r01,1,24,24,24,24,,34,70.6,0,0.751,0.751,0.751,3.182,514,a015ae1fcc0a
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r02,1,0,0,0,0,,34,0.0,0,0.609,0.609,0.609,5.303,370,586fd5f95368
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r03,1,16,16,16,16,,34,47.1,0,0.973,0.973,0.973,4.169,506,f7d190cfdf13
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r04,1,23,23,23,23,,34,67.6,0,0.752,0.752,0.752,9.754,520,7f2b870bd7e1
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r05,1,18,18,18,18,,34,52.9,0,0.959,0.959,0.959,8.52,729,80ebe39a9bd7
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r06,1,11,11,11,11,,34,32.4,0,0.804,0.804,0.804,12.78,573,e0516c857a5a
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r07,1,32,32,32,32,,34,94.1,0,0.752,0.752,0.752,2.226,521,cb08b17dbea8
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r08,1,19,19,19,19,,34,55.9,0,0.755,0.755,0.755,5.641,523,5707d33653f6
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r09,1,24,24,24,24,,34,70.6,0,1.303,1.303,1.303,7.177,835,ed3364d2e97e
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r10,2,16/12,14,12,16,2.83,34,41.2,0,0.819,0.668,0.97,5.001,470.0,8ab8d7e65e71 bae8fe37630c
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r12,1,12,12,12,12,,34,35.3,0,0.696,0.696,0.696,4.978,463,2fc24f5c99ff
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r13,2,34/24,29,24,34,7.07,34,85.3,0,0.873,0.723,1.023,4.843,524.0,b2cd62dd06f7 9ee800935879
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r15,2,23/26,24.5,23,26,2.12,34,72.1,0,0.88,0.674,1.087,2.334,530.5,f2d259d182b7 863318b7cf5a
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r16,2,33/15,24,15,33,12.73,34,70.6,0,0.729,0.702,0.756,4.261,497.0,11c50656c2cd d45bdb61afd8
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r16g-ablation,2,24/32,28,24,32,5.66,34,82.4,0,0.999,0.797,1.202,6.72,649.0,c9d8c7213a24 030833032cb4
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r17,2,19/29,24,19,29,7.07,34,70.6,0,0.862,0.725,0.999,4.437,512.5,be308b013c17 964abf29479d
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r18,2,13/20,16.5,13,20,4.95,34,48.5,0,0.869,0.768,0.97,11.071,639.0,3bcc70216f9b ad38576325b7
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r19,2,29/33,31,29,33,2.83,34,91.2,0,0.809,0.746,0.873,8.827,579.0,5c9795ef5cc5 b6f475ccc745
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r20,2,27/25,26,25,27,1.41,34,76.5,0,0.618,0.498,0.738,12.913,1441.5,46040700f73b c49f74e9d0eb
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r21,2,29/27,28,27,29,1.41,34,82.4,0,1.005,0.751,1.26,9.668,657.5,6154c835e885 d4161287820a
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r22,2,27/30,28.5,27,30,2.12,34,83.8,0,0.721,0.628,0.814,5.8,491.0,9c10628a6a85 0b144c25a96f
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r23,2,26/27,26.5,26,27,0.71,34,77.9,0,0.639,0.5,0.779,10.369,1753.0,d225a2a6aae4 fea30564dead
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r24,2,29/30,29.5,29,30,0.71,34,86.8,0,0.938,0.919,0.958,6.826,767.5,f049a96be4a4 ab1bd13fb5e6
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r25,2,30/29,29.5,29,30,0.71,34,86.8,0,0.808,0.575,1.04,5.425,458.5,b99bb894afd6 f950141b04cf
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r26,2,27/32,29.5,27,32,3.54,34,86.8,0,0.701,0.699,0.703,4.091,470.0,21546966634a 3e73f0bf037b
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r27,2,33/30,31.5,30,33,2.12,34,92.6,0,0.926,0.856,0.996,7.566,578.0,d9a59a1c3fbe 97fdf9107ef2
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,r28b,2,31/31,31,31,31,0.0,34,91.2,0,1.024,0.969,1.079,9.015,568.0,22ebe9018c98 f787793ce559
+arc-bench-web,bookstack,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-long-bookstack,1,21,21,21,21,,34,61.8,0,3.581,3.581,3.581,30.57,2090,8237f284ed0c
+arc-bench-web,bookstack,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-short-bookstack,1,15,15,15,15,,34,44.1,0,2.384,2.384,2.384,5.496,1478,95409b63b6dd
+arc-bench-web,bookstack,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-short-bookstack-r2,1,0,0,0,0,,34,0.0,1,2.062,2.062,2.062,2.677,1702,7a68247cd0d7
+arc-bench-web,bookstack,deepseek-v4-flash,s8h-adaptive,s8h-cand-adaptive-keep,1,0,0,0,0,,34,0.0,0,0.0,0.0,0.0,0.0,5,de841b16001a
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,volo-oneshot-labcard-hide-9f9028a7-flash,1,27,27,27,27,,34,79.4,0,0.623,0.623,0.623,0.547,384,78cd76c4caa8
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash,1,0,0,0,0,,34,0.0,1,0.0,0.0,0.0,0.642,1395,33ae97f7ef90
+arc-bench-web,bookstack,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash2,1,16,16,16,16,,34,47.1,0,0.75,0.75,0.75,1.731,704,23fdd9ca1182
+arc-bench-web,bookstack,qwen3.7-plus,oneshot,volo-oneshot-smoke-a414e22f-qwen37plus,1,12,12,12,12,,34,35.3,0,0.32,0.32,0.32,2.904,515,14d9c3d0b1e3
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,action-outcome,1,0,0,0,0,,125,0.0,0,1.328,1.328,1.328,1.328,769,9a2cdc6656f3
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r00-callbudget,1,8,8,8,8,,125,6.4,0,1.227,1.227,1.227,9.228,993,63ad25bdacbc
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r01,1,43,43,43,43,,125,34.4,0,0.831,0.831,0.831,5.827,594,337ff1b2d247
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r02,1,27,27,27,27,,125,21.6,0,0.853,0.853,0.853,5.303,616,38115ce82dc1
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r03,1,24,24,24,24,,125,19.2,0,1.35,1.35,1.35,14.533,883,1375c98047c6
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r04,1,25,25,25,25,,125,20.0,0,1.128,1.128,1.128,13.887,658,f0d9011dce55
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r05,1,0,0,0,0,,125,0.0,1,0.714,0.714,0.714,0.775,476,0ab9fe9c4cbd
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r06,1,23,23,23,23,,125,18.4,0,1.113,1.113,1.113,22.422,1056,7bb6109cbcbe
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r07,1,39,39,39,39,,125,31.2,0,1.072,1.072,1.072,13.218,605,dbda3fc128d4
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r08,1,28,28,28,28,,125,22.4,0,1.284,1.284,1.284,11.723,817,34ef155fc3e0
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r09,1,16,16,16,16,,125,12.8,0,1.131,1.131,1.131,15.099,666,11a9308368fd
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r10,2,22/54,38,22,54,22.63,125,30.4,0,1.155,1.073,1.236,9.18,686.5,175f45279e98 843ef290092f
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r12,1,34,34,34,34,,125,27.2,0,1.586,1.586,1.586,15.919,1119,4a9c92b4b723
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r13,2,48/37,42.5,37,48,7.78,125,34.0,0,1.426,1.137,1.716,9.98,960.5,cbba6f2af32d 7a4b8f36ce2c
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r15,2,54/18,36,18,54,25.46,125,28.8,0,1.333,1.257,1.409,6.97,867.0,66c719aedcad bbc5bb0a7fdd
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r16,2,37/51,44,37,51,9.9,125,35.2,0,1.524,1.242,1.807,13.927,1854.5,44d9c77266f0 4be2d1b4205a
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r16g-ablation,2,34/27,30.5,27,34,4.95,125,24.4,0,1.191,1.131,1.251,16.632,723.5,f421af673378 7443f5012b3a
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r17,2,37/36,36.5,36,37,0.71,125,29.2,0,1.55,1.276,1.824,13.394,1086.5,f6663e6f8197 874be80f4d77
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r18,2,0/23,11.5,0,23,16.26,125,9.2,1,0.589,0.0,1.178,9.808,597.0,aa0c0196fc9f 4e4286aa36ee
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r19,2,19/19,19,19,19,0.0,125,15.2,0,1.215,1.188,1.242,16.797,747.5,1c8a8468ba3d 586c93b426ce
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r20,2,41/20,30.5,20,41,14.85,125,24.4,0,0.956,0.528,1.384,13.981,1366.0,01fb9249bd81 4ae3d36f381e
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r21,2,25/40,32.5,25,40,10.61,125,26.0,0,1.271,1.228,1.314,18.955,805.0,2c525699aed0 e9b9612babf4
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r22,2,24/52,38,24,52,19.8,125,30.4,0,1.314,1.169,1.46,18.515,847.5,028ee3f72ab3 154b9c54a337
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r23,2,36/12,24,12,36,16.97,125,19.2,0,0.664,0.346,0.983,16.451,1852.0,f1af65940680 57f96b1af758
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r24,2,33/45,39,33,45,8.49,125,31.2,0,1.102,0.989,1.215,20.452,983.5,fbb4effce0c9 2d22338a9e23
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r25,2,41/25,33,25,41,11.31,125,26.4,0,1.202,1.111,1.292,20.39,1287.5,4c2414e945c7 166f94c70260
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r26,2,37/34,35.5,34,37,2.12,125,28.4,0,1.153,1.132,1.175,17.388,685.0,aeeb26169bf9 97293bd31327
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r27,2,32/26,29,26,32,4.24,125,23.2,0,1.25,1.203,1.298,17.884,785.5,d6fcf0bb6bbe f3726d72429a
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,r28b,2,22/26,24,22,26,2.83,125,19.2,0,1.281,1.222,1.339,27.707,1004.0,7d392dd3b3af 820bc5bc4665
+arc-bench-web,ctrip,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-long-ctrip,1,27,27,27,27,,125,21.6,0,6.115,6.115,6.115,40.014,2803,15af8a229912
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,volo-oneshot-labcard-hide-9f9028a7-flash,1,20,20,20,20,,125,16.0,0,1.094,1.094,1.094,5.29,614,85531ed4ac76
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash,1,0,0,0,0,,125,0.0,1,0.0,0.0,0.0,0.642,1202,82330a9d20dd
+arc-bench-web,ctrip,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash2,1,0,0,0,0,,125,0.0,1,0.714,0.714,0.714,3.149,1114,2105472e648f
+arc-bench-web,ctrip,qwen3.7-plus,oneshot,volo-oneshot-smoke-a414e22f-qwen37plus,1,12,12,12,12,,125,9.6,0,0.439,0.439,0.439,2.904,646,ba63aa5e2be5
+arc-bench-web,keep,deepseek-v4-flash,oneshot,action-outcome,1,23,23,23,23,,32,71.9,0,1.279,1.279,1.279,1.279,898,84ecc659d5ce
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r00-callbudget,1,26,26,26,26,,32,81.2,0,1.093,1.093,1.093,4.523,859,b45a931207d8
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r01,1,17,17,17,17,,32,53.1,0,0.986,0.986,0.986,4.166,751,71aa703b0958
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r02,1,26,26,26,26,,32,81.2,0,0.943,0.943,0.943,5.303,707,82ecfa65901d
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r03,1,28,28,28,28,,32,87.5,0,0.929,0.929,0.929,5.258,699,836f4e8e94df
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r04,1,28,28,28,28,,32,87.5,0,1.187,1.187,1.187,11.927,717,0c55fbab35c7
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r05,1,24,24,24,24,,32,75.0,0,0.934,0.934,0.934,8.52,764,14ee2d33a97f
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r06,1,28,28,28,28,,32,87.5,0,1.227,1.227,1.227,12.78,759,22b832ca9e65
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r07,1,25,25,25,25,,32,78.1,0,0.896,0.896,0.896,6.057,666,ed93598bbed4
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r08,1,27,27,27,27,,32,84.4,0,1.237,1.237,1.237,7.306,769,307c85ab96ad
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r09,1,28,28,28,28,,32,87.5,0,1.055,1.055,1.055,4.371,585,c2985c084cd7
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r10,2,6/27,16.5,6,27,14.85,32,51.6,0,1.231,1.194,1.268,6.909,763.0,1458cb0b58a9 b5ab9820ddcd
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r12,1,27,27,27,27,,32,84.4,0,1.2,1.2,1.2,5.57,731,af1e69a20e09
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r13,2,27/30,28.5,27,30,2.12,32,89.1,0,1.151,1.147,1.156,5.932,682.0,33526ef7d95f d24810f39b48
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r15,2,30/30,30,30,30,0.0,32,93.8,0,1.073,0.888,1.257,4.521,724.0,61fa7531580f 7747d71e9e70
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r16,2,24/29,26.5,24,29,3.54,32,82.8,0,1.06,0.888,1.232,8.453,711.0,74032e8864ac 094302f16050
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r16g-ablation,2,29/22,25.5,22,29,4.95,32,79.7,0,1.231,1.046,1.417,12.458,883.0,da773e8e9c80 bdd209231711
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r17,2,28/27,27.5,27,28,0.71,32,85.9,0,1.292,1.145,1.44,10.288,825.0,337286da1d8b 21f63fe30e0d
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r18,2,27/27,27,27,27,0.0,32,84.4,0,1.201,0.889,1.512,13.433,901.5,99fddd56457c 7a10e7848b01
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r19,2,22/29,25.5,22,29,4.95,32,79.7,0,1.214,1.213,1.215,15.682,746.5,e6689fbd998b 0108c7d359db
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r20,2,19/25,22,19,25,4.24,32,68.8,0,1.103,0.866,1.341,11.822,1417.0,835e7183f127 2a2920b2ca89
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r21,2,28/26,27,26,28,1.41,32,84.4,0,1.742,1.344,2.14,18.538,1398.5,fefebaa00791 6f3d007d532f
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r22,2,27/26,26.5,26,27,0.71,32,82.8,0,1.019,0.795,1.244,9.37,670.5,a1bdd008d69d bef99774a373
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r23,2,26/29,27.5,26,29,2.12,32,85.9,0,0.603,0.482,0.725,16.538,3219.0,3c3a816fc5a7 4b00d0d9586b
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r24,2,0/25,12.5,0,25,17.68,32,39.1,1,1.363,1.317,1.408,20.452,1634.5,8d467c61fbb4 69503f7afdd7
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r25,2,28/25,26.5,25,28,2.12,32,82.8,0,1.27,1.18,1.36,16.422,1093.5,885715814aee 351f51940a82
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r26,2,18/25,21.5,18,25,4.95,32,67.2,0,0.873,0.679,1.067,8.624,644.0,e8bca30a7baf f0275b11caf6
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r27,2,25/27,26,25,27,1.41,32,81.2,0,1.277,1.069,1.485,13.735,811.5,3deb92ee302b 282703739e16
+arc-bench-web,keep,deepseek-v4-flash,oneshot,r28b,2,26/27,26.5,26,27,0.71,32,82.8,0,0.834,0.462,1.206,16.129,890.5,af64f7964076 9928b9c95061
+arc-bench-web,keep,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-long-keep,1,26,26,26,26,,32,81.2,0,4.255,4.255,4.255,40.908,3125,4f518fea185e
+arc-bench-web,keep,deepseek-v4-flash,s8h-adaptive,s8h-cand-adaptive-keep,1,26,26,26,26,,32,81.2,0,2.83,2.83,2.83,17.436,2462,a849897fa089
+arc-bench-web,keep,deepseek-v4-flash,s8h-adaptive,s8h-cand-fast-keep,1,20,20,20,20,,32,62.5,0,1.887,1.887,1.887,8.277,1075,5c61a442359d
+arc-bench-web,keep,deepseek-v4-flash,oneshot,volo-oneshot-77e8d0ce-flash,1,21,21,21,21,,32,65.6,0,0.655,0.655,0.655,0.655,471,65886537f7a7
+arc-bench-web,keep,deepseek-v4-flash,oneshot,volo-oneshot-77e8d0ce-flash-b,2,17/20,18.5,17,20,2.12,32,57.8,0,0.842,0.722,0.962,3.862,604.5,6bddad2746bc ea32d0a66e4d
+arc-bench-web,keep,deepseek-v4-flash,oneshot,volo-oneshot-8e59406c-flash,1,0,0,0,0,,32,0.0,1,0.0,0.0,0.0,0.0,0,12f7c07637ec
+arc-bench-web,keep,deepseek-v4-flash,oneshot,volo-oneshot-hover-f8adf758-flash,3,25/26/19,23.33,19,26,3.79,32,72.9,0,0.915,0.843,0.962,4.575,703,ef8aa0a5f2ac 6aca5ddadc8e 7b576783a110
+arc-bench-web,keep,deepseek-v4-flash,oneshot,volo-oneshot-labcard-475d0041-flash,3,28/24/26,26,24,28,2.0,32,81.2,0,1.014,0.907,1.1,2.211,798,bf8a5f57b155 957f73c923c4 ae9ac5e7d0be
+arc-bench-web,keep,deepseek-v4-flash,oneshot,volo-oneshot-labcard-hide-9f9028a7-flash,4,25/0/17/22,16,0,25,11.17,32,50.0,1,1.018,0.858,1.224,2.269,760.0,c6187ae7d2d4 3fa986b1866e 18200f00d8b1 9c26a77b12b4
+arc-bench-web,keep,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash,2,0/0,0,0,0,0.0,32,0.0,2,0.0,0.0,0.0,0.421,1707.0,b1af053badc4 542f2338b9c8
+arc-bench-web,keep,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash2,1,25,25,25,25,,32,78.1,0,1.042,1.042,1.042,2.06,1544,79c325f4af2d
+arc-bench-web,keep,glm-5.3,oneshot,volo-oneshot-smoke-a414e22f-glm53,1,0,0,0,0,,32,0.0,1,1.029,1.029,1.029,1.029,942,16180f834eec
+arc-bench-web,keep,glm-5.3-flash,oneshot,volo-oneshot-smoke-a414e22f-glm53flash,1,0,0,0,0,,32,0.0,1,0.052,0.052,0.052,0.052,695,ef14b1f867f2
+arc-bench-web,keep,qwen3.7-plus,oneshot,volo-oneshot-smoke-a414e22f-qwen37plus,1,22,22,22,22,,32,68.8,0,0.308,0.308,0.308,2.432,469,a3714ee01088
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,action-outcome,1,59,59,59,59,,86,68.6,0,1.889,1.889,1.889,1.889,2491,435556e82b15
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r00-callbudget,1,41,41,41,41,,86,47.7,0,0.668,0.668,0.668,4.523,430,eb166860ff13
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r01,1,0,0,0,0,,86,0.0,1,1.342,1.342,1.342,5.827,1108,a57c8da4efb6
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r02,1,38,38,38,38,,86,44.2,0,0.732,0.732,0.732,5.303,494,d457e5574260
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r03,1,56,56,56,56,,86,65.1,0,1.36,1.36,1.36,12.572,893,8cda69ac75e6
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r04,1,50,50,50,50,,86,58.1,0,1.682,1.682,1.682,13.887,1217,d7040f3dc0aa
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r05,1,49,49,49,49,,86,57.0,0,1.24,1.24,1.24,13.251,772,9d2ec094eef3
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r06,1,53,53,53,53,,86,61.6,0,1.472,1.472,1.472,15.916,1005,11649c8140f6
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r07,1,49,49,49,49,,86,57.0,0,1.167,1.167,1.167,7.122,699,a8f403842b67
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r08,1,52,52,52,52,,86,60.5,0,1.37,1.37,1.37,8.346,905,3a582701ac37
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r09,1,64,64,64,64,,86,74.4,0,1.319,1.319,1.319,7.765,852,89ee48b3abd1
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r10,2,27/56,41.5,27,56,20.51,86,48.3,0,1.211,1.111,1.31,7.762,742.5,1cc7103965a9 d487f5958744
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r12,1,64,64,64,64,,86,74.4,0,1.19,1.19,1.19,8.137,721,c0b7d3c11f33
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r13,2,58/52,55,52,58,4.24,86,64.0,0,1.358,1.337,1.379,9.714,1036.0,c9c4203c6d1a da0c883dde59
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r15,2,63/57,60,57,63,4.24,86,69.8,0,1.375,1.346,1.403,6.97,907.5,80d4434870dd 63d21f8ba126
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r16,2,57/49,53,49,57,5.66,86,61.6,0,1.328,1.32,1.337,12.213,861.0,5b227b45dde5 b7e272ce6ba8
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r16g-ablation,2,44/59,51.5,44,59,10.61,86,59.9,0,1.348,1.296,1.401,16.004,880.5,22e270c017c5 9e9221d34ae8
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r17,2,57/58,57.5,57,58,0.71,86,66.9,0,1.285,1.246,1.323,12.132,817.5,fd9cff1f4a04 71977ea217c8
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r18,2,51/53,52,51,53,1.41,86,60.5,0,1.371,1.369,1.372,16.134,904.0,5ac4a9044826 dec704ed116e
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r19,2,69/66,67.5,66,69,2.12,86,78.5,0,0.953,0.843,1.062,16.797,1470.5,98db43637589 cd755e99ae27
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r20,2,57/41,49,41,57,11.31,86,57.0,0,0.897,0.424,1.37,13.981,1376.0,48812250198a 779348373864
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r21,2,53/54,53.5,53,54,0.71,86,62.2,0,1.3,1.22,1.379,18.121,837.5,713ba0755951 cfa85fa7bd13
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r22,2,63/50,56.5,50,63,9.19,86,65.7,0,1.306,1.269,1.342,18.515,841.0,46b486d0d69d be04d0946b2e
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r23,2,55/0,27.5,0,55,38.89,86,32.0,0,0.605,0.558,0.65,16.538,2581.5,df2889f911cc 5e54581b8c44
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r24,2,68/60,64,60,68,5.66,86,74.4,0,1.532,1.293,1.77,19.023,1354.5,d578da887774 fa907c7d481b
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r25,2,57/68,62.5,57,68,7.78,86,72.7,0,1.348,1.272,1.425,17.195,886.0,cf4e99461f64 8923b1ba8656
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r26,2,47/64,55.5,47,64,12.02,86,64.5,0,1.455,1.257,1.652,17.032,994.0,cfa73098cd54 5916fe816abf
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r27,2,55/55,55,55,55,0.0,86,64.0,0,1.273,1.244,1.302,17.884,811.0,6f653331e8a1 0c4a915f2f7d
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,r28b,2,65/63,64,63,65,1.41,86,74.4,0,1.244,1.232,1.257,19.428,891.0,dfefda5d7879 a469b45aca1d
+arc-bench-web,prestashop,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-long-prestashop,1,57,57,57,57,,86,66.3,0,6.224,6.224,6.224,41.57,3315,8fec75ff0904
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,volo-oneshot-labcard-hide-9f9028a7-flash,1,51,51,51,51,,86,59.3,0,0.872,0.872,0.872,5.29,635,f446b0ebdd6b
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash,1,0,0,0,0,,86,0.0,1,0.0,0.0,0.0,0.642,1155,749a22a65df4
+arc-bench-web,prestashop,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash2,1,44,44,44,44,,86,51.2,0,0.797,0.797,0.797,3.993,1212,c9c2b5fd3b2c
+arc-bench-web,prestashop,qwen3.7-plus,oneshot,volo-oneshot-smoke-a414e22f-qwen37plus,1,29,29,29,29,,86,33.7,0,0.423,0.423,0.423,2.904,635,361ef392c29a
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,action-outcome,1,35,35,35,35,,66,53.0,0,1.069,1.069,1.069,1.069,664,e5dfdd1a6d77
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r00-callbudget,1,15,15,15,15,,66,22.7,0,0.648,0.648,0.648,4.523,410,03bad7c55e23
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r01,1,33,33,33,33,,66,50.0,0,0.786,0.786,0.786,4.166,549,b319a1e78a87
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r02,1,19,19,19,19,,66,28.8,0,1.174,1.174,1.174,5.303,697,612bfa179c1a
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r03,1,36,36,36,36,,66,54.5,0,0.94,0.94,0.94,10.399,710,e139d9ab00d9
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r04,1,34,34,34,34,,66,51.5,0,1.165,1.165,1.165,13.459,699,8de3e5e7d785
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r05,1,31,31,31,31,,66,47.0,0,1.308,1.308,1.308,15.119,840,b794068fa7b1
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r06,1,20,20,20,20,,66,30.3,0,1.272,1.272,1.272,15.916,804,06a32813ffcf
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r07,1,47,47,47,47,,66,71.2,0,1.194,1.194,1.194,6.506,725,8ba987c75a5a
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r08,1,38,38,38,38,,66,57.6,0,1.037,1.037,1.037,7.951,569,cda090c91843
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r09,1,31,31,31,31,,66,47.0,0,1.126,1.126,1.126,7.765,657,9569b763269e
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r10,2,22/53,37.5,22,53,21.92,66,56.8,0,1.57,1.403,1.737,8.508,1106.0,b85a6aa7c1a2 c4d8f79dff28
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r12,1,29,29,29,29,,66,43.9,0,1.318,1.318,1.318,11.872,849,972979ee90b9
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r13,2,3/46,24.5,3,46,30.41,66,37.1,0,1.397,1.251,1.544,9.782,929.5,a931857ccf6f 42a1c18b8d5f
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r15,2,49/1,25,1,49,33.94,66,37.9,0,1.269,1.221,1.318,6.97,802.0,a49aa2ec0296 0eb9937e897f
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r16,2,34/53,43.5,34,53,13.44,66,65.9,0,1.389,1.344,1.434,12.213,922.5,56896036410e 58e3c1cd9234
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r16g-ablation,2,0/29,14.5,0,29,20.51,66,22.0,1,1.196,1.101,1.291,14.154,844.5,a5c0b54ee171 37a29cdeb557
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r17,2,35/47,41,35,47,8.49,66,62.1,0,1.218,1.117,1.319,11.057,750.0,7929d8c67728 dd4282cda1a0
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r18,2,32/27,29.5,27,32,3.54,66,44.7,0,1.244,1.2,1.288,16.134,777.5,c0fb56e810d6 57e1a760802f
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r19,2,43/50,46.5,43,50,4.95,66,70.5,0,1.276,1.246,1.306,16.445,810.0,0fcfb12629d6 664db4a7281c
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r20,2,33/39,36,33,39,4.24,66,54.5,0,1.452,1.426,1.478,13.891,1319.5,5404889a757a eb493359a3ba
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r21,2,44/51,47.5,44,51,4.95,66,72.0,0,1.245,1.135,1.356,16.455,841.0,02d177889d99 38732b1e3844
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r22,2,48/44,46,44,48,2.83,66,69.7,0,1.279,1.27,1.288,17.965,817.5,cdc5350a1d92 7569bd32cde5
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r23,2,47/21,34,21,47,18.38,66,51.5,0,0.884,0.536,1.232,12.703,1836.0,5bfe2c85e0c7 e21e2af39520
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r24,2,48/45,46.5,45,48,2.12,66,70.5,0,1.291,1.291,1.291,19.738,1417.5,964f3787f711 82b2e366a946
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r25,2,44/45,44.5,44,45,0.71,66,67.4,0,1.239,1.207,1.27,16.634,774.0,46319d2fff6b d6e3df21c1a8
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r26,2,46/47,46.5,46,47,0.71,66,70.5,0,1.4,1.165,1.635,15.498,945.5,c1cba5d506a7 70a040638ed3
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r27,2,47/41,44,41,47,4.24,66,66.7,0,1.222,1.186,1.258,17.801,765.5,aa8aa581157b 848afb62ec7f
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,r28b,2,45/41,43,41,45,2.83,66,65.2,0,1.277,1.25,1.304,18.227,834.0,20d99918abf3 2df0bfd60ae9
+arc-bench-web,stackoverflow,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-long-stackoverflow,1,30,30,30,30,,66,45.5,0,3.872,3.872,3.872,38.147,2024,32c46ebfaa3e
+arc-bench-web,stackoverflow,deepseek-v4-flash,s8h-adaptive,s8h-adaptive-short-stackoverflow,1,25,25,25,25,,66,37.9,0,4.553,4.553,4.553,8.681,3848,ed85b14f7b76
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,volo-oneshot-labcard-hide-9f9028a7-flash,1,0,0,0,0,,66,0.0,0,1.473,1.473,1.473,5.29,996,59021786fb22
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash,1,0,0,0,0,,66,0.0,1,0.0,0.0,0.0,0.642,1143,80a538d033e6
+arc-bench-web,stackoverflow,deepseek-v4-flash,oneshot,volo-oneshot-smoke-a414e22f-flash2,1,4,4,4,4,,66,6.1,0,1.133,1.133,1.133,3.993,818,2b0dae1b647a
+arc-bench-web,stackoverflow,qwen3.7-plus,oneshot,volo-oneshot-smoke-a414e22f-qwen37plus,1,15,15,15,15,,66,22.7,0,0.415,0.415,0.415,2.904,655,483ce9e264ba
+ticket-booking,ticket-booking,deepseek-v4-flash,s8h-adaptive,s8h-cand-adaptive-tb,1,5,5,5,5,,10,50.0,0,1.497,1.497,1.497,12.661,1356,b65a947466da
+ticket-booking,ticket-booking,deepseek-v4-flash,s8h-adaptive,s8h-cand-fast-tb,1,9,9,9,9,,10,90.0,0,1.087,1.087,1.087,5.792,708,7895e9f76a3b
+ticket-booking,ticket-booking,deepseek-v4-flash,s8h-adaptive,s8h-cand-race-sessionfix,1,10,10,10,10,,10,100.0,0,2.459,2.459,2.459,8.465,1290,87ca8188bb69

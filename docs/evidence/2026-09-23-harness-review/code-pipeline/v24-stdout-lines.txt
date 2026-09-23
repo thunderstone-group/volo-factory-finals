@@ -1,0 +1,811 @@
+lines 810
+0 Workspace assembled successfully.
+1 [2026-09-22 14:23:12 UTC] [backend] Execution started for submission fd8ba0b84fe7
+2 [2026-09-22 14:23:12 UTC] [backend] Requirement category: web
+3 [2026-09-22 14:23:12 UTC] [backend] Workspace assembled at /var/lib/arcbench/executor-workspaces/b34c975b641f407c91940efbddeade5e/fd8ba0b84fe7/generation-1/workspace
+4 [2026-09-22 14:23:13 UTC] [backend] Meter baseline captured for access key whitelist-REDACTED-28582b67b927
+5 [2026-09-22 14:23:13 UTC] [backend] Connecting to Docker daemon
+6 [2026-09-22 14:23:13 UTC] [backend] Docker daemon ping succeeded
+7 [2026-09-22 14:23:13 UTC] [backend] Ensuring runner image is available: regt3h8hc.arc-bench.com/arcbench-runner:latest
+8 [2026-09-22 14:23:13 UTC] [docker-build] Using existing runner image: regt3h8hc.arc-bench.com/arcbench-runner:latest
+9 [2026-09-22 14:23:14 UTC] [backend] Container created: name=arcbench-fd8ba0b84fe7-g1, id=b61e7c3d34f63fae94bea9326408f70ad42047eab583cfa56cf5a210f1bdbc42
+10 [2026-09-22 14:23:14 UTC] [backend] Container start requested
+11 [2026-09-22 14:23:14 UTC] [backend] Waiting for container to exit without timeout
+12 [2026-09-22 14:23:14] [runner] Runner started with spec: {'agent_source': 'upload', 'runtime': 'python', 'submission_dir': '/workspace/submission', 'template_dir': '/workspace/template', 'project_dir': '/workspace/template', 'tests_dir': '/workspace/tests', 'arc_dir': '.arc', 'requirement_dir': 'requirements', 'output_dir': '/workspace/template', 'runner_events_path': '.arc/runner-events.jsonl', ' ...[544 chars]
+13 [2026-09-22 14:23:14] [runner] Source mirror configuration: apt_mirror=https://mirrors.aliyun.com/ubuntu (baked into runner image), npm_config=container npm config, pip_index_url=https://pypi.tuna.tsinghua.edu.cn/simple, pip_trusted_host=pypi.tuna.tsinghua.edu.cn, pip_extra_index_url=https://pypi.org/simple
+14 [2026-09-22 14:23:14] [runner] Initializing traceability store at /workspace/template/.arc/traceability
+15 [2026-09-22 14:23:15] [runner] Applying pip mirror configuration: PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple, PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn, PIP_EXTRA_INDEX_URL=https://pypi.org/simple, PIP_CACHE_DIR=/tmp/arcbench/pip-cache
+16 [2026-09-22 14:23:15] [runner] Starting pip install attempt 1/3 with cache_dir=/tmp/arcbench/pip-cache
+17 [2026-09-22 14:23:15] [runner] Executing agent-pip-install: python3 -m pip install --retries 10 --timeout 120 --resume-retries 8 --prefer-binary -r requirements.txt
+18 [2026-09-22 14:23:15] [runner] agent-pip-install.stdout | Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple, https://pypi.org/simple
+19 [2026-09-22 14:23:15] [runner] agent-pip-install exit code: 0
+20 [2026-09-22 14:23:15] [runner] No submission package.json found, skipping agent npm install
+21 [2026-09-22 14:23:15] [runner] Prepared agent requirement source from /workspace/template/requirements to /tmp/arcbench/requirements-source
+22 [2026-09-22 14:23:15] [runner] Launching generation agent with requirement and output args: python3 /workspace/submission/main.py /tmp/arcbench/requirements-source --output-dir /workspace/template
+23 [2026-09-22 14:23:15] [runner] Agent environment summary: OPENAI_API_KEY=set, OPENAI_BASE_URL=https://api.arc-bench.com/v1, MODEL=kimi-k2.7-code-highspeed, ARC_DEBUG=1, VISUAL_BASE_URL=https://api.arc-bench.com/v1, VISUAL_MODEL=deepseek-v4-flash-vision-exp, ARCBENCH_RUNNER_EVENTS_PATH=/workspace/template/.arc/runner-events.jsonl, ARCBENCH_TRACEABILITY_DIR=/workspace/template/.arc/traceability
+24 [2026-09-22 14:23:15] [runner] Executing generation-agent: python3 /workspace/submission/main.py /tmp/arcbench/requirements-source --output-dir /workspace/template
+25 [2026-09-22 14:27:41] [runner] generation-agent.stderr | [oneshot] semantic browser {"executed": true, "diagnostic_only": true, "errors": ["The homepage scenario requires the \"Recently Updated Pages\" list without an authentication prerequisite, but it is absent for the current unauthenticated visitor. Render this public list without requiring login, including after returning from a content view; ...[2034 chars]
+26 [2026-09-22 14:28:48] [runner] generation-agent.stderr | [oneshot] semantic browser {"executed": true, "diagnostic_only": true, "errors": [], "page_errors": [], "actions": [{"scope": "record-entry", "name": "Shelf 4.5.1", "action": "navigation"}, {"scope": "record-entry", "name": "Shelf 4.3.1", "action": "navigation"}, {"scope": "page", "name": "Page 6.3.1", "action": "view-entity"}, {"scope": "pa ...[1401 chars]
+27 [2026-09-22 14:28:48] [runner] generation-agent.stderr | [oneshot] trace {"call": 1, "model": "kimi-k2.7-code-highspeed", "messages": [{"role": "system", "content": "You are a senior full-stack engineer. You are given a requirements document and a precise description of the automated accessibility-driven acceptance suite that will grade your work. You get exactly one attempt: no tools, no feedback ...[131804 chars]
+28 [2026-09-22 14:28:48] [runner] generation-agent.stderr | [oneshot] trace {"call": 2, "model": "kimi-k2.7-code-highspeed", "messages": [{"role": "system", "content": "You are a senior full-stack engineer. You are given a requirements document and a precise description of the automated accessibility-driven acceptance suite that will grade your work. You get exactly one attempt: no tools, no feedback ...[158659 chars]
+29 [2026-09-22 14:28:48] [runner] generation-agent.stdout | [oneshot] wrote 4 files in 332.6s
+30 [2026-09-22 14:28:48] [runner] generation-agent.stderr | [oneshot] smoke {"executed": true, "problems": ["Requirement-derived UI observation: The homepage scenario requires the \"Recently Updated Pages\" list without an authentication prerequisite, but it is absent for the current unauthenticated visitor. Render this public list without requiring login, including after returning from a content vie ...[4181 chars]
+31 [2026-09-22 14:28:48] [runner] generation-agent.stderr | [oneshot] usage {"billing_status": "tokens_reported_cost_not_estimated", "call_limit": 3, "calls": 2, "completed_calls": 2, "completion_tokens": 61448, "failed_calls": 0, "failure_limit": 5, "fallback_model": null, "known_completion_tokens": 61448, "known_prompt_tokens": 56497, "prompt_tokens": 56497, "unknown_usage_calls": []}
+32 [2026-09-22 14:28:48] [runner] generation-agent exit code: 0
+33 [2026-09-22 14:28:48] [runner] Using container npm configuration for frontend: NPM_CONFIG_REGISTRY=<unset>, NPM_CONFIG_REPLACE_REGISTRY_HOST=npmjs
+34 [2026-09-22 14:28:48] [runner] Waiting for npm dependency lock for frontend: /tmp/arcbench/npm-install-locks/14b378ee63d07874ae9577b83f4934ba13ebbfd34964b723eee75427eab036ff.lock
+35 [2026-09-22 14:28:48] [runner] Acquired npm dependency lock for frontend
+36 [2026-09-22 14:28:48] [runner] Executing frontend-npm-install: npm install --include=optional --no-audit --no-fund
+37 [2026-09-22 14:28:48] [runner] frontend-npm-install.stdout | 
+38 [2026-09-22 14:28:48] [runner] frontend-npm-install.stdout | up to date in 239ms
+39 [2026-09-22 14:28:48] [runner] frontend-npm-install exit code: 0
+40 [2026-09-22 14:28:48] [runner] Released npm dependency lock for frontend
+41 [2026-09-22 14:28:48] [runner] Executing frontend-npm-build: npm run build
+42 [2026-09-22 14:28:48] [runner] frontend-npm-build.stdout | 
+43 [2026-09-22 14:28:48] [runner] frontend-npm-build.stdout | > app-frontend@1.0.0 build
+44 [2026-09-22 14:28:48] [runner] frontend-npm-build.stdout | > node -e "require('fs').cpSync('public','dist',{recursive:true})"
+45 [2026-09-22 14:28:48] [runner] frontend-npm-build.stdout | 
+46 [2026-09-22 14:28:48] [runner] frontend-npm-build exit code: 0
+47 [2026-09-22 14:28:48] [runner] Using container npm configuration for backend: NPM_CONFIG_REGISTRY=<unset>, NPM_CONFIG_REPLACE_REGISTRY_HOST=npmjs
+48 [2026-09-22 14:28:48] [runner] Waiting for npm dependency lock for backend: /tmp/arcbench/npm-install-locks/ee95a96c476e21387f9f2731593556768f5d45565b485a7a1de76582a75b5435.lock
+49 [2026-09-22 14:28:48] [runner] Acquired npm dependency lock for backend
+50 [2026-09-22 14:28:48] [runner] Executing backend-npm-install: npm install --include=optional --no-audit --no-fund
+51 [2026-09-22 14:28:49] [runner] backend-npm-install.stdout | 
+52 [2026-09-22 14:28:49] [runner] backend-npm-install.stdout | up to date in 248ms
+53 [2026-09-22 14:28:49] [runner] backend-npm-install exit code: 0
+54 [2026-09-22 14:28:49] [runner] Released npm dependency lock for backend
+55 [2026-09-22 14:28:49] [runner] Starting background process template-app: npm run start
+56 [2026-09-22 14:28:49] [runner] Waiting for template application server at http://127.0.0.1:3000 with timeout=120s
+57 [2026-09-22 14:28:49] [runner] template-app.stdout | 
+58 [2026-09-22 14:28:49] [runner] template-app.stdout | > app-backend@1.0.0 start
+59 [2026-09-22 14:28:49] [runner] template-app.stdout | > node server.js
+60 [2026-09-22 14:28:49] [runner] template-app.stdout | 
+61 [2026-09-22 14:28:49] [runner] template-app.stdout | listening 3000
+62 [2026-09-22 14:28:50] [runner] template application server became ready with status=200
+63 [2026-09-22 14:28:50] [runner] Counting Playwright tests before execution
+64 [2026-09-22 14:28:52] [runner] playwright-list.stdout | Listing tests:
+65 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-1.1.spec.ts:7:1 › REQ-1.1: Open Homepage
+66 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-1.2.spec.ts:7:1 › REQ-1.2: Back to Homepage from Other Pages
+67 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-2.1.spec.ts:7:1 › REQ-2.1: Enter Login Page
+68 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-2.2.spec.ts:7:1 › REQ-2.2: Log In Successfully
+69 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-3.1.spec.ts:7:1 › REQ-3.1: Enter Authenticated Homepage
+70 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-4.1.spec.ts:7:1 › REQ-4.1: View Shelf List
+71 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-4.2.1.spec.ts:7:1 › REQ-4.2.1: Enter Shelf Details Page
+72 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-4.3.1.spec.ts:7:1 › REQ-4.3.1: Create Shelf
+73 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-4.3.2.spec.ts:7:1 › REQ-4.3.2: Cancel Creation
+74 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-4.4.1.spec.ts:7:1 › REQ-4.4.1: Confirm Delete Shelf
+75 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-4.4.2.spec.ts:7:1 › REQ-4.4.2: Cancel Delete Shelf
+76 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-4.5.1.spec.ts:7:1 › REQ-4.5.1: Save Shelf Edits
+77 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-4.5.2.spec.ts:7:1 › REQ-4.5.2: Cancel Shelf Edits
+78 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.1.spec.ts:7:1 › REQ-5.1: View Books List
+79 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.2.1.spec.ts:7:1 › REQ-5.2.1: Enter Book Details Page through Book List Page
+80 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.2.2.spec.ts:7:1 › REQ-5.2.2: Enter Book Details Page through Shelf Details Page
+81 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.3.1.spec.ts:7:1 › REQ-5.3.1: Fill out and Save Book
+82 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.3.2.spec.ts:7:1 › REQ-5.3.2: Cancel Creating Book
+83 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.4.1.spec.ts:7:1 › REQ-5.4.1: Save Book Edits
+84 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.4.2.spec.ts:7:1 › REQ-5.4.2: Cancel Book Edits
+85 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.5.1.spec.ts:7:1 › REQ-5.5.1: Confirm Delete Book
+86 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.5.2.spec.ts:7:1 › REQ-5.5.2: Cancel Delete Book
+87 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-5.6.1.spec.ts:7:1 › REQ-5.6.1: Fill out and Save Book with Shelf
+88 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-6.1.1.spec.ts:7:1 › REQ-6.1.1: Save Page
+89 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-6.1.2.spec.ts:7:1 › REQ-6.1.2: Save Draft
+90 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-6.1.3.spec.ts:7:1 › REQ-6.1.3: Delete Draft
+91 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-6.2.1.spec.ts:7:1 › REQ-6.2.1: Create Chapter
+92 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-6.3.1.spec.ts:7:1 › REQ-6.3.1: Enter Page Reading Page
+93 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-6.3.2.spec.ts:7:1 › REQ-6.3.2: Redirect to Page Edit Page
+94 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-7.1.spec.ts:7:1 › REQ-7.1: Add to Recently Viewed
+95 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-7.2.spec.ts:7:1 › REQ-7.2: Quick Navigation from Recently Viewed
+96 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-8.1.spec.ts:7:1 › REQ-8.1: Favorite Items
+97 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-8.2.spec.ts:7:1 › REQ-8.2: Quick Navigation from Favorites
+98 [2026-09-22 14:28:52] [runner] playwright-list.stdout |   REQ-9.1.spec.ts:7:1 › REQ-9.1: Quick Navigation from Recently Updated
+99 [2026-09-22 14:28:52] [runner] playwright-list.stdout | Total: 34 tests in 34 files
+100 [2026-09-22 14:28:52] [runner] Starting Playwright test process: npx playwright test --workers=1
+101 [2026-09-22 14:28:53] [runner] playwright-test.stdout | 
+102 [2026-09-22 14:28:53] [runner] playwright-test.stdout | Running 34 tests using 1 worker
+103 [2026-09-22 14:28:53] [runner] playwright-test.stdout | 
+104 [2026-09-22 14:28:53] [runner] playwright-test.stdout | [1A[2K[1/34] REQ-1.1.spec.ts:7:1 › REQ-1.1: Open Homepage
+105 [2026-09-22 14:28:55] [runner] playwright-test.stdout | [1A[2K[2/34] REQ-1.2.spec.ts:7:1 › REQ-1.2: Back to Homepage from Other Pages
+106 [2026-09-22 14:28:55] [runner] playwright-test.stdout | [1A[2K[3/34] REQ-2.1.spec.ts:7:1 › REQ-2.1: Enter Login Page
+107 [2026-09-22 14:28:56] [runner] playwright-test.stdout | [1A[2K[4/34] REQ-2.2.spec.ts:7:1 › REQ-2.2: Log In Successfully
+108 [2026-09-22 14:28:56] [runner] playwright-test.stdout | [1A[2K[5/34] REQ-3.1.spec.ts:7:1 › REQ-3.1: Enter Authenticated Homepage
+109 [2026-09-22 14:28:57] [runner] playwright-test.stdout | [1A[2K[6/34] REQ-4.1.spec.ts:7:1 › REQ-4.1: View Shelf List
+110 [2026-09-22 14:28:57] [runner] playwright-test.stdout | [1A[2K[7/34] REQ-4.2.1.spec.ts:7:1 › REQ-4.2.1: Enter Shelf Details Page
+111 [2026-09-22 14:28:57] [runner] playwright-test.stdout | [1A[2K[8/34] REQ-4.3.1.spec.ts:7:1 › REQ-4.3.1: Create Shelf
+112 [2026-09-22 14:28:58] [runner] playwright-test.stdout | [1A[2K[9/34] REQ-4.3.2.spec.ts:7:1 › REQ-4.3.2: Cancel Creation
+113 [2026-09-22 14:28:58] [runner] playwright-test.stdout | [1A[2K[10/34] REQ-4.4.1.spec.ts:7:1 › REQ-4.4.1: Confirm Delete Shelf
+114 [2026-09-22 14:29:08] [runner] playwright-test.stdout | [1A[2K  1) REQ-4.4.1.spec.ts:7:1 › REQ-4.4.1: Confirm Delete Shelf ───────────────────────────────────────
+115 [2026-09-22 14:29:08] [runner] playwright-test.stdout | 
+116 [2026-09-22 14:29:08] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+117 [2026-09-22 14:29:08] [runner] playwright-test.stdout | 
+118 [2026-09-22 14:29:08] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+119 [2026-09-22 14:29:08] [runner] playwright-test.stdout |     Call log:
+120 [2026-09-22 14:29:08] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /^Delete$/i }).first()[22m
+121 [2026-09-22 14:29:08] [runner] playwright-test.stdout | 
+122 [2026-09-22 14:29:08] [runner] playwright-test.stdout | 
+123 [2026-09-22 14:29:08] [runner] playwright-test.stdout |        at helpers.ts:119
+124 [2026-09-22 14:29:08] [runner] playwright-test.stdout | 
+125 [2026-09-22 14:29:08] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+126 [2026-09-22 14:29:08] [runner] playwright-test.stdout |       118 |   ]);
+127 [2026-09-22 14:29:08] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+128 [2026-09-22 14:29:08] [runner] playwright-test.stdout |           |                 ^
+129 [2026-09-22 14:29:08] [runner] playwright-test.stdout |       120 | }
+130 [2026-09-22 14:29:08] [runner] playwright-test.stdout |       121 |
+131 [2026-09-22 14:29:08] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+132 [2026-09-22 14:29:08] [runner] playwright-test.stdout |         at Module.clickNamed (/workspace/tests/helpers.ts:119:17)
+133 [2026-09-22 14:29:08] [runner] playwright-test.stdout |         at /workspace/tests/REQ-4.4.1.spec.ts:9:3
+134 [2026-09-22 14:29:08] [runner] playwright-test.stdout | 
+135 [2026-09-22 14:29:08] [runner] playwright-test.stdout |     Error Context: test-results/REQ-4.4.1-REQ-4-4-1-Confirm-Delete-Shelf/error-context.md
+136 [2026-09-22 14:29:08] [runner] playwright-test.stdout | 
+137 [2026-09-22 14:29:08] [runner] playwright-test.stdout | 
+138 [2026-09-22 14:29:09] [runner] playwright-test.stdout | [1A[2K[11/34] REQ-4.4.2.spec.ts:7:1 › REQ-4.4.2: Cancel Delete Shelf
+139 [2026-09-22 14:29:20] [runner] playwright-test.stdout | [1A[2K  2) REQ-4.4.2.spec.ts:7:1 › REQ-4.4.2: Cancel Delete Shelf ────────────────────────────────────────
+140 [2026-09-22 14:29:20] [runner] playwright-test.stdout | 
+141 [2026-09-22 14:29:20] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+142 [2026-09-22 14:29:20] [runner] playwright-test.stdout | 
+143 [2026-09-22 14:29:20] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+144 [2026-09-22 14:29:20] [runner] playwright-test.stdout |     Call log:
+145 [2026-09-22 14:29:20] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /^Delete$/i }).first()[22m
+146 [2026-09-22 14:29:20] [runner] playwright-test.stdout | 
+147 [2026-09-22 14:29:20] [runner] playwright-test.stdout | 
+148 [2026-09-22 14:29:20] [runner] playwright-test.stdout |        at helpers.ts:119
+149 [2026-09-22 14:29:20] [runner] playwright-test.stdout | 
+150 [2026-09-22 14:29:20] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+151 [2026-09-22 14:29:20] [runner] playwright-test.stdout |       118 |   ]);
+152 [2026-09-22 14:29:20] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+153 [2026-09-22 14:29:20] [runner] playwright-test.stdout |           |                 ^
+154 [2026-09-22 14:29:20] [runner] playwright-test.stdout |       120 | }
+155 [2026-09-22 14:29:20] [runner] playwright-test.stdout |       121 |
+156 [2026-09-22 14:29:20] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+157 [2026-09-22 14:29:20] [runner] playwright-test.stdout |         at Module.clickNamed (/workspace/tests/helpers.ts:119:17)
+158 [2026-09-22 14:29:20] [runner] playwright-test.stdout |         at /workspace/tests/REQ-4.4.2.spec.ts:9:3
+159 [2026-09-22 14:29:20] [runner] playwright-test.stdout | 
+160 [2026-09-22 14:29:20] [runner] playwright-test.stdout |     Error Context: test-results/REQ-4.4.2-REQ-4-4-2-Cancel-Delete-Shelf/error-context.md
+161 [2026-09-22 14:29:20] [runner] playwright-test.stdout | 
+162 [2026-09-22 14:29:20] [runner] playwright-test.stdout | 
+163 [2026-09-22 14:29:20] [runner] playwright-test.stdout | [1A[2K[12/34] REQ-4.5.1.spec.ts:7:1 › REQ-4.5.1: Save Shelf Edits
+164 [2026-09-22 14:29:31] [runner] playwright-test.stdout | [1A[2K  3) REQ-4.5.1.spec.ts:7:1 › REQ-4.5.1: Save Shelf Edits ───────────────────────────────────────────
+165 [2026-09-22 14:29:31] [runner] playwright-test.stdout | 
+166 [2026-09-22 14:29:31] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+167 [2026-09-22 14:29:31] [runner] playwright-test.stdout | 
+168 [2026-09-22 14:29:31] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+169 [2026-09-22 14:29:31] [runner] playwright-test.stdout |     Call log:
+170 [2026-09-22 14:29:31] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /^Edit$/i }).first()[22m
+171 [2026-09-22 14:29:31] [runner] playwright-test.stdout | 
+172 [2026-09-22 14:29:31] [runner] playwright-test.stdout | 
+173 [2026-09-22 14:29:31] [runner] playwright-test.stdout |        at helpers.ts:119
+174 [2026-09-22 14:29:31] [runner] playwright-test.stdout | 
+175 [2026-09-22 14:29:31] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+176 [2026-09-22 14:29:31] [runner] playwright-test.stdout |       118 |   ]);
+177 [2026-09-22 14:29:31] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+178 [2026-09-22 14:29:31] [runner] playwright-test.stdout |           |                 ^
+179 [2026-09-22 14:29:31] [runner] playwright-test.stdout |       120 | }
+180 [2026-09-22 14:29:31] [runner] playwright-test.stdout |       121 |
+181 [2026-09-22 14:29:31] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+182 [2026-09-22 14:29:31] [runner] playwright-test.stdout |         at Module.clickNamed (/workspace/tests/helpers.ts:119:17)
+183 [2026-09-22 14:29:31] [runner] playwright-test.stdout |         at /workspace/tests/REQ-4.5.1.spec.ts:9:3
+184 [2026-09-22 14:29:31] [runner] playwright-test.stdout | 
+185 [2026-09-22 14:29:31] [runner] playwright-test.stdout |     Error Context: test-results/REQ-4.5.1-REQ-4-5-1-Save-Shelf-Edits/error-context.md
+186 [2026-09-22 14:29:31] [runner] playwright-test.stdout | 
+187 [2026-09-22 14:29:31] [runner] playwright-test.stdout | 
+188 [2026-09-22 14:29:31] [runner] playwright-test.stdout | [1A[2K[13/34] REQ-4.5.2.spec.ts:7:1 › REQ-4.5.2: Cancel Shelf Edits
+189 [2026-09-22 14:29:42] [runner] playwright-test.stdout | [1A[2K  4) REQ-4.5.2.spec.ts:7:1 › REQ-4.5.2: Cancel Shelf Edits ─────────────────────────────────────────
+190 [2026-09-22 14:29:42] [runner] playwright-test.stdout | 
+191 [2026-09-22 14:29:42] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+192 [2026-09-22 14:29:42] [runner] playwright-test.stdout | 
+193 [2026-09-22 14:29:42] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+194 [2026-09-22 14:29:42] [runner] playwright-test.stdout |     Call log:
+195 [2026-09-22 14:29:42] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /^Edit$/i }).first()[22m
+196 [2026-09-22 14:29:42] [runner] playwright-test.stdout | 
+197 [2026-09-22 14:29:42] [runner] playwright-test.stdout | 
+198 [2026-09-22 14:29:42] [runner] playwright-test.stdout |        at helpers.ts:119
+199 [2026-09-22 14:29:42] [runner] playwright-test.stdout | 
+200 [2026-09-22 14:29:42] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+201 [2026-09-22 14:29:42] [runner] playwright-test.stdout |       118 |   ]);
+202 [2026-09-22 14:29:42] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+203 [2026-09-22 14:29:42] [runner] playwright-test.stdout |           |                 ^
+204 [2026-09-22 14:29:42] [runner] playwright-test.stdout |       120 | }
+205 [2026-09-22 14:29:42] [runner] playwright-test.stdout |       121 |
+206 [2026-09-22 14:29:42] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+207 [2026-09-22 14:29:42] [runner] playwright-test.stdout |         at Module.clickNamed (/workspace/tests/helpers.ts:119:17)
+208 [2026-09-22 14:29:42] [runner] playwright-test.stdout |         at /workspace/tests/REQ-4.5.2.spec.ts:9:3
+209 [2026-09-22 14:29:42] [runner] playwright-test.stdout | 
+210 [2026-09-22 14:29:42] [runner] playwright-test.stdout |     Error Context: test-results/REQ-4.5.2-REQ-4-5-2-Cancel-Shelf-Edits/error-context.md
+211 [2026-09-22 14:29:42] [runner] playwright-test.stdout | 
+212 [2026-09-22 14:29:42] [runner] playwright-test.stdout | 
+213 [2026-09-22 14:29:42] [runner] playwright-test.stdout | [1A[2K[14/34] REQ-5.1.spec.ts:7:1 › REQ-5.1: View Books List
+214 [2026-09-22 14:29:53] [runner] playwright-test.stdout | [1A[2K  5) REQ-5.1.spec.ts:7:1 › REQ-5.1: View Books List ────────────────────────────────────────────────
+215 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+216 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+217 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+218 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+219 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+220 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     Locator: getByRole('heading', { name: /Book\s+5\.1/i }).first()
+221 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     Expected: visible
+222 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     Error: element(s) not found
+223 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+224 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     Call log:
+225 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+226 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('heading', { name: /Book\s+5\.1/i }).first()[22m
+227 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+228 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+229 [2026-09-22 14:29:53] [runner] playwright-test.stdout |        at helpers.ts:134
+230 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+231 [2026-09-22 14:29:53] [runner] playwright-test.stdout |       132 |       page.getByPlaceholder(name),
+232 [2026-09-22 14:29:53] [runner] playwright-test.stdout |       133 |     ]);
+233 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     > 134 |     await expect(locator).toBeVisible();
+234 [2026-09-22 14:29:53] [runner] playwright-test.stdout |           |                           ^
+235 [2026-09-22 14:29:53] [runner] playwright-test.stdout |       135 |   }
+236 [2026-09-22 14:29:53] [runner] playwright-test.stdout |       136 | }
+237 [2026-09-22 14:29:53] [runner] playwright-test.stdout |       137 |
+238 [2026-09-22 14:29:53] [runner] playwright-test.stdout |         at Module.expectTextsVisible (/workspace/tests/helpers.ts:134:27)
+239 [2026-09-22 14:29:53] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.1.spec.ts:9:3
+240 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+241 [2026-09-22 14:29:53] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.1-REQ-5-1-View-Books-List/error-context.md
+242 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+243 [2026-09-22 14:29:53] [runner] playwright-test.stdout | 
+244 [2026-09-22 14:29:54] [runner] playwright-test.stdout | [1A[2K[15/34] REQ-5.2.1.spec.ts:7:1 › REQ-5.2.1: Enter Book Details Page through Book List Page
+245 [2026-09-22 14:30:04] [runner] playwright-test.stdout | [1A[2K  6) REQ-5.2.1.spec.ts:7:1 › REQ-5.2.1: Enter Book Details Page through Book List Page ─────────────
+246 [2026-09-22 14:30:04] [runner] playwright-test.stdout | 
+247 [2026-09-22 14:30:04] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+248 [2026-09-22 14:30:04] [runner] playwright-test.stdout | 
+249 [2026-09-22 14:30:04] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+250 [2026-09-22 14:30:04] [runner] playwright-test.stdout |     Call log:
+251 [2026-09-22 14:30:04] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+5\.2\.1/i }).first()[22m
+252 [2026-09-22 14:30:04] [runner] playwright-test.stdout | 
+253 [2026-09-22 14:30:04] [runner] playwright-test.stdout | 
+254 [2026-09-22 14:30:04] [runner] playwright-test.stdout |        at helpers.ts:119
+255 [2026-09-22 14:30:04] [runner] playwright-test.stdout | 
+256 [2026-09-22 14:30:04] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+257 [2026-09-22 14:30:04] [runner] playwright-test.stdout |       118 |   ]);
+258 [2026-09-22 14:30:04] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+259 [2026-09-22 14:30:04] [runner] playwright-test.stdout |           |                 ^
+260 [2026-09-22 14:30:04] [runner] playwright-test.stdout |       120 | }
+261 [2026-09-22 14:30:04] [runner] playwright-test.stdout |       121 |
+262 [2026-09-22 14:30:04] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+263 [2026-09-22 14:30:04] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+264 [2026-09-22 14:30:04] [runner] playwright-test.stdout |         at Module.openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+265 [2026-09-22 14:30:04] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.2.1.spec.ts:8:3
+266 [2026-09-22 14:30:04] [runner] playwright-test.stdout | 
+267 [2026-09-22 14:30:04] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.2.1-REQ-5-2-1-Enter--512ab-Page-through-Book-List-Page/error-context.md
+268 [2026-09-22 14:30:04] [runner] playwright-test.stdout | 
+269 [2026-09-22 14:30:04] [runner] playwright-test.stdout | 
+270 [2026-09-22 14:30:05] [runner] playwright-test.stdout | [1A[2K[16/34] REQ-5.2.2.spec.ts:7:1 › REQ-5.2.2: Enter Book Details Page through Shelf Details Page
+271 [2026-09-22 14:30:15] [runner] playwright-test.stdout | [1A[2K  7) REQ-5.2.2.spec.ts:7:1 › REQ-5.2.2: Enter Book Details Page through Shelf Details Page ─────────
+272 [2026-09-22 14:30:15] [runner] playwright-test.stdout | 
+273 [2026-09-22 14:30:15] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+274 [2026-09-22 14:30:15] [runner] playwright-test.stdout | 
+275 [2026-09-22 14:30:15] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+276 [2026-09-22 14:30:15] [runner] playwright-test.stdout |     Call log:
+277 [2026-09-22 14:30:15] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+5\.2\.2/i }).first()[22m
+278 [2026-09-22 14:30:15] [runner] playwright-test.stdout | 
+279 [2026-09-22 14:30:15] [runner] playwright-test.stdout | 
+280 [2026-09-22 14:30:15] [runner] playwright-test.stdout |        at helpers.ts:119
+281 [2026-09-22 14:30:15] [runner] playwright-test.stdout | 
+282 [2026-09-22 14:30:15] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+283 [2026-09-22 14:30:15] [runner] playwright-test.stdout |       118 |   ]);
+284 [2026-09-22 14:30:15] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+285 [2026-09-22 14:30:15] [runner] playwright-test.stdout |           |                 ^
+286 [2026-09-22 14:30:15] [runner] playwright-test.stdout |       120 | }
+287 [2026-09-22 14:30:15] [runner] playwright-test.stdout |       121 |
+288 [2026-09-22 14:30:15] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+289 [2026-09-22 14:30:15] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+290 [2026-09-22 14:30:15] [runner] playwright-test.stdout |         at Module.openBookDetailsFromShelf (/workspace/tests/helpers.ts:200:3)
+291 [2026-09-22 14:30:15] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.2.2.spec.ts:8:3
+292 [2026-09-22 14:30:15] [runner] playwright-test.stdout | 
+293 [2026-09-22 14:30:15] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.2.2-REQ-5-2-2-Enter--c57f6--through-Shelf-Details-Page/error-context.md
+294 [2026-09-22 14:30:15] [runner] playwright-test.stdout | 
+295 [2026-09-22 14:30:15] [runner] playwright-test.stdout | 
+296 [2026-09-22 14:30:15] [runner] playwright-test.stdout | [1A[2K[17/34] REQ-5.3.1.spec.ts:7:1 › REQ-5.3.1: Fill out and Save Book
+297 [2026-09-22 14:30:26] [runner] playwright-test.stdout | [1A[2K  8) REQ-5.3.1.spec.ts:7:1 › REQ-5.3.1: Fill out and Save Book ─────────────────────────────────────
+298 [2026-09-22 14:30:26] [runner] playwright-test.stdout | 
+299 [2026-09-22 14:30:26] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+300 [2026-09-22 14:30:26] [runner] playwright-test.stdout | 
+301 [2026-09-22 14:30:26] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+302 [2026-09-22 14:30:26] [runner] playwright-test.stdout |     Call log:
+303 [2026-09-22 14:30:26] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /^Create New Book$/i }).first()[22m
+304 [2026-09-22 14:30:26] [runner] playwright-test.stdout | 
+305 [2026-09-22 14:30:26] [runner] playwright-test.stdout | 
+306 [2026-09-22 14:30:26] [runner] playwright-test.stdout |        at helpers.ts:119
+307 [2026-09-22 14:30:26] [runner] playwright-test.stdout | 
+308 [2026-09-22 14:30:26] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+309 [2026-09-22 14:30:26] [runner] playwright-test.stdout |       118 |   ]);
+310 [2026-09-22 14:30:26] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+311 [2026-09-22 14:30:26] [runner] playwright-test.stdout |           |                 ^
+312 [2026-09-22 14:30:26] [runner] playwright-test.stdout |       120 | }
+313 [2026-09-22 14:30:26] [runner] playwright-test.stdout |       121 |
+314 [2026-09-22 14:30:26] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+315 [2026-09-22 14:30:26] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+316 [2026-09-22 14:30:26] [runner] playwright-test.stdout |         at Module.openBookCreationFromList (/workspace/tests/helpers.ts:205:3)
+317 [2026-09-22 14:30:26] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.3.1.spec.ts:8:3
+318 [2026-09-22 14:30:26] [runner] playwright-test.stdout | 
+319 [2026-09-22 14:30:26] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.3.1-REQ-5-3-1-Fill-out-and-Save-Book/error-context.md
+320 [2026-09-22 14:30:26] [runner] playwright-test.stdout | 
+321 [2026-09-22 14:30:26] [runner] playwright-test.stdout | 
+322 [2026-09-22 14:30:26] [runner] playwright-test.stdout | [1A[2K[18/34] REQ-5.3.2.spec.ts:7:1 › REQ-5.3.2: Cancel Creating Book
+323 [2026-09-22 14:30:37] [runner] playwright-test.stdout | [1A[2K  9) REQ-5.3.2.spec.ts:7:1 › REQ-5.3.2: Cancel Creating Book ───────────────────────────────────────
+324 [2026-09-22 14:30:37] [runner] playwright-test.stdout | 
+325 [2026-09-22 14:30:37] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+326 [2026-09-22 14:30:37] [runner] playwright-test.stdout | 
+327 [2026-09-22 14:30:37] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+328 [2026-09-22 14:30:37] [runner] playwright-test.stdout |     Call log:
+329 [2026-09-22 14:30:37] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /^Create New Book$/i }).first()[22m
+330 [2026-09-22 14:30:37] [runner] playwright-test.stdout | 
+331 [2026-09-22 14:30:37] [runner] playwright-test.stdout | 
+332 [2026-09-22 14:30:37] [runner] playwright-test.stdout |        at helpers.ts:119
+333 [2026-09-22 14:30:37] [runner] playwright-test.stdout | 
+334 [2026-09-22 14:30:37] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+335 [2026-09-22 14:30:37] [runner] playwright-test.stdout |       118 |   ]);
+336 [2026-09-22 14:30:37] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+337 [2026-09-22 14:30:37] [runner] playwright-test.stdout |           |                 ^
+338 [2026-09-22 14:30:37] [runner] playwright-test.stdout |       120 | }
+339 [2026-09-22 14:30:37] [runner] playwright-test.stdout |       121 |
+340 [2026-09-22 14:30:37] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+341 [2026-09-22 14:30:37] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+342 [2026-09-22 14:30:37] [runner] playwright-test.stdout |         at Module.openBookCreationFromList (/workspace/tests/helpers.ts:205:3)
+343 [2026-09-22 14:30:37] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.3.2.spec.ts:8:3
+344 [2026-09-22 14:30:37] [runner] playwright-test.stdout | 
+345 [2026-09-22 14:30:37] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.3.2-REQ-5-3-2-Cancel-Creating-Book/error-context.md
+346 [2026-09-22 14:30:37] [runner] playwright-test.stdout | 
+347 [2026-09-22 14:30:37] [runner] playwright-test.stdout | 
+348 [2026-09-22 14:30:38] [runner] playwright-test.stdout | [1A[2K[19/34] REQ-5.4.1.spec.ts:7:1 › REQ-5.4.1: Save Book Edits
+349 [2026-09-22 14:30:48] [runner] playwright-test.stdout | [1A[2K  10) REQ-5.4.1.spec.ts:7:1 › REQ-5.4.1: Save Book Edits ───────────────────────────────────────────
+350 [2026-09-22 14:30:48] [runner] playwright-test.stdout | 
+351 [2026-09-22 14:30:48] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+352 [2026-09-22 14:30:48] [runner] playwright-test.stdout | 
+353 [2026-09-22 14:30:48] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+354 [2026-09-22 14:30:48] [runner] playwright-test.stdout |     Call log:
+355 [2026-09-22 14:30:48] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+5\.4\.1/i }).first()[22m
+356 [2026-09-22 14:30:48] [runner] playwright-test.stdout | 
+357 [2026-09-22 14:30:48] [runner] playwright-test.stdout | 
+358 [2026-09-22 14:30:48] [runner] playwright-test.stdout |        at helpers.ts:119
+359 [2026-09-22 14:30:48] [runner] playwright-test.stdout | 
+360 [2026-09-22 14:30:48] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+361 [2026-09-22 14:30:48] [runner] playwright-test.stdout |       118 |   ]);
+362 [2026-09-22 14:30:48] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+363 [2026-09-22 14:30:48] [runner] playwright-test.stdout |           |                 ^
+364 [2026-09-22 14:30:48] [runner] playwright-test.stdout |       120 | }
+365 [2026-09-22 14:30:48] [runner] playwright-test.stdout |       121 |
+366 [2026-09-22 14:30:48] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+367 [2026-09-22 14:30:48] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+368 [2026-09-22 14:30:48] [runner] playwright-test.stdout |         at Module.openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+369 [2026-09-22 14:30:48] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.4.1.spec.ts:8:3
+370 [2026-09-22 14:30:48] [runner] playwright-test.stdout | 
+371 [2026-09-22 14:30:48] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.4.1-REQ-5-4-1-Save-Book-Edits/error-context.md
+372 [2026-09-22 14:30:48] [runner] playwright-test.stdout | 
+373 [2026-09-22 14:30:48] [runner] playwright-test.stdout | 
+374 [2026-09-22 14:30:48] [runner] playwright-test.stdout | [1A[2K[20/34] REQ-5.4.2.spec.ts:7:1 › REQ-5.4.2: Cancel Book Edits
+375 [2026-09-22 14:30:59] [runner] playwright-test.stdout | [1A[2K  11) REQ-5.4.2.spec.ts:7:1 › REQ-5.4.2: Cancel Book Edits ─────────────────────────────────────────
+376 [2026-09-22 14:30:59] [runner] playwright-test.stdout | 
+377 [2026-09-22 14:30:59] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+378 [2026-09-22 14:30:59] [runner] playwright-test.stdout | 
+379 [2026-09-22 14:30:59] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+380 [2026-09-22 14:30:59] [runner] playwright-test.stdout |     Call log:
+381 [2026-09-22 14:30:59] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+5\.4\.2/i }).first()[22m
+382 [2026-09-22 14:30:59] [runner] playwright-test.stdout | 
+383 [2026-09-22 14:30:59] [runner] playwright-test.stdout | 
+384 [2026-09-22 14:30:59] [runner] playwright-test.stdout |        at helpers.ts:119
+385 [2026-09-22 14:30:59] [runner] playwright-test.stdout | 
+386 [2026-09-22 14:30:59] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+387 [2026-09-22 14:30:59] [runner] playwright-test.stdout |       118 |   ]);
+388 [2026-09-22 14:30:59] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+389 [2026-09-22 14:30:59] [runner] playwright-test.stdout |           |                 ^
+390 [2026-09-22 14:30:59] [runner] playwright-test.stdout |       120 | }
+391 [2026-09-22 14:30:59] [runner] playwright-test.stdout |       121 |
+392 [2026-09-22 14:30:59] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+393 [2026-09-22 14:30:59] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+394 [2026-09-22 14:30:59] [runner] playwright-test.stdout |         at Module.openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+395 [2026-09-22 14:30:59] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.4.2.spec.ts:8:3
+396 [2026-09-22 14:30:59] [runner] playwright-test.stdout | 
+397 [2026-09-22 14:30:59] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.4.2-REQ-5-4-2-Cancel-Book-Edits/error-context.md
+398 [2026-09-22 14:30:59] [runner] playwright-test.stdout | 
+399 [2026-09-22 14:30:59] [runner] playwright-test.stdout | 
+400 [2026-09-22 14:30:59] [runner] playwright-test.stdout | [1A[2K[21/34] REQ-5.5.1.spec.ts:7:1 › REQ-5.5.1: Confirm Delete Book
+401 [2026-09-22 14:31:10] [runner] playwright-test.stdout | [1A[2K  12) REQ-5.5.1.spec.ts:7:1 › REQ-5.5.1: Confirm Delete Book ───────────────────────────────────────
+402 [2026-09-22 14:31:10] [runner] playwright-test.stdout | 
+403 [2026-09-22 14:31:10] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+404 [2026-09-22 14:31:10] [runner] playwright-test.stdout | 
+405 [2026-09-22 14:31:10] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+406 [2026-09-22 14:31:10] [runner] playwright-test.stdout |     Call log:
+407 [2026-09-22 14:31:10] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+5\.5\.1/i }).first()[22m
+408 [2026-09-22 14:31:10] [runner] playwright-test.stdout | 
+409 [2026-09-22 14:31:10] [runner] playwright-test.stdout | 
+410 [2026-09-22 14:31:10] [runner] playwright-test.stdout |        at helpers.ts:119
+411 [2026-09-22 14:31:10] [runner] playwright-test.stdout | 
+412 [2026-09-22 14:31:10] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+413 [2026-09-22 14:31:10] [runner] playwright-test.stdout |       118 |   ]);
+414 [2026-09-22 14:31:10] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+415 [2026-09-22 14:31:10] [runner] playwright-test.stdout |           |                 ^
+416 [2026-09-22 14:31:10] [runner] playwright-test.stdout |       120 | }
+417 [2026-09-22 14:31:10] [runner] playwright-test.stdout |       121 |
+418 [2026-09-22 14:31:10] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+419 [2026-09-22 14:31:10] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+420 [2026-09-22 14:31:10] [runner] playwright-test.stdout |         at Module.openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+421 [2026-09-22 14:31:10] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.5.1.spec.ts:8:3
+422 [2026-09-22 14:31:10] [runner] playwright-test.stdout | 
+423 [2026-09-22 14:31:10] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.5.1-REQ-5-5-1-Confirm-Delete-Book/error-context.md
+424 [2026-09-22 14:31:10] [runner] playwright-test.stdout | 
+425 [2026-09-22 14:31:10] [runner] playwright-test.stdout | 
+426 [2026-09-22 14:31:10] [runner] playwright-test.stdout | [1A[2K[22/34] REQ-5.5.2.spec.ts:7:1 › REQ-5.5.2: Cancel Delete Book
+427 [2026-09-22 14:31:21] [runner] playwright-test.stdout | [1A[2K  13) REQ-5.5.2.spec.ts:7:1 › REQ-5.5.2: Cancel Delete Book ────────────────────────────────────────
+428 [2026-09-22 14:31:21] [runner] playwright-test.stdout | 
+429 [2026-09-22 14:31:21] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+430 [2026-09-22 14:31:21] [runner] playwright-test.stdout | 
+431 [2026-09-22 14:31:21] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+432 [2026-09-22 14:31:21] [runner] playwright-test.stdout |     Call log:
+433 [2026-09-22 14:31:21] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+5\.5\.2/i }).first()[22m
+434 [2026-09-22 14:31:21] [runner] playwright-test.stdout | 
+435 [2026-09-22 14:31:21] [runner] playwright-test.stdout | 
+436 [2026-09-22 14:31:21] [runner] playwright-test.stdout |        at helpers.ts:119
+437 [2026-09-22 14:31:21] [runner] playwright-test.stdout | 
+438 [2026-09-22 14:31:21] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+439 [2026-09-22 14:31:21] [runner] playwright-test.stdout |       118 |   ]);
+440 [2026-09-22 14:31:21] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+441 [2026-09-22 14:31:21] [runner] playwright-test.stdout |           |                 ^
+442 [2026-09-22 14:31:21] [runner] playwright-test.stdout |       120 | }
+443 [2026-09-22 14:31:21] [runner] playwright-test.stdout |       121 |
+444 [2026-09-22 14:31:21] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+445 [2026-09-22 14:31:21] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+446 [2026-09-22 14:31:21] [runner] playwright-test.stdout |         at Module.openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+447 [2026-09-22 14:31:21] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.5.2.spec.ts:8:3
+448 [2026-09-22 14:31:21] [runner] playwright-test.stdout | 
+449 [2026-09-22 14:31:21] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.5.2-REQ-5-5-2-Cancel-Delete-Book/error-context.md
+450 [2026-09-22 14:31:21] [runner] playwright-test.stdout | 
+451 [2026-09-22 14:31:21] [runner] playwright-test.stdout | 
+452 [2026-09-22 14:31:21] [runner] playwright-test.stdout | [1A[2K[23/34] REQ-5.6.1.spec.ts:7:1 › REQ-5.6.1: Fill out and Save Book with Shelf
+453 [2026-09-22 14:31:31] [runner] playwright-test.stdout | [1A[2K  14) REQ-5.6.1.spec.ts:7:1 › REQ-5.6.1: Fill out and Save Book with Shelf ─────────────────────────
+454 [2026-09-22 14:31:31] [runner] playwright-test.stdout | 
+455 [2026-09-22 14:31:31] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+456 [2026-09-22 14:31:31] [runner] playwright-test.stdout | 
+457 [2026-09-22 14:31:31] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+458 [2026-09-22 14:31:31] [runner] playwright-test.stdout |     Call log:
+459 [2026-09-22 14:31:31] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /^New Book$/i }).first()[22m
+460 [2026-09-22 14:31:31] [runner] playwright-test.stdout | 
+461 [2026-09-22 14:31:31] [runner] playwright-test.stdout | 
+462 [2026-09-22 14:31:31] [runner] playwright-test.stdout |        at helpers.ts:119
+463 [2026-09-22 14:31:31] [runner] playwright-test.stdout | 
+464 [2026-09-22 14:31:31] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+465 [2026-09-22 14:31:31] [runner] playwright-test.stdout |       118 |   ]);
+466 [2026-09-22 14:31:31] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+467 [2026-09-22 14:31:31] [runner] playwright-test.stdout |           |                 ^
+468 [2026-09-22 14:31:31] [runner] playwright-test.stdout |       120 | }
+469 [2026-09-22 14:31:31] [runner] playwright-test.stdout |       121 |
+470 [2026-09-22 14:31:31] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+471 [2026-09-22 14:31:31] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+472 [2026-09-22 14:31:31] [runner] playwright-test.stdout |         at Module.openBookCreationFromShelf (/workspace/tests/helpers.ts:234:3)
+473 [2026-09-22 14:31:31] [runner] playwright-test.stdout |         at /workspace/tests/REQ-5.6.1.spec.ts:8:3
+474 [2026-09-22 14:31:31] [runner] playwright-test.stdout | 
+475 [2026-09-22 14:31:31] [runner] playwright-test.stdout |     Error Context: test-results/REQ-5.6.1-REQ-5-6-1-Fill-out-and-Save-Book-with-Shelf/error-context.md
+476 [2026-09-22 14:31:31] [runner] playwright-test.stdout | 
+477 [2026-09-22 14:31:31] [runner] playwright-test.stdout | 
+478 [2026-09-22 14:31:32] [runner] playwright-test.stdout | [1A[2K[24/34] REQ-6.1.1.spec.ts:7:1 › REQ-6.1.1: Save Page
+479 [2026-09-22 14:31:42] [runner] playwright-test.stdout | [1A[2K  15) REQ-6.1.1.spec.ts:7:1 › REQ-6.1.1: Save Page ─────────────────────────────────────────────────
+480 [2026-09-22 14:31:42] [runner] playwright-test.stdout | 
+481 [2026-09-22 14:31:42] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+482 [2026-09-22 14:31:42] [runner] playwright-test.stdout | 
+483 [2026-09-22 14:31:42] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+484 [2026-09-22 14:31:42] [runner] playwright-test.stdout |     Call log:
+485 [2026-09-22 14:31:42] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+6\.1\.1/i }).first()[22m
+486 [2026-09-22 14:31:42] [runner] playwright-test.stdout | 
+487 [2026-09-22 14:31:42] [runner] playwright-test.stdout | 
+488 [2026-09-22 14:31:42] [runner] playwright-test.stdout |        at helpers.ts:119
+489 [2026-09-22 14:31:42] [runner] playwright-test.stdout | 
+490 [2026-09-22 14:31:42] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+491 [2026-09-22 14:31:42] [runner] playwright-test.stdout |       118 |   ]);
+492 [2026-09-22 14:31:42] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+493 [2026-09-22 14:31:42] [runner] playwright-test.stdout |           |                 ^
+494 [2026-09-22 14:31:42] [runner] playwright-test.stdout |       120 | }
+495 [2026-09-22 14:31:42] [runner] playwright-test.stdout |       121 |
+496 [2026-09-22 14:31:42] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+497 [2026-09-22 14:31:42] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+498 [2026-09-22 14:31:42] [runner] playwright-test.stdout |         at openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+499 [2026-09-22 14:31:42] [runner] playwright-test.stdout |         at Module.openPageEditor (/workspace/tests/helpers.ts:270:3)
+500 [2026-09-22 14:31:42] [runner] playwright-test.stdout |         at /workspace/tests/REQ-6.1.1.spec.ts:8:3
+501 [2026-09-22 14:31:42] [runner] playwright-test.stdout | 
+502 [2026-09-22 14:31:42] [runner] playwright-test.stdout |     Error Context: test-results/REQ-6.1.1-REQ-6-1-1-Save-Page/error-context.md
+503 [2026-09-22 14:31:42] [runner] playwright-test.stdout | 
+504 [2026-09-22 14:31:42] [runner] playwright-test.stdout | 
+505 [2026-09-22 14:31:43] [runner] playwright-test.stdout | [1A[2K[25/34] REQ-6.1.2.spec.ts:7:1 › REQ-6.1.2: Save Draft
+506 [2026-09-22 14:31:53] [runner] playwright-test.stdout | [1A[2K  16) REQ-6.1.2.spec.ts:7:1 › REQ-6.1.2: Save Draft ────────────────────────────────────────────────
+507 [2026-09-22 14:31:53] [runner] playwright-test.stdout | 
+508 [2026-09-22 14:31:53] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+509 [2026-09-22 14:31:53] [runner] playwright-test.stdout | 
+510 [2026-09-22 14:31:53] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+511 [2026-09-22 14:31:53] [runner] playwright-test.stdout |     Call log:
+512 [2026-09-22 14:31:53] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+6\.1\.2/i }).first()[22m
+513 [2026-09-22 14:31:53] [runner] playwright-test.stdout | 
+514 [2026-09-22 14:31:53] [runner] playwright-test.stdout | 
+515 [2026-09-22 14:31:53] [runner] playwright-test.stdout |        at helpers.ts:119
+516 [2026-09-22 14:31:53] [runner] playwright-test.stdout | 
+517 [2026-09-22 14:31:53] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+518 [2026-09-22 14:31:53] [runner] playwright-test.stdout |       118 |   ]);
+519 [2026-09-22 14:31:53] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+520 [2026-09-22 14:31:53] [runner] playwright-test.stdout |           |                 ^
+521 [2026-09-22 14:31:53] [runner] playwright-test.stdout |       120 | }
+522 [2026-09-22 14:31:53] [runner] playwright-test.stdout |       121 |
+523 [2026-09-22 14:31:53] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+524 [2026-09-22 14:31:53] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+525 [2026-09-22 14:31:53] [runner] playwright-test.stdout |         at openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+526 [2026-09-22 14:31:53] [runner] playwright-test.stdout |         at Module.openPageEditor (/workspace/tests/helpers.ts:270:3)
+527 [2026-09-22 14:31:53] [runner] playwright-test.stdout |         at /workspace/tests/REQ-6.1.2.spec.ts:9:3
+528 [2026-09-22 14:31:53] [runner] playwright-test.stdout | 
+529 [2026-09-22 14:31:53] [runner] playwright-test.stdout |     Error Context: test-results/REQ-6.1.2-REQ-6-1-2-Save-Draft/error-context.md
+530 [2026-09-22 14:31:53] [runner] playwright-test.stdout | 
+531 [2026-09-22 14:31:53] [runner] playwright-test.stdout | 
+532 [2026-09-22 14:31:54] [runner] playwright-test.stdout | [1A[2K[26/34] REQ-6.1.3.spec.ts:7:1 › REQ-6.1.3: Delete Draft
+533 [2026-09-22 14:32:04] [runner] playwright-test.stdout | [1A[2K  17) REQ-6.1.3.spec.ts:7:1 › REQ-6.1.3: Delete Draft ──────────────────────────────────────────────
+534 [2026-09-22 14:32:04] [runner] playwright-test.stdout | 
+535 [2026-09-22 14:32:04] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+536 [2026-09-22 14:32:04] [runner] playwright-test.stdout | 
+537 [2026-09-22 14:32:04] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+538 [2026-09-22 14:32:04] [runner] playwright-test.stdout |     Call log:
+539 [2026-09-22 14:32:04] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+6\.1\.3/i }).first()[22m
+540 [2026-09-22 14:32:04] [runner] playwright-test.stdout | 
+541 [2026-09-22 14:32:04] [runner] playwright-test.stdout | 
+542 [2026-09-22 14:32:04] [runner] playwright-test.stdout |        at helpers.ts:119
+543 [2026-09-22 14:32:04] [runner] playwright-test.stdout | 
+544 [2026-09-22 14:32:04] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+545 [2026-09-22 14:32:04] [runner] playwright-test.stdout |       118 |   ]);
+546 [2026-09-22 14:32:04] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+547 [2026-09-22 14:32:04] [runner] playwright-test.stdout |           |                 ^
+548 [2026-09-22 14:32:04] [runner] playwright-test.stdout |       120 | }
+549 [2026-09-22 14:32:04] [runner] playwright-test.stdout |       121 |
+550 [2026-09-22 14:32:04] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+551 [2026-09-22 14:32:04] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+552 [2026-09-22 14:32:04] [runner] playwright-test.stdout |         at openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+553 [2026-09-22 14:32:04] [runner] playwright-test.stdout |         at Module.openDraftPageEditor (/workspace/tests/helpers.ts:275:3)
+554 [2026-09-22 14:32:04] [runner] playwright-test.stdout |         at /workspace/tests/REQ-6.1.3.spec.ts:8:3
+555 [2026-09-22 14:32:04] [runner] playwright-test.stdout | 
+556 [2026-09-22 14:32:04] [runner] playwright-test.stdout |     Error Context: test-results/REQ-6.1.3-REQ-6-1-3-Delete-Draft/error-context.md
+557 [2026-09-22 14:32:04] [runner] playwright-test.stdout | 
+558 [2026-09-22 14:32:04] [runner] playwright-test.stdout | 
+559 [2026-09-22 14:32:05] [runner] playwright-test.stdout | [1A[2K[27/34] REQ-6.2.1.spec.ts:7:1 › REQ-6.2.1: Create Chapter
+560 [2026-09-22 14:32:15] [runner] playwright-test.stdout | [1A[2K  18) REQ-6.2.1.spec.ts:7:1 › REQ-6.2.1: Create Chapter ────────────────────────────────────────────
+561 [2026-09-22 14:32:15] [runner] playwright-test.stdout | 
+562 [2026-09-22 14:32:15] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+563 [2026-09-22 14:32:15] [runner] playwright-test.stdout | 
+564 [2026-09-22 14:32:15] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+565 [2026-09-22 14:32:15] [runner] playwright-test.stdout |     Call log:
+566 [2026-09-22 14:32:15] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+6\.2\.1/i }).first()[22m
+567 [2026-09-22 14:32:15] [runner] playwright-test.stdout | 
+568 [2026-09-22 14:32:15] [runner] playwright-test.stdout | 
+569 [2026-09-22 14:32:15] [runner] playwright-test.stdout |        at helpers.ts:119
+570 [2026-09-22 14:32:15] [runner] playwright-test.stdout | 
+571 [2026-09-22 14:32:15] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+572 [2026-09-22 14:32:15] [runner] playwright-test.stdout |       118 |   ]);
+573 [2026-09-22 14:32:15] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+574 [2026-09-22 14:32:15] [runner] playwright-test.stdout |           |                 ^
+575 [2026-09-22 14:32:15] [runner] playwright-test.stdout |       120 | }
+576 [2026-09-22 14:32:15] [runner] playwright-test.stdout |       121 |
+577 [2026-09-22 14:32:15] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+578 [2026-09-22 14:32:15] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+579 [2026-09-22 14:32:15] [runner] playwright-test.stdout |         at openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+580 [2026-09-22 14:32:15] [runner] playwright-test.stdout |         at Module.openChapterCreation (/workspace/tests/helpers.ts:286:3)
+581 [2026-09-22 14:32:15] [runner] playwright-test.stdout |         at /workspace/tests/REQ-6.2.1.spec.ts:8:3
+582 [2026-09-22 14:32:15] [runner] playwright-test.stdout | 
+583 [2026-09-22 14:32:15] [runner] playwright-test.stdout |     Error Context: test-results/REQ-6.2.1-REQ-6-2-1-Create-Chapter/error-context.md
+584 [2026-09-22 14:32:15] [runner] playwright-test.stdout | 
+585 [2026-09-22 14:32:15] [runner] playwright-test.stdout | 
+586 [2026-09-22 14:32:16] [runner] playwright-test.stdout | [1A[2K[28/34] REQ-6.3.1.spec.ts:7:1 › REQ-6.3.1: Enter Page Reading Page
+587 [2026-09-22 14:32:26] [runner] playwright-test.stdout | [1A[2K  19) REQ-6.3.1.spec.ts:7:1 › REQ-6.3.1: Enter Page Reading Page ───────────────────────────────────
+588 [2026-09-22 14:32:26] [runner] playwright-test.stdout | 
+589 [2026-09-22 14:32:26] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+590 [2026-09-22 14:32:26] [runner] playwright-test.stdout | 
+591 [2026-09-22 14:32:26] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+592 [2026-09-22 14:32:26] [runner] playwright-test.stdout |     Call log:
+593 [2026-09-22 14:32:26] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+6\.3\.1/i }).first()[22m
+594 [2026-09-22 14:32:26] [runner] playwright-test.stdout | 
+595 [2026-09-22 14:32:26] [runner] playwright-test.stdout | 
+596 [2026-09-22 14:32:26] [runner] playwright-test.stdout |        at helpers.ts:119
+597 [2026-09-22 14:32:26] [runner] playwright-test.stdout | 
+598 [2026-09-22 14:32:26] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+599 [2026-09-22 14:32:26] [runner] playwright-test.stdout |       118 |   ]);
+600 [2026-09-22 14:32:26] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+601 [2026-09-22 14:32:26] [runner] playwright-test.stdout |           |                 ^
+602 [2026-09-22 14:32:26] [runner] playwright-test.stdout |       120 | }
+603 [2026-09-22 14:32:26] [runner] playwright-test.stdout |       121 |
+604 [2026-09-22 14:32:26] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+605 [2026-09-22 14:32:26] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+606 [2026-09-22 14:32:26] [runner] playwright-test.stdout |         at openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+607 [2026-09-22 14:32:26] [runner] playwright-test.stdout |         at Module.openPageReading (/workspace/tests/helpers.ts:296:3)
+608 [2026-09-22 14:32:26] [runner] playwright-test.stdout |         at /workspace/tests/REQ-6.3.1.spec.ts:8:3
+609 [2026-09-22 14:32:26] [runner] playwright-test.stdout | 
+610 [2026-09-22 14:32:26] [runner] playwright-test.stdout |     Error Context: test-results/REQ-6.3.1-REQ-6-3-1-Enter-Page-Reading-Page/error-context.md
+611 [2026-09-22 14:32:26] [runner] playwright-test.stdout | 
+612 [2026-09-22 14:32:26] [runner] playwright-test.stdout | 
+613 [2026-09-22 14:32:27] [runner] playwright-test.stdout | [1A[2K[29/34] REQ-6.3.2.spec.ts:7:1 › REQ-6.3.2: Redirect to Page Edit Page
+614 [2026-09-22 14:32:37] [runner] playwright-test.stdout | [1A[2K  20) REQ-6.3.2.spec.ts:7:1 › REQ-6.3.2: Redirect to Page Edit Page ────────────────────────────────
+615 [2026-09-22 14:32:37] [runner] playwright-test.stdout | 
+616 [2026-09-22 14:32:37] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+617 [2026-09-22 14:32:37] [runner] playwright-test.stdout | 
+618 [2026-09-22 14:32:37] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+619 [2026-09-22 14:32:37] [runner] playwright-test.stdout |     Call log:
+620 [2026-09-22 14:32:37] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+6\.3\.2/i }).first()[22m
+621 [2026-09-22 14:32:37] [runner] playwright-test.stdout | 
+622 [2026-09-22 14:32:37] [runner] playwright-test.stdout | 
+623 [2026-09-22 14:32:37] [runner] playwright-test.stdout |        at helpers.ts:119
+624 [2026-09-22 14:32:37] [runner] playwright-test.stdout | 
+625 [2026-09-22 14:32:37] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+626 [2026-09-22 14:32:37] [runner] playwright-test.stdout |       118 |   ]);
+627 [2026-09-22 14:32:37] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+628 [2026-09-22 14:32:37] [runner] playwright-test.stdout |           |                 ^
+629 [2026-09-22 14:32:37] [runner] playwright-test.stdout |       120 | }
+630 [2026-09-22 14:32:37] [runner] playwright-test.stdout |       121 |
+631 [2026-09-22 14:32:37] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+632 [2026-09-22 14:32:37] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+633 [2026-09-22 14:32:37] [runner] playwright-test.stdout |         at openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+634 [2026-09-22 14:32:37] [runner] playwright-test.stdout |         at Module.openPageReading (/workspace/tests/helpers.ts:296:3)
+635 [2026-09-22 14:32:37] [runner] playwright-test.stdout |         at /workspace/tests/REQ-6.3.2.spec.ts:8:3
+636 [2026-09-22 14:32:37] [runner] playwright-test.stdout | 
+637 [2026-09-22 14:32:37] [runner] playwright-test.stdout |     Error Context: test-results/REQ-6.3.2-REQ-6-3-2-Redirect-to-Page-Edit-Page/error-context.md
+638 [2026-09-22 14:32:37] [runner] playwright-test.stdout | 
+639 [2026-09-22 14:32:37] [runner] playwright-test.stdout | 
+640 [2026-09-22 14:32:37] [runner] playwright-test.stdout | [1A[2K[30/34] REQ-7.1.spec.ts:7:1 › REQ-7.1: Add to Recently Viewed
+641 [2026-09-22 14:32:48] [runner] playwright-test.stdout | [1A[2K  21) REQ-7.1.spec.ts:7:1 › REQ-7.1: Add to Recently Viewed ────────────────────────────────────────
+642 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+643 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+644 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+645 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+646 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+647 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     Locator: getByRole('heading', { name: /Shelf\s+7\.1/i }).first()
+648 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     Expected: visible
+649 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     Error: element(s) not found
+650 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+651 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     Call log:
+652 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+653 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('heading', { name: /Shelf\s+7\.1/i }).first()[22m
+654 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+655 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+656 [2026-09-22 14:32:48] [runner] playwright-test.stdout |        at helpers.ts:134
+657 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+658 [2026-09-22 14:32:48] [runner] playwright-test.stdout |       132 |       page.getByPlaceholder(name),
+659 [2026-09-22 14:32:48] [runner] playwright-test.stdout |       133 |     ]);
+660 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     > 134 |     await expect(locator).toBeVisible();
+661 [2026-09-22 14:32:48] [runner] playwright-test.stdout |           |                           ^
+662 [2026-09-22 14:32:48] [runner] playwright-test.stdout |       135 |   }
+663 [2026-09-22 14:32:48] [runner] playwright-test.stdout |       136 | }
+664 [2026-09-22 14:32:48] [runner] playwright-test.stdout |       137 |
+665 [2026-09-22 14:32:48] [runner] playwright-test.stdout |         at Module.expectTextsVisible (/workspace/tests/helpers.ts:134:27)
+666 [2026-09-22 14:32:48] [runner] playwright-test.stdout |         at /workspace/tests/REQ-7.1.spec.ts:11:3
+667 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+668 [2026-09-22 14:32:48] [runner] playwright-test.stdout |     Error Context: test-results/REQ-7.1-REQ-7-1-Add-to-Recently-Viewed/error-context.md
+669 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+670 [2026-09-22 14:32:48] [runner] playwright-test.stdout | 
+671 [2026-09-22 14:32:48] [runner] playwright-test.stdout | [1A[2K[31/34] REQ-7.2.spec.ts:7:1 › REQ-7.2: Quick Navigation from Recently Viewed
+672 [2026-09-22 14:32:59] [runner] playwright-test.stdout | [1A[2K  22) REQ-7.2.spec.ts:7:1 › REQ-7.2: Quick Navigation from Recently Viewed ─────────────────────────
+673 [2026-09-22 14:32:59] [runner] playwright-test.stdout | 
+674 [2026-09-22 14:32:59] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+675 [2026-09-22 14:32:59] [runner] playwright-test.stdout | 
+676 [2026-09-22 14:32:59] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+677 [2026-09-22 14:32:59] [runner] playwright-test.stdout |     Call log:
+678 [2026-09-22 14:32:59] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Shelf\s+7\.2/i }).first()[22m
+679 [2026-09-22 14:32:59] [runner] playwright-test.stdout | 
+680 [2026-09-22 14:32:59] [runner] playwright-test.stdout | 
+681 [2026-09-22 14:32:59] [runner] playwright-test.stdout |        at helpers.ts:119
+682 [2026-09-22 14:32:59] [runner] playwright-test.stdout | 
+683 [2026-09-22 14:32:59] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+684 [2026-09-22 14:32:59] [runner] playwright-test.stdout |       118 |   ]);
+685 [2026-09-22 14:32:59] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+686 [2026-09-22 14:32:59] [runner] playwright-test.stdout |           |                 ^
+687 [2026-09-22 14:32:59] [runner] playwright-test.stdout |       120 | }
+688 [2026-09-22 14:32:59] [runner] playwright-test.stdout |       121 |
+689 [2026-09-22 14:32:59] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+690 [2026-09-22 14:32:59] [runner] playwright-test.stdout |         at Module.clickNamed (/workspace/tests/helpers.ts:119:17)
+691 [2026-09-22 14:32:59] [runner] playwright-test.stdout |         at /workspace/tests/REQ-7.2.spec.ts:11:3
+692 [2026-09-22 14:32:59] [runner] playwright-test.stdout | 
+693 [2026-09-22 14:32:59] [runner] playwright-test.stdout |     Error Context: test-results/REQ-7.2-REQ-7-2-Quick-Navigation-from-Recently-Viewed/error-context.md
+694 [2026-09-22 14:32:59] [runner] playwright-test.stdout | 
+695 [2026-09-22 14:32:59] [runner] playwright-test.stdout | 
+696 [2026-09-22 14:32:59] [runner] playwright-test.stdout | [1A[2K[32/34] REQ-8.1.spec.ts:7:1 › REQ-8.1: Favorite Items
+697 [2026-09-22 14:33:10] [runner] playwright-test.stdout | [1A[2K  23) REQ-8.1.spec.ts:7:1 › REQ-8.1: Favorite Items ────────────────────────────────────────────────
+698 [2026-09-22 14:33:10] [runner] playwright-test.stdout | 
+699 [2026-09-22 14:33:10] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+700 [2026-09-22 14:33:10] [runner] playwright-test.stdout | 
+701 [2026-09-22 14:33:10] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+702 [2026-09-22 14:33:10] [runner] playwright-test.stdout |     Call log:
+703 [2026-09-22 14:33:10] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+8\.1/i }).first()[22m
+704 [2026-09-22 14:33:10] [runner] playwright-test.stdout | 
+705 [2026-09-22 14:33:10] [runner] playwright-test.stdout | 
+706 [2026-09-22 14:33:10] [runner] playwright-test.stdout |        at helpers.ts:119
+707 [2026-09-22 14:33:10] [runner] playwright-test.stdout | 
+708 [2026-09-22 14:33:10] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+709 [2026-09-22 14:33:10] [runner] playwright-test.stdout |       118 |   ]);
+710 [2026-09-22 14:33:10] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+711 [2026-09-22 14:33:10] [runner] playwright-test.stdout |           |                 ^
+712 [2026-09-22 14:33:10] [runner] playwright-test.stdout |       120 | }
+713 [2026-09-22 14:33:10] [runner] playwright-test.stdout |       121 |
+714 [2026-09-22 14:33:10] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+715 [2026-09-22 14:33:10] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+716 [2026-09-22 14:33:10] [runner] playwright-test.stdout |         at Module.openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+717 [2026-09-22 14:33:10] [runner] playwright-test.stdout |         at /workspace/tests/REQ-8.1.spec.ts:8:3
+718 [2026-09-22 14:33:10] [runner] playwright-test.stdout | 
+719 [2026-09-22 14:33:10] [runner] playwright-test.stdout |     Error Context: test-results/REQ-8.1-REQ-8-1-Favorite-Items/error-context.md
+720 [2026-09-22 14:33:10] [runner] playwright-test.stdout | 
+721 [2026-09-22 14:33:10] [runner] playwright-test.stdout | 
+722 [2026-09-22 14:33:10] [runner] playwright-test.stdout | [1A[2K[33/34] REQ-8.2.spec.ts:7:1 › REQ-8.2: Quick Navigation from Favorites
+723 [2026-09-22 14:33:21] [runner] playwright-test.stdout | [1A[2K  24) REQ-8.2.spec.ts:7:1 › REQ-8.2: Quick Navigation from Favorites ───────────────────────────────
+724 [2026-09-22 14:33:21] [runner] playwright-test.stdout | 
+725 [2026-09-22 14:33:21] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+726 [2026-09-22 14:33:21] [runner] playwright-test.stdout | 
+727 [2026-09-22 14:33:21] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+728 [2026-09-22 14:33:21] [runner] playwright-test.stdout |     Call log:
+729 [2026-09-22 14:33:21] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+8\.2/i }).first()[22m
+730 [2026-09-22 14:33:21] [runner] playwright-test.stdout | 
+731 [2026-09-22 14:33:21] [runner] playwright-test.stdout | 
+732 [2026-09-22 14:33:21] [runner] playwright-test.stdout |        at helpers.ts:119
+733 [2026-09-22 14:33:21] [runner] playwright-test.stdout | 
+734 [2026-09-22 14:33:21] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+735 [2026-09-22 14:33:21] [runner] playwright-test.stdout |       118 |   ]);
+736 [2026-09-22 14:33:21] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+737 [2026-09-22 14:33:21] [runner] playwright-test.stdout |           |                 ^
+738 [2026-09-22 14:33:21] [runner] playwright-test.stdout |       120 | }
+739 [2026-09-22 14:33:21] [runner] playwright-test.stdout |       121 |
+740 [2026-09-22 14:33:21] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+741 [2026-09-22 14:33:21] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+742 [2026-09-22 14:33:21] [runner] playwright-test.stdout |         at Module.openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+743 [2026-09-22 14:33:21] [runner] playwright-test.stdout |         at /workspace/tests/REQ-8.2.spec.ts:9:3
+744 [2026-09-22 14:33:21] [runner] playwright-test.stdout | 
+745 [2026-09-22 14:33:21] [runner] playwright-test.stdout |     Error Context: test-results/REQ-8.2-REQ-8-2-Quick-Navigation-from-Favorites/error-context.md
+746 [2026-09-22 14:33:21] [runner] playwright-test.stdout | 
+747 [2026-09-22 14:33:21] [runner] playwright-test.stdout | 
+748 [2026-09-22 14:33:21] [runner] playwright-test.stdout | [1A[2K[34/34] REQ-9.1.spec.ts:7:1 › REQ-9.1: Quick Navigation from Recently Updated
+749 [2026-09-22 14:33:32] [runner] playwright-test.stdout | [1A[2K  25) REQ-9.1.spec.ts:7:1 › REQ-9.1: Quick Navigation from Recently Updated ────────────────────────
+750 [2026-09-22 14:33:32] [runner] playwright-test.stdout | 
+751 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     [31mTest timeout of 10000ms exceeded.[39m
+752 [2026-09-22 14:33:32] [runner] playwright-test.stdout | 
+753 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     Error: locator.click: Test timeout of 10000ms exceeded.
+754 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     Call log:
+755 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     [2m  - waiting for getByRole('button', { name: /Book\s+9\.1/i }).first()[22m
+756 [2026-09-22 14:33:32] [runner] playwright-test.stdout | 
+757 [2026-09-22 14:33:32] [runner] playwright-test.stdout | 
+758 [2026-09-22 14:33:32] [runner] playwright-test.stdout |        at helpers.ts:119
+759 [2026-09-22 14:33:32] [runner] playwright-test.stdout | 
+760 [2026-09-22 14:33:32] [runner] playwright-test.stdout |       117 |     page.getByRole('link', { name }),
+761 [2026-09-22 14:33:32] [runner] playwright-test.stdout |       118 |   ]);
+762 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     > 119 |   await locator.click();
+763 [2026-09-22 14:33:32] [runner] playwright-test.stdout |           |                 ^
+764 [2026-09-22 14:33:32] [runner] playwright-test.stdout |       120 | }
+765 [2026-09-22 14:33:32] [runner] playwright-test.stdout |       121 |
+766 [2026-09-22 14:33:32] [runner] playwright-test.stdout |       122 | export async function expectTextsVisible(page: Page, values: Array<string | RegExp>): Promise<void> {
+767 [2026-09-22 14:33:32] [runner] playwright-test.stdout |         at clickNamed (/workspace/tests/helpers.ts:119:17)
+768 [2026-09-22 14:33:32] [runner] playwright-test.stdout |         at openBookDetailsFromList (/workspace/tests/helpers.ts:195:3)
+769 [2026-09-22 14:33:32] [runner] playwright-test.stdout |         at Module.openPageEditor (/workspace/tests/helpers.ts:270:3)
+770 [2026-09-22 14:33:32] [runner] playwright-test.stdout |         at /workspace/tests/REQ-9.1.spec.ts:8:3
+771 [2026-09-22 14:33:32] [runner] playwright-test.stdout | 
+772 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     Error Context: test-results/REQ-9.1-REQ-9-1-Quick-Navigation-from-Recently-Updated/error-context.md
+773 [2026-09-22 14:33:32] [runner] playwright-test.stdout | 
+774 [2026-09-22 14:33:32] [runner] playwright-test.stdout | 
+775 [2026-09-22 14:33:32] [runner] playwright-test.stdout | [1A[2K  25 failed
+776 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-4.4.1.spec.ts:7:1 › REQ-4.4.1: Confirm Delete Shelf ────────────────────────────────────────
+777 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-4.4.2.spec.ts:7:1 › REQ-4.4.2: Cancel Delete Shelf ─────────────────────────────────────────
+778 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-4.5.1.spec.ts:7:1 › REQ-4.5.1: Save Shelf Edits ────────────────────────────────────────────
+779 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-4.5.2.spec.ts:7:1 › REQ-4.5.2: Cancel Shelf Edits ──────────────────────────────────────────
+780 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.1.spec.ts:7:1 › REQ-5.1: View Books List ─────────────────────────────────────────────────
+781 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.2.1.spec.ts:7:1 › REQ-5.2.1: Enter Book Details Page through Book List Page ──────────────
+782 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.2.2.spec.ts:7:1 › REQ-5.2.2: Enter Book Details Page through Shelf Details Page ──────────
+783 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.3.1.spec.ts:7:1 › REQ-5.3.1: Fill out and Save Book ──────────────────────────────────────
+784 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.3.2.spec.ts:7:1 › REQ-5.3.2: Cancel Creating Book ────────────────────────────────────────
+785 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.4.1.spec.ts:7:1 › REQ-5.4.1: Save Book Edits ─────────────────────────────────────────────
+786 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.4.2.spec.ts:7:1 › REQ-5.4.2: Cancel Book Edits ───────────────────────────────────────────
+787 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.5.1.spec.ts:7:1 › REQ-5.5.1: Confirm Delete Book ─────────────────────────────────────────
+788 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.5.2.spec.ts:7:1 › REQ-5.5.2: Cancel Delete Book ──────────────────────────────────────────
+789 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-5.6.1.spec.ts:7:1 › REQ-5.6.1: Fill out and Save Book with Shelf ───────────────────────────
+790 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-6.1.1.spec.ts:7:1 › REQ-6.1.1: Save Page ───────────────────────────────────────────────────
+791 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-6.1.2.spec.ts:7:1 › REQ-6.1.2: Save Draft ──────────────────────────────────────────────────
+792 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-6.1.3.spec.ts:7:1 › REQ-6.1.3: Delete Draft ────────────────────────────────────────────────
+793 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-6.2.1.spec.ts:7:1 › REQ-6.2.1: Create Chapter ──────────────────────────────────────────────
+794 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-6.3.1.spec.ts:7:1 › REQ-6.3.1: Enter Page Reading Page ─────────────────────────────────────
+795 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-6.3.2.spec.ts:7:1 › REQ-6.3.2: Redirect to Page Edit Page ──────────────────────────────────
+796 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-7.1.spec.ts:7:1 › REQ-7.1: Add to Recently Viewed ──────────────────────────────────────────
+797 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-7.2.spec.ts:7:1 › REQ-7.2: Quick Navigation from Recently Viewed ───────────────────────────
+798 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-8.1.spec.ts:7:1 › REQ-8.1: Favorite Items ──────────────────────────────────────────────────
+799 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-8.2.spec.ts:7:1 › REQ-8.2: Quick Navigation from Favorites ─────────────────────────────────
+800 [2026-09-22 14:33:32] [runner] playwright-test.stdout |     REQ-9.1.spec.ts:7:1 › REQ-9.1: Quick Navigation from Recently Updated ──────────────────────────
+801 [2026-09-22 14:33:32] [runner] playwright-test.stdout |   9 passed (4.6m)
+802 [2026-09-22 14:33:32] [runner] Stopping process template application server
+803 [2026-09-22 14:33:37 UTC] [backend] Container exited with result={'StatusCode': 1}
+804 [2026-09-22 14:33:37 UTC] [backend] Collected container logs: stdout_bytes=0, stderr_bytes=0
+805 [2026-09-22 14:33:37 UTC] [backend] Parsed Playwright report at /var/lib/arcbench/executor-workspaces/b34c975b641f407c91940efbddeade5e/fd8ba0b84fe7/generation-1/workspace/template/.arc/playwright-report.json: {'passed': 9, 'failed': 25, 'score': 26.5, 'test_pass_rate': 26.5, 'feature_implemented_count': 9, 'feature_total_count': 34, 'feature_implementation_rate': 26.5, 'tests': [{'name': 'REQ-1.1: ...[7881 chars]
+806 [2026-09-22 14:33:39 UTC] [backend] Meter usage captured: tokens=117945, cost=3.821024 CNY
+807 [2026-09-22 14:33:40 UTC] [backend] Submission finalized with status=FAILED, score=26.5
+808 [2026-09-22 14:33:40 UTC] [backend] Removing container arcbench-fd8ba0b84fe7-g1
+809 [2026-09-22 14:33:40 UTC] [backend] Container removed

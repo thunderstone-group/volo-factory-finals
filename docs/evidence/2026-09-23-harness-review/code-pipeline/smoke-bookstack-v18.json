@@ -1,0 +1,162 @@
+{
+ "app": "bookstack-v18",
+ "smoke_total_s": 8.286,
+ "phases": [
+  [
+   "npm run build",
+   0.101
+  ],
+  [
+   "_check_syntax",
+   0.057
+  ],
+  [
+   "_check_page",
+   0.009
+  ],
+  [
+   "npm run build",
+   3.452
+  ],
+  [
+   "_check_dom",
+   3.454
+  ],
+  [
+   "_check_semantic_browser",
+   4.246
+  ]
+ ],
+ "backend_start_to_health_s": 0.417,
+ "static_gates_s": 0.015,
+ "problems": [
+  "Requirement-derived UI observation: The homepage scenario requires the \"Recently Updated Pages\" list without an authentication prerequisite, but it is absent for the current unauthenticated visitor. Render this public list without requiring login, including after returning from a content view; keep separately authenticated dashboard lists conditional.",
+  "Requirement-derived UI observation: Activating \"Shelf Tags\" in \"Edit shelf form\" leaves the \"tag1, tag2\" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.",
+  "Requirement-derived UI observation: Typing into \"Edit shelf form\" and then activating \"Shelf Tags\" discards the entered field value. Preserve the current form inputs and edit state when a disclosure or render updates the UI.",
+  "Requirement-derived UI observation: Activating \"Book Tags\" in \"Edit book form\" leaves the \"tag1, tag2\" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.",
+  "Requirement-derived UI observation: Typing into \"Edit book form\" and then activating \"Book Tags\" discards the entered field value. Preserve the current form inputs and edit state when a disclosure or render updates the UI.",
+  "Requirement-derived UI observation: Activating \"Book Tags\" in \"Create book form\" leaves the \"tag1, tag2\" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.",
+  "Requirement-derived UI observation: Typing into \"Create book form\" and then activating \"Book Tags\" discards the entered field value. Preserve the current form inputs and edit state when a disclosure or render updates the UI.",
+  "Requirement-derived UI observation: Primary record entry \"Draft 6.1.3\" in \"Book 6.1.3\" opens an editor directly, bypassing the reading/details view and its Edit action. Preserve the normal primary-entry flow for drafts too."
+ ],
+ "static": [],
+ "vocab_missing": 0,
+ "probe_screens": [
+  [
+   "#/",
+   "#/shelves",
+   "#/books",
+   "#/book/book_6_1_3",
+   "#/book/book_6_1_3/page/draft_6_1_3/edit",
+   "#/login",
+   "#/shelf/shelf_4_1",
+   "#/shelf/shelf_4_2_1",
+   "#/shelf/shelf_4_3_1",
+   "#/shelf/shelf_4_3_2",
+   "#/shelf/shelf_4_4_1",
+   "#/shelf/shelf_4_4_2"
+  ]
+ ],
+ "probe_actions": [
+  [
+   [
+    "Shelf 4.5.1",
+    "navigation"
+   ],
+   [
+    "Book 5.4.1",
+    "navigation"
+   ],
+   [
+    "Create New Book",
+    "navigation"
+   ],
+   [
+    "Shelf 4.3.1",
+    "navigation"
+   ],
+   [
+    "Book 6.1.3",
+    "navigation"
+   ],
+   [
+    "Book 8.1",
+    "navigation"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "Home",
+    "arc:nav"
+   ],
+   [
+    "Shelves",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "Delete Draft",
+    "delete-draft"
+   ],
+   [
+    "Confirm Delete",
+    "confirm-delete-draft"
+   ],
+   [
+    "Edit",
+    "edit-book"
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "Remember Me",
+    ""
+   ],
+   [
+    "BookStack",
+    "arc:nav"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ],
+   [
+    "Edit",
+    "edit-shelf"
+   ]
+  ]
+ ],
+ "probe_executed": [
+  true
+ ],
+ "probe_unavailable": [
+  null
+ ]
+}

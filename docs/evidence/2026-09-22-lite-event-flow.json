@@ -1,0 +1,840 @@
+{
+  "candidate": "event-flow-v16",
+  "package_sha256": "7ec29c1d42535c2b7529246b6e0f562132ee1d6873ec823c25391a15fcecc6bb",
+  "previous_independent_keep": {
+    "candidate": "record-contract-v14",
+    "passed": 23,
+    "total": 32,
+    "receipt": "generations/record-contract-v14/keep-highspeed-a/receipt.json"
+  },
+  "diagnostic_keep": {
+    "passed": 32,
+    "total": 32,
+    "lost_cases": [],
+    "result": "replays/diagnostic/keep-v14-event-flow/result.json",
+    "independent_goal_pass": false
+  },
+  "diagnostic_bookstack": {
+    "passed": 34,
+    "total": 34,
+    "result": "replays/diagnostic/bookstack-v13-initial-flow/result.json",
+    "independent_goal_pass": false
+  },
+  "calibrations": {
+    "keep-v14": {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [
+        "Clicking \"Change labels\" (data-action open-label-editor) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions.",
+        "Clicking \"Delete Note\" (data-action delete-note) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+      ],
+      "page_errors": [],
+      "actions": [
+        {
+          "scope": "page",
+          "name": "Take a note",
+          "action": "take-note"
+        },
+        {
+          "scope": "dialog",
+          "name": "More options",
+          "action": "open-more-options"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "page",
+          "name": "More options",
+          "action": "open-more-options"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Delete Note",
+          "action": "delete-note"
+        },
+        {
+          "scope": "page",
+          "name": "Edit labels",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Work editable",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "More options",
+          "action": "open-more-options"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Delete Note",
+          "action": "delete-note"
+        },
+        {
+          "scope": "page",
+          "name": "Edit labels",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit labels",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit labels",
+          "action": "arc:nav"
+        }
+      ],
+      "screens": [
+        "#/",
+        "#/label/Reminders",
+        "#/labels",
+        "#/label/Work",
+        "#/label/Work%20editable",
+        "#/archive",
+        "#/trash"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0",
+      "runtime": "docker",
+      "seconds": 4.991,
+      "probe_sha256": "5f8c3970eda2af33b2df064d2f61664c657ac6a2cdae01fe5f69e077e75d7a3f"
+    },
+    "keep-v14-fixed": {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [],
+      "actions": [
+        {
+          "scope": "page",
+          "name": "Take a note",
+          "action": "take-note"
+        },
+        {
+          "scope": "dialog",
+          "name": "More options",
+          "action": "open-more-options"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Work editable",
+          "action": "toggle-label"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Work",
+          "action": "toggle-label"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Reminders",
+          "action": "toggle-label"
+        },
+        {
+          "scope": "page",
+          "name": "More options",
+          "action": "open-more-options"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Work editable",
+          "action": "toggle-label"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Work",
+          "action": "toggle-label"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Reminders",
+          "action": "toggle-label"
+        },
+        {
+          "scope": "page",
+          "name": "Edit labels",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Work editable",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "More options",
+          "action": "open-more-options"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Work editable",
+          "action": "toggle-label"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Work",
+          "action": "toggle-label"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Reminders",
+          "action": "toggle-label"
+        },
+        {
+          "scope": "page",
+          "name": "Edit labels",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit labels",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit labels",
+          "action": "arc:nav"
+        }
+      ],
+      "screens": [
+        "#/",
+        "#/label/Reminders",
+        "#/labels",
+        "#/label/Work",
+        "#/label/Work%20editable",
+        "#/archive",
+        "#/trash"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0",
+      "runtime": "docker",
+      "seconds": 4.151,
+      "probe_sha256": "5f8c3970eda2af33b2df064d2f61664c657ac6a2cdae01fe5f69e077e75d7a3f"
+    },
+    "keep-fixed": {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [],
+      "actions": [
+        {
+          "scope": "page",
+          "name": "Take a note",
+          "action": "take-a-note"
+        },
+        {
+          "scope": "dialog",
+          "name": "More options",
+          "action": "editor-more-options"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Change labels",
+          "action": "editor-change-labels"
+        },
+        {
+          "scope": "dialog",
+          "name": "Work editable",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Work",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Reminders",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Pin note",
+          "action": "editor-pin"
+        },
+        {
+          "scope": "dialog",
+          "name": "Unpin note",
+          "action": "editor-pin"
+        },
+        {
+          "scope": "dialog",
+          "name": "Change color",
+          "action": "editor-change-color"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Default",
+          "action": "editor-apply-color"
+        },
+        {
+          "scope": "dialog",
+          "name": "Close",
+          "action": "editor-close"
+        },
+        {
+          "scope": "page",
+          "name": "More options",
+          "action": "more-options"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "page",
+          "name": "Take a note",
+          "action": "take-a-note"
+        },
+        {
+          "scope": "dialog",
+          "name": "More options",
+          "action": "editor-more-options"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Change labels",
+          "action": "editor-change-labels"
+        },
+        {
+          "scope": "dialog",
+          "name": "Work editable",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Work",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Reminders",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Pin note",
+          "action": "editor-pin"
+        },
+        {
+          "scope": "dialog",
+          "name": "Unpin note",
+          "action": "editor-pin"
+        },
+        {
+          "scope": "dialog",
+          "name": "Change color",
+          "action": "editor-change-color"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Default",
+          "action": "editor-apply-color"
+        },
+        {
+          "scope": "dialog",
+          "name": "Close",
+          "action": "editor-close"
+        },
+        {
+          "scope": "page",
+          "name": "More options",
+          "action": "more-options"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "page",
+          "name": "Take a note",
+          "action": "take-a-note"
+        },
+        {
+          "scope": "dialog",
+          "name": "More options",
+          "action": "editor-more-options"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Change labels",
+          "action": "editor-change-labels"
+        },
+        {
+          "scope": "dialog",
+          "name": "Work editable",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Work",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Reminders",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Pin note",
+          "action": "editor-pin"
+        },
+        {
+          "scope": "dialog",
+          "name": "Unpin note",
+          "action": "editor-pin"
+        },
+        {
+          "scope": "dialog",
+          "name": "Change color",
+          "action": "editor-change-color"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Default",
+          "action": "editor-apply-color"
+        },
+        {
+          "scope": "dialog",
+          "name": "Close",
+          "action": "editor-close"
+        },
+        {
+          "scope": "page",
+          "name": "More options",
+          "action": "more-options"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "page",
+          "name": "Take a note",
+          "action": "take-a-note"
+        },
+        {
+          "scope": "dialog",
+          "name": "More options",
+          "action": "editor-more-options"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Change labels",
+          "action": "editor-change-labels"
+        },
+        {
+          "scope": "dialog",
+          "name": "Work editable",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Work",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Reminders",
+          "action": "toggle-editor-label"
+        },
+        {
+          "scope": "dialog",
+          "name": "Pin note",
+          "action": "editor-pin"
+        },
+        {
+          "scope": "dialog",
+          "name": "Unpin note",
+          "action": "editor-pin"
+        },
+        {
+          "scope": "dialog",
+          "name": "Change color",
+          "action": "editor-change-color"
+        },
+        {
+          "scope": "dialog-popover",
+          "name": "Default",
+          "action": "editor-apply-color"
+        },
+        {
+          "scope": "dialog",
+          "name": "Close",
+          "action": "editor-close"
+        },
+        {
+          "scope": "page",
+          "name": "More options",
+          "action": "more-options"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Change labels",
+          "action": "open-label-editor"
+        },
+        {
+          "scope": "page",
+          "name": "Work editable",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Work editable",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Work editable",
+          "action": "arc:nav"
+        }
+      ],
+      "screens": [
+        "#/",
+        "#/label/Work",
+        "#/label/Reminders",
+        "#/label/Work%20editable",
+        "#/edit-labels",
+        "#/archive",
+        "#/trash"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0",
+      "runtime": "docker",
+      "seconds": 7.77,
+      "probe_sha256": "5f8c3970eda2af33b2df064d2f61664c657ac6a2cdae01fe5f69e077e75d7a3f"
+    },
+    "bookstack-positive": {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [],
+      "actions": [
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Favorites",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-book"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        },
+        {
+          "scope": "page",
+          "name": "Remember Me",
+          "action": ""
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-shelf"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        }
+      ],
+      "screens": [
+        "#/",
+        "#/shelves",
+        "#/books",
+        "#/books/bk6_1_3",
+        "#/pages/pg6_1_3",
+        "#/login",
+        "#/pages/pg6_1_3/edit",
+        "#/shelves/sh7_2",
+        "#/pages/pg9_1",
+        "#/pages/pg6_3_2",
+        "#/pages/pg6_3_1",
+        "#/favorites"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0",
+      "runtime": "docker",
+      "seconds": 3.761,
+      "probe_sha256": "5f8c3970eda2af33b2df064d2f61664c657ac6a2cdae01fe5f69e077e75d7a3f"
+    },
+    "book-v13": {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [
+        "The requirements define initially unselected Favorite controls and declare no favorite seed memberships, but generated seeds already contain favorites. Start unmarked and let the prerequisite actions populate favorites instead of pre-applying a later GIVEN state.",
+        "Primary record link \"Draft 6.1.3\" opens an editor directly and bypasses the reading/details view with its Edit action. Preserve the normal primary-entry flow for draft records too; do not automatically redirect their reading route."
+      ],
+      "page_errors": [],
+      "actions": [
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-book"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Remember Me",
+          "action": ""
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-shelf"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-book"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        }
+      ],
+      "screens": [
+        "#/",
+        "#/shelves",
+        "#/books",
+        "#/book/book-6-1-3",
+        "#/page-edit/draft-6-1-3",
+        "#/favorites",
+        "#/login",
+        "#/page/draft-6-1-3",
+        "#/shelf/shelf-7-2",
+        "#/book/book-8-2",
+        "#/page/page-9-1",
+        "#/page/page-6-3-2"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0",
+      "runtime": "docker",
+      "seconds": 3.432,
+      "probe_sha256": "5f8c3970eda2af33b2df064d2f61664c657ac6a2cdae01fe5f69e077e75d7a3f"
+    },
+    "book-v13-fixed": {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [],
+      "actions": [
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-book"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Remember Me",
+          "action": ""
+        },
+        {
+          "scope": "page",
+          "name": "BookStack",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-shelf"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-page"
+        },
+        {
+          "scope": "page",
+          "name": "Edit",
+          "action": "edit-shelf"
+        }
+      ],
+      "screens": [
+        "#/",
+        "#/shelves",
+        "#/books",
+        "#/book/book-6-1-3",
+        "#/page/draft-6-1-3",
+        "#/favorites",
+        "#/login",
+        "#/shelf/shelf-7-2",
+        "#/page/page-9-1",
+        "#/page/page-6-3-2",
+        "#/page/page-6-3-1",
+        "#/shelf/shelf-4-1"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0",
+      "runtime": "docker",
+      "seconds": 3.459,
+      "probe_sha256": "5f8c3970eda2af33b2df064d2f61664c657ac6a2cdae01fe5f69e077e75d7a3f"
+    }
+  },
+  "regressions": {
+    "full_suite": {
+      "passed": 102,
+      "skipped": 1,
+      "log": "v16-full-tests.log"
+    },
+    "targeted_browser_rerun": {
+      "passed": 1,
+      "skipped": 0,
+      "log": "v16-persistence-tests.log"
+    }
+  }
+}

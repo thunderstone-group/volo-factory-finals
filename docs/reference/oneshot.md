@@ -1,5 +1,7 @@
 # One-shot candidate inside VOLO
 
+Last reviewed: 2026-09-22.
+
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
 The original three source hashes and Git head are in `oneshot/source_manifest.json`.
@@ -12,7 +14,8 @@ The original three source hashes and Git head are in `oneshot/source_manifest.js
 ```
 
 The default artifact is `oneshot/dist/oneshot.zip`, with a sibling `.zip.manifest.json`.
-Only `main.py`, `dialect.md`, and `requirements.txt` are in the ZIP, flattened to its root.
+The root allowlist is `main.py`, `dialect.md`, `requirements.txt`, and `semantic_probe.cjs`;
+regular scaffold files are packaged under `scaffold/`.
 Timestamps, order, permissions and uncompressed ZIP encoding are fixed. The external
 manifest binds every current source file to the ZIP hash and retains import provenance.
 Neither forum tools nor platform sessions, test fixtures, or run evidence are packaged.
@@ -40,17 +43,34 @@ normalization. In-place publication uses two renames with rollback, not an atomi
 exchange: a process kill between renames may leave the original at a sibling
 `.oneshot-backup-*` path. A failed rollback leaves that backup outside temporary cleanup.
 Gateway redirects are refused.
-A single global three-request limit includes stream retries and one truncation continuation.
+The budget permits three completed calls and at most five failed transport attempts; failures do
+not consume a completed-call slot. Generation and repair streams each make at most three attempts before a
+different configured fallback may be selected. Kimi K2.7 Code stays on its selected model and uses
+the provider-required temperature 1.0. Other current model settings are unchanged.
 Permanent HTTP failures (including 402) are not retried. Observed token usage is accumulated
 across all attempts; incomplete usage remains unknown and is not reported as zero cost.
 True prompts, responses, usage and timings are logged with the key redacted.
+During generation, the owned temporary staging directory also holds `progress.json`: phase,
+request hash, byte/event counts and output/reasoning character counts. It contains no prompts,
+response text or credentials and is removed with the temporary directory after completion.
 Missing delivery files or malformed output fail nonzero. There is no model backfill loop.
 
-The deterministic delivery check validates manifests, scripts, the backend entry file,
-nonempty frontend HTML and the zero-dependency contract. It does NOT run npm build,
-start the generated application or establish health/behavior correctness. A successful
-exit is therefore not an official acceptance result. The original root `main.py` / `volo/`
-are a frozen legacy baseline; this change does not silently replace that entrypoint.
+The delivery check validates manifests, scripts, the backend entry file, nonempty HTML and
+the zero-dependency application contract. With Node/npm available, it builds the frontend,
+starts the backend, checks health and assets, and executes a jsdom crash probe. Requirements
+with explicit UI declarations also receive a deterministic Chromium diagnostic: declared home
+controls, accessible roles, dialog action ambiguity, editor scope and native checkbox behavior.
+It supplies observations to the bounded repair flow; no model-generated test or planning call is
+added. If an accepted repair exposes remaining runtime problems, a remaining call within the same
+three-call global cap can address them. A regressing follow-up restores the previous accepted stage.
+Each repair and whether its browser check actually executed are retained in the trace.
+Missing browser infrastructure is reported separately and cannot approve a previously observed
+repair. These checks are diagnostic; only the unchanged acceptance suite establishes test scores.
+
+The browser helper uses Playwright 1.57.0. It reuses a reachable Node package and browser cache,
+or installs the pinned package and headless Chromium into runtime caches with bounded waits.
+`NODE_PATH` and `PLAYWRIGHT_BROWSERS_PATH` may supply existing installations. Generated apps still
+receive no gateway credentials. The root `main.py` / `volo/` remain frozen legacy components.
 
 ## Continuation validation on 2026-09-16
 

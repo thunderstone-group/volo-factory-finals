@@ -1,0 +1,46 @@
+{
+  "candidate": "nested-seed-v24",
+  "package_sha256": "959890c1cfc7d8af8e17c7c9c969103936c55c7829f91b32b35294887cabb998",
+  "controlled_bookstack": {
+    "passed": 34,
+    "total": 34,
+    "gained_vs_v23": 1,
+    "lost": 0,
+    "new_input_tokens": 52190,
+    "new_output_tokens": 7166,
+    "new_call_seconds": 35.164,
+    "control_seconds": 53.498,
+    "settled_cny": "1.065434",
+    "cumulative_completed_calls": 3,
+    "cumulative_failed_calls": 1,
+    "inherited_failed_call_usage_unknown": true,
+    "independent_goal_pass": false,
+    "result": "replays/diagnostic/bookstack-v24-nested-favorites/result.json"
+  },
+  "calibrations": {
+    "verified-docker-book-v22-positive": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 6.202,
+      "probe_sha256": "517c209512b201140ca85a9210a7044d028a883e576068ca87eb84492a332238"
+    },
+    "verified-docker-book-v23-recovered": {
+      "executed": true,
+      "errors": [
+        "The requirements define initially unselected Favorite controls and declare no favorite seed memberships, but generated seeds already contain favorites. Start unmarked and let the prerequisite actions populate favorites instead of pre-applying a later GIVEN state."
+      ],
+      "page_errors": [],
+      "seconds": 6.382,
+      "probe_sha256": "517c209512b201140ca85a9210a7044d028a883e576068ca87eb84492a332238"
+    },
+    "verified-docker-book-v23-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "seconds": 6.139,
+      "probe_sha256": "517c209512b201140ca85a9210a7044d028a883e576068ca87eb84492a332238"
+    }
+  },
+  "official_trial": "BookStack only, explicitly authorized by user; preflight no active or pending Lite runs"
+}

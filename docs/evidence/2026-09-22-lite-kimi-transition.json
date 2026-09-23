@@ -1,0 +1,204 @@
+{
+  "recorded_at": "2026-09-22T19:11:20.548149+08:00",
+  "official_v5": {
+    "keep": {
+      "id": "2eef0a0f987a",
+      "model_name": "qwen3.7-plus",
+      "status": "FAILED",
+      "passed_count": 14,
+      "failed_count": 18,
+      "run_duration_seconds": 3708,
+      "token_count": 122304,
+      "token_cost_usd": 0.665106,
+      "token_cost_currency": "CNY",
+      "started_at": "2026-09-22T07:50:31.309710",
+      "finished_at": "2026-09-22T08:55:57.419379",
+      "attempts": [
+        {
+          "call": 1,
+          "model": "qwen3.7-plus",
+          "status": "failed",
+          "elapsed_seconds": 1200.072,
+          "usage": {},
+          "error_type": "StreamError",
+          "finish_reason": null,
+          "content_chars": 0
+        },
+        {
+          "call": 2,
+          "model": "qwen3.7-plus",
+          "status": "failed",
+          "elapsed_seconds": 1200.067,
+          "usage": {},
+          "error_type": "StreamError",
+          "finish_reason": null,
+          "content_chars": 0
+        },
+        {
+          "call": 3,
+          "model": "qwen3.7-plus",
+          "status": "completed",
+          "elapsed_seconds": 1161.018,
+          "usage": {
+            "prompt_tokens": 19392,
+            "completion_tokens": 59539
+          },
+          "error_type": null,
+          "finish_reason": "stop",
+          "content_chars": 44122
+        },
+        {
+          "call": 4,
+          "model": "qwen3.7-plus",
+          "status": "completed",
+          "elapsed_seconds": 123.025,
+          "usage": {
+            "prompt_tokens": 32829,
+            "completion_tokens": 10544
+          },
+          "error_type": null,
+          "finish_reason": "stop",
+          "content_chars": 32591
+        }
+      ]
+    },
+    "bookstack": {
+      "id": "1f56fb1be7fc",
+      "model_name": "qwen3.7-plus",
+      "status": "FAILED",
+      "passed_count": 27,
+      "failed_count": 7,
+      "run_duration_seconds": 1003,
+      "token_count": 115063,
+      "token_cost_usd": 0.584954,
+      "token_cost_currency": "CNY",
+      "started_at": "2026-09-22T09:19:13.267013",
+      "finished_at": "2026-09-22T09:37:39.743989"
+    }
+  },
+  "official_keep_public_replay": {
+    "official_passed": 14,
+    "public_passed": 13,
+    "total": 32,
+    "same_application_source": true,
+    "differences": [
+      {
+        "id": "REQ-1.1",
+        "official": true,
+        "public": false
+      }
+    ],
+    "runtime_difference": "official worker vs pinned local ARM64 runtime; evaluator-source identity not established"
+  },
+  "bookstack_requirement_semantic_differences": 0,
+  "kimi_standard_keep": {
+    "candidate": "kimi-adapter-v11",
+    "app": "keep",
+    "model": "kimi-k2.7-code",
+    "transport": "direct",
+    "sample": "direct-a",
+    "seconds": 995.977,
+    "success": true,
+    "error": null,
+    "usage": {
+      "calls": 1,
+      "call_limit": 3,
+      "completed_calls": 1,
+      "failed_calls": 0,
+      "failure_limit": 1,
+      "known_prompt_tokens": 20031,
+      "prompt_tokens": 20031,
+      "known_completion_tokens": 45187,
+      "completion_tokens": 45187,
+      "unknown_usage_calls": [],
+      "fallback_model": null,
+      "billing_status": "tokens_reported_cost_not_estimated"
+    }
+  },
+  "kimi_standard_keep_public_score": 25,
+  "kimi_standard_bookstack": {
+    "candidate": "kimi-adapter-v11",
+    "app": "bookstack",
+    "model": "kimi-k2.7-code",
+    "transport": "direct",
+    "sample": "direct-a",
+    "seconds": 1200.031,
+    "success": false,
+    "error": {
+      "type": "RuntimeError",
+      "message": "model stream failed (StreamError)"
+    },
+    "usage": {
+      "calls": 1,
+      "call_limit": 3,
+      "completed_calls": 0,
+      "failed_calls": 1,
+      "failure_limit": 1,
+      "known_prompt_tokens": null,
+      "prompt_tokens": null,
+      "known_completion_tokens": null,
+      "completion_tokens": null,
+      "unknown_usage_calls": [
+        1
+      ],
+      "fallback_model": null,
+      "billing_status": "unknown"
+    }
+  },
+  "kimi_standard_bookstack_timeout": {
+    "curl_exit_code": 28,
+    "limit_seconds": 1200,
+    "generated_content_chars": 0,
+    "classification": "local client timeout during reasoning; upstream completion unknown; no application delivered"
+  },
+  "highspeed_v12": {
+    "candidate": "seed-popover-v12",
+    "app": "keep",
+    "model": "kimi-k2.7-code-highspeed",
+    "transport": "direct",
+    "sample": "highspeed-a",
+    "seconds": 290.335,
+    "success": true,
+    "error": null,
+    "usage": {
+      "calls": 2,
+      "call_limit": 3,
+      "completed_calls": 2,
+      "failed_calls": 0,
+      "failure_limit": 1,
+      "known_prompt_tokens": 50686,
+      "prompt_tokens": 50686,
+      "known_completion_tokens": 52844,
+      "completion_tokens": 52844,
+      "unknown_usage_calls": [],
+      "fallback_model": null,
+      "billing_status": "tokens_reported_cost_not_estimated"
+    }
+  },
+  "v12_published_score": 25,
+  "v12_rejected_model_repair_score": 32,
+  "v12_model_repair_gains": 7,
+  "v12_model_repair_losses": 0,
+  "retention_replay": {
+    "classification": "offline replay of a real repair; no independent generation",
+    "new_model_calls": 0,
+    "source": "~/projects/volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922/generations/seed-popover-v12/keep-highspeed-a",
+    "request_bytes_identical": true,
+    "request_sha256": "dd764acf103fbb1a24c97cd2ec1965e27108c9b1a9c593c39d5a7b20f060305a",
+    "repair": {
+      "accepted": true,
+      "files": [
+        "frontend/public/seed.js",
+        "frontend/public/app.js",
+        "frontend/public/styles.css"
+      ],
+      "vocabulary_missing_after": 0
+    },
+    "result_matches_previously_scored_model_repair": true,
+    "seconds": 19.299
+  },
+  "current_candidate": "runtime-retention-v13",
+  "current_package_sha256": "01872ebe97ba4ac461fcceb8638510c780cc00e0e81fa3322f21292b3b837099",
+  "independent_goal_passes": [],
+  "model_notice_user_supplied": true
+}

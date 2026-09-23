@@ -5,10 +5,16 @@
   const ARC = {};
 
   // --- Store: the whole app renders synchronously from memory (the click ladder probes each rung for
-  // 500 ms, so data fetched after navigation is never found). Seed comes from seed.js; writes go
-  // through to /api/state in the background and never gate rendering.
+  // 500 ms, so data fetched after navigation is never found). A new browsing session starts from
+  // seed.js. Full navigation in the same tab restores its state synchronously, including login.
+  // Writes also go to /api/state in the background and never gate rendering.
   ARC.state = JSON.parse(JSON.stringify(window.SEED || {}));
+  try {
+    const saved = JSON.parse(sessionStorage.getItem('arc:state:v1') || 'null');
+    if (saved && typeof saved === 'object' && !Array.isArray(saved)) ARC.state = saved;
+  } catch (e) {}
   ARC.save = function () {
+    try { sessionStorage.setItem('arc:state:v1', JSON.stringify(ARC.state)); } catch (e) {}
     try { fetch('/api/state', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ARC.state) }).catch(() => {}); } catch (e) {}
   };
   ARC.uid = function (prefix) { return (prefix || 'id') + '_' + Math.random().toString(36).slice(2, 9); };
@@ -35,8 +41,8 @@
   // The footer ends with the layout nouns as visible words ("Header · Sidebar · Main content · Footer"):
   // layout tests assert /header/i, /sidebar/i as visible text, and a landmark tag alone is invisible
   // (StackOverflow REQ-1.1 / 1.2 lost in both round-18 samples once the model stopped writing them).
-  // The brand is a logo BUTTON named "<Brand> logo" next to the brand link: one suite generation
-  // returns home through `button /^BookStack logo$/`, the other through `link /bookstack/i`.
+  // The home button uses the brand as its accessible name. Preserve an explicitly
+  // required name rather than decorating it with an extra "logo" suffix.
   // Header entries are links (navigation). Sidebar entries are BUTTONS inside <aside> (role
   // complementary): one suite generation resolves them as `complementary >> button /^Name$/`. The aside
   // comes AFTER <main> in DOM order (CSS puts it back on the left) so a page-wide `.first()` for a verb
@@ -47,9 +53,10 @@
     const link = (n) => `<a href="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</a>`;
     const entry = (n) => `<button type="button" data-action="arc:nav" data-hash="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</button>`;
     const nav = (L.nav || []).map(link).join('');
-    const side = (L.sidebar || []).map(entry).join('');
+    // Built-in and data-derived destinations may overlap; render each identical entry once.
+    const side = [...new Set((L.sidebar || []).map(entry))].join('');
     return `<header class="app-header">
-  <button type="button" class="brand-logo" aria-label="${ARC.esc(L.brand || 'App')} logo" data-action="arc:nav" data-hash="#/"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="2"/></svg></button>
+  <button type="button" class="brand-logo" aria-label="${ARC.esc(L.brand || 'App')}" data-action="arc:nav" data-hash="#/"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="2"/></svg></button>
   <a class="brand" href="#/">${ARC.esc(L.brand || 'App')}</a>
   <nav aria-label="Main navigation">${nav}</nav>
   <div class="account">${L.account ? L.account(user) : ''}</div>
@@ -108,18 +115,21 @@
     }
   };
 
-  // --- Popover: a menu, colour palette or label picker that belongs to ONE record opens INSIDE that
-  // record's element (the <article>), never in the dialog root: both suite generations scope the
-  // lookup to the card (`article >> button /^Delete Note$/`, `article >> button /^Light green$/`),
-  // and one of them anchors a header dropdown as `menu >> menuitem /^Settings$/`. `items` are
-  // { label, action, extra? }; kind 'buttons' (default, record menus and palettes) renders plain
-  // <button>s, kind 'menu' (header dropdowns) renders role="menu" with role="menuitem" buttons.
-  // The popover closes on the next render, on Escape, or on a click outside it.
+  // --- Popover: render contextual UI inside its supplied host. The requirement determines
+  // the host and whether the interaction is a popover or an entity editor/dialog.
+  // Command menus are not a replacement for the entity's named field editor.
+  // items are { label, action, extra? }; kind 'buttons' renders native buttons;
+  // kind 'menu' explicitly renders role=menu and role=menuitem.
+  // The popover closes on render, Escape, or a click outside it.
   ARC.openPopover = function (host, items, opts) {
+    const record = host && host.closest('article[data-id], [role="article"][data-id]');
+    const id = (opts && opts.id) != null ? String(opts.id) :
+      (host && host.dataset && host.dataset.id) || (record && record.dataset.id) || '';
+    // A menu item may replace its own menu. Keep the connected anchor before removing it.
+    if (host && ARC._popover && ARC._popover.contains(host)) host = ARC._popover.parentElement;
     ARC.closePopover();
     if (!host) return;
     const kind = (opts && opts.kind) || 'buttons';
-    const id = (opts && opts.id) != null ? String(opts.id) : (host.dataset && host.dataset.id) || '';
     const button = (a) => `<button type="button"${kind === 'menu' ? ' role="menuitem"' : ''} data-action="${ARC.esc(a.action)}" data-id="${ARC.esc(id)}"${a.extra ? ' ' + a.extra : ''}>${ARC.esc(a.label)}</button>`;
     const body = typeof items === 'string' ? items : items.map(button).join('');
     const wrap = document.createElement('div');
@@ -168,8 +178,8 @@
   }
   document.addEventListener('click', (ev) => {
     if (ARC._popover && !ARC._popover.contains(ev.target) && !ev.target.closest('[data-action]')) ARC.closePopover();
-    const el = ev.target.closest('[data-action]');
-    if (!el || el.tagName === 'FORM') {
+    const el = ev.target.closest('[data-action], button, input, textarea, select, a, label');
+    if (!el || !el.hasAttribute('data-action') || el.tagName === 'FORM') {
       // In-app links render synchronously too (see ARC.navigate); the browser's own fragment
       // navigation would only render on the later hashchange task.
       const link = ev.target.closest('a[href^="#/"], a[href="#"]');
@@ -179,7 +189,9 @@
       }
       return;
     }
-    ev.preventDefault();
+    // Native controls must keep their own activation behavior. In particular,
+    // cancelling checkbox clicks reverts the checked state after our handler.
+    if (!el.matches('input, textarea, select, label')) ev.preventDefault();
     dispatch(el.dataset.action, el, ev, null);
   });
   document.addEventListener('submit', (ev) => {
@@ -189,7 +201,9 @@
     const form = Object.fromEntries(new FormData(formEl).entries());
     dispatch(formEl.dataset.action, formEl, ev, form);
   });
-  document.addEventListener('change', (ev) => {
+  // Value-change actions run while typing, not only after a control loses focus.
+  // Programmatic value updates should emit a bubbling input event too.
+  document.addEventListener('input', (ev) => {
     const el = ev.target.closest('[data-change]');
     if (!el) return;
     dispatch(el.dataset.change, el, ev, null);

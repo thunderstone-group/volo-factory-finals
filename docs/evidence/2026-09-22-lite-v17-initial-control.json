@@ -1,0 +1,70 @@
+{
+  "candidate": "entry-contract-v17",
+  "independent_bookstack": {
+    "passed": 33,
+    "total": 34,
+    "seconds": 249.058,
+    "calls": 2,
+    "input_tokens": 56773,
+    "output_tokens": 46373,
+    "failed": [
+      "REQ-8.1"
+    ],
+    "result": "replays/entry-contract-v17/bookstack-highspeed-a/result.json",
+    "settled_cny": "2.818869"
+  },
+  "keep_preflight_failure": {
+    "model_requests_sent": 0,
+    "read_attempts": 3,
+    "http_status": 500,
+    "path": "GET /runs"
+  },
+  "diagnostic_bookstack": {
+    "passed": 34,
+    "total": 34,
+    "gained": 1,
+    "lost": 0,
+    "result": "replays/diagnostic/bookstack-v17-guest/result.json",
+    "independent_goal_pass": false
+  },
+  "next_candidate": "initial-control-v18",
+  "next_package_sha256": "2aa980e96b67408e585c36101240ebea5cc3d7359b6374976f1a106c2c03906f",
+  "change": "Explicit initial toggle contract now diagnoses missing/wrong-state controls instead of skipping them",
+  "calibrations": {
+    "verified-docker-book-v16-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "probe_sha256": "c33a46467f0adaf3dc2a269cd96d38773691bf2d7d998f7db28bf886444021de",
+      "seconds": 5.063
+    },
+    "verified-docker-book-v17": {
+      "executed": true,
+      "errors": [
+        "Record \"Book 8.1\" requires an initially visible \"Favorite\" button with aria-pressed=false, but it is absent or has the wrong state. Do not hide the declared action behind an unstated login prerequisite."
+      ],
+      "page_errors": [],
+      "probe_sha256": "c33a46467f0adaf3dc2a269cd96d38773691bf2d7d998f7db28bf886444021de",
+      "seconds": 4.91
+    },
+    "verified-docker-book-v17-fixed": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "probe_sha256": "c33a46467f0adaf3dc2a269cd96d38773691bf2d7d998f7db28bf886444021de",
+      "seconds": 5.0
+    },
+    "verified-docker-bookstack-positive": {
+      "executed": true,
+      "errors": [],
+      "page_errors": [],
+      "probe_sha256": "c33a46467f0adaf3dc2a269cd96d38773691bf2d7d998f7db28bf886444021de",
+      "seconds": 4.991
+    }
+  },
+  "package_tests": {
+    "passed": 2,
+    "skipped": 0,
+    "log": "v18-package-tests.log"
+  }
+}

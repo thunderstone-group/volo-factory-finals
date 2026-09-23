@@ -86,6 +86,33 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(self.transport.call_count, 1)
         self.assertEqual(budget.smoke, {"executed": True, "problems": [], "vocabulary_missing": 0, "repair": None})
         self.assertTrue((self.out / "backend/server.js").is_file())
+
+    def test_interrupted_repair_retries_same_request_without_publishing_partial_files(self):
+        partial = events(block('frontend/public/failed-version.js', 'discard me'), finish=None, done=False)
+        partial.append(b'data: {"choices":[')  # Synthetic reduction of a connection reset mid-event.
+        self.replies(events(app(server(health='{}')), {'prompt_tokens':10,'completion_tokens':20}),
+                     partial, events(block('backend/server.js', server()), {'prompt_tokens':3,'completion_tokens':7}))
+        files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertEqual([a['status'] for a in budget.attempts], ['completed','failed','completed'])
+        self.assertEqual(self.transport.call_args_list[1].args[0].data,
+                         self.transport.call_args_list[2].args[0].data)
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertFalse((self.out / 'frontend/public/failed-version.js').exists())
+        self.assertNotIn('frontend/public/failed-version.js', [f['path'] for f in files])
+        self.assertEqual(budget.summary()['unknown_usage_calls'], [2])
+        self.assertIsNone(budget.summary()['prompt_tokens'])
+        self.assertEqual(budget.summary()['known_prompt_tokens'], 13)
+
+    def test_repair_retry_stops_at_the_shared_failure_budget(self):
+        self.replies(events(app(server(health='{}'))), [], events(block('backend/server.js', server())))
+        budget = adapter.CallBudget(limit=3, fail_limit=1)
+        adapter.generate('Synthetic requirements only', 'synthetic-model',
+                         'https://synthetic.invalid/v1', SYNTHETIC_KEY, self.out, budget)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertFalse(budget.smoke['repair']['accepted'])
+        self.assertEqual(len(budget.failed()), 1)
+        self.assertTrue(budget.exhausted())
         self.assertEqual(list(self.root.glob(".oneshot-*")), [])
 
     def test_root_404_is_repaired_and_repair_is_kept(self):
@@ -222,7 +249,7 @@ class SmokeCase(unittest.TestCase):
                                 "document.body.insertAdjacentHTML('beforeend', '<button type=\"button\" data-action=\"add-to-cart\">Add to cart</button>');\n"
                                 "document.addEventListener('click', (e) => { if (e.target.dataset.action === 'add-to-cart') { const p = undefined; p.id; } });")
         self.replies(events(broken), events(throwing_button))
-        files, budget = self.generate()
+        files, budget = self.generate(limit=2)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         self.assertEqual(budget.smoke["repair"]["accepted"], True, budget.smoke)
@@ -239,11 +266,42 @@ class SmokeCase(unittest.TestCase):
         draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
                                       block("frontend/public/app.js", buttons("one", "two")))
         self.replies(events(draft), events(block("frontend/public/app.js", buttons("three"))))
-        files, budget = self.generate()
+        files, budget = self.generate(limit=2)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         self.assertEqual(budget.smoke["repair"]["accepted"], True, budget.smoke)
         self.assertIn("=== 'three'", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
+
+    def test_remaining_budget_repairs_a_click_error_exposed_after_a_syntax_fix(self):
+        broken = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                       block("frontend/public/app.js", "function f( { }"))
+        partial = ("document.body.insertAdjacentHTML('beforeend', '<button data-action=\"open\">Open</button>');\n"
+                   "document.addEventListener('click', () => { const missing = undefined; missing.id; });")
+        complete = partial.replace("const missing = undefined; missing.id;", "document.body.dataset.opened = 'true';")
+        self.replies(events(broken), events(block("frontend/public/app.js", partial)),
+                     events(block("frontend/public/app.js", complete)))
+        files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertTrue(budget.exhausted())
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertEqual(budget.smoke['problems_after'], [])
+        self.assertTrue(budget.smoke['previous_repairs'][0]['repair']['accepted'])
+        self.assertIn('clicking `Open`', budget.attempts[2]['messages'][-1]['content'])
+        self.assertEqual(next(f for f in files if f['path'] == 'frontend/public/app.js')['content'], complete + '\n')
+
+    def test_regressing_followup_keeps_the_prior_accepted_application(self):
+        broken = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
+                                       block("frontend/public/app.js", "function f( { }"))
+        partial = ("document.body.insertAdjacentHTML('beforeend', '<button data-action=\"open\">Open</button>');\n"
+                   "document.addEventListener('click', () => { const missing = undefined; missing.id; });")
+        self.replies(events(broken), events(block("frontend/public/app.js", partial)),
+                     events(block("frontend/public/app.js", "function f( { }")))
+        files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertTrue(budget.smoke['previous_repairs'][0]['repair']['accepted'])
+        self.assertEqual((self.out / 'frontend/public/app.js').read_text(), partial + '\n')
+        self.assertEqual(next(f for f in files if f['path'] == 'frontend/public/app.js')['content'], partial + '\n')
 
     def test_repair_that_leaves_a_click_error_is_rejected_when_the_app_was_never_broken_whole(self):
         # Unchanged rule for the ordinary path: a repair for a family-level problem must leave the app clean.
@@ -371,6 +429,23 @@ class SmokeCase(unittest.TestCase):
         (stage / "backend" / "server.js").write_text("process.on('uncaughtException', () => {}); process.on('unhandledRejection', () => {});\n")
         self.assertEqual(adapter.process_guard_gaps(stage), [])
 
+    def test_template_expressions_are_not_accessible_label_collisions(self):
+        # Reduced from the real Lite Keep Qwen draft: the old scan treated
+        # ARC.esc in both interpolated attributes as a shared accessible name.
+        stage = self.root / "dynamic-labels"
+        public = stage / "frontend" / "public"
+        public.mkdir(parents=True)
+        source = public / "app.js"
+        template = ('const html = `<button aria-label="${ARC.esc(L.brand || \'App\')}">Home</button>'
+                    '<input placeholder="${ARC.esc(field.placeholder)}">`;\n')
+        source.write_text(template)
+        self.assertEqual(adapter.aria_collision_gaps(stage), [])
+        source.write_text(template + '<label>Quantity<input></label>'
+                          '<button aria-label="Decrease quantity">-</button>')
+        [problem] = adapter.aria_collision_gaps(stage)
+        self.assertIn("Decrease quantity", problem)
+        self.assertNotIn("ARC.esc", problem)
+
     def test_nested_label_advice_keeps_the_quoted_name_and_renames_the_other(self):
         stage = self.root / "stage2"
         (stage / "frontend" / "public").mkdir(parents=True)
@@ -383,6 +458,26 @@ class SmokeCase(unittest.TestCase):
         self.assertNotIn('"Date" is contained in "End date"', problem)  # both quoted: not a rename problem
         [generic] = adapter.aria_collision_gaps(stage)
         self.assertIn('"Date" is contained in "End date"', generic)
+
+    def test_a_form_after_a_button_is_not_a_button_label_collision(self):
+        # Reduced from the real v4 BookStack draft. The preceding button used
+        # to make the scanner misclassify this required named form.
+        stage = self.root / "form-label"
+        public = stage / "frontend" / "public"
+        public.mkdir(parents=True)
+        (public / "app.js").write_text(
+            '<button>New Book</button><form aria-label="Create book form">'
+            '<label>Book description<input></label></form>')
+        self.assertEqual(adapter.aria_collision_gaps(stage), [])
+
+    def test_backtick_control_names_are_not_renamed_by_collision_advice(self):
+        stage = self.root / "backtick-label"
+        public = stage / "frontend" / "public"
+        public.mkdir(parents=True)
+        (public / "app.js").write_text(
+            '<label>Tags<input></label><button aria-label="Book Tags">Tags</button>')
+        self.assertTrue(adapter.aria_collision_gaps(stage))
+        self.assertEqual(adapter.aria_collision_gaps(stage, 'A button named `Book Tags`.'), [])
 
     def test_quoted_button_names_are_not_collision_problems_and_only_control_phrases_are_pinned(self):
         stage = self.root / "stage3"
@@ -412,6 +507,52 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(budget.smoke["repair"]["accepted"], False, budget.smoke)
         self.assertIn("renamed quoted control(s): from", budget.smoke["repair"]["reason"])
         self.assertIn("From <input", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
+
+    def test_rendered_control_name_survives_a_move_from_html_to_menu_data(self):
+        before_js = "document.body.innerHTML='<button>Choose fields</button>';"
+        after_js = "const item={label:'Choose fields',action:'choose'};document.body.innerHTML='<button>'+item.label+'</button>';"
+        draft = app(server()).replace(block('frontend/public/app.js', "console.log('synthetic');"),
+                                      block('frontend/public/app.js', before_js))
+        self.replies(events(draft), events(block('frontend/public/app.js', after_js)))
+        checks = []
+
+        def check(stage, requirements=None, diagnostics=None):
+            checks.append(stage)
+            if diagnostics is not None:
+                diagnostics.append({'executed': True, 'actions': [
+                    {'name': 'Choose fields', 'action': 'choose', 'scope': 'dialog-popover'}]})
+            return (['clicking a fixture control throws'] if len(checks) == 1 else []), True
+
+        budget = adapter.CallBudget()
+        with patch.object(adapter, 'smoke_check', side_effect=check):
+            adapter.generate('Synthetic: the button named "Choose fields" must remain available.',
+                             'synthetic-model', 'https://synthetic.invalid/v1', SYNTHETIC_KEY,
+                             self.out, budget)
+        self.assertNotIn('choose fields', adapter.control_names(self.out))
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+
+    def test_unexecuted_control_observation_does_not_waive_name_preservation(self):
+        before_js = "document.body.innerHTML='<button>Choose fields</button>';"
+        after_js = "const item={label:'Choose fields'};document.body.innerHTML='<button>Other action</button>';"
+        draft = app(server()).replace(block('frontend/public/app.js', "console.log('synthetic');"),
+                                      block('frontend/public/app.js', before_js))
+        self.replies(events(draft), events(block('frontend/public/app.js', after_js)))
+        checks = []
+
+        def check(stage, requirements=None, diagnostics=None):
+            checks.append(stage)
+            if diagnostics is not None:
+                diagnostics.append({'executed': True, 'actions': [
+                    {'name': 'Choose fields', 'observation': 'Synthetic click did not complete'}]})
+            return (['clicking a fixture control throws'] if len(checks) == 1 else []), True
+
+        budget = adapter.CallBudget()
+        with patch.object(adapter, 'smoke_check', side_effect=check):
+            adapter.generate('Synthetic: the button named "Choose fields" must remain available.',
+                             'synthetic-model', 'https://synthetic.invalid/v1', SYNTHETIC_KEY,
+                             self.out, budget)
+        self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertIn('repair renamed quoted control(s)', budget.smoke['repair']['reason'])
 
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"

@@ -1,0 +1,25 @@
+{
+  "classification": "single-change frozen-app diagnosis; not an independent Goal pass",
+  "before": 33,
+  "after": 34,
+  "total": 34,
+  "gained": [
+    "REQ-6.1.3"
+  ],
+  "lost": [],
+  "model_calls": 0,
+  "change_receipt": "runs/lite-goal-20260922/diagnostics/bookstack-draft-entry/receipt.json",
+  "full_result": "runs/lite-goal-20260922/replays/diagnostic/bookstack-draft-entry/result.json",
+  "generic_prompt_candidate": {
+    "base": "session-store-v7",
+    "changed_files": [
+      "dialect.md"
+    ],
+    "change": "Existing entities with separate reading and editing flows retain the same primary navigation across lifecycle states",
+    "model_calls": 0,
+    "official_upload_performed": false,
+    "package_sha256": "b7b167f9e7e13bd281a0086367e493db7374c266669ac80522ed5129ffc76981",
+    "generation_effect_not_yet_tested": true
+  },
+  "prompt_generation_effect_not_yet_measured": true
+}

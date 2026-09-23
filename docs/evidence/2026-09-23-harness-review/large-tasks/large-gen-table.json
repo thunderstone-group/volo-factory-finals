@@ -1,0 +1,2002 @@
+[
+ {
+  "tag": "r26a",
+  "rid": "6cb486a4b5b2",
+  "task": "12306",
+  "passed": 91,
+  "run_dur": "2314",
+  "agent_s": 2314.0,
+  "exit": "0",
+  "ncalls": 3,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    921.196,
+    257,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    1038.857,
+    112320,
+    4
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    337.771,
+    105339,
+    3
+   ]
+  ],
+  "draft_chars": 257,
+  "prompt_chars": 199176,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "the draft has no file blocks; asking once more"
+  ]
+ },
+ {
+  "tag": "r26a",
+  "rid": "97293bd31327",
+  "task": "ctrip",
+  "passed": 34,
+  "run_dur": "704",
+  "agent_s": 704.0,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    381.956,
+    93968,
+    4
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    313.067,
+    91891,
+    3
+   ]
+  ],
+  "draft_chars": 93968,
+  "prompt_chars": 173359,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "still failing after repair: frontend/public/lib/arc.js:15 does not parse (SyntaxError: Invalid or unexpected token) — the line reads `ARC.esc = function (s) { r",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r26a",
+  "rid": "5916fe816abf",
+  "task": "prestashop",
+  "passed": 64,
+  "run_dur": "795",
+  "agent_s": 794.7,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    593.901,
+    83529,
+    4
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    184.629,
+    61488,
+    2
+   ]
+  ],
+  "draft_chars": 83529,
+  "prompt_chars": 116271,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r26a",
+  "rid": "70a040638ed3",
+  "task": "stackoverflow",
+  "passed": 47,
+  "run_dur": "707",
+  "agent_s": 707.0,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    572.54,
+    89506,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    113.228,
+    50986,
+    1
+   ]
+  ],
+  "draft_chars": 89506,
+  "prompt_chars": 117809,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "repair renamed quoted control(s): your answer\"}}",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r26b",
+  "rid": "194ddc3c3f11",
+  "task": "12306",
+  "passed": 48,
+  "run_dur": "840",
+  "agent_s": 840.4,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    600.98,
+    94100,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    225.923,
+    86984,
+    2
+   ]
+  ],
+  "draft_chars": 94100,
+  "prompt_chars": 199176,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "repair renamed quoted control(s): additional information, contact information, correct password input to modify personal information., essential information, lo",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r26b",
+  "rid": "aeeb26169bf9",
+  "task": "ctrip",
+  "passed": 37,
+  "run_dur": "666",
+  "agent_s": 665.6,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    459.235,
+    83821,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    192.942,
+    64849,
+    1
+   ]
+  ],
+  "draft_chars": 83821,
+  "prompt_chars": 173359,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "repair renamed quoted control(s): + 添加返程\"}}",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r26b",
+  "rid": "cfa73098cd54",
+  "task": "prestashop",
+  "passed": 47,
+  "run_dur": "1193",
+  "agent_s": 1192.8,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    1031.164,
+    89324,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    145.332,
+    65574,
+    1
+   ]
+  ],
+  "draft_chars": 89324,
+  "prompt_chars": 116271,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "ignored 2 line(s) outside file blocks",
+   "ignored 2 line(s) outside file blocks"
+  ]
+ },
+ {
+  "tag": "r26b",
+  "rid": "c1cba5d506a7",
+  "task": "stackoverflow",
+  "passed": 46,
+  "run_dur": "1184",
+  "agent_s": 1184.1,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    1001.482,
+    102083,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    157.955,
+    79210,
+    2
+   ]
+  ],
+  "draft_chars": 102083,
+  "prompt_chars": 117809,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r24a",
+  "rid": "14a46b9e3c16",
+  "task": "12306",
+  "passed": 90,
+  "run_dur": "1041",
+  "agent_s": 1041.3,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    710.944,
+    101098,
+    10
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    317.059,
+    100454,
+    3
+   ]
+  ],
+  "draft_chars": 101098,
+  "prompt_chars": 199176,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r24a",
+  "rid": "2d22338a9e23",
+  "task": "ctrip",
+  "passed": 45,
+  "run_dur": "1006",
+  "agent_s": 1005.4,
+  "exit": "0",
+  "ncalls": 3,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    515.614,
+    86655,
+    3
+   ],
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    147.74,
+    0,
+    0
+   ],
+   [
+    "qwen3.7-",
+    "completed",
+    "stop",
+    null,
+    334.391,
+    80785,
+    2
+   ]
+  ],
+  "draft_chars": 86655,
+  "prompt_chars": 173359,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "closing an unterminated final block at finish_reason=stop",
+   "deepseek-v4-flash failed 1 times; the rest of this run uses qwen3.7-plus"
+  ]
+ },
+ {
+  "tag": "r24a",
+  "rid": "fa907c7d481b",
+  "task": "prestashop",
+  "passed": 60,
+  "run_dur": "1311",
+  "agent_s": 1311.2,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    1027.749,
+    89134,
+    4
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    268.028,
+    73760,
+    2
+   ]
+  ],
+  "draft_chars": 89134,
+  "prompt_chars": 116271,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r24a",
+  "rid": "82b2e366a946",
+  "task": "stackoverflow",
+  "passed": 45,
+  "run_dur": "1442",
+  "agent_s": 1441.4,
+  "exit": "0",
+  "ncalls": 4,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    230.981,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    377.267,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    595.524,
+    71160,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    216.528,
+    45098,
+    1
+   ]
+  ],
+  "draft_chars": 0,
+  "prompt_chars": 117809,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry",
+   "call 2 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "r24b",
+  "rid": "dc8eaa82e890",
+  "task": "12306",
+  "passed": 87,
+  "run_dur": "1500",
+  "agent_s": 1499.6,
+  "exit": "0",
+  "ncalls": 3,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    597.019,
+    98267,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    593.646,
+    104756,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    299.452,
+    105851,
+    3
+   ]
+  ],
+  "draft_chars": 98267,
+  "prompt_chars": 199176,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "r24b",
+  "rid": "fbb4effce0c9",
+  "task": "ctrip",
+  "passed": 33,
+  "run_dur": "961",
+  "agent_s": 960.8,
+  "exit": "0",
+  "ncalls": 3,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    211.156,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    506.302,
+    83536,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    229.751,
+    67136,
+    1
+   ]
+  ],
+  "draft_chars": 0,
+  "prompt_chars": 173359,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "r24b",
+  "rid": "d578da887774",
+  "task": "prestashop",
+  "passed": 68,
+  "run_dur": "1398",
+  "agent_s": 1398.2,
+  "exit": "0",
+  "ncalls": 3,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    566.675,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    646.996,
+    91578,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    167.828,
+    64031,
+    1
+   ]
+  ],
+  "draft_chars": 0,
+  "prompt_chars": 116271,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "r24b",
+  "rid": "964f3787f711",
+  "task": "stackoverflow",
+  "passed": 48,
+  "run_dur": "1393",
+  "agent_s": 1392.9,
+  "exit": "0",
+  "ncalls": 3,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    561.16,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    629.335,
+    87113,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    182.745,
+    60393,
+    1
+   ]
+  ],
+  "draft_chars": 0,
+  "prompt_chars": 117809,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "r25a",
+  "rid": "756ac7cf284d",
+  "task": "12306",
+  "passed": 54,
+  "run_dur": "789",
+  "agent_s": 789.3,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    514.736,
+    98996,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    261.86,
+    80775,
+    1
+   ]
+  ],
+  "draft_chars": 98996,
+  "prompt_chars": 199176,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "closing an unterminated final block at finish_reason=stop"
+  ]
+ },
+ {
+  "tag": "r25a",
+  "rid": "166f94c70260",
+  "task": "ctrip",
+  "passed": 25,
+  "run_dur": "1209",
+  "agent_s": 1209.2,
+  "exit": "0",
+  "ncalls": 3,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    379.668,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    568.686,
+    77735,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    245.093,
+    73445,
+    2
+   ]
+  ],
+  "draft_chars": 0,
+  "prompt_chars": 173359,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "r25a",
+  "rid": "8923b1ba8656",
+  "task": "prestashop",
+  "passed": 68,
+  "run_dur": "965",
+  "agent_s": 965.2,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    805.007,
+    83503,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    142.783,
+    67183,
+    2
+   ]
+  ],
+  "draft_chars": 83503,
+  "prompt_chars": 116271,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r25a",
+  "rid": "d6e3df21c1a8",
+  "task": "stackoverflow",
+  "passed": 45,
+  "run_dur": "806",
+  "agent_s": 805.6,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    633.676,
+    106524,
+    8
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    158.117,
+    62140,
+    2
+   ]
+  ],
+  "draft_chars": 106524,
+  "prompt_chars": 117809,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r25b",
+  "rid": "1afa8f5625fa",
+  "task": "12306",
+  "passed": 88,
+  "run_dur": "949",
+  "agent_s": 948.7,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    624.225,
+    95424,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    312.833,
+    96320,
+    3
+   ]
+  ],
+  "draft_chars": 95424,
+  "prompt_chars": 199176,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r25b",
+  "rid": "4c2414e945c7",
+  "task": "ctrip",
+  "passed": 41,
+  "run_dur": "1366",
+  "agent_s": 1365.7,
+  "exit": "0",
+  "ncalls": 4,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    592.26,
+    74118,
+    2
+   ],
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    133.998,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    437.262,
+    79962,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    193.345,
+    71657,
+    2
+   ]
+  ],
+  "draft_chars": 74118,
+  "prompt_chars": 173359,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry",
+   "call 2 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "r25b",
+  "rid": "cf4e99461f64",
+  "task": "prestashop",
+  "passed": 57,
+  "run_dur": "807",
+  "agent_s": 806.5,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    575.111,
+    96589,
+    4
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    217.653,
+    57552,
+    1
+   ]
+  ],
+  "draft_chars": 96589,
+  "prompt_chars": 116271,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r25b",
+  "rid": "46319d2fff6b",
+  "task": "stackoverflow",
+  "passed": 44,
+  "run_dur": "742",
+  "agent_s": 741.6,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    575.197,
+    106254,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    152.156,
+    56748,
+    1
+   ]
+  ],
+  "draft_chars": 106254,
+  "prompt_chars": 117809,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r27a",
+  "rid": "cb1e1d2f9aa0",
+  "task": "12306",
+  "passed": 62,
+  "run_dur": "679",
+  "agent_s": 678.7,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    498.413,
+    89985,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    168.169,
+    75660,
+    2
+   ]
+  ],
+  "draft_chars": 89985,
+  "prompt_chars": 199176,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r27a",
+  "rid": "f3726d72429a",
+  "task": "ctrip",
+  "passed": 26,
+  "run_dur": "739",
+  "agent_s": 738.4,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    447.059,
+    96680,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    276.84,
+    80008,
+    2
+   ]
+  ],
+  "draft_chars": 96680,
+  "prompt_chars": 173359,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "repair renamed quoted control(s): + 添加返程\"}}",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r27a",
+  "rid": "0c4a915f2f7d",
+  "task": "prestashop",
+  "passed": 55,
+  "run_dur": "840",
+  "agent_s": 840.4,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    588.366,
+    90307,
+    4
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    234.786,
+    80223,
+    3
+   ]
+  ],
+  "draft_chars": 90307,
+  "prompt_chars": 116271,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r27a",
+  "rid": "848afb62ec7f",
+  "task": "stackoverflow",
+  "passed": 41,
+  "run_dur": "730",
+  "agent_s": 729.5,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    430.619,
+    94854,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    275.749,
+    82853,
+    3
+   ]
+  ],
+  "draft_chars": 94854,
+  "prompt_chars": 117809,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "closing an unterminated final block at finish_reason=stop"
+  ]
+ },
+ {
+  "tag": "r27b",
+  "rid": "3fee98a94012",
+  "task": "12306",
+  "passed": 75,
+  "run_dur": "952",
+  "agent_s": 952.4,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    762.786,
+    94381,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    176.952,
+    74031,
+    1
+   ]
+  ],
+  "draft_chars": 94381,
+  "prompt_chars": 199176,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r27b",
+  "rid": "d6fcf0bb6bbe",
+  "task": "ctrip",
+  "passed": 32,
+  "run_dur": "832",
+  "agent_s": 832.4,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    632.193,
+    94415,
+    6
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    186.803,
+    69132,
+    1
+   ]
+  ],
+  "draft_chars": 94415,
+  "prompt_chars": 173359,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "repair renamed quoted control(s): + 添加返程\"}}",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r27b",
+  "rid": "6f653331e8a1",
+  "task": "prestashop",
+  "passed": 55,
+  "run_dur": "782",
+  "agent_s": 782.0,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    587.764,
+    70919,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    177.51,
+    61885,
+    2
+   ]
+  ],
+  "draft_chars": 70919,
+  "prompt_chars": 116271,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "r27b",
+  "rid": "aa8aa581157b",
+  "task": "stackoverflow",
+  "passed": 47,
+  "run_dur": "801",
+  "agent_s": 801.3,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    679.478,
+    103327,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    100.2,
+    62870,
+    1
+   ]
+  ],
+  "draft_chars": 103327,
+  "prompt_chars": 117809,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "s2-names4-12306",
+  "rid": "57cf6c6841da",
+  "task": "12306",
+  "passed": 62,
+  "run_dur": "2460",
+  "agent_s": null,
+  "exit": "0",
+  "ncalls": 0,
+  "calls": [],
+  "draft_chars": null,
+  "prompt_chars": null,
+  "repair_accepted": null,
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "s8h-adaptive-long-ctrip",
+  "rid": "15af8a229912",
+  "task": "ctrip",
+  "passed": 27,
+  "run_dur": "2803",
+  "agent_s": null,
+  "exit": "0",
+  "ncalls": 0,
+  "calls": [],
+  "draft_chars": null,
+  "prompt_chars": null,
+  "repair_accepted": null,
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "s8h-adaptive-long-12306",
+  "rid": "a01719166800",
+  "task": "12306",
+  "passed": 54,
+  "run_dur": "2337",
+  "agent_s": null,
+  "exit": "0",
+  "ncalls": 0,
+  "calls": [],
+  "draft_chars": null,
+  "prompt_chars": null,
+  "repair_accepted": null,
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "s8h-adaptive-long-prestashop",
+  "rid": "8fec75ff0904",
+  "task": "prestashop",
+  "passed": 57,
+  "run_dur": "3315",
+  "agent_s": null,
+  "exit": "0",
+  "ncalls": 0,
+  "calls": [],
+  "draft_chars": null,
+  "prompt_chars": null,
+  "repair_accepted": null,
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "s8h-adaptive-long-stackoverflow",
+  "rid": "32c46ebfaa3e",
+  "task": "stackoverflow",
+  "passed": 30,
+  "run_dur": "2024",
+  "agent_s": null,
+  "exit": "0",
+  "ncalls": 0,
+  "calls": [],
+  "draft_chars": null,
+  "prompt_chars": null,
+  "repair_accepted": null,
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "volo-oneshot-r28b-path-table",
+  "rid": "20d99918abf3",
+  "task": "stackoverflow",
+  "passed": 45,
+  "run_dur": "813",
+  "agent_s": 812.9,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    631.555,
+    207919,
+    6
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    139.8,
+    62188,
+    2
+   ]
+  ],
+  "draft_chars": 207919,
+  "prompt_chars": 120837,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "ignored 197 line(s) outside file blocks",
+   "ignored 197 line(s) outside file blocks"
+  ]
+ },
+ {
+  "tag": "volo-oneshot-r28b-path-table",
+  "rid": "dfefda5d7879",
+  "task": "prestashop",
+  "passed": 65,
+  "run_dur": "772",
+  "agent_s": 772.0,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    613.752,
+    79655,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    139.25,
+    57287,
+    1
+   ]
+  ],
+  "draft_chars": 79655,
+  "prompt_chars": 119475,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "still failing after repair: clicking `Clear all` (data-action `clear-filters`) on screen `#/category/accessories` produced no observable outcome; render the req",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "volo-oneshot-r28b-path-table",
+  "rid": "7d392dd3b3af",
+  "task": "ctrip",
+  "passed": 22,
+  "run_dur": "1022",
+  "agent_s": 1022.0,
+  "exit": "0",
+  "ncalls": 3,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    132.561,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    526.167,
+    90988,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    334.688,
+    83663,
+    2
+   ]
+  ],
+  "draft_chars": 0,
+  "prompt_chars": 178294,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "repair renamed quoted control(s): + 添加返程\"}}",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "volo-oneshot-r28b-path-table",
+  "rid": "f92f08a9b4bb",
+  "task": "12306",
+  "passed": 64,
+  "run_dur": "1181",
+  "agent_s": 1181.4,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    758.806,
+    98934,
+    10
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    369.29,
+    110558,
+    4
+   ]
+  ],
+  "draft_chars": 98934,
+  "prompt_chars": 204720,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "volo-oneshot-r28b-path-table",
+  "rid": "2df0bfd60ae9",
+  "task": "stackoverflow",
+  "passed": 41,
+  "run_dur": "855",
+  "agent_s": 854.7,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    677.018,
+    90460,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    148.71,
+    53918,
+    1
+   ]
+  ],
+  "draft_chars": 90460,
+  "prompt_chars": 120837,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "volo-oneshot-r28b-path-table",
+  "rid": "a469b45aca1d",
+  "task": "prestashop",
+  "passed": 63,
+  "run_dur": "1010",
+  "agent_s": 1010.3,
+  "exit": "0",
+  "ncalls": 4,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    85.288,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    126.557,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    638.824,
+    68052,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    139.127,
+    60772,
+    2
+   ]
+  ],
+  "draft_chars": 0,
+  "prompt_chars": 119475,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "still failing after repair: clicking `Clear all` (data-action `clear-filters`) on screen `#/category/women` produced no observable outcome; render the requested",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry",
+   "call 2 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "volo-oneshot-r28b-path-table",
+  "rid": "820bc5bc4665",
+  "task": "ctrip",
+  "passed": 26,
+  "run_dur": "986",
+  "agent_s": 986.3,
+  "exit": "0",
+  "ncalls": 3,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    214.375,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    479.443,
+    92331,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    263.564,
+    78751,
+    2
+   ]
+  ],
+  "draft_chars": 0,
+  "prompt_chars": 178294,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "repair renamed quoted control(s): + 添加返程, 我的信息\"}}",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "volo-oneshot-r28b-path-table",
+  "rid": "01ea1a853d95",
+  "task": "12306",
+  "passed": 74,
+  "run_dur": "991",
+  "agent_s": 991.2,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    573.869,
+    93155,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    358.571,
+    95337,
+    3
+   ]
+  ],
+  "draft_chars": 93155,
+  "prompt_chars": 204720,
+  "repair_accepted": [
+   "true"
+  ],
+  "repair_reason": "",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "volo-action-outcome-20260919",
+  "rid": "9a2cdc6656f3",
+  "task": "ctrip",
+  "passed": 0,
+  "run_dur": "769",
+  "agent_s": 768.4,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    461.1,
+    85968,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    289.99,
+    99932,
+    4
+   ]
+  ],
+  "draft_chars": 85968,
+  "prompt_chars": 173359,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "repair renamed quoted control(s): + 添加返程\"}}",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "volo-action-outcome-20260919",
+  "rid": "67195b0de1c0",
+  "task": "12306",
+  "passed": 50,
+  "run_dur": "1003",
+  "agent_s": 1003.0,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    721.658,
+    101179,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    256.101,
+    94911,
+    3
+   ]
+  ],
+  "draft_chars": 101179,
+  "prompt_chars": 199176,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "still failing after repair: clicking `Sat, Sep 19` (data-action `results-date`) on screen `#/results` produced no observable outcome; render the requested scree",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ },
+ {
+  "tag": "volo-action-outcome-20260919",
+  "rid": "435556e82b15",
+  "task": "prestashop",
+  "passed": 59,
+  "run_dur": "2491",
+  "agent_s": 2490.9,
+  "exit": "0",
+  "ncalls": 4,
+  "calls": [
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    591.978,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "failed",
+    null,
+    "StreamError",
+    472.084,
+    0,
+    0
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    1149.555,
+    115687,
+    8
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    255.75,
+    66827,
+    1
+   ]
+  ],
+  "draft_chars": 0,
+  "prompt_chars": 116271,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "still failing after repair: clicking `Search` (data-action `do-search`) on screen `#/category/women` produced no observable outcome; render the requested screen",
+  "repair_str": null,
+  "failed": null,
+  "notes": [
+   "call 1 failed; bounded retry",
+   "call 2 failed; bounded retry"
+  ]
+ },
+ {
+  "tag": "volo-action-outcome-20260919",
+  "rid": "e5dfdd1a6d77",
+  "task": "stackoverflow",
+  "passed": 35,
+  "run_dur": "664",
+  "agent_s": 664.2,
+  "exit": "0",
+  "ncalls": 2,
+  "calls": [
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    507.285,
+    85045,
+    3
+   ],
+   [
+    "deepseek",
+    "completed",
+    "stop",
+    null,
+    133.794,
+    60755,
+    2
+   ]
+  ],
+  "draft_chars": 85045,
+  "prompt_chars": 117809,
+  "repair_accepted": [
+   "false"
+  ],
+  "repair_reason": "still failing after repair: clicking `Newest` (data-action `set-question-tab`) on screen `#/` produced no observable outcome; render the requested screen, dialo",
+  "repair_str": null,
+  "failed": null,
+  "notes": []
+ }
+]
