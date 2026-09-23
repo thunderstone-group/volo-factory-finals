@@ -19,6 +19,8 @@ regular scaffold files are packaged under `scaffold/`.
 Timestamps, order, permissions and uncompressed ZIP encoding are fixed. The external
 manifest binds every current source file to the ZIP hash and retains import provenance.
 Neither forum tools nor platform sessions, test fixtures, or run evidence are packaged.
+`tests_oneshot/test_package_names.py` fails when a packaged file names a practice task (the compliance
+rule in `preliminary-rules.md`); `main.py` is exempt only until its comments are cleaned.
 
 Run the extracted entrypoint as `python3 main.py REQUIREMENT_DIR --output-dir EMPTY_DIR --type web`.
 Real generation uses the authorized gateway environment, never credentials in arguments.
