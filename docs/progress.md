@@ -994,3 +994,16 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
 - The executor's own samples were contaminated by the 13:58 local outage (two moved to Kimi, CNY 9.36 of its 14.37).
 - Opening package: scripts/package_oneshot.py on main 8285cdb, SHA-256 bb73b7f4e5d1ca30103442d51402eb8f19532fe1d77399c89e9f4518133d43aa.
   A platform-style run from the unpacked zip (output dir pre-populated with .arc/ and requirements/) on Keep is in flight.
+
+## 2026-09-23 16:50 — Opening package, real runs: platform-style Keep and two large 12306 runs
+
+- Keep from the unpacked zip (main 8285cdb), output dir pre-populated with .arc/ and requirements/ like the runner:
+  32/32; two repair rounds fixed the draft's 4 failing scenarios; CNY 1.43 (repair and translation 0.53).
+- 12306 (old-style Web requirements r28-req-12306), same package, local hosted replay as in the model-pair experiment
+  (state_rehearsal.py --profile hosted): 101/135 and 98/135, against 51 and 51 for the old pipeline with the same
+  replay and 60 and 90 on the practice platform (4.4). Two samples per side: a strong signal, not a verdict.
+  - Coverage 17/135 and 46/135 (rules 3; the translation accepted 14 and 43, so coverage varies run to run).
+  - Repairs: 1 of 7 rounds kept (+12 scenarios); the others broke a passing scenario or fixed none (whole-file
+    re-emission of a large app.js). Each round CNY 0.32-0.47 and 4-9 minutes locally; the three-discards stop bounded
+    the waste. Cost per task 2.58 and 3.51 (old pipeline about 1.1); wall time 33 and 41 minutes; one scenario check on
+    the large app took 262-302 s locally (the runner has one CPU).
