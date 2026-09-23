@@ -1,0 +1,2634 @@
+{
+  "experiment": "Model pair on the frozen oneshot candidate (main 1f697d8, oneshot tree d31afba): deepseek-v4-flash vs kimi-k2.7-code-highspeed, local generations and local replays, 2026-09-23",
+  "formula": "p=0 -> S=0; b<=1.2p -> S=p/(b/(1.2p))^0.1; b>1.2p -> S=p/(b/(1.2p))^0.2; p = combined passed/combined total in percent, b = combined cost in CNY",
+  "pairing": "S is computed for every combination of one sample of each task (same model); S_mean is their mean. S_se is the first-order two-sample U-statistic standard error: SE^2 = var(row means)/n_a + var(column means)/n_b. Verdict: |S_mean(flash) - S_mean(kimi)| > S_se(flash) + S_se(kimi), otherwise indistinguishable.",
+  "cost_basis": "gateway metered amount per call (exact match on model and input/output tokens); matches the local usage x price ledger for every completed call; cut or refused calls were not billed",
+  "replay": {
+    "lite": "replay.py of exp/lite-first-20260922: image arc-business-feedback:20260921 (ARM64 build of the official runner), 1 CPU, 2 GB, 1 worker, 10 s test and expect timeouts, public tests",
+    "12306": "harness_lab/state_rehearsal.py (bigtask-keep worktree) --profile hosted: host Playwright 1.61.1, 4 workers, 10 s timeouts, arc-bench clone a0d049c tests; calibration: round-28 sample a app replayed 74/135, platform run 01ea1a853d95 scored 74/135. Pass 1 (primary) ran after every generation ended; pass 2 is a robustness replay in reverse order."
+  },
+  "exclusions": {
+    "incident": "Local proxy restart: Clash Verge Rev (the HTTPS_PROXY 127.0.0.1:7897 the agent's urllib uses, and the TUN) re-initialised at 13:58:55 CST (its latest.log starts with app initialisation at 13:58:55.217). Every in-flight model stream broke at 13:58:54 (StreamError) and each immediate retry failed within 4-6 ms (URLError), so the candidate's transport fallback switched each affected run to the other model. The gateway and the models were not at fault; the platform runner has no such proxy.",
+    "rule": "A sample is excluded from the primary comparison when any of its model calls was cut or refused by this incident; it is replaced by a new sample of the same model and task (d, e). Excluded samples stay in the per-sample table and in an as-run sensitivity analysis.",
+    "samples": {
+      "flash-bookstack-b": "draft call 1 (flash, 567 s of reasoning) cut; calls 2-3 refused; fallback to kimi-k2.7-code-highspeed wrote the delivered app",
+      "flash-bookstack-c": "draft call 1 (flash, 168 s) cut; calls 2-3 refused; fallback to kimi-k2.7-code-highspeed wrote the delivered app",
+      "flash-keep-c": "draft call 1 (flash) cut; calls 2-3 refused; fallback to kimi-k2.7-code-highspeed wrote the delivered app",
+      "kimi-keep-c": "repair call 2 (kimi) cut; calls 3-4 refused; the repair phase fell back to deepseek-v4-flash"
+    },
+    "replacements": {
+      "flash-bookstack-b": "flash-bookstack-d",
+      "flash-bookstack-c": "flash-bookstack-e",
+      "flash-keep-c": "flash-keep-d",
+      "kimi-keep-c": "kimi-keep-d"
+    }
+  },
+  "mixed_model_rule": "a sample whose stderr has `the rest of this run uses` or whose usage.fallback_model is set (models_used > 1) is a mixed-model sample and is not counted for either model",
+  "mixed_model_cost_split": {
+    "flash-bookstack-b": {
+      "switch_line_at": "13:58:56",
+      "switch_line": "[oneshot] deepseek-v4-flash failed 3 times; the rest of this run uses kimi-k2.7-code-highspeed",
+      "usage_fallback_model": "kimi-k2.7-code-highspeed",
+      "models_used": [
+        "deepseek-v4-flash",
+        "kimi-k2.7-code-highspeed"
+      ],
+      "cost_before_switch_cny": 0,
+      "cost_after_switch_cny": 3.187476,
+      "calls": [
+        [
+          1,
+          "draft",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          2,
+          "draft",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          3,
+          "draft",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          4,
+          "draft",
+          "kimi",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          5,
+          "draft",
+          "kimi",
+          "completed",
+          "2.142680"
+        ],
+        [
+          6,
+          "repair",
+          "kimi",
+          "completed",
+          "1.044796"
+        ]
+      ]
+    },
+    "flash-bookstack-c": {
+      "switch_line_at": "13:58:56",
+      "switch_line": "[oneshot] deepseek-v4-flash failed 3 times; the rest of this run uses kimi-k2.7-code-highspeed",
+      "usage_fallback_model": "kimi-k2.7-code-highspeed",
+      "models_used": [
+        "deepseek-v4-flash",
+        "kimi-k2.7-code-highspeed"
+      ],
+      "cost_before_switch_cny": 0,
+      "cost_after_switch_cny": 3.189562,
+      "calls": [
+        [
+          1,
+          "draft",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          2,
+          "draft",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          3,
+          "draft",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          4,
+          "draft",
+          "kimi",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          5,
+          "draft",
+          "kimi",
+          "completed",
+          "1.934618"
+        ],
+        [
+          6,
+          "repair",
+          "kimi",
+          "completed",
+          "1.254944"
+        ]
+      ]
+    },
+    "flash-keep-c": {
+      "switch_line_at": "13:58:56",
+      "switch_line": "[oneshot] deepseek-v4-flash failed 3 times; the rest of this run uses kimi-k2.7-code-highspeed",
+      "usage_fallback_model": "kimi-k2.7-code-highspeed",
+      "models_used": [
+        "deepseek-v4-flash",
+        "kimi-k2.7-code-highspeed"
+      ],
+      "cost_before_switch_cny": 0,
+      "cost_after_switch_cny": 4.637993,
+      "calls": [
+        [
+          1,
+          "draft",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          2,
+          "draft",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          3,
+          "draft",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          4,
+          "draft",
+          "kimi",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          5,
+          "draft",
+          "kimi",
+          "completed",
+          "2.622616"
+        ],
+        [
+          6,
+          "repair",
+          "kimi",
+          "completed",
+          "2.015377"
+        ]
+      ]
+    },
+    "kimi-keep-c": {
+      "switch_line_at": "13:58:56",
+      "switch_line": "[oneshot] kimi-k2.7-code-highspeed failed 3 times; the rest of this run uses deepseek-v4-flash",
+      "usage_fallback_model": "deepseek-v4-flash",
+      "models_used": [
+        "deepseek-v4-flash",
+        "kimi-k2.7-code-highspeed"
+      ],
+      "cost_before_switch_cny": 2.58784,
+      "cost_after_switch_cny": 0.348695,
+      "calls": [
+        [
+          1,
+          "draft",
+          "kimi",
+          "completed",
+          "2.587840"
+        ],
+        [
+          2,
+          "repair",
+          "kimi",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          3,
+          "repair",
+          "kimi",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          4,
+          "repair",
+          "kimi",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          5,
+          "repair",
+          "flash",
+          "failed",
+          "0 (unbilled)"
+        ],
+        [
+          6,
+          "repair",
+          "flash",
+          "completed",
+          "0.348695"
+        ]
+      ]
+    }
+  },
+  "rows": [
+    {
+      "sample_id": "flash-12306-a",
+      "model": "deepseek-v4-flash",
+      "task": "12306",
+      "sample": "a",
+      "passed": 51,
+      "total": 135,
+      "replay_tool": "state_rehearsal.py --profile hosted (4 workers, 10 s), quiet phase",
+      "passed_replay_pass2": 51,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 1.16381,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 1.16381,
+      "wall_seconds": 691.855,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 3,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 3,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "flash-12306-b",
+      "model": "deepseek-v4-flash",
+      "task": "12306",
+      "sample": "b",
+      "passed": 51,
+      "total": 135,
+      "replay_tool": "state_rehearsal.py --profile hosted (4 workers, 10 s), quiet phase",
+      "passed_replay_pass2": 51,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 0.959946,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 0.959945,
+      "wall_seconds": 680.102,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 5,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 3,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "flash-bookstack-a",
+      "model": "deepseek-v4-flash",
+      "task": "bookstack",
+      "sample": "a",
+      "passed": 34,
+      "total": 34,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 0.957764,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 0.957763,
+      "wall_seconds": 660.884,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 8,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 1,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "flash-bookstack-b",
+      "model": "deepseek-v4-flash",
+      "task": "bookstack",
+      "sample": "b",
+      "passed": 25,
+      "total": 34,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": true,
+      "excluded_from_primary": "draft call 1 (flash, 567 s of reasoning) cut; calls 2-3 refused; fallback to kimi-k2.7-code-highspeed wrote the delivered app",
+      "cost_cny": 3.187476,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 4.111036,
+      "wall_seconds": 864.74,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 4,
+      "calls_completed": 2,
+      "calls_failed": 4,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash",
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": "kimi-k2.7-code-highspeed",
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 1,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 3,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 6,
+      "repairs": [
+        {
+          "accepted": false,
+          "reason": "repair renamed quoted control(s): book tags, shelf tags",
+          "files": null,
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": false
+    },
+    {
+      "sample_id": "flash-bookstack-c",
+      "model": "deepseek-v4-flash",
+      "task": "bookstack",
+      "sample": "c",
+      "passed": 34,
+      "total": 34,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": true,
+      "excluded_from_primary": "draft call 1 (flash, 168 s) cut; calls 2-3 refused; fallback to kimi-k2.7-code-highspeed wrote the delivered app",
+      "cost_cny": 3.189562,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 3.498053,
+      "wall_seconds": 467.499,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 4,
+      "calls_completed": 2,
+      "calls_failed": 4,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash",
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": "kimi-k2.7-code-highspeed",
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 1,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 3,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 6,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "flash-bookstack-d",
+      "model": "deepseek-v4-flash",
+      "task": "bookstack",
+      "sample": "d",
+      "passed": 13,
+      "total": 34,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 0.778932,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 1.416478,
+      "wall_seconds": 966.554,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 3,
+      "calls_completed": 3,
+      "calls_failed": 1,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 2,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 1,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 2,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        },
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "flash-bookstack-e",
+      "model": "deepseek-v4-flash",
+      "task": "bookstack",
+      "sample": "e",
+      "passed": 33,
+      "total": 34,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 0.84699,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 1.126411,
+      "wall_seconds": 855.881,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 3,
+      "calls_completed": 2,
+      "calls_failed": 1,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 1,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 1,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "flash-keep-a",
+      "model": "deepseek-v4-flash",
+      "task": "keep",
+      "sample": "a",
+      "passed": 31,
+      "total": 32,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 1.09825,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 1.09825,
+      "wall_seconds": 888.87,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 3,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 3,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "flash-keep-b",
+      "model": "deepseek-v4-flash",
+      "task": "keep",
+      "sample": "b",
+      "passed": 30,
+      "total": 32,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 0.833839,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 0.833839,
+      "wall_seconds": 689.988,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 3,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 2,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "flash-keep-c",
+      "model": "deepseek-v4-flash",
+      "task": "keep",
+      "sample": "c",
+      "passed": 32,
+      "total": 32,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": true,
+      "excluded_from_primary": "draft call 1 (flash) cut; calls 2-3 refused; fallback to kimi-k2.7-code-highspeed wrote the delivered app",
+      "cost_cny": 4.637993,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 5.148427,
+      "wall_seconds": 766.786,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 4,
+      "calls_completed": 2,
+      "calls_failed": 4,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash",
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": "kimi-k2.7-code-highspeed",
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 1,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 3,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 8,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "flash-keep-d",
+      "model": "deepseek-v4-flash",
+      "task": "keep",
+      "sample": "d",
+      "passed": 31,
+      "total": 32,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 1.16362,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 1.814409,
+      "wall_seconds": 1445.433,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 3,
+      "calls_completed": 2,
+      "calls_failed": 1,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 1,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 5,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "kimi-12306-a",
+      "model": "kimi-k2.7-code-highspeed",
+      "task": "12306",
+      "sample": "a",
+      "passed": 79,
+      "total": 135,
+      "replay_tool": "state_rehearsal.py --profile hosted (4 workers, 10 s), quiet phase",
+      "passed_replay_pass2": 79,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 6.833349,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 6.833349,
+      "wall_seconds": 633.099,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 8,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 9,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js",
+            "frontend/public/lib/arc.js",
+            "frontend/public/seed.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "kimi-12306-b",
+      "model": "kimi-k2.7-code-highspeed",
+      "task": "12306",
+      "sample": "b",
+      "passed": 36,
+      "total": 135,
+      "replay_tool": "state_rehearsal.py --profile hosted (4 workers, 10 s), quiet phase",
+      "passed_replay_pass2": 36,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 7.53853,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 7.53853,
+      "wall_seconds": 693.564,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 3,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 2,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "kimi-bookstack-a",
+      "model": "kimi-k2.7-code-highspeed",
+      "task": "bookstack",
+      "sample": "a",
+      "passed": 34,
+      "total": 34,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 3.821721,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 3.821721,
+      "wall_seconds": 334.97,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 4,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 4,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "kimi-bookstack-b",
+      "model": "kimi-k2.7-code-highspeed",
+      "task": "bookstack",
+      "sample": "b",
+      "passed": 17,
+      "total": 34,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 3.211093,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 3.211093,
+      "wall_seconds": 259.161,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 3,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 12,
+      "repairs": [
+        {
+          "accepted": false,
+          "reason": "repair renamed quoted control(s): book tags, shelf tags",
+          "files": null,
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": false
+    },
+    {
+      "sample_id": "kimi-bookstack-c",
+      "model": "kimi-k2.7-code-highspeed",
+      "task": "bookstack",
+      "sample": "c",
+      "passed": 22,
+      "total": 34,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 4.257549,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 4.257549,
+      "wall_seconds": 372.655,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 4,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 7,
+      "repairs": [
+        {
+          "accepted": false,
+          "reason": "repair renamed quoted control(s): book tags, shelf tags",
+          "files": null,
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": false
+    },
+    {
+      "sample_id": "kimi-keep-a",
+      "model": "kimi-k2.7-code-highspeed",
+      "task": "keep",
+      "sample": "a",
+      "passed": 30,
+      "total": 32,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 4.461984,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 4.461984,
+      "wall_seconds": 412.568,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 4,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 9,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "kimi-keep-b",
+      "model": "kimi-k2.7-code-highspeed",
+      "task": "keep",
+      "sample": "b",
+      "passed": 29,
+      "total": 32,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 5.01609,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 5.01609,
+      "wall_seconds": 487.677,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 4,
+      "calls_completed": 2,
+      "calls_failed": 0,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 0,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 2,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "kimi-keep-c",
+      "model": "kimi-k2.7-code-highspeed",
+      "task": "keep",
+      "sample": "c",
+      "passed": 31,
+      "total": 32,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": true,
+      "excluded_from_primary": "repair call 2 (kimi) cut; calls 3-4 refused; the repair phase fell back to deepseek-v4-flash",
+      "cost_cny": 2.936535,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 3.714755,
+      "wall_seconds": 604.224,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 3,
+      "calls_completed": 2,
+      "calls_failed": 4,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "deepseek-v4-flash",
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": "deepseek-v4-flash",
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 1,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 3,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 10,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/seed.js",
+            "frontend/public/app.js",
+            "frontend/public/styles.css"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    },
+    {
+      "sample_id": "kimi-keep-d",
+      "model": "kimi-k2.7-code-highspeed",
+      "task": "keep",
+      "sample": "d",
+      "passed": 31,
+      "total": 32,
+      "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+      "passed_replay_pass2": null,
+      "mixed_model": false,
+      "excluded_from_primary": null,
+      "cost_cny": 3.59907,
+      "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+      "local_ledger_cny": 5.49047,
+      "wall_seconds": 456.839,
+      "exit_code": 0,
+      "delivered": true,
+      "files_written": 4,
+      "calls_completed": 2,
+      "calls_failed": 1,
+      "draft_calls_completed": 1,
+      "repair_calls_completed": 1,
+      "models_used": [
+        "kimi-k2.7-code-highspeed"
+      ],
+      "fallback_model_engaged": null,
+      "continuation": 0,
+      "cut_stream_kept": 0,
+      "transport_fallback": 0,
+      "content_filter": 0,
+      "empty_reply_retry": 0,
+      "bounded_retry": 1,
+      "delivered_after_error": 0,
+      "closed_unterminated_block": 0,
+      "smoke_problems_before": 10,
+      "repairs": [
+        {
+          "accepted": true,
+          "reason": null,
+          "files": [
+            "frontend/public/app.js",
+            "frontend/public/seed.js",
+            "frontend/public/styles.css",
+            "backend/server.js"
+          ],
+          "waived": null
+        }
+      ],
+      "repair_accepted_any": true
+    }
+  ],
+  "primary": {
+    "per_model_task": {
+      "deepseek-v4-flash": {
+        "keep": {
+          "n": 3,
+          "samples": [
+            "a",
+            "b",
+            "d"
+          ],
+          "passed": [
+            31,
+            30,
+            31
+          ],
+          "total": 32,
+          "passed_mean": 30.6667,
+          "passed_sd": 0.5774,
+          "pass_rate_mean_percent": 95.8333,
+          "cost_cny": [
+            1.09825,
+            0.833839,
+            1.16362
+          ],
+          "cost_mean": 1.0319,
+          "cost_sd": 0.1746,
+          "wall_seconds_mean": 1008.1,
+          "wall_seconds_sd": 391.6
+        },
+        "bookstack": {
+          "n": 3,
+          "samples": [
+            "a",
+            "d",
+            "e"
+          ],
+          "passed": [
+            34,
+            13,
+            33
+          ],
+          "total": 34,
+          "passed_mean": 26.6667,
+          "passed_sd": 11.8462,
+          "pass_rate_mean_percent": 78.4314,
+          "cost_cny": [
+            0.957764,
+            0.778932,
+            0.84699
+          ],
+          "cost_mean": 0.8612,
+          "cost_sd": 0.0903,
+          "wall_seconds_mean": 827.8,
+          "wall_seconds_sd": 154.8
+        },
+        "12306": {
+          "n": 2,
+          "samples": [
+            "a",
+            "b"
+          ],
+          "passed": [
+            51,
+            51
+          ],
+          "total": 135,
+          "passed_mean": 51,
+          "passed_sd": 0.0,
+          "pass_rate_mean_percent": 37.7778,
+          "cost_cny": [
+            1.16381,
+            0.959946
+          ],
+          "cost_mean": 1.0619,
+          "cost_sd": 0.1442,
+          "wall_seconds_mean": 686.0,
+          "wall_seconds_sd": 8.3
+        }
+      },
+      "kimi-k2.7-code-highspeed": {
+        "keep": {
+          "n": 3,
+          "samples": [
+            "a",
+            "b",
+            "d"
+          ],
+          "passed": [
+            30,
+            29,
+            31
+          ],
+          "total": 32,
+          "passed_mean": 30,
+          "passed_sd": 1.0,
+          "pass_rate_mean_percent": 93.75,
+          "cost_cny": [
+            4.461984,
+            5.01609,
+            3.59907
+          ],
+          "cost_mean": 4.359,
+          "cost_sd": 0.7141,
+          "wall_seconds_mean": 452.4,
+          "wall_seconds_sd": 37.8
+        },
+        "bookstack": {
+          "n": 3,
+          "samples": [
+            "a",
+            "b",
+            "c"
+          ],
+          "passed": [
+            34,
+            17,
+            22
+          ],
+          "total": 34,
+          "passed_mean": 24.3333,
+          "passed_sd": 8.7369,
+          "pass_rate_mean_percent": 71.5686,
+          "cost_cny": [
+            3.821721,
+            3.211093,
+            4.257549
+          ],
+          "cost_mean": 3.7635,
+          "cost_sd": 0.5257,
+          "wall_seconds_mean": 322.3,
+          "wall_seconds_sd": 57.8
+        },
+        "12306": {
+          "n": 2,
+          "samples": [
+            "a",
+            "b"
+          ],
+          "passed": [
+            79,
+            36
+          ],
+          "total": 135,
+          "passed_mean": 57.5,
+          "passed_sd": 30.4056,
+          "pass_rate_mean_percent": 42.5926,
+          "cost_cny": [
+            6.833349,
+            7.53853
+          ],
+          "cost_mean": 7.1859,
+          "cost_sd": 0.4986,
+          "wall_seconds_mean": 663.3,
+          "wall_seconds_sd": 42.8
+        }
+      }
+    },
+    "pairs": {
+      "keep+12306": {
+        "flash": {
+          "combinations": 6,
+          "S_mean": 68.2716,
+          "S_se": 0.3403,
+          "S_min": 67.8325,
+          "S_max": 68.6889,
+          "p_mean_percent": 48.9022,
+          "cost_mean_cny": 2.0938,
+          "S_at_means": 68.2474,
+          "S_grid": [
+            [
+              68.026,
+              68.672
+            ],
+            [
+              67.953,
+              68.689
+            ],
+            [
+              67.832,
+              68.457
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "kimi": {
+          "combinations": 6,
+          "S_mean": 62.3474,
+          "S_se": 16.9695,
+          "S_min": 44.3869,
+          "S_max": 80.6535,
+          "p_mean_percent": 52.3952,
+          "cost_mean_cny": 11.5449,
+          "S_at_means": 62.0726,
+          "S_grid": [
+            [
+              79.215,
+              45.343
+            ],
+            [
+              78.042,
+              44.387
+            ],
+            [
+              80.654,
+              46.444
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "verdict": {
+          "S_diff_flash_minus_kimi": 5.9242,
+          "se_sum": 17.3098,
+          "winner": "indistinguishable"
+        }
+      },
+      "bookstack+12306": {
+        "flash": {
+          "combinations": 6,
+          "S_mean": 64.3277,
+          "S_se": 6.0787,
+          "S_min": 51.9038,
+          "S_max": 71.0109,
+          "p_mean_percent": 45.9566,
+          "cost_mean_cny": 1.9231,
+          "S_at_means": 64.2837,
+          "S_grid": [
+            [
+              70.297,
+              71.011
+            ],
+            [
+              51.904,
+              52.482
+            ],
+            [
+              69.761,
+              70.511
+            ]
+          ],
+          "grid_rows": [
+            "bookstack-a",
+            "bookstack-d",
+            "bookstack-e"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "kimi": {
+          "combinations": 6,
+          "S_mean": 57.5149,
+          "S_se": 17.1311,
+          "S_min": 35.5473,
+          "S_max": 81.8226,
+          "p_mean_percent": 48.4221,
+          "cost_mean_cny": 10.9494,
+          "S_at_means": 57.2172,
+          "S_grid": [
+            [
+              81.823,
+              48.008
+            ],
+            [
+              68.794,
+              35.547
+            ],
+            [
+              72.028,
+              38.89
+            ]
+          ],
+          "grid_rows": [
+            "bookstack-a",
+            "bookstack-b",
+            "bookstack-c"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "verdict": {
+          "S_diff_flash_minus_kimi": 6.8128,
+          "se_sum": 23.2098,
+          "winner": "indistinguishable"
+        }
+      },
+      "keep+bookstack": {
+        "flash": {
+          "combinations": 9,
+          "S_mean": 129.8823,
+          "S_se": 16.6563,
+          "S_min": 96.0457,
+          "S_max": 147.6801,
+          "p_mean_percent": 86.8688,
+          "cost_mean_cny": 1.8931,
+          "S_at_means": 129.7033,
+          "S_grid": [
+            [
+              147.68,
+              97.021,
+              145.989
+            ],
+            [
+              147.195,
+              96.046,
+              145.594
+            ],
+            [
+              147.219,
+              96.69,
+              145.507
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "bookstack-a",
+            "bookstack-d",
+            "bookstack-e"
+          ]
+        },
+        "kimi": {
+          "combinations": 9,
+          "S_mean": 105.8153,
+          "S_se": 10.8388,
+          "S_min": 87.8877,
+          "S_max": 129.8911,
+          "p_mean_percent": 82.3232,
+          "cost_mean_cny": 8.1225,
+          "S_at_means": 105.6875,
+          "S_grid": [
+            [
+              126.298,
+              90.621,
+              99.994
+            ],
+            [
+              123.328,
+              87.888,
+              97.28
+            ],
+            [
+              129.891,
+              93.858,
+              103.181
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "bookstack-a",
+            "bookstack-b",
+            "bookstack-c"
+          ]
+        },
+        "verdict": {
+          "S_diff_flash_minus_kimi": 24.067,
+          "se_sum": 27.4951,
+          "winner": "indistinguishable"
+        }
+      }
+    }
+  },
+  "as_run_all_samples": {
+    "per_model_task": {
+      "deepseek-v4-flash": {
+        "keep": {
+          "n": 4,
+          "samples": [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "passed": [
+            31,
+            30,
+            32,
+            31
+          ],
+          "total": 32,
+          "passed_mean": 31,
+          "passed_sd": 0.8165,
+          "pass_rate_mean_percent": 96.875,
+          "cost_cny": [
+            1.09825,
+            0.833839,
+            4.637993,
+            1.16362
+          ],
+          "cost_mean": 1.9334,
+          "cost_sd": 1.8087,
+          "wall_seconds_mean": 947.8,
+          "wall_seconds_sd": 341.7
+        },
+        "bookstack": {
+          "n": 5,
+          "samples": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ],
+          "passed": [
+            34,
+            25,
+            34,
+            13,
+            33
+          ],
+          "total": 34,
+          "passed_mean": 27.8,
+          "passed_sd": 9.094,
+          "pass_rate_mean_percent": 81.7647,
+          "cost_cny": [
+            0.957764,
+            3.187476,
+            3.189562,
+            0.778932,
+            0.84699
+          ],
+          "cost_mean": 1.7921,
+          "cost_sd": 1.2763,
+          "wall_seconds_mean": 763.1,
+          "wall_seconds_sd": 198.8
+        },
+        "12306": {
+          "n": 2,
+          "samples": [
+            "a",
+            "b"
+          ],
+          "passed": [
+            51,
+            51
+          ],
+          "total": 135,
+          "passed_mean": 51,
+          "passed_sd": 0.0,
+          "pass_rate_mean_percent": 37.7778,
+          "cost_cny": [
+            1.16381,
+            0.959946
+          ],
+          "cost_mean": 1.0619,
+          "cost_sd": 0.1442,
+          "wall_seconds_mean": 686.0,
+          "wall_seconds_sd": 8.3
+        }
+      },
+      "kimi-k2.7-code-highspeed": {
+        "keep": {
+          "n": 4,
+          "samples": [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "passed": [
+            30,
+            29,
+            31,
+            31
+          ],
+          "total": 32,
+          "passed_mean": 30.25,
+          "passed_sd": 0.9574,
+          "pass_rate_mean_percent": 94.5312,
+          "cost_cny": [
+            4.461984,
+            5.01609,
+            2.936535,
+            3.59907
+          ],
+          "cost_mean": 4.0034,
+          "cost_sd": 0.9197,
+          "wall_seconds_mean": 490.3,
+          "wall_seconds_sd": 82.0
+        },
+        "bookstack": {
+          "n": 3,
+          "samples": [
+            "a",
+            "b",
+            "c"
+          ],
+          "passed": [
+            34,
+            17,
+            22
+          ],
+          "total": 34,
+          "passed_mean": 24.3333,
+          "passed_sd": 8.7369,
+          "pass_rate_mean_percent": 71.5686,
+          "cost_cny": [
+            3.821721,
+            3.211093,
+            4.257549
+          ],
+          "cost_mean": 3.7635,
+          "cost_sd": 0.5257,
+          "wall_seconds_mean": 322.3,
+          "wall_seconds_sd": 57.8
+        },
+        "12306": {
+          "n": 2,
+          "samples": [
+            "a",
+            "b"
+          ],
+          "passed": [
+            79,
+            36
+          ],
+          "total": 135,
+          "passed_mean": 57.5,
+          "passed_sd": 30.4056,
+          "pass_rate_mean_percent": 42.5926,
+          "cost_cny": [
+            6.833349,
+            7.53853
+          ],
+          "cost_mean": 7.1859,
+          "cost_sd": 0.4986,
+          "wall_seconds_mean": 663.3,
+          "wall_seconds_sd": 42.8
+        }
+      }
+    },
+    "pairs": {
+      "keep+12306": {
+        "flash": {
+          "combinations": 8,
+          "S_mean": 66.9173,
+          "S_se": 1.3834,
+          "S_min": 62.7422,
+          "S_max": 68.6889,
+          "p_mean_percent": 49.1018,
+          "cost_mean_cny": 2.9953,
+          "S_at_means": 66.1426,
+          "S_grid": [
+            [
+              68.026,
+              68.672
+            ],
+            [
+              67.953,
+              68.689
+            ],
+            [
+              62.742,
+              62.967
+            ],
+            [
+              67.832,
+              68.457
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-c",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "kimi": {
+          "combinations": 8,
+          "S_mean": 62.7499,
+          "S_se": 17.0353,
+          "S_min": 44.3869,
+          "S_max": 81.1845,
+          "p_mean_percent": 52.5449,
+          "cost_mean_cny": 11.1893,
+          "S_at_means": 62.4628,
+          "S_grid": [
+            [
+              79.215,
+              45.343
+            ],
+            [
+              78.042,
+              44.387
+            ],
+            [
+              81.184,
+              46.73
+            ],
+            [
+              80.654,
+              46.444
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-c",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "verdict": {
+          "S_diff_flash_minus_kimi": 4.1674,
+          "se_sum": 18.4187,
+          "winner": "indistinguishable"
+        }
+      },
+      "bookstack+12306": {
+        "flash": {
+          "combinations": 10,
+          "S_mean": 63.3095,
+          "S_se": 3.5986,
+          "S_min": 51.9038,
+          "S_max": 71.0109,
+          "p_mean_percent": 46.6272,
+          "cost_mean_cny": 2.854,
+          "S_at_means": 62.7879,
+          "S_grid": [
+            [
+              70.297,
+              71.011
+            ],
+            [
+              57.846,
+              58.125
+            ],
+            [
+              65.422,
+              65.736
+            ],
+            [
+              51.904,
+              52.482
+            ],
+            [
+              69.761,
+              70.511
+            ]
+          ],
+          "grid_rows": [
+            "bookstack-a",
+            "bookstack-b",
+            "bookstack-c",
+            "bookstack-d",
+            "bookstack-e"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "kimi": {
+          "combinations": 6,
+          "S_mean": 57.5149,
+          "S_se": 17.1311,
+          "S_min": 35.5473,
+          "S_max": 81.8226,
+          "p_mean_percent": 48.4221,
+          "cost_mean_cny": 10.9494,
+          "S_at_means": 57.2172,
+          "S_grid": [
+            [
+              81.823,
+              48.008
+            ],
+            [
+              68.794,
+              35.547
+            ],
+            [
+              72.028,
+              38.89
+            ]
+          ],
+          "grid_rows": [
+            "bookstack-a",
+            "bookstack-b",
+            "bookstack-c"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "verdict": {
+          "S_diff_flash_minus_kimi": 5.7946,
+          "se_sum": 20.7297,
+          "winner": "indistinguishable"
+        }
+      },
+      "keep+bookstack": {
+        "flash": {
+          "combinations": 20,
+          "S_mean": 126.4507,
+          "S_se": 9.7096,
+          "S_min": 89.4496,
+          "S_max": 147.6801,
+          "p_mean_percent": 89.0909,
+          "cost_mean_cny": 3.7255,
+          "S_at_means": 124.6282,
+          "S_grid": [
+            [
+              147.68,
+              116.473,
+              137.215,
+              97.021,
+              145.989
+            ],
+            [
+              147.195,
+              114.916,
+              135.756,
+              96.046,
+              145.594
+            ],
+            [
+              135.873,
+              111.823,
+              131.388,
+              89.45,
+              133.877
+            ],
+            [
+              147.219,
+              116.297,
+              137.007,
+              96.69,
+              145.507
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-c",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "bookstack-a",
+            "bookstack-b",
+            "bookstack-c",
+            "bookstack-d",
+            "bookstack-e"
+          ]
+        },
+        "kimi": {
+          "combinations": 12,
+          "S_mean": 106.8639,
+          "S_se": 10.8644,
+          "S_min": 87.8877,
+          "S_max": 131.1116,
+          "p_mean_percent": 82.702,
+          "cost_mean_cny": 7.7669,
+          "S_at_means": 106.6991,
+          "S_grid": [
+            [
+              126.298,
+              90.621,
+              99.994
+            ],
+            [
+              123.328,
+              87.888,
+              97.28
+            ],
+            [
+              131.112,
+              94.823,
+              104.094
+            ],
+            [
+              129.891,
+              93.858,
+              103.181
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-c",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "bookstack-a",
+            "bookstack-b",
+            "bookstack-c"
+          ]
+        },
+        "verdict": {
+          "S_diff_flash_minus_kimi": 19.5868,
+          "se_sum": 20.574,
+          "winner": "indistinguishable"
+        }
+      }
+    }
+  },
+  "robustness_12306_pass2": {
+    "per_model_task": {
+      "deepseek-v4-flash": {
+        "keep": {
+          "n": 3,
+          "samples": [
+            "a",
+            "b",
+            "d"
+          ],
+          "passed": [
+            31,
+            30,
+            31
+          ],
+          "total": 32,
+          "passed_mean": 30.6667,
+          "passed_sd": 0.5774,
+          "pass_rate_mean_percent": 95.8333,
+          "cost_cny": [
+            1.09825,
+            0.833839,
+            1.16362
+          ],
+          "cost_mean": 1.0319,
+          "cost_sd": 0.1746,
+          "wall_seconds_mean": 1008.1,
+          "wall_seconds_sd": 391.6
+        },
+        "bookstack": {
+          "n": 3,
+          "samples": [
+            "a",
+            "d",
+            "e"
+          ],
+          "passed": [
+            34,
+            13,
+            33
+          ],
+          "total": 34,
+          "passed_mean": 26.6667,
+          "passed_sd": 11.8462,
+          "pass_rate_mean_percent": 78.4314,
+          "cost_cny": [
+            0.957764,
+            0.778932,
+            0.84699
+          ],
+          "cost_mean": 0.8612,
+          "cost_sd": 0.0903,
+          "wall_seconds_mean": 827.8,
+          "wall_seconds_sd": 154.8
+        },
+        "12306": {
+          "n": 2,
+          "samples": [
+            "a",
+            "b"
+          ],
+          "passed": [
+            51,
+            51
+          ],
+          "total": 135,
+          "passed_mean": 51,
+          "passed_sd": 0.0,
+          "pass_rate_mean_percent": 37.7778,
+          "cost_cny": [
+            1.16381,
+            0.959946
+          ],
+          "cost_mean": 1.0619,
+          "cost_sd": 0.1442,
+          "wall_seconds_mean": 686.0,
+          "wall_seconds_sd": 8.3
+        }
+      },
+      "kimi-k2.7-code-highspeed": {
+        "keep": {
+          "n": 3,
+          "samples": [
+            "a",
+            "b",
+            "d"
+          ],
+          "passed": [
+            30,
+            29,
+            31
+          ],
+          "total": 32,
+          "passed_mean": 30,
+          "passed_sd": 1.0,
+          "pass_rate_mean_percent": 93.75,
+          "cost_cny": [
+            4.461984,
+            5.01609,
+            3.59907
+          ],
+          "cost_mean": 4.359,
+          "cost_sd": 0.7141,
+          "wall_seconds_mean": 452.4,
+          "wall_seconds_sd": 37.8
+        },
+        "bookstack": {
+          "n": 3,
+          "samples": [
+            "a",
+            "b",
+            "c"
+          ],
+          "passed": [
+            34,
+            17,
+            22
+          ],
+          "total": 34,
+          "passed_mean": 24.3333,
+          "passed_sd": 8.7369,
+          "pass_rate_mean_percent": 71.5686,
+          "cost_cny": [
+            3.821721,
+            3.211093,
+            4.257549
+          ],
+          "cost_mean": 3.7635,
+          "cost_sd": 0.5257,
+          "wall_seconds_mean": 322.3,
+          "wall_seconds_sd": 57.8
+        },
+        "12306": {
+          "n": 2,
+          "samples": [
+            "a",
+            "b"
+          ],
+          "passed": [
+            79,
+            36
+          ],
+          "total": 135,
+          "passed_mean": 57.5,
+          "passed_sd": 30.4056,
+          "pass_rate_mean_percent": 42.5926,
+          "cost_cny": [
+            6.833349,
+            7.53853
+          ],
+          "cost_mean": 7.1859,
+          "cost_sd": 0.4986,
+          "wall_seconds_mean": 663.3,
+          "wall_seconds_sd": 42.8
+        }
+      }
+    },
+    "pairs": {
+      "keep+12306": {
+        "flash": {
+          "combinations": 6,
+          "S_mean": 68.2716,
+          "S_se": 0.3403,
+          "S_min": 67.8325,
+          "S_max": 68.6889,
+          "p_mean_percent": 48.9022,
+          "cost_mean_cny": 2.0938,
+          "S_at_means": 68.2474,
+          "S_grid": [
+            [
+              68.026,
+              68.672
+            ],
+            [
+              67.953,
+              68.689
+            ],
+            [
+              67.832,
+              68.457
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "kimi": {
+          "combinations": 6,
+          "S_mean": 62.3474,
+          "S_se": 16.9695,
+          "S_min": 44.3869,
+          "S_max": 80.6535,
+          "p_mean_percent": 52.3952,
+          "cost_mean_cny": 11.5449,
+          "S_at_means": 62.0726,
+          "S_grid": [
+            [
+              79.215,
+              45.343
+            ],
+            [
+              78.042,
+              44.387
+            ],
+            [
+              80.654,
+              46.444
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "verdict": {
+          "S_diff_flash_minus_kimi": 5.9242,
+          "se_sum": 17.3098,
+          "winner": "indistinguishable"
+        }
+      },
+      "bookstack+12306": {
+        "flash": {
+          "combinations": 6,
+          "S_mean": 64.3277,
+          "S_se": 6.0787,
+          "S_min": 51.9038,
+          "S_max": 71.0109,
+          "p_mean_percent": 45.9566,
+          "cost_mean_cny": 1.9231,
+          "S_at_means": 64.2837,
+          "S_grid": [
+            [
+              70.297,
+              71.011
+            ],
+            [
+              51.904,
+              52.482
+            ],
+            [
+              69.761,
+              70.511
+            ]
+          ],
+          "grid_rows": [
+            "bookstack-a",
+            "bookstack-d",
+            "bookstack-e"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "kimi": {
+          "combinations": 6,
+          "S_mean": 57.5149,
+          "S_se": 17.1311,
+          "S_min": 35.5473,
+          "S_max": 81.8226,
+          "p_mean_percent": 48.4221,
+          "cost_mean_cny": 10.9494,
+          "S_at_means": 57.2172,
+          "S_grid": [
+            [
+              81.823,
+              48.008
+            ],
+            [
+              68.794,
+              35.547
+            ],
+            [
+              72.028,
+              38.89
+            ]
+          ],
+          "grid_rows": [
+            "bookstack-a",
+            "bookstack-b",
+            "bookstack-c"
+          ],
+          "grid_cols": [
+            "12306-a",
+            "12306-b"
+          ]
+        },
+        "verdict": {
+          "S_diff_flash_minus_kimi": 6.8128,
+          "se_sum": 23.2098,
+          "winner": "indistinguishable"
+        }
+      },
+      "keep+bookstack": {
+        "flash": {
+          "combinations": 9,
+          "S_mean": 129.8823,
+          "S_se": 16.6563,
+          "S_min": 96.0457,
+          "S_max": 147.6801,
+          "p_mean_percent": 86.8688,
+          "cost_mean_cny": 1.8931,
+          "S_at_means": 129.7033,
+          "S_grid": [
+            [
+              147.68,
+              97.021,
+              145.989
+            ],
+            [
+              147.195,
+              96.046,
+              145.594
+            ],
+            [
+              147.219,
+              96.69,
+              145.507
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "bookstack-a",
+            "bookstack-d",
+            "bookstack-e"
+          ]
+        },
+        "kimi": {
+          "combinations": 9,
+          "S_mean": 105.8153,
+          "S_se": 10.8388,
+          "S_min": 87.8877,
+          "S_max": 129.8911,
+          "p_mean_percent": 82.3232,
+          "cost_mean_cny": 8.1225,
+          "S_at_means": 105.6875,
+          "S_grid": [
+            [
+              126.298,
+              90.621,
+              99.994
+            ],
+            [
+              123.328,
+              87.888,
+              97.28
+            ],
+            [
+              129.891,
+              93.858,
+              103.181
+            ]
+          ],
+          "grid_rows": [
+            "keep-a",
+            "keep-b",
+            "keep-d"
+          ],
+          "grid_cols": [
+            "bookstack-a",
+            "bookstack-b",
+            "bookstack-c"
+          ]
+        },
+        "verdict": {
+          "S_diff_flash_minus_kimi": 24.067,
+          "se_sum": 27.4951,
+          "winner": "indistinguishable"
+        }
+      }
+    }
+  },
+  "spend": {
+    "experiment_metered_cny": 60.4941,
+    "experiment_metered_primary_samples_cny": 46.5425,
+    "experiment_metered_excluded_samples_cny": 13.9516,
+    "by_configured_model_cny": {
+      "deepseek-v4-flash": 18.8182,
+      "kimi-k2.7-code-highspeed": 41.6759
+    },
+    "unbilled": "the aborted flash-bookstack-e call (64 s), every stream cut at 13:58:54 or 14:12:03 and every refused retry: no billed request started with any of them",
+    "other_agents_same_account_cny": 25.1097,
+    "other_agents_note": "63 billed requests in the experiment window that no call of this experiment claims; another session (scratchpad agent-card) was generating Lite apps with the same oneshot prompts on the same account",
+    "balance_before": 252.21233,
+    "balance_after": 166.608522,
+    "balance_drop_check": "252.2123 - 166.6085 = 85.6038 = 60.4941 (this experiment) + 25.1097 (others)",
+    "cap_cny": 120,
+    "stop_balance_cny": 100
+  },
+  "meter_reads": [
+    {
+      "at": "13:13:54",
+      "ok": true,
+      "balance": 252.21233,
+      "via": "arcbench balance (one login per command)"
+    },
+    {
+      "at": "13:22:56",
+      "ok": true,
+      "balance": 252.21233,
+      "via": "orchestrator 1"
+    },
+    {
+      "at": "13:23:00",
+      "ok": true,
+      "balance": 252.21233,
+      "via": "orchestrator 1, before the first launch"
+    },
+    {
+      "at": "13:23:06",
+      "ok": false,
+      "error": "HTTP 429 too many login attempts (POST /user/login)",
+      "via": "orchestrator 1"
+    },
+    {
+      "at": "13:23:18",
+      "ok": false,
+      "error": "HTTP 429 too many login attempts",
+      "via": "orchestrator 1"
+    },
+    {
+      "at": "13:23:29",
+      "ok": false,
+      "error": "HTTP 429 too many login attempts",
+      "via": "orchestrator 1"
+    },
+    {
+      "at": "about 13:24:30",
+      "ok": false,
+      "error": "HTTP 429 too many login attempts",
+      "via": "two manual reproductions"
+    },
+    {
+      "at": "about 13:25",
+      "ok": false,
+      "error": "HTTP 429 too many login attempts",
+      "via": "coordinator's manual read (request_id b95a2f0b93614b4f850c2115738d6160)"
+    },
+    {
+      "at": "13:44:59",
+      "ok": true,
+      "balance": 234.081735,
+      "via": "orchestrator 2, one in-process login, 30-minute spacing"
+    },
+    {
+      "at": "14:15:30",
+      "ok": true,
+      "balance": 181.374527,
+      "via": "orchestrator 4"
+    },
+    {
+      "at": "14:46:06",
+      "ok": true,
+      "balance": 166.608522,
+      "via": "orchestrator 4, final reconciliation"
+    }
+  ],
+  "meter_rate_limit_note": "Eight meter logins between 13:13 and 13:23 (every arcbench balance/models/requests command logs in) were followed by 429 on the ninth; after the switch to a local cost ledger and one in-process login per orchestrator with reads at most every 30 minutes, 3 of 3 reads succeeded.",
+  "timeline": {
+    "setup_and_12306_calibration": "13:13-13:22 (12306 local replay confirmed in 3 minutes: round-28 sample a app 74/135 = platform 74/135)",
+    "first_launch": "13:23:00",
+    "last_generation_end": "14:30:19",
+    "lite_replays": "13:34-14:30, as each generation ended",
+    "12306_replays_pass1": "14:30:38-14:46:06, after every generation had ended",
+    "12306_replays_pass2_and_controls": "from 14:46:40"
+  },
+  "incidents": [
+    {
+      "at": "13:23",
+      "what": "meter login rate limit (429)",
+      "effect": "orchestrator 1 stopped launching after one generation; replaced by a local-ledger launch gate"
+    },
+    {
+      "at": "13:58:54",
+      "what": "local proxy restart: Clash Verge Rev re-initialised at 13:58:55 (its latest.log); every in-flight stream broke and retries were refused for about 2 s",
+      "effect": "4 samples switched model through the candidate's transport fallback; excluded from the primary comparison and replaced (d, e)"
+    },
+    {
+      "at": "14:06:25-14:07:28",
+      "what": "orchestrator 3 slot-accounting bug",
+      "effect": "5 generations ran at once for 63 s; the fifth (flash-bookstack-e) was aborted after 64 s (unbilled) and relaunched at 14:10:04 as a fresh sample"
+    },
+    {
+      "at": "14:12:03",
+      "what": "network reset of every connection through the proxy node the gateway traffic uses (api.arc-bench.com matches the proxy's final rule, a Los Angeles node); other apps reconnected in the same second",
+      "effect": "4 in-flight calls cut; each retried once on the same model and completed; the samples stay in the primary comparison (flash-keep-d, flash-bookstack-d, flash-bookstack-e, kimi-keep-d), their wall time includes the lost attempt"
+    },
+    {
+      "at": "throughout",
+      "what": "other sessions on the same machine and account (agent-card generations and replays, repair_replay.py runs)",
+      "effect": "their spend is separated by exact request matching; host load could affect the 12306 host replays, checked with calibration controls before and after pass 2"
+    }
+  ],
+  "concurrency": "at most 4 generations of this experiment at once, except 14:06:25-14:07:28 (5, see incidents)",
+  "12306_replay_checks": {
+    "calibration_before_experiment": {
+      "app": "round-28 sample a (platform run 01ea1a853d95, 74/135)",
+      "local": "74/135",
+      "at": "13:17-13:20"
+    },
+    "pass2_and_controls": [
+      {
+        "label": "control-1 (r28a, platform 74/135)",
+        "passed": 74,
+        "total": 135,
+        "exit_code": 0,
+        "started_at": 1790145973.085782,
+        "replay_seconds": 167.9
+      },
+      {
+        "label": "kimi-12306-b pass 2",
+        "passed": 36,
+        "total": 135,
+        "exit_code": 0,
+        "started_at": 1790146141.024771,
+        "replay_seconds": 260.2
+      },
+      {
+        "label": "flash-12306-b pass 2",
+        "passed": 51,
+        "total": 135,
+        "exit_code": 0,
+        "started_at": 1790146401.22766,
+        "replay_seconds": 219.0
+      },
+      {
+        "label": "kimi-12306-a pass 2",
+        "passed": 79,
+        "total": 135,
+        "exit_code": 0,
+        "started_at": 1790146620.26895,
+        "replay_seconds": 150.4
+      },
+      {
+        "label": "flash-12306-a pass 2",
+        "passed": 51,
+        "total": 135,
+        "exit_code": 0,
+        "started_at": 1790146770.622135,
+        "replay_seconds": 220.5
+      },
+      {
+        "label": "control-2 (r28a, platform 74/135)",
+        "passed": 74,
+        "total": 135,
+        "exit_code": 0,
+        "started_at": 1790146991.0905,
+        "replay_seconds": 168.9
+      }
+    ],
+    "reading": "Pass 2 reproduced pass 1 exactly for all four 12306 apps (51, 51, 79, 36) and both calibration controls replayed 74/135 = platform, so the 12306 local replay is deterministic here and host load from other sessions did not move it."
+  },
+  "break_even": {
+    "keep+12306": {
+      "kimi_12306_mean_needed": 65.4,
+      "flash_12306_mean": 51.0,
+      "kimi_12306_measured": [
+        79,
+        36
+      ],
+      "relative_pass_rate_gain_needed_percent": 16.8,
+      "measured_gain_percent": 7.2
+    },
+    "bookstack+12306": {
+      "kimi_12306_mean_needed": 66.6,
+      "flash_12306_mean": 51.0,
+      "kimi_12306_measured": [
+        79,
+        36
+      ],
+      "relative_pass_rate_gain_needed_percent": 17.1,
+      "measured_gain_percent": 5.4
+    },
+    "method": "S at the per-task means; Kimi's 12306 mean at which its S equals flash's, holding each model's measured costs and the other task's mean; needed gain = (cost_kimi/cost_flash)^(1/11) - 1"
+  }
+}
