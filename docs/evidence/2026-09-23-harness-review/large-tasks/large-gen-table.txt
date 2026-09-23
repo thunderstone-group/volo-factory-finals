@@ -1,0 +1,203 @@
+12306         r24a                           14a46b9e3c16 pass= 90 agent=1041.3 exit=0 draft_chars=101098 prompt=199176
+       ('deepseek', 'completed', 'stop', None, 710.944, 101098, 10)
+       ('deepseek', 'completed', 'stop', None, 317.059, 100454, 3)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+12306         r24b                           dc8eaa82e890 pass= 87 agent=1499.6 exit=0 draft_chars=98267 prompt=199176
+       ('deepseek', 'failed', None, 'StreamError', 597.019, 98267, 3)
+       ('deepseek', 'completed', 'stop', None, 593.646, 104756, 3)
+       ('deepseek', 'completed', 'stop', None, 299.452, 105851, 3)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['call 1 failed; bounded retry']
+12306         r25a                           756ac7cf284d pass= 54 agent=789.3 exit=0 draft_chars=98996 prompt=199176
+       ('deepseek', 'completed', 'stop', None, 514.736, 98996, 3)
+       ('deepseek', 'completed', 'stop', None, 261.86, 80775, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['closing an unterminated final block at finish_reason=stop']
+12306         r25b                           1afa8f5625fa pass= 88 agent=948.7 exit=0 draft_chars=95424 prompt=199176
+       ('deepseek', 'completed', 'stop', None, 624.225, 95424, 3)
+       ('deepseek', 'completed', 'stop', None, 312.833, 96320, 3)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+12306         r26a                           6cb486a4b5b2 pass= 91 agent=2314.0 exit=0 draft_chars=257 prompt=199176
+       ('deepseek', 'completed', 'stop', None, 921.196, 257, 0)
+       ('deepseek', 'completed', 'stop', None, 1038.857, 112320, 4)
+       ('deepseek', 'completed', 'stop', None, 337.771, 105339, 3)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['the draft has no file blocks; asking once more']
+12306         r26b                           194ddc3c3f11 pass= 48 agent=840.4 exit=0 draft_chars=94100 prompt=199176
+       ('deepseek', 'completed', 'stop', None, 600.98, 94100, 3)
+       ('deepseek', 'completed', 'stop', None, 225.923, 86984, 2)
+       repair accepted= ['false'] str= None reason= repair renamed quoted control(s): additional information, contact information, correct password input to modify personal information., essen | failed= None | notes= []
+12306         r27a                           cb1e1d2f9aa0 pass= 62 agent=678.7 exit=0 draft_chars=89985 prompt=199176
+       ('deepseek', 'completed', 'stop', None, 498.413, 89985, 3)
+       ('deepseek', 'completed', 'stop', None, 168.169, 75660, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+12306         r27b                           3fee98a94012 pass= 75 agent=952.4 exit=0 draft_chars=94381 prompt=199176
+       ('deepseek', 'completed', 'stop', None, 762.786, 94381, 3)
+       ('deepseek', 'completed', 'stop', None, 176.952, 74031, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+12306         s2-names4-12306                57cf6c6841da pass= 62 agent=None exit=0 draft_chars=None prompt=None
+       repair accepted= None str= None reason=  | failed= None | notes= []
+12306         s8h-adaptive-long-12306        a01719166800 pass= 54 agent=None exit=0 draft_chars=None prompt=None
+       repair accepted= None str= None reason=  | failed= None | notes= []
+12306         volo-action-outcome-20260919   67195b0de1c0 pass= 50 agent=1003.0 exit=0 draft_chars=101179 prompt=199176
+       ('deepseek', 'completed', 'stop', None, 721.658, 101179, 3)
+       ('deepseek', 'completed', 'stop', None, 256.101, 94911, 3)
+       repair accepted= ['false'] str= None reason= still failing after repair: clicking `Sat, Sep 19` (data-action `results-date`) on screen `#/results` produced no observable outcome; render | failed= None | notes= []
+12306         volo-oneshot-r28b-path-table   f92f08a9b4bb pass= 64 agent=1181.4 exit=0 draft_chars=98934 prompt=204720
+       ('deepseek', 'completed', 'stop', None, 758.806, 98934, 10)
+       ('deepseek', 'completed', 'stop', None, 369.29, 110558, 4)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+12306         volo-oneshot-r28b-path-table   01ea1a853d95 pass= 74 agent=991.2 exit=0 draft_chars=93155 prompt=204720
+       ('deepseek', 'completed', 'stop', None, 573.869, 93155, 3)
+       ('deepseek', 'completed', 'stop', None, 358.571, 95337, 3)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+ctrip         r24a                           2d22338a9e23 pass= 45 agent=1005.4 exit=0 draft_chars=86655 prompt=173359
+       ('deepseek', 'completed', 'stop', None, 515.614, 86655, 3)
+       ('deepseek', 'failed', None, 'StreamError', 147.74, 0, 0)
+       ('qwen3.7-', 'completed', 'stop', None, 334.391, 80785, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['closing an unterminated final block at finish_reason=stop', 'deepseek-v4-flash failed 1 times; the rest of this run uses qwen3.7-plus']
+ctrip         r24b                           fbb4effce0c9 pass= 33 agent=960.8 exit=0 draft_chars=0 prompt=173359
+       ('deepseek', 'failed', None, 'StreamError', 211.156, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 506.302, 83536, 3)
+       ('deepseek', 'completed', 'stop', None, 229.751, 67136, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['call 1 failed; bounded retry']
+ctrip         r25a                           166f94c70260 pass= 25 agent=1209.2 exit=0 draft_chars=0 prompt=173359
+       ('deepseek', 'failed', None, 'StreamError', 379.668, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 568.686, 77735, 3)
+       ('deepseek', 'completed', 'stop', None, 245.093, 73445, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['call 1 failed; bounded retry']
+ctrip         r25b                           4c2414e945c7 pass= 41 agent=1365.7 exit=0 draft_chars=74118 prompt=173359
+       ('deepseek', 'failed', None, 'StreamError', 592.26, 74118, 2)
+       ('deepseek', 'failed', None, 'StreamError', 133.998, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 437.262, 79962, 3)
+       ('deepseek', 'completed', 'stop', None, 193.345, 71657, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['call 1 failed; bounded retry', 'call 2 failed; bounded retry']
+ctrip         r26a                           97293bd31327 pass= 34 agent=704.0 exit=0 draft_chars=93968 prompt=173359
+       ('deepseek', 'completed', 'stop', None, 381.956, 93968, 4)
+       ('deepseek', 'completed', 'stop', None, 313.067, 91891, 3)
+       repair accepted= ['false'] str= None reason= still failing after repair: frontend/public/lib/arc.js:15 does not parse (SyntaxError: Invalid or unexpected token) — the line reads `ARC.es | failed= None | notes= []
+ctrip         r26b                           aeeb26169bf9 pass= 37 agent=665.6 exit=0 draft_chars=83821 prompt=173359
+       ('deepseek', 'completed', 'stop', None, 459.235, 83821, 3)
+       ('deepseek', 'completed', 'stop', None, 192.942, 64849, 1)
+       repair accepted= ['false'] str= None reason= repair renamed quoted control(s): + 添加返程"}} | failed= None | notes= []
+ctrip         r27a                           f3726d72429a pass= 26 agent=738.4 exit=0 draft_chars=96680 prompt=173359
+       ('deepseek', 'completed', 'stop', None, 447.059, 96680, 3)
+       ('deepseek', 'completed', 'stop', None, 276.84, 80008, 2)
+       repair accepted= ['false'] str= None reason= repair renamed quoted control(s): + 添加返程"}} | failed= None | notes= []
+ctrip         r27b                           d6fcf0bb6bbe pass= 32 agent=832.4 exit=0 draft_chars=94415 prompt=173359
+       ('deepseek', 'completed', 'stop', None, 632.193, 94415, 6)
+       ('deepseek', 'completed', 'stop', None, 186.803, 69132, 1)
+       repair accepted= ['false'] str= None reason= repair renamed quoted control(s): + 添加返程"}} | failed= None | notes= []
+ctrip         s8h-adaptive-long-ctrip        15af8a229912 pass= 27 agent=None exit=0 draft_chars=None prompt=None
+       repair accepted= None str= None reason=  | failed= None | notes= []
+ctrip         volo-action-outcome-20260919   9a2cdc6656f3 pass=  0 agent=768.4 exit=0 draft_chars=85968 prompt=173359
+       ('deepseek', 'completed', 'stop', None, 461.1, 85968, 3)
+       ('deepseek', 'completed', 'stop', None, 289.99, 99932, 4)
+       repair accepted= ['false'] str= None reason= repair renamed quoted control(s): + 添加返程"}} | failed= None | notes= []
+ctrip         volo-oneshot-r28b-path-table   7d392dd3b3af pass= 22 agent=1022.0 exit=0 draft_chars=0 prompt=178294
+       ('deepseek', 'failed', None, 'StreamError', 132.561, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 526.167, 90988, 3)
+       ('deepseek', 'completed', 'stop', None, 334.688, 83663, 2)
+       repair accepted= ['false'] str= None reason= repair renamed quoted control(s): + 添加返程"}} | failed= None | notes= ['call 1 failed; bounded retry']
+ctrip         volo-oneshot-r28b-path-table   820bc5bc4665 pass= 26 agent=986.3 exit=0 draft_chars=0 prompt=178294
+       ('deepseek', 'failed', None, 'StreamError', 214.375, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 479.443, 92331, 3)
+       ('deepseek', 'completed', 'stop', None, 263.564, 78751, 2)
+       repair accepted= ['false'] str= None reason= repair renamed quoted control(s): + 添加返程, 我的信息"}} | failed= None | notes= ['call 1 failed; bounded retry']
+prestashop    r24a                           fa907c7d481b pass= 60 agent=1311.2 exit=0 draft_chars=89134 prompt=116271
+       ('deepseek', 'completed', 'stop', None, 1027.749, 89134, 4)
+       ('deepseek', 'completed', 'stop', None, 268.028, 73760, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+prestashop    r24b                           d578da887774 pass= 68 agent=1398.2 exit=0 draft_chars=0 prompt=116271
+       ('deepseek', 'failed', None, 'StreamError', 566.675, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 646.996, 91578, 3)
+       ('deepseek', 'completed', 'stop', None, 167.828, 64031, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['call 1 failed; bounded retry']
+prestashop    r25a                           8923b1ba8656 pass= 68 agent=965.2 exit=0 draft_chars=83503 prompt=116271
+       ('deepseek', 'completed', 'stop', None, 805.007, 83503, 3)
+       ('deepseek', 'completed', 'stop', None, 142.783, 67183, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+prestashop    r25b                           cf4e99461f64 pass= 57 agent=806.5 exit=0 draft_chars=96589 prompt=116271
+       ('deepseek', 'completed', 'stop', None, 575.111, 96589, 4)
+       ('deepseek', 'completed', 'stop', None, 217.653, 57552, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+prestashop    r26a                           5916fe816abf pass= 64 agent=794.7 exit=0 draft_chars=83529 prompt=116271
+       ('deepseek', 'completed', 'stop', None, 593.901, 83529, 4)
+       ('deepseek', 'completed', 'stop', None, 184.629, 61488, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+prestashop    r26b                           cfa73098cd54 pass= 47 agent=1192.8 exit=0 draft_chars=89324 prompt=116271
+       ('deepseek', 'completed', 'stop', None, 1031.164, 89324, 3)
+       ('deepseek', 'completed', 'stop', None, 145.332, 65574, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['ignored 2 line(s) outside file blocks', 'ignored 2 line(s) outside file blocks']
+prestashop    r27a                           0c4a915f2f7d pass= 55 agent=840.4 exit=0 draft_chars=90307 prompt=116271
+       ('deepseek', 'completed', 'stop', None, 588.366, 90307, 4)
+       ('deepseek', 'completed', 'stop', None, 234.786, 80223, 3)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+prestashop    r27b                           6f653331e8a1 pass= 55 agent=782.0 exit=0 draft_chars=70919 prompt=116271
+       ('deepseek', 'completed', 'stop', None, 587.764, 70919, 3)
+       ('deepseek', 'completed', 'stop', None, 177.51, 61885, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+prestashop    s8h-adaptive-long-prestashop   8fec75ff0904 pass= 57 agent=None exit=0 draft_chars=None prompt=None
+       repair accepted= None str= None reason=  | failed= None | notes= []
+prestashop    volo-action-outcome-20260919   435556e82b15 pass= 59 agent=2490.9 exit=0 draft_chars=0 prompt=116271
+       ('deepseek', 'failed', None, 'StreamError', 591.978, 0, 0)
+       ('deepseek', 'failed', None, 'StreamError', 472.084, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 1149.555, 115687, 8)
+       ('deepseek', 'completed', 'stop', None, 255.75, 66827, 1)
+       repair accepted= ['false'] str= None reason= still failing after repair: clicking `Search` (data-action `do-search`) on screen `#/category/women` produced no observable outcome; render  | failed= None | notes= ['call 1 failed; bounded retry', 'call 2 failed; bounded retry']
+prestashop    volo-oneshot-r28b-path-table   dfefda5d7879 pass= 65 agent=772.0 exit=0 draft_chars=79655 prompt=119475
+       ('deepseek', 'completed', 'stop', None, 613.752, 79655, 3)
+       ('deepseek', 'completed', 'stop', None, 139.25, 57287, 1)
+       repair accepted= ['false'] str= None reason= still failing after repair: clicking `Clear all` (data-action `clear-filters`) on screen `#/category/accessories` produced no observable out | failed= None | notes= []
+prestashop    volo-oneshot-r28b-path-table   a469b45aca1d pass= 63 agent=1010.3 exit=0 draft_chars=0 prompt=119475
+       ('deepseek', 'failed', None, 'StreamError', 85.288, 0, 0)
+       ('deepseek', 'failed', None, 'StreamError', 126.557, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 638.824, 68052, 3)
+       ('deepseek', 'completed', 'stop', None, 139.127, 60772, 2)
+       repair accepted= ['false'] str= None reason= still failing after repair: clicking `Clear all` (data-action `clear-filters`) on screen `#/category/women` produced no observable outcome;  | failed= None | notes= ['call 1 failed; bounded retry', 'call 2 failed; bounded retry']
+stackoverflow r24a                           82b2e366a946 pass= 45 agent=1441.4 exit=0 draft_chars=0 prompt=117809
+       ('deepseek', 'failed', None, 'StreamError', 230.981, 0, 0)
+       ('deepseek', 'failed', None, 'StreamError', 377.267, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 595.524, 71160, 3)
+       ('deepseek', 'completed', 'stop', None, 216.528, 45098, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['call 1 failed; bounded retry', 'call 2 failed; bounded retry']
+stackoverflow r24b                           964f3787f711 pass= 48 agent=1392.9 exit=0 draft_chars=0 prompt=117809
+       ('deepseek', 'failed', None, 'StreamError', 561.16, 0, 0)
+       ('deepseek', 'completed', 'stop', None, 629.335, 87113, 3)
+       ('deepseek', 'completed', 'stop', None, 182.745, 60393, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['call 1 failed; bounded retry']
+stackoverflow r25a                           d6e3df21c1a8 pass= 45 agent=805.6 exit=0 draft_chars=106524 prompt=117809
+       ('deepseek', 'completed', 'stop', None, 633.676, 106524, 8)
+       ('deepseek', 'completed', 'stop', None, 158.117, 62140, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+stackoverflow r25b                           46319d2fff6b pass= 44 agent=741.6 exit=0 draft_chars=106254 prompt=117809
+       ('deepseek', 'completed', 'stop', None, 575.197, 106254, 3)
+       ('deepseek', 'completed', 'stop', None, 152.156, 56748, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+stackoverflow r26a                           70a040638ed3 pass= 47 agent=707.0 exit=0 draft_chars=89506 prompt=117809
+       ('deepseek', 'completed', 'stop', None, 572.54, 89506, 3)
+       ('deepseek', 'completed', 'stop', None, 113.228, 50986, 1)
+       repair accepted= ['false'] str= None reason= repair renamed quoted control(s): your answer"}} | failed= None | notes= []
+stackoverflow r26b                           c1cba5d506a7 pass= 46 agent=1184.1 exit=0 draft_chars=102083 prompt=117809
+       ('deepseek', 'completed', 'stop', None, 1001.482, 102083, 3)
+       ('deepseek', 'completed', 'stop', None, 157.955, 79210, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+stackoverflow r27a                           848afb62ec7f pass= 41 agent=729.5 exit=0 draft_chars=94854 prompt=117809
+       ('deepseek', 'completed', 'stop', None, 430.619, 94854, 3)
+       ('deepseek', 'completed', 'stop', None, 275.749, 82853, 3)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['closing an unterminated final block at finish_reason=stop']
+stackoverflow r27b                           aa8aa581157b pass= 47 agent=801.3 exit=0 draft_chars=103327 prompt=117809
+       ('deepseek', 'completed', 'stop', None, 679.478, 103327, 3)
+       ('deepseek', 'completed', 'stop', None, 100.2, 62870, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []
+stackoverflow s8h-adaptive-long-stackoverflow 32c46ebfaa3e pass= 30 agent=None exit=0 draft_chars=None prompt=None
+       repair accepted= None str= None reason=  | failed= None | notes= []
+stackoverflow volo-action-outcome-20260919   e5dfdd1a6d77 pass= 35 agent=664.2 exit=0 draft_chars=85045 prompt=117809
+       ('deepseek', 'completed', 'stop', None, 507.285, 85045, 3)
+       ('deepseek', 'completed', 'stop', None, 133.794, 60755, 2)
+       repair accepted= ['false'] str= None reason= still failing after repair: clicking `Newest` (data-action `set-question-tab`) on screen `#/` produced no observable outcome; render the req | failed= None | notes= []
+stackoverflow volo-oneshot-r28b-path-table   20d99918abf3 pass= 45 agent=812.9 exit=0 draft_chars=207919 prompt=120837
+       ('deepseek', 'completed', 'stop', None, 631.555, 207919, 6)
+       ('deepseek', 'completed', 'stop', None, 139.8, 62188, 2)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= ['ignored 197 line(s) outside file blocks', 'ignored 197 line(s) outside file blocks']
+stackoverflow volo-oneshot-r28b-path-table   2df0bfd60ae9 pass= 41 agent=854.7 exit=0 draft_chars=90460 prompt=120837
+       ('deepseek', 'completed', 'stop', None, 677.018, 90460, 3)
+       ('deepseek', 'completed', 'stop', None, 148.71, 53918, 1)
+       repair accepted= ['true'] str= None reason=  | failed= None | notes= []

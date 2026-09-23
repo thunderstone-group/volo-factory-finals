@@ -24,8 +24,10 @@ No generation/behavior/score improvement is proved by mock tests or successful p
 
 `docs/README.md` is the map of `docs/` and the documentation policy; read it before adding or moving
 a document. Entry order for a continuation: `docs/SESSION_HANDOFF.md` (one section, current),
-`docs/progress.md` (append-only ledger of the current line), then `docs/reports/` (dated, frozen)
-and `docs/reference/` (stable, maintained) as the handoff directs. `docs/archive/` holds the frozen
+`docs/reference/roadmap.md` (living plan: goal, workstreams with completion criteria, gates,
+decisions), `docs/progress.md` (append-only ledger of the current line), then `docs/reports/`
+(dated, frozen) and the rest of `docs/reference/` (stable, maintained) as the handoff directs.
+Competition rules live in `docs/reference/preliminary-rules.md`. `docs/archive/` holds the frozen
 multi-round harness era and old handoff sections; `docs/evidence/` holds the JSON the reports cite.
 
 Code map: `oneshot/` (active candidate, `oneshot/scaffold/README.md` is its architecture knowledge

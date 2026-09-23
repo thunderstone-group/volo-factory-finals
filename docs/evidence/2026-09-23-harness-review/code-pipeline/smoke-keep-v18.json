@@ -1,0 +1,362 @@
+{
+ "app": "keep-v18",
+ "smoke_total_s": 11.515,
+ "phases": [
+  [
+   "npm run build",
+   0.102
+  ],
+  [
+   "_check_syntax",
+   0.059
+  ],
+  [
+   "_check_page",
+   0.011
+  ],
+  [
+   "npm run build",
+   3.356
+  ],
+  [
+   "_check_dom",
+   3.358
+  ],
+  [
+   "_check_semantic_browser",
+   7.571
+  ]
+ ],
+ "backend_start_to_health_s": 0.411,
+ "static_gates_s": 0.007,
+ "problems": [
+  "Requirement-derived UI observation: Record field chooser (Work) is outside the declared record editor \"Note editor\". Reuse that named entity editor for field editing and preserve the checkbox elements until explicit completion."
+ ],
+ "static": [],
+ "vocab_missing": 0,
+ "probe_screens": [
+  [
+   "#/",
+   "#/label/Reminders",
+   "#/edit-labels",
+   "#/archive",
+   "#/trash",
+   "#/label/Work",
+   "#/label/Work%20editable"
+  ]
+ ],
+ "probe_actions": [
+  [
+   [
+    "Take a note",
+    "take-note"
+   ],
+   [
+    "More options",
+    "editor-more-options"
+   ],
+   [
+    "Change labels",
+    "editor-change-labels"
+   ],
+   [
+    "Work editable",
+    "editor-toggle-label"
+   ],
+   [
+    "Work",
+    "editor-toggle-label"
+   ],
+   [
+    "Reminders",
+    "editor-toggle-label"
+   ],
+   [
+    "Change color",
+    "editor-change-color"
+   ],
+   [
+    "Default",
+    "editor-pick-color"
+   ],
+   [
+    "Pin note",
+    "editor-pin"
+   ],
+   [
+    "Unpin note",
+    "editor-pin"
+   ],
+   [
+    "Close",
+    ""
+   ],
+   [
+    "More options",
+    "more-options"
+   ],
+   [
+    "Change labels",
+    "card-change-labels"
+   ],
+   [
+    "Work editable",
+    "card-toggle-label"
+   ],
+   [
+    "Work",
+    "card-toggle-label"
+   ],
+   [
+    "Reminders",
+    "card-toggle-label"
+   ],
+   [
+    "Unpin note",
+    "pin-note"
+   ],
+   [
+    "More options",
+    "more-options"
+   ],
+   [
+    "Take a note",
+    "take-note"
+   ],
+   [
+    "More options",
+    "editor-more-options"
+   ],
+   [
+    "Change labels",
+    "editor-change-labels"
+   ],
+   [
+    "Work editable",
+    "editor-toggle-label"
+   ],
+   [
+    "Work",
+    "editor-toggle-label"
+   ],
+   [
+    "Reminders",
+    "editor-toggle-label"
+   ],
+   [
+    "Change color",
+    "editor-change-color"
+   ],
+   [
+    "Default",
+    "editor-pick-color"
+   ],
+   [
+    "Pin note",
+    "editor-pin"
+   ],
+   [
+    "Unpin note",
+    "editor-pin"
+   ],
+   [
+    "Close",
+    ""
+   ],
+   [
+    "More options",
+    "more-options"
+   ],
+   [
+    "Change labels",
+    "card-change-labels"
+   ],
+   [
+    "Work editable",
+    "card-toggle-label"
+   ],
+   [
+    "Work",
+    "card-toggle-label"
+   ],
+   [
+    "Reminders",
+    "card-toggle-label"
+   ],
+   [
+    "Pin note",
+    "pin-note"
+   ],
+   [
+    "Unpin note",
+    "pin-note"
+   ],
+   [
+    "Edit labels",
+    "arc:nav"
+   ],
+   [
+    "Work editable",
+    "arc:nav"
+   ],
+   [
+    "Edit labels",
+    "arc:nav"
+   ],
+   [
+    "Edit labels",
+    "arc:nav"
+   ],
+   [
+    "Take a note",
+    "take-note"
+   ],
+   [
+    "More options",
+    "editor-more-options"
+   ],
+   [
+    "Change labels",
+    "editor-change-labels"
+   ],
+   [
+    "Work editable",
+    "editor-toggle-label"
+   ],
+   [
+    "Work",
+    "editor-toggle-label"
+   ],
+   [
+    "Reminders",
+    "editor-toggle-label"
+   ],
+   [
+    "Change color",
+    "editor-change-color"
+   ],
+   [
+    "Default",
+    "editor-pick-color"
+   ],
+   [
+    "Pin note",
+    "editor-pin"
+   ],
+   [
+    "Unpin note",
+    "editor-pin"
+   ],
+   [
+    "Close",
+    ""
+   ],
+   [
+    "More options",
+    "more-options"
+   ],
+   [
+    "Change labels",
+    "card-change-labels"
+   ],
+   [
+    "Work editable",
+    "card-toggle-label"
+   ],
+   [
+    "Work",
+    "card-toggle-label"
+   ],
+   [
+    "Reminders",
+    "card-toggle-label"
+   ],
+   [
+    "Pin note",
+    "pin-note"
+   ],
+   [
+    "Unpin note",
+    "pin-note"
+   ],
+   [
+    "Take a note",
+    "take-note"
+   ],
+   [
+    "More options",
+    "editor-more-options"
+   ],
+   [
+    "Change labels",
+    "editor-change-labels"
+   ],
+   [
+    "Work editable",
+    "editor-toggle-label"
+   ],
+   [
+    "Work",
+    "editor-toggle-label"
+   ],
+   [
+    "Reminders",
+    "editor-toggle-label"
+   ],
+   [
+    "Change color",
+    "editor-change-color"
+   ],
+   [
+    "Default",
+    "editor-pick-color"
+   ],
+   [
+    "Pin note",
+    "editor-pin"
+   ],
+   [
+    "Unpin note",
+    "editor-pin"
+   ],
+   [
+    "Close",
+    ""
+   ],
+   [
+    "More options",
+    "more-options"
+   ],
+   [
+    "Change labels",
+    "card-change-labels"
+   ],
+   [
+    "Work editable",
+    "card-toggle-label"
+   ],
+   [
+    "Work",
+    "card-toggle-label"
+   ],
+   [
+    "Reminders",
+    "card-toggle-label"
+   ],
+   [
+    "Pin note",
+    "pin-note"
+   ],
+   [
+    "Unpin note",
+    "pin-note"
+   ]
+  ]
+ ],
+ "probe_executed": [
+  true
+ ],
+ "probe_unavailable": [
+  null
+ ]
+}

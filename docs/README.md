@@ -1,6 +1,6 @@
 # docs/ — 地图与管理规范
 
-last-reviewed: 2026-09-18。本文只维护 docs/ 的结构与规则，不复述任何文档的内容；某份文档说了什么，去读它。
+last-reviewed: 2026-09-23。本文只维护 docs/ 的结构与规则，不复述任何文档的内容；某份文档说了什么，去读它。
 
 ## 地图
 
@@ -9,16 +9,16 @@ last-reviewed: 2026-09-18。本文只维护 docs/ 的结构与规则，不复述
 | `SESSION_HANDOFF.md` | 当前交接：只有**一节**，写给下一个会话的第一个读者 | 每次会话结束整体改写；旧节整份搬进 `archive/handoffs/<日期-时间>.md`，不在文件里堆叠 |
 | `progress.md` | 当前路线（one-shot，2026-09-17 起）的追加式账本：做了什么、结果、run id | 只追加，条目标题 `## YYYY-MM-DD [时刻] — 主题`；路线切换时把旧路线整段搬进 `archive/progress-<起>-to-<止>.md` |
 | `adr/NNNN-slug.md` | 架构决策记录：难以回退、脱离上下文会显得奇怪、且有真实取舍的决定 | 三条不全中就不写；决定被推翻时新增一条并在旧条标 superseded，不改旧文 |
-| `reference/` | 稳定的操作与事实文档：平台 CLI 用法、论坛 CLI、one-shot 候选的边界、官方语料目录 | 无日期前缀，内容随现状更新；顶部写 last-reviewed；过时段落标 TODO 而不是悄悄删 |
+| `reference/` | 稳定的操作与事实文档：初赛规则、改进路线图（活文档）、平台 CLI 用法、论坛 CLI、one-shot 候选的边界、官方语料目录 | 无日期前缀，内容随现状更新；顶部写 last-reviewed；过时段落标 TODO 而不是悄悄删 |
 | `reports/YYYY-MM-DD-topic.md` | 有日期的调查、计划、账本、复盘：写完即冻结，只允许在顶部加「更新/被谁取代」一行 | 一次调查一份；结论若改变，写新报告并互链，不改旧报告正文 |
 | `evidence/YYYY-MM-DD-*.json` | 报告引用的原始数据：榜单快照、run 记录、计量表 | 只增不改；报告用相对链接指向它 |
 | `archive/` | 不再被当前工作读取的东西：旧交接节、旧路线账本、冻结的多轮 harness 时代（09-11～09-14）的设计与调查稿 | 原样搬入，不改名不改内容；`archive/README.md` 一行一份说明它是什么 |
 
-入口顺序：新会话先读 `SESSION_HANDOFF.md`，再读 `progress.md` 它指定的位置，再按需读 `reports/` 与 `reference/`。仓库根的 `AGENTS.md` 是项目地图，只指向本目录，不复述。
+入口顺序：新会话先读 `SESSION_HANDOFF.md`，再读 `reference/roadmap.md`（全局目标、工作流、关口与决策），再读 `progress.md` 交接指定的位置，再按需读 `reports/` 与其余 `reference/`。仓库根的 `AGENTS.md` 是项目地图，只指向本目录，不复述。
 
 ## 规则
 
-1. **一个事实一个真源。** 平台规则在 `reference/platform-cli.md`，赛制与目标在最新的 `reports/*-campaign-plan.md` / `*-goal-ledger.md`，当前状态只在 `SESSION_HANDOFF.md`。别处需要时用链接，不复制段落。
+1. **一个事实一个真源。** 平台 CLI 规则在 `reference/platform-cli.md`，初赛赛制在 `reference/preliminary-rules.md`，目标、工作流、关口与决策在 `reference/roadmap.md`，当前状态只在 `SESSION_HANDOFF.md`。别处需要时用链接，不复制段落。
 2. **三个月判据决定去处。** 三个月后还会有人读、且内容会随现状变的 → `reference/`；三个月后还会有人读、但内容不再变的 → `reports/`；三个月后没人读的 → 不写，或写进 `progress.md` 一条。
 3. **日期进文件名，只有报告有日期。** `reports/` 与 `evidence/` 用 `YYYY-MM-DD-` 前缀，按时间排序即是历史；`reference/` 不带日期（外部快照除外，如 `docs/reference/arc-bench-corpus-2026-09-14.md`，它是对某天上游仓库的目录）。
 4. **状态不落盘。** 分支、候选包、run 列表、余额都从 git 与 `arcbench` 现场读；文档里出现的 run id、提交号、榜位都是「当时」的证据，不是当前状态。
@@ -31,6 +31,8 @@ last-reviewed: 2026-09-18。本文只维护 docs/ 的结构与规则，不复述
 ## reports/ 索引（新在上）
 
 - `2026-09-23-harness-review.md` — 当前候选 v24 的瓶颈评审：自检盲区、大题零证据与归零出口、修复验收、模型成本、开发口径；含完整参赛须知要点。
+  - `2026-09-23-harness-review-appendix-0-method.md` — 评审方法、主会话核对、子评审分歧与更正、复现方式、Lite 榜换算。
+  - `2026-09-23-harness-review-appendix-1-code-pipeline.md` … `-appendix-4-large-task-readiness.md` — 四份只读子评审原文：代码主链路、实验史、官方 run 与计分、大题就绪度。
 - `2026-09-22-lite-first.md` — Lite 优先：当前需求与测试核对、两题冻结应用基线、首页按钮修复的完整回放。
 - `2026-09-18-goal-ledger.md` — 甲方 01:53 定的「Web 聚合榜 ≥ 80%」目标模式：每轮一行的账本、护栏、判据。
 - `2026-09-18-distillation.md` — 把 know-how 压到弱模型能用的层级（门 → 骨架 → 表 → 散文）的叙事，ADR 0001 的背景。
@@ -45,6 +47,8 @@ last-reviewed: 2026-09-18。本文只维护 docs/ 的结构与规则，不复述
 
 ## reference/ 索引
 
+- `docs/reference/roadmap.md` — 改进路线图（活文档）：初赛目标、策略、工作流与完成判据、阶段关口、证据口径、决策记录、迭代日志。
+- `docs/reference/preliminary-rules.md` — 初赛规则：完整参赛须知（PDF 存档在 evidence/）与官方模拟环境契约的要点。
 - `docs/reference/platform-cli.md` — `arcbench` 客户端的安装配置与绑定本 harness 的平台规则。
 - `docs/reference/oneshot.md` — one-shot 候选在仓库内的位置与边界、打包入口。
 - `docs/reference/forum-cli.md` — 独立的 Qiwoo 论坛 CLI（不进竞赛包）。

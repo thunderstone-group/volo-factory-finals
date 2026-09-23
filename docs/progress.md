@@ -859,3 +859,18 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
 - The full participation notice (PDF) settles the formal rules: best submission counts, 48 h per task,
   S = p / (c/(1.2p))^e pooled over the two tasks, top 20 advance.
 - No model calls, uploads or runs in this session. The recommendations await the owner's decision.
+
+## 2026-09-23 09:55 — Review archived in full; roadmap v1 and preliminary-rules reference
+
+- The four read-only sub-review reports are saved verbatim as appendices 1–4 of
+  reports/2026-09-23-harness-review.md. Appendix 0 records the method, seven main-session checks
+  (all confirmed), the disagreements and corrections between reviews, and how to reproduce.
+- Evidence added: the full participation notice (evidence/2026-09-20-participation-notice.pdf,
+  SHA-256 5da6b57e…314e, plus text), and the review's scripts and intermediate data under
+  evidence/2026-09-23-harness-review/. Scoring parameters were read from page 2 of the PDF itself:
+  b0 = 1.2, alpha = 0.1, beta = 0.2, cost in CNY.
+- New reference documents: reference/preliminary-rules.md (single source for competition rules) and
+  reference/roadmap.md (living plan: goal, strategy, eight workstreams with fixed completion
+  criteria, stage gates, evidence rules, decisions, iteration log). docs/README.md and AGENTS.md
+  now route new sessions through the roadmap after the handoff.
+- No model calls, uploads or runs. Current stage: pre-opening; all workstreams not started.

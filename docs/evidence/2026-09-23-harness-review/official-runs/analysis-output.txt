@@ -1,0 +1,77 @@
+=== flash per-task own cost estimate, r14-r27 (CNY) ===
+keep           n=28 mean=1.16 median=1.20 min=0.48 max=2.14 sd=0.32
+bookstack      n=28 mean=0.81 median=0.76 min=0.50 max=1.26 sd=0.18
+stackoverflow  n=28 mean=1.27 median=1.28 min=0.54 max=1.64 sd=0.19
+prestashop     n=28 mean=1.24 median=1.32 min=0.42 max=1.77 sd=0.29
+12306          n=28 mean=1.36 median=1.37 min=0.24 max=3.01 sd=0.44
+ctrip          n=28 mean=1.18 median=1.22 min=0.00 max=1.82 sd=0.38
+
+=== (a) medium + large combos, per sample in same package run ===
+keep+12306: n=28 p mean 55.8 (sd 11.9) | c mean 2.52 [0.90,3.69] | S mean 77.7 sd 17.2 min 20.9 max 98.3 | var(lnS) share: p 1.127 c 0.0095 cov -0.1364
+keep+ctrip: n=28 p mean 36.6 (sd 8.8) | c mean 2.34 [0.83,3.37] | S mean 49.3 sd 12.5 min 22.3 max 73.5 | var(lnS) share: p 1.080 c 0.0092 cov -0.0891
+bookstack+12306: n=28 p mean 56.1 (sd 12.9) | c mean 2.17 [0.74,3.71] | S mean 79.3 sd 18.8 min 21.2 max 101.4 | var(lnS) share: p 1.128 c 0.0069 cov -0.1348
+bookstack+ctrip: n=28 p mean 37.2 (sd 9.2) | c mean 1.99 [0.77,2.57] | S mean 50.9 sd 13.2 min 10.5 max 72.4 | var(lnS) share: p 1.108 c 0.0052 cov -0.1133
+pooled r14-r27 packages (incl r13 twin), per task: n mean min max sd (tests), mean pct, sd pct, zero-deliveries
+keep 28 25.3 0 30 5.8 79.1 18.0 1
+bookstack 28 27 13 34 5.2 79.4 15.2 0
+stackoverflow 28 39.6 1 53 13.0 60.1 19.7 0
+prestashop 28 54.9 0 69 12.6 63.8 14.7 0
+12306 28 67.9 0 91 19.9 50.3 14.7 1
+ctrip 28 32.2 0 54 12.8 25.8 10.2 1
+
+within-package pooled SD and between adjacent package mean diffs (tests)
+keep pooledSD 5.41 pp 16.9 median range 3.0 max range 25 | adj mean diff median 3.5 max 15.0 n pkgs 14
+bookstack pooledSD 4.83 pp 14.2 median range 3.0 max range 18 | adj mean diff median 2.0 max 14.5 n pkgs 14
+stackoverflow pooledSD 14.09 pp 21.3 median range 6.5 max range 48 | adj mean diff median 10.5 max 18.5 n pkgs 14
+prestashop pooledSD 12.06 pp 14.0 median range 7.0 max range 55 | adj mean diff median 5.5 max 36.5 n pkgs 14
+12306 pooledSD 17.23 pp 12.8 median range 14.0 max range 45 | adj mean diff median 15 max 66.0 n pkgs 14
+ctrip pooledSD 12.84 pp 10.3 median range 14.5 max range 36 | adj mean diff median 7.5 max 25.0 n pkgs 14
+
+=== robust: excluding catastrophic samples (passed < 1/3 of task pooled median) ===
+keep median 27.0 catastrophic 1 of 28 (4%) pooledSD_ex 2.75 tests = 8.6 pp  single-sample 95% MDD ~ 7.6 tests 23.8 pp  pair-vs-pair MDD ~ 5.4 tests
+bookstack median 28.0 catastrophic 0 of 28 (0%) pooledSD_ex 4.83 tests = 14.2 pp  single-sample 95% MDD ~ 13.4 tests 39.3 pp  pair-vs-pair MDD ~ 9.5 tests
+stackoverflow median 44.5 catastrophic 2 of 28 (7%) pooledSD_ex 7.65 tests = 11.6 pp  single-sample 95% MDD ~ 21.2 tests 32.1 pp  pair-vs-pair MDD ~ 15.0 tests
+prestashop median 57.0 catastrophic 1 of 28 (4%) pooledSD_ex 6.35 tests = 7.4 pp  single-sample 95% MDD ~ 17.6 tests 20.5 pp  pair-vs-pair MDD ~ 12.5 tests
+12306 median 72.0 catastrophic 1 of 28 (4%) pooledSD_ex 15.55 tests = 11.5 pp  single-sample 95% MDD ~ 43.1 tests 31.9 pp  pair-vs-pair MDD ~ 30.5 tests
+ctrip median 35.0 catastrophic 1 of 28 (4%) pooledSD_ex 12.53 tests = 10.0 pp  single-sample 95% MDD ~ 34.7 tests 27.8 pp  pair-vs-pair MDD ~ 24.6 tests
+
+=== six-task task-equal average per sample ===
+r13 [64.5, 58.6]
+r15 [52.6, 67.1]
+r16 [56.5, 63.0]
+r17 [64.7, 59.2]
+r18 [52.2, 45.6]
+r19 [65.5, 60.0]
+r20 [54.1, 57.9]
+r21 [65.5, 62.9]
+r22 [63.5, 64.2]
+r23 [40.8, 53.6]
+r24 [67.8, 54.7]
+r25 [61.8, 67.8]
+r26 [68.7, 54.2]
+r27 [60.9, 65.3]
+pooled within-package SD of six-task avg 6.03 pp; package means: [61.6, 59.8, 59.7, 62.0, 48.9, 62.7, 56.0, 64.2, 63.9, 47.2, 61.2, 64.8, 61.5, 63.1]
+SD of package means 5.44 range 47.2 64.8
+keep           ANOVA across 14 pkgs F=1.27 p=0.331 | excl r18,r23 F=1.25 p=0.351
+bookstack      ANOVA across 14 pkgs F=1.31 p=0.312 | excl r18,r23 F=0.56 p=0.826
+stackoverflow  ANOVA across 14 pkgs F=0.69 p=0.742 | excl r18,r23 F=0.66 p=0.747
+prestashop     ANOVA across 14 pkgs F=1.20 p=0.369 | excl r18,r23 F=1.25 p=0.353
+12306          ANOVA across 14 pkgs F=1.70 p=0.169 | excl r18,r23 F=0.67 p=0.742
+ctrip          ANOVA across 14 pkgs F=0.98 p=0.510 | excl r18,r23 F=0.61 p=0.793
+six-task avg ANOVA F=1.63 p=0.188
+six-task avg excl r18,r23 F=0.34 p=0.957
+
+combined medium+large per-sample pass rate (pp), pooled r14-r27:
+  keep+12306: n=28 mean=55.8 sd=11.9 min=15.6 max=69.5 within-pkg SD=11.1
+  keep+ctrip: n=28 mean=36.6 sd=8.8 min=17.2 max=53.5 within-pkg SD=9.0
+  bookstack+12306: n=28 mean=56.1 sd=12.9 min=15.4 max=72.8 within-pkg SD=11.6
+  bookstack+ctrip: n=28 mean=37.2 sd=9.2 min=8.2 max=51.6 within-pkg SD=8.6
+task | within-pkg flips per pair (mean, as % of tests) | adjacent-pkg flips (first samples) | net diff within-pkg
+keep          within flips mean 4.5 (14%) median 4 | adjacent flips mean 3.8 (12%) | within net |diff| mean 3.1
+bookstack     within flips mean 7.9 (23%) median 6.5 | adjacent flips mean 6.8 (20%) | within net |diff| mean 5.0
+stackoverflow within flips mean 18.3 (28%) median 14.5 | adjacent flips mean 22.7 (34%) | within net |diff| mean 13.4
+prestashop    within flips mean 22.1 (26%) median 18.5 | adjacent flips mean 24.8 (29%) | within net |diff| mean 10.5
+12306         within flips mean 29.5 (22%) median 26 | adjacent flips mean 30.8 (23%) | within net |diff| mean 17.5
+ctrip         within flips mean 25.6 (20%) median 24 | adjacent flips mean 28.2 (23%) | within net |diff| mean 14.4
+keep official flash r17-r28b n 22 mean 14.7 min 5 max 21 sd 4.4 within-pkg pooled SD 1.49
+bookstack official flash r17-r28b n 22 mean 19.8 min 5 max 25 sd 7.2 within-pkg pooled SD 4.1

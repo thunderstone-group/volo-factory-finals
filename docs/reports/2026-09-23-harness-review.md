@@ -1,5 +1,10 @@
 # ARC harness 评审：瓶颈在哪里（2026-09-23）
 
+> 更新（2026-09-23 09:50）：
+> - 四份子评审原文已作为附录 1–4 落盘；评审方法、核对结果与已知分歧见[附录 0](2026-09-23-harness-review-appendix-0-method.md)。
+> - 赛制的真源改为 [reference/preliminary-rules.md](../reference/preliminary-rules.md)。
+> - 后续改进按 [reference/roadmap.md](../reference/roadmap.md) 推进，本报告「建议」一节由路线图取代。
+
 评审对象是分支 `exp/lite-first-20260922` 上的冻结候选 nested-seed-v24（提交 4893b83，包 SHA-256 `959890c1…`）。
 它的做法是：kimi-k2.7-code-highspeed 一次调用写完整个应用，再用确定性门禁和需求派生的 Chromium 探针找问题，
 最多再用两次调用修复，全局上限 3 次完成调用。
@@ -253,6 +258,14 @@ Lite 中题本地独立生成的对比如下，差距都在噪声之内：
    以及 09-21 至 09-22 约 150 元的充值，在本机仓库里都找不到来源，是谁在用？这会影响练习 key 的计量。
 
 ## 证据索引
+
+- 附录：
+  - [0 方法、核对与分歧](2026-09-23-harness-review-appendix-0-method.md)
+  - [1 代码主链路](2026-09-23-harness-review-appendix-1-code-pipeline.md)
+  - [2 实验史](2026-09-23-harness-review-appendix-2-experiment-history.md)
+  - [3 官方 run 与计分](2026-09-23-harness-review-appendix-3-official-runs-and-scoring.md)
+  - [4 大题就绪度](2026-09-23-harness-review-appendix-4-large-task-readiness.md)
+- [完整参赛须知 PDF](../evidence/2026-09-20-participation-notice.pdf) 与[文本版](../evidence/2026-09-20-participation-notice.txt)；评审用到的脚本与中间数据在 [2026-09-23-harness-review/](../evidence/2026-09-23-harness-review/README.md)。
 
 - [官方 run 数据集](../evidence/2026-09-23-official-runs-dataset.csv)：09-17 以来完成的 389 条 run，含自有费用估计。
   平台的费用字段是共享 key 在该 run 时间窗口内的计量差值，并发时会重复计入（09-17 以来合计虚高约 9.4 倍）。
