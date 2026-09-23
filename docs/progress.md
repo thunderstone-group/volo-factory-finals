@@ -905,3 +905,16 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
   protocol error, exit 1 when the model wrote nothing, oneshot.md refresh) and a practice-platform probe
   (arc-bench-web, flash, 12306 and Ctrip twice each, serial, package from 75360b7) dispatched.
 - Six orphaned `node server.js` replay servers from 09-18 (runs/2026-09-18-goal bundles, ports 587xx) stopped.
+
+## 2026-09-23 11:45 — Delivery-never-zero round 2 merged; scenario self-check v1 fails the held-out Keep
+
+- PR #48 merged (f9bd5cf): the revival waiver now covers the vocabulary and browser-recheck checks; a protocol error
+  keeps the complete blocks before it; exit 1 when no delivered file came from the model; oneshot.md refreshed.
+  Acceptance: 9 hidden cases, one-shot 130 OK / 1 skipped, legacy 226 OK / 12 skipped, Ctrip 09-19 replay accepted.
+- Scenario self-check v1 (PR #49, not merged). BookStack (development half): agreement 98.1% on 841 comparable
+  verdicts, false pass 1.7%, coverage 29/34, all four structural failures reported, 0 failures on twelve 34/34
+  apps. Held-out Keep (24 replays, public YAML): about 3 of 32 requirements parsed per app, agreement 65.3% (47/72),
+  false pass 0, false fail 25 — REQ-5.1 fails on all 24 apps including the ten 32/32 ones. The hand-written grammar
+  fits BookStack's wording. Round 2 on the same branch adds a single flash translation call per task for
+  scenarios the grammar cannot parse (fixed action schema, verbatim names, cached by requirements hash) and fixes
+  REQ-5.1; Keep becomes a development set, and the formal tasks are the next generalization check.
