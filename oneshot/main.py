@@ -245,12 +245,14 @@ def fallback_model(budget, model):
     return KIMI_FALLBACK_MODEL if model in KIMI_CODE_MODELS else FALLBACK_MODEL
 
 
-def stream_completion(messages, model, base, key, budget, tries=3):
-    """Buffer each attempt separately; failed streams never write application files. The primary
-    model is retried `tries` times on transport failures; when those are spent the run switches to
-    its fallback model for this and every later call (a cut route rarely heals within one run), with
+def stream_completion(messages, model, base, key, budget, tries=3, salvage=None):
+    """Buffer each attempt separately; a failed attempt's text is discarded. The primary model is
+    retried `tries` times on transport failures; when those are spent the run switches to its
+    fallback model for this and every later call (a cut route rarely heals within one run), with
     that model's own request parameters. A stream that ends normally without content (the reasoning
-    used the whole output) is a completed, billed call: the caller decides whether to ask again."""
+    used the whole output) is a completed, billed call: the caller decides whether to ask again.
+    With `salvage`, a stream that breaks off after text for which salvage(text) is true is returned
+    with the finish reason "cut" instead of being retried; the attempt stays a failed one."""
     model = budget.model or model
     fallback = fallback_model(budget, model)
     payload = {"model": model, "messages": messages, "max_tokens": MAX_TOKENS,
@@ -333,13 +335,20 @@ def stream_completion(messages, model, base, key, budget, tries=3):
             record["elapsed_seconds"] = round(time.monotonic() - started, 3)
             budget.progress("completed" if record["status"] == "completed" else "call_failed",
                             record, force=True)
+        if retryable and salvage is not None and record["content"] and salvage(record["content"]):
+            # The stream broke off after complete files (the gateway cuts one stream at about 1200 s; a Ctrip
+            # draft needed 1101 s): hand them over rather than redraft from scratch into the same wall. The
+            # attempt stays a failed one on the ledger: billed, usage unknown.
+            print(f"[oneshot] call {record['call']} was cut ({record['error_type']}) after "
+                  f"{len(record['content'])} characters; keeping its complete file blocks", file=sys.stderr)
+            return record["content"], record["usage"], "cut"
         if not retryable or budget.exhausted():
             raise failure
         if attempt + 1 >= tries:
             if fallback and fallback != model:
                 print(f"[oneshot] {model} failed {tries} times; the rest of this run uses {fallback}", file=sys.stderr)
                 budget.model = fallback
-                return stream_completion(messages, fallback, base, key, budget, tries)
+                return stream_completion(messages, fallback, base, key, budget, tries, salvage)
             raise failure
         print(f"[oneshot] call {record['call']} failed; bounded retry", file=sys.stderr)
         time.sleep(1)
@@ -1068,20 +1077,29 @@ def salvage_blocks(content):
         return exc.files, [], str(exc)
 
 
+def has_complete_block(content):
+    return bool(salvage_blocks(content)[0])
+
+
 def draft_application(stage, files, messages, model, base, key, budget, template):
     """Write the model's file blocks into the stage and return the conversation that produced them.
 
     A reply cut at `length` is continued while the draft allowance lasts: inside a file, the model re-emits
     that file from its beginning; between files, it is told which files are complete and writes the rest. A
-    reply that breaks the file framing keeps the complete blocks before the break and is continued the same
-    way. A reply without file blocks (no content because the reasoning used the whole output, or a prose
-    excuse) is sent again unchanged, except after a cut between files, where a normal stop means nothing was
-    left."""
+    stream that breaks off after complete files, and a reply that breaks the file framing, keep the complete
+    blocks and are continued the same way. A reply without file blocks (no content because the reasoning used
+    the whole output, or a prose excuse) is sent again unchanged, except after a cut between files, where a
+    normal stop means nothing was left."""
     emitted, request, history, pending, reason = set(), list(messages), None, None, None
     while True:
         if budget.exhausted():
-            raise RuntimeError(f"draft call limit reached ({budget.limits['draft']})" + (f": {reason}" if reason else ""))
-        content, _, finish = stream_completion(request, model, base, key, budget)
+            spent = (f"global model failure limit reached ({budget.fail_limit})"
+                     if len(budget.failed()) >= budget.fail_limit
+                     else f"draft call limit reached ({budget.limits['draft']})")
+            raise RuntimeError(spent + (f": {reason}" if reason else ""))
+        content, _, finish = stream_completion(request, model, base, key, budget, salvage=has_complete_block)
+        if finish == "cut":
+            finish = "length"  # the complete blocks of a broken-off stream are kept and continued like a truncation
         if finish == "content_filter":
             # The gateway's output filter ends a stream the way a truncation does, with the partial
             # draft intact (r18a Ctrip: 200 KB of app.js, then a whole-task zero). Continue it like a
