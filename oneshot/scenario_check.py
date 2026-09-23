@@ -457,8 +457,9 @@ def _payload(item, failed_headings):
     return {"id": item["id"], "ops": item["ops"], "skip_heading": sorted(failed_headings)}
 
 
-def _execute(runnable, app, port, progress=None):
-    """Run the parsed scenarios; returns ({id: reply}, runtime)."""
+def _execute(runnable, app, port, progress=None, deadline=None):
+    """Run the parsed scenarios; returns ({id: reply}, runtime). Past `deadline` (a time.monotonic() value) no further
+    scenario starts; those left get an error reply."""
     work = Path(tempfile.mkdtemp(prefix="scenario-check-"))
     replies, runtime, failed_headings = {}, {}, set()
     worker = backend = None
@@ -482,6 +483,10 @@ def _execute(runnable, app, port, progress=None):
             return replies, runtime
         backend = Backend(workspace.root, env, work / "backend.log")
         for item in runnable:
+            if deadline is not None and time.monotonic() > deadline:
+                replies[item["id"]] = {"status": "error", "steps": [],
+                                       "observation": "Not run: the check's time budget was spent."}
+                continue
             try:
                 chosen, ready, why = _start_backend(backend, workspace, port)
                 if not ready:
@@ -513,10 +518,10 @@ def _execute(runnable, app, port, progress=None):
     return replies, runtime
 
 
-def translate_unparsed(text, planned):
+def translate_unparsed(text, planned, allowed=True):
     """Replace unparsed scenarios with validated model translations (one cached call per requirements text).
-    Off with SCENARIO_TRANSLATE=0; without OPENAI_API_KEY only an existing cache entry is used."""
-    if os.environ.get("SCENARIO_TRANSLATE", "1") == "0":
+    Off with SCENARIO_TRANSLATE=0 or allowed=False; without OPENAI_API_KEY only an existing cache entry is used."""
+    if not allowed or os.environ.get("SCENARIO_TRANSLATE", "1") == "0":
         return {"status": "disabled"}
     summary = scenario_translate.translate(text, planned)
     for item in planned["scenarios"]:
@@ -527,15 +532,21 @@ def translate_unparsed(text, planned):
     return summary
 
 
-def run(requirements, app, out=None, port=None, progress=None):
-    """Plan and execute the scenarios of `requirements` against the application directory `app`."""
+def run(requirements, app, out=None, port=None, progress=None, text=None, only=None, translate=True, seconds=None):
+    """Plan and execute the scenarios of `requirements` (a path, or the document itself as `text`) against the
+    application directory `app`. With `only`, just those scenario ids run and appear in the report (a recheck).
+    `translate=False` keeps the model translation off (the cached reply is not read either); after `seconds`, no
+    further scenario starts."""
     started = time.monotonic()
-    text = Path(requirements).read_text(encoding="utf-8")
+    text = text if text is not None else Path(requirements).read_text(encoding="utf-8")
     planned = scenarios.plan(text)
     rules = sum(1 for item in planned["scenarios"] if item["status"] == "parsed")
-    translation = translate_unparsed(text, planned)
+    translation = translate_unparsed(text, planned, allowed=translate)
+    if only is not None:
+        planned["scenarios"] = [item for item in planned["scenarios"] if item["id"] in only]
     runnable = [item for item in planned["scenarios"] if item["status"] == "parsed"]
-    replies, runtime = _execute(runnable, app, port, progress) if runnable else ({}, {})
+    deadline = started + seconds if seconds else None
+    replies, runtime = _execute(runnable, app, port, progress, deadline) if runnable else ({}, {})
     parsed = len(runnable)
     report = {"scenarios": [], "invariants": [],
               "coverage": {"total": planned["coverage"]["total"], "parsed": parsed, "rules": rules, "model": parsed - rules},

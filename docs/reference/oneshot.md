@@ -48,8 +48,11 @@ outside temporary cleanup. Gateway redirects are refused.
 ## Model calls
 
 The default model is `deepseek-v4-flash` (`MODEL`). Completed calls are capped per phase: four
-for the draft (first draft, continuations, redrafts; `ONESHOT_DRAFT_CALLS`) and two for the
-delivery repairs (`ONESHOT_REPAIR_CALLS`); a malformed value stops the CLI before any request.
+for the draft (first draft, continuations, redrafts; `ONESHOT_DRAFT_CALLS`) and six for the
+repairs (`ONESHOT_REPAIR_CALLS`). The repairs also stop at a spend limit, CNY 3 per task by default
+(`ONESHOT_REPAIR_CNY`), which counts the repair calls and the scenario translation; costs are
+estimated from the reported usage with the gateway's price list, and a cut stream from its
+characters. A malformed value stops the CLI before any request.
 Transport failures (cut streams, 408/429/5xx) share one cap of five across both phases and never
 consume a completed call. A call makes at most three attempts on its model; then the rest of the
 run switches to the fallback: `kimi-k2.7-code-highspeed` for flash or any other non-Kimi model,
@@ -94,15 +97,54 @@ controls, accessible roles, dialog action ambiguity, editor scope and native che
 Quoted requirement phrases (backticks, straight or curly double quotes) drive the prompt's
 vocabulary checklist, the vocabulary and exact-name gates and the repair's rename guard; a phrase
 quoted only in backticks that the user types (`fills X with ...`, `enters ...`) is a runtime value
-and is not demanded. The check supplies observations to the bounded repair flow; no
-model-generated test or planning call is added. If an accepted repair exposes remaining runtime
-problems, the remaining repair call can address them. A regressing follow-up restores the
-previous accepted stage. Each repair and whether its browser check actually executed are retained
-in the trace. Missing browser infrastructure is reported separately and cannot approve a previously
-observed repair. A repair that removes a whole-application failure (blank page, crash) is kept even
-when the rename, vocabulary or browser-recheck guard would reject it; the waived guards are listed
-in `smoke.repair.waived`. Control names are compared without leading or trailing symbols. These
-checks are diagnostic; only the unchanged acceptance suite establishes test scores.
+and is not demanded. These checks feed the repair loop below as findings and hints; only the
+unchanged acceptance suite establishes test scores.
+
+## Repair loop
+
+`repair_delivery` (roadmap 4.3) assesses the staged draft: the delivery check, the static gates
+(process guards, label collisions, exact names, readonly inputs, scaffold primitives), the quoted
+vocabulary, and, when the application is not broken as a whole, the scenario self-check below.
+
+- **Trigger.** A repair is requested only while the application is broken as a whole (build or
+  syntax failure, dead backend, `/` not served, load error, blank page, a page that never settles)
+  or a requirement scenario fails. A load failure that only the jsdom probe reports (jsdom lacks
+  `ResizeObserver`, canvas and other browser APIs) stands only when Chromium passes no scenario
+  either; otherwise it becomes a hint (`smoke.jsdom_only`). Family-level smoke problems (a throwing
+  click handler, a missing landmark), the static gates and the vocabulary gap ride along as hints
+  and never trigger a call on their own.
+- **Request.** The whole-application failures, else each failing scenario with the steps the
+  browser performed and what it observed (up to 40), the ids of the passing scenarios to keep, and
+  the hints. The files are re-emitted whole.
+- **Acceptance.** A repair that makes a broken application work again is kept whatever else it did
+  (the waived guards are listed in `rounds[].waived`). Otherwise it is kept only when at least one
+  scenario that failed now passes, it gains three such scenarios for every passing one it loses, no
+  clean static gate starts flagging, no quoted phrase disappears and no control name the requirement
+  quotes is renamed (compared without leading or trailing symbols; a name the browser activated
+  counts as present). Only verdicts both checks reached compare: a scenario that was unparsed or
+  errored before is never a gain, one unparsed or not started after is never a loss. Lost
+  scenarios, and gains of at most two, are rechecked once. A check that cannot run at all (no
+  browser, every scenario errored) is retried once and then marked `checker`: the repair is
+  discarded, but the model is not told it failed.
+- **Fixed plan.** The first check fixes the scenario plan for the whole loop: a translation that
+  failed (or had no key) is not retried, so every check compares the same scenarios.
+- **Discard.** A discarded repair is swapped back by renames within one directory (the stage never
+  goes missing); its reply never enters the conversation, and the next request says why it was
+  discarded and what it left failing. A transport failure changes nothing the model hears.
+- **Stop.** When nothing fails; when the next call would exceed the spend limit (spend so far plus an
+  estimate: the whole prompt uncached and as much output as the largest completed repair, at least
+  8000 tokens; the retries of one failing stream and an unusually long reply can still overrun it);
+  at the repair call or transport failure limit; after three discarded repairs in a row; or after
+  three hours of repairs. One scenario check starts no scenario after 30 minutes (those left are
+  `Not run`).
+- **Record.** `smoke.rounds` holds every round: `fatal` and `failing` (what triggered it), `reason`,
+  `gained`, `lost`, `flaky`, `unconfirmed`, `files`, `seconds`, `cost_cny` and the scenario summary
+  after it; `smoke.repair` repeats only the last round. `smoke.scenarios` and
+  `smoke.scenarios_after` summarize the first and the final report; `smoke.stopped` says why the loop
+  ended. Every translation call, failed ones included, appears in the trace like any other call.
+
+`scripts/repair_replay.py` runs the loop on an existing application as if it were the draft, with
+real model calls (a controlled repair: evidence about the loop, never candidate progress).
 
 The browser helper uses Playwright 1.57.0. It reuses a reachable Node package and browser cache,
 or installs the pinned package and headless Chromium into runtime caches with bounded waits.
@@ -114,7 +156,7 @@ receive no gateway credentials. The root `main.py` / `volo/` remain frozen legac
 `oneshot/scenario_check.py` executes the requirements' own GIVEN/WHEN/THEN scenarios against a built
 application in Chromium and reports `pass`, `fail`, `unparsed` or `error` per ATOMIC scenario, with one
 observation sentence (screen hash, h1/h2, expected role and name, matches found). It ships in the
-package; `main.py` does not call it yet. It reads only the requirements and the application, never
+package and drives the repair loop above. It reads only the requirements and the application, never
 evaluator tests.
 
 ```sh
