@@ -70,10 +70,14 @@ A `length` cut is continued while the draft allowance lasts: inside a file, the 
 that file from its beginning; between files, it gets the list of complete files and writes the
 rest. A reply that breaks the file framing (a missing `=== END ===`, a stray or malformed marker)
 keeps the complete blocks before the break and is continued the same way; the rest of that reply
-is dropped. A reply without any usable block (an empty stream whose reasoning used the whole
-output, prose, a break before the first complete file) is a completed call and is sent again
-unchanged; only after a cut between files does a reply that stops without blocks end the draft.
-Partial blocks are never written.
+is dropped. A draft stream that breaks off after complete blocks (the gateway cuts one stream at
+about 1200 s; a dropped connection, a missing `[DONE]`) keeps them and is continued like a
+`length` cut; the attempt still counts as a failed, billed transport attempt with unknown usage.
+A stream that breaks off before its first complete block is retried from scratch as before, and a
+cut repair is never salvaged: the pre-repair application stays. A reply without any usable block
+(an empty stream whose reasoning used the whole output, prose, a break before the first complete
+file) is a completed call and is sent again unchanged; only after a cut between files does a reply
+that stops without blocks end the draft. Partial blocks are never written.
 
 Any error after the stage is set up (a spent allowance, transport failures, a rejected path, a
 crash in the checks) still publishes the stage when it passes the delivery check, and stderr names
