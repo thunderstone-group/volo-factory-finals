@@ -984,3 +984,13 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
 - Four samples switched models during the 13:58:54 local outage (Clash Verge re-initialized; api.arc-bench.com goes
   through Clash's fallback rule to a Los Angeles node) and were excluded; replacements ran clean. Spend CNY 60.49,
   reconciled request by request with the gateway meter.
+
+## 2026-09-23 16:10 — Card subtraction (roadmap 4.6) merged; opening package from main 8285cdb
+
+- PR #58 merged after the main session rebased it on the repair loop, removed the last practice names in main.py
+  (two model-facing examples) and scenarios.py, and dropped the gate's temporary exemption.
+- Samples on the new pipeline (flash, public Lite replay): card Keep 32/32/32 vs control 32/32; card BookStack 32/33/33
+  vs control 34/34/34; mean differences 0 and -1.33, within the 2-case criterion. Cost 0.77-1.58 CNY per task.
+- The executor's own samples were contaminated by the 13:58 local outage (two moved to Kimi, CNY 9.36 of its 14.37).
+- Opening package: scripts/package_oneshot.py on main 8285cdb, SHA-256 bb73b7f4e5d1ca30103442d51402eb8f19532fe1d77399c89e9f4518133d43aa.
+  A platform-style run from the unpacked zip (output dir pre-populated with .arc/ and requirements/) on Keep is in flight.
