@@ -50,21 +50,35 @@ class EvolutionTests(unittest.TestCase):
         self.assertEqual(adapter.read_template(self.out), before)
         self.assertIn('Updated', (target / 'frontend/public/index.html').read_text())
 
+    def upgrade_reporting(self):
+        """Run an upgrade that ends in an error but still delivers; returns what it printed to stderr."""
+        capture = io.StringIO()
+        with contextlib.redirect_stderr(capture):
+            self.upgrade()
+        self.assertIn('[oneshot] delivering the last complete version after an error: ', capture.getvalue())
+        return capture.getvalue()
+
     def test_partial_or_invalid_upgrade_leaves_original_untouched(self):
         before = self.seed()
-        for reply in (block('backend/package.json', '{}'),
-                      block('../escape', 'bad'), '=== FILE: x.js ===\npartial'):
+        # A patch that breaks a required file leaves nothing complete to deliver: still nonzero.
+        self.replies(events(block('backend/package.json', '{}')))
+        with self.assertRaisesRegex(ValueError, 'incomplete delivery'):
+            self.upgrade()
+        self.assertEqual(adapter.read_template(self.out), before)
+        # A rejected or unterminated patch writes nothing; the original is the last complete version and ships
+        # (it used to raise, and the task scored zero).
+        for reply, reason in ((block('../escape', 'bad'), 'escapes'),
+                              ('=== FILE: x.js ===\npartial', 'unterminated file block: x.js')):
             self.replies(events(reply))
-            with self.assertRaises(ValueError):
-                self.upgrade()
+            self.assertIn(reason, self.upgrade_reporting())
             self.assertEqual(adapter.read_template(self.out), before)
+        self.assertFalse((self.root / 'escape').exists())
         self.assertEqual(list(self.root.glob('.oneshot-*')), [])
 
     def test_unchanged_response_is_not_an_upgrade(self):
         before = self.seed()
         self.replies(events(block('frontend/public/index.html', before['frontend/public/index.html'].decode().rstrip())))
-        with self.assertRaisesRegex(ValueError, 'did not change'):
-            self.upgrade()
+        self.assertIn('upgrade did not change any files', self.upgrade_reporting())
         self.assertEqual(adapter.read_template(self.out), before)
 
     def test_snapshot_limits_and_symlinks_fail_before_http(self):
@@ -94,8 +108,7 @@ class EvolutionTests(unittest.TestCase):
     def test_alias_path_cannot_turn_unchanged_response_into_success(self):
         before = self.seed()
         self.replies(events(block('./frontend/public/index.html', before['frontend/public/index.html'].decode().rstrip())))
-        with self.assertRaisesRegex(ValueError, 'did not change'):
-            self.upgrade()
+        self.assertIn('upgrade did not change any files', self.upgrade_reporting())
         self.assertEqual(adapter.read_template(self.out), before)
 
     def test_preserved_metadata_is_not_writable_by_generated_patch(self):
@@ -103,9 +116,10 @@ class EvolutionTests(unittest.TestCase):
         (self.out / '.env').write_text('preserved')
         for name in ('.env', 'frontend/.env', 'frontend/dist/old.js', 'node_modules/x.js'):
             self.replies(events(block(name, 'bad')))
-            with self.assertRaisesRegex(ValueError, 'metadata or build artifacts'):
-                self.upgrade()
+            self.assertIn('metadata or build artifacts: ' + name, self.upgrade_reporting())
         self.assertEqual((self.out / '.env').read_text(), 'preserved')
+        for name in ('frontend/.env', 'frontend/dist/old.js', 'node_modules/x.js'):
+            self.assertFalse((self.out / name).exists())
 
     def test_concurrent_source_change_aborts_publication(self):
         self.seed()
