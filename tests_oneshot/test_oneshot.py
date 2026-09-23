@@ -488,6 +488,67 @@ class OfflineCase(unittest.TestCase):
         self.assertIn("`frontend/public/index.html`", budget.attempts[1]["messages"][-1]["content"])
         self.assertEqual(adapter.missing_required(self.out), [])
 
+    def test_a_broken_file_framing_keeps_the_complete_blocks_before_it(self):
+        # A missing END used to raise and discard the whole draft. The blocks before the break are written, the
+        # rest of the reply is dropped, and the model is asked for the remaining files like after a cut.
+        parts = split_application()
+        unterminated = "=== FILE: frontend/package.json ===\n{\"scripts\":{\"build\":\"node build.js\"}}\n"
+        budget = adapter.CallBudget()
+        self.replies(events(parts[0] + parts[1] + unterminated + parts[3] + parts[4]),
+                     events(parts[2] + parts[3] + parts[4]))
+        capture = io.StringIO()
+        with contextlib.redirect_stderr(capture):
+            files, _ = self.generate(budget)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(adapter.missing_required(self.out), [])
+        ask = budget.attempts[1]["messages"][-1]["content"]
+        self.assertIn("broke the file framing (unterminated file before next block: frontend/package.json)", ask)
+        self.assertEqual(ask.split("must not be emitted again: ")[1].split(". Continue")[0],
+                         "`backend/package.json`, `backend/server.js`")
+        self.assertIn("[oneshot] the reply broke the file framing (unterminated file before next block: "
+                      "frontend/package.json); continuing", capture.getvalue())
+
+    def test_a_broken_framing_before_any_complete_file_is_asked_again(self):
+        budget = adapter.CallBudget()
+        self.replies(events("=== FILE: a.js ===\nx\n=== FILE: b.js ===\ny\n=== END ===\n"), events(application()))
+        files, _ = self.generate(budget)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertEqual(budget.attempts[1]["messages"], budget.attempts[0]["messages"])
+        self.assertEqual(len(files), 5)
+        self.assertFalse((self.out / "b.js").exists())  # blocks after the break are never written
+
+    def test_a_stray_marker_after_a_complete_draft_keeps_the_draft(self):
+        # With no call left for the rest, the kept blocks ship (they complete the application here).
+        budget = adapter.CallBudget(draft_limit=1)
+        self.replies(events(application() + "=== END ===\n"))
+        capture = io.StringIO()
+        with contextlib.redirect_stderr(capture):
+            files, _ = self.generate(budget)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(adapter.missing_required(self.out), [])
+        self.assertIn("after an error: draft call limit reached (1): the reply broke the file framing (file closing "
+                      "marker without an open block)", capture.getvalue())
+
+    def test_cli_exits_nonzero_when_no_file_came_from_the_model(self):
+        # Round 1 shipped the bare scaffold with exit 0 during a gateway outage, so the platform saw a success.
+        requirement = self.out / "requirements"
+        requirement.mkdir(parents=True)
+        (requirement / "requirements.yaml").write_text("synthetic: true")
+        (self.out / ".arc").mkdir()
+        self.replies(*[URLError("synthetic outage")] * 5)
+        capture = io.StringIO()
+        with patch.object(adapter, "SCAFFOLD", True), \
+                patch.dict(os.environ, {"OPENAI_API_KEY": SYNTHETIC_KEY}, clear=True), \
+                contextlib.redirect_stderr(capture), contextlib.redirect_stdout(io.StringIO()):
+            code = adapter.main([str(requirement), "--output-dir", str(self.out)])
+        self.assertEqual(code, 1)
+        self.assertEqual(self.transport.call_count, 5)
+        self.assertIn("[oneshot] delivering the last complete version after an error: model stream failed (URLError)",
+                      capture.getvalue())
+        self.assertIn("[oneshot] failed: no application file came from the model", capture.getvalue())
+        self.assertTrue((self.out / "frontend/public/lib/arc.js").is_file())  # the scaffold is still in place
+
     def test_continuation_can_retry_without_leaking_a_failed_version(self):
         budget = adapter.CallBudget()
         prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
@@ -526,10 +587,12 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(totals["failed_calls"], 2)
         self.assertEqual(list(self.root.glob(".oneshot-*")), [])
 
-    def test_a_protocol_error_or_a_spent_draft_allowance_delivers_the_complete_files(self):
+    def test_a_rejected_path_or_a_spent_draft_allowance_delivers_the_complete_files(self):
+        # A broken framing is no longer an error (the complete blocks before it are kept and the draft continues:
+        # test_a_broken_file_framing_keeps_the_complete_blocks_before_it); a path outside the stage still is.
         cut = "=== FILE: frontend/public/app.js ===\n// cut off"
-        cases = ((adapter.CallBudget(), events("=== FILE: a.js ===\nx\n=== FILE: b.js ===\n"),
-                  "unterminated file before next block: a.js"),
+        cases = ((adapter.CallBudget(), events(block("../escape.js", "bad")),
+                  "path escapes the output directory: ../escape.js"),
                  (adapter.CallBudget(draft_limit=2), events(cut, finish="length"),
                   "draft call limit reached (2): the output was cut off inside `frontend/public/app.js`"))
         for budget, continuation, reason in cases:
@@ -647,14 +710,15 @@ class OfflineCase(unittest.TestCase):
         (self.out / ".arc").mkdir()
         (self.out / ".arc" / "runner-events.jsonl").write_text("{}\n")
         self.replies(events(application() + "=== FILE: frontend/public/app.js ===\n// cut off", finish="length"),
-                     events("=== FILE: a.js ===\nx\n=== FILE: b.js ===\n"))
+                     events(block("../escape.js", "bad")))
         capture, output = io.StringIO(), io.StringIO()
         with patch.dict(os.environ, {"OPENAI_API_KEY": SYNTHETIC_KEY}, clear=True), \
                 contextlib.redirect_stderr(capture), contextlib.redirect_stdout(output):
             code = adapter.main([str(requirement), "--output-dir", str(self.out)])
         self.assertEqual(code, 0)
-        self.assertIn("delivering the last complete version after an error: unterminated file before next block",
+        self.assertIn("delivering the last complete version after an error: path escapes the output directory",
                       capture.getvalue())
+        self.assertEqual(list(self.root.rglob("escape.js")), [])
         self.assertIn("[oneshot] wrote 5 files", output.getvalue())
         self.assertEqual(adapter.missing_required(self.out), [])
         self.assertFalse((self.out / "frontend/public/app.js").exists())

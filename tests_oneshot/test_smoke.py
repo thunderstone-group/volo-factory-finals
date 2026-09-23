@@ -16,6 +16,7 @@ from oneshot import main as adapter
 from test_oneshot import SYNTHETIC_KEY, SyntheticStream, block, events
 
 NODE = shutil.which("node") and shutil.which("npm")
+BLANK = ["frontend script error on load (the page is blank for every test): this.flights is not a function"]
 
 SERVER = """// Synthetic local fixture
 const http = require('node:http');
@@ -554,8 +555,9 @@ class SmokeCase(unittest.TestCase):
         self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
         self.assertIn('repair renamed quoted control(s)', budget.smoke['repair']['reason'])
 
-    def repair_with_smoke(self, requirements, draft_js, repaired_js, before, after):
-        """One synthetic draft and repair; the smoke check reports `before` on the draft and `after` on the repair."""
+    def repair_with_smoke(self, requirements, draft_js, repaired_js, before, after, browser=(), out=None):
+        """One synthetic draft and repair; the smoke check reports `before` on the draft and `after` on the repair,
+        and adds browser[0] / browser[1] to the browser diagnostics of the first / second check."""
         draft = app(server()).replace(block('frontend/public/app.js', "console.log('synthetic');"),
                                       block('frontend/public/app.js', draft_js))
         self.replies(events(draft), events(block('frontend/public/app.js', repaired_js)))
@@ -563,13 +565,41 @@ class SmokeCase(unittest.TestCase):
 
         def check(stage, requirements=None, diagnostics=None):
             checks.append(stage)
+            if len(browser) >= len(checks) and diagnostics is not None:
+                diagnostics.append(browser[len(checks) - 1])
             return (before if len(checks) == 1 else after), True
 
         budget = adapter.CallBudget(repair_limit=1)
         with patch.object(adapter, 'smoke_check', side_effect=check):
             adapter.generate(requirements, 'synthetic-model', 'https://synthetic.invalid/v1', SYNTHETIC_KEY,
-                             self.out, budget)
+                             out or self.out, budget)
         return budget
+
+    def test_a_revived_application_is_kept_although_it_loses_quoted_vocabulary(self):
+        # The rename waiver extended: one lost quoted phrase costs a family of tests, a blank page all of them.
+        args = ('Synthetic: the welcome text reads "Have a nice trip".',
+                "document.body.innerHTML='<p>Have a nice trip</p>'; this.flights();",
+                "document.body.innerHTML='<p>Welcome</p>';")
+        budget = self.repair_with_smoke(*args, BLANK, [])
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertEqual(budget.smoke['repair']['waived'], ['repair removed quoted vocabulary (0 -> 1 missing)'])
+        # Unchanged when nothing whole-app was fixed: the guard still rejects the repair.
+        budget = self.repair_with_smoke(*args, ['clicking `Welcome` on screen `#/` throws: synthetic'], [],
+                                        out=self.root / 'guarded')
+        self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertIn('repair removed quoted vocabulary (0 -> 1 missing)', budget.smoke['repair']['reason'])
+
+    def test_a_revived_application_is_kept_although_the_browser_recheck_did_not_run(self):
+        ran, unavailable = {'executed': True, 'actions': []}, {'executed': False, 'unavailable': 'browser'}
+        args = ('Synthetic requirements only', "document.body.innerHTML='<p>Home</p>'; this.flights();",
+                "document.body.innerHTML='<p>Home</p>';")
+        budget = self.repair_with_smoke(*args, BLANK, [], browser=(ran, unavailable))
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertEqual(budget.smoke['repair']['waived'], ['browser recheck unavailable; cannot validate the repair'])
+        budget = self.repair_with_smoke(*args, ['clicking `Home` on screen `#/` throws: synthetic'], [],
+                                        browser=(ran, unavailable), out=self.root / 'guarded')
+        self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertIn('browser recheck unavailable', budget.smoke['repair']['reason'])
 
     def test_a_repair_that_revives_a_dead_application_is_kept_although_it_renames_a_quoted_control(self):
         # Reduced from 09-19 Ctrip: the repair cured a blank page and left one family-level problem, then the rename
@@ -578,10 +608,10 @@ class SmokeCase(unittest.TestCase):
             'Synthetic: the button named "Add return trip" opens the return date.',
             "document.body.innerHTML='<button>Add return trip</button>'; this.flights();",
             "document.body.innerHTML='<p>Add return trip</p><button>Return trip</button>';",
-            ['frontend script error on load (the page is blank for every test): this.flights is not a function'],
-            ['clicking `Return trip` on screen `#/` throws: synthetic'])
+            BLANK, ['clicking `Return trip` on screen `#/` throws: synthetic'])
         self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
         self.assertEqual(budget.smoke['repair']['renamed_controls'], ['add return trip'])
+        self.assertEqual(budget.smoke['repair']['waived'], ['repair renamed quoted control(s): add return trip'])
         self.assertIn('<button>Return trip</button>', (self.out / 'frontend/public/app.js').read_text())
 
     def test_removing_a_decoration_from_a_quoted_name_is_not_a_rename(self):

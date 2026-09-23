@@ -1,6 +1,6 @@
 # One-shot candidate inside VOLO
 
-Last reviewed: 2026-09-22.
+Last reviewed: 2026-09-23.
 
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
@@ -38,34 +38,66 @@ and retains unmentioned files. The prompt excludes dotfiles, node_modules, dist 
 caches; these remain preserved in the delivered tree and cannot be edited by the response.
 Source snapshots are bounded to 256 files / 2 MiB with explicit failure instead of truncation.
 Symlinks in source are rejected; ignored metadata is copied without following links.
-Source or local metadata changes during generation abort publication. No-op upgrades are rejected after path
-normalization. In-place publication uses two renames with rollback, not an atomic directory
-exchange: a process kill between renames may leave the original at a sibling
-`.oneshot-backup-*` path. A failed rollback leaves that backup outside temporary cleanup.
-Gateway redirects are refused.
-The budget permits three completed calls and at most five failed transport attempts; failures do
-not consume a completed-call slot. Generation and repair streams each make at most three attempts before a
-different configured fallback may be selected. Kimi K2.7 Code stays on its selected model and uses
-the provider-required temperature 1.0. Other current model settings are unchanged.
-Permanent HTTP failures (including 402) are not retried. Observed token usage is accumulated
-across all attempts; incomplete usage remains unknown and is not reported as zero cost.
-True prompts, responses, usage and timings are logged with the key redacted.
-During generation, the owned temporary staging directory also holds `progress.json`: phase,
-request hash, byte/event counts and output/reasoning character counts. It contains no prompts,
-response text or credentials and is removed with the temporary directory after completion.
-Missing delivery files or malformed output fail nonzero. There is no model backfill loop.
+Source or local metadata changes during generation abort publication. A no-op upgrade (detected
+after path normalization) is reported and ships the unchanged original. In-place publication uses
+two renames with rollback, not an atomic directory exchange: a process kill between renames may
+leave the original at a sibling `.oneshot-backup-*` path. A failed rollback leaves that backup
+outside temporary cleanup. Gateway redirects are refused.
+
+## Model calls
+
+The default model is `deepseek-v4-flash` (`MODEL`). Completed calls are capped per phase: four
+for the draft (first draft, continuations, redrafts; `ONESHOT_DRAFT_CALLS`) and two for the
+delivery repairs (`ONESHOT_REPAIR_CALLS`); a malformed value stops the CLI before any request.
+Transport failures (cut streams, 408/429/5xx) share one cap of five across both phases and never
+consume a completed call. A call makes at most three attempts on its model; then the rest of the
+run switches to the fallback: `kimi-k2.7-code-highspeed` for flash or any other non-Kimi model,
+`deepseek-v4-flash` for a Kimi model, each request with its own model's parameters (Kimi's
+provider-required temperature is 1.0). `FALLBACK_MODEL` overrides the pairing and an empty value
+disables it. A `content_filter` finish continues the draft on the same fallback, or on the current
+model when the fallback is disabled. Permanent HTTP failures (including 402) are not retried.
+Observed token usage is accumulated across all attempts; incomplete usage remains unknown and is
+not reported as zero cost. True prompts, responses, usage and timings are logged with the key
+redacted; each trace record names its phase. During generation, the owned temporary staging
+directory also holds `progress.json`: phase, request hash, byte/event counts and output/reasoning
+character counts. It contains no prompts, response text or credentials and is removed with the
+temporary directory after completion.
+
+## Drafting and delivery
+
+A `length` cut is continued while the draft allowance lasts: inside a file, the model re-emits
+that file from its beginning; between files, it gets the list of complete files and writes the
+rest. A reply that breaks the file framing (a missing `=== END ===`, a stray or malformed marker)
+keeps the complete blocks before the break and is continued the same way; the rest of that reply
+is dropped. A reply without any usable block (an empty stream whose reasoning used the whole
+output, prose, a break before the first complete file) is a completed call and is sent again
+unchanged; only after a cut between files does a reply that stops without blocks end the draft.
+Partial blocks are never written.
+
+Any error after the stage is set up (a spent allowance, transport failures, a rejected path, a
+crash in the checks) still publishes the stage when it passes the delivery check, and stderr names
+the error: `[oneshot] delivering the last complete version after an error: ...`. An incomplete
+stage fails nonzero. The CLI also exits 1 after publishing when no delivered file came from the
+model, for example the bare scaffold after a gateway outage, or an Evolution original whose patch
+was rejected whole, so the platform sees the failure. There is no model backfill loop.
 
 The delivery check validates manifests, scripts, the backend entry file, nonempty HTML and
 the zero-dependency application contract. With Node/npm available, it builds the frontend,
 starts the backend, checks health and assets, and executes a jsdom crash probe. Requirements
 with explicit UI declarations also receive a deterministic Chromium diagnostic: declared home
 controls, accessible roles, dialog action ambiguity, editor scope and native checkbox behavior.
-It supplies observations to the bounded repair flow; no model-generated test or planning call is
-added. If an accepted repair exposes remaining runtime problems, a remaining call within the same
-three-call global cap can address them. A regressing follow-up restores the previous accepted stage.
-Each repair and whether its browser check actually executed are retained in the trace.
-Missing browser infrastructure is reported separately and cannot approve a previously observed
-repair. These checks are diagnostic; only the unchanged acceptance suite establishes test scores.
+Quoted requirement phrases (backticks, straight or curly double quotes) drive the prompt's
+vocabulary checklist, the vocabulary and exact-name gates and the repair's rename guard; a phrase
+quoted only in backticks that the user types (`fills X with ...`, `enters ...`) is a runtime value
+and is not demanded. The check supplies observations to the bounded repair flow; no
+model-generated test or planning call is added. If an accepted repair exposes remaining runtime
+problems, the remaining repair call can address them. A regressing follow-up restores the
+previous accepted stage. Each repair and whether its browser check actually executed are retained
+in the trace. Missing browser infrastructure is reported separately and cannot approve a previously
+observed repair. A repair that removes a whole-application failure (blank page, crash) is kept even
+when the rename, vocabulary or browser-recheck guard would reject it; the waived guards are listed
+in `smoke.repair.waived`. Control names are compared without leading or trailing symbols. These
+checks are diagnostic; only the unchanged acceptance suite establishes test scores.
 
 The browser helper uses Playwright 1.57.0. It reuses a reachable Node package and browser cache,
 or installs the pinned package and headless Chromium into runtime caches with bounded waits.
@@ -101,4 +133,4 @@ PYTHONPATH=.:tests_oneshot .venv/bin/python -m unittest test_oneshot.OfflineCase
 No official run, real model generation, new Keep/Bookstack score, or quality improvement
 is claimed. Next validation must use a fixed candidate, independent Lite generations,
 and the actual official worker/time-limit environment. Static delivery checks do not
-replace that measurement. The three-call cap is not a monetary budget.
+replace that measurement. The completed-call allowances are not a monetary budget.

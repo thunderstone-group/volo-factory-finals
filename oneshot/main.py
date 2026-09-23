@@ -101,9 +101,9 @@ CONTINUE = ("Your output was cut off inside the file `{path}`. Re-emit that file
             "emitted in full. Use the same `=== FILE: <path> ===` and `=== END ===` framing and emit "
             "nothing else.")
 
-RESUME = ("Your output was cut off between two files. These files are complete and must not be emitted again: "
-          "{done}. Continue with every remaining file the application needs, each as one complete block with the "
-          "same `=== FILE: <path> ===` and `=== END ===` framing, and emit nothing else. Stop after the last file.")
+RESUME = ("{why} These files are complete and must not be emitted again: {done}. Continue with every remaining "
+          "file the application needs, each as one complete block with the same `=== FILE: <path> ===` and "
+          "`=== END ===` framing, and emit nothing else. Stop after the last file.")
 
 REPAIR = ("The application you delivered failed the runner's delivery check before any test ran:\n"
           "{problems}\n\n"
@@ -124,6 +124,14 @@ TOKEN_FIELDS = ("prompt_tokens", "completion_tokens")
 
 class StreamError(RuntimeError):
     """A retryable interrupted or malformed event stream."""
+
+
+class ProtocolError(ValueError):
+    """A reply that breaks the file-block framing; `files` holds the complete blocks before the break."""
+
+    def __init__(self, message, files=()):
+        super().__init__(message)
+        self.files = list(files)
 
 
 class NoModelRedirect(request.HTTPRedirectHandler):
@@ -353,7 +361,8 @@ def resolve_path(out, name):
 
 
 def parse_blocks(text):
-    """Strict line framing; only a nonempty final open block may be continued."""
+    """Strict line framing; only a nonempty final open block may be continued. A break in the framing
+    raises ProtocolError, which carries the complete blocks written before the break."""
     files, current, body, stray = [], None, [], 0
     for line in text.splitlines(keepends=True):
         marker = line.rstrip("\r\n")
@@ -367,30 +376,30 @@ def parse_blocks(text):
                 opening, stray = glued, stray + 1
         if opening:
             if current is not None:
-                raise ValueError("unterminated file before next block: " + current)
+                raise ProtocolError("unterminated file before next block: " + current, files)
             current = opening.group(1).strip()
             if not current:
-                raise ValueError("empty file block path")
+                raise ProtocolError("empty file block path", files)
             body = []
         elif marker.rstrip(" \t") == "=== END ===":
             if current is None:
-                raise ValueError("file closing marker without an open block")
+                raise ProtocolError("file closing marker without an open block", files)
             content = "".join(body)
             if not content.strip():
-                raise ValueError("empty file block: " + current)
+                raise ProtocolError("empty file block: " + current, files)
             # A path emitted twice is the model correcting itself (qwen3.7-plus re-emitted seed.js and a
             # 12306 run scored 0/135 on the old ValueError): the later block wins.
             files[:] = [item for item in files if item["path"] != current]
             files.append({"path": current, "content": content.rstrip("\r\n") + "\n"})
             current, body = None, []
         elif marker.startswith(("=== FILE", "=== END")):
-            raise ValueError("malformed file marker")
+            raise ProtocolError("malformed file marker", files)
         elif current is not None:
             body.append(line)
         elif line.strip():
             stray += 1  # prose between blocks is ignored; an 18-minute draft must not die on a sentence
     if not files and current is None:
-        raise ValueError("no file blocks in the response")
+        raise ProtocolError("no file blocks in the response")
     if stray:
         print(f"[oneshot] ignored {stray} line(s) outside file blocks", file=sys.stderr)
     return files, [current] if current is not None else []
@@ -1050,13 +1059,24 @@ def delivery_complete(stage):
         return False
 
 
+def salvage_blocks(content):
+    """parse_blocks that keeps the complete blocks before a break in the framing: (blocks, open, break or None)."""
+    try:
+        batch, missing = parse_blocks(content)
+        return batch, missing, None
+    except ProtocolError as exc:
+        return exc.files, [], str(exc)
+
+
 def draft_application(stage, files, messages, model, base, key, budget, template):
     """Write the model's file blocks into the stage and return the conversation that produced them.
 
     A reply cut at `length` is continued while the draft allowance lasts: inside a file, the model re-emits
     that file from its beginning; between files, it is told which files are complete and writes the rest. A
-    reply without file blocks (no content because the reasoning used the whole output, or a prose excuse) is
-    sent again unchanged, except after a cut between files, where a normal stop means nothing was left."""
+    reply that breaks the file framing keeps the complete blocks before the break and is continued the same
+    way. A reply without file blocks (no content because the reasoning used the whole output, or a prose
+    excuse) is sent again unchanged, except after a cut between files, where a normal stop means nothing was
+    left."""
     emitted, request, history, pending, reason = set(), list(messages), None, None, None
     while True:
         if budget.exhausted():
@@ -1083,12 +1103,17 @@ def draft_application(stage, files, messages, model, base, key, budget, template
             reason = "the reply has no file blocks"
             print(f"[oneshot] {reason}; asking again", file=sys.stderr)
             continue
-        if finish == "stop" and template is None and parse_blocks(content)[1]:
+        batch, missing, broken = salvage_blocks(content)
+        if not broken and missing and finish == "stop" and template is None:
             # The model stopped on its own but forgot the closing marker of the last file:
             # the content is whole, only the framing is missing. Close it rather than lose the draft.
             print("[oneshot] closing an unterminated final block at finish_reason=stop", file=sys.stderr)
             content = content.rstrip("\r\n") + "\n=== END ===\n"
-        batch, missing = parse_blocks(content)
+            batch, missing, broken = salvage_blocks(content)
+        if broken and not batch:
+            reason = f"the reply broke the file framing before any complete file ({broken})"
+            print(f"[oneshot] {reason}; asking again", file=sys.stderr)
+            continue
         for name in [item["path"] for item in batch] + missing:
             resolve_path(stage, name)
             if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
@@ -1104,20 +1129,27 @@ def draft_application(stage, files, messages, model, base, key, budget, template
             write_one(stage, item)
             files.append(item)
         cut = resolve_path(stage, missing[0]).relative_to(stage.resolve()).as_posix() if missing else None
-        if pending and pending not in {item["path"] for item in batch} and cut != pending:
+        if not broken and pending and pending not in {item["path"] for item in batch} and cut != pending:
             raise ValueError("continuation did not complete file: " + pending)
         history = request + [{"role": "assistant", "content": content}]
-        if finish != "length":
+        if finish != "length" and not broken:
             if missing:
                 raise ValueError("unterminated file block: " + missing[0])
             return history
+        done = ", ".join(f"`{item['path']}`" for item in files)
         pending = cut
-        if pending:
+        if broken:
+            # A missing END, a stray or malformed marker used to discard the whole draft. The blocks before the
+            # break are written; everything after it is lost, and the model writes the rest.
+            reason = f"the reply broke the file framing ({broken})"
+            ask = RESUME.format(why=f"Your output broke the file framing ({broken}); everything after that point "
+                                    f"was discarded.", done=done)
+        elif pending:
             reason = f"the output was cut off inside `{pending}`"
             ask = CONTINUE.format(path=pending)
         else:
             reason = "the output was cut off between two files"
-            ask = RESUME.format(done=", ".join(f"`{item['path']}`" for item in files))
+            ask = RESUME.format(why="Your output was cut off between two files.", done=done)
         print(f"[oneshot] {reason}; continuing", file=sys.stderr)
         request = history + [{"role": "user", "content": ask}]
 
@@ -1586,9 +1618,20 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         budget.smoke["problems_after"] = list(after)
         if after_diagnostics:
             budget.smoke["browser_after"] = after_diagnostics
-        if any(r.get("executed") for r in diagnostics) and not any(
-                r.get("executed") for r in after_diagnostics):
-            raise ValueError("browser recheck unavailable; cannot validate the repair")
+        # A repair that brought a blank or dead application back is kept even when a guard below would reject
+        # it: the rename guard once shipped the blank page instead (09-19 Ctrip, 0/125). A waived guard is
+        # recorded in smoke.repair.waived.
+        revived = any(_fatal(p) for p in smoke_before) and not any(_fatal(p) for p in after)
+        waived = []
+
+        def guard(failed, reason):
+            if failed and not revived:
+                raise ValueError(reason)
+            if failed:
+                waived.append(reason)
+
+        guard(any(r.get("executed") for r in diagnostics) and not any(r.get("executed") for r in after_diagnostics),
+              "browser recheck unavailable; cannot validate the repair")
         improved = not any(_fatal(p) for p in after) and (
             not after or any(_fatal(p) for p in smoke_before) or len(after) < len(smoke_before))
         if not improved:
@@ -1599,8 +1642,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             # and the six-fault draft shipped, 9/34). Same or more problems → the original stays.
             raise ValueError("still failing after repair: " + "; ".join(after))
         _, missing_after = vocabulary_gaps(stage, requirements)
-        if missing_after > missing_before:
-            raise ValueError(f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
+        guard(missing_after > missing_before,
+              f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
         # A literal button can become a data-driven menu entry. Successful activation
         # proves the name still exists even when this static HTML scan cannot resolve it.
         observed_after = {re.sub(r"\s+", " ", action["name"]).strip().lower()
@@ -1611,18 +1654,17 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         # and that repair must not count as a rename.
         present = {_bare_name(name) for name in control_names(stage) | observed_after}
         renamed = sorted(name for name in pinned_before if _bare_name(name) not in present)
-        if renamed and not (any(_fatal(p) for p in smoke_before) and not any(_fatal(p) for p in after)):
-            # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
-            # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).
-            # A repair that brought a blank or dead application back is kept anyway: the veto once shipped the
-            # blank page instead (09-19 Ctrip, 0/125).
-            raise ValueError("repair renamed quoted control(s): " + ", ".join(renamed[:8]))
+        # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
+        # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).
+        guard(bool(renamed), "repair renamed quoted control(s): " + ", ".join(renamed[:8]))
         for item in batch:
             files[:] = [f for f in files if f["path"] != item["path"]] + [item]
         budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch],
                                   "vocabulary_missing_after": missing_after}
         if renamed:
             budget.smoke["repair"]["renamed_controls"] = renamed
+        if waived:
+            budget.smoke["repair"]["waived"] = waived
     except Exception as exc:
         # Keep the original delivery: a half-applied fix could be worse than the known state.
         shutil.rmtree(stage)
@@ -1691,6 +1733,11 @@ def main(argv=None):
         print(("[oneshot] failed: " + str(exc)).replace(key, "[REDACTED]"), file=sys.stderr)
         return 1
     else:
+        if not files:
+            # Only what was already in place shipped (the bare scaffold after a gateway outage): not the
+            # model's work, and the platform must see this run fail.
+            print("[oneshot] failed: no application file came from the model", file=sys.stderr)
+            return 1
         print(f"[oneshot] wrote {len(files)} files in {time.monotonic() - started:.1f}s")
         return 0
     finally:
