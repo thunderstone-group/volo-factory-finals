@@ -932,3 +932,12 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
   CNY 100 during the probe, most likely the practice voucher's automatic top-up.
 - Delivery-never-zero round 3 dispatched: keep the complete blocks of a cut stream and continue like finish=length.
 - Evidence: docs/evidence/2026-09-23-practice-probe/ (status, per-call analysis and billed requests per run).
+
+## 2026-09-23 12:55 — Delivery-never-zero round 3 merged
+
+- PR #54 merged (071fdd0): a cut draft stream that already holds complete file blocks is treated like a length cut
+  (blocks written, continuation from the draft allowance; the attempt still counts as a failed transport attempt).
+  Main-session acceptance: hidden cases pass; one-shot 135 OK / 1 skipped; legacy 226 OK / 12 skipped. The
+  executor's fake-gateway subprocess run (seed.js complete, app.js cut without [DONE]) delivered the whole app.
+- Known intermittent test: test_smoke …rejected_when_the_app_was_never_broken_whole fails occasionally under load,
+  also on the older code (fixture timing, not product behavior).
