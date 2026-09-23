@@ -874,3 +874,18 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
   criteria, stage gates, evidence rules, decisions, iteration log). docs/README.md and AGENTS.md
   now route new sessions through the roadmap after the handoff.
 - No model calls, uploads or runs. Current stage: pre-opening; all workstreams not started.
+
+## 2026-09-23 10:05 — Consolidated into main; delivery-never-zero and scenario self-check dispatched
+
+- PR #44 merged (merge commit 9700ab5): main now carries the lite-first candidate v24, the 09-23 review,
+  the preliminary rules and the roadmap. Both deterministic suites were green on the branch before merging
+  (one-shot 110 OK / 1 skipped; legacy 226 OK / 12 skipped).
+- Owner confirmed the roadmap decisions at 09:38: target the best single formal submission, build the
+  scenario self-check and scenario-driven repair, default model deepseek-v4-flash with Kimi HighSpeed as
+  transport fallback. VOLO-AI is treated as the captain account until the first formal submission verifies it.
+- Two executors started from main in their own worktrees: delivery-never-zero (feat/delivery-never-zero)
+  and scenario-check (feat/scenario-check). Both deliver PRs for main-session acceptance.
+- The scenario self-check's calibration set is split: BookStack replays (29) are open to the executor;
+  Keep replays (24, 10 of them full score) are held out for acceptance.
+- The local image built from the official runner Dockerfile has no PyYAML, so the scenario parser is
+  standard-library only.
