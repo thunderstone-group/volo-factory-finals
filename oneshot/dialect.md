@@ -95,7 +95,9 @@ editing. Native input semantics apply immediately; live filtering must not wait 
   follow those exactly; do not append "logo" to an explicitly required brand name.
 - An explicit role is part of the contract. Do not override a required native button with role=option
   merely because it appears in a listbox. Similarly, keep a required textbox as a textbox.
-- Keep any explicitly requested root attributes.
+- Keep any explicitly requested root attributes. Also expose each record state on a visible DESCENDANT
+  element inside the card whose `title` is the state word (`<span title="Starred">`): suites read
+  `article >> [title="Starred"]`.
 - Toggle buttons carry `aria-pressed` reflecting the state.
 - Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
   header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
