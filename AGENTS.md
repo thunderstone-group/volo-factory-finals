@@ -47,8 +47,9 @@ names the current branch or candidate.
 Self-checks are diagnostic, including a captured self-check: it reports an observed ambiguity and
 never decides a verification. Only an explicitly supplied calibrated acceptance suite
 may populate `verified_requirements`; official scores remain a separate result.
-The model-generated browser probe stays opt-in in `harness_lab/` and never becomes a
-default second model call. Do not merge a new experiment by silently enabling it.
+The legacy model-generated browser probe stays opt-in in `harness_lab/`. The scenario self-check's
+one translation call per task (`oneshot/scenario_translate.py`, cached by requirements hash) is part of
+the default repair loop since roadmap 4.3. Do not merge a new experiment by silently enabling it.
 
 Use the organizer's configured model gateway for competition model calls. Never embed API keys.
 Treat official requirements and evaluator files as read-only. Do not optimize by editing tests,

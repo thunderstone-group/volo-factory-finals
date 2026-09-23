@@ -699,7 +699,7 @@ class SmokeCase(unittest.TestCase):
         first, second = budget.smoke["rounds"]
         self.assertFalse(first["accepted"])
         self.assertEqual(first["lost"], ["REQ-1"])
-        self.assertIn("the change broke 1 passing scenario(s): REQ-1", first["reason"])
+        self.assertIn("the change broke 1 passing scenario(s): REQ-1, and fixed only 1", first["reason"])
         self.assertTrue(second["accepted"], second)
         self.assertEqual(calls, [None, None, {"REQ-1"}, None])  # the lost scenario was rechecked once
         ask = budget.attempts[2]["messages"][-1]["content"]
@@ -708,6 +708,21 @@ class SmokeCase(unittest.TestCase):
         # The discarded reply never enters the conversation: the model sees the files as they are.
         self.assertEqual(len(budget.attempts[2]["messages"]), len(budget.attempts[1]["messages"]))
         self.assertEqual((self.out / "frontend/public/app.js").read_text(), "const one = 1; const two = 2;\n")
+
+    def test_a_repair_that_gains_three_scenarios_per_lost_one_is_kept(self):
+        # Reduced from the official v24 router fix: 9 -> 28 passing scenarios, two lost that the broken router passed
+        # by accident. The lost one is then a failing scenario of the next round.
+        self.draft_js("const zero = 0;", "const a = 1; const b = 2; const c = 3;", "const a = 1; const b = 2; const c = 3; const zero = 0;")
+        self.scenarios({"REQ-0": lambda t: "zero" in t, "REQ-A": lambda t: "a = 1" in t,
+                        "REQ-B": lambda t: "b = 2" in t, "REQ-C": lambda t: "c = 3" in t})
+        files, budget = self.generate()
+        first, second = budget.smoke["rounds"]
+        self.assertTrue(first["accepted"], first)
+        self.assertEqual((first["gained"], first["lost"]), (["REQ-A", "REQ-B", "REQ-C"], ["REQ-0"]))
+        self.assertEqual(first["reason"], "3 more scenario(s) pass, 1 lost")
+        self.assertEqual(second["failing"], ["REQ-0"])
+        self.assertTrue(second["accepted"], second)
+        self.assertEqual(budget.smoke["scenarios_after"]["counts"], {"pass": 4})
 
     def test_a_lost_scenario_that_passes_on_the_recheck_does_not_block_the_repair(self):
         self.draft_js("const one = 1;", "const one = 1; const two = 2;")
@@ -765,6 +780,9 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual([r["accepted"] for r in budget.smoke["rounds"]], [False, False, False])
         self.assertTrue(all(r["reason"] == "no failing scenario passes after the change" for r in budget.smoke["rounds"]))
         self.assertEqual(budget.smoke["stopped"], "3 repairs in a row were discarded")
+        # The next request says what the discarded change left failing, as the check observed it.
+        self.assertIn("after it REQ-1 still failed: synthetic observation for REQ-1",
+                      budget.attempts[2]["messages"][-1]["content"])
         self.assertEqual((self.out / "frontend/public/app.js").read_text(), "const zero = 0;\n")
 
     def test_the_scenario_translation_call_is_on_the_ledger(self):

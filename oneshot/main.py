@@ -43,6 +43,7 @@ REPAIR_CALLS = 6  # Completed repair calls; the spend limit below usually ends t
 REPAIR_CNY = 3.0  # Repair spend per task in CNY: the repair calls plus the scenario translation (roadmap 4.3).
 REPAIR_REJECTIONS = 3  # Consecutive discarded repairs before the loop gives up.
 REPAIR_SHOWN = 40  # Failing scenarios listed in one repair request.
+LOSS_RATIO = 3  # A repair that loses passing scenarios is kept only when it gains this many per loss.
 # CNY per million tokens (input, cache-hit input, output), from the gateway catalogue (`arcbench models`, 09-23).
 PRICES = {"deepseek-v4-flash": (3.0, 0.1, 9.0), "kimi-k2.7-code-highspeed": (13.0, 2.6, 54.0)}
 MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
@@ -402,7 +403,7 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None)
             budget.progress("completed" if record["status"] == "completed" else "call_failed",
                             record, force=True)
         if retryable and salvage is not None and record["content"] and salvage(record["content"]):
-            # The stream broke off after complete files (the gateway cuts one stream at about 1200 s; a Ctrip
+            # The stream broke off after complete files (the gateway cuts one stream at about 1200 s; a large-task
             # draft needed 1101 s): hand them over rather than redraft from scratch into the same wall. The
             # attempt stays a failed one on the ledger: billed, usage unknown.
             print(f"[oneshot] call {record['call']} was cut ({record['error_type']}) after "
@@ -463,7 +464,7 @@ def parse_blocks(text):
             if not content.strip():
                 raise ProtocolError("empty file block: " + current, files)
             # A path emitted twice is the model correcting itself (qwen3.7-plus re-emitted seed.js and a
-            # 12306 run scored 0/135 on the old ValueError): the later block wins.
+            # large-task run scored 0/135 on the old ValueError): the later block wins.
             files[:] = [item for item in files if item["path"] != current]
             files.append({"path": current, "content": content.rstrip("\r\n") + "\n"})
             current, body = None, []
@@ -552,8 +553,8 @@ def _free_port():
 
 def _check_syntax(stage, node, problems):
     """`node --check` every frontend script, before anything is served. A file that does not parse is
-    dropped whole by the browser, so the scaffold renders its empty defaults on every screen (round 23
-    Prestashop: one missing parenthesis on app.js:12, 0/86). The DOM probe sees the same error but
+    dropped whole by the browser, so the scaffold renders its empty defaults on every screen (one practice
+    run: one missing parenthesis on app.js:12, 0/86). The DOM probe sees the same error but
     without a location, and a repair told only "Unexpected token ';'" did not find the line in 65 KB.
     Needs neither jsdom nor the network."""
     root = stage / "frontend"
@@ -743,7 +744,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
                       footer: q('footer, [role="contentinfo"]') };
   // Click walk: visit every hash route reachable from `/` (bounded) and click every button once,
   // recording uncaught exceptions. A handler that throws leaves the suite's next step waiting
-  // for a result that never renders (round 20 Prestashop: "Add to cart" threw on the product page
+  // for a result that never renders (one practice run: "Add to cart" threw on the product page
   // and 17 checkout tests waited for the dialog). jsdom's own gaps are not the app's errors.
   const loadErrors = errors.slice();  // what the page threw while loading; the walk's exceptions are reported apart
   const clickErrors = [];
@@ -806,7 +807,7 @@ def _check_dom(stage, port, problems, requirements=None):
     """Load `/` in jsdom with scripts running: a frontend that throws on load or renders no text
     scores zero on every test, and no HTTP check can see it. When the requirement describes a
     header / navigation / footer, the first screen must render that landmark too: a home screen
-    that skips the shared layout loses every header and navigation test (round 15 StackOverflow,
+    that skips the shared layout loses every header and navigation test (one practice run,
     1/66). Skips silently when jsdom cannot be installed (offline) so the check never blocks
     delivery on its own account."""
     node, npm = shutil.which("node"), shutil.which("npm")
@@ -830,7 +831,7 @@ def _check_dom(stage, port, problems, requirements=None):
     except subprocess.TimeoutExpired:
         # The probe's own timeout is the app's fault, not a gap: a script that never returns (a loop waiting
         # on state, a render that re-triggers itself) keeps the page from settling, and in the runner every
-        # test then times out at its first step (round 23 Prestashop: 0/86, all "Visit Homepage").
+        # test then times out at its first step (one practice run: 0/86, all at the home page).
         problems.append(f"loading / in a DOM did not finish within {DOM_PROBE_SECONDS} s: a script on the page never "
                         f"returns (a loop that waits for state, a render that re-triggers itself, synchronous work "
                         f"on every timer tick), so the page never settles and every test times out at its first "
@@ -1057,7 +1058,7 @@ READONLY = re.compile(r"<(?:input|textarea)\b[^>]*\breadonly\b|\.readOnly\s*=\s*
 
 def readonly_gaps(stage):
     """A text field the suite types into must accept `fill()`; a readonly input (a picker trigger)
-    makes every fill time out (round 20 Ctrip: 出发城市 / 到达城市 readonly, 35 fills + 64 cascades)."""
+    makes every fill time out (one practice run: two readonly city fields, 35 fills + 64 cascades)."""
     gaps = []
     public = Path(stage) / "frontend" / "public"
     for path in sorted(public.rglob("*")) if public.is_dir() else []:
@@ -1168,7 +1169,7 @@ def draft_application(stage, files, messages, model, base, key, budget, template
             finish = "length"  # the complete blocks of a broken-off stream are kept and continued like a truncation
         if finish == "content_filter":
             # The gateway's output filter ends a stream the way a truncation does, with the partial
-            # draft intact (r18a Ctrip: 200 KB of app.js, then a whole-task zero). Continue it like a
+            # draft intact (one practice run: 200 KB of app.js, then a whole-task zero). Continue it like a
             # `length` cut, on the fallback model: at temperature 0 the same model re-emits the tokens
             # that tripped the filter.
             current = budget.model or model
@@ -1305,10 +1306,10 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     return files, budget.summary()
 
 
-# A phrase in paired `backticks` (how the Lite requirements name controls: 56 of 81 BookStack names never appear in
+# A phrase in paired `backticks` (how the Lite requirements name controls: 56 of 81 names of one task never appear in
 # double quotes), or in straight or curly double quotes.
 QUOTED = re.compile(r'`([^`\n]{2,80})`|[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
-# What precedes a value the user types: "fills `Name` with `Shelf 4.3.1`", "enters `user@example.com`". The field
+# What precedes a value the user types: "fills `Name` with `Item 4.3.1`", "enters `user@example.com`". The field
 # between fill and with stays in one clause; its quoted name may hold punctuation (`Write your page content here...`).
 TYPED = re.compile(r"(?:(?<![\w-])fill(?:s|ed|ing)?\b(?:[^.;\n`\"]|`[^`\n]*`|\"[^\"\n]*\")*\bwith"
                    r"|\benter(?:s|ed|ing)?|\btyp(?:es|ed|ing))\s+$", re.I)
@@ -1411,7 +1412,7 @@ def quoted_control_phrases(requirements):
 def exact_name_gaps(stage, requirements):
     """A quoted control name must be rendered as a WHOLE name. A phrase that appears in the source only
     inside a longer token (\u2022 Notes, Take a note..., Archive note) fails the suite's anchored
-    /^Name$/i match (Lite Keep 5/32: 22 of 27 losses cascaded from one decorated name). Only phrases
+    /^Name$/i match (one Lite run, 5/32: 22 of 27 losses cascaded from one decorated name). Only phrases
     whose requirement context names a control are checked. Static, no model."""
     phrases = quoted_control_phrases(requirements)
     if not phrases:
@@ -1603,7 +1604,7 @@ def aria_collision_gaps(stage, requirements=None):
         seen.add(label)
         lines.append(f'{"radio option" if label.startswith("radio ") else "button aria-label"} "{label.removeprefix("radio ")}" shares {"/".join(shared)} with a field label')
     out = []
-    # The requirement pins a quoted name; the rename must land on the OTHER label. Round 25 12306 a: told only
+    # The requirement pins a quoted name; the rename must land on the OTHER label. One practice run: told only
     # "rename", the repair renamed the quoted "From"/"To" to "Origin city"/"Destination city" and lost 45 tests.
     advised = []
     for short, long in nested:
@@ -1759,6 +1760,14 @@ def _checked(scenario, limit=700):
     return joined if len(joined) <= limit else joined[:limit] + " ..."
 
 
+def _still_failing(after, targeted, shown=5):
+    """What the discarded change left of the scenarios it was asked to fix, as the check observed it."""
+    if after is None or after.get("report") is None:
+        return ""
+    left = [s for s in _scenarios(after, "fail") if s["id"] in targeted][:shown]
+    return "".join(f"; after it {s['id']} still failed: {(s.get('observation') or '')[:300]}" for s in left)
+
+
 def repair_request(state, discarded=None):
     """The repair message: what breaks the application as a whole, else the failing scenarios with what the check did
     and saw, the passing scenarios to keep, and the other findings as hints."""
@@ -1789,9 +1798,9 @@ def repair_request(state, discarded=None):
 
 def judge(before, after, stage, requirements, pinned):
     """(accepted, reason, detail) for a repaired stage against the version before it (roadmap 4.3). A repair is kept
-    when it brings a broken application back (whatever else it did), or when at least one more scenario passes, none
-    that passed is lost (a lost one is rechecked once for flakiness), no static gate newly flags, no quoted phrase
-    disappears and no control name the requirement quotes is renamed."""
+    when it brings a broken application back (whatever else it did), or when at least one more scenario passes, it
+    gains LOSS_RATIO scenarios for every passing one it loses (a lost one is rechecked once for flakiness), no static
+    gate newly flags, no quoted phrase disappears and no control name the requirement quotes is renamed."""
     detail = {}
     if after["fatal"]:
         return False, "the application is still broken as a whole: " + "; ".join(after["fatal"])[:500], detail
@@ -1805,7 +1814,7 @@ def judge(before, after, stage, requirements, pinned):
     observed = {re.sub(r"\s+", " ", action["name"]).strip().lower()
                 for report in after["browser"] if report.get("executed")
                 for action in report.get("actions", []) if action.get("name") and "observation" not in action}
-    # Names compare without their decoration: dropping the `+ ` of `+ 添加返程` is not a rename.
+    # Names compare without their decoration: dropping the `+ ` of `+ Add return` is not a rename.
     present = {_bare_name(name) for name in control_names(stage) | observed}
     renamed = sorted(name for name in pinned if _bare_name(name) not in present)
     if renamed:
@@ -1813,7 +1822,7 @@ def judge(before, after, stage, requirements, pinned):
         guards.append("the change renamed quoted control(s): " + ", ".join(renamed[:8]))
     if before["fatal"]:
         # A blank or dead application that works again is kept: a rename guard once shipped the blank page instead
-        # (09-19 Ctrip, 0/125). The waived guards stay on the record.
+        # (09-19, a large task at 0/125). The waived guards stay on the record.
         if guards:
             detail["waived"] = guards
         return True, "the application works again", detail
@@ -1830,18 +1839,23 @@ def judge(before, after, stage, requirements, pinned):
                 if scenario["id"] in again:
                     scenario["status"] = "pass"
         lost -= again
+    gained = passing(after) - passing(before)
+    detail["gained"] = sorted(gained)
     if lost:
         detail["lost"] = sorted(lost)
         errors = [s for s in _scenarios(after, "error") if s["id"] in lost]
         what = "the scenario recheck could not run for" if len(errors) == len(lost) else "the change broke"
-        return False, f"{what} {len(lost)} passing scenario(s): " + ", ".join(sorted(lost)[:12]), detail
-    gained = passing(after) - passing(before)
-    detail["gained"] = sorted(gained)
+        broke = f"{what} {len(lost)} passing scenario(s): " + ", ".join(sorted(lost)[:12])
+        # A structural fix can expose failures that the broken version passed by accident: the official v24 router fix
+        # took the self-check from 9 to 28 passing scenarios and lost two that passed only because every detail link
+        # rendered the list (the public suite fails them on the fixed app too). Kept when it gains three per loss.
+        if len(gained) < LOSS_RATIO * len(lost):
+            return False, broke + (f", and fixed only {len(gained)}" if gained else ", and fixed none"), detail
     if not gained:
         return False, "no failing scenario passes after the change", detail
     if guards:
         return False, "; ".join(guards), detail
-    return True, f"{len(gained)} more scenario(s) pass", detail
+    return True, f"{len(gained)} more scenario(s) pass" + (f", {len(lost)} lost" if lost else ""), detail
 
 
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
@@ -1869,14 +1883,14 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 budget.smoke["repair"] = "skipped: " + stop
             break
         ask = repair_request(state, discarded)
-        # Only names the requirement quotes as controls are pinned (12306 r26b: pinning every quoted phrase rejected
+        # Only names the requirement quotes as controls are pinned (one practice run: pinning every quoted phrase rejected
         # a repair for "renaming" messages and headings, and the collision-laden draft shipped).
         pinned = control_names(stage) & quoted
         backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
         shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
         record = {"round": len(rounds) + 1, "fatal": len(state["fatal"]),
                   "failing": [s["id"] for s in _scenarios(state, "fail")], "accepted": False}
-        calls, started, replied = len(budget.attempts), time.monotonic(), False
+        calls, started, replied, after = len(budget.attempts), time.monotonic(), False, None
         try:
             fixed, _, finish = stream_completion(conversation + [{"role": "user", "content": ask}],
                                                  model, base, key, budget, tries=3)
@@ -1900,7 +1914,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             after = assess(stage, requirements, scaffold)
             account_translation(budget, after["report"])
             accepted, reason, detail = judge(state, after, stage, requirements, pinned)
-            record.update(detail, reason=reason)
+            record.update(detail, reason=reason, scenarios=scenario_summary(after["report"]))
             if after["browser"]:
                 record["browser_after"] = after["browser"]
             if not accepted:
@@ -1909,15 +1923,14 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 files[:] = [f for f in files if f["path"] != item["path"]] + [item]
             conversation += [{"role": "user", "content": ask}, {"role": "assistant", "content": fixed}]
             state, discarded = after, None
-            record.update(accepted=True, files=[item["path"] for item in batch],
-                          scenarios=scenario_summary(after["report"]))
+            record.update(accepted=True, files=[item["path"] for item in batch])
         except Exception as exc:
             # Keep the version before this repair: a half-applied fix could be worse than the known state.
             shutil.rmtree(stage)
             shutil.copytree(backup, stage, symlinks=True)
             record["reason"] = str(exc)[:600]
             if replied:  # a transport failure changed nothing the model should hear about
-                discarded = record["reason"]
+                discarded = record["reason"] + _still_failing(after, record["failing"])
         finally:
             shutil.rmtree(backup, ignore_errors=True)
             record["seconds"] = round(time.monotonic() - started, 1)

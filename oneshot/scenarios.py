@@ -526,7 +526,7 @@ _COMMA = "\ue000"
 
 
 def _clauses(text):
-    """Split a sentence into clauses at `,` `;` `and` `then`, keeping short enumerations (`a shelf, book, or page view`)."""
+    """Split a sentence into clauses at `,` `;` `and` `then`, keeping short enumerations (`a folder, file, or page view`)."""
     text = _ENUM.sub(lambda m: m.group(0).replace(",", _COMMA), text)
     return [part.strip().replace(_COMMA, ",") for part in _SPLIT.split(text) if part and part.strip()]
 
@@ -639,7 +639,7 @@ def _leftover(pre, post, then=False):
 
 
 def _target(phrase, names, default_kind, allow_scope=True, then=False):
-    """`the unique link or button named «0» in the shelf list` -> target dict and unique flag."""
+    """`the unique link or button named «0» in the item list` -> target dict and unique flag."""
     phrase = phrase.strip()
     scope = None
     if allow_scope:
@@ -957,8 +957,8 @@ def _singular(word):
 def _page_key(phrase):
     """A page phrase -> list of alternative keys (frozensets of words); None when it is not a page.
 
-    `the shelf details page` -> [{shelf, detail}]; `the homepage` -> [{home}];
-    `a supported shelf, book, chapter, or page view` -> one key per entity;
+    `the folder details page` -> [{folder, detail}]; `the homepage` -> [{home}];
+    `a supported folder, file, chapter, or page view` -> one key per entity;
     `a page where the navigation bar is visible` -> [] (any page); `a non-homepage page` -> ['non-home'].
     """
     text = phrase.strip().lower()
@@ -990,7 +990,7 @@ def _page_key(phrase):
                 continue
             key.add(_TYPE_WORDS.get(word, _TYPE_WORDS.get(_singular(word), _singular(word))))
         keys.append(frozenset(key))
-    if len(keys) > 1:  # "a shelf, book, or page view": the last word types every alternative
+    if len(keys) > 1:  # "a folder, file, or page view": the last word types every alternative
         types = {w for w in keys[-1] if w in _TYPE_WORDS.values()}
         keys = [frozenset(k | types) if not (k & set(_TYPE_WORDS.values())) else k for k in keys]
     return keys or None
@@ -1082,7 +1082,7 @@ def _assertion(phrase, names, lists, clause, scope=None):
     text = re.sub(r"^(?:and|then|also|where|with|that|which|while)\s+", "", text)
     text = re.sub(r"^(?:the )?(?:system|application|app|page|ui|site|user|screen)\s+(?:still\s+|now\s+|then\s+)?", "", text)
     if not _TOKEN.search(text) and not _LIST_TOKEN.search(text):
-        return []  # narrative ("the system persists the shelf"): nothing named to check
+        return []  # narrative ("the system persists the folder"): nothing named to check
     after = None
     match = _TEMPORAL.search(text)
     if match:
@@ -1581,8 +1581,8 @@ class _Planner:
     def _sibling_prefix(self, requirement, location, keys, end):
         """GIVEN on a page the chain does not reach: the opening activations of a sibling that goes there.
 
-        `The user is on the shelf creation page` + sibling `activates New Shelf, fills Name, ...` with the
-        same dependencies -> activate `New Shelf`. The page's type word must occur in the sibling's or the
+        `The user is on the folder creation page` + sibling `activates New Folder, fills Name, ...` with the
+        same dependencies -> activate `New Folder`. The page's type word must occur in the sibling's or the
         parent folder's name, so an unrelated sibling is never borrowed."""
         parent = self.by_id.get(requirement["parent"]) or {"name": ""}
         wanted_types = set().union(*[set(k) & _TYPES for k in keys]) if keys else set()
@@ -1730,7 +1730,7 @@ class _Planner:
         return kept
 
     def _substitute(self, requirement, ops):
-        """Prerequisite activations of a sibling entity (`Shelf 4.2.1`) use this requirement's seed of that kind."""
+        """Prerequisite activations of a sibling entity (`Item 4.2.1`) use this requirement's seed of that kind."""
         seeds = {}
         for name in _seeds(requirement):
             kind = _kind(name)
@@ -1764,7 +1764,7 @@ class _Planner:
         return done
 
     def _resolve_scopes(self, ops):
-        """An unquoted scope phrase becomes the quoted container it names (`the shelf list` -> `Shelf list`), else a
+        """An unquoted scope phrase becomes the quoted container it names (`the item list` -> `Item list`), else a
         soft role scope when it names a role (`the visible suggestions listbox`), else it is dropped."""
         for op in ops:
             target = op.get("target")
