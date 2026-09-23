@@ -123,7 +123,7 @@
   "usage_cost_total_cny": 7.16571,
   "estimated_failed_calls_total_cny": 0.974271,
   "meter_cost_total_cny": 7.16571,
-  "meter_log": "meter-requests-141536.json",
+  "meter_log": "meter-requests-144611.json",
   "notes": {
     "keep-b": "flash call 1 cut at 13:58:54 by the same host network drop, two instant URLErrors, then the Kimi HighSpeed fallback drafted and repaired; excluded from the flash means",
     "keep-a": "lost REQ-2.8.1 / 2.8.3: title=\"Pinned\" on the article root only; the record-state rule was restored in bab46f1",

@@ -1,8 +1,8 @@
 {
-  "meter_log": "meter-requests-141536.json",
-  "meter_log_latest_record_epoch": 1790144126,
+  "meter_log": "meter-requests-144611.json",
+  "meter_log_latest_record_epoch": 1790145955,
   "method": "match (model, input_tokens, output_tokens) exactly; the meter log was saved by the model-pair run",
-  "billed_total_cny": 11.452649,
+  "billed_total_cny": 14.373115,
   "rows": [
     {
       "sample": "gens/bookstack-a",
@@ -216,7 +216,10 @@
       "prompt_tokens": 21991,
       "completion_tokens": 137298,
       "cached_tokens": 20480,
-      "match": "completed call not in this meter log (billed later or log older than the call)"
+      "meter_request_id": "2026092314121190454830293061",
+      "meter_amount_cny": 1.242263,
+      "meter_cached_tokens": 20480,
+      "match": "model + exact tokens"
     },
     {
       "sample": "gens3/bookstack-a",
@@ -229,7 +232,10 @@
       "prompt_tokens": 33526,
       "completion_tokens": 8744,
       "cached_tokens": 20480,
-      "match": "completed call not in this meter log (billed later or log older than the call)"
+      "meter_request_id": "2026092314281022991468143755",
+      "meter_amount_cny": 0.119882,
+      "meter_cached_tokens": 20480,
+      "match": "model + exact tokens"
     },
     {
       "sample": "gens3/keep-a",
@@ -326,7 +332,10 @@
       "prompt_tokens": 19936,
       "completion_tokens": 122087,
       "cached_tokens": 18432,
-      "match": "completed call not in this meter log (billed later or log older than the call)"
+      "meter_request_id": "2026092314181100567642591087",
+      "meter_amount_cny": 1.105138,
+      "meter_cached_tokens": 18432,
+      "match": "model + exact tokens"
     },
     {
       "sample": "gens3/keep-b",
@@ -339,7 +348,10 @@
       "prompt_tokens": 30209,
       "completion_tokens": 26922,
       "cached_tokens": 18432,
-      "match": "completed call not in this meter log (billed later or log older than the call)"
+      "meter_request_id": "2026092314325216814928755546",
+      "meter_amount_cny": 0.279472,
+      "meter_cached_tokens": 18432,
+      "match": "model + exact tokens"
     },
     {
       "sample": "gens3/keep-b",
@@ -352,7 +364,11 @@
       "prompt_tokens": 36840,
       "completion_tokens": 16260,
       "cached_tokens": 28672,
-      "match": "completed call not in this meter log (billed later or log older than the call)"
+      "meter_request_id": "2026092314362726047025120055",
+      "meter_amount_cny": 0.173711,
+      "meter_cached_tokens": 28672,
+      "match": "model + exact tokens"
     }
-  ]
+  ],
+  "unbilled_check": "no record in the 14:46:11 log carries the prompt size of a failed or stopped call of this experiment (Keep 19,865 / 19,936 and BookStack 21,991 tokens; a retry sends the identical prompt), so the failed and stopped calls were not billed"
 }
