@@ -1,0 +1,874 @@
+{
+ "what": "Scenario self-check calibration on the public bookstack exercise: self-check verdicts against the public tests of replayed applications (result.json cases), aligned by requirement id.",
+ "code": "git 1ab955c + working tree of feat/scenario-check (scenarios.py, scenario_translate.py VERSION 3, scenario_check.cjs)",
+ "command": "python scripts/calibrate_scenarios.py --requirements ~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml --jobs 4 --out summary.json REPLAY_DIR ...",
+ "requirements_sha256": "7242df64f12f44e2adc7113a325c7cce0a984c665853148bcf63d934d55fc21d",
+ "coverage_note": "parsed = rules + model; unparsed verdicts are excluded from the agreement denominator and counted separately",
+ "model_call": {
+  "window_local": [
+   "2026-09-23 12:42:05",
+   "2026-09-23 12:43:32"
+  ],
+  "usage": {
+   "completion_tokens": 11917,
+   "completion_tokens_details": {
+    "reasoning_tokens": 10548
+   },
+   "prompt_tokens": 13124,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "total_tokens": 25041
+  },
+  "cost_cny": 0.146625,
+  "seconds": 86.9,
+  "finish_reason": "stop",
+  "requested": 5,
+  "accepted": 3
+ },
+ "model_call_note": "one deepseek-v4-flash call (temperature 0, reasoning_effort low) whose reply is cached by the requirements hash; every calibration run reused it (no further calls). Times are local UTC+8; practice runs of other agents were using the same account meter in that window.",
+ "requirements": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements/requirements.yaml",
+ "replays": 29,
+ "seconds": 325.1,
+ "compared": 928,
+ "agree": 900,
+ "agree_pass": 812,
+ "agree_fail": 88,
+ "false_pass": 26,
+ "false_fail": 2,
+ "unparsed": 58,
+ "error": 0,
+ "agreement_rate": 0.9698,
+ "false_pass_rate": 0.028,
+ "missed_public_failures": 0.2281,
+ "rows": [
+  {
+   "replay": "replays/baseline/bookstack-a",
+   "public": "5/34",
+   "self": {
+    "pass": 5,
+    "fail": 27,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 96.9,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 5,
+   "agree_fail": 27,
+   "unparsed": 2,
+   "invariant_failures": 5,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-contract-fixes",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.8,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-draft-entry",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.8,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-full-live-input",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 35.0,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-native-v5-preservation",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.8,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-routing-fix",
+   "public": "29/34",
+   "self": {
+    "pass": 31,
+    "unparsed": 2,
+    "fail": 1
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.7,
+   "compared": 32,
+   "agree": 29,
+   "agree_pass": 28,
+   "false_pass": 3,
+   "unparsed": 2,
+   "agree_fail": 1,
+   "invariant_failures": 0,
+   "disagreements": [
+    {
+     "id": "REQ-6.1.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-7.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-7.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    }
+   ]
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-session-persistence",
+   "public": "33/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.5,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-session-preservation",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.9,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v13-initial-flow",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.9,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v16-controls",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.9,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v17-guest",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.7,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v17-model-repair",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.7,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v20-third-call",
+   "public": "32/34",
+   "self": {
+    "pass": 31,
+    "fail": 1,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 37.0,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 31,
+   "agree_fail": 1,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v21-third-call",
+   "public": "31/34",
+   "self": {
+    "pass": 30,
+    "fail": 2,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 39.6,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 30,
+   "agree_fail": 2,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v22-third-call",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.6,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v23-nested-favorite",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.5,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v23-stream-recovery",
+   "public": "33/34",
+   "self": {
+    "pass": 31,
+    "unparsed": 2,
+    "fail": 1
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.4,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 31,
+   "unparsed": 2,
+   "agree_fail": 1,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v24-nested-favorites",
+   "public": "34/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.5,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 32,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v4-before-auto-repair",
+   "public": "28/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.5,
+   "compared": 32,
+   "agree": 28,
+   "agree_pass": 28,
+   "false_pass": 4,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": [
+    {
+     "id": "REQ-6.1.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-7.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-7.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-8.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    }
+   ]
+  },
+  {
+   "replay": "replays/diagnostic/bookstack-v5-integrated-repair",
+   "public": "32/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.5,
+   "compared": 32,
+   "agree": 31,
+   "agree_pass": 31,
+   "false_pass": 1,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": [
+    {
+     "id": "REQ-6.1.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    }
+   ]
+  },
+  {
+   "replay": "replays/entry-contract-v17/bookstack-highspeed-a",
+   "public": "33/34",
+   "self": {
+    "pass": 31,
+    "unparsed": 2,
+    "fail": 1
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 37.0,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 31,
+   "unparsed": 2,
+   "agree_fail": 1,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/event-flow-v16/bookstack-highspeed-a",
+   "public": "26/34",
+   "self": {
+    "pass": 29,
+    "fail": 3,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 41.9,
+   "compared": 32,
+   "agree": 28,
+   "agree_pass": 25,
+   "agree_fail": 3,
+   "false_pass": 4,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": [
+    {
+     "id": "REQ-4.5.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-5.3.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-5.4.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-5.6.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    }
+   ]
+  },
+  {
+   "replay": "replays/form-state-v22/bookstack-highspeed-a",
+   "public": "9/34",
+   "self": {
+    "pass": 7,
+    "fail": 25,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 124.4,
+   "compared": 32,
+   "agree": 30,
+   "agree_pass": 7,
+   "false_fail": 2,
+   "agree_fail": 23,
+   "unparsed": 2,
+   "invariant_failures": 23,
+   "disagreements": [
+    {
+     "id": "REQ-4.2.1",
+     "self": "fail",
+     "public": "pass",
+     "observation": "After activating `Shelf 4.2.1` (REQ-4.2.1), screen #/shelf/shelf_4_2_1 has h1 `Shelves`; expected a visible heading named `Shelf 4.2.1`, found 0. Page error: this.shelfDetails is not a function"
+    },
+    {
+     "id": "REQ-5.2.1",
+     "self": "fail",
+     "public": "pass",
+     "observation": "After activating `Book 5.2.1` (REQ-5.2.1), screen #/book/book_5_2_1 has h1 `Books`; expected a visible heading named `Book 5.2.1`, found 0. Page error: this.bookDetails is not a function"
+    }
+   ]
+  },
+  {
+   "replay": "replays/form-state-v22/bookstack-highspeed-r1a",
+   "public": "30/34",
+   "self": {
+    "pass": 30,
+    "unparsed": 2,
+    "fail": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 37.0,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 30,
+   "unparsed": 2,
+   "agree_fail": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/initial-control-v18/bookstack-highspeed-a",
+   "public": "28/34",
+   "self": {
+    "pass": 28,
+    "fail": 4,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 44.4,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 28,
+   "agree_fail": 4,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/official-v24/bookstack",
+   "public": "9/34",
+   "self": {
+    "pass": 9,
+    "fail": 23,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 102.1,
+   "compared": 32,
+   "agree": 32,
+   "agree_pass": 9,
+   "agree_fail": 23,
+   "unparsed": 2,
+   "invariant_failures": 10,
+   "disagreements": []
+  },
+  {
+   "replay": "replays/requirements-first-v3/bookstack-direct-a",
+   "public": "28/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.7,
+   "compared": 32,
+   "agree": 28,
+   "agree_pass": 28,
+   "false_pass": 4,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": [
+    {
+     "id": "REQ-6.1.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-7.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-7.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-8.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    }
+   ]
+  },
+  {
+   "replay": "replays/runtime-retention-v13/bookstack-highspeed-a",
+   "public": "32/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.5,
+   "compared": 32,
+   "agree": 31,
+   "agree_pass": 31,
+   "unparsed": 2,
+   "false_pass": 1,
+   "invariant_failures": 0,
+   "disagreements": [
+    {
+     "id": "REQ-8.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    }
+   ]
+  },
+  {
+   "replay": "replays/targeted-contract-v4/bookstack-direct-a",
+   "public": "23/34",
+   "self": {
+    "pass": 32,
+    "unparsed": 2
+   },
+   "coverage": {
+    "total": 34,
+    "parsed": 32,
+    "rules": 29,
+    "model": 3
+   },
+   "seconds": 34.5,
+   "compared": 32,
+   "agree": 23,
+   "agree_pass": 23,
+   "false_pass": 9,
+   "unparsed": 2,
+   "invariant_failures": 0,
+   "disagreements": [
+    {
+     "id": "REQ-4.3.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-4.5.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-5.3.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-5.4.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-5.6.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-6.1.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-7.1",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-7.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    },
+    {
+     "id": "REQ-8.2",
+     "self": "pass",
+     "public": "fail",
+     "observation": "All 1 expectations held."
+    }
+   ]
+  }
+ ],
+ "disagreements_by_requirement": {
+  "REQ-6.1.2": 5,
+  "REQ-7.1": 4,
+  "REQ-7.2": 4,
+  "REQ-8.2": 4,
+  "REQ-4.5.1": 2,
+  "REQ-5.3.1": 2,
+  "REQ-5.4.1": 2,
+  "REQ-5.6.1": 2,
+  "REQ-4.3.1": 1,
+  "REQ-4.2.1": 1,
+  "REQ-5.2.1": 1
+ }
+}
