@@ -1,0 +1,129 @@
+{
+  "task": "bookstack",
+  "sample": "a",
+  "model": "deepseek-v4-flash",
+  "branch": "feat/card-subtraction",
+  "commit": "bab46f1",
+  "package_sha256": "7d60629e23569f39347ac07669e5503eabc093bb623b6e9f8a45155e2116b529",
+  "requirement_dir": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/bookstack/requirements",
+  "exit_code": 0,
+  "wall_seconds": 1467.3,
+  "delivered": true,
+  "calls_total": 3,
+  "calls_completed": 2,
+  "models_used": [
+    "deepseek-v4-flash"
+  ],
+  "smoke_executed": true,
+  "smoke_problems": 2,
+  "draft_problems": [
+    "Requirement-derived UI observation: Primary record entry \"Draft 6.1.3\" in \"Book 6.1.3\" opens an editor directly, bypassing the reading/details view and its Edit action. Preserve the normal primary-entry flow for drafts too.",
+    "Requirement-derived UI observation: Primary record link \"Draft 6.1.3\" opens an editor directly and bypasses the reading/details view with its Edit action. Preserve the normal primary-entry flow for draft records too; do not automatically re"
+  ],
+  "problems_after_repair": [],
+  "repairs": [
+    {
+      "accepted": true,
+      "reason": null,
+      "files": [
+        "frontend/public/app.js"
+      ],
+      "waived": null
+    }
+  ],
+  "local_cost_cny": 2.089252,
+  "local_cost_exact": false,
+  "usage_cost_cny": 1.362145,
+  "estimated_failed_calls_cny": 0.727107,
+  "price_cny_per_million": {
+    "deepseek-v4-flash": [
+      3.0,
+      0.1,
+      9.0
+    ],
+    "kimi-k2.7-code-highspeed": [
+      13.0,
+      2.6,
+      54.0
+    ]
+  },
+  "usage_summary": {
+    "billing_status": "unknown",
+    "calls": 3,
+    "completed_calls": 2,
+    "completion_tokens": null,
+    "draft_call_limit": 4,
+    "failed_calls": 1,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 146042,
+    "known_prompt_tokens": 55517,
+    "prompt_tokens": null,
+    "repair_call_limit": 2,
+    "unknown_usage_calls": [
+      1
+    ]
+  },
+  "calls": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "failed",
+      "finish_reason": null,
+      "elapsed_seconds": 409.166,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cached_tokens": 0,
+      "request_sha256": "5e4229c2da6cc87b6cace6eff3fc7fbd1510766a98b789b1c564e8be970959a7",
+      "local_cost_cny": 0.727107,
+      "cost_basis": "estimate (no usage reported)"
+    },
+    {
+      "call": 2,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 954.844,
+      "prompt_tokens": 21991,
+      "completion_tokens": 137298,
+      "cached_tokens": 20480,
+      "request_sha256": "5e4229c2da6cc87b6cace6eff3fc7fbd1510766a98b789b1c564e8be970959a7",
+      "local_cost_cny": 1.242263,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 3,
+      "phase": "repair",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 85.998,
+      "prompt_tokens": 33526,
+      "completion_tokens": 8744,
+      "cached_tokens": 20480,
+      "request_sha256": "c4f921dd71c6a70fba8d71c453b70c1a52775fd7bbfd4df00da09e718d4f949c",
+      "local_cost_cny": 0.119882,
+      "cost_basis": "usage"
+    }
+  ],
+  "stderr_notes": [
+    "call 1 failed; bounded retry"
+  ],
+  "replay": {
+    "app": "bookstack",
+    "passed": 34,
+    "total": 34,
+    "delivered": true,
+    "tool": "lite-first replay.py (arc-business-feedback:20260921 ARM64, 1 CPU, 2 GB, 1 worker, 10 s)",
+    "exit_code": 0,
+    "failed_ids": [],
+    "replay_seconds": 9.3
+  },
+  "role": "measured",
+  "flash_only": true,
+  "void": null,
+  "meter_cost_cny": 1.362145,
+  "meter_log": "meter-requests-144611.json"
+}

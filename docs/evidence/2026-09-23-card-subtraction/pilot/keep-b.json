@@ -1,0 +1,224 @@
+{
+  "task": "keep",
+  "sample": "b",
+  "model": "deepseek-v4-flash",
+  "branch": "feat/card-subtraction",
+  "commit": "de91a02",
+  "package_sha256": "b1c8658be8f2dcbfc7b1d62082e5675bfb6ef6daaca2a134f45834207c25007c",
+  "requirement_dir": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements",
+  "exit_code": 0,
+  "wall_seconds": 1125.0,
+  "delivered": true,
+  "calls_total": 7,
+  "calls_completed": 3,
+  "models_used": [
+    "deepseek-v4-flash",
+    "kimi-k2.7-code-highspeed"
+  ],
+  "smoke_executed": true,
+  "smoke_problems": 1,
+  "draft_problems": [
+    "Requirement-derived UI observation: Seed data declares \"Delete me 2.3.3\" as deletable, but its generated trashed=true. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.",
+    "Requirement-derived UI observation: Seed data declares \"Travel plans 2.5.3\" as active, but its generated archived=true. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.",
+    "Requirement-derived UI observation: Seed data declares \"Travel plans 2.5.4\" as active, but its generated archived=true. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.",
+    "Requirement-derived UI observation: Seed data declares \"Meeting agenda 2.8.2\" as regular, but its generated pinned=true. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.",
+    "Requirement-derived UI observation: Record root has title \"Pinned\", but no visible descendant exposes it. Preserve the requested root attribute and also expose a visible state marker inside the record for scoped lookup.",
+    "Requirement-derived UI observation: Required button \"Change labels\" is rendered with role=menuitem; preserve the explicitly required button role.",
+    "Requirement-derived UI observation: Required button \"Delete Note\" is rendered with role=menuitem; preserve the explicitly required button role.",
+    "Requirement-derived UI observation: Record field editing opened dialog \"Change labels\" instead of the declared editor \"Note editor\". Reuse the named entity editor for these fields.",
+    "5 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where t"
+  ],
+  "problems_after_repair": [],
+  "repairs": [
+    {
+      "accepted": true,
+      "reason": null,
+      "files": [
+        "frontend/public/seed.js",
+        "frontend/public/app.js",
+        "frontend/public/styles.css",
+        "backend/server.js"
+      ],
+      "waived": null
+    },
+    {
+      "accepted": true,
+      "reason": null,
+      "files": [
+        "frontend/public/app.js"
+      ],
+      "waived": null
+    }
+  ],
+  "local_cost_cny": 6.051091,
+  "local_cost_exact": false,
+  "usage_cost_cny": 5.07682,
+  "estimated_failed_calls_cny": 0.974271,
+  "price_cny_per_million": {
+    "deepseek-v4-flash": [
+      3.0,
+      0.1,
+      9.0
+    ],
+    "kimi-k2.7-code-highspeed": [
+      13.0,
+      2.6,
+      54.0
+    ]
+  },
+  "usage_summary": {
+    "billing_status": "unknown",
+    "calls": 7,
+    "completed_calls": 3,
+    "completion_tokens": null,
+    "draft_call_limit": 4,
+    "failed_calls": 4,
+    "failure_limit": 5,
+    "fallback_model": "kimi-k2.7-code-highspeed",
+    "known_completion_tokens": 82151,
+    "known_prompt_tokens": 88194,
+    "prompt_tokens": null,
+    "repair_call_limit": 2,
+    "unknown_usage_calls": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "calls": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "failed",
+      "finish_reason": null,
+      "elapsed_seconds": 616.915,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cached_tokens": 0,
+      "request_sha256": "7e4aef5d5e9d6fbce5310d626ccb99b14af302e78454d0230f345f1f09cbd35b",
+      "local_cost_cny": 0.974271,
+      "cost_basis": "estimate (no usage reported)"
+    },
+    {
+      "call": 2,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "failed",
+      "finish_reason": null,
+      "elapsed_seconds": 0.006,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cached_tokens": 0,
+      "request_sha256": "7e4aef5d5e9d6fbce5310d626ccb99b14af302e78454d0230f345f1f09cbd35b",
+      "local_cost_cny": 0.0,
+      "cost_basis": "estimate (no usage reported)"
+    },
+    {
+      "call": 3,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "failed",
+      "finish_reason": null,
+      "elapsed_seconds": 0.005,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cached_tokens": 0,
+      "request_sha256": "7e4aef5d5e9d6fbce5310d626ccb99b14af302e78454d0230f345f1f09cbd35b",
+      "local_cost_cny": 0.0,
+      "cost_basis": "estimate (no usage reported)"
+    },
+    {
+      "call": 4,
+      "phase": "draft",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "failed",
+      "finish_reason": null,
+      "elapsed_seconds": 0.005,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cached_tokens": 0,
+      "request_sha256": "fe017c0d40dc31b36bf1e700d6b685c88e3845cdf84c4295ca649930c2c4ab11",
+      "local_cost_cny": 0.0,
+      "cost_basis": "estimate (no usage reported)"
+    },
+    {
+      "call": 5,
+      "phase": "draft",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 286.768,
+      "prompt_tokens": 18953,
+      "completion_tokens": 50311,
+      "cached_tokens": 256,
+      "request_sha256": "fe017c0d40dc31b36bf1e700d6b685c88e3845cdf84c4295ca649930c2c4ab11",
+      "local_cost_cny": 2.960521,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 6,
+      "phase": "repair",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 131.298,
+      "prompt_tokens": 29519,
+      "completion_tokens": 25963,
+      "cached_tokens": 18944,
+      "request_sha256": "f6ee80675e30ceb29efb53ed9d37b2fc99c61807dcfa7af3c1c94bd6acca803b",
+      "local_cost_cny": 1.588731,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 7,
+      "phase": "repair",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 29.972,
+      "prompt_tokens": 39722,
+      "completion_tokens": 5877,
+      "cached_tokens": 29440,
+      "request_sha256": "656215e3442ccbb25461ec5ff3ae14647328a3dc0e664caa7ef5cb84f0f37605",
+      "local_cost_cny": 0.527568,
+      "cost_basis": "usage"
+    }
+  ],
+  "stderr_notes": [
+    "call 1 failed; bounded retry",
+    "call 2 failed; bounded retry",
+    "deepseek-v4-flash failed 3 times; the rest of this run uses kimi-k2.7-code-highspeed",
+    "call 4 failed; bounded retry"
+  ],
+  "replay": {
+    "app": "keep",
+    "passed": 19,
+    "total": 32,
+    "delivered": true,
+    "tool": "lite-first replay.py (arc-business-feedback:20260921 ARM64, 1 CPU, 2 GB, 1 worker, 10 s)",
+    "exit_code": 0,
+    "failed_ids": [
+      "REQ-2.2",
+      "REQ-2.3.3",
+      "REQ-2.5.1",
+      "REQ-2.5.2",
+      "REQ-2.5.3",
+      "REQ-2.5.4",
+      "REQ-2.6.2",
+      "REQ-2.7.1",
+      "REQ-2.7.2",
+      "REQ-2.7.4",
+      "REQ-2.8.1",
+      "REQ-2.8.2",
+      "REQ-2.8.3"
+    ],
+    "replay_seconds": 140.7
+  },
+  "role": "pilot",
+  "flash_only": false,
+  "void": null,
+  "meter_cost_cny": 5.07682,
+  "meter_log": "meter-requests-144611.json"
+}

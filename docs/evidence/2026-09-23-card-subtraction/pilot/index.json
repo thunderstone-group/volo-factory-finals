@@ -1,0 +1,132 @@
+{
+  "experiment": "roadmap 4.6 card subtraction",
+  "role": "pilot",
+  "branch": "feat/card-subtraction",
+  "packages": [
+    {
+      "commit": "de91a02",
+      "package_sha256": "b1c8658be8f2dcbfc7b1d62082e5675bfb6ef6daaca2a134f45834207c25007c"
+    }
+  ],
+  "model": "deepseek-v4-flash",
+  "other_parameters": "defaults (ONESHOT_*, FALLBACK_MODEL, OPENAI_BASE_URL unset)",
+  "invocation": "python3 main.py <requirements> --output-dir <fresh empty dir>, from the extracted package ZIP",
+  "requirements": "hackathon-local-simulation cfbbc28 public-exercise/{keep,bookstack}/requirements",
+  "scoring": "volo-factory-worktrees/lite-first-20260922/runs/lite-goal-20260922/replay.py: the unchanged public tests in arc-business-feedback:20260921 (ARM64 build of the official runner image), 1 CPU, 2 GB, 1 worker, 10 s timeout. A local replay, not an official score",
+  "cost_basis": "usage_cost: per-call usage from the [oneshot] trace lines at flash 3 / 0.1 / 9 and Kimi HighSpeed 13 / 2.6 / 54 CNY per 1M tokens (input miss / input hit / output), the brief's local ledger. estimated_failed_calls: a conservative stand-in for failed calls that report no usage (from the observed stream); the meter log shows none of them billed. meter_cost: the same calls matched by model + exact tokens in the billed-request log saved by the concurrent model-pair run (billing-reconciliation.json); null while a completed call is not yet in that log. This experiment never logged in to the meter",
+  "samples": [
+    {
+      "sample": "bookstack-a",
+      "task": "bookstack",
+      "exit_code": 0,
+      "delivered": true,
+      "passed": 34,
+      "total": 34,
+      "usage_cost_cny": 0.825108,
+      "estimated_failed_calls_cny": 0,
+      "meter_cost_cny": 0.825108,
+      "flash_only": true,
+      "void": false,
+      "wall_seconds": 621.4,
+      "calls_completed": 2,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "draft_problems": 8,
+      "repairs": 1,
+      "repairs_accepted": 1,
+      "failed_ids": []
+    },
+    {
+      "sample": "keep-a",
+      "task": "keep",
+      "exit_code": 0,
+      "delivered": true,
+      "passed": 30,
+      "total": 32,
+      "usage_cost_cny": 1.263782,
+      "estimated_failed_calls_cny": 0,
+      "meter_cost_cny": 1.263782,
+      "flash_only": true,
+      "void": false,
+      "wall_seconds": 1013.5,
+      "calls_completed": 3,
+      "models_used": [
+        "deepseek-v4-flash"
+      ],
+      "draft_problems": 3,
+      "repairs": 2,
+      "repairs_accepted": 1,
+      "failed_ids": [
+        "REQ-2.8.1",
+        "REQ-2.8.3"
+      ]
+    },
+    {
+      "sample": "keep-b",
+      "task": "keep",
+      "exit_code": 0,
+      "delivered": true,
+      "passed": 19,
+      "total": 32,
+      "usage_cost_cny": 5.07682,
+      "estimated_failed_calls_cny": 0.974271,
+      "meter_cost_cny": 5.07682,
+      "flash_only": false,
+      "void": false,
+      "wall_seconds": 1125.0,
+      "calls_completed": 3,
+      "models_used": [
+        "deepseek-v4-flash",
+        "kimi-k2.7-code-highspeed"
+      ],
+      "draft_problems": 9,
+      "repairs": 2,
+      "repairs_accepted": 2,
+      "failed_ids": [
+        "REQ-2.2",
+        "REQ-2.3.3",
+        "REQ-2.5.1",
+        "REQ-2.5.2",
+        "REQ-2.5.3",
+        "REQ-2.5.4",
+        "REQ-2.6.2",
+        "REQ-2.7.1",
+        "REQ-2.7.2",
+        "REQ-2.7.4",
+        "REQ-2.8.1",
+        "REQ-2.8.2",
+        "REQ-2.8.3"
+      ]
+    }
+  ],
+  "means": {
+    "keep": {
+      "n": 1,
+      "passed": [
+        30
+      ],
+      "mean_passed": 30.0,
+      "total": 32,
+      "basis": "flash-only, non-void samples"
+    },
+    "bookstack": {
+      "n": 1,
+      "passed": [
+        34
+      ],
+      "mean_passed": 34.0,
+      "total": 34,
+      "basis": "flash-only, non-void samples"
+    }
+  },
+  "usage_cost_total_cny": 7.16571,
+  "estimated_failed_calls_total_cny": 0.974271,
+  "meter_cost_total_cny": 7.16571,
+  "meter_log": "meter-requests-144611.json",
+  "notes": {
+    "keep-b": "flash call 1 cut at 13:58:54 by the same host network drop, two instant URLErrors, then the Kimi HighSpeed fallback drafted and repaired; excluded from the flash means",
+    "keep-a": "lost REQ-2.8.1 / 2.8.3: title=\"Pinned\" on the article root only; the record-state rule was restored in bab46f1",
+    "bookstack-a": "draft threw in five click handlers (this.screens.home() inside APP.screens methods); repaired; the route-table rule was restored in 9132743"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "task": "keep",
+  "sample": "b",
+  "model": "deepseek-v4-flash",
+  "branch": "feat/card-subtraction",
+  "commit": "bab46f1",
+  "package_sha256": "7d60629e23569f39347ac07669e5503eabc093bb623b6e9f8a45155e2116b529",
+  "requirement_dir": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements",
+  "exit_code": 0,
+  "wall_seconds": 1217.5,
+  "delivered": true,
+  "calls_total": 3,
+  "calls_completed": 3,
+  "models_used": [
+    "deepseek-v4-flash"
+  ],
+  "smoke_executed": true,
+  "smoke_problems": 8,
+  "draft_problems": [
+    "clicking `Undo` (data-action `arc:undo`) on screen `#/label/Reminders` throws: this.home is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a mis",
+    "clicking `Keep` (data-action `arc:nav`) on screen `#/label/Reminders` throws: this.home is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a miss",
+    "clicking `Toggle sidebar` (data-action `toggle-sidebar`) on screen `#/label/Reminders` throws: this.home is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard eve",
+    "clicking `Settings` (data-action `open-settings`) on screen `#/label/Reminders` throws: this.home is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every look",
+    "clicking `Cancel` (data-action `cancel-settings`) on screen `#/label/Reminders` throws: this.home is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every look",
+    "clicking `List view` (data-action `set-view`) on screen `#/label/Reminders` throws: this.home is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (",
+    "Requirement-derived UI observation: Dialog \"Note editor\" contains 2 active \"close\" buttons. Keep one completion action in the editor; nested field choosers must not duplicate it.",
+    "Requirement-derived UI observation: Record field chooser (Work) is outside the declared record editor \"Note editor\". Reuse that named entity editor for field editing and preserve the checkbox elements until explicit completion.",
+    "browser interaction error: this.home is not a function",
+    "5 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where t"
+  ],
+  "problems_after_repair": [],
+  "repairs": [
+    {
+      "accepted": true,
+      "reason": null,
+      "files": [
+        "frontend/public/app.js"
+      ],
+      "waived": null
+    },
+    {
+      "accepted": false,
+      "reason": "repair removed quoted vocabulary (0 -> 1 missing)",
+      "files": null,
+      "waived": null
+    }
+  ],
+  "local_cost_cny": 1.558322,
+  "local_cost_exact": true,
+  "usage_cost_cny": 1.558321,
+  "estimated_failed_calls_cny": 0,
+  "price_cny_per_million": {
+    "deepseek-v4-flash": [
+      3.0,
+      0.1,
+      9.0
+    ],
+    "kimi-k2.7-code-highspeed": [
+      13.0,
+      2.6,
+      54.0
+    ]
+  },
+  "usage_summary": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 3,
+    "completed_calls": 3,
+    "completion_tokens": 165269,
+    "draft_call_limit": 4,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 165269,
+    "known_prompt_tokens": 86985,
+    "prompt_tokens": 86985,
+    "repair_call_limit": 2,
+    "unknown_usage_calls": []
+  },
+  "calls": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 787.203,
+      "prompt_tokens": 19936,
+      "completion_tokens": 122087,
+      "cached_tokens": 18432,
+      "request_sha256": "31f0cdc943a2804c94c0525d2a24572792730d4f0e23195d6c9e00c3a831ff12",
+      "local_cost_cny": 1.105138,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 2,
+      "phase": "repair",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 202.773,
+      "prompt_tokens": 30209,
+      "completion_tokens": 26922,
+      "cached_tokens": 18432,
+      "request_sha256": "d61fbed8bb79f0c1e33bca522f9f0c382cb0f9cd05fdf4b31e5a0396269d721c",
+      "local_cost_cny": 0.279472,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 3,
+      "phase": "repair",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 115.409,
+      "prompt_tokens": 36840,
+      "completion_tokens": 16260,
+      "cached_tokens": 28672,
+      "request_sha256": "4d2e62bec44099945b09469c1aee169ec338a4faa3fb6b1520690fb12fb8cc7c",
+      "local_cost_cny": 0.173711,
+      "cost_basis": "usage"
+    }
+  ],
+  "stderr_notes": [],
+  "replay": {
+    "app": "keep",
+    "passed": 30,
+    "total": 32,
+    "delivered": true,
+    "tool": "lite-first replay.py (arc-business-feedback:20260921 ARM64, 1 CPU, 2 GB, 1 worker, 10 s)",
+    "exit_code": 0,
+    "failed_ids": [
+      "REQ-2.7.6.1",
+      "REQ-2.7.6.3"
+    ],
+    "replay_seconds": 29.2
+  },
+  "role": "measured",
+  "flash_only": true,
+  "void": null,
+  "meter_cost_cny": 1.558321,
+  "meter_log": "meter-requests-144611.json"
+}

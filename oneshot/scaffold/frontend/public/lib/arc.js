@@ -28,8 +28,8 @@
   // Navigation renders in the SAME task as the click. The click ladder probes each rung with
   // `isVisible()` (no wait) right after the click resolves; a render deferred to the `hashchange`
   // task loses that race under load, and the step then waits for the wrong rung until the test
-  // times out (Lite Bookstack: every "click an entry after navigation" step; Web: the stochastic
-  // seed-click family).
+  // times out (every "click an entry after navigation" step of one medium practice task, and a
+  // stochastic seed-click failure family on the large ones).
   ARC.navigate = function (hash) {
     if ((location.hash || '#/') !== hash) location.hash = hash;
     if (ARC.dialogOpen) ARC.closeDialog();
@@ -40,7 +40,7 @@
   // header (landmark + navigation + account controls), sidebar, main and footer exist on every route.
   // The footer ends with the layout nouns as visible words ("Header · Sidebar · Main content · Footer"):
   // layout tests assert /header/i, /sidebar/i as visible text, and a landmark tag alone is invisible
-  // (StackOverflow REQ-1.1 / 1.2 lost in both round-18 samples once the model stopped writing them).
+  // (one practice task lost its two layout requirements in both samples once the model stopped writing them).
   // The home button uses the brand as its accessible name. Preserve an explicitly
   // required name rather than decorating it with an extra "logo" suffix.
   // Header entries are links (navigation). Sidebar entries are BUTTONS inside <aside> (role
@@ -149,7 +149,7 @@
   ARC.notify = function (message, opts) {
     const root = document.getElementById('status-root');
     ARC._undo = opts && opts.undo;
-    // The message sits in its own <span>: an anchored `getByText(/^Note trashed$/)` must find an element whose
+    // The message sits in its own <span>: an anchored `getByText(/^Item deleted$/)` must find an element whose
     // whole text is the message, and the status container's text also holds the Undo button's label.
     root.innerHTML = `<div class="status" role="status"><span class="status-text">${ARC.esc(message)}</span>${ARC._undo ? ' <button type="button" data-action="arc:undo">Undo</button>' : ''}</div>`;
     root.hidden = false;

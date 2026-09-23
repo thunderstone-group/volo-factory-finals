@@ -1,0 +1,25 @@
+{
+  "sample": "keep-a on package 2",
+  "role": "aborted",
+  "commit": "9132743",
+  "package_sha256": "599ef4861a0663aee04631a6db12263034c293982d4d31dba1161f66a0cd51de",
+  "model": "deepseek-v4-flash",
+  "exit_code": -15,
+  "wall_seconds": 129.5,
+  "reason": "stopped by hand 130 s into its first draft call: the pilot showed that the record-state rule had to be restored, so package 2 (9132743) was superseded by package 3 (bab46f1) before any measured sample finished",
+  "progress_110s": {
+    "phase": "receiving",
+    "elapsed_seconds": 110.815,
+    "call": 1,
+    "completed_calls": 0,
+    "model": "deepseek-v4-flash",
+    "stream": {
+      "received_bytes": 3289252,
+      "sse_events": 11603,
+      "content_chars": 0,
+      "reasoning_chars": 50677
+    }
+  },
+  "trace": "none (the process was stopped before printing it)",
+  "billing": "no billed record in the meter log saved at 14:15:36 matches a draft-sized request after the stop; counted as 0"
+}

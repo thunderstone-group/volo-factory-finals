@@ -1,0 +1,189 @@
+{
+  "task": "keep",
+  "sample": "a",
+  "model": "deepseek-v4-flash",
+  "branch": "feat/card-subtraction",
+  "commit": "bab46f1",
+  "package_sha256": "7d60629e23569f39347ac07669e5503eabc093bb623b6e9f8a45155e2116b529",
+  "requirement_dir": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements",
+  "exit_code": 0,
+  "wall_seconds": 417.8,
+  "delivered": true,
+  "calls_total": 6,
+  "calls_completed": 2,
+  "models_used": [
+    "deepseek-v4-flash",
+    "kimi-k2.7-code-highspeed"
+  ],
+  "smoke_executed": true,
+  "smoke_problems": 7,
+  "draft_problems": [
+    "clicking `List view` (data-action `toggle-view`) on screen `#/` throws: Cannot read properties of undefined (reading 'view'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard e",
+    "Requirement-derived UI observation: Seed data declares \"Delete me 2.3.3\" as deletable, but its generated trashed=true. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.",
+    "Requirement-derived UI observation: Seed data declares \"Travel plans 2.5.3\" as active, but its generated archived=true. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.",
+    "Requirement-derived UI observation: Seed data declares \"Travel plans 2.5.4\" as active, but its generated archived=true. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.",
+    "Requirement-derived UI observation: Seed data declares \"Meeting agenda 2.8.2\" as regular, but its generated pinned=true. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.",
+    "browser interaction error: Cannot read properties of undefined (reading 'color')",
+    "4 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where t"
+  ],
+  "problems_after_repair": [],
+  "repairs": [
+    {
+      "accepted": true,
+      "reason": null,
+      "files": [
+        "backend/server.js",
+        "frontend/public/seed.js",
+        "frontend/public/app.js"
+      ],
+      "waived": null
+    }
+  ],
+  "local_cost_cny": 4.416438,
+  "local_cost_exact": false,
+  "usage_cost_cny": 4.286939,
+  "estimated_failed_calls_cny": 0.129499,
+  "price_cny_per_million": {
+    "deepseek-v4-flash": [
+      3.0,
+      0.1,
+      9.0
+    ],
+    "kimi-k2.7-code-highspeed": [
+      13.0,
+      2.6,
+      54.0
+    ]
+  },
+  "usage_summary": {
+    "billing_status": "unknown",
+    "calls": 6,
+    "completed_calls": 2,
+    "completion_tokens": null,
+    "draft_call_limit": 4,
+    "failed_calls": 4,
+    "failure_limit": 5,
+    "fallback_model": "kimi-k2.7-code-highspeed",
+    "known_completion_tokens": 71432,
+    "known_prompt_tokens": 48407,
+    "prompt_tokens": null,
+    "repair_call_limit": 2,
+    "unknown_usage_calls": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "calls": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "failed",
+      "finish_reason": null,
+      "elapsed_seconds": 44.558,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cached_tokens": 0,
+      "request_sha256": "31f0cdc943a2804c94c0525d2a24572792730d4f0e23195d6c9e00c3a831ff12",
+      "local_cost_cny": 0.129499,
+      "cost_basis": "estimate (no usage reported)"
+    },
+    {
+      "call": 2,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "failed",
+      "finish_reason": null,
+      "elapsed_seconds": 0.005,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cached_tokens": 0,
+      "request_sha256": "31f0cdc943a2804c94c0525d2a24572792730d4f0e23195d6c9e00c3a831ff12",
+      "local_cost_cny": 0.0,
+      "cost_basis": "estimate (no usage reported)"
+    },
+    {
+      "call": 3,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "failed",
+      "finish_reason": null,
+      "elapsed_seconds": 0.005,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cached_tokens": 0,
+      "request_sha256": "31f0cdc943a2804c94c0525d2a24572792730d4f0e23195d6c9e00c3a831ff12",
+      "local_cost_cny": 0.0,
+      "cost_basis": "estimate (no usage reported)"
+    },
+    {
+      "call": 4,
+      "phase": "draft",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "failed",
+      "finish_reason": null,
+      "elapsed_seconds": 0.004,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cached_tokens": 0,
+      "request_sha256": "f0dd438b8c31b82b5ddfa75e4531d8d91d5ea719318d190478d6d5b76ba40d8b",
+      "local_cost_cny": 0.0,
+      "cost_basis": "estimate (no usage reported)"
+    },
+    {
+      "call": 5,
+      "phase": "draft",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 264.533,
+      "prompt_tokens": 19022,
+      "completion_tokens": 53069,
+      "cached_tokens": 256,
+      "request_sha256": "f0dd438b8c31b82b5ddfa75e4531d8d91d5ea719318d190478d6d5b76ba40d8b",
+      "local_cost_cny": 3.11035,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 6,
+      "phase": "repair",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 87.601,
+      "prompt_tokens": 29385,
+      "completion_tokens": 18363,
+      "cached_tokens": 18944,
+      "request_sha256": "bd05be881260b52b43bec162ea90acbcb889ada96dc94ec1d010d2103dcc7c38",
+      "local_cost_cny": 1.176589,
+      "cost_basis": "usage"
+    }
+  ],
+  "stderr_notes": [
+    "call 1 failed; bounded retry",
+    "call 2 failed; bounded retry",
+    "deepseek-v4-flash failed 3 times; the rest of this run uses kimi-k2.7-code-highspeed",
+    "call 4 failed; bounded retry"
+  ],
+  "replay": {
+    "app": "keep",
+    "passed": 29,
+    "total": 32,
+    "delivered": true,
+    "tool": "lite-first replay.py (arc-business-feedback:20260921 ARM64, 1 CPU, 2 GB, 1 worker, 10 s)",
+    "exit_code": 0,
+    "failed_ids": [
+      "REQ-2.7.1",
+      "REQ-2.7.2",
+      "REQ-2.7.4"
+    ],
+    "replay_seconds": 39.1
+  },
+  "role": "measured",
+  "flash_only": false,
+  "void": null,
+  "meter_cost_cny": 4.286939,
+  "meter_log": "meter-requests-144611.json"
+}

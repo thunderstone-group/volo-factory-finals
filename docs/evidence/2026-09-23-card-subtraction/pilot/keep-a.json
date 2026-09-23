@@ -1,0 +1,138 @@
+{
+  "task": "keep",
+  "sample": "a",
+  "model": "deepseek-v4-flash",
+  "branch": "feat/card-subtraction",
+  "commit": "de91a02",
+  "package_sha256": "b1c8658be8f2dcbfc7b1d62082e5675bfb6ef6daaca2a134f45834207c25007c",
+  "requirement_dir": "~/projects/arcbench-campaign/upstream/hackathon-local-simulation/public-exercise/keep/requirements",
+  "exit_code": 0,
+  "wall_seconds": 1013.5,
+  "delivered": true,
+  "calls_total": 3,
+  "calls_completed": 3,
+  "models_used": [
+    "deepseek-v4-flash"
+  ],
+  "smoke_executed": true,
+  "smoke_problems": 1,
+  "draft_problems": [
+    "Requirement-derived UI observation: Record root has title \"Pinned\", but no visible descendant exposes it. Preserve the requested root attribute and also expose a visible state marker inside the record for scoped lookup.",
+    "Requirement-derived UI observation: Record field editing opened dialog \"Labels\" instead of the declared editor \"Note editor\". Reuse the named entity editor for these fields.",
+    "4 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where t"
+  ],
+  "problems_after_repair": [
+    "Requirement-derived UI observation: Record root has title \"Pinned\", but no visible descendant exposes it. Preserve the requested root attribute and also expose a visible state marker inside the record for scoped lookup."
+  ],
+  "repairs": [
+    {
+      "accepted": true,
+      "reason": null,
+      "files": [
+        "frontend/public/app.js",
+        "frontend/public/styles.css"
+      ],
+      "waived": null
+    },
+    {
+      "accepted": false,
+      "reason": "still failing after repair: Requirement-derived UI observation: Record root has title \"Pinned\", but no visible descendant exposes it. Preserve the requested root attribute and also expose a visible state marker inside the record for scoped lookup.",
+      "files": null,
+      "waived": null
+    }
+  ],
+  "local_cost_cny": 1.263783,
+  "local_cost_exact": true,
+  "usage_cost_cny": 1.263782,
+  "estimated_failed_calls_cny": 0,
+  "price_cny_per_million": {
+    "deepseek-v4-flash": [
+      3.0,
+      0.1,
+      9.0
+    ],
+    "kimi-k2.7-code-highspeed": [
+      13.0,
+      2.6,
+      54.0
+    ]
+  },
+  "usage_summary": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 3,
+    "completed_calls": 3,
+    "completion_tokens": 127412,
+    "draft_call_limit": 4,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 127412,
+    "known_prompt_tokens": 82579,
+    "prompt_tokens": 82579,
+    "repair_call_limit": 2,
+    "unknown_usage_calls": []
+  },
+  "calls": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 763.7,
+      "prompt_tokens": 19865,
+      "completion_tokens": 96105,
+      "cached_tokens": 0,
+      "request_sha256": "7e4aef5d5e9d6fbce5310d626ccb99b14af302e78454d0230f345f1f09cbd35b",
+      "local_cost_cny": 0.92454,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 2,
+      "phase": "repair",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 129.968,
+      "prompt_tokens": 27877,
+      "completion_tokens": 18694,
+      "cached_tokens": 18432,
+      "request_sha256": "aa85ce1a9cf3793d71dd0cefdc0e468444535f7d7302e5c7c40396942c74667f",
+      "local_cost_cny": 0.198424,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 3,
+      "phase": "repair",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "elapsed_seconds": 93.067,
+      "prompt_tokens": 34837,
+      "completion_tokens": 12613,
+      "cached_tokens": 26624,
+      "request_sha256": "d878648c0ff257fe04b9f5a51e8029152c42036041e49b3e659018ad072c100a",
+      "local_cost_cny": 0.140818,
+      "cost_basis": "usage"
+    }
+  ],
+  "stderr_notes": [],
+  "replay": {
+    "app": "keep",
+    "passed": 30,
+    "total": 32,
+    "delivered": true,
+    "tool": "lite-first replay.py (arc-business-feedback:20260921 ARM64, 1 CPU, 2 GB, 1 worker, 10 s)",
+    "exit_code": 0,
+    "failed_ids": [
+      "REQ-2.8.1",
+      "REQ-2.8.3"
+    ],
+    "replay_seconds": 29.0
+  },
+  "role": "pilot",
+  "flash_only": true,
+  "void": null,
+  "meter_cost_cny": 1.263782,
+  "meter_log": "meter-requests-144611.json"
+}
