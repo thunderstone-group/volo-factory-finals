@@ -527,13 +527,16 @@ def translate_unparsed(text, planned):
     return summary
 
 
-def run(requirements, app, out=None, port=None, progress=None):
-    """Plan and execute the scenarios of `requirements` against the application directory `app`."""
+def run(requirements, app, out=None, port=None, progress=None, text=None, only=None):
+    """Plan and execute the scenarios of `requirements` (a path, or the document itself as `text`) against the
+    application directory `app`. With `only`, just those scenario ids run and appear in the report (a recheck)."""
     started = time.monotonic()
-    text = Path(requirements).read_text(encoding="utf-8")
+    text = text if text is not None else Path(requirements).read_text(encoding="utf-8")
     planned = scenarios.plan(text)
     rules = sum(1 for item in planned["scenarios"] if item["status"] == "parsed")
     translation = translate_unparsed(text, planned)
+    if only is not None:
+        planned["scenarios"] = [item for item in planned["scenarios"] if item["id"] in only]
     runnable = [item for item in planned["scenarios"] if item["status"] == "parsed"]
     replies, runtime = _execute(runnable, app, port, progress) if runnable else ({}, {})
     parsed = len(runnable)

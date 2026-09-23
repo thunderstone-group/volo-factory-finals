@@ -85,7 +85,7 @@ class OfflineCase(unittest.TestCase):
         self.enter(patch.object(adapter.time, "sleep"))
         self.enter(patch.object(adapter, "SMOKE", False))
         self.enter(patch.dict(os.environ))  # the code defaults, whatever the developer's shell exports
-        for name in ("FALLBACK_MODEL", "ONESHOT_DRAFT_CALLS", "ONESHOT_REPAIR_CALLS"):
+        for name in ("FALLBACK_MODEL", "ONESHOT_DRAFT_CALLS", "ONESHOT_REPAIR_CALLS", "ONESHOT_REPAIR_CNY"):
             os.environ.pop(name, None)
 
     def enter(self, manager):
@@ -799,14 +799,18 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(list(self.out.glob(".oneshot-*")), [])
 
     def test_call_allowances_come_from_the_environment_and_a_bad_value_stops_before_any_request(self):
-        self.assertEqual(adapter.CallBudget().limits, {"draft": 4, "repair": 2})
-        with patch.dict(os.environ, {"ONESHOT_DRAFT_CALLS": "6", "ONESHOT_REPAIR_CALLS": "0"}):
+        self.assertEqual(adapter.CallBudget().limits, {"draft": 4, "repair": 6})
+        self.assertEqual(adapter.CallBudget().repair_cny, 3.0)
+        with patch.dict(os.environ, {"ONESHOT_DRAFT_CALLS": "6", "ONESHOT_REPAIR_CALLS": "0", "ONESHOT_REPAIR_CNY": "0.5"}):
             self.assertEqual(adapter.CallBudget().limits, {"draft": 6, "repair": 0})
+            self.assertEqual(adapter.CallBudget().repair_cny, 0.5)
             self.assertEqual(adapter.CallBudget(draft_limit=1, repair_limit=1).limits, {"draft": 1, "repair": 1})
+            self.assertEqual(adapter.CallBudget(repair_cny=2).repair_cny, 2.0)
         requirement = self.root / "requirements"
         requirement.mkdir()
         (requirement / "requirements.yaml").write_text("synthetic: true")
-        for name, value in (("ONESHOT_DRAFT_CALLS", "0"), ("ONESHOT_DRAFT_CALLS", "many"), ("ONESHOT_REPAIR_CALLS", "-1")):
+        for name, value in (("ONESHOT_DRAFT_CALLS", "0"), ("ONESHOT_DRAFT_CALLS", "many"), ("ONESHOT_REPAIR_CALLS", "-1"),
+                            ("ONESHOT_REPAIR_CNY", "-1"), ("ONESHOT_REPAIR_CNY", "lots")):
             with self.subTest(name=name, value=value):
                 with patch.dict(os.environ, {name: value}), self.assertRaisesRegex(ValueError, name):
                     adapter.CallBudget()

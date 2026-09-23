@@ -9,7 +9,8 @@ delivery contract, and writes the returned files under `<DIR>`.
 
 Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash),
 FALLBACK_MODEL (default kimi-k2.7-code-highspeed, or deepseek-v4-flash when MODEL is a Kimi model;
-empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 2).
+empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 6),
+ONESHOT_REPAIR_CNY (repair spend per task, default 3).
 """
 import argparse
 import hashlib
@@ -38,7 +39,12 @@ KIMI_FALLBACK_MODEL = "deepseek-v4-flash"
 KIMI_CODE_MODELS = {"kimi-k2.7-code", "kimi-k2.7-code-highspeed"}
 MAX_TOKENS = 131072  # content cap per call; the gateway has metered >135k output tokens in one request
 DRAFT_CALLS = 4  # Completed draft calls: the first draft, continuations after a cut, redrafts of an empty reply.
-REPAIR_CALLS = 2  # Completed smoke-repair calls.
+REPAIR_CALLS = 6  # Completed repair calls; the spend limit below usually ends the repairs first.
+REPAIR_CNY = 3.0  # Repair spend per task in CNY: the repair calls plus the scenario translation (roadmap 4.3).
+REPAIR_REJECTIONS = 3  # Consecutive discarded repairs before the loop gives up.
+REPAIR_SHOWN = 40  # Failing scenarios listed in one repair request.
+# CNY per million tokens (input, cache-hit input, output), from the gateway catalogue (`arcbench models`, 09-23).
+PRICES = {"deepseek-v4-flash": (3.0, 0.1, 9.0), "kimi-k2.7-code-highspeed": (13.0, 2.6, 54.0)}
 MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
 #                 three on the primary model, then up to two on the fallback.
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
@@ -105,11 +111,12 @@ RESUME = ("{why} These files are complete and must not be emitted again: {done}.
           "file the application needs, each as one complete block with the same `=== FILE: <path> ===` and "
           "`=== END ===` framing, and emit nothing else. Stop after the last file.")
 
-REPAIR = ("The application you delivered failed the runner's delivery check before any test ran:\n"
-          "{problems}\n\n"
-          "Fix the cause. Re-emit every file that must change as a COMPLETE file block with the same "
+REPAIR = ("The application you delivered was built, started and driven through the requirement scenarios in a "
+          "real browser.\n\n{findings}\n\n"
+          "Fix the causes. Re-emit every file that must change as a COMPLETE file block with the same "
           "`=== FILE: <path> ===` / `=== END ===` framing, and emit nothing else. Do not re-emit files "
-          "that do not change. The check will run again on the result.")
+          "that do not change. The check will run again on the result, and a change that breaks a passing "
+          "scenario is discarded.")
 
 SMOKE = True  # run the delivery smoke check (build, start, GET / and /api/health) before publishing
 SMOKE_BUILD_SECONDS = 90
@@ -155,18 +162,53 @@ def _call_limit(value, env, default, low):
     return value
 
 
-class CallBudget:
-    """Completed calls are capped per phase: the draft (first draft, continuations, redrafts) and the smoke
-    repairs. Transport failures share one cap across both. An honest ledger, including failed requests."""
+def _spend_limit(value, env, default):
+    """A CNY limit: explicit, else the environment's (experiments), else the default."""
+    if value is None:
+        raw = os.environ.get(env, "").strip()
+        try:
+            value = float(raw) if raw else default
+        except ValueError:
+            raise ValueError(f"{env} must be a number of CNY, got {raw!r}") from None
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0:
+        raise ValueError(f"{env} must be a nonnegative number of CNY, got {value!r}")
+    return float(value)
 
-    def __init__(self, draft_limit=None, repair_limit=None, fail_limit=MAX_FAILURES):
+
+def call_cost(record):
+    """CNY of one model call from its last usage frame. A stream that broke off is billed without reporting usage;
+    its tokens are estimated from the characters sent and received. An unknown model is priced like the dearest."""
+    price = PRICES.get(record.get("model")) or max(PRICES.values(), key=lambda p: p[2])
+    usage = record.get("usage") or {}
+    prompt, completion = usage.get("prompt_tokens"), usage.get("completion_tokens")
+    cached = 0
+    if isinstance(prompt, int) and isinstance(completion, int):
+        last = (record.get("usage_events") or [{}])[-1]
+        details = last.get("prompt_tokens_details") if isinstance(last, dict) else None
+        hit = details.get("cached_tokens") if isinstance(details, dict) else None
+        cached = min(hit, prompt) if isinstance(hit, int) and hit > 0 else 0
+    else:
+        seen = record.get("stream_observation") or {}
+        prompt = sum(len(m.get("content") or "") for m in record.get("messages") or []) // 3
+        completion = (seen.get("content_chars", 0) + seen.get("reasoning_chars", 0)) // 3
+    return ((prompt - cached) * price[0] + cached * price[1] + completion * price[2]) / 1e6
+
+
+class CallBudget:
+    """Completed calls are capped per phase: the draft (first draft, continuations, redrafts) and the repairs.
+    Transport failures share one cap across both; the repairs also stop at a spend limit. An honest ledger,
+    including failed requests and the scenario check's translation call."""
+
+    def __init__(self, draft_limit=None, repair_limit=None, fail_limit=MAX_FAILURES, repair_cny=None):
         self.limits = {"draft": _call_limit(draft_limit, "ONESHOT_DRAFT_CALLS", DRAFT_CALLS, 1),
                        "repair": _call_limit(repair_limit, "ONESHOT_REPAIR_CALLS", REPAIR_CALLS, 0)}
+        self.repair_cny = _spend_limit(repair_cny, "ONESHOT_REPAIR_CNY", REPAIR_CNY)
         if not isinstance(fail_limit, int) or isinstance(fail_limit, bool) or not 1 <= fail_limit <= MAX_FAILURES:
             raise ValueError(f"failure limit must be between 1 and {MAX_FAILURES}")
         self.phase = "draft"  # generate() moves to "repair" before the smoke repairs
         self.fail_limit = fail_limit
         self.attempts = []
+        self.side_calls = []  # model calls made outside stream_completion: the scenario translation
         self.smoke = None
         self.model = None  # set once the run has switched to the fallback model
         self.progress_path = None
@@ -206,6 +248,26 @@ class CallBudget:
         return (len(self.completed(self.phase)) >= self.limits[self.phase]
                 or len(self.failed()) >= self.fail_limit)
 
+    def spent(self, phase=None):
+        """Estimated CNY of the calls so far (all phases, or one); the side calls belong to the repair phase."""
+        total = sum(call_cost(r) for r in self.attempts if phase in (None, r["phase"]))
+        if phase in (None, "repair"):
+            total += sum(call.get("cost_cny") or 0.0 for call in self.side_calls)
+        return total
+
+    def repair_stop(self):
+        """Why no further repair may start, or None. A repair starts only while the spend so far plus the cost of the
+        last repair call stays within the limit, so the limit is not overrun by more than an estimate's error."""
+        if len(self.failed()) >= self.fail_limit:
+            return f"global model failure limit reached ({self.fail_limit})"
+        if len(self.completed("repair")) >= self.limits["repair"]:
+            return f"repair call limit reached ({self.limits['repair']})"
+        repairs = [r for r in self.attempts if r["phase"] == "repair"]
+        spent, last = self.spent("repair"), (call_cost(repairs[-1]) if repairs else 0.0)
+        if spent + last > self.repair_cny:
+            return f"repair spend limit reached (CNY {spent:.2f} spent, next call about {last:.2f}, limit {self.repair_cny:g})"
+        return None
+
     def start(self, messages, model):
         if len(self.completed(self.phase)) >= self.limits[self.phase]:
             raise RuntimeError(f"{self.phase} call limit reached ({self.limits[self.phase]})")
@@ -228,6 +290,10 @@ class CallBudget:
             result["known_" + field] = sum(values) if values else None
             result[field] = sum(values) if len(values) == len(self.attempts) and values else None
         result["unknown_usage_calls"] = unknown
+        result["estimated_cost_cny"] = round(self.spent(), 6)
+        result["estimated_repair_cost_cny"] = round(self.spent("repair"), 6)
+        result["repair_cny_limit"] = self.repair_cny
+        result["side_calls"] = len(self.side_calls)
         result["fallback_model"] = self.model
         result["billing_status"] = ("not_called" if not self.attempts else
                                     "unknown" if unknown else "tokens_reported_cost_not_estimated")
@@ -1172,6 +1238,18 @@ def draft_application(stage, files, messages, model, base, key, budget, template
         request = history + [{"role": "user", "content": ask}]
 
 
+def draft_messages(requirements, scaffold=None, snapshot=None):
+    """The draft conversation: the card, the delivery contract, the quoted vocabulary and the requirements, then the
+    scaffold placed in the stage or the existing application being extended."""
+    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
+            "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
+    if scaffold:
+        user += scaffold_context(scaffold)
+    if snapshot is not None:
+        user += template_context(snapshot)
+    return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
+
+
 def generate(requirements, model, base, key, out, budget=None, template=None):
     budget = budget if budget is not None else CallBudget()
     # Reusing a nonempty directory could hide missing files behind an earlier run.
@@ -1186,14 +1264,8 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     stamp = template_stamp(template) if template is not None else None
     snapshot = read_template(template) if template is not None else {}
     out.parent.mkdir(parents=True, exist_ok=True)
-    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
-            "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
     scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
-    if scaffold:
-        user += scaffold_context(scaffold)
-    if template is not None:
-        user += template_context(snapshot)
-    messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
+    messages = draft_messages(requirements, scaffold, snapshot if template is not None else None)
     files = []
     with tempfile.TemporaryDirectory(prefix=".oneshot-", dir=out.parent) as temp:
         budget.progress_path = Path(temp) / "progress.json"
@@ -1588,115 +1660,274 @@ def _bare_name(name):
     return re.sub(r"^[\W_]+|[\W_]+$", "", re.sub(r"\s+", " ", name)).lower()
 
 
-def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
-    """Repair observed problems within the repair call allowance, preserving every accepted
-    improvement. A repaired crash can expose a further UI problem; use a remaining call for it
-    and retain the prior working version if that follow-up regresses. Records every repair."""
-    diagnostics = []
-    problems, executed = smoke_check(stage, requirements, diagnostics)
-    smoke_before = list(problems)
-    vocab, missing_before = vocabulary_gaps(stage, requirements)
-    static = (process_guard_gaps(stage) + aria_collision_gaps(stage, requirements) + exact_name_gaps(stage, requirements)
-              + readonly_gaps(stage) + (scaffold_gaps(stage) if scaffold else []))
-    budget.smoke = {"executed": executed, "problems": problems + static + vocab, "vocabulary_missing": missing_before,
-                    "repair": None}
-    if diagnostics:
-        budget.smoke["browser_before"] = diagnostics
-    problems = problems + static + vocab
-    if not problems:
-        return
-    if budget.exhausted():
-        budget.smoke["repair"] = "skipped: call limit reached"
-        return
-    # Only names the requirement quotes as controls are pinned (12306 r26b: a rule pinning every quoted phrase
-    # rejected a repair for "renaming" quoted messages and section headings, and the collision-laden draft shipped).
-    pinned_before = control_names(stage) & {p.lower() for p in quoted_control_phrases(requirements)}
-    backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
-    shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
+def _scenario_module():
     try:
-        ask = REPAIR.format(problems="\n".join("- " + p for p in problems))
-        fixed, _, finish = stream_completion(messages + [{"role": "user", "content": ask}],
-                                             model, base, key, budget, tries=3)
-        batch, missing = parse_blocks(fixed)
-        if missing or finish == "length":
-            raise ValueError("repair output truncated")
-        for item in batch:
-            target = resolve_path(stage, item["path"])
-            if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
-                                            for part in PurePosixPath(item["path"]).parts):
-                raise ValueError("repair cannot edit local metadata or build artifacts: " + item["path"])
-            item["path"] = target.relative_to(stage.resolve()).as_posix()
-            write_one(stage, item)
-        needed = missing_required(stage)
-        if needed:
-            raise ValueError("repair broke delivery: " + "; ".join(needed))
-        after_diagnostics = []
-        budget.progress("checking_repair", force=True)
-        after, _ = smoke_check(stage, requirements, after_diagnostics)
-        budget.smoke["problems_after"] = list(after)
-        if after_diagnostics:
-            budget.smoke["browser_after"] = after_diagnostics
-        # A repair that brought a blank or dead application back is kept even when a guard below would reject
-        # it: the rename guard once shipped the blank page instead (09-19 Ctrip, 0/125). A waived guard is
-        # recorded in smoke.repair.waived.
-        revived = any(_fatal(p) for p in smoke_before) and not any(_fatal(p) for p in after)
-        waived = []
+        from . import scenario_check
+    except ImportError:  # the flat package: main.py runs as a script beside scenario_check.py
+        import scenario_check
+    return scenario_check
 
-        def guard(failed, reason):
-            if failed and not revived:
-                raise ValueError(reason)
-            if failed:
-                waived.append(reason)
 
-        guard(any(r.get("executed") for r in diagnostics) and not any(r.get("executed") for r in after_diagnostics),
-              "browser recheck unavailable; cannot validate the repair")
-        improved = not any(_fatal(p) for p in after) and (
-            not after or any(_fatal(p) for p in smoke_before) or len(after) < len(smoke_before))
-        if not improved:
-            # A repair is kept when the app is clean, or when nothing whole-app remains and it is strictly
-            # better than before: it removed a whole-app failure (round 23 Prestashop: the parse-error repair
-            # was rejected and 0/86 shipped) or it removed more family-level problems than it left (Lite
-            # Bookstack r26b: six throwing handlers fixed, one newly reachable one exposed, the repair rejected
-            # and the six-fault draft shipped, 9/34). Same or more problems → the original stays.
-            raise ValueError("still failing after repair: " + "; ".join(after))
-        _, missing_after = vocabulary_gaps(stage, requirements)
-        guard(missing_after > missing_before,
-              f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
-        # A literal button can become a data-driven menu entry. Successful activation
-        # proves the name still exists even when this static HTML scan cannot resolve it.
-        observed_after = {re.sub(r"\s+", " ", action["name"]).strip().lower()
-                          for report in after_diagnostics if report.get("executed")
-                          for action in report.get("actions", [])
-                          if action.get("name") and "observation" not in action}
-        # Names compare without their decoration: the exact-name gate asks for `+ 添加返程` to become `添加返程`,
-        # and that repair must not count as a rename.
-        present = {_bare_name(name) for name in control_names(stage) | observed_after}
-        renamed = sorted(name for name in pinned_before if _bare_name(name) not in present)
-        # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
-        # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).
-        guard(bool(renamed), "repair renamed quoted control(s): " + ", ".join(renamed[:8]))
-        for item in batch:
-            files[:] = [f for f in files if f["path"] != item["path"]] + [item]
-        budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch],
-                                  "vocabulary_missing_after": missing_after}
-        if renamed:
-            budget.smoke["repair"]["renamed_controls"] = renamed
-        if waived:
-            budget.smoke["repair"]["waived"] = waived
+def check_scenarios(stage, requirements, only=None):
+    """Run the requirements' own scenarios against the staged application (scenario_check.py). A checker that cannot
+    run reports why instead of raising: its failure is never the application's fault."""
+    try:
+        return _scenario_module().run(None, stage, text=requirements or "", only=only)
     except Exception as exc:
-        # Keep the original delivery: a half-applied fix could be worse than the known state.
-        shutil.rmtree(stage)
-        shutil.copytree(backup, stage, symlinks=True)
-        budget.smoke["repair"] = {"accepted": False, "reason": str(exc)[:600]}
-    finally:
-        shutil.rmtree(backup, ignore_errors=True)
-    if budget.smoke["repair"].get("accepted") and after and not budget.exhausted():
-        previous = budget.smoke
-        history = previous.pop("previous_repairs", [])
-        repair_delivery(stage, files, messages + [{"role": "user", "content": ask},
-                                                {"role": "assistant", "content": fixed}],
-                        model, base, key, budget, template, requirements, scaffold=scaffold)
-        budget.smoke["previous_repairs"] = history + [previous] + budget.smoke.get("previous_repairs", [])
+        reason = f"{type(exc).__name__}: {str(exc)[:300]}"
+        print(f"[oneshot] scenario check unavailable: {reason}", file=sys.stderr)
+        return {"unavailable": reason, "scenarios": [], "invariants": []}
+
+
+def static_gaps(stage, requirements, scaffold):
+    """The static gates that flag the staged source, by gate. They are repair hints; a repair may not make a clean
+    gate flag."""
+    gates = {"process guards": process_guard_gaps(stage), "label collisions": aria_collision_gaps(stage, requirements),
+             "exact names": exact_name_gaps(stage, requirements), "readonly inputs": readonly_gaps(stage)}
+    if scaffold:
+        gates["scaffold"] = scaffold_gaps(stage)
+    return {gate: problems for gate, problems in gates.items() if problems}
+
+
+def assess(stage, requirements, scaffold):
+    """What the repair loop decides on: the delivery smoke check (whole-application failures and hints), the static
+    gates, the quoted vocabulary, and the scenario report, which is skipped while the application is broken whole."""
+    browser = []
+    smoke, executed = smoke_check(stage, requirements, browser)
+    vocab, missing = vocabulary_gaps(stage, requirements)
+    state = {"executed": executed, "smoke": smoke, "fatal": [p for p in smoke if _fatal(p)],
+             "static": static_gaps(stage, requirements, scaffold), "vocab": vocab, "missing": missing,
+             "browser": browser, "report": None}
+    if executed and not state["fatal"]:
+        state["report"] = check_scenarios(stage, requirements)
+    return state
+
+
+def _scenarios(state, status):
+    return [s for s in (state["report"] or {}).get("scenarios", []) if s.get("status") == status]
+
+
+def passing(state):
+    return {s["id"] for s in _scenarios(state, "pass")}
+
+
+def scenario_summary(report):
+    """A scenario report as the trace keeps it: counts, coverage, the failing scenarios with their observations, the
+    failed invariants, the translation's ledger and the time taken."""
+    if report is None:
+        return None
+    if report.get("unavailable"):
+        return {"unavailable": report["unavailable"]}
+    counts = {}
+    for scenario in report.get("scenarios", []):
+        counts[scenario.get("status")] = counts.get(scenario.get("status"), 0) + 1
+    translation = report.get("translation") or {}
+    return {"counts": counts, "coverage": report.get("coverage"), "seconds": report.get("seconds"),
+            "failing": [{"id": s["id"], "observation": (s.get("observation") or "")[:400]}
+                        for s in report.get("scenarios", []) if s.get("status") in ("fail", "error")],
+            "invariants": [{"id": i.get("id"), "observation": (i.get("observation") or "")[:400]}
+                           for i in report.get("invariants", []) if i.get("status") == "fail"],
+            "translation": {k: translation[k] for k in ("status", "model", "requested", "accepted", "rejected", "usage",
+                                                         "cost_cny", "seconds", "error") if k in translation}}
+
+
+def account_translation(budget, report):
+    """Put the scenario translation call on the ledger when this check made one; a cached reply costs nothing."""
+    translation = (report or {}).get("translation") or {}
+    if translation.get("status") not in ("called", "failed"):
+        return
+    call = {"call": "scenario-translation", "phase": "repair", "model": translation.get("model"),
+            "status": "completed" if translation["status"] == "called" else "failed",
+            "cost_cny": translation.get("cost_cny"), "usage": translation.get("usage") or {},
+            "elapsed_seconds": translation.get("seconds"), "error": translation.get("error")}
+    try:  # the true prompt and reply live in the translation cache record
+        cached = json.loads(Path(translation["cache"]).read_text(encoding="utf-8"))
+        call.update(messages=cached.get("messages"), content=cached.get("content"),
+                    finish_reason=cached.get("finish_reason"))
+    except (KeyError, OSError, ValueError, TypeError):
+        pass
+    budget.side_calls.append(call)
+
+
+def _checked(scenario, limit=700):
+    """The steps the browser performed for a scenario, in one line, marking the one that failed."""
+    parts = []
+    for step in scenario.get("steps") or []:
+        text = re.sub(r"^model: ", "", str(step.get("text") or step.get("op") or ""))
+        parts.append(text + ("" if step.get("result") in (None, "ok") else f" [{step['result']}]"))
+    joined = "; ".join(parts)
+    return joined if len(joined) <= limit else joined[:limit] + " ..."
+
+
+def repair_request(state, discarded=None):
+    """The repair message: what breaks the application as a whole, else the failing scenarios with what the check did
+    and saw, the passing scenarios to keep, and the other findings as hints."""
+    sections = []
+    if discarded:
+        sections.append("Your previous change was discarded and the application is back to the version before it, "
+                        f"because {discarded}. Fix the same findings a different way.")
+    if state["fatal"]:
+        sections.append("It is broken as a whole, so no scenario can pass:\n" + "\n".join("- " + p for p in state["fatal"]))
+    failing = _scenarios(state, "fail")
+    if failing:
+        lines = [f"- {s['id']} {s.get('name') or ''}\n  checked: {_checked(s)}\n  observed: {(s.get('observation') or '')[:600]}"
+                 for s in failing[:REPAIR_SHOWN]]
+        more = f"\n(and {len(failing) - REPAIR_SHOWN} more failing scenarios)" if len(failing) > REPAIR_SHOWN else ""
+        sections.append("These requirement scenarios fail (each id and scenario is in the requirements above; `checked` is "
+                        "what the browser did, `observed` what it saw):\n" + "\n".join(lines) + more)
+        keep = sorted(passing(state))
+        if keep:
+            sections.append("These scenarios pass and must keep passing: " + ", ".join(keep))
+        hints = [i.get("observation") or "" for i in (state["report"] or {}).get("invariants", []) if i.get("status") == "fail"]
+        hints += [p for p in state["smoke"] if not _fatal(p)]
+        hints += [p for problems in state["static"].values() for p in problems] + state["vocab"]
+        if hints:
+            sections.append("Other findings of the same check (hints; they may share a cause with the failures):\n"
+                            + "\n".join("- " + h[:600] for h in hints[:20]))
+    return REPAIR.format(findings="\n\n".join(sections))
+
+
+def judge(before, after, stage, requirements, pinned):
+    """(accepted, reason, detail) for a repaired stage against the version before it (roadmap 4.3). A repair is kept
+    when it brings a broken application back (whatever else it did), or when at least one more scenario passes, none
+    that passed is lost (a lost one is rechecked once for flakiness), no static gate newly flags, no quoted phrase
+    disappears and no control name the requirement quotes is renamed."""
+    detail = {}
+    if after["fatal"]:
+        return False, "the application is still broken as a whole: " + "; ".join(after["fatal"])[:500], detail
+    guards = []
+    newly = sorted(set(after["static"]) - set(before["static"]))
+    if newly:
+        guards.append("a static gate that was clean now flags: " + "; ".join(p for g in newly for p in after["static"][g])[:500])
+    if after["missing"] > before["missing"]:
+        guards.append(f"the change removed quoted vocabulary ({before['missing']} -> {after['missing']} missing)")
+    # A literal button can become a data-driven menu entry: a successful browser activation proves the name exists.
+    observed = {re.sub(r"\s+", " ", action["name"]).strip().lower()
+                for report in after["browser"] if report.get("executed")
+                for action in report.get("actions", []) if action.get("name") and "observation" not in action}
+    # Names compare without their decoration: dropping the `+ ` of `+ 添加返程` is not a rename.
+    present = {_bare_name(name) for name in control_names(stage) | observed}
+    renamed = sorted(name for name in pinned if _bare_name(name) not in present)
+    if renamed:
+        detail["renamed_controls"] = renamed
+        guards.append("the change renamed quoted control(s): " + ", ".join(renamed[:8]))
+    if before["fatal"]:
+        # A blank or dead application that works again is kept: a rename guard once shipped the blank page instead
+        # (09-19 Ctrip, 0/125). The waived guards stay on the record.
+        if guards:
+            detail["waived"] = guards
+        return True, "the application works again", detail
+    report = after["report"] or {}
+    if report.get("unavailable"):
+        return False, "the scenario recheck could not run: " + report["unavailable"], detail
+    lost = passing(before) - passing(after)
+    if lost:
+        again = {s["id"] for s in check_scenarios(stage, requirements, only=lost).get("scenarios", [])
+                 if s.get("status") == "pass"}
+        if again:
+            detail["flaky"] = sorted(again)
+            for scenario in report.get("scenarios", []):
+                if scenario["id"] in again:
+                    scenario["status"] = "pass"
+        lost -= again
+    if lost:
+        detail["lost"] = sorted(lost)
+        errors = [s for s in _scenarios(after, "error") if s["id"] in lost]
+        what = "the scenario recheck could not run for" if len(errors) == len(lost) else "the change broke"
+        return False, f"{what} {len(lost)} passing scenario(s): " + ", ".join(sorted(lost)[:12]), detail
+    gained = passing(after) - passing(before)
+    detail["gained"] = sorted(gained)
+    if not gained:
+        return False, "no failing scenario passes after the change", detail
+    if guards:
+        return False, "; ".join(guards), detail
+    return True, f"{len(gained)} more scenario(s) pass", detail
+
+
+def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
+    """Scenario-driven repair (roadmap 4.3). A repair is requested while the application is broken as a whole or one of
+    the requirements' scenarios fails, and it carries those findings; the static gates and the smoke check's
+    family-level problems ride along as hints and never trigger a call on their own. judge() decides whether a repair
+    is kept; a discarded one puts the stage back and the next request says why. The loop ends when nothing fails, at
+    the repair spend or call limit, or after REPAIR_REJECTIONS discarded repairs in a row. Each round is recorded."""
+    state = assess(stage, requirements, scaffold)
+    account_translation(budget, state["report"])
+    budget.smoke = {"executed": state["executed"],
+                    "problems": state["smoke"] + [p for ps in state["static"].values() for p in ps] + state["vocab"],
+                    "vocabulary_missing": state["missing"], "scenarios": scenario_summary(state["report"]), "repair": None}
+    if state["browser"]:
+        budget.smoke["browser_before"] = state["browser"]
+    rounds, conversation, discarded = [], list(messages), None
+    quoted = {phrase.lower() for phrase in quoted_control_phrases(requirements)}
+    while state["fatal"] or _scenarios(state, "fail"):
+        stop = budget.repair_stop()
+        if stop is None and len(rounds) >= REPAIR_REJECTIONS and not any(r["accepted"] for r in rounds[-REPAIR_REJECTIONS:]):
+            stop = f"{REPAIR_REJECTIONS} repairs in a row were discarded"
+        if stop:
+            budget.smoke["stopped"] = stop
+            if not rounds:
+                budget.smoke["repair"] = "skipped: " + stop
+            break
+        ask = repair_request(state, discarded)
+        # Only names the requirement quotes as controls are pinned (12306 r26b: pinning every quoted phrase rejected
+        # a repair for "renaming" messages and headings, and the collision-laden draft shipped).
+        pinned = control_names(stage) & quoted
+        backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
+        shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
+        record = {"round": len(rounds) + 1, "fatal": len(state["fatal"]),
+                  "failing": [s["id"] for s in _scenarios(state, "fail")], "accepted": False}
+        calls, started, replied = len(budget.attempts), time.monotonic(), False
+        try:
+            fixed, _, finish = stream_completion(conversation + [{"role": "user", "content": ask}],
+                                                 model, base, key, budget, tries=3)
+            replied = True
+            batch, missing = parse_blocks(fixed)
+            if missing or finish == "length":
+                raise ValueError("the repair output was truncated; emit only the files that must change")
+            if not batch:
+                raise ValueError("the repair emitted no file block")
+            for item in batch:
+                target = resolve_path(stage, item["path"])
+                if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
+                                                for part in PurePosixPath(item["path"]).parts):
+                    raise ValueError("repair cannot edit local metadata or build artifacts: " + item["path"])
+                item["path"] = target.relative_to(stage.resolve()).as_posix()
+                write_one(stage, item)
+            needed = missing_required(stage)
+            if needed:
+                raise ValueError("the repair broke delivery: " + "; ".join(needed))
+            budget.progress("checking_repair", force=True)
+            after = assess(stage, requirements, scaffold)
+            account_translation(budget, after["report"])
+            accepted, reason, detail = judge(state, after, stage, requirements, pinned)
+            record.update(detail, reason=reason)
+            if after["browser"]:
+                record["browser_after"] = after["browser"]
+            if not accepted:
+                raise ValueError(reason)
+            for item in batch:
+                files[:] = [f for f in files if f["path"] != item["path"]] + [item]
+            conversation += [{"role": "user", "content": ask}, {"role": "assistant", "content": fixed}]
+            state, discarded = after, None
+            record.update(accepted=True, files=[item["path"] for item in batch],
+                          scenarios=scenario_summary(after["report"]))
+        except Exception as exc:
+            # Keep the version before this repair: a half-applied fix could be worse than the known state.
+            shutil.rmtree(stage)
+            shutil.copytree(backup, stage, symlinks=True)
+            record["reason"] = str(exc)[:600]
+            if replied:  # a transport failure changed nothing the model should hear about
+                discarded = record["reason"]
+        finally:
+            shutil.rmtree(backup, ignore_errors=True)
+            record["seconds"] = round(time.monotonic() - started, 1)
+            record["cost_cny"] = round(sum(call_cost(r) for r in budget.attempts[calls:]), 6)
+            rounds.append(record)
+            budget.smoke["rounds"] = rounds
+            budget.smoke["repair"] = {k: record[k] for k in ("accepted", "reason", "files", "waived",
+                                                             "renamed_controls") if k in record}
+    budget.smoke["problems_after"] = state["smoke"]
+    budget.smoke["scenarios_after"] = scenario_summary(state["report"])
 
 
 def main(argv=None):
@@ -1760,7 +1991,7 @@ def main(argv=None):
         return 0
     finally:
         # True prompts, responses, timing and usage, including failures; never headers or keys.
-        for attempt in budget.attempts:
+        for attempt in budget.attempts + budget.side_calls:
             print("[oneshot] trace " + json.dumps(attempt, ensure_ascii=False).replace(key, "[REDACTED]"),
                   file=sys.stderr)
         if budget.smoke is not None:
