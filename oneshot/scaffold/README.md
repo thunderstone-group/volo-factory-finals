@@ -11,7 +11,7 @@ question is whether a primitive here can absorb it (ADR 0001).
 | `frontend/public/index.html` | shell | `#dialog-root` / `#status-root` hidden while idle (never intercept pointer events); script order seed → arc → app |
 | `frontend/public/styles.css` | row actions, dialog, status | actions `display:none` at rest, shown on `:hover` / `:focus-within` BELOW the text, never over a title |
 | `lib/arc.js` §Store | synchronous state, same-tab session snapshot, background API writes | `ARC.save()` preserves login and domain changes across full navigation; a fresh browser context starts from `seed.js`; screens render without waiting for a fetch |
-| `lib/arc.js` §Router | hash routes, `ARC.navigate`, in-app link interception | every screen reachable by clicking from `/`; navigation renders in the SAME task as the click — the click ladder probes each rung with `isVisible()` (no wait) right after the click resolves, and a render deferred to the `hashchange` task loses that race (Lite Bookstack 6 → 22 of 34 with this alone) |
+| `lib/arc.js` §Router | hash routes, `ARC.navigate`, in-app link interception | every screen reachable by clicking from `/`; navigation renders in the SAME task as the click — the click ladder probes each rung with `isVisible()` (no wait) right after the click resolves, and a render deferred to the `hashchange` task loses that race (one medium practice task went from 6 to 22 of 34 with this alone) |
 | `lib/arc.js` §Layout | one layout function | header (landmark) + navigation + account controls + sidebar + main + footer on EVERY route including `/`; home button named exactly by the brand beside the brand link; footer ends with the layout nouns as visible words (`/header/i`, `/sidebar/i` layout tests) |
 | `lib/arc.js` §Dialog | `openDialog` / `closeDialog` | siblings `inert` + `aria-hidden` while open (Playwright ignores `aria-modal`); no outside textbox visible to the fill ladder |
 | `lib/arc.js` §Popover | `openPopover(host, items, {kind, id, label})` / `closePopover()` | renders inside the supplied host; the requirements decide its scope and whether a command opens a named entity editor; native buttons by default, explicit menu/menuitem roles only for a required menu |
@@ -22,5 +22,5 @@ question is whether a primitive here can absorb it (ADR 0001).
 Gates that protect it: `scaffold_gaps` (shell still loads seed/arc/app; primitives still defined),
 the DOM smoke (no throw on load, text rendered, landmarks present), the collision and vocabulary gates.
 
-Validation: local Keep probe 2026-09-18 — model wrote only `app.js` + `seed.js`, primitives byte-identical,
-replay 31/32 (previous best 30/32). Platform pair = round 17.
+Validation: local probe on a medium practice task, 2026-09-18 — the model wrote only `app.js` + `seed.js`,
+primitives byte-identical, replay 31/32 (previous best 30/32).
