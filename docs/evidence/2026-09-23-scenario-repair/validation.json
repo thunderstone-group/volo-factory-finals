@@ -1,0 +1,935 @@
+{
+ "what": "Roadmap 4.3 validation: the scenario-driven repair loop run on existing applications as if they were drafts (scripts/repair_replay.py, deepseek-v4-flash, practice key), then the public Lite suite replayed on the result (lite-first replay.py: arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s).",
+ "code": "feat/scenario-repair 4d57980 (the review fixes in the same PR came after this batch; the paired comparison runs on them)",
+ "translation": "cached v3 translations of docs/evidence/2026-09-23-scenario-check-translation (SCENARIO_CACHE_DIR)",
+ "criterion_1": "four broken BookStack apps x 3 repairs; public before: v24 official 9, v22-a 9, baseline-a 5, c8a5 (r26 official, local replay) 8",
+ "criterion_2": "19 calibration replays with failing scenarios; public before from their recorded result.json",
+ "first_run_under_the_superset_rule": {
+  "run": "v24-a, 13:50-13:58",
+  "rounds": [
+   {
+    "round": 1,
+    "accepted": false,
+    "reason": "the change broke 2 passing scenario(s): REQ-4.3.1, REQ-4.3.2",
+    "lost": [
+     "REQ-4.3.1",
+     "REQ-4.3.2"
+    ],
+    "seconds": 112.1,
+    "cost_cny": 0.12276
+   },
+   {
+    "round": 2,
+    "accepted": false,
+    "reason": "the change broke 2 passing scenario(s): REQ-4.3.1, REQ-4.3.2",
+    "lost": [
+     "REQ-4.3.1",
+     "REQ-4.3.2"
+    ],
+    "seconds": 111.1,
+    "cost_cny": 0.088478
+   },
+   {
+    "round": 3,
+    "accepted": false,
+    "reason": "the change broke 2 passing scenario(s): REQ-4.3.1, REQ-4.3.2",
+    "lost": [
+     "REQ-4.3.1",
+     "REQ-4.3.2"
+    ],
+    "seconds": 112.9,
+    "cost_cny": 0.078795
+   }
+  ],
+  "note": "round 1 re-scored offline: self-check 9 -> 28 passing, lost REQ-4.3.1/4.3.2 (passed only because the broken router rendered the list); acceptance changed to three gains per loss"
+ },
+ "runs": [
+  {
+   "label": "c1-v24-a",
+   "cost": 0.233778,
+   "seconds": 368.6,
+   "self": "{'pass': 9, 'fail': 23, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+21 more scenario(s) pass, 2 lost",
+    "+4 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 9,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.1",
+    "REQ-5.2.1",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.2",
+    "REQ-6.1.3",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-7.1",
+    "REQ-7.2",
+    "REQ-8.1",
+    "REQ-8.2",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-v22a-a",
+   "cost": 0.195371,
+   "seconds": 274.1,
+   "self": "{'pass': 7, 'fail': 25, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+25 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 33,
+   "public_before": 9,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.3.1",
+    "REQ-4.3.2",
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.2",
+    "REQ-6.1.3",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-7.1",
+    "REQ-7.2",
+    "REQ-8.1",
+    "REQ-8.2"
+   ]
+  },
+  {
+   "label": "c1-base-a",
+   "cost": 0.339,
+   "seconds": 356.4,
+   "self": "{'pass': 5, 'fail': 27, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+27 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 5,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.1",
+    "REQ-4.2.1",
+    "REQ-4.3.1",
+    "REQ-4.3.2",
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.1",
+    "REQ-5.2.1",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.3",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-8.1",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-c8a5-a",
+   "cost": 0.473535,
+   "seconds": 496.4,
+   "self": "{'fail': 29, 'pass': 3, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+27 more scenario(s) pass",
+    "+2 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 28,
+   "public_before": 8,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-1.2",
+    "REQ-4.3.2",
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.2",
+    "REQ-5.2.2",
+    "REQ-5.3.2",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-6.1.1",
+    "REQ-6.1.2",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-7.1",
+    "REQ-7.2",
+    "REQ-8.1",
+    "REQ-8.2",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-v24-b",
+   "cost": 0.210964,
+   "seconds": 353.2,
+   "self": "{'pass': 9, 'fail': 23, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+21 more scenario(s) pass, 2 lost",
+    "+4 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 9,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.1",
+    "REQ-5.2.1",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.2",
+    "REQ-6.1.3",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-7.1",
+    "REQ-7.2",
+    "REQ-8.1",
+    "REQ-8.2",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-v22a-b",
+   "cost": 0.176763,
+   "seconds": 314.5,
+   "self": "{'pass': 7, 'fail': 25, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+24 more scenario(s) pass",
+    "+1 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 9,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.3.1",
+    "REQ-4.3.2",
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.2",
+    "REQ-6.1.3",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-7.1",
+    "REQ-7.2",
+    "REQ-8.1",
+    "REQ-8.2",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-base-b",
+   "cost": 0.108643,
+   "seconds": 216.6,
+   "self": "{'pass': 5, 'fail': 27, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+27 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 5,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.1",
+    "REQ-4.2.1",
+    "REQ-4.3.1",
+    "REQ-4.3.2",
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.1",
+    "REQ-5.2.1",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.3",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-8.1",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-c8a5-b",
+   "cost": 0.523276,
+   "seconds": 682.7,
+   "self": "{'fail': 29, 'pass': 3, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+26 more scenario(s) pass",
+    "+3 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 33,
+   "public_before": 8,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-1.2",
+    "REQ-4.3.1",
+    "REQ-4.3.2",
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.2",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-7.1",
+    "REQ-7.2",
+    "REQ-8.1",
+    "REQ-8.2",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-v24-c",
+   "cost": 0.254216,
+   "seconds": 482.0,
+   "self": "{'pass': 9, 'fail': 23, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+21 more scenario(s) pass, 2 lost",
+    "+4 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 9,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.1",
+    "REQ-5.2.1",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.2",
+    "REQ-6.1.3",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-7.1",
+    "REQ-7.2",
+    "REQ-8.1",
+    "REQ-8.2",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-v22a-c",
+   "cost": 0.259815,
+   "seconds": 562.7,
+   "self": "{'pass': 7, 'fail': 25, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+1 more scenario(s) pass",
+    "+24 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 9,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.3.1",
+    "REQ-4.3.2",
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.2",
+    "REQ-6.1.3",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-7.1",
+    "REQ-7.2",
+    "REQ-8.1",
+    "REQ-8.2",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-base-c",
+   "cost": 0.101506,
+   "seconds": 212.1,
+   "self": "{'pass': 5, 'fail': 27, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+27 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 5,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.1",
+    "REQ-4.2.1",
+    "REQ-4.3.1",
+    "REQ-4.3.2",
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.1",
+    "REQ-4.5.2",
+    "REQ-5.1",
+    "REQ-5.2.1",
+    "REQ-5.2.2",
+    "REQ-5.3.1",
+    "REQ-5.3.2",
+    "REQ-5.4.1",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-5.6.1",
+    "REQ-6.1.1",
+    "REQ-6.1.3",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-8.1",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c1-c8a5-c",
+   "cost": 0.930973,
+   "seconds": 970.2,
+   "self": "{'fail': 29, 'pass': 3, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+25 more scenario(s) pass",
+    "+2 more scenario(s) pass",
+    "+2 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 27,
+   "public_before": 8,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-1.2",
+    "REQ-4.3.2",
+    "REQ-4.4.1",
+    "REQ-4.4.2",
+    "REQ-4.5.2",
+    "REQ-5.2.2",
+    "REQ-5.3.2",
+    "REQ-5.4.2",
+    "REQ-5.5.1",
+    "REQ-5.5.2",
+    "REQ-6.1.1",
+    "REQ-6.1.2",
+    "REQ-6.2.1",
+    "REQ-6.3.1",
+    "REQ-6.3.2",
+    "REQ-7.1",
+    "REQ-7.2",
+    "REQ-8.1",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c2-baseline__keep-a",
+   "cost": 0.294092,
+   "seconds": 296.6,
+   "self": "{'pass': 25, 'fail': 5, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+5 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 32,
+   "public_before": 23,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-2.3.3",
+    "REQ-2.5.1",
+    "REQ-2.5.2",
+    "REQ-2.5.3",
+    "REQ-2.5.4",
+    "REQ-2.7.1",
+    "REQ-2.7.2",
+    "REQ-2.7.4",
+    "REQ-2.8.2"
+   ]
+  },
+  {
+   "label": "c2-baseline__keep-qwen-a",
+   "cost": 0.407033,
+   "seconds": 311.3,
+   "self": "{'pass': 26, 'fail': 4, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+4 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 27,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-2.7.4",
+    "REQ-2.8.2",
+    "REQ-3.2"
+   ]
+  },
+  {
+   "label": "c2-diagnostic__keep-qwen-before-auto-repair",
+   "cost": 0.269458,
+   "seconds": 271.6,
+   "self": "{'pass': 26, 'fail': 4, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+4 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 27,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-2.7.4",
+    "REQ-2.8.2",
+    "REQ-3.2"
+   ]
+  },
+  {
+   "label": "c2-diagnostic__keep-qwen-live-input",
+   "cost": 0.272219,
+   "seconds": 226.8,
+   "self": "{'pass': 27, 'fail': 3, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+3 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 28,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-2.7.4",
+    "REQ-2.8.2"
+   ]
+  },
+  {
+   "label": "c2-event-flow-v16__keep-highspeed-a",
+   "cost": 0.197072,
+   "seconds": 187.8,
+   "self": "{'pass': 27, 'fail': 3, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+3 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 32,
+   "public_before": 31,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-2.7.6.3"
+   ]
+  },
+  {
+   "label": "c2-kimi-adapter-v11__keep-direct-a",
+   "cost": 0.232132,
+   "seconds": 280.4,
+   "self": "{'pass': 25, 'fail': 5, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+5 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 29,
+   "public_before": 25,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-2.3.3",
+    "REQ-2.5.3",
+    "REQ-2.5.4",
+    "REQ-2.8.2"
+   ]
+  },
+  {
+   "label": "c2-official-v5-keep-public",
+   "cost": 0.649764,
+   "seconds": 606.4,
+   "self": "{'fail': 15, 'pass': 15, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "-the change renamed quoted control(s): pin note",
+    "+15 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 28,
+   "public_before": 13,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-1.1",
+    "REQ-2.2",
+    "REQ-2.5.1",
+    "REQ-2.5.2",
+    "REQ-2.5.3",
+    "REQ-2.5.4",
+    "REQ-2.6.1",
+    "REQ-2.6.2",
+    "REQ-2.7.6.2",
+    "REQ-2.8.1",
+    "REQ-2.8.2",
+    "REQ-2.8.3",
+    "REQ-3.1",
+    "REQ-4.1",
+    "REQ-6.2"
+   ]
+  },
+  {
+   "label": "c2-record-contract-v14__keep-highspeed-a",
+   "cost": 0.213265,
+   "seconds": 219.4,
+   "self": "{'pass': 22, 'fail': 8, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+8 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 23,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-2.3.1",
+    "REQ-2.3.2",
+    "REQ-2.3.3",
+    "REQ-2.6.1",
+    "REQ-2.6.2",
+    "REQ-2.7.4",
+    "REQ-4.2"
+   ]
+  },
+  {
+   "label": "c2-requirements-first-v3__keep-direct-a",
+   "cost": 0.215984,
+   "seconds": 201.2,
+   "self": "{'pass': 29, 'fail': 1, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+1 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 25,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-2.4",
+    "REQ-2.7.4",
+    "REQ-2.8.1",
+    "REQ-2.8.3",
+    "REQ-3.1"
+   ]
+  },
+  {
+   "label": "c2-seed-popover-v12__keep-highspeed-a",
+   "cost": 0.329066,
+   "seconds": 291.5,
+   "self": "{'pass': 28, 'fail': 2, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+2 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 32,
+   "public_before": 25,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-2.3.3",
+    "REQ-2.5.3",
+    "REQ-2.5.4",
+    "REQ-2.7.1",
+    "REQ-2.7.2",
+    "REQ-2.7.4",
+    "REQ-3.1"
+   ]
+  },
+  {
+   "label": "c2-targeted-contract-v4__keep-direct-a",
+   "cost": 0.312091,
+   "seconds": 277.3,
+   "self": "{'fail': 3, 'pass': 27, 'unparsed': 2} -> {'pass': 30, 'unparsed': 2}",
+   "rounds": [
+    "+3 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 27,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-1.1",
+    "REQ-2.7.4",
+    "REQ-3.1"
+   ]
+  },
+  {
+   "label": "c2-diagnostic__bookstack-routing-fix",
+   "cost": 0.189079,
+   "seconds": 201.2,
+   "self": "{'pass': 31, 'unparsed': 2, 'fail': 1} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+1 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 30,
+   "public_before": 29,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c2-diagnostic__bookstack-v20-third-call",
+   "cost": 0.147552,
+   "seconds": 154.9,
+   "self": "{'pass': 31, 'fail': 1, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+1 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 32,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-5.3.1",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c2-diagnostic__bookstack-v21-third-call",
+   "cost": 0.152795,
+   "seconds": 173.0,
+   "self": "{'pass': 30, 'fail': 2, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+2 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 31,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.5.1",
+    "REQ-5.4.1",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c2-diagnostic__bookstack-v23-stream-recovery",
+   "cost": 0.176522,
+   "seconds": 172.6,
+   "self": "{'pass': 31, 'unparsed': 2, 'fail': 1} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+1 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 33,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-8.2"
+   ]
+  },
+  {
+   "label": "c2-entry-contract-v17__bookstack-highspeed-a",
+   "cost": 0.125216,
+   "seconds": 150.0,
+   "self": "{'pass': 31, 'unparsed': 2, 'fail': 1} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+1 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 33,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-8.1"
+   ]
+  },
+  {
+   "label": "c2-event-flow-v16__bookstack-highspeed-a",
+   "cost": 0.397332,
+   "seconds": 359.4,
+   "self": "{'pass': 29, 'fail': 3, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+3 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 26,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.3.1",
+    "REQ-4.3.2",
+    "REQ-4.5.1",
+    "REQ-5.3.1",
+    "REQ-5.4.1",
+    "REQ-5.6.1",
+    "REQ-6.1.3",
+    "REQ-8.1"
+   ]
+  },
+  {
+   "label": "c2-form-state-v22__bookstack-highspeed-r1a",
+   "cost": 0.25136,
+   "seconds": 237.7,
+   "self": "{'pass': 30, 'unparsed': 2, 'fail': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+2 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 30,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-6.1.3",
+    "REQ-8.1",
+    "REQ-8.2",
+    "REQ-9.1"
+   ]
+  },
+  {
+   "label": "c2-initial-control-v18__bookstack-highspeed-a",
+   "cost": 0.222566,
+   "seconds": 261.2,
+   "self": "{'pass': 28, 'fail': 4, 'unparsed': 2} -> {'pass': 32, 'unparsed': 2}",
+   "rounds": [
+    "+4 more scenario(s) pass"
+   ],
+   "stopped": null,
+   "error": null,
+   "public_after": 34,
+   "public_before": 28,
+   "lost_cases": [],
+   "gained_cases": [
+    "REQ-4.5.1",
+    "REQ-5.3.1",
+    "REQ-5.4.1",
+    "REQ-5.6.1",
+    "REQ-6.1.3",
+    "REQ-9.1"
+   ]
+  }
+ ],
+ "totals": {
+  "runs": 31,
+  "repair_cost_cny": 8.862,
+  "max_cost_cny": 0.930973,
+  "lost_public_cases": 0,
+  "criterion_2_public_before": 516,
+  "criterion_2_public_after": 601
+ }
+}

@@ -52,6 +52,10 @@ CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this l
 DOM_ONLY = ("loading / in a DOM", "frontend script error on load", "after scripts run, / renders no visible text")
 # CNY per million tokens (input, cache-hit input, output), from the gateway catalogue (`arcbench models`, 09-23).
 PRICES = {"deepseek-v4-flash": (3.0, 0.1, 9.0), "kimi-k2.7-code-highspeed": (13.0, 2.6, 54.0)}
+# Seconds before the second and the third attempt of a call. A local network blip (09-23 13:58, every running
+# generation cut in the same second) spent three one-second retries and moved whole runs to the six times dearer
+# fallback model.
+RETRY_WAIT = (5, 30)
 MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
 #                 three on the primary model, then up to two on the fallback.
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
@@ -436,8 +440,9 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None)
                 budget.model = fallback
                 return stream_completion(messages, fallback, base, key, budget, tries, salvage)
             raise failure
-        print(f"[oneshot] call {record['call']} failed; bounded retry", file=sys.stderr)
-        time.sleep(1)
+        wait = RETRY_WAIT[min(attempt, len(RETRY_WAIT) - 1)]
+        print(f"[oneshot] call {record['call']} failed; bounded retry in {wait} s", file=sys.stderr)
+        time.sleep(wait)
     raise RuntimeError("no model call attempted")
 
 

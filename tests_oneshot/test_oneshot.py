@@ -596,7 +596,8 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual([r["status"] for r in budget.attempts], ["failed", "failed", "completed"])
         self.assertEqual(budget.attempts[1]["messages"], budget.attempts[0]["messages"])
         self.assertIn("inside the file `frontend/package.json`", budget.attempts[2]["messages"][-1]["content"])
-        self.assertIn("[oneshot] call 1 failed; bounded retry", capture.getvalue())
+        self.assertIn("[oneshot] call 1 failed; bounded retry in 5 s", capture.getvalue())
+        self.assertEqual([c.args for c in adapter.time.sleep.call_args_list], [(5,)])  # waits out a short network blip
         self.assertIn("[oneshot] call 2 was cut (StreamError)", capture.getvalue())
         self.assertEqual(len(files), 5)
         self.assertEqual((self.out / "backend/package.json").read_text(), '{"scripts":{"start":"node server.js"}}\n')
