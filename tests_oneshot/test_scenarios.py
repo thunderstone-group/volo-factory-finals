@@ -336,11 +336,17 @@ class SentenceCase(unittest.TestCase):
                          [(["heading"], "any"), (["region"], "any"), (["link", "button"], "one")])
 
     def test_given_shapes(self):
-        self.assertEqual(scenarios._given("The system is accessible."), {"auth": None, "location": None})
-        self.assertEqual(scenarios._given("The user is on the homepage and is not logged in."),
-                         {"auth": False, "location": "the homepage"})
-        self.assertEqual(scenarios._given("The authenticated user is on the page edit page."),
-                         {"auth": True, "location": "the page edit page"})
+        def given(text):
+            state = scenarios._given(text)
+            return {k: v for k, v in state.items() if v not in (None, [])}
+        self.assertEqual(given("The system is accessible."), {})
+        self.assertEqual(given("The user is on the homepage and is not logged in."), {"auth": False, "location": "the homepage"})
+        self.assertEqual(given("The authenticated user is on the page edit page."), {"auth": True, "location": "the page edit page"})
+        self.assertEqual(given("User has opened the application and the system is accessible."), {})
+        self.assertEqual(given('User is on the home page and the "Take a note" editor is open.'),
+                         {"location": "the home page", "open": "Take a note"})
+        self.assertEqual(given("The user has just deleted a note from the home page."),
+                         {"effects": ["the user has just deleted a note from the home page"]})
         with self.assertRaises(scenarios.Unparsed):
             scenarios._given("The homepage shows `Recent` with at least one item.")
 
@@ -399,6 +405,113 @@ class PlanCase(unittest.TestCase):
         entities = set(self.plan["entities"])
         self.assertTrue({"Room 3.2", "Room 3.3.1", "Rooms"} <= entities)
         self.assertNotIn("Delete", entities)
+
+
+TOGGLES = """id: ROOT
+type: FOLDER
+children:
+  - id: REQ-1
+    name: Home
+    type: ATOMIC
+    dependencies: []
+    scenarios:
+      - name: Home
+        steps:
+          - keyword: GIVEN
+            content: User has opened the application and the system is accessible.
+          - keyword: WHEN
+            content: Open the application entry URL.
+          - keyword: THEN
+            content: The page shows the `Board` region.
+  - id: REQ-2
+    name: Toggle views
+    type: ATOMIC
+    dependencies: [REQ-1]
+    scenarios:
+      - name: Toggle views
+        steps:
+          - keyword: GIVEN
+            content: User is on the home page.
+          - keyword: WHEN
+            content: Activate `List view` and then activate `Grid view`.
+          - keyword: THEN
+            content: '`List view` has aria-pressed=true after the first activation; `Grid view` has aria-pressed=true after the second activation.'
+  - id: REQ-3
+    name: Pin card
+    type: ATOMIC
+    description: 'Seed data: card "Card 3.1".'
+    dependencies: [REQ-1]
+    scenarios:
+      - name: Pin card
+        steps:
+          - keyword: GIVEN
+            content: User can see the sidebar.
+          - keyword: WHEN
+            content: Hover over the article for `Card 3.1`, activate its `More` button, and activate its `Pin` button.
+          - keyword: THEN
+            content: The `Pin` label is assigned.
+  - id: REQ-4
+    name: Unpin card
+    type: ATOMIC
+    description: 'Seed data: card "Card 4.1".'
+    dependencies: [REQ-3]
+    scenarios:
+      - name: Unpin card
+        steps:
+          - keyword: GIVEN
+            content: User is on the home page and the card is pinned.
+          - keyword: WHEN
+            content: In the `Card 4.1` article, activate `More` and activate `Unpin`.
+          - keyword: THEN
+            content: The `Card 4.1` article is absent from the pinned list; the `Board` region is visible.
+  - id: REQ-5
+    name: Collapse
+    type: ATOMIC
+    dependencies: [REQ-1]
+    scenarios:
+      - name: Collapse
+        steps:
+          - keyword: GIVEN
+            content: The sidebar is expanded.
+          - keyword: WHEN
+            content: Activate `Toggle sidebar` twice and activate its `Close` button.
+          - keyword: THEN
+            content: The `Board` region is visible.
+"""
+
+
+class StrictShapesCase(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.plan = scenarios.plan(TOGGLES)
+
+    def test_a_state_after_one_of_several_actions_is_checked_right_after_it(self):
+        ops = [(o["op"], (o.get("target") or {}).get("name"), o.get("attrs")) for o in ops_of(self.plan, "REQ-2")["ops"]]
+        self.assertEqual(ops[-4:], [("click", "List view", None), ("expect", "List view", {"aria-pressed": "true"}),
+                                    ("click", "Grid view", None), ("expect", "Grid view", {"aria-pressed": "true"})])
+
+    def test_unread_qualifiers_make_the_scenario_unparsed_instead_of_weaker(self):
+        pin = ops_of(self.plan, "REQ-3")  # "is assigned" is not an observable shape
+        self.assertEqual((pin["status"], pin["fragment"]["phase"]), ("unparsed", "then"))
+        unpin = ops_of(self.plan, "REQ-4")  # an absence inside a container the text never names
+        self.assertEqual((unpin["status"], unpin["fragment"]["phase"]), ("unparsed", "then"))
+        collapse = ops_of(self.plan, "REQ-5")  # `its` with no container before it
+        self.assertEqual((collapse["status"], collapse["fragment"]["phase"]), ("unparsed", "when"))
+
+    def test_pronoun_prefix_and_repeat_scopes(self):
+        masked, names = scenarios.mask("Hover over the article for `Card 3.1`, activate its `More` button, and activate `Pin` twice")
+        context, ops = {}, []
+        for clause in scenarios._clauses(masked):
+            ops.extend(scenarios._when_clause(clause, names, context))
+        self.assertEqual([(o["op"], o["target"]["name"]) for o in ops],
+                         [("hover", "Card 3.1"), ("click", "More"), ("click", "Pin"), ("click", "Pin")])
+        self.assertEqual(ops[1]["target"]["scope"]["name"], "Card 3.1")
+        masked, names = scenarios.mask("In the `Card 4.1` article, activate `More` and activate `Unpin`")
+        context, ops = {}, []
+        for clause in scenarios._clauses(masked):
+            ops.extend(scenarios._when_clause(clause, names, context))
+        self.assertEqual([o["target"]["scope"] for o in ops],
+                         [{"type": "named", "name": "Card 4.1", "roles": ["article"], "strict": False}] * 2)
 
 
 @unittest.skipUnless(BOOKSTACK.is_file(), "public BookStack exercise requirements are not present")

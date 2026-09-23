@@ -18,6 +18,11 @@ const FIELD_ROLES = ['textbox', 'searchbox', 'combobox', 'spinbutton'];
 const TEXT_ROLES = ['heading', 'link', 'button', 'cell', 'gridcell', 'option', 'tab', 'menuitem', 'status', 'alert', 'img'];
 const CONTAINER_ROLES = ['region', 'list', 'form', 'dialog', 'alertdialog', 'group', 'navigation', 'complementary',
   'tabpanel', 'table', 'grid', 'listbox', 'menu', 'toolbar', 'article', 'main', 'search'];
+// Roles whose accessible name does not come from their content: a note card "named by its title" is an
+// article that contains the title, so these are also matched by the text inside them.
+const BY_CONTENT = new Set(['article', 'listitem', 'row', 'group', 'region', 'cell', 'gridcell', 'list', 'dialog',
+  'alertdialog', 'form', 'complementary', 'navigation', 'tabpanel', 'figure', 'note', 'status', 'alert', 'log', 'main',
+  'toolbar', 'table', 'grid', 'tree', 'menu', 'listbox']);
 
 function loadPlaywright() {
   for (const name of ['playwright', '@playwright/test', 'playwright-core']) {
@@ -38,7 +43,7 @@ const q = (s) => '`' + clip(s, 80) + '`';
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 function union(root, roles, name, exact) {
-  const list = roles.map(role => root.getByRole(role, {name, exact}));
+  const list = roles.map(role => (name === undefined ? root.getByRole(role) : root.getByRole(role, {name, exact})));
   return list.reduce((a, b) => a.or(b));
 }
 
@@ -47,6 +52,18 @@ function ladder(root, target) {
   const n = target.name;
   const roles = target.roles || [];
   const rungs = [];
+  if (!n && roles.length) return [['role', union(root, roles, undefined)]];
+  if (target.kind === 'tag') {
+    const tagged = root.locator(target.tag);
+    rungs.push(['tag', n ? tagged.filter({hasText: n}) : tagged]);
+    return rungs;
+  }
+  if (target.kind === 'any') {
+    rungs.push(['role+name', union(root, [...CONTROL_ROLES, ...TEXT_ROLES.filter(r => !CONTROL_ROLES.includes(r))], n, true)],
+      ['text', root.getByText(n, {exact: true})], ['label', root.getByLabel(n, {exact: true})],
+      ['text substring', root.getByText(n)]);
+    return rungs;
+  }
   if (target.kind === 'field') {
     const r = roles.length ? roles : FIELD_ROLES;
     rungs.push(['role+name', union(root, r, n, true)], ['label', root.getByLabel(n, {exact: true})],
@@ -61,7 +78,14 @@ function ladder(root, target) {
       ['text substring', root.getByText(n)], ['role+name substring', union(root, TEXT_ROLES, n, false)]);
   } else {
     const r = roles.length ? roles : CONTROL_ROLES;
-    rungs.push(['role+name', union(root, r, n, true)], ['role+name substring', union(root, r, n, false)]);
+    rungs.push(['role+name', union(root, r, n, true)]);
+    const content = r.filter(role => BY_CONTENT.has(role));
+    if (content.length) {
+      const all = union(root, content, undefined);
+      rungs.push(['role+text', all.filter({has: root.getByText(n, {exact: true})})]);
+    }
+    rungs.push(['role+name substring', union(root, r, n, false)]);
+    if (content.length) rungs.push(['role+text substring', union(root, content, undefined).filter({hasText: n})]);
     if (target.kind !== 'structure') {
       rungs.push(['label', root.getByLabel(n, {exact: true})], ['placeholder', root.getByPlaceholder(n, {exact: true})],
         ['text', root.getByText(n, {exact: true})]);
@@ -75,11 +99,14 @@ function exactRungs(root, target) {
 }
 
 function describeTarget(target) {
+  if (target.kind === 'tag') return `<${target.tag}> element${target.name ? ` containing ${q(target.name)}` : ''}`;
   const roles = target.roles && target.roles.length ? target.roles.join(' or ') :
-    ({field: 'field', entry: 'entry', text: 'text', control: 'control', structure: 'element'})[target.kind] || 'element';
+    ({field: 'field', entry: 'entry', text: 'text', control: 'control', structure: 'element', any: 'element'})[target.kind] || 'element';
+  if (!target.name) return `${roles}${target.scope && target.scope.type === 'named' ? ` in ${q(target.scope.name)}` : ''}`;
   let scope = '';
   if (target.scope && target.scope.type === 'named') scope = ` in ${q(target.scope.name)}`;
   if (target.scope && target.scope.type === 'landmark') scope = ' in the navigation';
+  if (target.scope && target.scope.type === 'role') scope = ` in the ${target.scope.roles.join(' or ')}`;
   return `${roles} named ${q(target.name)}${scope}`;
 }
 
@@ -97,32 +124,79 @@ async function scopeRoots(page, scope) {
     roots.push({root: page, label: 'page'});
     return {roots, missing: null};
   }
-  const roles = [...(scope.roles || []), ...CONTAINER_ROLES.filter(r => !(scope.roles || []).includes(r))];
+  if (scope.type === 'role') {
+    // "in the sidebar", "in the suggestions listbox": visible containers of that role first, then the page.
+    const roots = [];
+    const marks = union(page, scope.roles, undefined, false).filter({visible: true});
+    const count = Math.min(await marks.count(), 6);
+    for (let i = 0; i < count; i++) roots.push({root: marks.nth(i), label: scope.roles[0]});
+    if (scope.strict && !roots.length) return {roots: [], missing: `no visible ${scope.roles.join(' or ')}`};
+    if (!scope.strict) roots.push({root: page, label: 'page'});
+    return {roots, missing: null};
+  }
+  const label = q(scope.name);
+  const given = scope.roles || [];
+  const roles = [...given, ...CONTAINER_ROLES.filter(r => !given.includes(r))];
   let containers = union(page, roles, scope.name, true).filter({visible: true});
   let count = await containers.count();
-  if (!count) {
-    const heading = page.getByRole('heading', {name: scope.name, exact: true}).filter({visible: true});
-    if (await heading.count()) { containers = heading.first().locator('xpath=..'); count = 1; }
+  let roots = [];
+  const content = given.filter(role => BY_CONTENT.has(role) && role !== 'region');
+  if (!count && content.length) {
+    // An article "named" by the title it contains.
+    containers = union(page, content, undefined).filter({has: page.getByText(scope.name, {exact: true})}).filter({visible: true});
+    count = await containers.count();
   }
-  if (!count) {
+  if (count) {
+    for (let i = 0; i < Math.min(count, 4); i++) roots.push({root: containers.nth(i), label});
+  } else {
+    // A section titled by a heading: the heading's own wrapper, or, when that wrapper also holds the next
+    // section, the elements between this heading and the next heading of the same or a higher level.
+    const heading = page.getByRole('heading', {name: scope.name, exact: true}).filter({visible: true}).first();
+    if (await heading.count()) {
+      const shared = await heading.evaluate(h => {
+        const level = Number((h.getAttribute('aria-level') || h.tagName.slice(1)) || 6);
+        return [...h.parentElement.querySelectorAll('h1,h2,h3,h4,h5,h6,[role="heading"]')].some(o => o !== h &&
+          Number((o.getAttribute('aria-level') || o.tagName.slice(1)) || 6) <= level);
+      }).catch(() => true);
+      roots.push(shared ? {root: page, label, section: await heading.elementHandle()} : {root: heading.locator('xpath=..'), label});
+    }
+  }
+  if (!roots.length) {
     if (scope.strict) return {roots: [], missing: `no region, list, form or dialog named ${q(scope.name)}`};
     return {roots: [{root: page, label: 'page'}], missing: null};
   }
-  const roots = [];
-  for (let i = 0; i < Math.min(count, 4); i++) roots.push({root: containers.nth(i), label: q(scope.name)});
   if (!scope.strict) roots.push({root: page, label: 'page'});
   return {roots, missing: null};
 }
 
-// First rung with visible matches, searched root by root: {count, locator, rung, root, missing}.
+// Visible matches of a locator inside a root: {count, pick(i)}; a section root keeps only the elements that
+// follow its heading and precede the next heading of the same or a higher level.
+async function within(root, loc) {
+  const visible = loc.filter({visible: true});
+  if (!root.section) {
+    const count = await visible.count();
+    return {count, pick: i => visible.nth(i)};
+  }
+  const flags = await visible.evaluateAll((els, h) => {
+    const level = Number((h.getAttribute('aria-level') || h.tagName.slice(1)) || 6);
+    const headings = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6,[role="heading"]')];
+    const next = headings.find(o => (h.compareDocumentPosition(o) & Node.DOCUMENT_POSITION_FOLLOWING) &&
+      Number((o.getAttribute('aria-level') || o.tagName.slice(1)) || 6) <= level);
+    return els.map(el => !!(h.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) &&
+      (!next || !!(el.compareDocumentPosition(next) & Node.DOCUMENT_POSITION_FOLLOWING)) && el !== h);
+  }, root.section);
+  const indexes = flags.map((f, i) => (f ? i : -1)).filter(i => i >= 0);
+  return {count: indexes.length, pick: i => visible.nth(indexes[i])};
+}
+
+// First rung with visible matches, searched root by root: {count, pick, rung, root, missing}.
 async function locate(page, target) {
   const {roots, missing} = await scopeRoots(page, target.scope);
   if (missing) return {count: 0, missing};
-  for (const {root, label} of roots) {
-    for (const [rung, loc] of ladder(root, target)) {
-      const visible = loc.filter({visible: true});
-      const count = await visible.count();
-      if (count) return {count, locator: visible, rung, root: label};
+  for (const root of roots) {
+    for (const [rung, loc] of ladder(root.root, target)) {
+      const found = await within(root, loc);
+      if (found.count) return {count: found.count, pick: found.pick, rung, root: root.label};
     }
   }
   return {count: 0};
@@ -162,7 +236,7 @@ function where(s) {
 }
 
 function verb(op) {
-  return ({click: 'activating', hover: 'hovering', fill: 'filling', check: 'checking', select: 'selecting in',
+  return ({click: 'activating', hover: 'hovering', focus: 'focusing', fill: 'filling', check: 'checking', select: 'selecting in',
     goto: 'opening', press: 'pressing', wait: 'waiting'})[op.op] || op.op;
 }
 
@@ -203,8 +277,23 @@ async function elementRole(locator) {
   } catch { return ''; }
 }
 
+async function revealIn(page, scope) {
+  if (!scope || scope.type !== 'named') return;
+  try {
+    const {roots} = await scopeRoots(page, scope);
+    if (roots.length && roots[0].label !== 'page' && !roots[0].section) await roots[0].root.first().hover({timeout: 1000});
+  } catch {}
+}
+
+// Controls a row reveals on hover stay visible while the pointer rests there; park it before counting.
+async function park(page) {
+  try { await page.mouse.move(1, 1); await sleep(60); } catch {}
+}
+
 async function act(page, op, ctx) {
   const target = op.target;
+  if (op.unique && !(target.scope && target.scope.type === 'named')) await park(page);
+  await revealIn(page, target.scope);
   const found = await waitFor(page, target, ACTION_MS);
   if (!found.count) {
     const s = await screen(page);
@@ -221,13 +310,17 @@ async function act(page, op, ctx) {
     }
     if (!chosen.count) chosen = found;
   }
-  const element = chosen.locator.first();
+  const element = chosen.pick(0);
   const detail = `${chosen.rung}${chosen.root && chosen.root !== 'page' ? ' in ' + chosen.root : ''}, ${chosen.count} match${chosen.count > 1 ? 'es' : ''}`;
   const before = page.url();
   const role = op.op === 'click' ? await elementRole(element) : '';
   try {
-    if (op.op === 'click') await element[op.double ? 'dblclick' : 'click']({timeout: ACTION_MS});
+    if (op.op === 'click') {
+      const card = target.kind === 'structure' && (target.roles || []).some(r => BY_CONTENT.has(r));
+      await element[op.double ? 'dblclick' : 'click'](card ? {timeout: ACTION_MS, position: {x: 8, y: 8}} : {timeout: ACTION_MS});
+    }
     else if (op.op === 'hover') await element.hover({timeout: ACTION_MS});
+    else if (op.op === 'focus') { await element.focus({timeout: ACTION_MS}); await sleep(120); }
     else if (op.op === 'fill') await element.fill(op.value, {timeout: ACTION_MS});
     else if (op.op === 'check') {
       try { await (op.checked ? element.check({timeout: ACTION_MS}) : element.uncheck({timeout: ACTION_MS})); }
@@ -277,7 +370,14 @@ async function checkAttrs(locator, op) {
   const attrs = op.attrs || {};
   const states = op.states || {};
   for (const [key, value] of Object.entries(attrs)) {
-    if (String(await locator.getAttribute(key)) !== String(value)) return `${key}=${await locator.getAttribute(key)}`;
+    const own = await locator.getAttribute(key);
+    if (String(own) === String(value)) continue;
+    if (key === 'title' && await locator.locator(`[title="${String(value).replace(/"/g, '\\"')}"]`).count()) continue;
+    return `${key}=${own}`;
+  }
+  for (const [prop, value] of Object.entries(op.style || {})) {
+    const actual = await locator.evaluate((el, p) => getComputedStyle(el).getPropertyValue(p).trim(), prop);
+    if (actual.replace(/\s+/g, '') !== String(value).replace(/\s+/g, '')) return `${prop}: ${actual}`;
   }
   for (const [key, value] of Object.entries(states)) {
     let actual;
@@ -291,13 +391,21 @@ async function checkAttrs(locator, op) {
 
 async function expectOnce(page, op) {
   const target = op.target;
+  if (op.count === 'none' && (op.attrs || op.states || op.style)) {
+    // "has no `Pinned` title": no matching element carries those values (the element itself may stay).
+    const found = await locate(page, target);
+    for (let i = 0; i < Math.min(found.count || 0, 8); i++) {
+      if (!(await checkAttrs(found.pick(i), op))) return {ok: false, count: 1, rung: found.rung, root: found.root, attr: 'present'};
+    }
+    return {ok: true, detail: found.count ? 'no match carries the values' : 'absent'};
+  }
   if (op.count === 'none') {
     const {roots, missing} = await scopeRoots(page, target.scope);
     if (missing) return {ok: true, detail: missing};
-    for (const {root, label} of roots.slice(0, 1).concat(roots.length > 1 ? [roots[roots.length - 1]] : [])) {
-      for (const [rung, loc] of exactRungs(root, target)) {
-        const count = await loc.filter({visible: true}).count();
-        if (count) return {ok: false, count, rung, root: label};
+    for (const root of roots.slice(0, 1).concat(roots.length > 1 ? [roots[roots.length - 1]] : [])) {
+      for (const [rung, loc] of exactRungs(root.root, target)) {
+        const count = (await within(root, loc)).count;
+        if (count) return {ok: false, count, rung, root: root.label};
       }
     }
     return {ok: true, detail: 'absent'};
@@ -305,10 +413,10 @@ async function expectOnce(page, op) {
   const found = await locate(page, target);
   if (!found.count) return {ok: false, count: 0, missing: found.missing};
   if (op.count === 'one' && found.count !== 1) return {ok: false, count: found.count, rung: found.rung, root: found.root};
-  if (op.attrs || op.states) {
+  if (op.attrs || op.states || op.style) {
     let mismatch = null;
     for (let i = 0; i < Math.min(found.count, 5); i++) {
-      mismatch = await checkAttrs(found.locator.nth(i), op);
+      mismatch = await checkAttrs(found.pick(i), op);
       if (!mismatch) return {ok: true, detail: `${found.rung}, ${found.count} match(es)`};
     }
     return {ok: false, count: found.count, rung: found.rung, attr: mismatch};
@@ -317,6 +425,7 @@ async function expectOnce(page, op) {
 }
 
 async function expectOp(page, op, ctx) {
+  if (op.count === 'one' && !(op.target.scope && op.target.scope.type === 'named')) await park(page);
   const deadline = Date.now() + EXPECT_MS;
   let result;
   for (;;) {
@@ -328,9 +437,11 @@ async function expectOp(page, op, ctx) {
   const s = await screen(page);
   const target = op.target;
   let want;
-  if (op.count === 'none') want = `expected no ${describeTarget(target)}, found ${result.count} (${result.rung}${result.root && result.root !== 'page' ? ' in ' + result.root : ''})`;
+  const values = Object.entries({...(op.attrs || {}), ...(op.states || {}), ...(op.style || {})}).map(([k, v]) => `${k}=${v}`).join(', ');
+  if (op.count === 'none' && values) want = `expected no ${describeTarget(target)} with ${values}, but one has them`;
+  else if (op.count === 'none') want = `expected no ${describeTarget(target)}, found ${result.count} (${result.rung}${result.root && result.root !== 'page' ? ' in ' + result.root : ''})`;
   else if (result.missing) want = `expected ${describeTarget(target)}, but there is ${result.missing}`;
-  else if (result.attr) want = `expected ${describeTarget(target)} with ${Object.entries({...(op.attrs || {}), ...(op.states || {})}).map(([k, v]) => `${k}=${v}`).join(', ')}, found ${result.count} with ${result.attr}`;
+  else if (result.attr) want = `expected ${describeTarget(target)} with ${Object.entries({...(op.attrs || {}), ...(op.states || {}), ...(op.style || {})}).map(([k, v]) => `${k}=${v}`).join(', ')}, found ${result.count} with ${result.attr}`;
   else if (op.count === 'one' && result.count) want = `expected exactly one ${describeTarget(target)}, found ${result.count} (${result.rung})`;
   else {
     const partial = await locate(page, {...target, scope: target.scope && target.scope.strict ? target.scope : undefined});

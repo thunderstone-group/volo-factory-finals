@@ -544,6 +544,7 @@ _ROLE_TABLE = [
     (r"headings? or (?:named )?regions?|regions? or (?:named )?headings?", ["heading", "region"], "structure"),
     (r"menu ?items?", ["menuitem"], "control"),
     (r"list ?items?", ["listitem"], "entry"),
+    (r"list ?box(?:es)?", ["listbox"], "structure"),
     (r"radio(?: buttons?)?", ["radio"], "control"),
     (r"check ?box(?:es)?", ["checkbox"], "control"),
     (r"toggles?|switch(?:es)?", ["switch", "button"], "control"),
@@ -557,7 +558,8 @@ _ROLE_TABLE = [
     (r"links?", ["link"], "control"),
     (r"options?", ["option"], "control"),
     (r"headings?|titles?", ["heading"], "structure"),
-    (r"regions?|sections?", ["region"], "structure"),
+    (r"regions?", ["region"], "structure"),
+    (r"sections?", ["region", "heading"], "structure"),
     (r"forms?", ["form"], "structure"),
     (r"dialogs?|modals?|pop-?ups?", ["dialog", "alertdialog"], "structure"),
     (r"lists?", ["list"], "structure"),
@@ -565,6 +567,7 @@ _ROLE_TABLE = [
     (r"tables?|grids?", ["table", "grid"], "structure"),
     (r"images?|icons?|logos?|pictures?", ["img"], "structure"),
     (r"navigation(?: bar)?|nav(?: ?bar)?", ["navigation"], "structure"),
+    (r"side ?bars?|side panels?", ["complementary"], "structure"),
     (r"menus?", ["menu"], "structure"),
     (r"alerts?", ["alert"], "structure"),
     (r"articles?", ["article"], "structure"),
@@ -579,7 +582,7 @@ _NAMING = re.compile(r"\b(?:named|labell?ed|called|titled|with (?:the )?(?:acces
                      r"with (?:the )?(?:exact )?text|with (?:the )?(?:exact )?(?:label|title)|reading|"
                      r"(?:exactly )?matching)\b")
 _PLACEHOLDER = re.compile(r"\bwith (?:the |an? )?(?:exact )?placeholder\b|\bplaceholder\b")
-_SCOPE_SPLIT = re.compile(r"^(?P<core>.*?«\d+».*?)\s+(?:in|inside|within|on|from|under|at|of|for)\s+"
+_SCOPE_SPLIT = re.compile(r"^(?P<core>.*?«\d+».*?)\s+(?:in|inside|within|on|from|under|at|of|for|to)\s+"
                           r"(?P<scope>(?:the|a|an|this|that|its|their|each|every|any|all)\b.*|«\d+».*)$")
 _LANDMARK = re.compile(r"\b(?:nav(?:igation)?|navbar|menu ?bar|header|top bar|app ?bar|toolbar|banner|masthead)\b")
 
@@ -605,10 +608,37 @@ def _scope(text, names):
         return None  # a quoted name inside an unrecognised scope phrase: do not guess
     if _LANDMARK.search(text):
         return {"type": "landmark"}
-    return {"type": "phrase", "text": re.sub(r"^(?:the|a|an|this|its|their)\s+", "", text)}
+    found = _roles_in(text, True)
+    roles = [r for r in (found[0] if found and found[1] == "structure" else []) if r not in ("heading", "img")]
+    return {"type": "phrase", "text": re.sub(r"^(?:the|a|an|this|its|their)\s+", "", text), "roles": roles}
 
 
-def _target(phrase, names, default_kind, allow_scope=True):
+_PRE_DENY = re.compile(r"\b(?:after|before|first|second|third|fourth|last|twice|thrice|then|once|until|not|no|never|"
+                       r"without|except|another|other|every|each|all|both|least|most|more|less|than|order|sorted|"
+                       r"above|below|between|next|previous|times)\b")
+_POST_NOUNS = {"a", "an", "the", "note", "notes", "card", "cards", "entry", "entries", "item", "items", "text", "message",
+               "label", "labels", "title", "value", "element", "elements", "control", "controls", "icon", "icons",
+               "chip", "chips", "tag", "tags", "badge", "toggle", "row", "tile", "record", "result", "visible",
+               "unique", "named", "option", "field", "fields", "box"}
+
+
+_THEN_PRE_DENY = re.compile(r"\b(?:to|into|by|via|using|from|in|inside|within|on|changes?|becomes?|turns?|moves?|sets?|"
+                            r"is|are|was|were|be|been|has|have|had|appears?|computed|background|style|font|size|"
+                            r"position|order|count|number|attribute|property|width|height|colou?rs?)\b")
+
+
+def _leftover(pre, post, then=False):
+    """Words of a target phrase that change its meaning and that no shape reads (so it must not be guessed)."""
+    if _PRE_DENY.search(pre) or _PRE_DENY.search(post):
+        return (_PRE_DENY.search(pre) or _PRE_DENY.search(post)).group(0)
+    if then and _THEN_PRE_DENY.search(pre):
+        return _THEN_PRE_DENY.search(pre).group(0)
+    rest = _ROLE_RE.sub(" ", post)
+    words = [w for w in re.findall(r"[a-z][a-z'-]*", rest) if w not in _POST_NOUNS]
+    return " ".join(words)
+
+
+def _target(phrase, names, default_kind, allow_scope=True, then=False):
     """`the unique link or button named «0» in the shelf list` -> target dict and unique flag."""
     phrase = phrase.strip()
     scope = None
@@ -623,9 +653,11 @@ def _target(phrase, names, default_kind, allow_scope=True):
     if len(tokens) != 1:
         return None
     pre, post = phrase.split(f"«{tokens[0]}»", 1)
+    if _leftover(pre, post, then):
+        return None
     unique = bool(_UNIQUE.search(pre))
     placeholder = bool(_PLACEHOLDER.search(pre))
-    found = _roles_in(_NAMING.sub(" ", pre), True) or _roles_in(post, False)
+    found = _roles_in(_NAMING.sub(" ", pre), True) or _roles_in(post, True)
     roles, kind = found if found else ([], default_kind)
     if kind == "structure" and not roles:
         kind = default_kind
@@ -666,10 +698,59 @@ _LOOK = re.compile(r"^(?:reviews?|views?|looks? at|observes?|reads?|inspects?|ch
 _SYSTEM = re.compile(r"^(?:the |an? )?(?:system|application|app|page|browser|server|site|platform)\b")
 
 
-def _when_clause(clause, names):
-    """One WHEN clause -> list of ops. Raises Unparsed."""
+_CONTAINERS = {"article", "group", "row", "listitem", "region", "dialog", "alertdialog", "form", "list", "complementary",
+               "navigation", "menu", "listbox", "table", "grid", "tabpanel", "treeitem", "cell"}
+_FOCUS = re.compile(r"^(?:focus(?:es)?(?: on)?|puts? (?:the )?focus (?:on|in)|moves? focus to)\s+(?P<obj>.+)$")
+_REPEAT = re.compile(r"\s+(?P<n>twice|two times|three times|thrice)$")
+_IN_PREFIX = re.compile(r"^(?:in|inside|within|on) (?:the |its )?«(?P<n>\d+)»(?: (?P<noun>[a-z ]+))?$")
+
+
+def _apply_context(target, pre, context, clause):
+    """`its «Delete» button` after `hover the article for «X»`: scope to the last named container of the step.
+    `In the «X» article, activate ...`: the step's prefix scope, searched first (soft)."""
+    if target.get("scope"):
+        return target
+    if re.search(r"\b(?:its|their)\b", pre):
+        entity = context.get("entity")
+        if not entity:
+            raise Unparsed("when", clause, "`its` has no named container earlier in the step")
+        target["scope"] = {"type": "named", "name": entity["name"], "roles": entity["roles"], "strict": False}
+    elif context.get("prefix"):
+        target["scope"] = dict(context["prefix"])
+    return target
+
+
+def _remember(target, context):
+    if set(target.get("roles") or []) & _CONTAINERS:
+        context["entity"] = {"name": target["name"], "roles": target["roles"]}
+
+
+def _when_clause(clause, names, context=None):
+    """One WHEN clause -> list of ops. Raises Unparsed. `context` carries pronoun and prefix scopes of a step."""
+    context = {} if context is None else context
     text = re.sub(r"^(?:then|and|also|finally|next|first|afterwards)\s+", "", clause)
     text = _ACTOR.sub("", text)
+    match = _IN_PREFIX.match(text)
+    if match:
+        found = _roles_in(match.group("noun") or "", True)
+        roles = found[0] if found else []
+        context["prefix"] = {"type": "named", "name": names[int(match.group("n"))], "roles": roles, "strict": False}
+        context["entity"] = {"name": names[int(match.group("n"))], "roles": roles}
+        return []
+    repeat = 1
+    match = _REPEAT.search(text)
+    if match:
+        repeat = {"twice": 2, "two times": 2, "three times": 3, "thrice": 3}[match.group("n")]
+        text = text[:match.start()]
+    ops = _when_core(text, clause, names, context)
+    if repeat > 1:
+        if len(ops) != 1 or ops[0]["op"] not in ("click", "press"):
+            raise Unparsed("when", clause, "only a single activation can be repeated")
+        ops = [dict(ops[0]) for _ in range(repeat)]
+    return ops
+
+
+def _when_core(text, clause, names, context):
     if _SYSTEM.match(text) and not _TOKEN.search(text):
         return [{"op": "wait", "ms": 400}]
     if _GOTO.match(text):
@@ -679,12 +760,23 @@ def _when_clause(clause, names):
     match = _PRESS.match(text)
     if match and not match.group("obj"):
         return [{"op": "press", "key": _KEYS[match.group("key")]}]
+    match = _FOCUS.match(text)
+    if match:
+        found = _target(match.group("obj"), names, "field")
+        if not found:
+            raise Unparsed("when", clause, "the focus phrase does not name exactly one element")
+        target, unique, _ = found
+        if not target["roles"]:
+            target["kind"], target["roles"] = "field", list(_FIELD)
+        return [{"op": "focus", "target": _apply_context(target, match.group("obj").split("«")[0], context, clause),
+                 "unique": unique}]
     match = _FILL_INTO.match(text) or _FILL_WITH.match(text)
     if match:
         found = _target(match.group("field"), names, "field")
         if not found:
             raise Unparsed("when", clause, "the field phrase does not name exactly one field")
         target, unique, _ = found
+        _apply_context(target, match.group("field").split("«")[0], context, clause)
         target["kind"] = "field"
         if not target["roles"] or not set(target["roles"]) <= set(_FIELD + ["listbox"]):
             target["roles"] = list(_FIELD)
@@ -705,6 +797,7 @@ def _when_clause(clause, names):
             if not found:
                 raise Unparsed("when", clause, "the checkbox phrase does not name exactly one control")
             target, unique, _ = found
+            _apply_context(target, obj.split("«")[0], context, clause)
             if not target["roles"] or target["roles"] == ["button"]:
                 target["roles"] = ["checkbox", "radio", "switch"]
             state = not verb.startswith(("uncheck", "untick", "deselect", "disable"))
@@ -715,6 +808,8 @@ def _when_clause(clause, names):
         if not found:
             raise Unparsed("when", clause, "the hover phrase does not name exactly one element")
         target, unique, _ = found
+        _apply_context(target, match.group("obj").split("«")[0], context, clause)
+        _remember(target, context)
         return [{"op": "hover", "target": target, "unique": unique}]
     match = _ACTIVATE.match(text)
     if match:
@@ -735,6 +830,8 @@ def _when_clause(clause, names):
         if not found:
             raise Unparsed("when", clause, "the activation phrase does not name exactly one control")
         target, unique, _ = found
+        _apply_context(target, obj.split("«")[0], context, clause)
+        _remember(target, context)
         op = {"op": "click", "target": target, "unique": unique}
         if verb.startswith("double"):
             op["double"] = True
@@ -756,7 +853,20 @@ _TRIVIAL_GIVEN = [
                r"(?:panel|area|bar|menu|actions?|toolbar|section|controls?|buttons?)$"),
     re.compile(r"^at least (?:one|1|a) [a-z -]+? (?:is|are) (?:visible|listed|shown|displayed|present|available)(?: [a-z -]+)?$"),
     re.compile(r"^(?:an? |the )?[a-z -]+ (?:already )?exists?(?: [a-z -]+)?$"),
+    re.compile(r"^(?:the )?user has (?:already )?(?:opened|loaded|launched|accessed|visited) the (?:application|app|system|site|"
+               r"website|web application|home ?page)$"),
+    re.compile(r"^(?:the )?(?:system|application|app|database|data) (?:has been|is) (?:initiali[sz]ed|started|seeded|reset|"
+               r"set up|prepared|loaded)$"),
+    re.compile(r"^(?:the )?(?:user )?(?:can|could) (?:see|view) (?:the |a |an |at least one |some |its |their )?[a-z -]+$"),
+    re.compile(r"^(?:the )?(?:sidebar|side bar|side panel|navigation(?: bar)?|menu|header|toolbar) (?:is|are) "
+               r"(?:visible|expanded|displayed|shown|open|available)$"),
 ]
+_OPEN_GIVEN = re.compile(r"^(?:(?:the )?user has (?:just |already )?opened (?:the |a )?«(?P<a>\d+)»|(?:the |a )?«(?P<b>\d+)») ?"
+                         r"(?P<noun>editor|dialog|form|menu|panel|popover|modal|drawer|window|sheet|list|view|tab|picker)?"
+                         r"(?: (?:is|are) (?:open|opened|visible|displayed|shown|active|expanded))?$")
+_EFFECT_STOP = {"the", "a", "an", "user", "has", "have", "had", "just", "already", "is", "are", "was", "were", "been", "be",
+                "on", "in", "of", "to", "from", "after", "with", "and", "or", "visible", "shown", "displayed", "page",
+                "home", "homepage", "that", "this", "it", "its", "their", "some", "one", "at", "least", "now", "still"}
 _AUTH_NO = re.compile(r"^(?:the )?(?:user )?(?:is |has )?(?:not|never) (?:yet )?(?:logged|signed) (?:in|on)$|"
                       r"^(?:the )?user is (?:anonymous|a guest|unauthenticated|logged out|signed out)$")
 _AUTH = re.compile(r"^(?:the )?user (?:is|has|has been|was) (?:already |successfully )?(?:logged|signed) (?:in|on)"
@@ -769,11 +879,26 @@ _WHERE = re.compile(r"^(?:the |an? )?(?P<who>(?:authenticated |logged-in |signed
 
 
 def _given(content):
-    """GIVEN step -> {auth: True/False/None, location: phrase or None}. Raises Unparsed."""
-    masked, _ = mask(content)
-    state = {"auth": None, "location": None}
+    masked, names = mask(content)
+    try:
+        return _given_masked(masked, names)
+    except Unparsed as exc:
+        raise Unparsed(exc.phase, _restore(exc.text, names), exc.reason) from None
+
+
+def _given_masked(masked, names):
+    """GIVEN step -> {auth, location, open, effects}. Raises Unparsed.
+
+    `open`: a quoted control whose activation opens the stated editor or dialog (`the "Take a note" editor is
+    open`). `effects`: state clauses that describe the result of the dependency's action (`the note is
+    pinned`); the planner accepts them only when they share a distinctive word with that dependency's name."""
+    state = {"auth": None, "location": None, "open": None, "effects": []}
     for clause in _clauses(masked):
         text = re.sub(r"^(?:and|also|then)\s+", "", clause)
+        match = _OPEN_GIVEN.match(text)
+        if match and (match.group("a") or (match.group("b") and match.group("noun"))):
+            state["open"] = names[int(match.group("a") or match.group("b"))]
+            continue
         if _AUTH_NO.match(text):
             state["auth"] = False
             continue
@@ -790,6 +915,9 @@ def _given(content):
             if _page_key(where) is None:
                 raise Unparsed("given", clause, "the location is not a page this checker can identify")
             state["location"] = where
+            continue
+        if not _TOKEN.search(text) and re.search(r"\b(?:is|are|has|have|was|were)\b|\b[a-z]+ed\b", text):
+            state["effects"].append(text)
             continue
         raise Unparsed("given", clause, "the state is neither trivial, a login state nor a page location")
     return state
@@ -910,11 +1038,13 @@ _STRIP_VERB = re.compile(
     r"still displays|now displays)\s+")
 _NEGATIVE_SUFFIX = re.compile(r"\s+(?:is|are)(?: now)? (?:absent|gone|removed|deleted|hidden|not (?:visible|displayed|"
                               r"shown|present|listed|rendered)|no longer (?:visible|displayed|shown|present|listed|"
-                              r"rendered|there)|not in the list)(?:\s+.*)?$")
+                              r"rendered|there)|not in the list)(?P<rest>\s+.*)?$")
 _NEGATIVE_PREFIX = re.compile(r"^(?:does not|doesn't|no longer|never) (?:display|show|contain|list|include|render|"
                               r"appear)s?\s+(?:any |the |a |an )?|^no\s+(?:longer\s+)?")
 _POSITIVE_SUFFIX = re.compile(r"\s+(?:is|are)(?: still| now)? (?:visible|displayed|shown|present|listed|rendered|"
-                              r"available|there)(?:\s+.*)?$|\s+appears?$")
+                              r"available|there)(?P<rest>\s+.*)?$|\s+appears?$")
+_SCOPE_REST = re.compile(r"^\s*(?:again|on (?:the )?screen|on the page|to the user)?\s*$|"
+                         r"^\s*(?P<prep>from|in|inside|within|on|under|at) (?P<phrase>.+)$")
 _ATTR = re.compile(r"\s*,?\s*(?:with|and|has|having)\s+(?P<k>aria-[a-z-]+)\s*=\s*[\"']?(?P<v>true|false|mixed|[a-z0-9-]+)[\"']?")
 _STATE = re.compile(r"\s+(?:is|are)(?: now)? (?P<neg>not |un)?(?P<s>checked|selected|pressed|expanded|collapsed|"
                     r"disabled|enabled)$")
@@ -924,26 +1054,106 @@ _TEXT_NOUN = re.compile(r"^(?:the |an? )?(?:nickname|name|user ?name|display nam
                         r"\s*:?\s*(?=«)")
 
 
-def _assertion(phrase, names, lists, clause):
-    """An assertion phrase (no location) -> list of expect ops; [] for narrative without names."""
+_TEMPORAL = re.compile(r"\s*,?\s*(?:right |just |immediately )?after (?:the )?(?P<n>first|second|third|fourth|fifth|last|"
+                       r"\d+(?:st|nd|rd|th)?) (?:activation|click|action|press|toggle|step|time|one)s?$")
+_ORDINALS = {"first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5, "last": -1}
+_CLOSES = re.compile(r"\s+(?:closes|is closed|disappears|is dismissed|is hidden|goes away|vanishes|"
+                     r"is no longer (?:open|visible|shown|displayed))$")
+_MOVE_IN = re.compile(r"\s+(?:appears?|reappears?|returns?|comes back|goes back|moves|is moved|is returned|"
+                      r"(?:is|are)(?: still| now)? (?:shown|listed|displayed|present|visible|kept|stored|restored|placed|"
+                      r"available))(?: back)?\s+(?:to|in|into|inside|within|on)\s+")
+_RESTORED = re.compile(r"\s+(?:is|are) (?:restored|back|returned)$|\s+(?:reappears?|returns?|comes back)$")
+_SUBJECT = re.compile(r"^(?P<subject>(?:the |a |an )?(?:visible )?(?:[a-z-]+ ){0,4}?[a-z-]+) (?:still |now |then )?"
+                      r"(?:contains|includes|shows|displays|lists|has|holds|presents|exposes|renders)(?P<rest> .*)$")
+_IN_NAMED = re.compile(r"^(?:the |a |an )?«(?P<c>\d+)»(?: (?P<role>[a-z ]+?))? (?:still |now )?(?:displays|shows|contains|"
+                       r"includes|lists|has|reads)(?: the)?(?: (?:text|value|content|label|title|message))?"
+                       r"(?: exactly)? «(?P<n>\d+)»$")
+_STATUS = re.compile(r"^(?:a |the |an )?(?:visible )?(?:status|notification|toast|snackbar|alert|confirmation|error|"
+                     r"success|info)(?: message| text| notice)?(?: that)?(?: (?:displays|shows|reads|says|contains|"
+                     r"with|of|is))?(?: the text)?(?: exactly)?\s*(?=«)")
+_STYLE = re.compile(r"\s+(?:is saved with|is shown with|has|with|gets|shows|displays|uses|changes to)(?: a| the| its)?"
+                    r" (?:computed )?(?P<prop>background(?:-| )colou?r)(?: of)? «(?P<v>\d+)»$")
+
+
+def _assertion(phrase, names, lists, clause, scope=None):
+    """An assertion phrase (no location) -> list of expect ops; [] for narrative without names.
+    Every word must be read by a shape; a qualifier no shape reads makes the clause unparsed."""
     text = phrase.strip()
     text = re.sub(r"^(?:and|then|also|where|with|that|which|while)\s+", "", text)
     text = re.sub(r"^(?:the )?(?:system|application|app|page|ui|site|user|screen)\s+(?:still\s+|now\s+|then\s+)?", "", text)
     if not _TOKEN.search(text) and not _LIST_TOKEN.search(text):
         return []  # narrative ("the system persists the shelf"): nothing named to check
+    after = None
+    match = _TEMPORAL.search(text)
+    if match:
+        word = match.group("n")
+        after = _ORDINALS.get(word) or int(re.match(r"\d+", word).group(0))
+        text = text[:match.start()]
     attrs = {}
     for match in _ATTR.finditer(text):
         attrs[match.group("k")] = match.group("v")
     text = _ATTR.sub("", text)
-    # Several names at once: "visible headings or named regions exactly matching «0», «1», and «2»".
-    match = re.fullmatch(r"(?:(?:displays?|shows?|contains?|has|includes?)\s+)?(?:the |all |both )?(?:visible )?"
-                         r"(?P<roles>[a-z ]*?)\s*(?:exactly )?(?:matching|named|titled|called)?\s*‹(?P<l>\d+)›"
-                         r"(?P<post>(?: [a-z]+)*)", text)
+    style = {}
+    match = _STYLE.search(text)
     if match:
-        found = _roles_in(match.group("roles") + " " + match.group("post"), False)
+        style["background-color"] = names[int(match.group("v"))]
+        text = text[:match.start()]
+
+    def finish(ops):
+        for op in ops:
+            if after is not None:
+                op["after"] = after
+            if scope and not op["target"].get("scope"):
+                op["target"]["scope"] = dict(scope)
+        return ops
+
+    # "shows «A» with a unique «B» button": two assertions.
+    halves = re.split(r",?\s+with\s+", text, maxsplit=1)
+    if len(halves) == 2 and all(_TOKEN.search(h) or _LIST_TOKEN.search(h) for h in halves):
+        return finish(_assertion(halves[0], names, lists, clause) + _assertion(halves[1], names, lists, clause))
+    if len(halves) == 2 and (_TOKEN.search(halves[1]) or _LIST_TOKEN.search(halves[1])):
+        # "shows the expanded sidebar with unique buttons named A, B": B is looked for inside the sidebar.
+        inner = _scope(re.sub(r"^(?:shows?|displays?|contains?|has|includes?|renders?)\s+", "", halves[0]), names)
+        ops = _assertion(halves[1], names, lists, clause)
+        for op in ops:
+            if op["count"] == "none" and inner and inner.get("type") == "phrase":
+                raise Unparsed("then", clause, "an absence inside a container the requirement does not name")
+            if inner and inner.get("type") != "named" and not op["target"].get("scope"):
+                op["target"]["scope"] = dict(inner)
+        return finish(ops)
+    # A subject that is a container: "the notes list contains «X»", "the sidebar includes a unique button named «X»".
+    match = _SUBJECT.match(text)
+    if match and not (_TOKEN.search(match.group("subject")) or _LIST_TOKEN.search(match.group("subject"))):
+        subject = match.group("subject")
+        if not re.fullmatch(r"(?:the |a |an )?(?:system|application|app|page|ui|site|user|screen)", subject):
+            inner = _scope(subject, names)
+            ops = _assertion(match.group("rest"), names, lists, clause)
+            for op in ops:
+                if op["count"] == "none" and inner and inner.get("type") == "phrase":
+                    raise Unparsed("then", clause, "an absence inside a container the requirement does not name")
+                if inner and inner.get("type") != "named" and not op["target"].get("scope"):
+                    op["target"]["scope"] = dict(inner)
+            return finish(ops)
+    # "the «X» article displays «Y»": Y inside the named container X.
+    match = _IN_NAMED.match(text)
+    if match:
+        found = _roles_in(match.group("role") or "", True)
+        container = {"type": "named", "name": names[int(match.group("c"))], "roles": found[0] if found else [],
+                     "strict": True}
+        return finish([{"op": "expect", "count": "any",
+                        "target": {"name": names[int(match.group("n"))], "roles": [], "kind": "text", "scope": container}}])
+    # Several names at once: "visible headings or named regions exactly matching «0», «1», and «2»".
+    match = re.fullmatch(r"(?:(?:displays?|shows?|contains?|has|includes?|lists?)\s+)?(?:the |all |both |only )?"
+                         r"(?:visible )?(?P<roles>[a-z ]*?)\s*(?:exactly )?(?:matching|named|titled|called)?\s*"
+                         r"‹(?P<l>\d+)›(?P<post>(?: [a-z]+)*)", text)
+    if match:
+        if _leftover(match.group("roles"), match.group("post")):
+            raise Unparsed("then", clause, "a qualifier on a list of names that no shape reads")
+        found = _roles_in(match.group("roles") + " " + match.group("post"), True)
         roles, kind = found if found else ([], "text")
-        return [{"op": "expect", "target": {"name": names[i], "roles": roles, "kind": kind if roles else "text"},
-                 "count": "any"} for i in lists[int(match.group("l"))]]
+        count = "one" if _UNIQUE.search(match.group("roles")) else "any"
+        return finish([{"op": "expect", "target": {"name": names[i], "roles": roles, "kind": kind if roles else "text"},
+                        "count": count} for i in lists[int(match.group("l"))]])
     if _LIST_TOKEN.search(text):
         raise Unparsed("then", clause, "a list of names in a shape this checker does not read")
     # Special shapes.
@@ -963,17 +1173,35 @@ def _assertion(phrase, names, lists, clause):
             op = {"op": "expect", "target": target, "count": "any"}
             if attrs:
                 op["attrs"] = attrs
-            return [op]
+            return finish([op])
     count = "any"
+    match = _CLOSES.search(text)
+    if match:
+        text, count = text[:match.start()], "none"
+    text = _MOVE_IN.sub(" in ", text)
+    text = _RESTORED.sub("", text)
+    remainder = None
     negative = _NEGATIVE_SUFFIX.search(text)
     if negative:
-        text, count = text[:negative.start()], "none"
+        text, count, remainder = text[:negative.start()], "none", negative.group("rest")
     else:
         prefixed = _NEGATIVE_PREFIX.match(text)
         if prefixed:
             text, count = text[prefixed.end():], "none"
         else:
-            text = _POSITIVE_SUFFIX.sub("", text)
+            positive = _POSITIVE_SUFFIX.search(text)
+            if positive:
+                text, remainder = text[:positive.start()], positive.groupdict().get("rest")
+    if remainder and remainder.strip():
+        # "is absent from the target note article": the trailing words are a scope, or the clause is not read.
+        match = _SCOPE_REST.match(remainder)
+        if not match:
+            raise Unparsed("then", clause, f"a qualifier no shape reads: '{remainder.strip()}'")
+        if match.group("phrase"):
+            if _TOKEN.search(match.group("phrase")) or count != "none":
+                text = f"{text} in {match.group('phrase')}"
+            else:
+                raise Unparsed("then", clause, "an absence inside a container the requirement does not name")
     states = {}
     match = _STATE.search(text)
     if match:
@@ -982,6 +1210,9 @@ def _assertion(phrase, names, lists, clause):
         name, value = flip.get(state, (state, True))
         states[name] = (not value) if negated else value
         text = text[:match.start()]
+    if re.match(r"^(?:has|have|exposes?|carries|with|shows?) (?:the |a |an )?(?:title|tooltip|aria-label|label|"
+                r"placeholder|value)(?: attribute)? «\d+»$", text):
+        raise Unparsed("then", clause, "an attribute of an element the clause does not name")
     text = _STRIP_VERB.sub("", text)
     heading = re.search(r"\s+as (?:a |an |the )?(?:visible )?(?P<u>unique |single )?(?P<r>headings?|titles?|"
                         r"links? or buttons?|buttons? or links?|buttons?|links?)$", text)
@@ -991,28 +1222,29 @@ def _assertion(phrase, names, lists, clause):
         if heading.group("u"):
             count = "one" if count == "any" else count
         text = text[:heading.start()]
-    noun = _TEXT_NOUN.match(text)
-    default_kind = "text" if noun else "text"
+    noun = _TEXT_NOUN.match(text) or _STATUS.match(text)
     if noun:
         text = text[noun.end():]
-    found = _target(text, names, default_kind)
+    found = _target(text, names, "text", then=True)
     if not found:
         raise Unparsed("then", clause, "the expectation does not name exactly one element in a known shape")
     target, unique, post = found
+    if (attrs or states) and not target["roles"]:
+        target["kind"] = "control"  # a pressed / expanded / checked state belongs to the control, not its text
     if post and _TOKEN.search(post):
         raise Unparsed("then", clause, "a second name in the expectation is not consumed")
     if as_roles:
         target["roles"], target["kind"] = as_roles
     if unique and count == "any":
         count = "one"
-    if target["kind"] == "field" and count != "none" and not states:
-        target["kind"] = "field"
     op = {"op": "expect", "target": target, "count": count}
     if attrs:
         op["attrs"] = attrs
     if states:
         op["states"] = states
-    return [op]
+    if style:
+        op["style"] = style
+    return finish([op])
 
 
 def _then(content):
@@ -1064,6 +1296,25 @@ class _Unresolved(Exception):
     pass
 
 
+_ACTIONS = ("click", "fill", "check", "select", "press", "hover", "focus")
+# "in the sidebar", "in the suggestions listbox": these roles name one widget or landmark, so the lookup stays inside
+# it; "in the notes list" or "in the regular section" may be any wrapper, so those scopes fall back to the page.
+_STRICT_ROLE_SCOPES = {"listbox", "dialog", "alertdialog", "menu", "menubar", "complementary", "navigation", "tablist",
+                       "toolbar", "grid", "table", "form", "tree"}
+
+
+def _stem(word):
+    for suffix in ("ations", "ation", "ings", "ing", "ions", "ion", "ed", "es", "s", "e"):
+        if word.endswith(suffix) and len(word) - len(suffix) >= 3:
+            return word[:-len(suffix)]
+    return word
+
+
+def _stem_match(a, b):
+    short, long_ = sorted((a, b), key=len)
+    return len(short) >= 3 and long_.startswith(short)
+
+
 class _Planner:
     def __init__(self, requirements):
         self.all = requirements
@@ -1081,21 +1332,27 @@ class _Planner:
 
     # -- parsing
     def _parse(self, requirement, scenario):
-        result = {"given": {"auth": None, "location": None}, "when": [], "then": [], "error": None,
-                  "fragments": []}
+        result = {"given": {"auth": None, "location": None, "open": None, "effects": []}, "when": [], "then": [],
+                  "error": None, "fragments": []}
         givens, whens, thens = [], [], []
         for step in scenario["steps"]:
             {"GIVEN": givens, "WHEN": whens, "THEN": thens}.get(step["keyword"], whens).append(step["content"])
         try:
             for content in givens:
                 state = _given(content)
-                for key in ("auth", "location"):
+                for key in ("auth", "location", "open"):
                     if state[key] is not None:
                         result["given"][key] = state[key]
+                result["given"].setdefault("effects", []).extend(state["effects"])
             for content in whens:
                 masked, names = mask(content)
+                context = {}
                 for clause in _clauses(masked):
-                    for op in _when_clause(clause, names):
+                    try:
+                        clause_ops = _when_clause(clause, names, context)
+                    except Unparsed as exc:
+                        raise Unparsed(exc.phase, _restore(exc.text, names), exc.reason) from None
+                    for op in clause_ops:
                         op["src"], op["phase"], op["text"] = requirement["id"], "when", _restore(clause, names)
                         result["when"].append(op)
             if not thens:
@@ -1242,7 +1499,44 @@ class _Planner:
                     base.append(self._leave_home(rid, base))
             elif not _location_satisfied(keys, end):
                 base.append(self._sibling_prefix(requirement, given["location"], keys, end))
+        for effect in given.get("effects") or []:
+            self._check_effect(requirement, effect, base)
+        if given.get("open"):
+            base.append(self._opener(rid, given["open"]))
         return base
+
+    def _distinctive(self):
+        """Words that appear in few requirement names (a word in most names says nothing about a state)."""
+        if not hasattr(self, "_rare"):
+            counts = {}
+            for requirement in self.atomic:
+                for word in {_stem(w) for w in re.findall(r"[a-z]+", requirement["name"].lower())}:
+                    counts[word] = counts.get(word, 0) + 1
+            limit = max(2, len(self.atomic) // 5)
+            self._rare = {word for word, count in counts.items() if count <= limit}
+        return self._rare
+
+    def _check_effect(self, requirement, effect, base):
+        """`the note is pinned` holds after a dependency whose name says so (`Pin note`); otherwise unparsed."""
+        words = {_stem(w) for w in re.findall(r"[a-z]+", effect.lower()) if w not in _EFFECT_STOP}
+        words &= self._distinctive()
+        executed = [s["src"] for s in base if s["phase"] == "when"]
+        for dep in reversed(executed):
+            dep_words = {_stem(w) for w in re.findall(r"[a-z]+", self.by_id[dep]["name"].lower())}
+            if any(_stem_match(a, b) for a in words for b in dep_words):
+                return
+        raise _Unresolved(f"GIVEN '{effect}' is not a state any executed prerequisite's name describes")
+
+    def _opener(self, rid, name):
+        """GIVEN `the "X" editor is open`: the activation of the control named X that a requirement's WHEN starts with."""
+        for requirement in self.atomic:
+            parsed = self.parsed[(requirement["id"], 0)]
+            if requirement["id"] == rid or not parsed["when"] or (parsed["error"] and parsed["error"].phase != "then"):
+                continue
+            first = parsed["when"][0]
+            if first["op"] == "click" and first["target"]["name"] == name:
+                return {"src": requirement["id"], "phase": "given", "ops": [first]}
+        raise _Unresolved(f"GIVEN needs `{name}` open, but no parsed requirement starts by activating it")
 
     def _logs_in(self, rid):
         parsed = self.parsed.get((rid, 0))
@@ -1353,14 +1647,13 @@ class _Planner:
             return dict(base, status="unparsed", reason=str(exc), fragment={"phase": "given", "text": str(exc),
                                                                          "reason": "setup"})
         ops = [{"op": "goto", "path": "/", "src": requirement["id"], "phase": "given", "text": "open the application URL"}]
-        for segment in segments:
+        for index, segment in enumerate(segments):
             for op in segment["ops"]:
-                if ops and op["op"] == "goto" and ops[-1]["op"] == "goto":
-                    continue
                 ops.append(dict(op, phase="given" if segment["src"] != requirement["id"] else op["phase"],
-                                src=segment["src"]))
+                                src=segment["src"], _segment=index))
         substitutions = self._substitute(requirement, ops)
-        ops.extend(dict(op) for op in parsed["when"])
+        ops = self._prune(requirement, parsed, segments, ops)
+        own_when = [dict(op) for op in parsed["when"]]
         then_ops = []
         asserted = {op["target"]["name"] for clause in parsed["then"] for op in clause["ops"]}
         for clause in parsed["then"]:
@@ -1380,7 +1673,22 @@ class _Planner:
             return dict(base, status="unparsed", reason="THEN: nothing named to observe after resolving locations",
                         fragment={"phase": "then", "text": " ".join(c["text"] for c in parsed["then"]),
                                   "reason": "no checkable assertion"})
-        ops.extend(then_ops)
+        # "`List view` has aria-pressed=true after the first activation": check it right after that action.
+        actions = [i for i, op in enumerate(own_when) if op["op"] in _ACTIONS]
+        placed, rest = {}, []
+        for op in then_ops:
+            after = op.pop("after", None)
+            if after is None:
+                rest.append(op)
+                continue
+            if not actions or after > len(actions):
+                return dict(base, status="unparsed", reason=f"THEN refers to activation {after} of {len(actions)}",
+                            fragment={"phase": "then", "text": op.get("text", ""), "reason": "no such activation"})
+            placed.setdefault(actions[after - 1] if after > 0 else actions[-1], []).append(op)
+        for index, op in enumerate(own_when):
+            ops.append(op)
+            ops.extend(placed.get(index, []))
+        ops.extend(rest)
         self._resolve_scopes(ops)
         for op in ops:
             if op["op"] in ("click", "hover") and self._entity(op["target"]["name"]):
@@ -1394,6 +1702,33 @@ class _Planner:
             result["substitutions"] = substitutions
         return result
 
+    def _prune(self, requirement, parsed, segments, ops):
+        """Drop a prerequisite's data entry (a segment that fills, checks or selects) unless it logs in for a
+        GIVEN that needs a login or acts on this requirement's own seed items: creating an unrelated note first
+        establishes nothing the scenario reads, and only adds a way to fail before the scenario starts."""
+        seeds = set(_seeds(requirement))
+        keep = set()
+        for index, segment in enumerate(segments):
+            mine = [op for op in ops if op.get("_segment") == index]
+            if segment.get("page") is not None or segment["src"] == requirement["id"] or segment["phase"] != "when":
+                keep.add(index)
+            elif not any(op["op"] in ("fill", "check", "select") for op in mine):
+                keep.add(index)
+            elif parsed["given"]["auth"] is True and self._logs_in(segment["src"]):
+                keep.add(index)
+            elif any(op["op"] in ("click", "hover", "focus") and (op["target"]["name"] in seeds or (
+                    op["target"].get("scope") or {}).get("name") in seeds) for op in mine):
+                keep.add(index)
+        kept = []
+        for op in ops:
+            index = op.pop("_segment", None)
+            if index is not None and index not in keep:
+                continue
+            if kept and op["op"] == "goto" and kept[-1]["op"] == "goto":
+                continue
+            kept.append(op)
+        return kept
+
     def _substitute(self, requirement, ops):
         """Prerequisite activations of a sibling entity (`Shelf 4.2.1`) use this requirement's seed of that kind."""
         seeds = {}
@@ -1404,28 +1739,46 @@ class _Planner:
         own = {op["target"]["name"] for parsed in [self.parsed[(requirement["id"], 0)]] for op in parsed["when"]
                if "target" in op}
         done = {}
-        for op in ops:
-            if op["op"] not in ("click", "hover", "check") or op["src"] == requirement["id"]:
-                continue
-            name = op["target"]["name"]
+
+        def swap(name):
             kind = _kind(name)
             if not kind or len(seeds.get(kind, [])) != 1 or name in own or name in seeds[kind]:
+                return None
+            return seeds[kind][0]
+
+        for op in ops:
+            if "target" not in op or op["src"] == requirement["id"]:
                 continue
-            op["target"] = dict(op["target"], name=seeds[kind][0])
-            op["text"] = f"{op.get('text', '')} [with `{seeds[kind][0]}` for `{name}`]"
-            done[name] = seeds[kind][0]
+            target = dict(op["target"])
+            new_name = swap(target["name"]) if op["op"] in ("click", "hover", "check", "focus") else None
+            if new_name:
+                done[target["name"]] = new_name
+                target["name"] = new_name
+            scope = target.get("scope")
+            if scope and scope.get("type") == "named" and swap(scope["name"]):
+                done[scope["name"]] = swap(scope["name"])
+                target["scope"] = dict(scope, name=done[scope["name"]])
+            if target != op["target"]:
+                op["target"] = target
+                op["text"] = f"{op.get('text', '')} [{', '.join(f'`{b}` for `{a}`' for a, b in done.items())}]"
         return done
 
     def _resolve_scopes(self, ops):
+        """An unquoted scope phrase becomes the quoted container it names (`the shelf list` -> `Shelf list`), else a
+        soft role scope when it names a role (`the visible suggestions listbox`), else it is dropped."""
         for op in ops:
             target = op.get("target")
             scope = target.get("scope") if target else None
             if not scope or scope.get("type") != "phrase":
                 continue
-            phrase = re.sub(r"\s+(?:region|section|list|area|panel)$", "", scope["text"])
-            name = self.containers.get(scope["text"]) or self.containers.get(phrase)
+            words = scope["text"].split()
+            candidates = [" ".join(words[i:j]) for i in range(len(words)) for j in range(len(words), i, -1)]
+            name = next((self.containers[c] for c in candidates if c in self.containers), None)
             if name:
                 target["scope"] = {"type": "named", "name": name, "roles": [], "strict": False}
+            elif scope.get("roles"):
+                target["scope"] = {"type": "role", "roles": scope["roles"],
+                                   "strict": bool(set(scope["roles"]) & _STRICT_ROLE_SCOPES)}
             else:
                 target.pop("scope")
 

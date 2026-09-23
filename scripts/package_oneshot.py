@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "oneshot"
-FILES = ("main.py", "dialect.md", "requirements.txt", "semantic_probe.cjs", "scenarios.py", "scenario_check.py",
+FILES = ("main.py", "dialect.md", "requirements.txt", "semantic_probe.cjs", "scenarios.py", "scenario_check.py", "scenario_translate.py",
          "scenario_check.cjs")
 
 

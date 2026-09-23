@@ -30,8 +30,9 @@ from pathlib import Path
 from urllib import error, request
 
 try:
-    from . import scenarios
+    from . import scenario_translate, scenarios
 except ImportError:  # run as a script, or from the flat package next to main.py
+    import scenario_translate
     import scenarios
 
 HERE = Path(__file__).resolve().parent
@@ -389,7 +390,7 @@ def _start_worker(env):
 
 # ---------------------------------------------------------------------------------- run
 
-def _unparsed_entry(item):
+def _unparsed_entry(item, translation=None):
     fragment = item.get("fragment") or {}
     phase = (fragment.get("phase") or "").upper()
     text = fragment.get("text") or ""
@@ -397,6 +398,9 @@ def _unparsed_entry(item):
         observation = f"Unparsed: {text}"
     else:
         observation = f"Unparsed {phase} {text!r}: {fragment.get('reason', item.get('reason', ''))}"
+    rejected = ((translation or {}).get("rejected") or {}).get(item["id"])
+    if rejected:
+        observation += f"; model translation rejected: {rejected}"
     return {"id": item["id"], "name": item["name"], "status": "unparsed", "observation": observation, "steps": []}
 
 
@@ -497,32 +501,53 @@ def _execute(runnable, app, port, progress=None):
     return replies, runtime
 
 
+def translate_unparsed(text, planned):
+    """Replace unparsed scenarios with validated model translations (one cached call per requirements text).
+    Off with SCENARIO_TRANSLATE=0; without OPENAI_API_KEY only an existing cache entry is used."""
+    if os.environ.get("SCENARIO_TRANSLATE", "1") == "0":
+        return {"status": "disabled"}
+    summary = scenario_translate.translate(text, planned)
+    for item in planned["scenarios"]:
+        ops = summary["accepted"].get(item["id"])
+        if ops is not None:
+            item.update(status="parsed", source="model", ops=ops, chain=[])
+    summary["accepted"] = sorted(summary["accepted"])
+    return summary
+
+
 def run(requirements, app, out=None, port=None, progress=None):
     """Plan and execute the scenarios of `requirements` against the application directory `app`."""
     started = time.monotonic()
-    planned = scenarios.plan(Path(requirements).read_text(encoding="utf-8"))
+    text = Path(requirements).read_text(encoding="utf-8")
+    planned = scenarios.plan(text)
+    rules = sum(1 for item in planned["scenarios"] if item["status"] == "parsed")
+    translation = translate_unparsed(text, planned)
     runnable = [item for item in planned["scenarios"] if item["status"] == "parsed"]
     replies, runtime = _execute(runnable, app, port, progress) if runnable else ({}, {})
-    report = {"scenarios": [], "invariants": [], "coverage": planned["coverage"]}
+    parsed = len(runnable)
+    report = {"scenarios": [], "invariants": [],
+              "coverage": {"total": planned["coverage"]["total"], "parsed": parsed, "rules": rules, "model": parsed - rules},
+              "translation": translation}
     ordered = []
     for item in planned["scenarios"]:
         if item["status"] != "parsed":
-            report["scenarios"].append(_unparsed_entry(item))
+            report["scenarios"].append(_unparsed_entry(item, translation))
             continue
         reply = replies.get(item["id"]) or {"status": "error", "observation": "not executed", "steps": []}
         entry = {"id": item["id"], "name": item["name"], "status": reply.get("status", "error"),
-                 "observation": reply.get("observation", ""), "steps": reply.get("steps", []), "chain": item["chain"]}
+                 "observation": reply.get("observation", ""), "steps": reply.get("steps", []), "chain": item["chain"],
+                 "source": item.get("source", "rules")}
         if item.get("substitutions"):
             entry["substitutions"] = item["substitutions"]
         report["scenarios"].append(entry)
         ordered.append((item["id"], reply))
     report["invariants"] = _aggregate_invariants(ordered)
-    shapes = collections.Counter()
+    shapes = collections.Counter()  # what the rules could not read, whether or not the model translated it
     for item in planned["scenarios"]:
         fragment = item.get("fragment")
-        if item["status"] != "parsed" and fragment and fragment.get("reason") != "setup":
+        if fragment and fragment.get("reason") != "setup":
             shapes[(fragment["phase"], scenarios.shape(fragment["text"]))] += 1
-        elif item["status"] != "parsed":
+        elif fragment:
             shapes[("given", "setup: " + (item.get("reason") or "")[:120])] += 1
     report["unparsed_shapes"] = [{"phase": phase, "shape": text, "count": count}
                                  for (phase, text), count in shapes.most_common()]
@@ -544,7 +569,9 @@ def main(argv=None):
     report = run(args.requirements, args.app, args.out, args.port)
     counts = collections.Counter(item["status"] for item in report["scenarios"])
     failed = [i["id"] for i in report["invariants"] if i["status"] == "fail"]
-    print(f"scenarios: {dict(counts)}; coverage {report['coverage']['parsed']}/{report['coverage']['total']}; "
+    coverage, translation = report["coverage"], report["translation"]
+    print(f"scenarios: {dict(counts)}; coverage {coverage['parsed']}/{coverage['total']} (rules {coverage['rules']}, "
+          f"model {coverage['model']}; translation {translation.get('status')}, cost CNY {translation.get('cost_cny')}); "
           f"invariant failures: {len(failed)}; {report['seconds']} s -> {args.out}", file=sys.stderr)
     return 0
 
