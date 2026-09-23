@@ -87,7 +87,7 @@ class ValidateCase(unittest.TestCase):
     def test_a_valid_translation_becomes_executor_ops(self):
         ops = scenario_translate.validate(GOOD, self.corpus, "REQ-2")
         self.assertEqual([op["op"] for op in ops], ["goto", "hover", "click", "expect", "expect", "expect", "expect", "expect"])
-        self.assertEqual(ops[2]["target"]["scope"], {"type": "named", "name": "Card 2", "roles": ["article"], "strict": True})
+        self.assertEqual(ops[2]["target"]["scope"], {"type": "named", "name": "Card 2", "roles": ["article"], "strict": False})
         self.assertEqual((ops[3]["count"], ops[3]["target"]["kind"]), ("none", "structure"))
         self.assertEqual(ops[4]["target"]["kind"], "text")  # trailing punctuation aside, `Card archived` is quoted
         self.assertEqual(ops[5]["attrs"], {"aria-pressed": "false"})
@@ -124,6 +124,72 @@ class ValidateCase(unittest.TestCase):
             {"phase": "when", "do": "fill", "role": "textbox", "name": "Cards", "value": "Renamed card"},
             {"phase": "then", "do": "expect", "role": "article", "name": "Renamed card"}]}, self.corpus, "REQ-3")
         self.assertEqual([op["op"] for op in ops], ["goto", "fill", "expect"])
+
+
+class CoverageCase(unittest.TestCase):
+    """A reply that drops part of the scenario or puts a state on the wrong element is rejected."""
+
+    TEXT = """id: ROOT
+type: FOLDER
+children:
+  - id: REQ-1
+    name: Menu
+    type: ATOMIC
+    description: 'A unique button named `Toggle panel` in the top navigation bar exposes aria-expanded. The panel region
+      is named `Panel`.'
+    dependencies: []
+    scenarios:
+      - name: Menu
+        steps:
+          - keyword: GIVEN
+            content: The user is on the home page.
+          - keyword: WHEN
+            content: The user activates the unique button named `Toggle panel` in the top navigation bar.
+          - keyword: THEN
+            content: The page shows the `Panel` region.
+  - id: REQ-2
+    name: Collapse
+    type: ATOMIC
+    dependencies: [REQ-1]
+    scenarios:
+      - name: Collapse
+        steps:
+          - keyword: GIVEN
+            content: The `Panel` region is open in some way.
+          - keyword: WHEN
+            content: Toggle it back.
+          - keyword: THEN
+            content: The panel collapses.
+"""
+
+    def setUp(self):
+        requirements = scenarios.load_requirements(self.TEXT)
+        self.corpus = scenario_translate._corpus(requirements)
+        self.scenario = requirements[2]["scenarios"][0]
+        self.known = scenarios.plan(self.TEXT)["known_steps"]
+
+    def steps(self, *middle):
+        return {"id": "REQ-2", "steps": [{"phase": "given", "do": "open"}, *middle]}
+
+    def test_the_scenario_names_must_all_be_used(self):
+        item = self.steps({"phase": "then", "do": "expect", "role": "button", "name": "Toggle panel"})
+        with self.assertRaisesRegex(scenario_translate.Invalid, "GIVEN name `Panel` is not used"):
+            scenario_translate.validate(item, self.corpus, "REQ-2", scenario=self.scenario)
+
+    def test_aria_states_belong_to_roles_that_support_them(self):
+        item = self.steps({"phase": "when", "do": "click", "role": "button", "name": "Toggle panel"},
+                          {"phase": "then", "do": "expect", "role": "region", "name": "Panel",
+                           "attr": {"aria-expanded": "false"}})
+        with self.assertRaisesRegex(scenario_translate.Invalid, "aria-expanded is not a state of role region"):
+            scenario_translate.validate(item, self.corpus, "REQ-2", scenario=self.scenario)
+
+    def test_a_dropped_location_comes_back_from_the_rules(self):
+        item = self.steps({"phase": "when", "do": "click", "role": "button", "name": "Toggle panel", "unique": True},
+                          {"phase": "then", "do": "expect", "role": "button", "name": "Toggle panel",
+                           "attr": {"aria-expanded": "false"}},
+                          {"phase": "then", "do": "expect", "role": "region", "name": "Panel", "count": "none"})
+        ops = scenario_translate.validate(item, self.corpus, "REQ-2", scenario=self.scenario, known=self.known)
+        self.assertEqual(ops[1]["target"]["scope"], {"type": "landmark"})
 
 
 class TranslateCase(unittest.TestCase):

@@ -27,7 +27,7 @@ except ImportError:  # run as a script, or from the flat package next to main.py
 
 MODEL = "deepseek-v4-flash"
 DEFAULT_BASE = "https://api.arc-bench.com/v1"
-VERSION = "2"  # prompt and reply format; part of the cache key
+VERSION = "3"  # prompt and reply format; part of the cache key
 MAX_TOKENS = 65536
 TIMEOUT_SECONDS = 600
 # CNY per million tokens (input, cache-hit input, output), read with `arcbench models` on 2026-09-23.
@@ -52,7 +52,15 @@ STYLE_PROPS = {"background-color", "color", "display", "visibility", "opacity", 
                "text-decoration-line", "border-color"}
 ATTR = re.compile(r"^(?:aria-[a-z]+|title|role|alt|placeholder|href|value|name|type|data-[a-z0-9-]+)$")
 ACTIONS = {"click", "dblclick", "hover", "focus", "fill", "check", "uncheck", "select", "press"}
+# ARIA states an expectation may check, and the roles that support them (WAI-ARIA 1.2).
+ARIA_SUPPORT = {"aria-pressed": {"button"},
+                "aria-checked": {"checkbox", "radio", "switch", "menuitemcheckbox", "menuitemradio", "option", "treeitem"},
+                "aria-selected": {"option", "tab", "row", "gridcell", "treeitem", "columnheader", "rowheader"},
+                "aria-expanded": {"button", "combobox", "link", "menuitem", "row", "tab", "treeitem", "gridcell",
+                                  "listbox", "checkbox", "menuitemcheckbox", "menuitemradio", "switch", "rowheader",
+                                  "columnheader"}}
 DOES = ACTIONS | {"open", "wait", "expect"}
+RECORD_ROLES = {"article", "listitem", "row", "group", "cell", "gridcell", "region", "list", "heading", "treeitem"}
 IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 
 SYSTEM = """You translate acceptance scenarios of a web application's requirements into steps for a browser test executor.
@@ -99,6 +107,16 @@ Rules:
 - Use "unique": true on an action only when the text says the control is unique.
 - Each requested scenario comes with the fragment a rule-based reader could not read ("unread"); make sure your steps
   cover that fragment exactly as the text states it.
+- Keep every location the text gives: "in the top navigation bar" -> "in": {"role": "navigation"}, "in the sidebar"
+  -> "in": {"role": "complementary"}, "inside the `X` article" -> "in": {"role": "article", "name": "X"}.
+- "known_steps" lists, for requirements a rule-based reader did read, the steps of their WHEN part. When a scenario
+  needs a prerequisite from that list, copy its steps, replacing only the seed item names by this scenario's own.
+- When a requirement's seed data names a user account, or its text says the user is authenticated or the page is the
+  authenticated one, first log in with the steps of the requirement that logs in.
+- Put an ARIA state (aria-pressed, aria-expanded, aria-checked, aria-selected) on the control the text says carries
+  it, such as the toggle button, never on the region it opens or closes.
+- Use every quoted name of the scenario's own GIVEN, WHEN and THEN text in your steps; a scenario you cannot
+  express that way is untranslatable.
 
 Example (for an unrelated application):
 {"scenarios": [{"id": "REQ-9.9", "steps": [
@@ -137,14 +155,50 @@ def _context(requirements, wanted):
     return records
 
 
-def build_messages(requirements, unparsed):
-    """unparsed: [{"id", "requirement"}] -> chat messages for one call."""
+def _model_step(op):
+    """A rules-parsed op in the reply schema (for `known_steps`)."""
+    if op["op"] == "goto":
+        return {"do": "open"}
+    if op["op"] not in ("click", "hover", "focus", "fill", "check", "select", "press"):
+        return None
+    if op["op"] == "press":
+        return {"do": "press", "key": "Space" if op["key"] == " " else op["key"]}
+    target = op["target"]
+    roles = target.get("roles") or []
+    step = {"do": "uncheck" if op["op"] == "check" and not op.get("checked", True) else
+            "dblclick" if op.get("double") else op["op"],
+            "role": roles[0] if len(roles) == 1 else None, "name": target["name"]}
+    scope = target.get("scope") or {}
+    if scope.get("type") == "named":
+        step["in"] = {"role": (scope.get("roles") or [None])[0], "name": scope["name"]}
+    elif scope.get("type") == "landmark":
+        step["in"] = {"role": "navigation"}
+    elif scope.get("type") == "role":
+        step["in"] = {"role": scope["roles"][0]}
+    if op.get("unique"):
+        step["unique"] = True
+    if op["op"] == "fill":
+        step["value"] = op["value"]
+    if op["op"] == "select":
+        step["option"] = op["option"]
+    return step
+
+
+def build_messages(requirements, unparsed, known=None):
+    """unparsed: [{"id", "requirement"}] -> chat messages for one call. `known`: {requirement id: WHEN ops}."""
     wanted = sorted({item["requirement"] for item in unparsed})
+    known_steps = {}
+    for rid, ops in (known or {}).items():
+        steps = [step for step in (_model_step(op) for op in ops) if step]
+        if steps:
+            known_steps[rid] = steps
     payload = {"requirements": _context(requirements, wanted),
                "translate": [{"id": item["id"], "requirement": item["requirement"], "scenario": item.get("name", ""),
                               "unread": (item.get("fragment") or {}).get("text", "")[:300]} for item in unparsed]}
     user = ("Requirements (JSON records in document order; dependencies list the prerequisite requirement ids):\n"
             + json.dumps(payload["requirements"], ensure_ascii=False, indent=0)
+            + "\n\nknown_steps (WHEN steps of requirements already read by rules):\n"
+            + json.dumps(known_steps, ensure_ascii=False)
             + "\n\nTranslate these scenarios (the id selects a scenario; `#2` is the requirement's second scenario):\n"
             + json.dumps(payload["translate"], ensure_ascii=False))
     return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
@@ -216,11 +270,31 @@ def _parse_reply(content):
     try:
         value = json.loads(text[start:end + 1])
     except ValueError as exc:
+        items = _salvage(text)
+        if items:
+            return items  # a reply cut off at the token limit keeps the scenarios it completed
         raise TranslateError(f"the reply is not valid JSON ({exc})") from None
     items = value.get("scenarios") if isinstance(value, dict) else None
     if not isinstance(items, list):
         raise TranslateError("the reply has no `scenarios` list")
     return items
+
+
+def _salvage(text):
+    """The complete entries of a `scenarios` array whose reply ended early."""
+    match = re.search(r'"scenarios"\s*:\s*\[', text)
+    if not match:
+        return []
+    decoder, index, items = json.JSONDecoder(), match.end(), []
+    while True:
+        while index < len(text) and text[index] in " \t\r\n,":
+            index += 1
+        try:
+            item, index = decoder.raw_decode(text, index)
+        except ValueError:
+            return items
+        if isinstance(item, dict):
+            items.append(item)
 
 
 # ------------------------------------------------------------------------------ validation
@@ -282,6 +356,8 @@ def _scope(step, corpus, typed):
         return None
     if not isinstance(scope, dict):
         raise Invalid("`in` must be an object")
+    if scope.get("name") in (None, "") and scope.get("role") in ("navigation", "banner"):
+        return {"type": "landmark"}  # "in the top navigation bar": navigation landmarks, then the banner, then the page
     if scope.get("name") in (None, "") and scope.get("role") in ROLES:  # "in the sidebar"
         return {"type": "role", "roles": [scope["role"]], "strict": scope["role"] in scenarios._STRICT_ROLE_SCOPES}
     inner = _element(scope, corpus, typed, "container")
@@ -290,7 +366,54 @@ def _scope(step, corpus, typed):
     return {"type": "named", "name": inner["name"], "roles": inner["roles"], "strict": True}
 
 
-def validate(item, corpus, requirement_id, entities=frozenset()):
+def _used(ops):
+    """Names a translation uses: element, container, typed, option, attribute and style values, roles and tags."""
+    every, checked = set(), set()
+    for op in ops:
+        target = op.get("target") or {}
+        names = {target.get("name"), (target.get("scope") or {}).get("name"), op.get("value"), op.get("option"),
+                 target.get("tag")} | set(target.get("roles") or []) | set((target.get("scope") or {}).get("roles") or [])
+        names |= set((op.get("attrs") or {}).values()) | set((op.get("style") or {}).values())
+        names = {_bare(n) for n in names if isinstance(n, str) and n}
+        every |= names
+        if op["op"] == "expect":
+            checked |= names
+    return every, checked
+
+
+def _coverage(ops, scenario):
+    """Every quoted name of the scenario's GIVEN and WHEN is used by some step, and every quoted name of its THEN
+    by some expectation: a translation that drops one has left out part of the scenario."""
+    every, checked = _used(ops)
+    for step in scenario["steps"]:
+        _, names = scenarios.mask(step["content"])
+        missing = [n for n in names if _bare(n) and _bare(n) not in (checked if step["keyword"] == "THEN" else every)]
+        if missing:
+            raise Invalid(f"the {step['keyword']} name `{missing[0][:60]}` is not used by any "
+                          f"{'expectation' if step['keyword'] == 'THEN' else 'step'}")
+
+
+def _normalise(ops, known):
+    """An action on a control the rules also read keeps the rules' location when the reply gave none
+    ("in the top navigation bar" is easy to drop)."""
+    index = {}
+    for rule_ops in known.values():
+        for op in rule_ops:
+            if op["op"] in ("click", "hover", "focus", "fill", "check", "select"):
+                index.setdefault((op["op"], op["target"]["name"]), []).append(op)
+    for op in ops:
+        target = op.get("target")
+        if not target or target.get("scope") or op["op"] not in ("click", "hover", "focus", "fill", "check", "select"):
+            continue
+        scopes = {json.dumps(r["target"].get("scope"), sort_keys=True) for r in index.get((op["op"], target["name"]), [])}
+        if len(scopes) == 1:
+            scope = json.loads(scopes.pop())
+            if scope and scope.get("type") in ("landmark", "role"):
+                target["scope"] = scope
+    return ops
+
+
+def validate(item, corpus, requirement_id, entities=frozenset(), scenario=None, known=None):
     """One translated scenario -> executor ops; raises Invalid with the first problem."""
     steps = item.get("steps")
     if not isinstance(steps, list) or not steps or len(steps) > 80:
@@ -325,6 +448,8 @@ def validate(item, corpus, requirement_id, entities=frozenset()):
             else:
                 target = _element(step, corpus, typed, nameless=do == "expect")
                 scope = _scope(step, corpus, typed)
+                if scope and do != "expect" and scope["type"] == "named" and set(scope["roles"]) & RECORD_ROLES:
+                    scope["strict"] = False  # act inside the record first; its editor may open outside it
                 if scope:
                     target["scope"] = scope
                 if do in ("fill", "select", "focus") and target["kind"] in ("any", "text"):
@@ -363,6 +488,10 @@ def validate(item, corpus, requirement_id, entities=frozenset()):
                                 isinstance(k, str) and ATTR.match(k) and isinstance(v, (str, bool)) for k, v in attrs.items()):
                             raise Invalid("`attr` must map attribute names to values")
                         op["attrs"] = {k: (str(v).lower() if isinstance(v, bool) else v) for k, v in attrs.items()}
+                        for key in op["attrs"]:
+                            support = ARIA_SUPPORT.get(key)
+                            if support and target["roles"] and not set(target["roles"]) & support:
+                                raise Invalid(f"{key} is not a state of role {target['roles'][0]}")
                         for key, value in op["attrs"].items():
                             if value not in ("true", "false", "mixed"):
                                 _verbatim(value, corpus, typed, f"{key} value")
@@ -389,7 +518,9 @@ def validate(item, corpus, requirement_id, entities=frozenset()):
         raise Invalid("no expect step")
     if ops[0]["op"] != "goto":
         ops.insert(0, {"op": "goto", "path": "/", "src": requirement_id, "phase": "given", "text": "open the application URL"})
-    return ops
+    if scenario is not None:
+        _coverage(ops, scenario)
+    return _normalise(ops, known or {})
 
 
 def _corpus(requirements):
@@ -427,43 +558,43 @@ def translate(text, planned, base=None, key=None, model=None, cache_dir=None, ca
     path = cache_path(text, model, cache_dir)
     summary["cache"] = str(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path.with_suffix(".lock"), "w") as lock:  # parallel checks of one task make one call, not several
+    # Parallel checks of one task make one call, not several (the lock lives outside the cache directory).
+    with open(Path(tempfile.gettempdir()) / (path.name + ".lock"), "w") as lock:
         try:
             import fcntl
             fcntl.flock(lock, fcntl.LOCK_EX)
         except (ImportError, OSError):
             pass
-        record = _cached_or_called(text, unparsed, path, summary, base, key, model, call)
+        record = _cached_or_called(text, planned, unparsed, path, summary, base, key, model, call)
     if record is None:
         return summary
     return _accept(text, planned, unparsed, record, summary)
 
 
-def _cached_or_called(text, unparsed, path, summary, base, key, model, call):
+def _cached_or_called(text, planned, unparsed, path, summary, base, key, model, call):
     if path.is_file():
         summary["status"] = "cached"
         return json.loads(path.read_text(encoding="utf-8"))
-    if True:
-        key = key if key is not None else os.environ.get("OPENAI_API_KEY", "")
-        if not key:
-            summary["status"] = "no_key"
-            return None
-        base = base or os.environ.get("OPENAI_BASE_URL") or DEFAULT_BASE
-        messages = build_messages(scenarios.load_requirements(text), unparsed)
-        started_at = time.time()
-        try:
-            content, usage, finish, seconds = call(messages, base, key, model)
-        except TranslateError as exc:
-            summary.update(status="failed", error=str(exc), calls=1)
-            return None
-        record = {"requirements_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "version": VERSION,
-                  "model": model, "started_at": started_at, "seconds": seconds, "finish_reason": finish,
-                  "usage": usage, "cost_cny": cost_cny(usage, model), "messages": messages, "content": content}
-        temporary = path.with_suffix(".tmp")
-        temporary.write_text(json.dumps(record, ensure_ascii=False, indent=1), encoding="utf-8")
-        temporary.replace(path)
-        summary.update(status="called", calls=1)
-        return record
+    key = key if key is not None else os.environ.get("OPENAI_API_KEY", "")
+    if not key:
+        summary["status"] = "no_key"
+        return None
+    base = base or os.environ.get("OPENAI_BASE_URL") or DEFAULT_BASE
+    messages = build_messages(scenarios.load_requirements(text), unparsed, planned.get("known_steps"))
+    started_at = time.time()
+    try:
+        content, usage, finish, seconds = call(messages, base, key, model)
+    except TranslateError as exc:
+        summary.update(status="failed", error=str(exc), calls=1)
+        return None
+    record = {"requirements_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "version": VERSION,
+              "model": model, "started_at": started_at, "seconds": seconds, "finish_reason": finish,
+              "usage": usage, "cost_cny": cost_cny(usage, model), "messages": messages, "content": content}
+    temporary = path.with_suffix(".tmp")
+    temporary.write_text(json.dumps(record, ensure_ascii=False, indent=1), encoding="utf-8")
+    temporary.replace(path)
+    summary.update(status="called", calls=1)
+    return record
 
 
 def _accept(text, planned, unparsed, record, summary):
@@ -474,6 +605,13 @@ def _accept(text, planned, unparsed, record, summary):
     requirements = scenarios.load_requirements(text)
     corpus = _corpus(requirements)
     wanted = {s["id"]: s for s in unparsed}
+    by_id = {r["id"]: r for r in requirements}
+
+    def scenario_of(sid):
+        rid, _, number = sid.partition("#")
+        found = by_id.get(rid)
+        index = int(number) - 1 if number.isdigit() else 0
+        return found["scenarios"][index] if found and index < len(found["scenarios"]) else None
     entities = set(planned.get("entities") or [])
     try:
         items = _parse_reply(record.get("content") or "")
@@ -491,7 +629,8 @@ def _accept(text, planned, unparsed, record, summary):
             summary["rejected"][sid] = "model: " + str(item.get("untranslatable"))[:200]
             continue
         try:
-            summary["accepted"][sid] = validate(item, corpus, wanted[sid]["requirement"], entities)
+            summary["accepted"][sid] = validate(item, corpus, wanted[sid]["requirement"], entities, scenario_of(sid),
+                                                planned.get("known_steps"))
         except Invalid as exc:
             summary["rejected"][sid] = str(exc)
     for sid in wanted:

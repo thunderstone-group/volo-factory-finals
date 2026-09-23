@@ -434,6 +434,24 @@ def _aggregate_invariants(replies):
     return invariants
 
 
+def _start_backend(backend, workspace, port, attempts=3):
+    """Start the backend on a free port. A free port can be taken by a parallel process between the probe and the
+    backend's bind, so an early exit is retried on a fresh port, from restored files, before it counts."""
+    for attempt in range(attempts):
+        chosen = port or _free_port()
+        if port:
+            deadline = time.monotonic() + 10
+            while not _port_free(port) and time.monotonic() < deadline:
+                time.sleep(0.2)
+        backend.start(chosen)
+        ready, why = backend.wait_ready(chosen)
+        if ready or attempt + 1 == attempts or "EADDRINUSE" not in _tail(backend.log_path, 4000):
+            return chosen, ready, why
+        backend.stop()
+        workspace.restore()
+    return chosen, ready, why
+
+
 def _payload(item, failed_headings):
     # A name whose main-heading check already failed is not re-polled (each failure costs a wait).
     return {"id": item["id"], "ops": item["ops"], "skip_heading": sorted(failed_headings)}
@@ -464,14 +482,8 @@ def _execute(runnable, app, port, progress=None):
             return replies, runtime
         backend = Backend(workspace.root, env, work / "backend.log")
         for item in runnable:
-            chosen = port or _free_port()
-            if port:
-                deadline = time.monotonic() + 10
-                while not _port_free(port) and time.monotonic() < deadline:
-                    time.sleep(0.2)
             try:
-                backend.start(chosen)
-                ready, why = backend.wait_ready(chosen)
+                chosen, ready, why = _start_backend(backend, workspace, port)
                 if not ready:
                     replies[item["id"]] = {"status": "fail", "steps": [], "observation": f"The backend did not start: {why}"}
                     continue

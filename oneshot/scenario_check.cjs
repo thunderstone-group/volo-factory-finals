@@ -135,10 +135,11 @@ async function scopeRoots(page, scope) {
     return {roots, missing: null};
   }
   const label = q(scope.name);
-  const given = scope.roles || [];
+  const given = (scope.roles || []).filter(r => r !== 'heading');
+  const titled = (scope.roles || []).includes('heading');  // "in the `Pinned` heading": the section it titles
   const roles = [...given, ...CONTAINER_ROLES.filter(r => !given.includes(r))];
   let containers = union(page, roles, scope.name, true).filter({visible: true});
-  let count = await containers.count();
+  let count = titled ? 0 : await containers.count();
   let roots = [];
   const content = given.filter(role => BY_CONTENT.has(role) && role !== 'region');
   if (!count && content.length) {

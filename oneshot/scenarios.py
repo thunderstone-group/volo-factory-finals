@@ -1810,7 +1810,13 @@ def plan(requirements_text):
     parsed = sum(1 for s in scenarios if s["status"] == "parsed")
     entities = sorted({op["target"]["name"] for s in scenarios if s["status"] == "parsed"
                        for op in s["ops"] if op.get("entity")})
-    return {"scenarios": scenarios, "coverage": {"total": len(scenarios), "parsed": parsed}, "entities": entities}
+    known = {}  # WHEN steps the rules read, also for requirements whose GIVEN or THEN they could not
+    for requirement in planner.atomic:
+        found = planner.parsed[(requirement["id"], 0)]
+        if found["when"] and not (found["error"] and found["error"].phase == "when"):
+            known[requirement["id"]] = found["when"]
+    return {"scenarios": scenarios, "coverage": {"total": len(scenarios), "parsed": parsed}, "entities": entities,
+            "known_steps": known}
 
 
 def shape(text):

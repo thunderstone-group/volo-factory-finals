@@ -10,6 +10,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from oneshot import scenario_check
 
@@ -202,7 +203,8 @@ class ScenarioCheckEndToEnd(unittest.TestCase):
         for variant in ("good", "broken"):
             make_app(cls.temp / variant, variant == "broken")
             out = cls.temp / f"{variant}.json"
-            cls.reports[variant] = scenario_check.run(cls.temp / "requirements.yaml", cls.temp / variant, out)
+            with patch.dict(os.environ, {"SCENARIO_TRANSLATE": "0"}):  # rules only: no model fallback in this test
+                cls.reports[variant] = scenario_check.run(cls.temp / "requirements.yaml", cls.temp / variant, out)
             cls.reports[variant + "-file"] = json.loads(out.read_text())
 
     @classmethod
@@ -215,7 +217,8 @@ class ScenarioCheckEndToEnd(unittest.TestCase):
     def test_correct_app_passes_and_each_scenario_starts_from_the_seed(self):
         self.assertEqual(self.status("good"), {"REQ-1.1": "pass", "REQ-2.1": "pass", "REQ-2.2": "pass",
                                                "REQ-2.3": "pass", "REQ-2.4": "pass", "REQ-2.5": "unparsed"})
-        self.assertEqual(self.reports["good"]["coverage"], {"total": 6, "parsed": 5})
+        self.assertEqual(self.reports["good"]["coverage"], {"total": 6, "parsed": 5, "rules": 5, "model": 0})
+        self.assertEqual(self.reports["good"]["translation"], {"status": "disabled"})
         self.assertEqual([i["status"] for i in self.reports["good"]["invariants"]], ["pass"] * len(self.reports["good"]["invariants"]))
         items = json.loads((self.temp / "good" / "backend" / "data" / "items.json").read_text())
         self.assertEqual(len(items), 2)  # the check never writes into the application it was given

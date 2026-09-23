@@ -111,49 +111,69 @@ receive no gateway credentials. The root `main.py` / `volo/` remain frozen legac
 application in Chromium and reports `pass`, `fail`, `unparsed` or `error` per ATOMIC scenario, with one
 observation sentence (screen hash, h1/h2, expected role and name, matches found). It ships in the
 package; `main.py` does not call it yet. It reads only the requirements and the application, never
-evaluator tests, and calls no model.
+evaluator tests.
 
 ```sh
 python oneshot/scenario_check.py --requirements requirements.yaml --app APP_DIR --out result.json [--port N]
 python scripts/calibrate_scenarios.py --requirements requirements.yaml REPLAY_DIR... [--jobs 4] [--out summary.json]
 ```
 
-The result is `{"scenarios": [{"id", "name", "status", "observation", "steps"}], "invariants": [...],
-"coverage": {"total", "parsed"}, "seconds"}`; a requirement with several scenarios gets ids `REQ-x`,
-`REQ-x#2`, ... `invariants` holds a main-heading check (after activating a link named like a seeded
-entity, the new screen's h1 or main heading contains that name) and every distinct uncaught page error.
+The result is `{"scenarios": [{"id", "name", "status", "observation", "steps", "source"}], "invariants": [...],
+"coverage": {"total", "parsed", "rules", "model"}, "translation": {...}, "seconds"}`; a requirement with several
+scenarios gets ids `REQ-x`, `REQ-x#2`, ... `invariants` holds a main-heading check (after activating a link named
+like a seeded entity, the new screen's h1 or main heading contains that name) and every distinct uncaught page
+error. `translation` reports the model fallback: status, accepted and rejected ids with reasons, usage and CNY cost.
 
-- **Parser** (`oneshot/scenarios.py`, standard library only): a YAML subset checked against PyYAML on
-  the Lite and large-task requirement files. Names come from backticks, or double quotes when a sentence
-  has none. Parsed WHEN shapes: open the application URL; activate / click / press / select a named
-  control (role words such as `link or button`, `button`, `tab`, `checkbox`; `unique`; scopes `in the
-  top navigation bar`, ``inside the `X` ``); enter / fill a named field with a value; check or uncheck;
-  select an option; press a key; hover; `The system ...` waits. THEN shapes: a (visible / exactly one /
-  unique) heading, region, form, button, link, entry or text named X, optionally in a named region or
-  list; `X is absent`; `keeps X unchanged`; `changes the control to X with aria-pressed=true`;
-  `headings or named regions matching A, B and C`. Any clause outside these shapes, or a quoted name no
-  shape consumes, makes the whole scenario `unparsed`.
-- **GIVEN**: the dependency chain runs first (prerequisites' WHEN steps only, one path when a
-  requirement lists alternatives, preferring the one reaching the requirement's seed kind), then the
-  scenario's own WHEN, then only its own THEN is asserted. A prerequisite activation of a sibling
-  entity (`Shelf 4.2.1`) uses the requirement's own seed of that kind (`Shelf 4.4.1`). A GIVEN page
-  the chain does not reach is entered with the opening activations of a same-folder sibling with the
-  same dependencies (`on the shelf creation page` -> `New Shelf`); `logged in` prepends the requirement
-  that logs in; `a non-homepage page` adds a navigation activation; `on the homepage` in a THEN first
-  performs the requirement that returns home. Other GIVEN states are `unparsed`.
-- **Locators**: role + exact name, role + name substring, label, placeholder, text; `unique` requires
-  exactly one visible element at the first rung that finds any; waits are 2.5 s per action or expectation.
-- **Isolation**: `frontend/` and `backend/` are copied to a scratch directory (dependencies linked,
-  never written) and built once; a pristine copy is kept. Every scenario gets a new browser context
-  and a backend started fresh on its own free port with a private TMPDIR; afterwards the backend's
-  process group and descendants are stopped and every file created, changed or removed under the copy
-  is restored from the pristine copy. The given application directory is never written.
-- **Playwright**: found through `NODE_PATH` / `PLAYWRIGHT_BROWSERS_PATH`, the global npm root, or the
-  same runtime cache `main.py` installs into.
+- **Rules** (`oneshot/scenarios.py`, standard library only): a YAML subset checked against PyYAML on the Lite and
+  large-task requirement files. Names come from backticks, or double quotes when a sentence has none. WHEN shapes:
+  open the application URL; activate / click / press / select / hover / focus a named control (role words such as
+  `link or button`, `button`, `tab`, `checkbox`; `unique`; `twice`; scopes `in the top navigation bar`, ``inside the
+  `X` article``, ``In the `X` article, ...``, `its`); enter / fill / replace a named field with a value; check or
+  uncheck; select an option; press a key; `The system ...` waits. THEN shapes: a (visible / exactly one / unique)
+  heading, region, section, form, button, link, article, entry or text named X, optionally in a named or described
+  container; `X is absent` / `closes`; `keeps X unchanged`; `the X article displays Y`; `the notes list contains X`;
+  aria states, computed background colour; `after the first activation` places the check after that action. Every
+  word of a clause must be read by a shape: an unread qualifier (`is assigned`, `has no title`, an absence inside an
+  unnamed container) makes the whole scenario `unparsed` rather than a weaker check.
+- **GIVEN**: the dependency chain runs first (prerequisites' WHEN steps only, one path when a requirement lists
+  alternatives, preferring the one reaching the requirement's seed kind), then the scenario's own WHEN, then only
+  its own THEN is asserted. A prerequisite activation of a sibling entity (`Shelf 4.2.1`) uses the requirement's
+  own seed of that kind (`Shelf 4.4.1`), in scopes too. A prerequisite's data entry (a segment that fills, checks
+  or selects) is not replayed unless it logs in for a GIVEN that needs it or acts on this requirement's seed items.
+  A GIVEN page the chain does not reach is entered with the opening activations of a same-folder sibling with the
+  same dependencies (`on the shelf creation page` -> `New Shelf`); ``the "X" editor is open`` activates X;
+  `logged in` prepends the requirement that logs in; `a non-homepage page` adds a navigation activation; a state
+  clause (`the note is pinned`) must share a distinctive word with an executed prerequisite's name;
+  `on the homepage` in a THEN first performs the requirement that returns home. Other GIVEN states are `unparsed`.
+- **Model fallback** (`oneshot/scenario_translate.py`): every scenario the rules leave unparsed goes to one
+  `deepseek-v4-flash` call per requirements text (temperature 0, reasoning effort low, gateway and key from
+  `OPENAI_BASE_URL` / `OPENAI_API_KEY` as in `main.py`), with all requirement records, the rules' reading of every
+  other requirement's WHEN steps and the fragment the rules could not read. The reply must be strict JSON in the
+  executor's step format. Each scenario is validated alone: step types the executor supports, ARIA roles and keys
+  from fixed lists, ARIA states only on roles that support them, every name, option and expected text equal to a
+  quoted name of the requirements or a value the scenario typed, and every quoted name of the scenario's own
+  GIVEN / WHEN / THEN used by its steps. A rejected scenario stays `unparsed`. The reply is cached by the SHA-256
+  of the requirements text with the prompt version and model (`SCENARIO_CACHE_DIR`, default
+  `$TMPDIR/oneshot-scenario-cache`), so repair rounds never call again; the cache record keeps the true prompt,
+  reply, usage and timing. `SCENARIO_TRANSLATE=0` switches the fallback off; without a key only a cached reply is
+  used.
+- **Locators**: role + exact name, then for roles named by their content (article, list item, row, region, ...)
+  the element that contains the name as text, role + name substring, label, placeholder, text. `unique` requires
+  exactly one visible element at the first rung that finds any, after the pointer is parked (hover-revealed row
+  actions do not count). An action inside a named record hovers the record first; a card is clicked near its
+  top-left corner. A section titled by a heading scopes by document position (after its heading, before the next
+  heading of the same level). Waits are 2.5 s per action or expectation.
+- **Isolation**: `frontend/` and `backend/` are copied to a scratch directory (dependencies linked, never written)
+  and built once; a pristine copy is kept. Every scenario gets a new browser context and a backend started fresh
+  on its own free port with a private TMPDIR (retried on a new port when a parallel run took it); afterwards the
+  backend's process group and descendants are stopped and every file created, changed or removed under the copy is
+  restored from the pristine copy. The given application directory is never written.
+- **Playwright**: found through `NODE_PATH` / `PLAYWRIGHT_BROWSERS_PATH`, the global npm root, or the same runtime
+  cache `main.py` installs into.
 
-The calibration script aligns verdicts with `result.json` cases by requirement id and reports
-agreement and false passes over decided verdicts, with unparsed counted separately. The verdicts are
-diagnostic; only the unchanged acceptance suite establishes scores.
+The calibration script aligns verdicts with `result.json` cases by requirement id and reports agreement and false
+passes over decided verdicts, with unparsed counted separately; `docs/evidence/2026-09-23-scenario-check-calibration-*.json`
+hold the Keep and BookStack runs. The verdicts are diagnostic; only the unchanged acceptance suite establishes scores.
 
 ## Continuation validation on 2026-09-16
 
