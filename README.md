@@ -16,6 +16,7 @@ remains the sole platform client; do not vendor a second copy into VOLO.
 |---|---|
 | `oneshot/main.py` | Versioned one-shot candidate, bounded requests and staged delivery |
 | `scripts/package_oneshot.py` | Candidate ZIP plus source/package SHA-256 manifest |
+| `oneshot/scenario_check.py` | Requirement scenario self-check in Chromium; see [one-shot](docs/reference/oneshot.md#scenario-self-check) |
 | `qiwoo`, `tools/qiwoo_cli/` | Separate forum reader and local drafts; live login/publishing unfinished |
 | installed `arcbench` | Platform operations, maintained in `thunderstone-group/arcbench-cli` |
 | `docs/README.md` | Map of `docs/` and the documentation policy |

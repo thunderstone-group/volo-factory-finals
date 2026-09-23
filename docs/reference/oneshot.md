@@ -1,6 +1,6 @@
 # One-shot candidate inside VOLO
 
-Last reviewed: 2026-09-22.
+Last reviewed: 2026-09-23.
 
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
@@ -14,7 +14,8 @@ The original three source hashes and Git head are in `oneshot/source_manifest.js
 ```
 
 The default artifact is `oneshot/dist/oneshot.zip`, with a sibling `.zip.manifest.json`.
-The root allowlist is `main.py`, `dialect.md`, `requirements.txt`, and `semantic_probe.cjs`;
+The root allowlist is `main.py`, `dialect.md`, `requirements.txt`, `semantic_probe.cjs`, and the scenario
+self-check files `scenarios.py`, `scenario_check.py` and `scenario_check.cjs`;
 regular scaffold files are packaged under `scaffold/`.
 Timestamps, order, permissions and uncompressed ZIP encoding are fixed. The external
 manifest binds every current source file to the ZIP hash and retains import provenance.
@@ -71,6 +72,56 @@ The browser helper uses Playwright 1.57.0. It reuses a reachable Node package an
 or installs the pinned package and headless Chromium into runtime caches with bounded waits.
 `NODE_PATH` and `PLAYWRIGHT_BROWSERS_PATH` may supply existing installations. Generated apps still
 receive no gateway credentials. The root `main.py` / `volo/` remain frozen legacy components.
+
+## Scenario self-check
+
+`oneshot/scenario_check.py` executes the requirements' own GIVEN/WHEN/THEN scenarios against a built
+application in Chromium and reports `pass`, `fail`, `unparsed` or `error` per ATOMIC scenario, with one
+observation sentence (screen hash, h1/h2, expected role and name, matches found). It ships in the
+package; `main.py` does not call it yet. It reads only the requirements and the application, never
+evaluator tests, and calls no model.
+
+```sh
+python oneshot/scenario_check.py --requirements requirements.yaml --app APP_DIR --out result.json [--port N]
+python scripts/calibrate_scenarios.py --requirements requirements.yaml REPLAY_DIR... [--jobs 4] [--out summary.json]
+```
+
+The result is `{"scenarios": [{"id", "name", "status", "observation", "steps"}], "invariants": [...],
+"coverage": {"total", "parsed"}, "seconds"}`; a requirement with several scenarios gets ids `REQ-x`,
+`REQ-x#2`, ... `invariants` holds a main-heading check (after activating a link named like a seeded
+entity, the new screen's h1 or main heading contains that name) and every distinct uncaught page error.
+
+- **Parser** (`oneshot/scenarios.py`, standard library only): a YAML subset checked against PyYAML on
+  the Lite and large-task requirement files. Names come from backticks, or double quotes when a sentence
+  has none. Parsed WHEN shapes: open the application URL; activate / click / press / select a named
+  control (role words such as `link or button`, `button`, `tab`, `checkbox`; `unique`; scopes `in the
+  top navigation bar`, ``inside the `X` ``); enter / fill a named field with a value; check or uncheck;
+  select an option; press a key; hover; `The system ...` waits. THEN shapes: a (visible / exactly one /
+  unique) heading, region, form, button, link, entry or text named X, optionally in a named region or
+  list; `X is absent`; `keeps X unchanged`; `changes the control to X with aria-pressed=true`;
+  `headings or named regions matching A, B and C`. Any clause outside these shapes, or a quoted name no
+  shape consumes, makes the whole scenario `unparsed`.
+- **GIVEN**: the dependency chain runs first (prerequisites' WHEN steps only, one path when a
+  requirement lists alternatives, preferring the one reaching the requirement's seed kind), then the
+  scenario's own WHEN, then only its own THEN is asserted. A prerequisite activation of a sibling
+  entity (`Shelf 4.2.1`) uses the requirement's own seed of that kind (`Shelf 4.4.1`). A GIVEN page
+  the chain does not reach is entered with the opening activations of a same-folder sibling with the
+  same dependencies (`on the shelf creation page` -> `New Shelf`); `logged in` prepends the requirement
+  that logs in; `a non-homepage page` adds a navigation activation; `on the homepage` in a THEN first
+  performs the requirement that returns home. Other GIVEN states are `unparsed`.
+- **Locators**: role + exact name, role + name substring, label, placeholder, text; `unique` requires
+  exactly one visible element at the first rung that finds any; waits are 2.5 s per action or expectation.
+- **Isolation**: `frontend/` and `backend/` are copied to a scratch directory (dependencies linked,
+  never written) and built once; a pristine copy is kept. Every scenario gets a new browser context
+  and a backend started fresh on its own free port with a private TMPDIR; afterwards the backend's
+  process group and descendants are stopped and every file created, changed or removed under the copy
+  is restored from the pristine copy. The given application directory is never written.
+- **Playwright**: found through `NODE_PATH` / `PLAYWRIGHT_BROWSERS_PATH`, the global npm root, or the
+  same runtime cache `main.py` installs into.
+
+The calibration script aligns verdicts with `result.json` cases by requirement id and reports
+agreement and false passes over decided verdicts, with unparsed counted separately. The verdicts are
+diagnostic; only the unchanged acceptance suite establishes scores.
 
 ## Continuation validation on 2026-09-16
 
