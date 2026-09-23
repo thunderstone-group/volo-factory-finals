@@ -105,6 +105,30 @@ class SmokeCase(unittest.TestCase):
         self.assertIsNone(budget.summary()['prompt_tokens'])
         self.assertEqual(budget.summary()['known_prompt_tokens'], 13)
 
+    def test_a_cut_repair_is_rejected_whole_while_a_cut_draft_is_kept(self):
+        # The draft breaks off inside app.js after four complete files: kept, and app.js comes from a continuation.
+        # The repair breaks off after one complete block: never used, so the pre-repair application ships.
+        blocks = app(server()).split("=== FILE: frontend/public/app.js ===")[0]
+        self.replies(events(blocks + "=== FILE: frontend/public/app.js ===\nconsole.log('dra", finish=None, done=False),
+                     events(block("frontend/public/app.js", "console.log('draft');")),
+                     events(block("frontend/public/app.js", "console.log('repaired');"), finish=None, done=False))
+        checks = []
+
+        def check(stage, requirements=None, diagnostics=None):
+            checks.append(stage)
+            return (['clicking `Open` on screen `#/` throws: synthetic'] if len(checks) == 1 else []), True
+
+        budget = adapter.CallBudget(repair_limit=1, fail_limit=2)
+        with patch.object(adapter, "smoke_check", side_effect=check):
+            files, _ = adapter.generate("Synthetic requirements only", "synthetic-model",
+                                        "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
+        self.assertEqual([(a["phase"], a["status"]) for a in budget.attempts],
+                         [("draft", "failed"), ("draft", "completed"), ("repair", "failed")])
+        self.assertFalse(budget.smoke["repair"]["accepted"], budget.smoke)
+        self.assertIn("model stream failed (StreamError)", budget.smoke["repair"]["reason"])
+        self.assertEqual((self.out / "frontend/public/app.js").read_text(), "console.log('draft');\n")
+        self.assertEqual(len(checks), 1)  # the cut repair never reached the recheck
+
     def test_repair_retry_stops_at_the_shared_failure_budget(self):
         self.replies(events(app(server(health='{}'))), [], events(block('backend/server.js', server())))
         budget = adapter.CallBudget(fail_limit=1)

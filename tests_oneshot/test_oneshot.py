@@ -4,6 +4,7 @@ No competition fixtures, external services, real keys or model calls are used.
 """
 import contextlib
 import hashlib
+import http.client
 import io
 import json
 import os
@@ -176,11 +177,11 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(missing, ["b.js"])
 
     def test_stream_retry_discards_failed_attempt_files_and_accumulates_usage(self):
+        # The failed attempt holds no complete block (one that does is kept and continued: the cut-stream tests).
         self.out.mkdir()  # Existing empty output is supported.
         budget = adapter.CallBudget()
-        self.replies(events(application(block("stale.js", "old")),
-                            {"prompt_tokens": 10, "completion_tokens": 20}, done=False) +
-                     [URLError("synthetic disconnect")],
+        self.replies(events("=== FILE: stale.js ===\nold", {"prompt_tokens": 10, "completion_tokens": 20},
+                            done=False) + [URLError("synthetic disconnect")],
                      events(application(), {"prompt_tokens": 3, "completion_tokens": 7}))
         files, totals = self.generate(budget)
         self.assertEqual(len(files), 5)
@@ -215,8 +216,9 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(len(budget.attempts[0]["usage_events"]), 3)
 
     def test_final_failure_retains_usage_without_publishing(self):
+        # A cut before any complete block (with complete blocks the application ships: the cut-stream tests).
         budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
-        self.replies(events(application(), {"prompt_tokens": 9}, done=False))
+        self.replies(events("=== FILE: backend/package.json ===\n{", {"prompt_tokens": 9}, done=False))
         with self.assertRaisesRegex(RuntimeError, "StreamError"):
             self.generate(budget)
         self.assertEqual(budget.summary()["known_prompt_tokens"], 9)
@@ -530,6 +532,75 @@ class OfflineCase(unittest.TestCase):
         self.assertIn("after an error: draft call limit reached (1): the reply broke the file framing (file closing "
                       "marker without an open block)", capture.getvalue())
 
+    def test_a_cut_draft_stream_keeps_its_complete_blocks_and_continues(self):
+        # The gateway cuts one stream at about 1200 s (a Ctrip draft took 1101 s). The complete blocks of the cut
+        # attempt used to be discarded and the draft restarted from scratch into the same wall.
+        parts = split_application()
+        interruptions = (("no end markers", [], "StreamError"),
+                         ("connection reset", [ConnectionResetError("synthetic reset")], "ConnectionResetError"),
+                         ("incomplete read", [http.client.IncompleteRead(b"")], "IncompleteRead"))
+        splits = (("inside a file", parts[0] + parts[1] + "=== FILE: frontend/package.json ===\n{\"scr",
+                   parts[2] + parts[3] + parts[4], "inside the file `frontend/package.json`"),
+                  ("between files", parts[0] + parts[1], parts[2] + parts[3] + parts[4],
+                   "cut off between two files. These files are complete and must not be emitted again: "
+                   "`backend/package.json`, `backend/server.js`."))
+        for (kind, tail, error_type), (where, received, rest, ask) in \
+                [(i, s) for i in interruptions for s in splits]:
+            with self.subTest(kind=kind, where=where):
+                out = self.root / f"{error_type}-{where.replace(' ', '-')}"
+                budget = adapter.CallBudget()
+                self.transport.reset_mock()
+                self.replies(events(received, finish=None, done=False) + tail, events(rest))
+                capture = io.StringIO()
+                with contextlib.redirect_stderr(capture):
+                    files, totals = adapter.generate("Synthetic requirements only", "synthetic-model",
+                                                     "https://synthetic.invalid/v1", SYNTHETIC_KEY, out, budget)
+                self.assertEqual(self.transport.call_count, 2)
+                self.assertEqual([r["status"] for r in budget.attempts], ["failed", "completed"])
+                self.assertEqual(budget.attempts[0]["error_type"], error_type)
+                self.assertEqual(budget.attempts[1]["messages"][-2], {"role": "assistant", "content": received})
+                self.assertIn(ask, budget.attempts[1]["messages"][-1]["content"])
+                self.assertIn(f"[oneshot] call 1 was cut ({error_type}) after {len(received)} characters; "
+                              f"keeping its complete file blocks", capture.getvalue())
+                self.assertEqual((totals["failed_calls"], totals["completed_calls"]), (1, 1))
+                self.assertEqual(totals["billing_status"], "unknown")  # billed, usage never reported
+                self.assertEqual(len(files), 5)
+                self.assertEqual(adapter.missing_required(out), [])
+                self.assertEqual((out / "frontend/package.json").read_text(), '{"scripts":{"build":"node build.js"}}\n')
+
+    def test_a_cut_stream_that_completes_the_application_ships_without_calls_left(self):
+        budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
+        self.replies(events(application(), {"prompt_tokens": 9}, finish=None, done=False))
+        capture = io.StringIO()
+        with contextlib.redirect_stderr(capture):
+            files, totals = self.generate(budget)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(adapter.missing_required(self.out), [])
+        self.assertIn("after an error: global model failure limit reached (1): the output was cut off between two "
+                      "files", capture.getvalue())
+        self.assertEqual(totals["known_prompt_tokens"], 9)
+        self.assertEqual(totals["unknown_usage_calls"], [1])
+
+    def test_a_cut_without_a_complete_block_is_retried_unchanged_before_a_later_cut_is_kept(self):
+        # Only a partial first block arrived: the same request goes out again, as before. The retry breaks off
+        # too, after two complete files: those are kept and the draft continues.
+        parts = split_application()
+        budget = adapter.CallBudget()
+        self.replies(events("=== FILE: backend/package.json ===\n{\"scr", finish=None, done=False),
+                     events(parts[0] + parts[1] + "=== FILE: frontend/package.json ===\n{", finish=None, done=False),
+                     events(parts[2] + parts[3] + parts[4]))
+        capture = io.StringIO()
+        with contextlib.redirect_stderr(capture):
+            files, _ = self.generate(budget)
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertEqual([r["status"] for r in budget.attempts], ["failed", "failed", "completed"])
+        self.assertEqual(budget.attempts[1]["messages"], budget.attempts[0]["messages"])
+        self.assertIn("inside the file `frontend/package.json`", budget.attempts[2]["messages"][-1]["content"])
+        self.assertIn("[oneshot] call 1 failed; bounded retry", capture.getvalue())
+        self.assertIn("[oneshot] call 2 was cut (StreamError)", capture.getvalue())
+        self.assertEqual(len(files), 5)
+        self.assertEqual((self.out / "backend/package.json").read_text(), '{"scripts":{"start":"node server.js"}}\n')
+
     def test_cli_exits_nonzero_when_no_file_came_from_the_model(self):
         # Round 1 shipped the bare scaffold with exit 0 during a gateway outage, so the platform saw a success.
         requirement = self.out / "requirements"
@@ -553,13 +624,15 @@ class OfflineCase(unittest.TestCase):
         budget = adapter.CallBudget()
         prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
         rest = application()[len(prefix):]
+        # The failed continuation attempt breaks off inside its first block, so nothing of it is complete.
         self.replies(events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="length"),
-                     events(rest + block("leaked.js", "bad"), done=False), events(rest))
+                     events("=== FILE: backend/server.js ===\n// leaked half", finish=None, done=False), events(rest))
         self.generate(budget)
         self.assertEqual(self.transport.call_count, 3)
-        self.assertFalse((self.out / "leaked.js").exists())
+        self.assertNotIn("leaked", (self.out / "backend/server.js").read_text())
         self.assertNotIn("cut off", (self.out / "backend/server.js").read_text())
         self.assertIn("backend/server.js", budget.attempts[1]["messages"][-1]["content"])
+        self.assertEqual(budget.attempts[2]["messages"], budget.attempts[1]["messages"])  # the same request again
 
     def test_no_continuation_for_stop_with_an_open_block(self):
         # The two other cases of the old table changed meaning: a complete draft cut at `length` between files is
@@ -862,6 +935,55 @@ class LocalHTTPTests(unittest.TestCase):
                 self.assertEqual(len(seen), 3)
                 self.assertTrue(all(path == "/v1/chat/completions" for path, _ in seen))
                 self.assertTrue(all(payload["stream"] for _, payload in seen))
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=2)
+
+    def test_extracted_zip_cli_keeps_a_cut_draft_and_continues_over_synthetic_local_http(self):
+        # What the gateway's ~1200 s hard cut looks like on a real socket: the draft stream closes without a
+        # finish reason or [DONE] after three complete files. They are kept; one continuation completes the rest.
+        parts = split_application()
+        draft = parts[0] + parts[1] + parts[2] + "=== FILE: frontend/build.js ===\n// Synth"
+        bodies = [b"".join(events(draft, finish=None, done=False)),
+                  b"".join(events(parts[3] + parts[4], {"prompt_tokens": 8, "completion_tokens": 13}))]
+        seen = []
+
+        class Handler(BaseHTTPRequestHandler):  # HTTP/1.0: the body ends when the connection closes
+            def do_POST(self):
+                seen.append(json.loads(self.rfile.read(int(self.headers["Content-Length"]))))
+                self.send_response(200)
+                self.send_header("Content-Type", "text/event-stream")
+                self.end_headers()
+                self.wfile.write(bodies.pop(0))
+
+            def log_message(self, *args):
+                pass
+
+        server = HTTPServer(("127.0.0.1", 0), Handler)
+        thread = threading.Thread(target=server.serve_forever, kwargs={"poll_interval": 0.01}, daemon=True)
+        thread.start()
+        try:
+            with tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                pack.build_package(root / "candidate.zip")
+                with zipfile.ZipFile(root / "candidate.zip") as archive:
+                    archive.extractall(root / "candidate")
+                requirements = root / "requirements"
+                requirements.mkdir()
+                (requirements / "requirements.yaml").write_text("synthetic: true")
+                env = {"PATH": os.defpath, "PYTHONDONTWRITEBYTECODE": "1", "OPENAI_API_KEY": SYNTHETIC_KEY,
+                       "OPENAI_BASE_URL": f"http://127.0.0.1:{server.server_port}/v1", "ONESHOT_SCAFFOLD": "0"}
+                result = subprocess.run([sys.executable, str(root / "candidate/main.py"), str(requirements),
+                                         "--output-dir", str(root / "out"), "--type", "web"],
+                                        env=env, capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn("[oneshot] call 1 was cut (StreamError)", result.stderr)
+                self.assertEqual(adapter.missing_required(root / "out"), [])
+                self.assertEqual((root / "out/frontend/build.js").read_text(), "// Synthetic build fixture\n")
+                self.assertEqual(len(seen), 2)
+                self.assertEqual(seen[1]["messages"][-2], {"role": "assistant", "content": draft})
+                self.assertIn("inside the file `frontend/build.js`", seen[1]["messages"][-1]["content"])
         finally:
             server.shutdown()
             server.server_close()
