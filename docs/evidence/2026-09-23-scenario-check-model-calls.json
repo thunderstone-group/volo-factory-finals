@@ -1,0 +1,224 @@
+{
+ "what": "Every model call made while developing the scenario translation fallback (deepseek-v4-flash, practice key), with the usage the stream reported; the gateway request log (`arcbench requests`) shows the same amounts.",
+ "window_local_utc8": [
+  "2026-09-23 11:58:16",
+  "2026-09-23 12:55:26"
+ ],
+ "total_cost_cny": 1.488972,
+ "calls": [
+  {
+   "label": "keep",
+   "window_local": [
+    "2026-09-23 11:58:16",
+    "2026-09-23 11:59:55"
+   ],
+   "usage": {
+    "completion_tokens": 13965,
+    "completion_tokens_details": {
+     "reasoning_tokens": 11214
+    },
+    "prompt_tokens": 6573,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "total_tokens": 20538
+   },
+   "cost_cny": 0.145404,
+   "seconds": 98.7,
+   "finish_reason": "stop",
+   "requested": 13,
+   "accepted": 11,
+   "requirements": "keep"
+  },
+  {
+   "label": "bookstack",
+   "window_local": [
+    "2026-09-23 12:00:51",
+    "2026-09-23 12:02:31"
+   ],
+   "usage": {
+    "completion_tokens": 10641,
+    "completion_tokens_details": {
+     "reasoning_tokens": 10174
+    },
+    "prompt_tokens": 5657,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "total_tokens": 16298
+   },
+   "cost_cny": 0.11274,
+   "seconds": 99.4,
+   "finish_reason": "stop",
+   "requested": 5,
+   "accepted": 1,
+   "requirements": "bookstack"
+  },
+  {
+   "label": "keep-v2",
+   "window_local": [
+    "2026-09-23 12:24:43",
+    "2026-09-23 12:25:50"
+   ],
+   "usage": {
+    "completion_tokens": 10242,
+    "completion_tokens_details": {
+     "reasoning_tokens": 7696
+    },
+    "prompt_tokens": 9258,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "total_tokens": 19500
+   },
+   "cost_cny": 0.119952,
+   "seconds": 67.6,
+   "finish_reason": "stop",
+   "requested": 13,
+   "accepted": 11,
+   "requirements": "keep"
+  },
+  {
+   "label": "bookstack-v2",
+   "window_local": [
+    "2026-09-23 12:25:52",
+    "2026-09-23 12:26:58"
+   ],
+   "usage": {
+    "completion_tokens": 10341,
+    "completion_tokens_details": {
+     "reasoning_tokens": 9259
+    },
+    "prompt_tokens": 10835,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "total_tokens": 21176
+   },
+   "cost_cny": 0.125574,
+   "seconds": 66.0,
+   "finish_reason": "stop",
+   "requested": 5,
+   "accepted": 3,
+   "requirements": "bookstack"
+  },
+  {
+   "label": "keep-v3",
+   "window_local": [
+    "2026-09-23 12:40:23",
+    "2026-09-23 12:42:03"
+   ],
+   "usage": {
+    "completion_tokens": 14307,
+    "completion_tokens_details": {
+     "reasoning_tokens": 11415
+    },
+    "prompt_tokens": 11255,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "total_tokens": 25562
+   },
+   "cost_cny": 0.162528,
+   "seconds": 100.0,
+   "finish_reason": "stop",
+   "requested": 13,
+   "accepted": 11,
+   "requirements": "keep"
+  },
+  {
+   "label": "bookstack-v3",
+   "window_local": [
+    "2026-09-23 12:42:05",
+    "2026-09-23 12:43:32"
+   ],
+   "usage": {
+    "completion_tokens": 11917,
+    "completion_tokens_details": {
+     "reasoning_tokens": 10548
+    },
+    "prompt_tokens": 13124,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "total_tokens": 25041
+   },
+   "cost_cny": 0.146625,
+   "seconds": 86.9,
+   "finish_reason": "stop",
+   "requested": 5,
+   "accepted": 3,
+   "requirements": "bookstack"
+  },
+  {
+   "label": "12306-v3",
+   "window_local": [
+    "2026-09-23 12:45:10",
+    "2026-09-23 12:48:34"
+   ],
+   "usage": {
+    "completion_tokens": 28919,
+    "completion_tokens_details": {
+     "reasoning_tokens": 15523
+    },
+    "prompt_tokens": 39687,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "total_tokens": 68606
+   },
+   "cost_cny": 0.379332,
+   "seconds": 203.7,
+   "finish_reason": "stop",
+   "requested": 132,
+   "accepted": 26,
+   "requirements": "r28-req-12306"
+  },
+  {
+   "label": "ctrip-v3",
+   "window_local": [
+    "2026-09-23 12:53:15",
+    "2026-09-23 12:55:26"
+   ],
+   "usage": {
+    "completion_tokens": 20237,
+    "completion_tokens_details": {
+     "reasoning_tokens": 15221
+    },
+    "prompt_tokens": 38228,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "total_tokens": 58465
+   },
+   "cost_cny": 0.296817,
+   "seconds": 131.0,
+   "finish_reason": "stop",
+   "requested": 125,
+   "accepted": 7,
+   "requirements": "r28-req-ctrip"
+  }
+ ],
+ "coverage_final": {
+  "keep": {
+   "total": 32,
+   "rules": 19,
+   "model": 11
+  },
+  "bookstack": {
+   "total": 34,
+   "rules": 29,
+   "model": 3
+  },
+  "12306 (r28-req-12306, old style)": {
+   "total": 135,
+   "rules": 3,
+   "model": 26
+  },
+  "ctrip (r28-req-ctrip, old style)": {
+   "total": 125,
+   "rules": 0,
+   "model": 7
+  }
+ }
+}
