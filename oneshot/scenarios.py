@@ -889,7 +889,7 @@ def _given(content):
 def _given_masked(masked, names):
     """GIVEN step -> {auth, location, open, effects}. Raises Unparsed.
 
-    `open`: a quoted control whose activation opens the stated editor or dialog (`the "Take a note" editor is
+    `open`: a quoted control whose activation opens the stated editor or dialog (`the "New item" editor is
     open`). `effects`: state clauses that describe the result of the dependency's action (`the note is
     pinned`); the planner accepts them only when they share a distinctive word with that dependency's name."""
     state = {"auth": None, "location": None, "open": None, "effects": []}

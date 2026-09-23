@@ -469,7 +469,7 @@ def parse_blocks(text):
         opening = FILE_OPEN.fullmatch(marker)
         if not opening and current is None:
             # Leaked reasoning glued to the marker on one line ("... Writing the output.</think>=== FILE: x ===",
-            # round 24 Keep b: the next END was then "without an open block" and the task scored 0/32). Between
+            # one practice run: the next END was then "without an open block" and the task scored 0/32). Between
             # blocks, a line that ENDS with a well-formed marker opens the block; the prefix is prose.
             glued = FILE_OPEN.search(marker)
             if glued and glued.end() == len(marker) and glued.start() > 0:
@@ -1334,7 +1334,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
 # double quotes), or in straight or curly double quotes.
 QUOTED = re.compile(r'`([^`\n]{2,80})`|[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
 # What precedes a value the user types: "fills `Name` with `Item 4.3.1`", "enters `user@example.com`". The field
-# between fill and with stays in one clause; its quoted name may hold punctuation (`Write your page content here...`).
+# between fill and with stays in one clause; its quoted name may hold punctuation (`Write your text here...`).
 TYPED = re.compile(r"(?:(?<![\w-])fill(?:s|ed|ing)?\b(?:[^.;\n`\"]|`[^`\n]*`|\"[^\"\n]*\")*\bwith"
                    r"|\benter(?:s|ed|ing)?|\btyp(?:es|ed|ing))\s+$", re.I)
 VOCAB_SHOWN = 60
@@ -1397,8 +1397,8 @@ def vocabulary_table(requirements):
              "visible text just the same (§7) and are not listed here: keep writing them. ",
              "Each phrase below is quoted by the requirement and matched by the suite as visible text, an accessible "
              "name, a message or a seed value, on the screen that requirement describes. A quoted control name is the "
-             "WHOLE accessible name, byte-exact: the suite anchors it (`/^Take a note$/i`), so an icon, bullet, "
-             "ellipsis, count or extra word in the same name (`\u2022 Notes`, `Take a note...`, `Archive note`) fails it. "
+             "WHOLE accessible name, byte-exact: the suite anchors it (`/^New item$/i`), so an icon, bullet, "
+             "ellipsis, count or extra word in the same name (`\u2022 Items`, `New item...`, `Archive item`) fails it. "
              "The role follows the requirement's verb: click/press \u2192 button, field/enter \u2192 textbox with that "
              "exact label, dialog/editor \u2192 role=dialog with that exact name, menu \u2192 menu/menuitem."]
     for key in order:
@@ -1435,7 +1435,7 @@ def quoted_control_phrases(requirements):
 
 def exact_name_gaps(stage, requirements):
     """A quoted control name must be rendered as a WHOLE name. A phrase that appears in the source only
-    inside a longer token (\u2022 Notes, Take a note..., Archive note) fails the suite's anchored
+    inside a longer token (\u2022 Items, New item..., Archive item) fails the suite's anchored
     /^Name$/i match (one Lite run, 5/32: 22 of 27 losses cascaded from one decorated name). Only phrases
     whose requirement context names a control are checked. Static, no model."""
     phrases = quoted_control_phrases(requirements)
@@ -1536,7 +1536,7 @@ def _label_words(text):
 
 
 def _shared_words(text, field_words):
-    """Latin words match whole; a CJK field label matches as a substring (搜航班号 contains 航班号)."""
+    """Latin words match whole; a CJK field label matches as a substring (搜索编号 contains 编号)."""
     shared = set(_label_words(text) & field_words)
     for word in field_words:
         if re.search(r"[\u4e00-\u9fff]", word) and len(word) >= 2 and word in text:
@@ -1645,7 +1645,7 @@ def aria_collision_gaps(stage, requirements=None):
         out.append(f"{len(advised)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
                    f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and "
                    f"NEVER rename a label the requirement quotes — rename the other one "
-                   f"(e.g. keep \"From\", rename \"From Station\" to \"Filter by departure station\"): " + "; ".join(advised[:12]))
+                   f"(e.g. keep \"Name\", rename \"Name filter\" to \"Filter by title\"): " + "; ".join(advised[:12]))
     if not lines:
         return out
     return out + [f"{len(lines)} button label(s) collide with field labels; the fill helper's first rung is "

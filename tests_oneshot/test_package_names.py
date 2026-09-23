@@ -10,10 +10,6 @@ import unittest
 
 from scripts import package_oneshot as pack
 
-# Temporary. main.py is being cleaned in parallel by the main session, which removes this entry
-# together with the practice names in main.py (roadmap 4.6). Do not add other files here.
-EXEMPT = {"main.py"}
-
 PATTERNS = {
     # Task and product names.
     "12306": r"12306",
@@ -56,18 +52,10 @@ class PracticeNameGate(unittest.TestCase):
     def test_packaged_files_name_no_practice_task(self):
         found = []
         for name in packaged():
-            if name in EXEMPT:
-                continue
             text = (pack.SOURCE / name).read_text(encoding="utf-8", errors="replace")
             for number, line in enumerate(text.splitlines(), 1):
                 found += [f"{name}:{number}: {match!r}" for match in hits(line)]
         self.assertEqual(found, [], "practice names in the package:\n" + "\n".join(found))
-
-    def test_exemption_names_a_packaged_file_that_still_needs_it(self):
-        for name in EXEMPT:
-            self.assertIn(name, packaged())
-            text = (pack.SOURCE / name).read_text(encoding="utf-8", errors="replace")
-            self.assertTrue(hits(text), f"{name} is clean now: remove it from EXEMPT")
 
     def test_product_names_match_and_the_verb_keep_does_not(self):
         for phrase in ("Google Keep", "Lite Keep", "on one Keep run", "13 of 15 Keep failures", "local Keep probe",
