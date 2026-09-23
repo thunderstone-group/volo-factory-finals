@@ -1,0 +1,168 @@
+{
+  "sample_id": "flash-keep-a",
+  "model": "deepseek-v4-flash",
+  "task": "keep",
+  "sample": "a",
+  "passed": 31,
+  "total": 32,
+  "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+  "passed_replay_pass2": null,
+  "mixed_model": false,
+  "excluded_from_primary": null,
+  "cost_cny": 1.09825,
+  "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+  "local_ledger_cny": 1.09825,
+  "wall_seconds": 888.87,
+  "exit_code": 0,
+  "delivered": true,
+  "files_written": 3,
+  "calls_completed": 2,
+  "calls_failed": 0,
+  "draft_calls_completed": 1,
+  "repair_calls_completed": 1,
+  "models_used": [
+    "deepseek-v4-flash"
+  ],
+  "fallback_model_engaged": null,
+  "continuation": 0,
+  "cut_stream_kept": 0,
+  "transport_fallback": 0,
+  "content_filter": 0,
+  "empty_reply_retry": 0,
+  "bounded_retry": 0,
+  "delivered_after_error": 0,
+  "closed_unterminated_block": 0,
+  "smoke_problems_before": 3,
+  "repairs": [
+    {
+      "accepted": true,
+      "reason": null,
+      "files": [
+        "frontend/public/app.js"
+      ],
+      "waived": null
+    }
+  ],
+  "repair_accepted_any": true,
+  "events": {
+    "cut_stream_kept": 0,
+    "transport_fallback": 0,
+    "content_filter": 0,
+    "empty_reply_retry": 0,
+    "framing_retry": 0,
+    "continue_inside_file": 0,
+    "continue_between_files": 0,
+    "continue_after_framing_break": 0,
+    "closed_unterminated_block": 0,
+    "bounded_retry": 0,
+    "delivered_after_error": 0,
+    "failed": 0,
+    "re_emitted_file": 0
+  },
+  "usage_summary": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 2,
+    "completed_calls": 2,
+    "completion_tokens": 112315,
+    "draft_call_limit": 4,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 112315,
+    "known_prompt_tokens": 52895,
+    "prompt_tokens": 52895,
+    "repair_call_limit": 2,
+    "unknown_usage_calls": []
+  },
+  "calls": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "error_type": null,
+      "http_status": null,
+      "elapsed_seconds": 662.365,
+      "prompt_tokens": 21416,
+      "completion_tokens": 87161,
+      "cached_tokens": 4096,
+      "content_chars": 32667,
+      "reasoning_chars": 316632,
+      "request_sha256": "5406fb870989535076e2413471b2f685fc5d2d1333c08cbc53e87388476a5611",
+      "local_cost_cny": 0.836819,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 2,
+      "phase": "repair",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "finish_reason": "stop",
+      "error_type": null,
+      "http_status": null,
+      "elapsed_seconds": 209.531,
+      "prompt_tokens": 31479,
+      "completion_tokens": 25154,
+      "cached_tokens": 20480,
+      "content_chars": 21702,
+      "reasoning_chars": 80716,
+      "request_sha256": "80337e1024a7776f9ddf16b66929c2dea5c0b7e9d63c682c825bd0d19717b920",
+      "local_cost_cny": 0.261431,
+      "cost_basis": "usage"
+    }
+  ],
+  "billing_rows": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "local_cost_cny": 0.836819,
+      "cost_basis": "usage",
+      "billing": {
+        "request_id": "2026092313274022169275597447",
+        "occurred_at": 1790141915,
+        "match": "exact tokens",
+        "amount": "0.836819",
+        "cached_tokens": 4096,
+        "currency": "CNY",
+        "input_tokens": 21416,
+        "output_tokens": 87161,
+        "total_tokens": 108577
+      }
+    },
+    {
+      "call": 2,
+      "phase": "repair",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "local_cost_cny": 0.261431,
+      "cost_basis": "usage",
+      "billing": {
+        "request_id": "2026092313385079568198478753",
+        "occurred_at": 1790142137,
+        "match": "exact tokens",
+        "amount": "0.261431",
+        "cached_tokens": 20480,
+        "currency": "CNY",
+        "input_tokens": 31479,
+        "output_tokens": 25154,
+        "total_tokens": 56633
+      }
+    }
+  ],
+  "replay": {
+    "app": "keep",
+    "passed": 31,
+    "total": 32,
+    "delivered": true,
+    "tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+    "exit_code": 0,
+    "failed_ids": [
+      "REQ-3.1"
+    ],
+    "replay_seconds": 18.6
+  },
+  "replay_pass2": null
+}

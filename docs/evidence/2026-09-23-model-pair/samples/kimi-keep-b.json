@@ -1,0 +1,170 @@
+{
+  "sample_id": "kimi-keep-b",
+  "model": "kimi-k2.7-code-highspeed",
+  "task": "keep",
+  "sample": "b",
+  "passed": 29,
+  "total": 32,
+  "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+  "passed_replay_pass2": null,
+  "mixed_model": false,
+  "excluded_from_primary": null,
+  "cost_cny": 5.01609,
+  "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+  "local_ledger_cny": 5.01609,
+  "wall_seconds": 487.677,
+  "exit_code": 0,
+  "delivered": true,
+  "files_written": 4,
+  "calls_completed": 2,
+  "calls_failed": 0,
+  "draft_calls_completed": 1,
+  "repair_calls_completed": 1,
+  "models_used": [
+    "kimi-k2.7-code-highspeed"
+  ],
+  "fallback_model_engaged": null,
+  "continuation": 0,
+  "cut_stream_kept": 0,
+  "transport_fallback": 0,
+  "content_filter": 0,
+  "empty_reply_retry": 0,
+  "bounded_retry": 0,
+  "delivered_after_error": 0,
+  "closed_unterminated_block": 0,
+  "smoke_problems_before": 2,
+  "repairs": [
+    {
+      "accepted": true,
+      "reason": null,
+      "files": [
+        "frontend/public/app.js"
+      ],
+      "waived": null
+    }
+  ],
+  "repair_accepted_any": true,
+  "events": {
+    "cut_stream_kept": 0,
+    "transport_fallback": 0,
+    "content_filter": 0,
+    "empty_reply_retry": 0,
+    "framing_retry": 0,
+    "continue_inside_file": 0,
+    "continue_between_files": 0,
+    "continue_after_framing_break": 0,
+    "closed_unterminated_block": 0,
+    "bounded_retry": 0,
+    "delivered_after_error": 0,
+    "failed": 0,
+    "re_emitted_file": 0
+  },
+  "usage_summary": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 2,
+    "completed_calls": 2,
+    "completion_tokens": 84463,
+    "draft_call_limit": 4,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 84463,
+    "known_prompt_tokens": 51186,
+    "prompt_tokens": 51186,
+    "repair_call_limit": 2,
+    "unknown_usage_calls": []
+  },
+  "calls": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "finish_reason": "stop",
+      "error_type": null,
+      "http_status": null,
+      "elapsed_seconds": 354.497,
+      "prompt_tokens": 20457,
+      "completion_tokens": 63390,
+      "cached_tokens": 0,
+      "content_chars": 35421,
+      "reasoning_chars": 226174,
+      "request_sha256": "b03d50c1b489ee3f9aa7874a08d3d48c3ebdc6df09469bc8bd58abbb6782845a",
+      "local_cost_cny": 3.689001,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 2,
+      "phase": "repair",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "finish_reason": "stop",
+      "error_type": null,
+      "http_status": null,
+      "elapsed_seconds": 119.695,
+      "prompt_tokens": 30729,
+      "completion_tokens": 21073,
+      "cached_tokens": 20224,
+      "content_chars": 19586,
+      "reasoning_chars": 73629,
+      "request_sha256": "98d24eb1c1c832df76408ccb96a67170ce42b5a6c0e0c91eae4b277ac6c64053",
+      "local_cost_cny": 1.327089,
+      "cost_basis": "usage"
+    }
+  ],
+  "billing_rows": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "local_cost_cny": 3.689001,
+      "cost_basis": "usage",
+      "billing": {
+        "request_id": "2026092313453629295487170150",
+        "occurred_at": 1790142688,
+        "match": "exact tokens",
+        "amount": "3.689001",
+        "cached_tokens": 0,
+        "currency": "CNY",
+        "input_tokens": 20457,
+        "output_tokens": 63390,
+        "total_tokens": 83847
+      }
+    },
+    {
+      "call": 2,
+      "phase": "repair",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "local_cost_cny": 1.327089,
+      "cost_basis": "usage",
+      "billing": {
+        "request_id": "2026092313513816490059549357",
+        "occurred_at": 1790142815,
+        "match": "exact tokens",
+        "amount": "1.327089",
+        "cached_tokens": 20224,
+        "currency": "CNY",
+        "input_tokens": 30729,
+        "output_tokens": 21073,
+        "total_tokens": 51802
+      }
+    }
+  ],
+  "replay": {
+    "app": "keep",
+    "passed": 29,
+    "total": 32,
+    "delivered": true,
+    "tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+    "exit_code": 0,
+    "failed_ids": [
+      "REQ-2.7.1",
+      "REQ-2.7.2",
+      "REQ-3.1"
+    ],
+    "replay_seconds": 38.8
+  },
+  "replay_pass2": null
+}

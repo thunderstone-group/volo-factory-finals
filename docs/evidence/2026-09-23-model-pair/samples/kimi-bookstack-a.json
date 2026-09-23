@@ -1,0 +1,167 @@
+{
+  "sample_id": "kimi-bookstack-a",
+  "model": "kimi-k2.7-code-highspeed",
+  "task": "bookstack",
+  "sample": "a",
+  "passed": 34,
+  "total": 34,
+  "replay_tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+  "passed_replay_pass2": null,
+  "mixed_model": false,
+  "excluded_from_primary": null,
+  "cost_cny": 3.821721,
+  "cost_basis": "gateway metered: every completed call matched on exact model and input/output tokens; failed or cut calls have no billed request",
+  "local_ledger_cny": 3.821721,
+  "wall_seconds": 334.97,
+  "exit_code": 0,
+  "delivered": true,
+  "files_written": 4,
+  "calls_completed": 2,
+  "calls_failed": 0,
+  "draft_calls_completed": 1,
+  "repair_calls_completed": 1,
+  "models_used": [
+    "kimi-k2.7-code-highspeed"
+  ],
+  "fallback_model_engaged": null,
+  "continuation": 0,
+  "cut_stream_kept": 0,
+  "transport_fallback": 0,
+  "content_filter": 0,
+  "empty_reply_retry": 0,
+  "bounded_retry": 0,
+  "delivered_after_error": 0,
+  "closed_unterminated_block": 0,
+  "smoke_problems_before": 4,
+  "repairs": [
+    {
+      "accepted": true,
+      "reason": null,
+      "files": [
+        "frontend/public/seed.js",
+        "frontend/public/app.js"
+      ],
+      "waived": null
+    }
+  ],
+  "repair_accepted_any": true,
+  "events": {
+    "cut_stream_kept": 0,
+    "transport_fallback": 0,
+    "content_filter": 0,
+    "empty_reply_retry": 0,
+    "framing_retry": 0,
+    "continue_inside_file": 0,
+    "continue_between_files": 0,
+    "continue_after_framing_break": 0,
+    "closed_unterminated_block": 0,
+    "bounded_retry": 0,
+    "delivered_after_error": 0,
+    "failed": 0,
+    "re_emitted_file": 0
+  },
+  "usage_summary": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 2,
+    "completed_calls": 2,
+    "completion_tokens": 62493,
+    "draft_call_limit": 4,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 62493,
+    "known_prompt_tokens": 56101,
+    "prompt_tokens": 56101,
+    "repair_call_limit": 2,
+    "unknown_usage_calls": []
+  },
+  "calls": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "finish_reason": "stop",
+      "error_type": null,
+      "http_status": null,
+      "elapsed_seconds": 221.459,
+      "prompt_tokens": 22540,
+      "completion_tokens": 45269,
+      "cached_tokens": 4608,
+      "content_chars": 36490,
+      "reasoning_chars": 132237,
+      "request_sha256": "1575fc9431dfbe661b941abbc0a913cdea3da550afc5044f6f0a8d0dcc7e849c",
+      "local_cost_cny": 2.689623,
+      "cost_basis": "usage"
+    },
+    {
+      "call": 2,
+      "phase": "repair",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "finish_reason": "stop",
+      "error_type": null,
+      "http_status": null,
+      "elapsed_seconds": 97.364,
+      "prompt_tokens": 33561,
+      "completion_tokens": 17224,
+      "cached_tokens": 22528,
+      "content_chars": 29357,
+      "reasoning_chars": 35669,
+      "request_sha256": "db2160ac8b0830c6e1fe54d6e0cd5514192b03c140524bc7810916d316f36ccd",
+      "local_cost_cny": 1.132098,
+      "cost_basis": "usage"
+    }
+  ],
+  "billing_rows": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "local_cost_cny": 2.689623,
+      "cost_basis": "usage",
+      "billing": {
+        "request_id": "2026092313344211424998441499",
+        "occurred_at": 1790141899,
+        "match": "exact tokens",
+        "amount": "2.689623",
+        "cached_tokens": 4608,
+        "currency": "CNY",
+        "input_tokens": 22540,
+        "output_tokens": 45269,
+        "total_tokens": 67809
+      }
+    },
+    {
+      "call": 2,
+      "phase": "repair",
+      "model": "kimi-k2.7-code-highspeed",
+      "status": "completed",
+      "local_cost_cny": 1.132098,
+      "cost_basis": "usage",
+      "billing": {
+        "request_id": "2026092313384583685684236785",
+        "occurred_at": 1790142004,
+        "match": "exact tokens",
+        "amount": "1.132098",
+        "cached_tokens": 22528,
+        "currency": "CNY",
+        "input_tokens": 33561,
+        "output_tokens": 17224,
+        "total_tokens": 50785
+      }
+    }
+  ],
+  "replay": {
+    "app": "bookstack",
+    "passed": 34,
+    "total": 34,
+    "delivered": true,
+    "tool": "lite replay.py (arc-business-feedback:20260921, 1 CPU, 2 GB, 1 worker, 10 s)",
+    "exit_code": 0,
+    "failed_ids": [],
+    "replay_seconds": 9.1
+  },
+  "replay_pass2": null
+}

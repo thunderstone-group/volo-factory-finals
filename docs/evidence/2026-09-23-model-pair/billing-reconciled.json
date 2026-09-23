@@ -1,0 +1,1925 @@
+{
+  "request_log": "requests-144611.json",
+  "records_in_window": 104,
+  "samples": {
+    "deepseek-v4-flash|12306|a": {
+      "metered_cost_cny": 1.16381,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 1.16381,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.809789,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313230292890270806654",
+            "occurred_at": 1790141482,
+            "match": "exact tokens",
+            "amount": "0.809789",
+            "cached_tokens": 6144,
+            "currency": "CNY",
+            "input_tokens": 45160,
+            "output_tokens": 76903,
+            "total_tokens": 122063
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.354021,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313313392625399614491",
+            "occurred_at": 1790141665,
+            "match": "exact tokens",
+            "amount": "0.354021",
+            "cached_tokens": 45056,
+            "currency": "CNY",
+            "input_tokens": 73253,
+            "output_tokens": 29436,
+            "total_tokens": 102689
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|12306|b": {
+      "metered_cost_cny": 0.959946,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 0.959945,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.61401,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313380881438424066269",
+            "occurred_at": 1790142380,
+            "match": "exact tokens",
+            "amount": "0.614010",
+            "cached_tokens": 45056,
+            "currency": "CNY",
+            "input_tokens": 45160,
+            "output_tokens": 67688,
+            "total_tokens": 112848
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.345936,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313463075868007003384",
+            "occurred_at": 1790142559,
+            "match": "exact tokens",
+            "amount": "0.345936",
+            "cached_tokens": 45056,
+            "currency": "CNY",
+            "input_tokens": 71455,
+            "output_tokens": 29137,
+            "total_tokens": 100592
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|bookstack|a": {
+      "metered_cost_cny": 0.957764,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 0.957763,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.751481,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313343535664030010393",
+            "occurred_at": 1790142201,
+            "match": "exact tokens",
+            "amount": "0.751481",
+            "cached_tokens": 4096,
+            "currency": "CNY",
+            "input_tokens": 23471,
+            "output_tokens": 76994,
+            "total_tokens": 100465
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.206283,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313433117098466363984",
+            "occurred_at": 1790142325,
+            "match": "exact tokens",
+            "amount": "0.206283",
+            "cached_tokens": 22528,
+            "currency": "CNY",
+            "input_tokens": 38659,
+            "output_tokens": 17293,
+            "total_tokens": 55952
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|bookstack|b": {
+      "metered_cost_cny": 3.187476,
+      "calls": 6,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "local_cost_cny": 4.111036,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.92356,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790142566.6,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 2,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143135.1,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 3,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "billing_note": "no billed request found (an immediate connection failure never reaches the gateway)"
+        },
+        {
+          "call": 4,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143136.1,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 5,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 2.14268,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313590019945558807474",
+            "occurred_at": 1790143341,
+            "match": "exact tokens",
+            "amount": "2.142680",
+            "cached_tokens": 22540,
+            "currency": "CNY",
+            "input_tokens": 22540,
+            "output_tokens": 38594,
+            "total_tokens": 61134
+          }
+        },
+        {
+          "call": 6,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 1.044796,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314023127614427194596",
+            "occurred_at": 1790143423,
+            "match": "exact tokens",
+            "amount": "1.044796",
+            "cached_tokens": 22528,
+            "currency": "CNY",
+            "input_tokens": 34231,
+            "output_tokens": 15446,
+            "total_tokens": 49677
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|bookstack|c": {
+      "metered_cost_cny": 3.189562,
+      "calls": 6,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "local_cost_cny": 3.498053,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.308491,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790142966.2,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 2,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143135.1,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 3,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "billing_note": "no billed request found (an immediate connection failure never reaches the gateway)"
+        },
+        {
+          "call": 4,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143136.1,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 5,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 1.934618,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313590023954503398488",
+            "occurred_at": 1790143321,
+            "match": "exact tokens",
+            "amount": "1.934618",
+            "cached_tokens": 22540,
+            "currency": "CNY",
+            "input_tokens": 22540,
+            "output_tokens": 34741,
+            "total_tokens": 57281
+          }
+        },
+        {
+          "call": 6,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 1.254944,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314021235293778667605",
+            "occurred_at": 1790143425,
+            "match": "exact tokens",
+            "amount": "1.254944",
+            "cached_tokens": 22528,
+            "currency": "CNY",
+            "input_tokens": 34001,
+            "output_tokens": 19393,
+            "total_tokens": 53394
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|bookstack|d": {
+      "metered_cost_cny": 0.778932,
+      "calls": 4,
+      "calls_matched": 3,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [
+        1
+      ],
+      "local_cost_cny": 1.416478,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.637546,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143580.3,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 2,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.550082,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314121195177616584107",
+            "occurred_at": 1790144407,
+            "match": "exact tokens",
+            "amount": "0.550082",
+            "cached_tokens": 23296,
+            "currency": "CNY",
+            "input_tokens": 23471,
+            "output_tokens": 60803,
+            "total_tokens": 84274
+          }
+        },
+        {
+          "call": 3,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.109746,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314201001083427956557",
+            "occurred_at": 1790144454,
+            "match": "exact tokens",
+            "amount": "0.109746",
+            "cached_tokens": 22528,
+            "currency": "CNY",
+            "input_tokens": 34413,
+            "output_tokens": 7982,
+            "total_tokens": 42395
+          }
+        },
+        {
+          "call": 4,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.119104,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314211072694403517076",
+            "occurred_at": 1790144539,
+            "match": "exact tokens",
+            "amount": "0.119104",
+            "cached_tokens": 34304,
+            "currency": "CNY",
+            "input_tokens": 42472,
+            "output_tokens": 10130,
+            "total_tokens": 52602
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|bookstack|e": {
+      "metered_cost_cny": 0.84699,
+      "calls": 3,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [
+        1
+      ],
+      "local_cost_cny": 1.126411,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.279421,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143804.7,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 2,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.728628,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314121194990125184699",
+            "occurred_at": 1790144596,
+            "match": "exact tokens",
+            "amount": "0.728628",
+            "cached_tokens": 22528,
+            "currency": "CNY",
+            "input_tokens": 23471,
+            "output_tokens": 80394,
+            "total_tokens": 103865
+          }
+        },
+        {
+          "call": 3,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.118362,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314232654981083366550",
+            "occurred_at": 1790144652,
+            "match": "exact tokens",
+            "amount": "0.118362",
+            "cached_tokens": 22528,
+            "currency": "CNY",
+            "input_tokens": 35344,
+            "output_tokens": 8629,
+            "total_tokens": 43973
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|keep|a": {
+      "metered_cost_cny": 1.09825,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 1.09825,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.836819,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313274022169275597447",
+            "occurred_at": 1790141915,
+            "match": "exact tokens",
+            "amount": "0.836819",
+            "cached_tokens": 4096,
+            "currency": "CNY",
+            "input_tokens": 21416,
+            "output_tokens": 87161,
+            "total_tokens": 108577
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.261431,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313385079568198478753",
+            "occurred_at": 1790142137,
+            "match": "exact tokens",
+            "amount": "0.261431",
+            "cached_tokens": 20480,
+            "currency": "CNY",
+            "input_tokens": 31479,
+            "output_tokens": 25154,
+            "total_tokens": 56633
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|keep|b": {
+      "metered_cost_cny": 0.833839,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 0.833839,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.657176,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313422898517548696345",
+            "occurred_at": 1790142709,
+            "match": "exact tokens",
+            "amount": "0.657176",
+            "cached_tokens": 20480,
+            "currency": "CNY",
+            "input_tokens": 21416,
+            "output_tokens": 72480,
+            "total_tokens": 93896
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.176663,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313515812935154096916",
+            "occurred_at": 1790142830,
+            "match": "exact tokens",
+            "amount": "0.176663",
+            "cached_tokens": 20480,
+            "currency": "CNY",
+            "input_tokens": 29956,
+            "output_tokens": 16243,
+            "total_tokens": 46199
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|keep|c": {
+      "metered_cost_cny": 4.637993,
+      "calls": 6,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "local_cost_cny": 5.148427,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.510434,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790142822.0,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 2,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143135.1,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 3,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "billing_note": "no billed request found (an immediate connection failure never reaches the gateway)"
+        },
+        {
+          "call": 4,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143136.1,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 5,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 2.622616,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313590018437321661306",
+            "occurred_at": 1790143404,
+            "match": "exact tokens",
+            "amount": "2.622616",
+            "cached_tokens": 20457,
+            "currency": "CNY",
+            "input_tokens": 20457,
+            "output_tokens": 47582,
+            "total_tokens": 68039
+          }
+        },
+        {
+          "call": 6,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 2.015377,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314033712498326567194",
+            "occurred_at": 1790143581,
+            "match": "exact tokens",
+            "amount": "2.015377",
+            "cached_tokens": 20480,
+            "currency": "CNY",
+            "input_tokens": 29609,
+            "output_tokens": 34138,
+            "total_tokens": 63747
+          }
+        }
+      ]
+    },
+    "deepseek-v4-flash|keep|d": {
+      "metered_cost_cny": 1.16362,
+      "calls": 3,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [
+        1
+      ],
+      "local_cost_cny": 1.814409,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.650789,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143570.3,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 2,
+          "phase": "draft",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 1.053167,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314121194153649576916",
+            "occurred_at": 1790144888,
+            "match": "exact tokens",
+            "amount": "1.053167",
+            "cached_tokens": 20480,
+            "currency": "CNY",
+            "input_tokens": 21416,
+            "output_tokens": 116479,
+            "total_tokens": 137895
+          }
+        },
+        {
+          "call": 3,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.110453,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314281725772697439234",
+            "occurred_at": 1790145009,
+            "match": "exact tokens",
+            "amount": "0.110453",
+            "cached_tokens": 20480,
+            "currency": "CNY",
+            "input_tokens": 29912,
+            "output_tokens": 8901,
+            "total_tokens": 38813
+          }
+        }
+      ]
+    },
+    "kimi-k2.7-code-highspeed|12306|a": {
+      "metered_cost_cny": 6.833349,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 6.833349,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 3.790775,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313273631304335524470",
+            "occurred_at": 1790141584,
+            "match": "exact tokens",
+            "amount": "3.790775",
+            "cached_tokens": 0,
+            "currency": "CNY",
+            "input_tokens": 43763,
+            "output_tokens": 59664,
+            "total_tokens": 103427
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 3.042574,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313332009203560201907",
+            "occurred_at": 1790141880,
+            "match": "exact tokens",
+            "amount": "3.042574",
+            "cached_tokens": 43520,
+            "currency": "CNY",
+            "input_tokens": 74240,
+            "output_tokens": 46853,
+            "total_tokens": 121093
+          }
+        }
+      ]
+    },
+    "kimi-k2.7-code-highspeed|12306|b": {
+      "metered_cost_cny": 7.53853,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 7.53853,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 4.616293,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313403372703898069596",
+            "occurred_at": 1790142439,
+            "match": "exact tokens",
+            "amount": "4.616293",
+            "cached_tokens": 43520,
+            "currency": "CNY",
+            "input_tokens": 43763,
+            "output_tokens": 83333,
+            "total_tokens": 127096
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 2.922237,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313472812502250903985",
+            "occurred_at": 1790142700,
+            "match": "exact tokens",
+            "amount": "2.922237",
+            "cached_tokens": 43520,
+            "currency": "CNY",
+            "input_tokens": 74155,
+            "output_tokens": 44645,
+            "total_tokens": 118800
+          }
+        }
+      ]
+    },
+    "kimi-k2.7-code-highspeed|bookstack|a": {
+      "metered_cost_cny": 3.821721,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 3.821721,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 2.689623,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313344211424998441499",
+            "occurred_at": 1790141899,
+            "match": "exact tokens",
+            "amount": "2.689623",
+            "cached_tokens": 4608,
+            "currency": "CNY",
+            "input_tokens": 22540,
+            "output_tokens": 45269,
+            "total_tokens": 67809
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 1.132098,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313384583685684236785",
+            "occurred_at": 1790142004,
+            "match": "exact tokens",
+            "amount": "1.132098",
+            "cached_tokens": 22528,
+            "currency": "CNY",
+            "input_tokens": 33561,
+            "output_tokens": 17224,
+            "total_tokens": 50785
+          }
+        }
+      ]
+    },
+    "kimi-k2.7-code-highspeed|bookstack|b": {
+      "metered_cost_cny": 3.211093,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 3.211093,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 2.403639,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313514906700142642777",
+            "occurred_at": 1790142896,
+            "match": "exact tokens",
+            "amount": "2.403639",
+            "cached_tokens": 4608,
+            "currency": "CNY",
+            "input_tokens": 22540,
+            "output_tokens": 39973,
+            "total_tokens": 62513
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 0.807454,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313550627223973467875",
+            "occurred_at": 1790142957,
+            "match": "exact tokens",
+            "amount": "0.807454",
+            "cached_tokens": 22528,
+            "currency": "CNY",
+            "input_tokens": 33715,
+            "output_tokens": 11175,
+            "total_tokens": 44890
+          }
+        }
+      ]
+    },
+    "kimi-k2.7-code-highspeed|bookstack|c": {
+      "metered_cost_cny": 4.257549,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 4.257549,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 2.996474,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314035363001013271650",
+            "occurred_at": 1790143690,
+            "match": "exact tokens",
+            "amount": "2.996474",
+            "cached_tokens": 22540,
+            "currency": "CNY",
+            "input_tokens": 22540,
+            "output_tokens": 54405,
+            "total_tokens": 76945
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 1.261075,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314082095106508466040",
+            "occurred_at": 1790143795,
+            "match": "exact tokens",
+            "amount": "1.261075",
+            "cached_tokens": 22528,
+            "currency": "CNY",
+            "input_tokens": 35158,
+            "output_tokens": 19228,
+            "total_tokens": 54386
+          }
+        }
+      ]
+    },
+    "kimi-k2.7-code-highspeed|keep|a": {
+      "metered_cost_cny": 4.461984,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 4.461984,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 3.086253,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313274515358929458524",
+            "occurred_at": 1790141554,
+            "match": "exact tokens",
+            "amount": "3.086253",
+            "cached_tokens": 0,
+            "currency": "CNY",
+            "input_tokens": 20457,
+            "output_tokens": 52228,
+            "total_tokens": 72685
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 1.375731,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313324528545058647677",
+            "occurred_at": 1790141670,
+            "match": "exact tokens",
+            "amount": "1.375731",
+            "cached_tokens": 20224,
+            "currency": "CNY",
+            "input_tokens": 30159,
+            "output_tokens": 22111,
+            "total_tokens": 52270
+          }
+        }
+      ]
+    },
+    "kimi-k2.7-code-highspeed|keep|b": {
+      "metered_cost_cny": 5.01609,
+      "calls": 2,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [],
+      "local_cost_cny": 5.01609,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 3.689001,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313453629295487170150",
+            "occurred_at": 1790142688,
+            "match": "exact tokens",
+            "amount": "3.689001",
+            "cached_tokens": 0,
+            "currency": "CNY",
+            "input_tokens": 20457,
+            "output_tokens": 63390,
+            "total_tokens": 83847
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 1.327089,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313513816490059549357",
+            "occurred_at": 1790142815,
+            "match": "exact tokens",
+            "amount": "1.327089",
+            "cached_tokens": 20224,
+            "currency": "CNY",
+            "input_tokens": 30729,
+            "output_tokens": 21073,
+            "total_tokens": 51802
+          }
+        }
+      ]
+    },
+    "kimi-k2.7-code-highspeed|keep|c": {
+      "metered_cost_cny": 2.936535,
+      "calls": 6,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "local_cost_cny": 3.714755,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 2.58784,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313535902325406330337",
+            "occurred_at": 1790143101,
+            "match": "exact tokens",
+            "amount": "2.587840",
+            "cached_tokens": 20457,
+            "currency": "CNY",
+            "input_tokens": 20457,
+            "output_tokens": 46938,
+            "total_tokens": 67395
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "failed",
+          "local_cost_cny": 0.77822,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143111.1,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 3,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143135.1,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 4,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "billing_note": "no billed request found (an immediate connection failure never reaches the gateway)"
+        },
+        {
+          "call": 5,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "failed",
+          "local_cost_cny": 0.0,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143136.1,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 6,
+          "phase": "repair",
+          "model": "deepseek-v4-flash",
+          "status": "completed",
+          "local_cost_cny": 0.348695,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092313590026223045177053",
+            "occurred_at": 1790143433,
+            "match": "exact tokens",
+            "amount": "0.348695",
+            "cached_tokens": 20480,
+            "currency": "CNY",
+            "input_tokens": 30531,
+            "output_tokens": 35166,
+            "total_tokens": 65697
+          }
+        }
+      ]
+    },
+    "kimi-k2.7-code-highspeed|keep|d": {
+      "metered_cost_cny": 3.59907,
+      "calls": 3,
+      "calls_matched": 2,
+      "unmatched_calls": [],
+      "unbilled_failed_calls": [
+        2
+      ],
+      "local_cost_cny": 5.49047,
+      "rows": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 2.432482,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314061729820686258516",
+            "occurred_at": 1790143814,
+            "match": "exact tokens",
+            "amount": "2.432482",
+            "cached_tokens": 20457,
+            "currency": "CNY",
+            "input_tokens": 20457,
+            "output_tokens": 44061,
+            "total_tokens": 64518
+          }
+        },
+        {
+          "call": 2,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "failed",
+          "local_cost_cny": 1.891399,
+          "cost_basis": "estimate(no usage reported)",
+          "billing": null,
+          "call_started_at": 1790143821.7,
+          "billing_note": "no billed request started with this call (not billed by the gateway)"
+        },
+        {
+          "call": 3,
+          "phase": "repair",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "local_cost_cny": 1.166588,
+          "cost_basis": "usage",
+          "billing": {
+            "request_id": "2026092314121201965997931157",
+            "occurred_at": 1790144023,
+            "match": "exact tokens",
+            "amount": "1.166588",
+            "cached_tokens": 30250,
+            "currency": "CNY",
+            "input_tokens": 30250,
+            "output_tokens": 20147,
+            "total_tokens": 50397
+          }
+        }
+      ]
+    }
+  },
+  "unclaimed": [
+    {
+      "request_id": "2026092314443514274083738839",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145955,
+      "amount": "0.152795",
+      "cached_tokens": 28160,
+      "currency": "CNY",
+      "input_tokens": 39789,
+      "output_tokens": 12788,
+      "total_tokens": 52577
+    },
+    {
+      "request_id": "2026092314443048274954623428",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145935,
+      "amount": "0.147552",
+      "cached_tokens": 22528,
+      "currency": "CNY",
+      "input_tokens": 39500,
+      "output_tokens": 10487,
+      "total_tokens": 49987
+    },
+    {
+      "request_id": "2026092314415953079470240914",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145928,
+      "amount": "0.316689",
+      "cached_tokens": 22528,
+      "currency": "CNY",
+      "input_tokens": 37190,
+      "output_tokens": 30050,
+      "total_tokens": 67240
+    },
+    {
+      "request_id": "2026092314430311649778342245",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145846,
+      "amount": "0.159900",
+      "cached_tokens": 22528,
+      "currency": "CNY",
+      "input_tokens": 42824,
+      "output_tokens": 10751,
+      "total_tokens": 53575
+    },
+    {
+      "request_id": "2026092314405257147254024308",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145844,
+      "amount": "0.252485",
+      "cached_tokens": 36864,
+      "currency": "CNY",
+      "input_tokens": 40201,
+      "output_tokens": 26532,
+      "total_tokens": 66733
+    },
+    {
+      "request_id": "2026092314413496946795973690",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145809,
+      "amount": "0.189079",
+      "cached_tokens": 26624,
+      "currency": "CNY",
+      "input_tokens": 37475,
+      "output_tokens": 17096,
+      "total_tokens": 54571
+    },
+    {
+      "request_id": "2026092314393478006860579209",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145790,
+      "amount": "0.329066",
+      "cached_tokens": 20480,
+      "currency": "CNY",
+      "input_tokens": 36609,
+      "output_tokens": 30959,
+      "total_tokens": 67568
+    },
+    {
+      "request_id": "2026092314394732586052896639",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145789,
+      "amount": "0.312091",
+      "cached_tokens": 21248,
+      "currency": "CNY",
+      "input_tokens": 35755,
+      "output_tokens": 29605,
+      "total_tokens": 65360
+    },
+    {
+      "request_id": "2026092314353990197589351260",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145619,
+      "amount": "0.397279",
+      "cached_tokens": 21248,
+      "currency": "CNY",
+      "input_tokens": 40166,
+      "output_tokens": 37600,
+      "total_tokens": 77766
+    },
+    {
+      "request_id": "2026092314380963630169038189",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145616,
+      "amount": "0.215984",
+      "cached_tokens": 20480,
+      "currency": "CNY",
+      "input_tokens": 35863,
+      "output_tokens": 18643,
+      "total_tokens": 54506
+    },
+    {
+      "request_id": "2026092314362424544955442301",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145514,
+      "amount": "0.213265",
+      "cached_tokens": 21248,
+      "currency": "CNY",
+      "input_tokens": 36023,
+      "output_tokens": 18535,
+      "total_tokens": 54558
+    },
+    {
+      "request_id": "2026092314362726047025120055",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145500,
+      "amount": "0.173711",
+      "cached_tokens": 28672,
+      "currency": "CNY",
+      "input_tokens": 36840,
+      "output_tokens": 16260,
+      "total_tokens": 53100
+    },
+    {
+      "request_id": "2026092314354192374023414640",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145488,
+      "amount": "0.247046",
+      "cached_tokens": 59392,
+      "currency": "CNY",
+      "input_tokens": 74310,
+      "output_tokens": 21817,
+      "total_tokens": 96127
+    },
+    {
+      "request_id": "2026092314343430113248959522",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145414,
+      "amount": "0.197791",
+      "cached_tokens": 21248,
+      "currency": "CNY",
+      "input_tokens": 30493,
+      "output_tokens": 18659,
+      "total_tokens": 49152
+    },
+    {
+      "request_id": "2026092314344354108535800295",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145414,
+      "amount": "0.232132",
+      "cached_tokens": 21248,
+      "currency": "CNY",
+      "input_tokens": 37002,
+      "output_tokens": 20305,
+      "total_tokens": 57307
+    },
+    {
+      "request_id": "2026092314325216814928755546",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145373,
+      "amount": "0.279472",
+      "cached_tokens": 18432,
+      "currency": "CNY",
+      "input_tokens": 30209,
+      "output_tokens": 26922,
+      "total_tokens": 57131
+    },
+    {
+      "request_id": "2026092314322933979642674934",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145294,
+      "amount": "0.250692",
+      "cached_tokens": 45056,
+      "currency": "CNY",
+      "input_tokens": 59612,
+      "output_tokens": 22502,
+      "total_tokens": 82114
+    },
+    {
+      "request_id": "2026092314330289076533710935",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145292,
+      "amount": "0.197072",
+      "cached_tokens": 20480,
+      "currency": "CNY",
+      "input_tokens": 37983,
+      "output_tokens": 15835,
+      "total_tokens": 53818
+    },
+    {
+      "request_id": "2026092314325799811338284527",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145242,
+      "amount": "0.095653",
+      "cached_tokens": 10240,
+      "currency": "CNY",
+      "input_tokens": 11255,
+      "output_tokens": 10176,
+      "total_tokens": 21431
+    },
+    {
+      "request_id": "2026092314331143426998522749",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145213,
+      "amount": "0.029609",
+      "cached_tokens": 34816,
+      "currency": "CNY",
+      "input_tokens": 35434,
+      "output_tokens": 2697,
+      "total_tokens": 38131
+    },
+    {
+      "request_id": "2026092314295740759052389216",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145188,
+      "amount": "0.272219",
+      "cached_tokens": 28672,
+      "currency": "CNY",
+      "input_tokens": 34981,
+      "output_tokens": 27825,
+      "total_tokens": 62806
+    },
+    {
+      "request_id": "2026092314181100567642591087",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145152,
+      "amount": "1.105138",
+      "cached_tokens": 18432,
+      "currency": "CNY",
+      "input_tokens": 19936,
+      "output_tokens": 122087,
+      "total_tokens": 142023
+    },
+    {
+      "request_id": "2026092314164552769647279058",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145114,
+      "amount": "1.054697",
+      "cached_tokens": 20480,
+      "currency": "CNY",
+      "input_tokens": 21416,
+      "output_tokens": 116649,
+      "total_tokens": 138065
+    },
+    {
+      "request_id": "2026092314304984211089688247",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145074,
+      "amount": "0.070887",
+      "cached_tokens": 22528,
+      "currency": "CNY",
+      "input_tokens": 35434,
+      "output_tokens": 3324,
+      "total_tokens": 38758
+    },
+    {
+      "request_id": "2026092314265455385403894746",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145053,
+      "amount": "0.407033",
+      "cached_tokens": 20480,
+      "currency": "CNY",
+      "input_tokens": 35118,
+      "output_tokens": 40119,
+      "total_tokens": 75237
+    },
+    {
+      "request_id": "2026092314270565829504440295",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145024,
+      "amount": "0.269458",
+      "cached_tokens": 21760,
+      "currency": "CNY",
+      "input_tokens": 35119,
+      "output_tokens": 25245,
+      "total_tokens": 60364
+    },
+    {
+      "request_id": "2026092314234921587120611550",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145014,
+      "amount": "0.433235",
+      "cached_tokens": 43008,
+      "currency": "CNY",
+      "input_tokens": 44503,
+      "output_tokens": 47161,
+      "total_tokens": 91664
+    },
+    {
+      "request_id": "2026092314273600842150934414",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790145011,
+      "amount": "0.093026",
+      "cached_tokens": 12288,
+      "currency": "CNY",
+      "input_tokens": 13124,
+      "output_tokens": 9921,
+      "total_tokens": 23045
+    },
+    {
+      "request_id": "2026092314281022991468143755",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144973,
+      "amount": "0.119882",
+      "cached_tokens": 20480,
+      "currency": "CNY",
+      "input_tokens": 33526,
+      "output_tokens": 8744,
+      "total_tokens": 42270
+    },
+    {
+      "request_id": "2026092314250742761705321761",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144924,
+      "amount": "0.294092",
+      "cached_tokens": 20480,
+      "currency": "CNY",
+      "input_tokens": 34644,
+      "output_tokens": 27728,
+      "total_tokens": 62372
+    },
+    {
+      "request_id": "2026092314121190454830293061",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144879,
+      "amount": "1.242263",
+      "cached_tokens": 20480,
+      "currency": "CNY",
+      "input_tokens": 21991,
+      "output_tokens": 137298,
+      "total_tokens": 159289
+    },
+    {
+      "request_id": "2026092314164553928914143977",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144846,
+      "amount": "0.738861",
+      "cached_tokens": 22528,
+      "currency": "CNY",
+      "input_tokens": 23471,
+      "output_tokens": 81531,
+      "total_tokens": 105002
+    },
+    {
+      "request_id": "2026092314245830577511780413",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144743,
+      "amount": "0.115113",
+      "cached_tokens": 38912,
+      "currency": "CNY",
+      "input_tokens": 52847,
+      "output_tokens": 7713,
+      "total_tokens": 60560
+    },
+    {
+      "request_id": "2026092314233879063573665914",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144731,
+      "amount": "0.205314",
+      "cached_tokens": 45056,
+      "currency": "CNY",
+      "input_tokens": 59183,
+      "output_tokens": 17603,
+      "total_tokens": 76786
+    },
+    {
+      "request_id": "2026092314214887942015066848",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144620,
+      "amount": "0.169169",
+      "cached_tokens": 43008,
+      "currency": "CNY",
+      "input_tokens": 48542,
+      "output_tokens": 16474,
+      "total_tokens": 65016
+    },
+    {
+      "request_id": "2026092314191644899084215005",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144566,
+      "amount": "0.144702",
+      "cached_tokens": 38912,
+      "currency": "CNY",
+      "input_tokens": 39997,
+      "output_tokens": 15284,
+      "total_tokens": 55281
+    },
+    {
+      "request_id": "2026092314172263887293178928",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144565,
+      "amount": "0.317963",
+      "cached_tokens": 43008,
+      "currency": "CNY",
+      "input_tokens": 44503,
+      "output_tokens": 34353,
+      "total_tokens": 78856
+    },
+    {
+      "request_id": "2026092314181222331944649049",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144437,
+      "amount": "0.085047",
+      "cached_tokens": 38912,
+      "currency": "CNY",
+      "input_tokens": 40476,
+      "output_tokens": 8496,
+      "total_tokens": 48972
+    },
+    {
+      "request_id": "2026092314193208878233481865",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144436,
+      "amount": "0.101506",
+      "cached_tokens": 40960,
+      "currency": "CNY",
+      "input_tokens": 42164,
+      "output_tokens": 10422,
+      "total_tokens": 52586
+    },
+    {
+      "request_id": "2026092314161376068359483485",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144224,
+      "amount": "0.101784",
+      "cached_tokens": 38912,
+      "currency": "CNY",
+      "input_tokens": 47399,
+      "output_tokens": 8048,
+      "total_tokens": 55447
+    },
+    {
+      "request_id": "2026092314145070021722465643",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144180,
+      "amount": "0.137068",
+      "cached_tokens": 40960,
+      "currency": "CNY",
+      "input_tokens": 48540,
+      "output_tokens": 12248,
+      "total_tokens": 60788
+    },
+    {
+      "request_id": "2026092314142933743776934251",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144138,
+      "amount": "0.108643",
+      "cached_tokens": 40960,
+      "currency": "CNY",
+      "input_tokens": 42164,
+      "output_tokens": 11215,
+      "total_tokens": 53379
+    },
+    {
+      "request_id": "2026092314144566079183603721",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144126,
+      "amount": "0.074979",
+      "cached_tokens": 38912,
+      "currency": "CNY",
+      "input_tokens": 39997,
+      "output_tokens": 7537,
+      "total_tokens": 47534
+    },
+    {
+      "request_id": "2026092314124473735539452007",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144049,
+      "amount": "0.175844",
+      "cached_tokens": 43008,
+      "currency": "CNY",
+      "input_tokens": 57331,
+      "output_tokens": 14286,
+      "total_tokens": 71617
+    },
+    {
+      "request_id": "2026092314130259010857530015",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790144020,
+      "amount": "0.073896",
+      "cached_tokens": 38912,
+      "currency": "CNY",
+      "input_tokens": 40476,
+      "output_tokens": 7257,
+      "total_tokens": 47733
+    },
+    {
+      "request_id": "2026092314103827606787312006",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790143921,
+      "amount": "0.138165",
+      "cached_tokens": 38912,
+      "currency": "CNY",
+      "input_tokens": 48519,
+      "output_tokens": 11717,
+      "total_tokens": 60236
+    },
+    {
+      "request_id": "2026092314090588183788366004",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790143917,
+      "amount": "0.297692",
+      "cached_tokens": 23296,
+      "currency": "CNY",
+      "input_tokens": 44503,
+      "output_tokens": 25749,
+      "total_tokens": 70252
+    },
+    {
+      "request_id": "2026092314082066947415489515",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790143909,
+      "amount": "0.339000",
+      "cached_tokens": 22528,
+      "currency": "CNY",
+      "input_tokens": 42164,
+      "output_tokens": 30871,
+      "total_tokens": 73035
+    },
+    {
+      "request_id": "2026092314084934425218866281",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790143826,
+      "amount": "0.195371",
+      "cached_tokens": 23296,
+      "currency": "CNY",
+      "input_tokens": 39997,
+      "output_tokens": 15882,
+      "total_tokens": 55879
+    },
+    {
+      "request_id": "2026092314082691910685702370",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790143764,
+      "amount": "0.095613",
+      "cached_tokens": 38912,
+      "currency": "CNY",
+      "input_tokens": 40476,
+      "output_tokens": 9670,
+      "total_tokens": 50146
+    },
+    {
+      "request_id": "2026092314063860962315776738",
+      "model": "kimi-k2.7-code-highspeed",
+      "occurred_at": 1790143626,
+      "amount": "0.527568",
+      "cached_tokens": 29440,
+      "currency": "CNY",
+      "input_tokens": 39722,
+      "output_tokens": 5877,
+      "total_tokens": 45599
+    },
+    {
+      "request_id": "2026092314035526249627102228",
+      "model": "kimi-k2.7-code-highspeed",
+      "occurred_at": 1790143564,
+      "amount": "1.588731",
+      "cached_tokens": 18944,
+      "currency": "CNY",
+      "input_tokens": 29519,
+      "output_tokens": 25963,
+      "total_tokens": 55482
+    },
+    {
+      "request_id": "2026092314033150265355310035",
+      "model": "kimi-k2.7-code-highspeed",
+      "occurred_at": 1790143497,
+      "amount": "1.176589",
+      "cached_tokens": 18944,
+      "currency": "CNY",
+      "input_tokens": 29385,
+      "output_tokens": 18363,
+      "total_tokens": 47748
+    },
+    {
+      "request_id": "2026092313590016433658029058",
+      "model": "kimi-k2.7-code-highspeed",
+      "occurred_at": 1790143423,
+      "amount": "2.960521",
+      "cached_tokens": 256,
+      "currency": "CNY",
+      "input_tokens": 18953,
+      "output_tokens": 50311,
+      "total_tokens": 69264
+    },
+    {
+      "request_id": "2026092313590019695816031849",
+      "model": "kimi-k2.7-code-highspeed",
+      "occurred_at": 1790143401,
+      "amount": "3.110350",
+      "cached_tokens": 256,
+      "currency": "CNY",
+      "input_tokens": 19022,
+      "output_tokens": 53069,
+      "total_tokens": 72091
+    },
+    {
+      "request_id": "2026092313554118517490746459",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790142982,
+      "amount": "0.078795",
+      "cached_tokens": 38912,
+      "currency": "CNY",
+      "input_tokens": 40528,
+      "output_tokens": 7784,
+      "total_tokens": 48312
+    },
+    {
+      "request_id": "2026092313532738616626487409",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790142897,
+      "amount": "0.140818",
+      "cached_tokens": 26624,
+      "currency": "CNY",
+      "input_tokens": 34837,
+      "output_tokens": 12613,
+      "total_tokens": 47450
+    },
+    {
+      "request_id": "2026092313535008091099168222",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790142869,
+      "amount": "0.088478",
+      "cached_tokens": 34816,
+      "currency": "CNY",
+      "input_tokens": 40528,
+      "output_tokens": 7540,
+      "total_tokens": 48068
+    },
+    {
+      "request_id": "2026092313510987849741881378",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790142793,
+      "amount": "0.198424",
+      "cached_tokens": 18432,
+      "currency": "CNY",
+      "input_tokens": 27877,
+      "output_tokens": 18694,
+      "total_tokens": 46571
+    },
+    {
+      "request_id": "2026092313515843809673600869",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790142757,
+      "amount": "0.122760",
+      "cached_tokens": 22528,
+      "currency": "CNY",
+      "input_tokens": 40476,
+      "output_tokens": 7407,
+      "total_tokens": 47883
+    },
+    {
+      "request_id": "2026092313381265472671533101",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790142653,
+      "amount": "0.924540",
+      "cached_tokens": 0,
+      "currency": "CNY",
+      "input_tokens": 19865,
+      "output_tokens": 96105,
+      "total_tokens": 115970
+    },
+    {
+      "request_id": "2026092313462676269789415638",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790142509,
+      "amount": "0.205793",
+      "cached_tokens": 20480,
+      "currency": "CNY",
+      "input_tokens": 33327,
+      "output_tokens": 18356,
+      "total_tokens": 51683
+    },
+    {
+      "request_id": "2026092313381764059927743060",
+      "model": "deepseek-v4-flash",
+      "occurred_at": 1790142376,
+      "amount": "0.619315",
+      "cached_tokens": 3072,
+      "currency": "CNY",
+      "input_tokens": 21920,
+      "output_tokens": 62496,
+      "total_tokens": 84416
+    }
+  ],
+  "unclaimed_amount_cny": 25.109705
+}
