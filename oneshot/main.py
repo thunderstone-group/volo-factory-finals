@@ -8,7 +8,8 @@ Reads `<requirement_path>/requirements.yaml`, sends it to the model together wit
 delivery contract, and writes the returned files under `<DIR>`.
 
 Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash),
-FALLBACK_MODEL (default qwen3.7-plus; empty disables the switch).
+FALLBACK_MODEL (default kimi-k2.7-code-highspeed, or deepseek-v4-flash when MODEL is a Kimi model;
+empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 2).
 """
 import argparse
 import hashlib
@@ -30,10 +31,14 @@ from urllib import error, request
 HERE = Path(__file__).resolve().parent
 DEFAULT_BASE = "https://api.arc-bench.com/v1"
 DEFAULT_MODEL = "deepseek-v4-flash"
-FALLBACK_MODEL = "qwen3.7-plus"  # taken up for the rest of a run once the primary model's retries are spent on transport failures
+# Taken up for the rest of a run once the primary model's retries are spent on transport failures, or after
+# content_filter. The owner's pairing (09-23): flash falls back to Kimi HighSpeed, a Kimi primary to flash.
+FALLBACK_MODEL = "kimi-k2.7-code-highspeed"
+KIMI_FALLBACK_MODEL = "deepseek-v4-flash"
 KIMI_CODE_MODELS = {"kimi-k2.7-code", "kimi-k2.7-code-highspeed"}
 MAX_TOKENS = 131072  # content cap per call; the gateway has metered >135k output tokens in one request
-MAX_CALLS = 3  # Completed calls: first draft, one truncation continuation, one smoke repair.
+DRAFT_CALLS = 4  # Completed draft calls: the first draft, continuations after a cut, redrafts of an empty reply.
+REPAIR_CALLS = 2  # Completed smoke-repair calls.
 MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
 #                 three on the primary model, then up to two on the fallback.
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
@@ -96,6 +101,10 @@ CONTINUE = ("Your output was cut off inside the file `{path}`. Re-emit that file
             "emitted in full. Use the same `=== FILE: <path> ===` and `=== END ===` framing and emit "
             "nothing else.")
 
+RESUME = ("{why} These files are complete and must not be emitted again: {done}. Continue with every remaining "
+          "file the application needs, each as one complete block with the same `=== FILE: <path> ===` and "
+          "`=== END ===` framing, and emit nothing else. Stop after the last file.")
+
 REPAIR = ("The application you delivered failed the runner's delivery check before any test ran:\n"
           "{problems}\n\n"
           "Fix the cause. Re-emit every file that must change as a COMPLETE file block with the same "
@@ -117,6 +126,14 @@ class StreamError(RuntimeError):
     """A retryable interrupted or malformed event stream."""
 
 
+class ProtocolError(ValueError):
+    """A reply that breaks the file-block framing; `files` holds the complete blocks before the break."""
+
+    def __init__(self, message, files=()):
+        super().__init__(message)
+        self.files = list(files)
+
+
 class NoModelRedirect(request.HTTPRedirectHandler):
     """A gateway redirect must never forward the model credential elsewhere."""
 
@@ -128,15 +145,26 @@ def _open_model(req, timeout):
     return request.build_opener(NoModelRedirect()).open(req, timeout=timeout)
 
 
-class CallBudget:
-    """One global request cap and an honest ledger, including failed requests."""
+def _call_limit(value, env, default, low):
+    """An explicit completed-call limit, else the environment's (experiments; the platform sets none), else the default."""
+    if value is None:
+        raw = os.environ.get(env, "").strip()
+        value = default if not raw else int(raw) if re.fullmatch(r"\d+", raw) else raw
+    if not isinstance(value, int) or isinstance(value, bool) or value < low:
+        raise ValueError(f"{env} must be an integer of at least {low}, got {value!r}")
+    return value
 
-    def __init__(self, limit=MAX_CALLS, fail_limit=MAX_FAILURES):
-        if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= MAX_CALLS:
-            raise ValueError(f"call limit must be between 1 and {MAX_CALLS}")
+
+class CallBudget:
+    """Completed calls are capped per phase: the draft (first draft, continuations, redrafts) and the smoke
+    repairs. Transport failures share one cap across both. An honest ledger, including failed requests."""
+
+    def __init__(self, draft_limit=None, repair_limit=None, fail_limit=MAX_FAILURES):
+        self.limits = {"draft": _call_limit(draft_limit, "ONESHOT_DRAFT_CALLS", DRAFT_CALLS, 1),
+                       "repair": _call_limit(repair_limit, "ONESHOT_REPAIR_CALLS", REPAIR_CALLS, 0)}
         if not isinstance(fail_limit, int) or isinstance(fail_limit, bool) or not 1 <= fail_limit <= MAX_FAILURES:
             raise ValueError(f"failure limit must be between 1 and {MAX_FAILURES}")
-        self.limit = limit
+        self.phase = "draft"  # generate() moves to "repair" before the smoke repairs
         self.fail_limit = fail_limit
         self.attempts = []
         self.smoke = None
@@ -167,30 +195,32 @@ class CallBudget:
             pass  # A diagnostic write cannot break application delivery.
         self._progress_written = now
 
-    def completed(self):
-        return [r for r in self.attempts if r["status"] == "completed"]
+    def completed(self, phase=None):
+        return [r for r in self.attempts if r["status"] == "completed" and phase in (None, r["phase"])]
 
     def failed(self):
         return [r for r in self.attempts if r["status"] != "completed"]
 
     def exhausted(self):
-        return len(self.completed()) >= self.limit or len(self.failed()) >= self.fail_limit
+        """No completed call left in the current phase, or no transport failure left in the run."""
+        return (len(self.completed(self.phase)) >= self.limits[self.phase]
+                or len(self.failed()) >= self.fail_limit)
 
     def start(self, messages, model):
-        if len(self.completed()) >= self.limit:
-            raise RuntimeError(f"global model call limit reached ({self.limit})")
+        if len(self.completed(self.phase)) >= self.limits[self.phase]:
+            raise RuntimeError(f"{self.phase} call limit reached ({self.limits[self.phase]})")
         if len(self.failed()) >= self.fail_limit:
             raise RuntimeError(f"global model failure limit reached ({self.fail_limit})")
-        record = {"call": len(self.attempts) + 1, "model": model, "messages": list(messages),
-                  "content": "", "usage": {}, "usage_events": [], "status": "failed",
-                  "finish_reason": None}
+        record = {"call": len(self.attempts) + 1, "phase": self.phase, "model": model,
+                  "messages": list(messages), "content": "", "usage": {}, "usage_events": [],
+                  "status": "failed", "finish_reason": None}
         self.attempts.append(record)
         return record
 
     def summary(self):
-        result = {"calls": len(self.attempts), "call_limit": self.limit,
-                  "completed_calls": len(self.completed()), "failed_calls": len(self.failed()),
-                  "failure_limit": self.fail_limit}
+        result = {"calls": len(self.attempts), "draft_call_limit": self.limits["draft"],
+                  "repair_call_limit": self.limits["repair"], "completed_calls": len(self.completed()),
+                  "failed_calls": len(self.failed()), "failure_limit": self.fail_limit}
         unknown = [r["call"] for r in self.attempts
                    if any(field not in r["usage"] for field in TOKEN_FIELDS)]
         for field in TOKEN_FIELDS:
@@ -204,17 +234,25 @@ class CallBudget:
         return result
 
 
-def fallback_model(budget):
-    """The model the rest of a run switches to; empty once switched, or when disabled by FALLBACK_MODEL=."""
-    return "" if budget.model else os.environ.get("FALLBACK_MODEL", FALLBACK_MODEL).strip()
+def fallback_model(budget, model):
+    """The model the rest of a run switches to from `model`: FALLBACK_MODEL when set (empty disables the
+    switch), else Kimi HighSpeed, or flash when `model` is itself Kimi. Empty once the run has switched."""
+    if budget.model:
+        return ""
+    configured = os.environ.get("FALLBACK_MODEL")
+    if configured is not None:
+        return configured.strip()
+    return KIMI_FALLBACK_MODEL if model in KIMI_CODE_MODELS else FALLBACK_MODEL
 
 
 def stream_completion(messages, model, base, key, budget, tries=3):
     """Buffer each attempt separately; failed streams never write application files. The primary
     model is retried `tries` times on transport failures; when those are spent the run switches to
-    FALLBACK_MODEL for this and every later call (a cut route rarely heals within one run)."""
+    its fallback model for this and every later call (a cut route rarely heals within one run), with
+    that model's own request parameters. A stream that ends normally without content (the reasoning
+    used the whole output) is a completed, billed call: the caller decides whether to ask again."""
     model = budget.model or model
-    fallback = "" if model in KIMI_CODE_MODELS else fallback_model(budget)
+    fallback = fallback_model(budget, model)
     payload = {"model": model, "messages": messages, "max_tokens": MAX_TOKENS,
                "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
     if model in KIMI_CODE_MODELS:
@@ -278,8 +316,6 @@ def stream_completion(messages, model, base, key, budget, tries=3):
                 raise StreamError("stream ended without completion markers")
             if record["finish_reason"] not in ("stop", "length", "content_filter"):
                 raise ValueError("unsupported finish reason: " + str(record["finish_reason"]))
-            if not record["content"].strip():
-                raise ValueError("stream produced no content")
             record["status"] = "completed"
             return record["content"], record["usage"], record["finish_reason"]
         except error.HTTPError as exc:
@@ -325,7 +361,8 @@ def resolve_path(out, name):
 
 
 def parse_blocks(text):
-    """Strict line framing; only a nonempty final open block may be continued."""
+    """Strict line framing; only a nonempty final open block may be continued. A break in the framing
+    raises ProtocolError, which carries the complete blocks written before the break."""
     files, current, body, stray = [], None, [], 0
     for line in text.splitlines(keepends=True):
         marker = line.rstrip("\r\n")
@@ -339,30 +376,30 @@ def parse_blocks(text):
                 opening, stray = glued, stray + 1
         if opening:
             if current is not None:
-                raise ValueError("unterminated file before next block: " + current)
+                raise ProtocolError("unterminated file before next block: " + current, files)
             current = opening.group(1).strip()
             if not current:
-                raise ValueError("empty file block path")
+                raise ProtocolError("empty file block path", files)
             body = []
         elif marker.rstrip(" \t") == "=== END ===":
             if current is None:
-                raise ValueError("file closing marker without an open block")
+                raise ProtocolError("file closing marker without an open block", files)
             content = "".join(body)
             if not content.strip():
-                raise ValueError("empty file block: " + current)
+                raise ProtocolError("empty file block: " + current, files)
             # A path emitted twice is the model correcting itself (qwen3.7-plus re-emitted seed.js and a
             # 12306 run scored 0/135 on the old ValueError): the later block wins.
             files[:] = [item for item in files if item["path"] != current]
             files.append({"path": current, "content": content.rstrip("\r\n") + "\n"})
             current, body = None, []
         elif marker.startswith(("=== FILE", "=== END")):
-            raise ValueError("malformed file marker")
+            raise ProtocolError("malformed file marker", files)
         elif current is not None:
             body.append(line)
         elif line.strip():
             stray += 1  # prose between blocks is ignored; an 18-minute draft must not die on a sentence
     if not files and current is None:
-        raise ValueError("no file blocks in the response")
+        raise ProtocolError("no file blocks in the response")
     if stray:
         print(f"[oneshot] ignored {stray} line(s) outside file blocks", file=sys.stderr)
     return files, [current] if current is not None else []
@@ -1014,6 +1051,109 @@ def publish(stage, out, template, snapshot, stamp):
     shutil.rmtree(backup)
 
 
+def delivery_complete(stage):
+    """True when the staged application passes the delivery check; a check that cannot run is a no."""
+    try:
+        return not missing_required(stage)
+    except Exception:
+        return False
+
+
+def salvage_blocks(content):
+    """parse_blocks that keeps the complete blocks before a break in the framing: (blocks, open, break or None)."""
+    try:
+        batch, missing = parse_blocks(content)
+        return batch, missing, None
+    except ProtocolError as exc:
+        return exc.files, [], str(exc)
+
+
+def draft_application(stage, files, messages, model, base, key, budget, template):
+    """Write the model's file blocks into the stage and return the conversation that produced them.
+
+    A reply cut at `length` is continued while the draft allowance lasts: inside a file, the model re-emits
+    that file from its beginning; between files, it is told which files are complete and writes the rest. A
+    reply that breaks the file framing keeps the complete blocks before the break and is continued the same
+    way. A reply without file blocks (no content because the reasoning used the whole output, or a prose
+    excuse) is sent again unchanged, except after a cut between files, where a normal stop means nothing was
+    left."""
+    emitted, request, history, pending, reason = set(), list(messages), None, None, None
+    while True:
+        if budget.exhausted():
+            raise RuntimeError(f"draft call limit reached ({budget.limits['draft']})" + (f": {reason}" if reason else ""))
+        content, _, finish = stream_completion(request, model, base, key, budget)
+        if finish == "content_filter":
+            # The gateway's output filter ends a stream the way a truncation does, with the partial
+            # draft intact (r18a Ctrip: 200 KB of app.js, then a whole-task zero). Continue it like a
+            # `length` cut, on the fallback model: at temperature 0 the same model re-emits the tokens
+            # that tripped the filter.
+            current = budget.model or model
+            switch = fallback_model(budget, current)
+            switch = switch if switch != current else ""
+            print("[oneshot] the stream ended with finish_reason=content_filter; continuing the draft"
+                  + (f" on {switch}" if switch else ""), file=sys.stderr)
+            if switch:
+                budget.model = switch
+            finish = "length"
+        if "=== FILE" not in content:
+            if history is not None and pending is None and finish == "stop":
+                return history  # the model had nothing left to write after a cut between files
+            # An empty draft ("No answer text provided." after a 14-minute reasoning stream, or no content at
+            # all when the reasoning used the whole output) is a whole-task zero; a fresh request is cheaper.
+            reason = "the reply has no file blocks"
+            print(f"[oneshot] {reason}; asking again", file=sys.stderr)
+            continue
+        batch, missing, broken = salvage_blocks(content)
+        if not broken and missing and finish == "stop" and template is None:
+            # The model stopped on its own but forgot the closing marker of the last file:
+            # the content is whole, only the framing is missing. Close it rather than lose the draft.
+            print("[oneshot] closing an unterminated final block at finish_reason=stop", file=sys.stderr)
+            content = content.rstrip("\r\n") + "\n=== END ===\n"
+            batch, missing, broken = salvage_blocks(content)
+        if broken and not batch:
+            reason = f"the reply broke the file framing before any complete file ({broken})"
+            print(f"[oneshot] {reason}; asking again", file=sys.stderr)
+            continue
+        for name in [item["path"] for item in batch] + missing:
+            resolve_path(stage, name)
+            if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
+                                            for part in PurePosixPath(name).parts):
+                raise ValueError("upgrade cannot edit local metadata or build artifacts: " + name)
+        for item in batch:
+            target = resolve_path(stage, item["path"])
+            item["path"] = target.relative_to(stage.resolve()).as_posix()
+            if target in emitted:  # re-emitted in a later turn: the later version replaces the earlier
+                print(f"[oneshot] {item['path']} emitted again; keeping the later version", file=sys.stderr)
+                files[:] = [f for f in files if f["path"] != item["path"]]
+            emitted.add(target)
+            write_one(stage, item)
+            files.append(item)
+        cut = resolve_path(stage, missing[0]).relative_to(stage.resolve()).as_posix() if missing else None
+        if not broken and pending and pending not in {item["path"] for item in batch} and cut != pending:
+            raise ValueError("continuation did not complete file: " + pending)
+        history = request + [{"role": "assistant", "content": content}]
+        if finish != "length" and not broken:
+            if missing:
+                raise ValueError("unterminated file block: " + missing[0])
+            return history
+        done = ", ".join(f"`{item['path']}`" for item in files)
+        pending = cut
+        if broken:
+            # A missing END, a stray or malformed marker used to discard the whole draft. The blocks before the
+            # break are written; everything after it is lost, and the model writes the rest.
+            reason = f"the reply broke the file framing ({broken})"
+            ask = RESUME.format(why=f"Your output broke the file framing ({broken}); everything after that point "
+                                    f"was discarded.", done=done)
+        elif pending:
+            reason = f"the output was cut off inside `{pending}`"
+            ask = CONTINUE.format(path=pending)
+        else:
+            reason = "the output was cut off between two files"
+            ask = RESUME.format(why="Your output was cut off between two files.", done=done)
+        print(f"[oneshot] {reason}; continuing", file=sys.stderr)
+        request = history + [{"role": "user", "content": ask}]
+
+
 def generate(requirements, model, base, key, out, budget=None, template=None):
     budget = budget if budget is not None else CallBudget()
     # Reusing a nonempty directory could hide missing files behind an earlier run.
@@ -1036,7 +1176,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     if template is not None:
         user += template_context(snapshot)
     messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
-    files, expected = [], None
+    files = []
     with tempfile.TemporaryDirectory(prefix=".oneshot-", dir=out.parent) as temp:
         budget.progress_path = Path(temp) / "progress.json"
         budget.progress("preparing", force=True)
@@ -1050,73 +1190,58 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             target = resolve_path(stage, name)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
-        emitted = set()
-        content = ""
-        for turn in range(2):
-            content, _, finish = stream_completion(messages, model, base, key, budget)
-            if turn == 0 and "=== FILE" not in content and not budget.exhausted():
-                # An empty draft ("No answer text provided." after a 14-minute reasoning stream, finish=stop)
-                # is a whole-task zero; one fresh draft is cheaper than the task (generic-card SO sample B).
-                print("[oneshot] the draft has no file blocks; asking once more", file=sys.stderr)
-                content, _, finish = stream_completion(messages, model, base, key, budget)
-            if finish == "content_filter":
-                # The gateway's output filter ends a stream the way a truncation does, with the partial
-                # draft intact (r18a Ctrip: 200 KB of app.js, then a whole-task zero). Continue it like a
-                # `length` cut, on the fallback model: at temperature 0 the same model re-emits the tokens
-                # that tripped the filter.
-                switch = fallback_model(budget)
-                print("[oneshot] the stream ended with finish_reason=content_filter; continuing the draft"
-                      + (f" on {switch}" if switch else ""), file=sys.stderr)
-                if switch:
-                    budget.model = switch
-                finish = "length"
-            if finish == "stop" and template is None and parse_blocks(content)[1]:
-                # The model stopped on its own but forgot the closing marker of the last file:
-                # the content is whole, only the framing is missing. Close it rather than lose the draft.
-                print("[oneshot] closing an unterminated final block at finish_reason=stop", file=sys.stderr)
-                content = content.rstrip("\r\n") + "\n=== END ===\n"
-            batch, missing = parse_blocks(content)
-            for name in [item["path"] for item in batch] + missing:
-                resolve_path(stage, name)
-                if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
-                                                for part in PurePosixPath(name).parts):
-                    raise ValueError("upgrade cannot edit local metadata or build artifacts: " + name)
-            if expected and (not batch or batch[0]["path"] != expected):
-                raise ValueError("continuation did not complete file: " + expected)
-            for item in batch:
-                target = resolve_path(stage, item["path"])
-                item["path"] = target.relative_to(stage.resolve()).as_posix()
-                if target in emitted:  # re-emitted in a later turn: the later version replaces the earlier
-                    print(f"[oneshot] {item['path']} emitted again; keeping the later version", file=sys.stderr)
-                    files[:] = [f for f in files if f["path"] != item["path"]]
-                emitted.add(target)
-                write_one(stage, item)
-                files.append(item)
-            if not missing:
-                if finish == "length":
-                    raise ValueError("output truncated between file blocks; remaining files unknown")
-                break
-            if turn == 1 or finish != "length":
-                raise ValueError("unterminated file block: " + missing[0])
-            expected = missing[0]
-            messages += [{"role": "assistant", "content": content},
-                         {"role": "user", "content": CONTINUE.format(path=expected)}]
-        needed = missing_required(stage)
-        if needed:
-            raise ValueError("incomplete delivery: " + "; ".join(needed))
-        if template is not None and all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files):
-            raise ValueError("upgrade did not change any files")
-        if SMOKE:
-            budget.progress("checking_application", force=True)
-            repair_delivery(stage, files, messages + [{"role": "assistant", "content": content}],
-                            model, base, key, budget, template, requirements, scaffold=bool(scaffold))
+        try:
+            conversation = draft_application(stage, files, messages, model, base, key, budget, template)
+            needed = missing_required(stage)
+            if needed:
+                raise ValueError("incomplete delivery: " + "; ".join(needed))
+            if template is not None and all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files):
+                raise ValueError("upgrade did not change any files")
+            if SMOKE:
+                budget.phase = "repair"
+                budget.progress("checking_application", force=True)
+                repair_delivery(stage, files, conversation, model, base, key, budget, template, requirements,
+                                scaffold=bool(scaffold))
+        except Exception as exc:
+            # A zero is the only outcome worse than any application (roadmap 4.1): after a spent budget, a
+            # transport failure, a protocol error or a crash in the checks, the stage holds every complete file
+            # written so far (never a partial one), and it ships when it passes the delivery check.
+            if not delivery_complete(stage):
+                raise
+            reason = str(exc).replace(key, "[REDACTED]") if key else str(exc)
+            print(f"[oneshot] delivering the last complete version after an error: {reason}", file=sys.stderr)
         budget.progress("publishing", force=True)
         publish(stage, out, template, snapshot, stamp)
     return files, budget.summary()
 
 
-QUOTED = re.compile(r'[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
+# A phrase in paired `backticks` (how the Lite requirements name controls: 56 of 81 BookStack names never appear in
+# double quotes), or in straight or curly double quotes.
+QUOTED = re.compile(r'`([^`\n]{2,80})`|[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
+# What precedes a value the user types: "fills `Name` with `Shelf 4.3.1`", "enters `user@example.com`". The field
+# between fill and with stays in one clause; its quoted name may hold punctuation (`Write your page content here...`).
+TYPED = re.compile(r"(?:(?<![\w-])fill(?:s|ed|ing)?\b(?:[^.;\n`\"]|`[^`\n]*`|\"[^\"\n]*\")*\bwith"
+                   r"|\benter(?:s|ed|ing)?|\btyp(?:es|ed|ing))\s+$", re.I)
 VOCAB_SHOWN = 60
+
+
+def _phrase(match):
+    """The whitespace-normalised phrase of a QUOTED match, whichever quotes delimit it."""
+    return re.sub(r"\s+", " ", match.group(1) or match.group(2)).strip()
+
+
+def runtime_values(requirements):
+    """Lower-cased phrases that only backticks quote and that the user types somewhere: the suite supplies
+    them at runtime, so the application's source need not contain them. A phrase the requirement also
+    double-quotes (a seeded account the user types at login) stays required."""
+    text = requirements or ""
+    typed, declared = set(), set()
+    for match in QUOTED.finditer(text):
+        if match.group(2) is not None:
+            declared.add(_phrase(match).lower())
+        elif TYPED.search(text[max(0, match.start() - 120):match.start()]):
+            typed.add(_phrase(match).lower())
+    return typed - declared
 
 
 REQ_ID = re.compile(r"^\s*-?\s*id:\s*['\"]?([A-Za-z0-9._-]+)['\"]?\s*$")
@@ -1128,6 +1253,7 @@ def vocabulary_table(requirements):
     checklist the vocabulary gate will enforce, handed to the model before it writes (ladder level 2)."""
     groups, order, seen = {}, [], set()
     current, name = None, None
+    runtime = runtime_values(requirements)
     for line in (requirements or "").splitlines():
         m = REQ_ID.match(line)
         if m:
@@ -1137,9 +1263,9 @@ def vocabulary_table(requirements):
         if n and current and name is None:
             name = n.group(1)
         for match in QUOTED.finditer(line):
-            phrase = re.sub(r"\s+", " ", match.group(1)).strip()
+            phrase = _phrase(match)
             if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
-                    or phrase.lower() in seen):
+                    or phrase.lower() in seen or phrase.lower() in runtime):
                 continue
             seen.add(phrase.lower())
             key = current or "ROOT"
@@ -1179,12 +1305,13 @@ def quoted_control_phrases(requirements):
     to be an accessible name and not a sentence or message. Original casing, first occurrence wins."""
     seen, phrases = set(), []
     text_req = requirements or ""
+    runtime = runtime_values(text_req)
     for match in QUOTED.finditer(text_req):
-        phrase = re.sub(r"\s+", " ", match.group(1)).strip()
+        phrase = _phrase(match)
         context = text_req[max(0, match.start() - 80):match.end() + 40]
         if (len(phrase) < 3 or len(phrase.split()) > NAME_MAX_WORDS or re.search(r"[.!?:;,]$", phrase)
                 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
-                or phrase.lower() in seen or not CONTROL_CONTEXT.search(context)):
+                or phrase.lower() in seen or phrase.lower() in runtime or not CONTROL_CONTEXT.search(context)):
             continue
         seen.add(phrase.lower())
         phrases.append(phrase)
@@ -1244,10 +1371,11 @@ def vocabulary_gaps(stage, requirements):
     """Every string the requirement quotes is matched verbatim by the suite (control names,
     messages, seed titles, accounts). Return the ones absent from the delivered source."""
     seen, phrases = set(), []
+    runtime = runtime_values(requirements)
     for match in QUOTED.finditer(requirements or ""):
-        phrase = re.sub(r"\s+", " ", match.group(1)).strip()
+        phrase = _phrase(match)
         if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
-                or phrase.lower() in seen):
+                or phrase.lower() in seen or phrase.lower() in runtime):
             continue
         seen.add(phrase.lower())
         phrases.append(phrase)
@@ -1317,7 +1445,7 @@ def _frontend_sources(stage):
 def _quoted_lower(requirements):
     """Every quoted phrase of the requirement, lower-cased and space-normalised."""
     text = requirements or ""
-    phrases = [m.group(1) for m in QUOTED.finditer(text)]
+    phrases = [_phrase(m) for m in QUOTED.finditer(text)]
     phrases += re.findall(r"`([^`\n]{1,80})`", text)
     return {re.sub(r"\s+", " ", phrase).strip().lower() for phrase in phrases}
 
@@ -1437,8 +1565,13 @@ def _fatal(problem):
                                     "browser interaction error:")) or "renders no <" in problem)
 
 
+def _bare_name(name):
+    """A control name without leading or trailing symbols (+, •, →, icons) and with single spaces."""
+    return re.sub(r"^[\W_]+|[\W_]+$", "", re.sub(r"\s+", " ", name)).lower()
+
+
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
-    """Repair observed problems within the existing global call budget, preserving every accepted
+    """Repair observed problems within the repair call allowance, preserving every accepted
     improvement. A repaired crash can expose a further UI problem; use a remaining call for it
     and retain the prior working version if that follow-up regresses. Records every repair."""
     diagnostics = []
@@ -1485,9 +1618,20 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         budget.smoke["problems_after"] = list(after)
         if after_diagnostics:
             budget.smoke["browser_after"] = after_diagnostics
-        if any(r.get("executed") for r in diagnostics) and not any(
-                r.get("executed") for r in after_diagnostics):
-            raise ValueError("browser recheck unavailable; cannot validate the repair")
+        # A repair that brought a blank or dead application back is kept even when a guard below would reject
+        # it: the rename guard once shipped the blank page instead (09-19 Ctrip, 0/125). A waived guard is
+        # recorded in smoke.repair.waived.
+        revived = any(_fatal(p) for p in smoke_before) and not any(_fatal(p) for p in after)
+        waived = []
+
+        def guard(failed, reason):
+            if failed and not revived:
+                raise ValueError(reason)
+            if failed:
+                waived.append(reason)
+
+        guard(any(r.get("executed") for r in diagnostics) and not any(r.get("executed") for r in after_diagnostics),
+              "browser recheck unavailable; cannot validate the repair")
         improved = not any(_fatal(p) for p in after) and (
             not after or any(_fatal(p) for p in smoke_before) or len(after) < len(smoke_before))
         if not improved:
@@ -1498,23 +1642,29 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             # and the six-fault draft shipped, 9/34). Same or more problems → the original stays.
             raise ValueError("still failing after repair: " + "; ".join(after))
         _, missing_after = vocabulary_gaps(stage, requirements)
-        if missing_after > missing_before:
-            raise ValueError(f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
+        guard(missing_after > missing_before,
+              f"repair removed quoted vocabulary ({missing_before} -> {missing_after} missing)")
         # A literal button can become a data-driven menu entry. Successful activation
         # proves the name still exists even when this static HTML scan cannot resolve it.
         observed_after = {re.sub(r"\s+", " ", action["name"]).strip().lower()
                           for report in after_diagnostics if report.get("executed")
                           for action in report.get("actions", [])
                           if action.get("name") and "observation" not in action}
-        renamed = sorted(pinned_before - control_names(stage) - observed_after)
-        if renamed:
-            # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
-            # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).
-            raise ValueError("repair renamed quoted control(s): " + ", ".join(renamed[:8]))
+        # Names compare without their decoration: the exact-name gate asks for `+ 添加返程` to become `添加返程`,
+        # and that repair must not count as a rename.
+        present = {_bare_name(name) for name in control_names(stage) | observed_after}
+        renamed = sorted(name for name in pinned_before if _bare_name(name) not in present)
+        # The word may survive elsewhere ("From Station", data-from), so the vocabulary count cannot see
+        # that the control named "From" is gone; the suite's getByLabel(/From/i) can (12306 r25a: 45 tests).
+        guard(bool(renamed), "repair renamed quoted control(s): " + ", ".join(renamed[:8]))
         for item in batch:
             files[:] = [f for f in files if f["path"] != item["path"]] + [item]
         budget.smoke["repair"] = {"accepted": True, "files": [item["path"] for item in batch],
                                   "vocabulary_missing_after": missing_after}
+        if renamed:
+            budget.smoke["repair"]["renamed_controls"] = renamed
+        if waived:
+            budget.smoke["repair"]["waived"] = waived
     except Exception as exc:
         # Keep the original delivery: a half-applied fix could be worse than the known state.
         shutil.rmtree(stage)
@@ -1547,7 +1697,11 @@ def main(argv=None):
     if not key:
         print("[oneshot] OPENAI_API_KEY is not set", file=sys.stderr)
         return 1
-    budget = CallBudget()
+    try:
+        budget = CallBudget()
+    except ValueError as exc:  # a mistyped ONESHOT_*_CALLS stops the run before anything is spent
+        print(f"[oneshot] {exc}", file=sys.stderr)
+        return 1
     started = time.monotonic()
     try:
         template = args.template_dir
@@ -1579,6 +1733,11 @@ def main(argv=None):
         print(("[oneshot] failed: " + str(exc)).replace(key, "[REDACTED]"), file=sys.stderr)
         return 1
     else:
+        if not files:
+            # Only what was already in place shipped (the bare scaffold after a gateway outage): not the
+            # model's work, and the platform must see this run fail.
+            print("[oneshot] failed: no application file came from the model", file=sys.stderr)
+            return 1
         print(f"[oneshot] wrote {len(files)} files in {time.monotonic() - started:.1f}s")
         return 0
     finally:

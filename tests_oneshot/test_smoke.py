@@ -16,6 +16,7 @@ from oneshot import main as adapter
 from test_oneshot import SYNTHETIC_KEY, SyntheticStream, block, events
 
 NODE = shutil.which("node") and shutil.which("npm")
+BLANK = ["frontend script error on load (the page is blank for every test): this.flights is not a function"]
 
 SERVER = """// Synthetic local fixture
 const http = require('node:http');
@@ -74,8 +75,8 @@ class SmokeCase(unittest.TestCase):
     def replies(self, *items):
         self.transport.side_effect = [SyntheticStream(x) for x in items]
 
-    def generate(self, limit=adapter.MAX_CALLS):
-        budget = adapter.CallBudget(limit)
+    def generate(self, repairs=adapter.REPAIR_CALLS):
+        budget = adapter.CallBudget(repair_limit=repairs)
         files, _ = adapter.generate("Synthetic requirements only", "synthetic-model",
                                    "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
         return files, budget
@@ -106,7 +107,7 @@ class SmokeCase(unittest.TestCase):
 
     def test_repair_retry_stops_at_the_shared_failure_budget(self):
         self.replies(events(app(server(health='{}'))), [], events(block('backend/server.js', server())))
-        budget = adapter.CallBudget(limit=3, fail_limit=1)
+        budget = adapter.CallBudget(fail_limit=1)
         adapter.generate('Synthetic requirements only', 'synthetic-model',
                          'https://synthetic.invalid/v1', SYNTHETIC_KEY, self.out, budget)
         self.assertEqual(self.transport.call_count, 2)
@@ -134,13 +135,13 @@ class SmokeCase(unittest.TestCase):
 
     def test_wrong_content_type_and_bad_health_are_reported(self):
         self.replies(events(app(server(ctype="'application/octet-stream'"))))
-        files, budget = self.generate(limit=1)
+        files, budget = self.generate(repairs=0)
         self.assertEqual(self.transport.call_count, 1)
         self.assertTrue(any("text/html" in p for p in budget.smoke["problems"]), budget.smoke)
         self.assertEqual(budget.smoke["repair"], "skipped: call limit reached")
         self.transport.side_effect = [SyntheticStream(events(app(server(health='{"ok":true}'))))]
         self.out = self.root / "app2"
-        files, budget = self.generate(limit=1)
+        files, budget = self.generate(repairs=0)
         self.assertTrue(any("/api/health" in p for p in budget.smoke["problems"]), budget.smoke)
 
     def test_crashing_backend_with_failed_repair_keeps_original_delivery(self):
@@ -167,7 +168,7 @@ class SmokeCase(unittest.TestCase):
     def test_missing_asset_referenced_by_index_is_reported(self):
         missing_asset = app(server()).replace('<script src="app.js">', '<script src="vendor/lib.js">')
         self.replies(events(missing_asset))
-        files, budget = self.generate(limit=1)
+        files, budget = self.generate(repairs=0)
         self.assertTrue(any("vendor/lib.js" in p and "404" in p for p in budget.smoke["problems"]), budget.smoke)
 
     def test_without_node_the_check_is_skipped_not_failed(self):
@@ -181,7 +182,7 @@ class SmokeCase(unittest.TestCase):
         throwing = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
                                          block("frontend/public/app.js", "document.body.appendChild(null);"))
         self.replies(events(throwing))
-        files, budget = self.generate(limit=1)
+        files, budget = self.generate(repairs=0)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         self.assertTrue(any("frontend script error on load" in p for p in budget.smoke["problems"]), budget.smoke)
@@ -195,7 +196,7 @@ class SmokeCase(unittest.TestCase):
                              block("frontend/public/app.js",
                                    "fetch('/api/health').then((r) => r.json()).then((d) => { document.body.textContent = d.message; });")))
         self.replies(events(fetching))
-        files, budget = self.generate(limit=1)
+        files, budget = self.generate(repairs=0)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         self.assertEqual(budget.smoke["problems"], [], budget.smoke)
@@ -208,7 +209,7 @@ class SmokeCase(unittest.TestCase):
                   "document.body.insertAdjacentHTML('beforeend', '<button type=\"button\" data-action=\"add-to-cart\">Add to cart</button>');\n"
                   "document.addEventListener('click', (e) => { if (e.target.dataset.action === 'add-to-cart') { const p = undefined; p.id; } });"))
         self.replies(events(throwing))
-        files, budget = self.generate(limit=1)
+        files, budget = self.generate(repairs=0)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         flagged = [p for p in budget.smoke["problems"] if "throws" in p]
@@ -223,7 +224,7 @@ class SmokeCase(unittest.TestCase):
                                          block("frontend/public/app.js", "for (;;) {}"))
         self.replies(events(spinning))
         with patch.object(adapter, "DOM_PROBE_SECONDS", 4):
-            files, budget = self.generate(limit=1)
+            files, budget = self.generate(repairs=0)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         flagged = [p for p in budget.smoke["problems"] if "did not finish within 4 s" in p]
@@ -236,7 +237,7 @@ class SmokeCase(unittest.TestCase):
                                        block("frontend/public/app.js", "function f( { }\nconsole.log('x');"))
         self.replies(events(broken))
         with patch.object(adapter, "_check_dom", side_effect=AssertionError("the DOM probe must not run")):
-            files, budget = self.generate(limit=1)
+            files, budget = self.generate(repairs=0)
         flagged = [p for p in budget.smoke["problems"] if "does not parse" in p]
         self.assertEqual(len(flagged), 1, budget.smoke)
         self.assertIn("frontend/public/app.js:2 does not parse (SyntaxError:", flagged[0])
@@ -249,7 +250,7 @@ class SmokeCase(unittest.TestCase):
                                 "document.body.insertAdjacentHTML('beforeend', '<button type=\"button\" data-action=\"add-to-cart\">Add to cart</button>');\n"
                                 "document.addEventListener('click', (e) => { if (e.target.dataset.action === 'add-to-cart') { const p = undefined; p.id; } });")
         self.replies(events(broken), events(throwing_button))
-        files, budget = self.generate(limit=2)
+        files, budget = self.generate(repairs=1)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         self.assertEqual(budget.smoke["repair"]["accepted"], True, budget.smoke)
@@ -266,7 +267,7 @@ class SmokeCase(unittest.TestCase):
         draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),
                                       block("frontend/public/app.js", buttons("one", "two")))
         self.replies(events(draft), events(block("frontend/public/app.js", buttons("three"))))
-        files, budget = self.generate(limit=2)
+        files, budget = self.generate(repairs=1)
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         self.assertEqual(budget.smoke["repair"]["accepted"], True, budget.smoke)
@@ -321,7 +322,7 @@ class SmokeCase(unittest.TestCase):
             block("frontend/public/app.js", "console.log('synthetic');"),
             block("frontend/public/app.js", "document.body.innerHTML += '<label>出发城市 <input id=\"o\" readonly data-action=\"open-city\"></label>';"))
         self.replies(events(picker))
-        files, budget = self.generate(limit=1)
+        files, budget = self.generate(repairs=0)
         flagged = [p for p in budget.smoke["problems"] if "readonly" in p]
         self.assertEqual(len(flagged), 1, budget.smoke)
         self.assertIn("frontend/public/app.js:1", flagged[0])
@@ -369,7 +370,7 @@ class SmokeCase(unittest.TestCase):
         reply = (block("frontend/public/index.html", "<!doctype html><title>T</title><h1>T</h1><script src=\"app.js\"></script>") +
                  block("frontend/public/app.js", "document.body.append('x');"))
         self.replies(events(reply))
-        budget = adapter.CallBudget(1)
+        budget = adapter.CallBudget(repair_limit=0)
         with patch.object(adapter, "SCAFFOLD", True):
             adapter.generate("req", "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
         gaps = [p for p in budget.smoke["problems"] if "scaffold" in p]
@@ -501,7 +502,7 @@ class SmokeCase(unittest.TestCase):
         repaired_js = "document.body.innerHTML += '<label>Origin city <input id=\"f\"></label><label>From Station <select id=\"s\"></select></label>';"
         draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"), block("frontend/public/app.js", draft_js))
         self.replies(events(draft), events(block("frontend/public/app.js", repaired_js)))
-        budget = adapter.CallBudget(adapter.MAX_CALLS)
+        budget = adapter.CallBudget()
         files, _ = adapter.generate('Synthetic: the departure field labeled "From" and a From Station filter.',
                                     "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
         self.assertEqual(budget.smoke["repair"]["accepted"], False, budget.smoke)
@@ -553,6 +554,77 @@ class SmokeCase(unittest.TestCase):
                              self.out, budget)
         self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
         self.assertIn('repair renamed quoted control(s)', budget.smoke['repair']['reason'])
+
+    def repair_with_smoke(self, requirements, draft_js, repaired_js, before, after, browser=(), out=None):
+        """One synthetic draft and repair; the smoke check reports `before` on the draft and `after` on the repair,
+        and adds browser[0] / browser[1] to the browser diagnostics of the first / second check."""
+        draft = app(server()).replace(block('frontend/public/app.js', "console.log('synthetic');"),
+                                      block('frontend/public/app.js', draft_js))
+        self.replies(events(draft), events(block('frontend/public/app.js', repaired_js)))
+        checks = []
+
+        def check(stage, requirements=None, diagnostics=None):
+            checks.append(stage)
+            if len(browser) >= len(checks) and diagnostics is not None:
+                diagnostics.append(browser[len(checks) - 1])
+            return (before if len(checks) == 1 else after), True
+
+        budget = adapter.CallBudget(repair_limit=1)
+        with patch.object(adapter, 'smoke_check', side_effect=check):
+            adapter.generate(requirements, 'synthetic-model', 'https://synthetic.invalid/v1', SYNTHETIC_KEY,
+                             out or self.out, budget)
+        return budget
+
+    def test_a_revived_application_is_kept_although_it_loses_quoted_vocabulary(self):
+        # The rename waiver extended: one lost quoted phrase costs a family of tests, a blank page all of them.
+        args = ('Synthetic: the welcome text reads "Have a nice trip".',
+                "document.body.innerHTML='<p>Have a nice trip</p>'; this.flights();",
+                "document.body.innerHTML='<p>Welcome</p>';")
+        budget = self.repair_with_smoke(*args, BLANK, [])
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertEqual(budget.smoke['repair']['waived'], ['repair removed quoted vocabulary (0 -> 1 missing)'])
+        # Unchanged when nothing whole-app was fixed: the guard still rejects the repair.
+        budget = self.repair_with_smoke(*args, ['clicking `Welcome` on screen `#/` throws: synthetic'], [],
+                                        out=self.root / 'guarded')
+        self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertIn('repair removed quoted vocabulary (0 -> 1 missing)', budget.smoke['repair']['reason'])
+
+    def test_a_revived_application_is_kept_although_the_browser_recheck_did_not_run(self):
+        ran, unavailable = {'executed': True, 'actions': []}, {'executed': False, 'unavailable': 'browser'}
+        args = ('Synthetic requirements only', "document.body.innerHTML='<p>Home</p>'; this.flights();",
+                "document.body.innerHTML='<p>Home</p>';")
+        budget = self.repair_with_smoke(*args, BLANK, [], browser=(ran, unavailable))
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertEqual(budget.smoke['repair']['waived'], ['browser recheck unavailable; cannot validate the repair'])
+        budget = self.repair_with_smoke(*args, ['clicking `Home` on screen `#/` throws: synthetic'], [],
+                                        browser=(ran, unavailable), out=self.root / 'guarded')
+        self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertIn('browser recheck unavailable', budget.smoke['repair']['reason'])
+
+    def test_a_repair_that_revives_a_dead_application_is_kept_although_it_renames_a_quoted_control(self):
+        # Reduced from 09-19 Ctrip: the repair cured a blank page and left one family-level problem, then the rename
+        # veto rejected it and the blank page shipped (0/125). A revived application beats a kept name.
+        budget = self.repair_with_smoke(
+            'Synthetic: the button named "Add return trip" opens the return date.',
+            "document.body.innerHTML='<button>Add return trip</button>'; this.flights();",
+            "document.body.innerHTML='<p>Add return trip</p><button>Return trip</button>';",
+            BLANK, ['clicking `Return trip` on screen `#/` throws: synthetic'])
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertEqual(budget.smoke['repair']['renamed_controls'], ['add return trip'])
+        self.assertEqual(budget.smoke['repair']['waived'], ['repair renamed quoted control(s): add return trip'])
+        self.assertIn('<button>Return trip</button>', (self.out / 'frontend/public/app.js').read_text())
+
+    def test_removing_a_decoration_from_a_quoted_name_is_not_a_rename(self):
+        # The exact-name gate asks for `+ Add return` to become `Add return`; the veto used to call that a rename
+        # when the requirement quoted both spellings. No whole-app failure here, so only (b) can accept it.
+        budget = self.repair_with_smoke(
+            'Synthetic: the "Add return" entry. Click the "+ Add return" button, then fill "Return date".',
+            "document.body.innerHTML='<button>+ Add return</button>';",
+            "document.body.innerHTML='<button>Add return</button><label>Return date <input></label>';",
+            ['clicking `+ Add return` on screen `#/` throws: synthetic'], [])
+        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+        self.assertNotIn('renamed_controls', budget.smoke['repair'])
+        self.assertEqual(adapter._bare_name('  • Add   return → '), 'add return')
 
     def test_cli_prints_smoke_summary_without_the_key(self):
         requirement = self.root / "requirements"

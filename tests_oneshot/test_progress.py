@@ -13,7 +13,7 @@ class ProgressCase(unittest.TestCase):
     def test_progress_distinguishes_connection_and_reasoning_without_logging_content(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / 'progress.json'
-            budget = adapter.CallBudget(limit=1, fail_limit=1)
+            budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
             budget.progress_path = path
             testcase = self
 
@@ -46,7 +46,7 @@ class ProgressCase(unittest.TestCase):
 
     def test_interrupted_stream_retains_partial_counts_and_failure_type(self):
         with tempfile.TemporaryDirectory() as temp:
-            budget = adapter.CallBudget(limit=1, fail_limit=1)
+            budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
             budget.progress_path = Path(temp) / 'progress.json'
             frames = [event({'choices': [{'delta': {'content': 'partial content'}}]}),
                       OSError('synthetic interruption')]
@@ -63,7 +63,7 @@ class ProgressCase(unittest.TestCase):
     def test_generation_progress_is_staged_without_becoming_application_source(self):
         with tempfile.TemporaryDirectory() as temp:
             out = Path(temp) / 'application'
-            budget = adapter.CallBudget(limit=1, fail_limit=1)
+            budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
 
             def response(req, timeout):
                 self.assertEqual(budget.progress_path.parent.parent, out.parent)
