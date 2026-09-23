@@ -37,6 +37,11 @@ def application(extra=""):
             block("frontend/public/index.html", "<!doctype html><title>Synthetic</title>") + extra)
 
 
+def split_application():
+    """The five blocks of application(), one string each, to cut a reply wherever a test needs."""
+    return [block(item["path"], item["content"].rstrip("\n")) for item in adapter.parse_blocks(application())[0]]
+
+
 def event(obj):
     return b"data: " + json.dumps(obj).encode("utf-8") + b"\n\n"
 
@@ -78,6 +83,9 @@ class OfflineCase(unittest.TestCase):
                                                 side_effect=AssertionError("unexpected HTTP")))
         self.enter(patch.object(adapter.time, "sleep"))
         self.enter(patch.object(adapter, "SMOKE", False))
+        self.enter(patch.dict(os.environ))  # the code defaults, whatever the developer's shell exports
+        for name in ("FALLBACK_MODEL", "ONESHOT_DRAFT_CALLS", "ONESHOT_REPAIR_CALLS"):
+            os.environ.pop(name, None)
 
     def enter(self, manager):
         value = manager.__enter__()
@@ -207,7 +215,7 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(len(budget.attempts[0]["usage_events"]), 3)
 
     def test_final_failure_retains_usage_without_publishing(self):
-        budget = adapter.CallBudget(limit=1, fail_limit=1)
+        budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
         self.replies(events(application(), {"prompt_tokens": 9}, done=False))
         with self.assertRaisesRegex(RuntimeError, "StreamError"):
             self.generate(budget)
@@ -305,6 +313,25 @@ class OfflineCase(unittest.TestCase):
         self.assertIsNone(budget.summary()["fallback_model"])
         self.assertTrue((self.out / "backend" / "server.js").exists())
 
+    def test_content_filter_continues_on_the_paired_fallback_with_its_own_parameters(self):
+        # No implicit qwen any more: the same pairing as a transport fallback, each model with its own temperature.
+        prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
+        rest = application()[len(prefix):]
+        for primary, fallback, temperature in (("deepseek-v4-flash", "kimi-k2.7-code-highspeed", 1.0),
+                                               ("kimi-k2.7-code-highspeed", "deepseek-v4-flash", 0.0)):
+            with self.subTest(primary=primary):
+                self.transport.reset_mock()
+                self.replies(events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="content_filter"),
+                             events(rest))
+                budget = adapter.CallBudget()
+                adapter.generate("Synthetic requirements only", primary, "https://synthetic.invalid/v1",
+                                 SYNTHETIC_KEY, self.root / primary, budget)
+                payloads = [json.loads(c.args[0].data) for c in self.transport.call_args_list]
+                self.assertEqual([p["model"] for p in payloads], [primary, fallback])
+                self.assertEqual(payloads[1]["temperature"], temperature)
+                self.assertEqual(budget.summary()["fallback_model"], fallback)
+                self.assertNotIn("cut off", (self.root / primary / "backend/server.js").read_text())
+
     def test_fallback_is_not_taken_for_permanent_errors(self):
         budget = adapter.CallBudget()
         self.replies(HTTPError("https://synthetic.invalid", 402, "synthetic", {}, None))
@@ -331,12 +358,36 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(self.transport.call_count, 2)
         self.assertEqual(totals["completed_calls"], 2)
 
-    def test_two_empty_drafts_fail_without_a_third_call(self):
-        budget = adapter.CallBudget()
-        self.replies(events("No answer text provided."), events("Still nothing."))
-        with self.assertRaisesRegex(ValueError, "no file blocks"):
-            self.generate(budget)
+    def test_replies_without_file_blocks_are_asked_again_until_the_draft_allowance_is_spent(self):
+        # Old rule: a second empty draft failed the task. Now every redraft comes out of the draft allowance.
+        self.replies(*[events("No answer text provided.")] * 4)
+        with self.assertRaisesRegex(RuntimeError, r"draft call limit reached \(4\): the reply has no file blocks"):
+            self.generate(adapter.CallBudget())
+        self.assertEqual(self.transport.call_count, 4)
+        self.assertFalse(self.out.exists())
+        self.transport.reset_mock()
+        self.replies(*[events("No answer text provided.")] * 2)
+        with patch.dict(os.environ, {"ONESHOT_DRAFT_CALLS": "2"}), \
+                self.assertRaisesRegex(RuntimeError, r"draft call limit reached \(2\)"):
+            self.generate(adapter.CallBudget())
         self.assertEqual(self.transport.call_count, 2)
+
+    def test_a_stream_without_content_is_a_billed_call_and_the_draft_is_asked_again(self):
+        # The reasoning used the whole output (finish=length, no content), then an empty stop: both are
+        # completed calls with their usage kept, and the same request goes out again.
+        reasoning_only = [event({"choices": [{"delta": {"reasoning_content": "synthetic reasoning"},
+                                              "finish_reason": "length"}]}),
+                          event({"choices": [], "usage": {"prompt_tokens": 5, "completion_tokens": 131072}}),
+                          b"data: [DONE]\n\n"]
+        budget = adapter.CallBudget()
+        self.replies(reasoning_only, events(""), events(application()))
+        files, totals = self.generate(budget)
+        self.assertEqual(len(files), 5)
+        self.assertEqual([r["status"] for r in budget.attempts], ["completed"] * 3)
+        self.assertEqual(totals["completed_calls"], 3)
+        self.assertEqual(budget.attempts[0]["usage"]["completion_tokens"], 131072)
+        self.assertEqual(budget.attempts[0]["stream_observation"]["reasoning_chars"], len("synthetic reasoning"))
+        self.assertEqual(budget.attempts[2]["messages"], budget.attempts[0]["messages"])
 
     def test_quoted_vocabulary_table_precedes_the_requirements(self):
         req = ("- id: REQ-1\n  name: Login\n  description: Show \u201cEmail cannot be empty\u201d and a \"Sign In\" button.\n"
@@ -352,14 +403,90 @@ class OfflineCase(unittest.TestCase):
         prompt = budget.attempts[0]["messages"][1]["content"]
         self.assertLess(prompt.index("## Quoted vocabulary checklist"), prompt.index("## Requirements (the application to build)"))
 
-    def test_completed_calls_still_share_the_global_cap(self):
-        budget = adapter.CallBudget(limit=1)
+    def test_backtick_phrases_are_quoted_vocabulary_and_values_the_user_types_are_not(self):
+        # Lite requirements backtick their control names; the old pattern saw none of them. What the test types
+        # (fills `Name` with `Shelf Created 1`) is supplied at runtime, so it is no gate phrase, unless the
+        # requirement also double-quotes it (the seeded account typed at login).
+        req = ("- id: REQ-1\n  name: Create shelf\n"
+               "  description: 'A form named `Create shelf form` has a textbox `Name` and a button named `Save Shelf`. "
+               "Seed data: account \"user@example.com\".'\n"
+               "  steps:\n"
+               "    - keyword: WHEN\n"
+               "      content: The user enters `user@example.com`, fills `Name` with `Shelf Created 1`, fills "
+               "`Write here...` with `Body text.` and activates `Save Shelf`.\n"
+               "    - keyword: THEN\n"
+               "      content: The list shows exactly one entry named `Shelf Created 1`; a lone `quote\" pairs with nothing.\n")
+        self.assertEqual(adapter.runtime_values(req), {"shelf created 1", "body text."})
+        self.assertIn("- REQ-1 Create shelf: “Create shelf form”; “Name”; “Save Shelf”; "
+                      "“user@example.com”; “Write here...”\n", adapter.vocabulary_table(req) + "\n")
+        self.assertEqual(adapter.quoted_control_phrases(req), ["Create shelf form", "Name", "Save Shelf", "user@example.com"])
+        stage = self.root / "stage"
+        (stage / "frontend" / "public").mkdir(parents=True)
+        (stage / "frontend" / "public" / "app.js").write_text(
+            "html += '<form aria-label=\"Create shelf form\"><label>Name <input></label>"
+            "<textarea placeholder=\"Write here...\"></textarea><button>+ Save Shelf</button></form>';\n"
+            "const SEED = { account: 'user@example.com' };\n")
+        self.assertEqual(adapter.vocabulary_gaps(stage, req), ([], 0))  # typed values are not demanded
+        [decorated] = adapter.exact_name_gaps(stage, req)
+        self.assertIn("“Save Shelf” appears only as `+ Save Shelf`", decorated)
+        (stage / "frontend" / "public" / "app.js").write_text("html += '<button>Save</button>';\n")
+        gaps, missing = adapter.vocabulary_gaps(stage, req)
+        self.assertEqual(missing, 5)
+        self.assertIn('"Save Shelf"', gaps[0])
+        self.assertNotIn("Shelf Created 1", gaps[0])
+
+    def test_the_draft_allowance_bounds_continuations(self):
+        budget = adapter.CallBudget(draft_limit=1)
         prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
         self.replies(events(prefix + "=== FILE: backend/server.js ===\n// cut off", finish="length"))
-        with self.assertRaisesRegex(RuntimeError, "global model call limit"):
+        with self.assertRaisesRegex(RuntimeError, r"draft call limit reached \(1\): the output was cut off inside "
+                                                  r"`backend/server.js`"):
             self.generate(budget)
         self.assertEqual(self.transport.call_count, 1)
-        self.assertFalse(self.out.exists())
+        self.assertFalse(self.out.exists())  # only backend/package.json was complete: nothing deliverable
+
+    def test_each_cut_is_continued_while_the_draft_allowance_lasts(self):
+        # Old rule: one continuation, and a second cut failed the task.
+        parts = split_application()
+        budget = adapter.CallBudget()
+        self.replies(events(parts[0] + "=== FILE: backend/server.js ===\n// cut off", finish="length"),
+                     events(parts[1] + parts[2] + "=== FILE: frontend/build.js ===\n// cut again", finish="length"),
+                     events(parts[3] + parts[4]))
+        files, totals = self.generate(budget)
+        self.assertEqual(self.transport.call_count, 3)
+        self.assertEqual(totals["completed_calls"], 3)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(adapter.missing_required(self.out), [])
+        self.assertNotIn("cut", (self.out / "backend/server.js").read_text() + (self.out / "frontend/build.js").read_text())
+        self.assertIn("inside the file `backend/server.js`", budget.attempts[1]["messages"][-1]["content"])
+        self.assertIn("inside the file `frontend/build.js`", budget.attempts[2]["messages"][-1]["content"])
+        self.assertEqual([m["role"] for m in budget.attempts[2]["messages"]],
+                         ["system", "user", "assistant", "user", "assistant", "user"])
+
+    def test_a_cut_between_files_asks_for_the_remaining_files_only(self):
+        # Old rule: "output truncated between file blocks; remaining files unknown" failed the task.
+        parts = split_application()
+        budget = adapter.CallBudget()
+        self.replies(events(parts[0] + parts[1], finish="length"), events(parts[2] + parts[3] + parts[4]))
+        files, _ = self.generate(budget)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertEqual(len(files), 5)
+        ask = budget.attempts[1]["messages"][-1]["content"]
+        self.assertIn("cut off between two files", ask)
+        self.assertIn("`backend/package.json`, `backend/server.js`", ask)
+        self.assertNotIn("frontend", ask)
+
+    def test_a_complete_draft_cut_at_its_end_is_resumed_and_an_empty_resume_ends_the_draft(self):
+        # Old assertion: a complete application with finish=length raised "truncated between". Now the model is
+        # asked for the remaining files; an empty normal stop means there were none.
+        budget = adapter.CallBudget()
+        self.replies(events(application(), finish="length"), events(""))
+        files, totals = self.generate(budget)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertEqual(totals["completed_calls"], 2)
+        self.assertEqual(len(files), 5)
+        self.assertIn("`frontend/public/index.html`", budget.attempts[1]["messages"][-1]["content"])
+        self.assertEqual(adapter.missing_required(self.out), [])
 
     def test_continuation_can_retry_without_leaking_a_failed_version(self):
         budget = adapter.CallBudget()
@@ -373,18 +500,60 @@ class OfflineCase(unittest.TestCase):
         self.assertNotIn("cut off", (self.out / "backend/server.js").read_text())
         self.assertIn("backend/server.js", budget.attempts[1]["messages"][-1]["content"])
 
-    def test_no_continuation_for_stop_with_open_block_or_length_between_blocks(self):
-        cases = (("=== FILE: x.js ===\npartial", "stop", "incomplete delivery"),
-                 (application(), "length", "truncated between"),
-                 ("", "stop", "no content"))  # a draft without blocks is asked once more (own test)
-        for content, finish, message in cases:
-            with self.subTest(content=content):
-                budget = adapter.CallBudget()
-                self.replies(events(content, finish=finish))
-                with self.assertRaisesRegex(ValueError, message):
-                    self.generate(budget)
-                self.assertEqual(len(budget.attempts), 1)
-                self.assertFalse(self.out.exists())
+    def test_no_continuation_for_stop_with_an_open_block(self):
+        # The two other cases of the old table changed meaning: a complete draft cut at `length` between files is
+        # resumed, and an empty stream is a completed call that is asked again (tests above).
+        budget = adapter.CallBudget()
+        self.replies(events("=== FILE: x.js ===\npartial", finish="stop"))
+        with self.assertRaisesRegex(ValueError, "incomplete delivery"):
+            self.generate(budget)
+        self.assertEqual(len(budget.attempts), 1)
+        self.assertFalse(self.out.exists())
+
+    def test_an_error_after_complete_files_delivers_them(self):
+        # Transport failures spent in a continuation used to delete the staged application with the error.
+        budget = adapter.CallBudget(fail_limit=2)
+        self.replies(events(application() + "=== FILE: frontend/public/app.js ===\n// cut off", finish="length"),
+                     URLError("first"), URLError("second"))
+        capture = io.StringIO()
+        with contextlib.redirect_stderr(capture):
+            files, totals = self.generate(budget)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(adapter.missing_required(self.out), [])
+        self.assertFalse((self.out / "frontend/public/app.js").exists())  # a partial file never ships
+        self.assertIn("[oneshot] delivering the last complete version after an error: model stream failed (URLError)",
+                      capture.getvalue())
+        self.assertEqual(totals["failed_calls"], 2)
+        self.assertEqual(list(self.root.glob(".oneshot-*")), [])
+
+    def test_a_protocol_error_or_a_spent_draft_allowance_delivers_the_complete_files(self):
+        cut = "=== FILE: frontend/public/app.js ===\n// cut off"
+        cases = ((adapter.CallBudget(), events("=== FILE: a.js ===\nx\n=== FILE: b.js ===\n"),
+                  "unterminated file before next block: a.js"),
+                 (adapter.CallBudget(draft_limit=2), events(cut, finish="length"),
+                  "draft call limit reached (2): the output was cut off inside `frontend/public/app.js`"))
+        for budget, continuation, reason in cases:
+            with self.subTest(reason=reason):
+                out = self.root / ("app-" + str(len(reason)))
+                self.replies(events(application() + cut, finish="length"), continuation)
+                capture = io.StringIO()
+                with contextlib.redirect_stderr(capture):
+                    adapter.generate("Synthetic requirements only", "synthetic-model", "https://synthetic.invalid/v1",
+                                     SYNTHETIC_KEY, out, budget)
+                self.assertIn("delivering the last complete version after an error: " + reason, capture.getvalue())
+                self.assertEqual(adapter.missing_required(out), [])
+                self.assertFalse((out / "frontend/public/app.js").exists())
+
+    def test_an_error_in_the_delivery_check_delivers_the_draft(self):
+        budget = adapter.CallBudget()
+        self.replies(events(application()))
+        capture = io.StringIO()
+        with patch.object(adapter, "SMOKE", True), contextlib.redirect_stderr(capture), \
+                patch.object(adapter, "smoke_check", side_effect=RuntimeError("synthetic probe crash")):
+            files, _ = self.generate(budget)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(adapter.missing_required(self.out), [])
+        self.assertIn("after an error: synthetic probe crash", capture.getvalue())
 
     def test_invalid_sse_retries_without_unbounded_calls(self):
         self.replies([b"data: {invalid json}\n"], [event({"choices": [None]})], events(application()))
@@ -470,6 +639,46 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual((self.out / ".arc" / "runner-events.jsonl").read_text(), "{}\n")
         self.assertEqual((requirement / "requirements.yaml").read_text(), "synthetic: true")
         self.assertEqual(list(self.out.glob(".oneshot-*")), [])
+
+    def test_cli_prepopulated_output_receives_the_complete_version_after_an_error(self):
+        requirement = self.out / "requirements"
+        requirement.mkdir(parents=True)
+        (requirement / "requirements.yaml").write_text("synthetic: true")
+        (self.out / ".arc").mkdir()
+        (self.out / ".arc" / "runner-events.jsonl").write_text("{}\n")
+        self.replies(events(application() + "=== FILE: frontend/public/app.js ===\n// cut off", finish="length"),
+                     events("=== FILE: a.js ===\nx\n=== FILE: b.js ===\n"))
+        capture, output = io.StringIO(), io.StringIO()
+        with patch.dict(os.environ, {"OPENAI_API_KEY": SYNTHETIC_KEY}, clear=True), \
+                contextlib.redirect_stderr(capture), contextlib.redirect_stdout(output):
+            code = adapter.main([str(requirement), "--output-dir", str(self.out)])
+        self.assertEqual(code, 0)
+        self.assertIn("delivering the last complete version after an error: unterminated file before next block",
+                      capture.getvalue())
+        self.assertIn("[oneshot] wrote 5 files", output.getvalue())
+        self.assertEqual(adapter.missing_required(self.out), [])
+        self.assertFalse((self.out / "frontend/public/app.js").exists())
+        self.assertEqual((self.out / ".arc" / "runner-events.jsonl").read_text(), "{}\n")
+        self.assertEqual(list(self.out.glob(".oneshot-*")), [])
+
+    def test_call_allowances_come_from_the_environment_and_a_bad_value_stops_before_any_request(self):
+        self.assertEqual(adapter.CallBudget().limits, {"draft": 4, "repair": 2})
+        with patch.dict(os.environ, {"ONESHOT_DRAFT_CALLS": "6", "ONESHOT_REPAIR_CALLS": "0"}):
+            self.assertEqual(adapter.CallBudget().limits, {"draft": 6, "repair": 0})
+            self.assertEqual(adapter.CallBudget(draft_limit=1, repair_limit=1).limits, {"draft": 1, "repair": 1})
+        requirement = self.root / "requirements"
+        requirement.mkdir()
+        (requirement / "requirements.yaml").write_text("synthetic: true")
+        for name, value in (("ONESHOT_DRAFT_CALLS", "0"), ("ONESHOT_DRAFT_CALLS", "many"), ("ONESHOT_REPAIR_CALLS", "-1")):
+            with self.subTest(name=name, value=value):
+                with patch.dict(os.environ, {name: value}), self.assertRaisesRegex(ValueError, name):
+                    adapter.CallBudget()
+                capture = io.StringIO()
+                with patch.dict(os.environ, {"OPENAI_API_KEY": SYNTHETIC_KEY, name: value}, clear=True), \
+                        contextlib.redirect_stderr(capture):
+                    self.assertEqual(adapter.main([str(requirement), "--output-dir", str(self.out)]), 1)
+                self.assertIn(name, capture.getvalue())
+        self.transport.assert_not_called()
 
     def test_cli_prepopulated_output_with_stray_file_is_still_rejected(self):
         requirement = self.out / "requirements"
