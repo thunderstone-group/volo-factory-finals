@@ -117,3 +117,5 @@ editing. Native input semantics apply immediately; live filtering must not wait 
   try/catch that answers HTTP 500. One thrown handler otherwise ends the Node process and every later test
   fails with ERR_CONNECTION_REFUSED (one large-task run died at test 6 of 135 on "Assignment to constant
   variable").
+
+Nested route-table callbacks must bind to the table that owns their sibling methods, or use explicit object references.
