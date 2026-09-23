@@ -974,3 +974,13 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
 - Code review (read-only agent): one blocking and five important issues fixed with tests before merging.
 - Local network blips at 13:58 and 14:57 cut every running generation; retries now wait 5 s and 30 s. An outage longer
   than about 35 s still zeroes a draft; recorded as a risk (roadmap section 9).
+
+## 2026-09-23 15:20 — Model pair (roadmap 4.5): default stays deepseek-v4-flash
+
+- PR #60 (evidence only; candidate 1f697d8, old repair loop). Clean samples, public replay: flash Keep 31/30/31,
+  BookStack 34/13/33, 12306 51/51; Kimi HighSpeed Keep 30/29/31, BookStack 34/17/22, 12306 79/36. Mean S per pairing,
+  flash vs Kimi: Keep+12306 68.3 vs 62.4, BookStack+12306 64.3 vs 57.5, Keep+BookStack 129.9 vs 105.8; every difference
+  smaller than the two standard errors combined, so the cheaper model stays (roadmap rule). Kimi costs 4-7x per task.
+- Four samples switched models during the 13:58:54 local outage (Clash Verge re-initialized; api.arc-bench.com goes
+  through Clash's fallback rule to a Los Angeles node) and were excluded; replacements ran clean. Spend CNY 60.49,
+  reconciled request by request with the gateway meter.
