@@ -44,6 +44,12 @@ REPAIR_CNY = 3.0  # Repair spend per task in CNY: the repair calls plus the scen
 REPAIR_REJECTIONS = 3  # Consecutive discarded repairs before the loop gives up.
 REPAIR_SHOWN = 40  # Failing scenarios listed in one repair request.
 LOSS_RATIO = 3  # A repair that loses passing scenarios is kept only when it gains this many per loss.
+REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce before one has completed.
+REPAIR_SECONDS = 3 * 3600  # No repair round starts after this much time in the repair phase.
+CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this long (a large task at 1 CPU).
+# Load failures only the jsdom probe reports: jsdom lacks APIs a browser has (ResizeObserver, canvas), so a
+# Chromium scenario run decides whether the application is really broken as a whole.
+DOM_ONLY = ("loading / in a DOM", "frontend script error on load", "after scripts run, / renders no visible text")
 # CNY per million tokens (input, cache-hit input, output), from the gateway catalogue (`arcbench models`, 09-23).
 PRICES = {"deepseek-v4-flash": (3.0, 0.1, 9.0), "kimi-k2.7-code-highspeed": (13.0, 2.6, 54.0)}
 MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
@@ -190,9 +196,19 @@ def call_cost(record):
         cached = min(hit, prompt) if isinstance(hit, int) and hit > 0 else 0
     else:
         seen = record.get("stream_observation") or {}
+        if not seen.get("received_bytes"):
+            return 0.0  # refused before any byte of a reply (a 429, a refused connection): nothing generated
         prompt = sum(len(m.get("content") or "") for m in record.get("messages") or []) // 3
         completion = (seen.get("content_chars", 0) + seen.get("reasoning_chars", 0)) // 3
     return ((prompt - cached) * price[0] + cached * price[1] + completion * price[2]) / 1e6
+
+
+def estimate_cost(messages, model, completion):
+    """CNY a call is expected to cost before it is made: every prompt character at the uncached price (three
+    characters a token) and `completion` output tokens."""
+    price = PRICES.get(model) or max(PRICES.values(), key=lambda p: p[2])
+    prompt = sum(len(m.get("content") or "") for m in messages) // 3
+    return (prompt * price[0] + completion * price[2]) / 1e6
 
 
 class CallBudget:
@@ -256,17 +272,20 @@ class CallBudget:
             total += sum(call.get("cost_cny") or 0.0 for call in self.side_calls)
         return total
 
-    def repair_stop(self):
-        """Why no further repair may start, or None. A repair starts only while the spend so far plus the cost of the
-        last repair call stays within the limit, so the limit is not overrun by more than an estimate's error."""
+    def repair_stop(self, messages=(), model=None):
+        """Why the next repair call (`messages` to `model`) may not start, or None. It starts only while the spend so
+        far plus its estimate stays within the limit: the whole prompt uncached, and as much output as the largest
+        completed repair so far, at least REPAIR_OUTPUT_FLOOR tokens. The estimate is checked once per call; the
+        retries of a failing stream and an unusually long reply can still overrun it."""
         if len(self.failed()) >= self.fail_limit:
             return f"global model failure limit reached ({self.fail_limit})"
         if len(self.completed("repair")) >= self.limits["repair"]:
             return f"repair call limit reached ({self.limits['repair']})"
-        repairs = [r for r in self.attempts if r["phase"] == "repair"]
-        spent, last = self.spent("repair"), (call_cost(repairs[-1]) if repairs else 0.0)
-        if spent + last > self.repair_cny:
-            return f"repair spend limit reached (CNY {spent:.2f} spent, next call about {last:.2f}, limit {self.repair_cny:g})"
+        output = max([r["usage"].get("completion_tokens") or 0 for r in self.completed("repair")] + [REPAIR_OUTPUT_FLOOR])
+        spent, next_call = self.spent("repair"), estimate_cost(messages, self.model or model, output)
+        if spent + next_call > self.repair_cny:
+            return (f"repair spend limit reached (CNY {spent:.2f} spent, the next call is estimated at {next_call:.2f}, "
+                    f"limit {self.repair_cny:g})")
         return None
 
     def start(self, messages, model):
@@ -1669,11 +1688,12 @@ def _scenario_module():
     return scenario_check
 
 
-def check_scenarios(stage, requirements, only=None):
+def check_scenarios(stage, requirements, only=None, translate=True):
     """Run the requirements' own scenarios against the staged application (scenario_check.py). A checker that cannot
     run reports why instead of raising: its failure is never the application's fault."""
     try:
-        return _scenario_module().run(None, stage, text=requirements or "", only=only)
+        return _scenario_module().run(None, stage, text=requirements or "", only=only, translate=translate,
+                                      seconds=CHECK_SECONDS)
     except Exception as exc:
         reason = f"{type(exc).__name__}: {str(exc)[:300]}"
         print(f"[oneshot] scenario check unavailable: {reason}", file=sys.stderr)
@@ -1690,17 +1710,23 @@ def static_gaps(stage, requirements, scaffold):
     return {gate: problems for gate, problems in gates.items() if problems}
 
 
-def assess(stage, requirements, scaffold):
+def assess(stage, requirements, scaffold, translate=True):
     """What the repair loop decides on: the delivery smoke check (whole-application failures and hints), the static
-    gates, the quoted vocabulary, and the scenario report, which is skipped while the application is broken whole."""
+    gates, the quoted vocabulary, and the scenario report, which is skipped while the application is broken whole.
+    A load failure that only the jsdom probe reports stands only when Chromium passes no scenario either."""
     browser = []
     smoke, executed = smoke_check(stage, requirements, browser)
     vocab, missing = vocabulary_gaps(stage, requirements)
-    state = {"executed": executed, "smoke": smoke, "fatal": [p for p in smoke if _fatal(p)],
+    fatal = [p for p in smoke if _fatal(p)]
+    state = {"executed": executed, "smoke": smoke, "fatal": fatal,
              "static": static_gaps(stage, requirements, scaffold), "vocab": vocab, "missing": missing,
              "browser": browser, "report": None}
-    if executed and not state["fatal"]:
-        state["report"] = check_scenarios(stage, requirements)
+    if executed and (not fatal or all(p.startswith(DOM_ONLY) for p in fatal)):
+        state["report"] = check_scenarios(stage, requirements, translate=translate)
+        if fatal and _scenarios(state, "pass"):
+            state["fatal"], state["jsdom_only"] = [], fatal  # a real browser renders it: hints, not a dead app
+        elif fatal:
+            state["report"] = None
     return state
 
 
@@ -1796,11 +1822,29 @@ def repair_request(state, discarded=None):
     return REPAIR.format(findings="\n\n".join(sections))
 
 
-def judge(before, after, stage, requirements, pinned):
+def _status_map(state):
+    """Scenario id -> status; a scenario the check never started (its time budget was spent) is `unrun`."""
+    return {s["id"]: ("unrun" if s.get("status") == "error" and (s.get("observation") or "").startswith("Not run:")
+                      else s.get("status")) for s in (state["report"] or {}).get("scenarios", [])}
+
+
+def _checker_failed(report):
+    """True when the scenario check itself could not judge the application: it did not run, or every scenario it
+    planned ended in an error (no browser, a hung executor, a spent time budget)."""
+    if report is None or report.get("unavailable"):
+        return True
+    statuses = [s.get("status") for s in report.get("scenarios", []) if s.get("status") != "unparsed"]
+    return bool(statuses) and all(status == "error" for status in statuses)
+
+
+def judge(before, after, stage, requirements, pinned, translate=True, budget=None):
     """(accepted, reason, detail) for a repaired stage against the version before it (roadmap 4.3). A repair is kept
-    when it brings a broken application back (whatever else it did), or when at least one more scenario passes, it
-    gains LOSS_RATIO scenarios for every passing one it loses (a lost one is rechecked once for flakiness), no static
-    gate newly flags, no quoted phrase disappears and no control name the requirement quotes is renamed."""
+    when it brings a broken application back (whatever else it did), or when at least one scenario that failed now
+    passes, it gains LOSS_RATIO of those for every passing scenario it loses, no clean static gate starts flagging, no
+    quoted phrase disappears and no control name the requirement quotes is renamed. Only verdicts both checks reached
+    compare: a scenario that was unparsed or errored before never counts as gained, and one that is unparsed after as
+    lost. Lost scenarios, and gains of at most two, are rechecked once for flakiness. A check that could not run at all
+    is the checker's failure, marked `checker` in the detail, not the repair's."""
     detail = {}
     if after["fatal"]:
         return False, "the application is still broken as a whole: " + "; ".join(after["fatal"])[:500], detail
@@ -1826,26 +1870,41 @@ def judge(before, after, stage, requirements, pinned):
         if guards:
             detail["waived"] = guards
         return True, "the application works again", detail
-    report = after["report"] or {}
-    if report.get("unavailable"):
-        return False, "the scenario recheck could not run: " + report["unavailable"], detail
-    lost = passing(before) - passing(after)
-    if lost:
-        again = {s["id"] for s in check_scenarios(stage, requirements, only=lost).get("scenarios", [])
-                 if s.get("status") == "pass"}
-        if again:
-            detail["flaky"] = sorted(again)
-            for scenario in report.get("scenarios", []):
-                if scenario["id"] in again:
-                    scenario["status"] = "pass"
-        lost -= again
-    gained = passing(after) - passing(before)
+    if _checker_failed(after["report"]):
+        after["report"] = check_scenarios(stage, requirements, translate=translate)  # one more try before judging
+        if budget is not None:
+            account_translation(budget, after["report"])
+    if _checker_failed(after["report"]):
+        detail["checker"] = True
+        why = (after["report"] or {}).get("unavailable") or next(
+            (s.get("observation") for s in (after["report"] or {}).get("scenarios", []) if s.get("status") == "error"), "")
+        return False, "the scenario recheck could not run: " + str(why)[:300], detail
+    old, new = _status_map(before), _status_map(after)
+    lost = {sid for sid, status in old.items() if status == "pass" and new.get(sid) in ("fail", "error")}
+    gained = {sid for sid, status in old.items() if status == "fail" and new.get(sid) == "pass"}
+    unsure = lost | (gained if len(gained) <= 2 else set())
+    if unsure:
+        recheck = check_scenarios(stage, requirements, only=unsure, translate=translate)
+        if budget is not None:
+            account_translation(budget, recheck)
+        again = {s["id"]: s.get("status") for s in recheck.get("scenarios", [])}
+        flaky = sorted(sid for sid in lost if again.get(sid) == "pass")
+        doubtful = sorted(sid for sid in gained & unsure if again.get(sid) != "pass")
+        if flaky:
+            detail["flaky"] = flaky
+        if doubtful:
+            detail["unconfirmed"] = doubtful
+        for scenario in after["report"].get("scenarios", []):
+            if scenario["id"] in flaky:
+                scenario["status"] = "pass"
+            elif scenario["id"] in doubtful:
+                scenario["status"] = again.get(scenario["id"]) or "error"
+        lost -= set(flaky)
+        gained -= set(doubtful)
     detail["gained"] = sorted(gained)
     if lost:
         detail["lost"] = sorted(lost)
-        errors = [s for s in _scenarios(after, "error") if s["id"] in lost]
-        what = "the scenario recheck could not run for" if len(errors) == len(lost) else "the change broke"
-        broke = f"{what} {len(lost)} passing scenario(s): " + ", ".join(sorted(lost)[:12])
+        broke = f"the change broke {len(lost)} passing scenario(s): " + ", ".join(sorted(lost)[:12])
         # A structural fix can expose failures that the broken version passed by accident: the official v24 router fix
         # took the self-check from 9 to 28 passing scenarios and lost two that passed only because every detail link
         # rendered the list (the public suite fails them on the fixed app too). Kept when it gains three per loss.
@@ -1858,33 +1917,53 @@ def judge(before, after, stage, requirements, pinned):
     return True, f"{len(gained)} more scenario(s) pass" + (f", {len(lost)} lost" if lost else ""), detail
 
 
+def _swap_back(stage, backup):
+    """Put the pre-repair copy back in place of the stage by renames within one directory, so a failure midway never
+    leaves neither (a delete-then-copy restore that fails on a full disk ships nothing)."""
+    discarded = stage.with_name(stage.name + ".discarded-" + uuid.uuid4().hex)
+    stage.rename(discarded)
+    try:
+        backup.rename(stage)
+    except BaseException:
+        discarded.rename(stage)
+        raise
+    shutil.rmtree(discarded, ignore_errors=True)
+
+
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
     """Scenario-driven repair (roadmap 4.3). A repair is requested while the application is broken as a whole or one of
     the requirements' scenarios fails, and it carries those findings; the static gates and the smoke check's
     family-level problems ride along as hints and never trigger a call on their own. judge() decides whether a repair
     is kept; a discarded one puts the stage back and the next request says why. The loop ends when nothing fails, at
-    the repair spend or call limit, or after REPAIR_REJECTIONS discarded repairs in a row. Each round is recorded."""
+    the repair spend, call or time limit, or after REPAIR_REJECTIONS discarded repairs in a row. Each round is
+    recorded. The scenario plan stays fixed for the whole loop: a translation that failed once is not retried."""
+    started_repairs = time.monotonic()
     state = assess(stage, requirements, scaffold)
     account_translation(budget, state["report"])
+    translate = ((state["report"] or {}).get("translation") or {}).get("status") not in ("failed", "no_key")
     budget.smoke = {"executed": state["executed"],
                     "problems": state["smoke"] + [p for ps in state["static"].values() for p in ps] + state["vocab"],
                     "vocabulary_missing": state["missing"], "scenarios": scenario_summary(state["report"]), "repair": None}
+    if state.get("jsdom_only"):
+        budget.smoke["jsdom_only"] = state["jsdom_only"]
     if state["browser"]:
         budget.smoke["browser_before"] = state["browser"]
     rounds, conversation, discarded = [], list(messages), None
     quoted = {phrase.lower() for phrase in quoted_control_phrases(requirements)}
     while state["fatal"] or _scenarios(state, "fail"):
-        stop = budget.repair_stop()
+        ask = repair_request(state, discarded)
+        stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
         if stop is None and len(rounds) >= REPAIR_REJECTIONS and not any(r["accepted"] for r in rounds[-REPAIR_REJECTIONS:]):
             stop = f"{REPAIR_REJECTIONS} repairs in a row were discarded"
+        if stop is None and time.monotonic() - started_repairs > REPAIR_SECONDS:
+            stop = f"the repair time limit was reached ({REPAIR_SECONDS} s)"
         if stop:
             budget.smoke["stopped"] = stop
             if not rounds:
                 budget.smoke["repair"] = "skipped: " + stop
             break
-        ask = repair_request(state, discarded)
-        # Only names the requirement quotes as controls are pinned (one practice run: pinning every quoted phrase rejected
-        # a repair for "renaming" messages and headings, and the collision-laden draft shipped).
+        # Only names the requirement quotes as controls are pinned (one practice run: pinning every quoted phrase
+        # rejected a repair for "renaming" messages and headings, and the collision-laden draft shipped).
         pinned = control_names(stage) & quoted
         backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
         shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
@@ -1911,9 +1990,9 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             if needed:
                 raise ValueError("the repair broke delivery: " + "; ".join(needed))
             budget.progress("checking_repair", force=True)
-            after = assess(stage, requirements, scaffold)
+            after = assess(stage, requirements, scaffold, translate)
             account_translation(budget, after["report"])
-            accepted, reason, detail = judge(state, after, stage, requirements, pinned)
+            accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget)
             record.update(detail, reason=reason, scenarios=scenario_summary(after["report"]))
             if after["browser"]:
                 record["browser_after"] = after["browser"]
@@ -1924,21 +2003,24 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             conversation += [{"role": "user", "content": ask}, {"role": "assistant", "content": fixed}]
             state, discarded = after, None
             record.update(accepted=True, files=[item["path"] for item in batch])
+            shutil.rmtree(backup, ignore_errors=True)
         except Exception as exc:
             # Keep the version before this repair: a half-applied fix could be worse than the known state.
-            shutil.rmtree(stage)
-            shutil.copytree(backup, stage, symlinks=True)
+            _swap_back(stage, backup)
             record["reason"] = str(exc)[:600]
-            if replied:  # a transport failure changed nothing the model should hear about
+            # The model hears why its change was discarded; not a transport failure or a checker that could not run.
+            if replied and not record.get("checker"):
                 discarded = record["reason"] + _still_failing(after, record["failing"])
         finally:
-            shutil.rmtree(backup, ignore_errors=True)
             record["seconds"] = round(time.monotonic() - started, 1)
             record["cost_cny"] = round(sum(call_cost(r) for r in budget.attempts[calls:]), 6)
             rounds.append(record)
             budget.smoke["rounds"] = rounds
             budget.smoke["repair"] = {k: record[k] for k in ("accepted", "reason", "files", "waived",
                                                              "renamed_controls") if k in record}
+    if "stopped" not in budget.smoke and _checker_failed(state["report"]) and not state["fatal"] and state["executed"]:
+        why = (state["report"] or {}).get("unavailable") or "every scenario ended in an error"
+        budget.smoke["stopped"] = "the scenario check could not run: " + str(why)[:300]
     budget.smoke["problems_after"] = state["smoke"]
     budget.smoke["scenarios_after"] = scenario_summary(state["report"])
 

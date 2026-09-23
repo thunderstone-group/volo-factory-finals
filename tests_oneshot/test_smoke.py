@@ -84,10 +84,11 @@ class SmokeCase(unittest.TestCase):
     def scenarios(self, rules):
         """Stand in for the Chromium scenario check: `rules` maps a scenario id to a predicate over the staged
         frontend/public/app.js (true = the scenario passes). Returns the `only` argument of every check."""
-        calls = []
+        calls, self.translate_flags = [], []
 
-        def check(stage, requirements, only=None):
+        def check(stage, requirements, only=None, translate=True):
             calls.append(only)
+            self.translate_flags.append(translate)
             text = (Path(stage) / "frontend/public/app.js").read_text(encoding="utf-8")
             verdicts = {sid: ok(text) for sid, ok in rules.items() if only is None or sid in only}
             return {"scenarios": [{"id": sid, "name": "Synthetic " + sid, "status": "pass" if passed else "fail",
@@ -350,7 +351,7 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("observed: synthetic observation for REQ-1", ask)
         self.assertIn("must keep passing: REQ-2", ask)
         self.assertNotIn("broken as a whole", ask)
-        self.assertEqual(calls, [None, None])  # the draft was broken whole: its scenarios never ran
+        self.assertEqual(calls, [None, None, {"REQ-1"}])  # the dead draft's scenarios never ran; the gain is rechecked
         self.assertEqual(budget.smoke["scenarios_after"]["counts"], {"pass": 2})
         self.assertEqual(next(f for f in files if f["path"] == "frontend/public/app.js")["content"], complete + "\n")
 
@@ -642,7 +643,7 @@ class SmokeCase(unittest.TestCase):
     def test_a_revived_application_is_kept_although_the_scenario_recheck_could_not_run(self):
         reports = []
 
-        def check(stage, requirements, only=None):
+        def check(stage, requirements, only=None, translate=True):
             reports.append(stage)
             if len(reports) == 1 and "Home" in (Path(stage) / "frontend/public/app.js").read_text() and self.first:
                 return {"scenarios": [{"id": "REQ-1", "status": "fail", "observation": "synthetic", "steps": []}],
@@ -701,7 +702,8 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(first["lost"], ["REQ-1"])
         self.assertIn("the change broke 1 passing scenario(s): REQ-1, and fixed only 1", first["reason"])
         self.assertTrue(second["accepted"], second)
-        self.assertEqual(calls, [None, None, {"REQ-1"}, None])  # the lost scenario was rechecked once
+        # The lost scenario and a gain of at most two are rechecked once, in each round.
+        self.assertEqual(calls, [None, None, {"REQ-1", "REQ-2"}, None, {"REQ-2"}])
         ask = budget.attempts[2]["messages"][-1]["content"]
         self.assertIn("Your previous change was discarded", ask)
         self.assertIn("the change broke 1 passing scenario(s): REQ-1", ask)
@@ -728,7 +730,7 @@ class SmokeCase(unittest.TestCase):
         self.draft_js("const one = 1;", "const one = 1; const two = 2;")
         full_checks = []
 
-        def check(stage, requirements, only=None):
+        def check(stage, requirements, only=None, translate=True):
             text = (Path(stage) / "frontend/public/app.js").read_text()
             if only is None:
                 full_checks.append(text)
@@ -742,6 +744,7 @@ class SmokeCase(unittest.TestCase):
         [only] = budget.smoke["rounds"]
         self.assertTrue(only["accepted"], only)
         self.assertEqual(only["flaky"], ["REQ-1"])
+        self.assertEqual(only["gained"], ["REQ-2"])
         self.assertEqual(budget.smoke["scenarios_after"]["counts"], {"pass": 2})
 
     def test_a_repair_that_makes_a_clean_static_gate_flag_is_discarded(self):
@@ -769,7 +772,8 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(self.transport.call_count, 2)
         self.assertTrue(budget.smoke["rounds"][0]["accepted"])
         self.assertAlmostEqual(budget.smoke["rounds"][0]["cost_cny"], 100000 * 13 / 1e6 + 20000 * 54 / 1e6)
-        self.assertIn("repair spend limit reached (CNY 2.38 spent", budget.smoke["stopped"])
+        # The limit is checked before each call against an estimate; this reply was far longer than estimated.
+        self.assertIn("repair spend limit reached (CNY 2.38 spent, the next call is estimated at", budget.smoke["stopped"])
         self.assertAlmostEqual(budget.summary()["estimated_repair_cost_cny"], 2.38)
 
     def test_three_discarded_repairs_in_a_row_end_the_loop(self):
@@ -784,6 +788,125 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("after it REQ-1 still failed: synthetic observation for REQ-1",
                       budget.attempts[2]["messages"][-1]["content"])
         self.assertEqual((self.out / "frontend/public/app.js").read_text(), "const zero = 0;\n")
+
+    def test_a_scenario_that_did_not_fail_before_is_no_gain(self):
+        # Review E2: only a verdict both checks reached compares. An errored or unparsed scenario that passes after the
+        # repair is not the repair's work.
+        states = iter([{"REQ-1": "fail", "REQ-2": "error", "REQ-3": "unparsed"},
+                       {"REQ-1": "fail", "REQ-2": "pass", "REQ-3": "pass"}])
+
+        def check(stage, requirements, only=None, translate=True):
+            verdicts = next(states) if only is None else {}
+            return {"scenarios": [{"id": sid, "status": st, "observation": "synthetic", "steps": []}
+                                  for sid, st in verdicts.items()], "invariants": [], "translation": {"status": "cached"}}
+        self.enter(patch.object(adapter, "check_scenarios", side_effect=check))
+        self.draft_js("const zero = 0;", "const zero = 0; // same")
+        files, budget = self.generate(repairs=1)
+        [only] = budget.smoke["rounds"]
+        self.assertFalse(only["accepted"])
+        self.assertEqual((only["gained"], only["reason"]), ([], "no failing scenario passes after the change"))
+
+    def test_a_gain_the_recheck_does_not_confirm_is_no_gain(self):
+        seen = []
+
+        def check(stage, requirements, only=None, translate=True):
+            seen.append(only)
+            passing = only is None and len(seen) == 2  # passes once, right after the repair, then fails again
+            return {"scenarios": [{"id": "REQ-1", "status": "pass" if passing else "fail", "observation": "synthetic",
+                                   "steps": []}], "invariants": [], "translation": {"status": "cached"}}
+        self.enter(patch.object(adapter, "check_scenarios", side_effect=check))
+        self.draft_js("const zero = 0;", "const one = 1;")
+        files, budget = self.generate(repairs=1)
+        [only] = budget.smoke["rounds"]
+        self.assertFalse(only["accepted"])
+        self.assertEqual(only["unconfirmed"], ["REQ-1"])
+        self.assertEqual((self.out / "frontend/public/app.js").read_text(), "const zero = 0;\n")
+
+    def test_a_failed_translation_is_not_retried_within_the_loop(self):
+        flags, reports = [], iter([{"status": "failed", "error": "synthetic cut"}, {"status": "disabled"}])
+
+        def check(stage, requirements, only=None, translate=True):
+            flags.append(translate)
+            text = (Path(stage) / "frontend/public/app.js").read_text()
+            verdict = "pass" if "one" in text else "fail"
+            translation = next(reports) if only is None else {"status": "disabled"}
+            return {"scenarios": [{"id": "REQ-1", "status": verdict, "observation": "synthetic", "steps": []}],
+                    "invariants": [], "translation": translation}
+        self.enter(patch.object(adapter, "check_scenarios", side_effect=check))
+        self.draft_js("const zero = 0;", "const one = 1;")
+        files, budget = self.generate()
+        self.assertEqual(flags, [True, False, False])  # first check, repair check, recheck of the single gain
+        self.assertTrue(budget.smoke["rounds"][0]["accepted"])
+        [call] = budget.side_calls
+        self.assertEqual((call["call"], call["status"]), ("scenario-translation", "failed"))
+
+    def test_a_recheck_that_cannot_run_is_the_checkers_failure_not_the_models(self):
+        seen = []
+
+        def check(stage, requirements, only=None, translate=True):
+            seen.append(only)
+            if len(seen) == 1:
+                return {"scenarios": [{"id": "REQ-1", "status": "fail", "observation": "synthetic", "steps": []}],
+                        "invariants": [], "translation": {"status": "cached"}}
+            return {"scenarios": [{"id": "REQ-1", "status": "error", "steps": [],
+                                   "observation": "Chromium is unavailable (browser): synthetic"}],
+                    "invariants": [], "translation": {"status": "cached"}}
+        self.enter(patch.object(adapter, "check_scenarios", side_effect=check))
+        self.draft_js("const zero = 0;", "const one = 1;", "const two = 2;")
+        files, budget = self.generate(repairs=2)
+        first, second = budget.smoke["rounds"]
+        self.assertTrue(first["checker"])
+        self.assertIn("the scenario recheck could not run: Chromium is unavailable", first["reason"])
+        self.assertEqual(seen[:3], [None, None, None])  # the recheck is tried once more before judging
+        ask = budget.attempts[2]["messages"][-1]["content"]
+        self.assertNotIn("previous change was discarded", ask)  # the model is not blamed for the checker
+
+    def test_a_load_failure_only_jsdom_reports_is_a_hint_when_chromium_renders_the_app(self):
+        # Review E5: ResizeObserver and canvas exist in Chromium, not in jsdom.
+        gap = "frontend script error on load (the page is blank for every test): ResizeObserver is not defined"
+        self.scenarios({"REQ-1": lambda t: True})
+        self.replies(events(app(server())))
+        with patch.object(adapter, "smoke_check", return_value=([gap], True)):
+            files, budget = self.generate()
+        self.assertEqual(self.transport.call_count, 1)
+        self.assertIsNone(budget.smoke["repair"])
+        self.assertEqual(budget.smoke["jsdom_only"], [gap])
+        self.assertEqual(budget.smoke["scenarios"]["counts"], {"pass": 1})
+        # When Chromium passes nothing either, the application is broken as a whole.
+        self.out = self.root / "dead"
+        self.scenarios({"REQ-1": lambda t: False})
+        self.replies(events(app(server())), events(block("frontend/public/app.js", "console.log('fixed');")))
+        with patch.object(adapter, "smoke_check", side_effect=[([gap], True), ([], True)]):
+            files, budget = self.generate(repairs=1)
+        self.assertIn("broken as a whole", budget.attempts[1]["messages"][-1]["content"])
+        self.assertTrue(budget.smoke["rounds"][0]["accepted"])
+
+    def test_the_restore_swaps_by_rename_and_survives_a_failed_rename(self):
+        stage, backup = self.root / "stage", self.root / "backup"
+        for where, text in ((stage, "repaired"), (backup, "original")):
+            (where / "frontend").mkdir(parents=True)
+            (where / "frontend" / "app.js").write_text(text)
+        adapter._swap_back(stage, backup)
+        self.assertEqual((stage / "frontend" / "app.js").read_text(), "original")
+        self.assertFalse(backup.exists())
+        (backup / "frontend").mkdir(parents=True)
+        (backup / "frontend" / "app.js").write_text("second")
+        real = Path.rename
+
+        def flaky(path, target):
+            if path == backup:
+                raise OSError("synthetic: no space left on device")
+            return real(path, target)
+        with patch.object(Path, "rename", flaky), self.assertRaises(OSError):
+            adapter._swap_back(stage, backup)
+        self.assertEqual((stage / "frontend" / "app.js").read_text(), "original")  # never neither
+
+    def test_a_call_refused_before_any_byte_costs_nothing(self):
+        refused = {"model": "kimi-k2.7-code-highspeed", "usage": {}, "messages": [{"role": "user", "content": "x" * 90000}],
+                   "stream_observation": {"received_bytes": 0, "content_chars": 0, "reasoning_chars": 0}}
+        self.assertEqual(adapter.call_cost(refused), 0.0)
+        self.assertAlmostEqual(adapter.estimate_cost([{"role": "user", "content": "x" * 30000}], "deepseek-v4-flash", 8000),
+                               (10000 * 3.0 + 8000 * 9.0) / 1e6)
 
     def test_the_scenario_translation_call_is_on_the_ledger(self):
         cache = self.root / "translation.json"
@@ -806,7 +929,7 @@ class SmokeCase(unittest.TestCase):
                                        "prompt_tokens_details": {"cached_tokens": 20000}}]}
         self.assertAlmostEqual(adapter.call_cost(completed), (10000 * 3.0 + 20000 * 0.1 + 10000 * 9.0) / 1e6)
         cut = {"model": "deepseek-v4-flash", "usage": {}, "messages": [{"role": "user", "content": "x" * 30000}],
-               "stream_observation": {"content_chars": 3000, "reasoning_chars": 27000}}
+               "stream_observation": {"received_bytes": 90000, "content_chars": 3000, "reasoning_chars": 27000}}
         self.assertAlmostEqual(adapter.call_cost(cut), (10000 * 3.0 + 10000 * 9.0) / 1e6)
 
     def test_cli_prints_smoke_summary_without_the_key(self):

@@ -108,27 +108,40 @@ vocabulary, and, when the application is not broken as a whole, the scenario sel
 
 - **Trigger.** A repair is requested only while the application is broken as a whole (build or
   syntax failure, dead backend, `/` not served, load error, blank page, a page that never settles)
-  or a requirement scenario fails. Family-level smoke problems (a throwing click handler, a missing
-  landmark), the static gates and the vocabulary gap ride along as hints and never trigger a call
-  on their own.
+  or a requirement scenario fails. A load failure that only the jsdom probe reports (jsdom lacks
+  `ResizeObserver`, canvas and other browser APIs) stands only when Chromium passes no scenario
+  either; otherwise it becomes a hint (`smoke.jsdom_only`). Family-level smoke problems (a throwing
+  click handler, a missing landmark), the static gates and the vocabulary gap ride along as hints
+  and never trigger a call on their own.
 - **Request.** The whole-application failures, else each failing scenario with the steps the
   browser performed and what it observed (up to 40), the ids of the passing scenarios to keep, and
   the hints. The files are re-emitted whole.
 - **Acceptance.** A repair that makes a broken application work again is kept whatever else it did
   (the waived guards are listed in `rounds[].waived`). Otherwise it is kept only when at least one
-  more scenario passes, none that passed is lost (a lost one is rechecked once, for flakiness), no
+  scenario that failed now passes, it gains three such scenarios for every passing one it loses, no
   clean static gate starts flagging, no quoted phrase disappears and no control name the requirement
   quotes is renamed (compared without leading or trailing symbols; a name the browser activated
-  counts as present).
-- **Discard.** A discarded repair restores the stage; its reply never enters the conversation, and
-  the next request says why it was discarded. A transport failure changes nothing the model hears.
-- **Stop.** When nothing fails, at the spend or call limit (a repair starts only while the spend so
-  far plus the last repair call's cost stays within the limit), at the transport failure limit, or
-  after three discarded repairs in a row.
-- **Record.** `smoke.rounds` holds every round: trigger, reason, gained, lost and flaky scenarios,
-  files, seconds and cost; `smoke.scenarios` and `smoke.scenarios_after` summarize the first and
-  the final report; `smoke.stopped` says why the loop ended. The translation call appears in the
-  trace like any other call.
+  counts as present). Only verdicts both checks reached compare: a scenario that was unparsed or
+  errored before is never a gain, one unparsed or not started after is never a loss. Lost
+  scenarios, and gains of at most two, are rechecked once. A check that cannot run at all (no
+  browser, every scenario errored) is retried once and then marked `checker`: the repair is
+  discarded, but the model is not told it failed.
+- **Fixed plan.** The first check fixes the scenario plan for the whole loop: a translation that
+  failed (or had no key) is not retried, so every check compares the same scenarios.
+- **Discard.** A discarded repair is swapped back by renames within one directory (the stage never
+  goes missing); its reply never enters the conversation, and the next request says why it was
+  discarded and what it left failing. A transport failure changes nothing the model hears.
+- **Stop.** When nothing fails; when the next call would exceed the spend limit (spend so far plus an
+  estimate: the whole prompt uncached and as much output as the largest completed repair, at least
+  8000 tokens; the retries of one failing stream and an unusually long reply can still overrun it);
+  at the repair call or transport failure limit; after three discarded repairs in a row; or after
+  three hours of repairs. One scenario check starts no scenario after 30 minutes (those left are
+  `Not run`).
+- **Record.** `smoke.rounds` holds every round: `fatal` and `failing` (what triggered it), `reason`,
+  `gained`, `lost`, `flaky`, `unconfirmed`, `files`, `seconds`, `cost_cny` and the scenario summary
+  after it; `smoke.repair` repeats only the last round. `smoke.scenarios` and
+  `smoke.scenarios_after` summarize the first and the final report; `smoke.stopped` says why the loop
+  ended. Every translation call, failed ones included, appears in the trace like any other call.
 
 `scripts/repair_replay.py` runs the loop on an existing application as if it were the draft, with
 real model calls (a controlled repair: evidence about the loop, never candidate progress).

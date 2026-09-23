@@ -236,5 +236,16 @@ class ScenarioCheckEndToEnd(unittest.TestCase):
         self.assertIn(("pageerror", "fail"), kinds)
 
 
+    def test_a_recheck_runs_only_the_named_scenarios_from_the_text_and_stops_at_its_time_budget(self):
+        # The repair loop passes the document itself, a subset of ids, and translate=False after a failed translation.
+        text = (self.temp / "requirements.yaml").read_text()
+        report = scenario_check.run(None, self.temp / "broken", text=text, only={"REQ-2.1", "REQ-2.2"}, translate=False)
+        self.assertEqual({s["id"]: s["status"] for s in report["scenarios"]}, {"REQ-2.1": "pass", "REQ-2.2": "fail"})
+        self.assertEqual(report["translation"], {"status": "disabled"})
+        spent = scenario_check.run(None, self.temp / "good", text=text, only={"REQ-2.1"}, translate=False, seconds=1e-9)
+        [scenario] = spent["scenarios"]
+        self.assertEqual(scenario["status"], "error")
+        self.assertTrue(scenario["observation"].startswith("Not run:"))
+
 if __name__ == "__main__":
     unittest.main()
