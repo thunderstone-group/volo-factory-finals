@@ -889,3 +889,19 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
   Keep replays (24, 10 of them full score) are held out for acceptance.
 - The local image built from the official runner Dockerfile has no PyYAML, so the scenario parser is
   standard-library only.
+
+## 2026-09-23 11:00 — Delivery-never-zero round 1 merged; large-bundle recheck; practice probe dispatched
+
+- PR #46 merged (75360b7). Main-session acceptance: 9 hidden cases pass; one-shot 124 OK / 1 skipped and legacy
+  226 OK / 12 skipped (one intermittent one-shot failure in three runs, gone on rerun; most likely a port clash with
+  the parallel agent's test runs); replaying the recorded 09-19 Ctrip repair through the branch's repair_delivery
+  is now accepted (browser checked before and after, one family-level problem left) where main rejected it for
+  renaming `+ 添加返程` and shipped the blank page (0/125).
+- Zero-cost recheck of three large bundles (r27a-12306, r28a-12306, 09-19 Ctrip) with main's self-check, locally
+  and in the arc-business-feedback image at 1 CPU / 2 GB: both probes executed in all six runs, smoke round
+  ≤ 6.9 s, no timeouts. Healthy 12306 bundles each raise one static-gate problem (r28a likely a false positive:
+  placeholder and aria-label of one input treated as nested labels), which would spend a repair call.
+- Delivery-never-zero round 2 (waiver extended to vocabulary and recheck checks, keep complete blocks on a
+  protocol error, exit 1 when the model wrote nothing, oneshot.md refresh) and a practice-platform probe
+  (arc-bench-web, flash, 12306 and Ctrip twice each, serial, package from 75360b7) dispatched.
+- Six orphaned `node server.js` replay servers from 09-18 (runs/2026-09-18-goal bundles, ports 587xx) stopped.
