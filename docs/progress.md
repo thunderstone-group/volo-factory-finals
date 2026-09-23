@@ -941,3 +941,18 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
   executor's fake-gateway subprocess run (seed.js complete, app.js cut without [DONE]) delivered the whole app.
 - Known intermittent test: test_smoke …rejected_when_the_app_was_never_broken_whole fails occasionally under load,
   also on the older code (fixture timing, not product behavior).
+
+## 2026-09-23 13:55 — Scenario self-check merged; scenario-driven repair and card subtraction started
+
+- PR #49 merged (7803da3). Round 2 meets the criteria on both tasks: Keep coverage 30/32 (19 rules + 11 model),
+  agreement 695/720 (96.5%), false pass 23 (3.2%); BookStack coverage 32/34 (29 + 3), agreement 900/928 (97.0%),
+  false pass 26 (2.8%); zero failing scenarios on the 10 + 12 full-score apps; the four broken BookStack apps report
+  23 / 25 / 27 / 29 failing scenarios. The main session re-ran both calibrations with the cached translations (no model
+  call) and got identical numbers. Old-style large requirements parse poorly (12306 29/135, Ctrip 7/125; not gated).
+  Development made eight translation calls, CNY 1.489.
+- Scenario-driven repair (roadmap 4.3) is implemented by the main session on feat/scenario-repair. Card subtraction
+  (4.6) was dispatched to an executor on feat/card-subtraction (report by 19:00); its control group is the flash samples
+  of the model-pair experiment (same code, only the card differs).
+- The meter's login endpoint rate-limits: HTTP 429 "too many login attempts" at 13:23, because every arcbench
+  balance / requests / usage call logs in again. The model-pair orchestrator stopped launching on an unreadable balance;
+  it now accounts spend locally from usage and reads the meter at most every 30 minutes.
