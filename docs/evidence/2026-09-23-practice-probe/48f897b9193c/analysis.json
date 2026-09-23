@@ -1,0 +1,427 @@
+{
+ "run_id": "48f897b9193c",
+ "status": {
+  "run_id": "48f897b9193c",
+  "status": "FAILED",
+  "passed": 52,
+  "failed": 73,
+  "pass_rate": 41.6,
+  "tokens": 703498,
+  "duration_seconds": 1235,
+  "failure_reason": "Runner exited with test failures or runtime errors",
+  "submission_id": "62093612a851",
+  "requirement_id": "arc-bench-web--ctrip",
+  "finished_at": "2026-09-23T03:55:04.618235",
+  "display_name": "dnz-75360b7",
+  "model_name": "deepseek-v4-flash",
+  "feature_implemented_count": 52,
+  "feature_total_count": 125,
+  "cost": {
+   "amount": 3.778246,
+   "currency": "CNY"
+  },
+  "steps": [
+   {
+    "key": "deploy_agent",
+    "status": "completed",
+    "description": "Done"
+   },
+   {
+    "key": "start_agent",
+    "status": "completed",
+    "description": "Done"
+   },
+   {
+    "key": "run_tests",
+    "status": "completed",
+    "description": "Done"
+   }
+  ]
+ },
+ "failed_tests": [
+  "REQ-2.4.1: Password Login Flow",
+  "REQ-2.4.4: Exception: Incorrect Username or Password",
+  "REQ-2.4.5: Exception: Agreement Not Accepted",
+  "REQ-2.5.1: Verification-Code Login Flow",
+  "REQ-2.5.3: Exception: Verification Code Missing",
+  "REQ-2.5.4: Exception: Incorrect Verification Code",
+  "REQ-2.5.5: Exception: Agreement Not Accepted",
+  "REQ-2.6.3.1: Enter Verification Information",
+  "REQ-2.6.4.1: Set Password and Complete Registration",
+  "REQ-2.6.4.2: Exception: Passwords Do Not Match",
+  "REQ-2.6.4.3: Exception: Password Too Weak",
+  "REQ-2.7.1: Log Out",
+  "REQ-3.2.4: Exception: Past-Date Validation",
+  "REQ-3.2.6.1: Select Departure Date",
+  "REQ-3.2.6.2: Select a Past Date",
+  "REQ-3.3.1: Configure Special Passengers",
+  "REQ-3.3.2: Filter by Cabin Class",
+  "REQ-3.4.1: Run a Standard Search",
+  "REQ-3.4.2: Quickly Reuse Search History",
+  "REQ-3.5.1.1: Modify Search Criteria",
+  "REQ-3.5.2.1: Switch to a Nearby Date",
+  "REQ-3.5.2.3: Switch to Next Week",
+  "REQ-3.5.3.1: Combined Filters",
+  "REQ-3.5.3.2: Sort by Price",
+  "REQ-3.5.4.1: Expand/Collapse Flight Details",
+  "REQ-4.1.1.1: View Reminder Details",
+  "REQ-4.1.2.1: Quickly Select Passengers",
+  "REQ-4.1.6.1: Real-Time Fee Calculation",
+  "REQ-4.2.1.1: Add Combo Insurance",
+  "REQ-4.2.1.2: View Insurance Terms",
+  "REQ-4.4.1: Enter Order Center",
+  "REQ-4.4.2.1: Switch to Pending Payment",
+  "REQ-4.4.2.2: Switch to Not Traveled",
+  "REQ-4.4.2.3: Switch to Pending Review",
+  "REQ-4.4.2.4: Switch to All Orders",
+  "REQ-4.4.3.1: Search Historical Orders",
+  "REQ-4.4.4.1: View Order Details",
+  "REQ-4.5.1.1: Pending Payment Countdown",
+  "REQ-4.5.1.2: Cancel a Pending Payment Order",
+  "REQ-4.5.2.1: View Refund/Change Rules",
+  "REQ-5.1: Enter Personal Center",
+  "REQ-5.2: Expand/Collapse Common Information",
+  "REQ-5.3.1.1: Search for a Traveler",
+  "REQ-5.3.1.2: No Matching Traveler Found",
+  "REQ-5.3.2.1: Create a New Traveler",
+  "REQ-5.3.2.2: Exception: Required-Field Validation",
+  "REQ-5.3.3.1: Delete a Traveler Record",
+  "REQ-5.3.3.2: Batch Delete",
+  "REQ-5.4.1.1: View Address List",
+  "REQ-5.4.2.1: Save a New Address",
+  "REQ-5.4.3.1: Delete a Single Address",
+  "REQ-5.4.3.2: Batch Delete Addresses",
+  "REQ-5.5.1.1: Search Contacts",
+  "REQ-5.5.1.2: Batch Delete",
+  "REQ-5.5.2.1: Add a Default Contact",
+  "REQ-5.5.3.1: Delete a Single Contact",
+  "REQ-5.5.3.2: Batch Delete Contacts",
+  "REQ-5.6.1.1: Search Invoice Titles",
+  "REQ-5.6.2.1: Add a Company Invoice Title",
+  "REQ-5.6.2.2: Configure Special VAT Invoice",
+  "REQ-5.6.3.1: Delete a Single Receipt",
+  "REQ-5.6.3.2: Batch Delete Receipts",
+  "REQ-6.1.1: View Basic Profile Information",
+  "REQ-6.2.1: Update Profile and Save",
+  "REQ-6.3.1: Enter Security Center",
+  "REQ-6.4.1: Standard Password Change Flow",
+  "REQ-6.5.1: Verify Identity and Bind New Phone",
+  "REQ-6.6.1: Email Verification Flow",
+  "REQ-7.2.1.1: Exact Flight Number Query",
+  "REQ-7.2.3.2: Clear History",
+  "REQ-7.3.2.1: View Detailed Status",
+  "REQ-8.1.1.1: Switch to Completed",
+  "REQ-8.2.1: View Eligible Orders"
+ ],
+ "agent_start": "2026-09-23 03:20:44",
+ "agent_end": "2026-09-23 03:41:20",
+ "agent_exit": "0",
+ "wrote": "wrote 3 files in 1235.2s",
+ "failed_line": null,
+ "calls": [
+  {
+   "call": 1,
+   "stage": "起草",
+   "phase": "draft",
+   "model": "deepseek-v4-flash",
+   "status": "failed",
+   "finish_reason": null,
+   "error_type": "StreamError",
+   "http_status": null,
+   "elapsed_seconds": 288.999,
+   "cum_elapsed": 289.0,
+   "prompt_tokens_log": null,
+   "completion_tokens_log": null,
+   "reasoning_tokens_log": null,
+   "content_chars_obs": 0,
+   "reasoning_chars_obs": 20367,
+   "sse_events": 5534,
+   "received_bytes": 1566479,
+   "content_len": 0,
+   "file_blocks": 0,
+   "end_markers": 0,
+   "prompt_chars": 172375,
+   "n_messages": 2,
+   "json_ok": true,
+   "bill": "2026092311204494388926776522",
+   "bill_delta": 0.0,
+   "bill_duration": 289,
+   "input_tokens": 45345,
+   "cached_tokens": 0,
+   "output_tokens": 65737,
+   "amount": 0.727668
+  },
+  {
+   "call": 2,
+   "stage": "起草(传输重试)",
+   "phase": "draft",
+   "model": "deepseek-v4-flash",
+   "status": "completed",
+   "finish_reason": "stop",
+   "error_type": null,
+   "http_status": null,
+   "elapsed_seconds": 607.934,
+   "cum_elapsed": 896.9,
+   "prompt_tokens_log": null,
+   "completion_tokens_log": null,
+   "reasoning_tokens_log": null,
+   "content_chars_obs": 105170,
+   "reasoning_chars_obs": 158595,
+   "sse_events": 75700,
+   "received_bytes": 20679599,
+   "content_len": 105076,
+   "file_blocks": 3,
+   "end_markers": 3,
+   "prompt_chars": 172375,
+   "n_messages": 2,
+   "json_ok": true,
+   "bill": "2026092311253494752922884817",
+   "bill_delta": 1.1,
+   "bill_duration": 608,
+   "input_tokens": 43951,
+   "cached_tokens": 43008,
+   "output_tokens": 76082,
+   "amount": 0.691868
+  },
+  {
+   "call": 3,
+   "stage": "修复",
+   "phase": "repair",
+   "model": "deepseek-v4-flash",
+   "status": "completed",
+   "finish_reason": "stop",
+   "error_type": null,
+   "http_status": null,
+   "elapsed_seconds": 312.607,
+   "cum_elapsed": 1209.5,
+   "prompt_tokens_log": null,
+   "completion_tokens_log": null,
+   "reasoning_tokens_log": null,
+   "content_chars_obs": 86446,
+   "reasoning_chars_obs": 53522,
+   "sse_events": 41147,
+   "received_bytes": 11052296,
+   "content_len": 86367,
+   "file_blocks": 1,
+   "end_markers": 1,
+   "prompt_chars": 280451,
+   "n_messages": 4,
+   "json_ok": true,
+   "bill": "2026092311355823123369762167",
+   "bill_delta": 15.4,
+   "bill_duration": 312,
+   "input_tokens": 77585,
+   "cached_tokens": 43008,
+   "output_tokens": 41262,
+   "amount": 0.47939
+  }
+ ],
+ "bills": [
+  {
+   "metrics": {
+    "amount": "0.727668",
+    "cached_tokens": 0,
+    "currency": "CNY",
+    "input_tokens": 45345,
+    "output_tokens": 65737,
+    "total_tokens": 111082
+   },
+   "model": "deepseek-v4-flash",
+   "occurred_at": 1790133933,
+   "request_id": "2026092311204494388926776522"
+  },
+  {
+   "metrics": {
+    "amount": "0.738828",
+    "cached_tokens": 0,
+    "currency": "CNY",
+    "input_tokens": 49668,
+    "output_tokens": 65536,
+    "total_tokens": 115204
+   },
+   "model": "deepseek-v4-flash",
+   "occurred_at": 1790133933,
+   "request_id": "2026092311204846652706576380"
+  },
+  {
+   "metrics": {
+    "amount": "0.691868",
+    "cached_tokens": 43008,
+    "currency": "CNY",
+    "input_tokens": 43951,
+    "output_tokens": 76082,
+    "total_tokens": 120033
+   },
+   "model": "deepseek-v4-flash",
+   "occurred_at": 1790134542,
+   "request_id": "2026092311253494752922884817"
+  },
+  {
+   "metrics": {
+    "amount": "0.713235",
+    "cached_tokens": 45056,
+    "currency": "CNY",
+    "input_tokens": 45160,
+    "output_tokens": 78713,
+    "total_tokens": 123873
+   },
+   "model": "deepseek-v4-flash",
+   "occurred_at": 1790134547,
+   "request_id": "2026092311253495315902010729"
+  },
+  {
+   "metrics": {
+    "amount": "0.427257",
+    "cached_tokens": 45056,
+    "currency": "CNY",
+    "input_tokens": 78702,
+    "output_tokens": 35757,
+    "total_tokens": 114459
+   },
+   "model": "deepseek-v4-flash",
+   "occurred_at": 1790134829,
+   "request_id": "2026092311355985435628406712"
+  },
+  {
+   "metrics": {
+    "amount": "0.479390",
+    "cached_tokens": 43008,
+    "currency": "CNY",
+    "input_tokens": 77585,
+    "output_tokens": 41262,
+    "total_tokens": 118847
+   },
+   "model": "deepseek-v4-flash",
+   "occurred_at": 1790134870,
+   "request_id": "2026092311355823123369762167"
+  }
+ ],
+ "unmatched_bills": [
+  {
+   "metrics": {
+    "amount": "0.738828",
+    "cached_tokens": 0,
+    "currency": "CNY",
+    "input_tokens": 49668,
+    "output_tokens": 65536,
+    "total_tokens": 115204
+   },
+   "model": "deepseek-v4-flash",
+   "occurred_at": 1790133933,
+   "request_id": "2026092311204846652706576380"
+  },
+  {
+   "metrics": {
+    "amount": "0.713235",
+    "cached_tokens": 45056,
+    "currency": "CNY",
+    "input_tokens": 45160,
+    "output_tokens": 78713,
+    "total_tokens": 123873
+   },
+   "model": "deepseek-v4-flash",
+   "occurred_at": 1790134547,
+   "request_id": "2026092311253495315902010729"
+  },
+  {
+   "metrics": {
+    "amount": "0.427257",
+    "cached_tokens": 45056,
+    "currency": "CNY",
+    "input_tokens": 78702,
+    "output_tokens": 35757,
+    "total_tokens": 114459
+   },
+   "model": "deepseek-v4-flash",
+   "occurred_at": 1790134829,
+   "request_id": "2026092311355985435628406712"
+  }
+ ],
+ "repairs": [
+  {
+   "problems": 6,
+   "vocabulary_missing": 3,
+   "problems_after": 0,
+   "accepted": true,
+   "reason": null,
+   "files": [
+    "frontend/public/app.js"
+   ],
+   "renamed_controls": null,
+   "vocabulary_missing_after": 0
+  }
+ ],
+ "usage": {
+  "billing_status": "unknown",
+  "calls": 3,
+  "completed_calls": 2,
+  "completion_tokens": null,
+  "draft_call_limit": 4,
+  "failed_calls": 1,
+  "failure_limit": 5,
+  "fallback_model": null,
+  "known_completion_tokens": null,
+  "known_prompt_tokens": null,
+  "prompt_tokens": null,
+  "repair_call_limit": 2,
+  "unknown_usage_calls": [
+   1
+  ]
+ },
+ "notes": [
+  [
+   "2026-09-23 03:25:33",
+   "call 1 failed; bounded retry"
+  ],
+  [
+   "2026-09-23 03:35:58",
+   "semantic browser {\"executed\": true, \"diagnostic_only\": true, \"errors\": [], \"page_errors\": [], \"actions\": [{\"scope\": \"page\", \"name\": \"带儿童\", \"action\": \"flight-options\"}, {\"scope\": \"page\", \"name\": \"带婴儿\", \"action\": \"flight-options\"}, {\"scope\": \"page\", \"name\": \"携程旅行\", \"action\": \"arc:nav\"}, {\"scope\": \"page\", \"name\": \"更多服务\", \"action\": \"\"}, {\"scope\": \"page\", \"name\": \"双向箭头\", \"action\": \"swap-cities\"}, {\"sco"
+  ],
+  [
+   "2026-09-23 03:41:19",
+   "semantic browser {\"executed\": true, \"diagnostic_only\": true, \"errors\": [], \"page_errors\": [], \"actions\": [{\"scope\": \"page\", \"name\": \"带儿童\", \"action\": \"flight-options\"}, {\"scope\": \"page\", \"name\": \"带婴儿\", \"action\": \"flight-options\"}, {\"scope\": \"page\", \"name\": \"携程旅行\", \"action\": \"arc:nav\"}, {\"scope\": \"page\", \"name\": \"更多服务\", \"action\": \"\"}, {\"scope\": \"page\", \"name\": \"双向箭头\", \"action\": \"swap-cities\"}, {\"sco"
+  ]
+ ],
+ "runner_steps": [
+  [
+   "2026-09-23 03:20:44",
+   "Executing agent-pip-install: python3 -m pip install --retries 10 --timeout 120 --resume-retries 8 --prefer-binary -r requirements.txt"
+  ],
+  [
+   "2026-09-23 03:20:44",
+   "agent-pip-install exit code: 0"
+  ],
+  [
+   "2026-09-23 03:20:44",
+   "Executing generation-agent: python3 /workspace/submission/main.py /tmp/arcbench/requirements-source --output-dir /workspace/template"
+  ],
+  [
+   "2026-09-23 03:41:20",
+   "generation-agent exit code: 0"
+  ],
+  [
+   "2026-09-23 03:41:20",
+   "Executing frontend-npm-install: npm install --include=optional --no-audit --no-fund"
+  ],
+  [
+   "2026-09-23 03:41:20",
+   "frontend-npm-install exit code: 0"
+  ],
+  [
+   "2026-09-23 03:41:20",
+   "Executing frontend-npm-build: npm run build"
+  ],
+  [
+   "2026-09-23 03:41:20",
+   "frontend-npm-build exit code: 0"
+  ],
+  [
+   "2026-09-23 03:41:20",
+   "Executing backend-npm-install: npm install --include=optional --no-audit --no-fund"
+  ],
+  [
+   "2026-09-23 03:41:20",
+   "backend-npm-install exit code: 0"
+  ]
+ ]
+}

@@ -918,3 +918,17 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
   fits BookStack's wording. Round 2 on the same branch adds a single flash translation call per task for
   scenarios the grammar cannot parse (fixed action schema, verbatim names, cached by requirements hash) and fixes
   REQ-5.1; Keep becomes a development set, and the formal tasks are the next generalization check.
+
+## 2026-09-23 12:35 — Practice-platform large-task probe complete
+
+- Package from main 75360b7 (submission 62093612a851, SHA-256 f5424bf1…7035, byte-identical to oneshot/) on
+  arc-bench-web with deepseek-v4-flash: 12306 60/135 (8521efac7614) and 90/135 (7a8b62da8ed2); Ctrip 52/125
+  (48f897b9193c) and 40/125 (a6c67f48309c). All four delivered; every draft ended with stop (no continuation);
+  all four repairs accepted; no fallback model used.
+- Criterion 4 failed once: a6c67f48309c's Ctrip draft took 1101.4 s and 149,745 completion tokens, 100 s short of
+  the gateway's ~1200 s per-stream cut. Two parallel drafts were cut in the same second (289 s / 285 s) and retried;
+  the cut calls were billed at about 65k output tokens each (CNY 1.47, 21% of the four runs' cost).
+- Per-request reconciliation: CNY 6.99 for the four runs (1.3–1.9 per large-task run). Balance rose by exactly
+  CNY 100 during the probe, most likely the practice voucher's automatic top-up.
+- Delivery-never-zero round 3 dispatched: keep the complete blocks of a cut stream and continue like finish=length.
+- Evidence: docs/evidence/2026-09-23-practice-probe/ (status, per-call analysis and billed requests per run).
