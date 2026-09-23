@@ -338,6 +338,11 @@ class Worker:
         except (OSError, ValueError, subprocess.TimeoutExpired):
             self.proc.kill()
             self.proc.wait()
+        for stream in (self.proc.stdin, self.proc.stdout, self.proc.stderr):
+            try:
+                stream.close()
+            except (OSError, ValueError):
+                pass
         self.proc = None
 
 
@@ -425,14 +430,15 @@ def _aggregate_invariants(replies):
     return invariants
 
 
-def _payload(item):
-    return {"id": item["id"], "ops": item["ops"]}
+def _payload(item, failed_headings):
+    # A name whose main-heading check already failed is not re-polled (each failure costs a wait).
+    return {"id": item["id"], "ops": item["ops"], "skip_heading": sorted(failed_headings)}
 
 
 def _execute(runnable, app, port, progress=None):
     """Run the parsed scenarios; returns ({id: reply}, runtime)."""
     work = Path(tempfile.mkdtemp(prefix="scenario-check-"))
-    replies, runtime = {}, {}
+    replies, runtime, failed_headings = {}, {}, set()
     worker = backend = None
     try:
         tmp = work / "tmp"
@@ -465,13 +471,14 @@ def _execute(runnable, app, port, progress=None):
                 if not ready:
                     replies[item["id"]] = {"status": "fail", "steps": [], "observation": f"The backend did not start: {why}"}
                     continue
-                reply = worker.run(f"http://127.0.0.1:{chosen}", _payload(item),
+                reply = worker.run(f"http://127.0.0.1:{chosen}", _payload(item, failed_headings),
                                    SCENARIO_SECONDS + STEP_SECONDS * len(item["ops"]))
                 if reply is None:
                     reply = {"status": "error", "steps": [], "observation": "The executor did not answer in time; restarted."}
                     worker.close()
                     worker, info = _start_worker(dict(env))
                 replies[item["id"]] = reply
+                failed_headings.update(c["name"] for c in reply.get("heading_checks") or [] if not c.get("ok"))
             except AppError as exc:
                 replies[item["id"]] = {"status": "fail", "steps": [], "observation": str(exc)}
             finally:

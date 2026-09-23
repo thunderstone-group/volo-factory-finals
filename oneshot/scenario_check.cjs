@@ -8,7 +8,7 @@ const readline = require('node:readline');
 
 const ACTION_MS = Number(process.env.SCENARIO_ACTION_MS || 2500);
 const EXPECT_MS = Number(process.env.SCENARIO_EXPECT_MS || 2500);
-const HEADING_MS = 2000;
+const HEADING_MS = 1500;
 const OP_HARD_MS = 20000;
 const CONTROL_ROLES = ['button', 'link', 'tab', 'menuitem', 'menuitemcheckbox', 'menuitemradio', 'checkbox',
   'radio', 'switch', 'option', 'treeitem', 'combobox'];
@@ -87,10 +87,13 @@ function describeTarget(target) {
 async function scopeRoots(page, scope) {
   if (!scope) return {roots: [{root: page, label: 'page'}], missing: null};
   if (scope.type === 'landmark') {
-    const marks = page.getByRole('banner').or(page.getByRole('navigation')).filter({visible: true});
-    const count = Math.min(await marks.count(), 8);
+    // "in the navigation bar": navigation landmarks first (document order), then the banner around them.
     const roots = [];
-    for (let i = 0; i < count; i++) roots.push({root: marks.nth(i), label: 'navigation landmark'});
+    for (const [role, label] of [['navigation', 'navigation landmark'], ['banner', 'banner']]) {
+      const marks = page.getByRole(role).filter({visible: true});
+      const count = Math.min(await marks.count(), 6);
+      for (let i = 0; i < count; i++) roots.push({root: marks.nth(i), label});
+    }
     roots.push({root: page, label: 'page'});
     return {roots, missing: null};
   }
@@ -247,7 +250,8 @@ async function act(page, op, ctx) {
   await sleep(60);
   const moved = page.url() !== before;
   if (moved) await page.waitForLoadState('domcontentloaded', {timeout: 5000}).catch(() => {});
-  if (op.op === 'click' && op.entity && moved && (role === 'link' || (role === 'button' && /\d/.test(target.name)))) {
+  if (op.op === 'click' && op.entity && moved && !ctx.skipHeading.has(target.name) &&
+      (role === 'link' || (role === 'button' && /\d/.test(target.name)))) {
     ctx.headingChecks.push(await headingInvariant(page, op, ctx));
   }
   return {ok: true, detail};
@@ -361,7 +365,7 @@ async function runScenario(browser, base, scenario) {
   const context = await browser.newContext({viewport: {width: 1280, height: 720}, timezoneId: 'UTC'});
   const page = await context.newPage();
   page.setDefaultTimeout(ACTION_MS);
-  const ctx = {last: null, headingChecks: [], index: -1};
+  const ctx = {last: null, headingChecks: [], index: -1, skipHeading: new Set(scenario.skip_heading || [])};
   const pageErrors = [];
   const dialogs = [];
   page.on('pageerror', e => pageErrors.push({step: ctx.index, message: clip(String(e && e.message || e).split('\n')[0], 240),
