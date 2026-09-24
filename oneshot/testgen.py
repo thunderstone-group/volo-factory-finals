@@ -69,6 +69,10 @@ How the tests run:
   Never CSS selectors, XPath, test ids, element ids, class names or guessed URLs. When the requirements put a control
   inside a named dialog, menu, region, row or grid, scope the locator to it first.
 - Tests are independent: each builds its own state and never relies on another test having run.
+- Every file runs in order against ONE application that is never reset between tests. Never change a seeded
+  record's credentials, never delete or rename a seeded record: when a scenario does that (change a password, delete
+  a repository, rename a workbook), the test first creates its own record through the UI and acts on that one, so the
+  seeded state stays as the requirements give it for every later test.
 - Where the requirements allow several ways to do the same thing (in a grid or a separate field, with a keyboard
   shortcut or a menu command, with a button or the Enter key), spread the tests of that requirement across those ways,
   as different users would.
