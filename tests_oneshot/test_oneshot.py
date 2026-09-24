@@ -1019,3 +1019,34 @@ class LocalHTTPTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RouteGapCase(unittest.TestCase):
+    """A route the app opens with no screen of that name renders the fallback: fatal for record pages and
+    navigations after an action, a hint for a plain dead link."""
+
+    def stage(self, source):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        public = Path(temp.name) / "frontend" / "public"
+        public.mkdir(parents=True)
+        (public / "app.js").write_text(source)
+        return Path(temp.name)
+
+    def test_a_record_route_without_its_screen_is_fatal(self):
+        stage = self.stage("const a = `<a href=\"#/w/${w.id}\">${w.name}</a>`;\n"
+                           "function made(id) { ARC.navigate('#/w/' + id); }\n"
+                           "window.LAYOUT = { account: () => '<a href=\"#/login\">Log in</a>' };")
+        routes = {"screens": ["home", "new", "workbook"], "dispatch": "screen(route) { return this.screens[route.name]; }"}
+        gaps = adapter.route_gaps(stage, routes)
+        self.assertEqual(len(gaps), 2)
+        self.assertTrue(adapter._fatal(gaps[0]))
+        self.assertIn("#/w ", gaps[0] + " ")
+        self.assertFalse(adapter._fatal(gaps[1]))
+        self.assertIn("#/login", gaps[1])
+
+    def test_routes_the_screens_or_the_dispatch_handle_pass(self):
+        stage = self.stage("ARC.navigate('#/workbook/' + id); const b = '<a href=\"#/wb/1\">x</a>';")
+        routes = {"screens": ["home", "workbook"], "dispatch": "screen(route) { if (route.name === 'wb') return 1; }"}
+        self.assertEqual(adapter.route_gaps(stage, routes), [])
+        self.assertEqual(adapter.route_gaps(stage, None), [])

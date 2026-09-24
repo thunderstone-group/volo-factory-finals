@@ -13,6 +13,7 @@ empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALL
 ONESHOT_REPAIR_CNY (repair spend per task, default 3).
 """
 import argparse
+import collections
 import hashlib
 import json
 import os
@@ -822,8 +823,16 @@ const { JSDOM, VirtualConsole } = require('jsdom');
     }
     if (clickErrors.length >= 8) break;
   }
+  // The screen table the app dispatches on (the scaffold's APP.screens), for the route-name check in Python.
+  let routes = null;
+  try {
+    const APP = win.APP;
+    if (APP && APP.screens && typeof APP.screens === 'object') {
+      routes = { screens: Object.keys(APP.screens), dispatch: typeof APP.screen === 'function' ? String(APP.screen).slice(0, 4000) : '' };
+    }
+  } catch (e) {}
   console.log(JSON.stringify({ text_chars: text.length, errors: loadErrors.slice(0, 5), landmarks, screens: seen.size,
-                               click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e) }));
+                               routes, click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e) }));
   dom.window.close();
 })();
 """
@@ -884,6 +893,8 @@ def _check_dom(stage, port, problems, requirements=None):
         problems.append(f"clicking {who} on screen `{err.get('hash', '#/')}` throws: {err.get('message')}. A click handler "
                         f"that throws renders nothing, so the suite's next step waits for a result that never comes; guard "
                         f"every lookup (a missing record must not dereference undefined) and never throw from a handler")
+    for problem in route_gaps(stage, report.get("routes")):
+        problems.append(problem)
     present = report.get("landmarks") or {}
     for name, (pattern, element) in LANDMARKS.items():
         if requirements and re.search(pattern, requirements, re.I) and name in present and not present[name]:
@@ -891,6 +902,37 @@ def _check_dom(stage, port, problems, requirements=None):
                             f"{name}; every screen, including the home screen, must render through the one shared "
                             f"layout (header, navigation, main content, footer) so the suite finds the same "
                             f"landmarks and controls on every route")
+
+
+# A route name where the app sends the browser: a link, ARC.navigate, a `hash:` entry, a location.hash assignment.
+ROUTE_REF = re.compile(r"""(href\s*=\s*\\?["'`]|navigate\(\s*["'`]|\bhash\s*[:=]\s*["'`])#/([A-Za-z][\w-]*)(/?)""")
+
+
+def route_gaps(stage, routes):
+    """In-app links and navigations whose route name has no screen in the app's screen table, so they render the
+    fallback (the home screen): two of five official-task drafts on 09-24 linked every record to `#/w/<id>` or
+    `#/wb/<id>` while the screen was named `workbook`, and no record could be opened. `routes` is what the DOM probe
+    read from APP.screens; a name the dispatch function spells out itself counts as handled. A missing record page
+    (the route takes a parameter) or a programmatic navigation is fatal: the task's main screens are unreachable. A
+    plain dead link (a `#/login` copied from the scaffold into an app without sign-in) is only a hint."""
+    if not routes or not routes.get("screens"):
+        return []
+    screens, dispatch = set(routes["screens"]), routes.get("dispatch") or ""
+    fatal, plain = set(), set()
+    for how, name, param in ROUTE_REF.findall(_frontend_sources(stage)):
+        if name in screens or any(q + name + q in dispatch for q in "'\"`"):
+            continue
+        (fatal if param or how.startswith("navigate") else plain).add(name)
+    problems = []
+    if fatal:
+        problems.append(f"the app opens route(s) {', '.join('#/' + n for n in sorted(fatal))} (a record page or a "
+                        f"navigation after an action) but its screen table (APP.screens) has no screen by that name "
+                        f"(it has: {', '.join(sorted(screens))}), so they render the fallback screen and the records "
+                        f"cannot be opened: name each screen exactly as the routes that lead to it")
+    if plain - fatal:
+        problems.append(f"unreachable link: {', '.join('#/' + n for n in sorted(plain - fatal))} has no screen in "
+                        f"APP.screens and renders the fallback screen; remove the link or add the screen")
+    return problems
 
 
 def _check_semantic_browser(port, problems, requirements, diagnostics):
@@ -1695,7 +1737,7 @@ def _fatal(problem):
     """A smoke problem that zeroes the whole app (nothing renders or serves), as opposed to one that
     costs a family of tests (a click handler that throws, a missing landmark)."""
     return not (problem.startswith(("clicking ", "Requirement-derived UI observation:",
-                                    "browser interaction error:")) or "renders no <" in problem)
+                                    "browser interaction error:", "unreachable link:")) or "renders no <" in problem)
 
 
 def _bare_name(name):
@@ -1764,6 +1806,11 @@ def finish_suite(job, budget, wait=TESTGEN_WAIT):
     return job["dir"] if ready else None
 
 
+def _suite(tests):
+    """The keyword a check call carries only when a written suite exists (the scenario check's call is unchanged)."""
+    return {"tests": tests} if tests is not None else {}
+
+
 def check_scenarios(stage, requirements, only=None, translate=True, tests=None):
     """Run the requirement-written acceptance tests in `tests` (testgen.py) when there are any, else the requirements'
     own scenarios (scenario_check.py), against the staged application. A checker that cannot run reports why instead
@@ -1801,7 +1848,7 @@ def assess(stage, requirements, scaffold, translate=True, tests=None):
              "static": static_gaps(stage, requirements, scaffold), "vocab": vocab, "missing": missing,
              "browser": browser, "report": None}
     if executed and (not fatal or all(p.startswith(DOM_ONLY) for p in fatal)):
-        state["report"] = check_scenarios(stage, requirements, translate=translate, tests=tests)
+        state["report"] = check_scenarios(stage, requirements, translate=translate, **_suite(tests))
         if fatal and _scenarios(state, "pass"):
             state["fatal"], state["jsdom_only"] = [], fatal  # a real browser renders it: hints, not a dead app
         elif fatal:
@@ -1966,7 +2013,7 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
             detail["waived"] = guards
         return True, "the application works again", detail
     if _checker_failed(after["report"]):
-        after["report"] = check_scenarios(stage, requirements, translate=translate, tests=tests)  # one more try
+        after["report"] = check_scenarios(stage, requirements, translate=translate, **_suite(tests))  # one more try
         if budget is not None:
             account_translation(budget, after["report"])
     if _checker_failed(after["report"]):
@@ -1979,7 +2026,7 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     gained = {sid for sid, status in old.items() if status == "fail" and new.get(sid) == "pass"}
     unsure = lost | (gained if len(gained) <= 2 else set())
     if unsure:
-        recheck = check_scenarios(stage, requirements, only=unsure, translate=translate, tests=tests)
+        recheck = check_scenarios(stage, requirements, only=unsure, translate=translate, **_suite(tests))
         if budget is not None:
             account_translation(budget, recheck)
         again = {s["id"]: s.get("status") for s in recheck.get("scenarios", [])}

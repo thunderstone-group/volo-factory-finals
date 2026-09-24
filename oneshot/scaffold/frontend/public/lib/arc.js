@@ -149,6 +149,20 @@
     document.getElementById('app').innerHTML = ARC.layout(main, route);
     if (ARC.dialogOpen) ARC.setInert(true);
     if (app.afterRender) app.afterRender(route);
+    ARC.collapseDuplicates();
+  };
+  // --- One copy of an identical control per screen. Suites click a quoted name in strict mode
+  // (`getByRole('link', {name: 'Sign in', exact: true})`); the same link in the header and in the page body
+  // resolved to two elements and failed three tests on 09-24 and six on the next draft. A visible link or
+  // button whose markup is byte-identical to an earlier visible one (same name, target, action and data) does
+  // the same thing, so the later copy is hidden. Controls that differ in anything (a record id, a role) stay.
+  ARC.collapseDuplicates = function () {
+    const seen = new Set();
+    for (const el of document.querySelectorAll('#app a[href], #app button')) {
+      if (el.hidden || !el.getClientRects().length) continue;
+      const key = el.outerHTML.replace(/\s+/g, ' ').trim();
+      if (seen.has(key)) { el.hidden = true; el.setAttribute('data-arc-duplicate', ''); } else seen.add(key);
+    }
   };
 
   // --- Dialog: while a chooser is open every sibling is inert + aria-hidden (Playwright ignores
