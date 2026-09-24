@@ -1,27 +1,26 @@
-# 当前交接 — 2026-09-24 12:00：开赛首日，第二次正式提交在跑
+# 当前交接 — 2026-09-24 12:45：第三次正式提交在跑
 
-先读 [改进路线图](reference/roadmap.md) 第 12 节第 13 版日志、4.2 和 4.9；赛制见 [初赛规则](reference/preliminary-rules.md) 的「开赛后核实」一节；数字见 [progress.md](progress.md) 09-24 一节和末尾的正式提交账本表。
+先读 [改进路线图](reference/roadmap.md) 第 12 节第 13、14 版日志和 4.9；赛制见 [初赛规则](reference/preliminary-rules.md)「开赛后核实」；数字见 [progress.md](progress.md) 09-24 两节和正式提交账本表。
 
 ## 状态（run 以 `arcbench status` 实时读到的为准）
 
-- 正式赛 `hackathon`，两题各 100 条：GitHub、Sheet。VOLO-AI 是队长，比赛额度起始 500 元。
-- CLI：arcbench-cli PR #9（0.4.0，本机已从分支安装，PR 未合）加了 `upload --official-evaluation`、`registration`、`requirements`。
-- 提交 1（包 bb73b7f4）：GitHub 5/100，Sheet 3/100，1.95 元。GitHub 93 条失败是评测环境缺 `E2E_*` 种子数据；Sheet 97 条全是 10 秒超时。
-- 共享状态脚手架（PR #65，main fd4d548）已合：数据经服务器跨浏览器会话共享，登录状态按浏览器隔离。两会话实验由失败变通过。
-- 提交 2（包 14297021，main fd4d548）：submission `16dbfd3dcbef`，run `02eb86092cc9`（GitHub）、`1d84ee5aa3d4`（Sheet），11:57 起跑。
-- 场景自检在正式题上覆盖率接近 0，修复循环不会触发（路线图 4.2）。
-- 本地产物和脚本在本会话 scratchpad（会被清掉）；要保留的证据已拷进 `docs/evidence/2026-09-24-opening-day/`。
+- 正式赛 `hackathon`：GitHub、Sheet 各 100 条。VOLO-AI 是队长；额度 495.96 元（第三次提交前）。
+- 账本：提交 1 基线 GitHub 5 / Sheet 3（S 4.4）；提交 2 共享状态 GitHub 3 / Sheet 42（S 29.0，榜第 2，Iris 28.5%）；提交 3（包 1b4e26a8，main c93b99c，可点击下拉框加命名规则）run `9de6dee5e02f`（GitHub）、`14de9c6238ff`（Sheet），12:40 起跑。
+- GitHub：93 条是评测方漏配 `E2E_*` 变量。主办方 12:28 答复会补上并重评之前的提交，还说应用要把需求 `data` 字段描述的数据写进自己的数据库。重评后要读 GitHub 的逐条报错，看 E2E 的值怎样对上我们应用的种子数据。
+- 平台 run 记录带 `failed_tests`（逐条名字和报错），只用于诊断，不进包。隐藏测试按精确名加严格模式定位；超时类失败没有细节。
+- 诊断工具：`docs/evidence/2026-09-24-opening-day/testgen/`（flash 按需求写测试的原型，加上运行器；README 写了用法和校准结果）。
+- CLI：arcbench-cli PR #9（0.4.0）本机已从分支安装，PR 未合（公开仓库，等甲方）。
 
 ## 接下来
 
-1. 读提交 2 的结果和 `failed_tests`（`arcbench --json status RUN`），填账本表，更新路线图。
-2. 如果 Sheet 大幅上升：按失败原因排序，挑能由通用机制解决的（例如双击行内编辑框 `Edit A1` 缺失这类基本编辑流程），做 Codex 建议的小范围可校准探针。
-3. 如果 Sheet 仍然全超时：下载 bundle，在 1 核 2 GB 镜像里复现，查是启动、渲染还是交互卡住。
-4. 等主办方答复 GitHub 种子数据的问题（问题反馈已交甲方发出）。
+1. 读提交 3 的结果，填账本表；和提交 2 按需求编号对比 Sheet 的失败（REQ-5 的下拉框、标签名、同名控件这几类是否消失）。
+2. 主办方重评之后，读 GitHub 的逐条报错。
+3. 路线图第 14 版日志里的候选 ①：把「按需求生成测试 → 跑 → 按失败修复」接进包里。开工前先请 Codex 对抗评审设计。
+4. 最好的包可以重复提交（取历史最高分，每次约 2 元）。
 
 ## 不要做
 
-- 不要把平台返回的失败测试内容写进包里；只用于诊断通用问题。
+- 不要把平台返回的失败测试内容，或者正式题、练习题的专名写进包里。
 - 不要把受控修复的分数当成进展。
 
 ---

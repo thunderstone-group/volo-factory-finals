@@ -1,0 +1,12 @@
+{
+ "submission": {
+  "id": "771fba900991",
+  "competition_id": "hackathon",
+  "credential_mode": "official_evaluation",
+  "model_name": "deepseek-v4-flash",
+  "display_name": "volo-oneshot-1b4e26a8-combobox-names",
+  "created_at": "2026-09-24T04:37:38.469066"
+ },
+ "uploaded_sha256": "1b4e26a8aed8299444f58d6ee6a6f571cfd855d29ac37f567b1f210cd17fd653",
+ "archive_verified": true
+}
