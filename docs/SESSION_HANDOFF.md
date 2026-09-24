@@ -1,3 +1,29 @@
+# 当前交接 — 2026-09-24 23:45：新版赛题；Sheet 评测方故障；修复改定点编辑，回放验证中
+
+先读 [改进路线图](reference/roadmap.md) 第 1 节「09-24 晚更正」、4.11、4.12 和第 16 版日志；数字见 [progress.md](progress.md) 最后一节和正式提交账本表。分支 `feat/seed-reach`（worktree `../volo-factory-worktrees/seed-reach`，已推，未合 main）。
+
+## 状态
+
+- 主办方 19:05 更正赛题，截止顺延到 10-01 23:59。新版两题各 100 个场景对应 100 条隐藏测试（测试名末尾 `Scenario <n>` = YAML 里第 n 个场景），GIVEN 写种子。新需求与证据在 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/`。
+- **Sheet 新套件在评测方那里列不出用例**：run `c34ae0a54c1e`、`4ef5a779acf2` 都是 "Failed to enumerate Playwright tests before execution"。给主办方的反馈草稿已交甲方转发。修好之前别再发 Sheet。
+- 正式提交：第 4 次 GitHub 11/100；第 5 次（包 165aece2，种子清单 + 卡 6b）GitHub 13/100。比赛额度约 487 元（主办方说会补今天的消耗）。
+- 本地代理测试套件（flash 按新需求写，各 100 条，练习 key）：本会话 scratchpad `gh-suite/`、`gh-suite-np/`（跳过改密码那条）、`sheet-suite/`。只能做 A/B，比隐藏测试宽松。
+- 受控回放（GitHub 新包初稿 a）：旧修复 3 轮全被拒（整份重发 93 KB app.js 每轮坏 10 条；零倒退规则扔掉了 25→32 的一轮）。9416c8d 改为 SEARCH/REPLACE 定点编辑、书面测试也按「每丢 1 条至少修 3 条」、helper 阻塞的测试转通过算增益；92b3797 让 testgen 不改种子记录。第二次回放 `replay2-gh-new-a` 在跑。
+
+## 接下来
+
+1. 读第二次回放：收下几轮、代理通过数、每轮耗时。收下且净增，就用 `ONESHOT_TESTGEN=1` 的包发一次 GitHub 正式 run（只发 GitHub），看隐藏分和平台上书面测试能否跑起来（日志里找 `acceptance tests`）。
+2. 平台书面测试跑通且隐藏分上升，就把 `ONESHOT_TESTGEN` 默认打开，开 PR 合 main。
+3. 主办方修好 Sheet 后：先用最好的包两题各跑一次拿完整 S，再做 Sheet 的 A/B（本地 `sheet-suite`）。
+4. 种子冲突（Sheet 的 `Q3 Sales` A1、GitHub 的 `acme-docs` 归属）没有通用解，先不处理。
+
+## 不要做
+
+- 不要把平台返回的失败测试内容，或正式题、练习题的专名写进包里。
+- 不要把受控回放的分数当成进展。
+
+---
+
 # 当前交接 — 2026-09-24 14:00：第四次提交的包已备好，等平台维护结束
 
 先读 [改进路线图](reference/roadmap.md) 第 12 节第 15 版日志、4.10 和 4.11；数字见 [progress.md](progress.md) 09-24 14:00 节和正式提交账本表。分支 `feat/testgen-loop`（worktree `../volo-factory-worktrees/testgen-loop`）。
