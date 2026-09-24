@@ -28,3 +28,8 @@ input, textarea, select { font: inherit; padding: 6px 8px; width: 100%; max-widt
 .app-footer .landmarks { opacity: 0.6; font-size: 0.85em; margin-left: 8px; }
 .popover { position: relative; z-index: 5; display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; margin-top: 4px; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
 .popover button { display: inline-block; }
+.combobox { position: relative; display: inline-block; }
+.combobox [role="combobox"] { min-width: 120px; text-align: left; }
+.listbox { position: absolute; z-index: 6; left: 0; top: 100%; min-width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.12); padding: 4px 0; }
+.listbox [role="option"] { padding: 4px 10px; cursor: pointer; white-space: nowrap; }
+.listbox [role="option"]:hover, .listbox [role="option"][aria-selected="true"] { background: #eef; }
