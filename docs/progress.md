@@ -1203,3 +1203,32 @@ official run records); proxy suites and replays in this session's scratchpad (pa
   options, missing sections. A card sentence cannot fix these one by one; this is the case for 4.11 (written tests
   drive the repairs). Controlled repair replay of new draft a with the proxy suite (`scripts/repair_replay.py --suite`,
   CNY 6 cap) running.
+
+## 2026-09-25 00:00-00:55 — Repair by edits: controlled GitHub replay 25 -> 38; written tests on by default (submission 6)
+
+Controlled replays (evidence about the repair loop, never progress of a candidate): `scripts/repair_replay.py
+--suite` (new option) on local GitHub draft `gh-new-a` with the proxy suite `gh-suite-np`, practice key.
+
+| replay | repair | kept rounds | proxy pass | CNY | minutes |
+|---|---|---|---|---|---|
+| 1 (main's loop) | whole files, written tests zero-loss | 0 of 3 | 25 -> 25 | 2.17 | 54 |
+| 2 (9416c8d) | SEARCH/REPLACE edits, 3 gains per loss, error -> pass counts | 3 of 6 | 25 -> 38 | 2.28 | 58 |
+
+- Replay 1: round 1 took the proxy to 32 but lost one test and zero-loss discarded it (it was credited with only 4
+  gains: tests a shared helper blocked are `error`, and error -> pass was not counted); rounds 2-3 re-emitted the
+  93 KB `app.js` and broke 10 passing tests each.
+- Replay 2: every discarded round died on one SEARCH that did not match the current file (the model misremembered a
+  line; round 1 had 11 hunks and only the 11th missed); the loop stopped at the 6-call cap with CNY 3.7 of its cap
+  left. Edit rounds cost CNY 0.25-0.5 and 3.5-14 minutes locally.
+- Follow-ups (commit after 9416c8d): a missed hunk now skips only itself, and the next request names it with the current
+  lines nearest to it; repair cap 12 calls / CNY 5.
+- `testgen` fixes: (1) one written spec file that does not parse made Playwright load no test at all ("Total: 0 tests",
+  the local Sheet suite judged nothing); such files are now `testIgnore`d by name — the same Sheet suite then reported
+  20 pass / 32 fail / 56 error on the local Sheet draft. The evaluator's corrected Sheet suite shows the same symptom
+  ("Failed to enumerate Playwright tests"), a plausible cause worth telling the organizers. (2) Tests never alter
+  seeded records (act on records they create). (3) The runner image's `/opt/arcbench/node_modules` is searched for
+  `@playwright/test` before npm.
+- `ONESHOT_TESTGEN` now defaults to 1 (400a009). Submission 6 (package 9dad2b75, submission `4982d19c7e1d`) runs
+  GitHub only (`5b0946d978cf`, 00:50) — the first official run of written tests + edit repairs; it checks the hidden
+  score and whether the suite runs inside the 1-CPU platform container.
+- Local Sheet draft (new package, practice key): CNY 1.16, 19 min; proxy 20/100. Controlled Sheet replay running.
