@@ -112,7 +112,12 @@ editing. Native input semantics apply immediately; live filtering must not wait 
   it is on the page by the time the test times out (one medium-task run lost 10 of 34 this way: a list was
   fetched after navigation). Load all data once at startup before enabling the UI (or embed seeds in the
   initial HTML), keep it in memory, and render every screen from it in the same tick as the click;
-  write-through to the API in the background.
+  write through to the API.
+- Records are shared by every browser session: an account registered or a record created in one session
+  is usable from another user's separately signed-in session and after its URL is reopened in a new
+  session. With the scaffold, keep the signed-in user's id in `ARC.state.session` and per-viewer view state
+  (open forms, drafts, messages) under `ARC.state.ui`, declare every record collection in `seed.js`, and
+  call `ARC.save()` after each change.
 - Budget: 10 s per test. No animations that gate visibility, no artificial delays, no redirect chains.
 - The backend must survive its own bugs: register `process.on('uncaughtException', …)` and
   `process.on('unhandledRejection', …)` handlers that log and keep serving, and wrap every request handler in

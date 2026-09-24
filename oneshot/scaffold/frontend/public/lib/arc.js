@@ -4,19 +4,59 @@
 (function () {
   const ARC = {};
 
-  // --- Store: the whole app renders synchronously from memory (the click ladder probes each rung for
-  // 500 ms, so data fetched after navigation is never found). A new browsing session starts from
-  // seed.js. Full navigation in the same tab restores its state synchronously, including login.
-  // Writes also go to /api/state in the background and never gate rendering.
+  // --- Store: records are shared through the server; the sign-in and view state stay in this browser.
+  // Every browser session (another user's isolated session, a later visit, a second tab) reads the same
+  // records from the server, so what one session creates the next one sees, and a record's URL opens the
+  // same record in any session. Reads and writes are synchronous XHRs: the click ladder probes each rung
+  // right after the click (rendering stays in the click's task), and a write must land before another
+  // session reads. Shared: every top-level key declared in seed.js and every array. Per browser:
+  // `session` (the signed-in user's id; localStorage, so one sign-in per browser session that survives
+  // reloads and new tabs) and every other key, such as `ui` view state, form drafts and messages
+  // (sessionStorage, this tab). Declare every record collection in seed.js, even when it starts empty.
+  const SEEDED = new Set(Object.keys(window.SEED || {}));
+  const isShared = (k, v) => k !== 'session' && k !== 'ui' && (SEEDED.has(k) || Array.isArray(v));
+  function split(state) {
+    const shared = {}, local = {};
+    for (const [k, v] of Object.entries(state || {})) (isShared(k, v) ? shared : local)[k] = v;
+    return { shared, local };
+  }
+  function sync(method, body) {
+    try {
+      const x = new XMLHttpRequest();
+      x.open(method, '/api/state', false);
+      if (body !== undefined) x.setRequestHeader('Content-Type', 'application/json');
+      x.send(body === undefined ? null : body);
+      return x.status === 200 ? x.responseText : null;
+    } catch (e) { return null; }
+  }
+  function readLocal() {
+    let local = {};
+    try { local = JSON.parse(sessionStorage.getItem('arc:local:v2') || '{}') || {}; } catch (e) {}
+    try {
+      const s = localStorage.getItem('arc:session:v2');
+      if (s !== null) local.session = JSON.parse(s);
+    } catch (e) {}
+    return local;
+  }
   ARC.state = JSON.parse(JSON.stringify(window.SEED || {}));
-  try {
-    const saved = JSON.parse(sessionStorage.getItem('arc:state:v1') || 'null');
-    if (saved && typeof saved === 'object' && !Array.isArray(saved)) ARC.state = saved;
-  } catch (e) {}
-  ARC.save = function () {
-    try { sessionStorage.setItem('arc:state:v1', JSON.stringify(ARC.state)); } catch (e) {}
-    try { fetch('/api/state', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ARC.state) }).catch(() => {}); } catch (e) {}
+  // Replace the shared keys with the server's copy, in place (code may hold a reference to ARC.state).
+  ARC.pull = function () {
+    let data = null;
+    try { data = JSON.parse(sync('GET') || 'null'); } catch (e) {}
+    if (!data || typeof data !== 'object' || Array.isArray(data) || !Object.keys(data).length) return false;
+    for (const k of Object.keys(ARC.state)) if (isShared(k, ARC.state[k])) delete ARC.state[k];
+    Object.assign(ARC.state, split(data).shared);
+    return true;
   };
+  ARC.save = function () {
+    const { shared, local } = split(ARC.state);
+    const { session, ...view } = local;
+    try { sessionStorage.setItem('arc:local:v2', JSON.stringify(view)); } catch (e) {}
+    try { localStorage.setItem('arc:session:v2', JSON.stringify(session === undefined ? null : session)); } catch (e) {}
+    sync('PUT', JSON.stringify(shared));
+  };
+  if (!ARC.pull()) sync('PUT', JSON.stringify(split(ARC.state).shared));
+  Object.assign(ARC.state, readLocal());
   ARC.uid = function (prefix) { return (prefix || 'id') + '_' + Math.random().toString(36).slice(2, 9); };
   ARC.esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); };
 
@@ -33,6 +73,7 @@
   ARC.navigate = function (hash) {
     if ((location.hash || '#/') !== hash) location.hash = hash;
     if (ARC.dialogOpen) ARC.closeDialog();
+    ARC.pull();
     ARC.render();
   };
 
@@ -174,6 +215,7 @@
     if (name === 'arc:nav') { ARC.navigate(el.dataset.hash || '#/'); return; }
     const fn = app.actions && app.actions[name];
     if (!fn) return;
+    ARC.pull();  // act on the records as they are now, including other sessions' writes
     fn({ id: el.dataset.id, data: { ...el.dataset }, el, event, form });
   }
   document.addEventListener('click', (ev) => {
@@ -212,6 +254,7 @@
   window.addEventListener('hashchange', () => {
     if ((location.hash || '#/') === ARC._renderedHash) return;  // already rendered in the click's task
     if (ARC.dialogOpen) ARC.closeDialog();
+    ARC.pull();
     ARC.render();
   });
   document.addEventListener('DOMContentLoaded', () => ARC.render());
