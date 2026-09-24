@@ -414,14 +414,23 @@ class OfflineCase(unittest.TestCase):
         reply = ("Fixing.\n=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nfunction f() {\n    return a;\n}\n"
                  "=======\nfunction f() {\n  return a + 1;\n}\n>>>>>>> REPLACE\n<<<<<<< SEARCH\nconst b = 2;\n=======\n"
                  "const b = 3;\n>>>>>>> REPLACE\n=== END ===\n=== FILE: frontend/public/extra.js ===\nx();\n=== END ===\n")
-        files, missing = adapter.parse_repair(reply, stage)
-        self.assertEqual(missing, [])
+        files, missing, skipped = adapter.parse_repair(reply, stage)
+        self.assertEqual((missing, skipped), ([], []))
         by = {f["path"]: f["content"] for f in files}
         self.assertEqual(by["frontend/public/app.js"], "const a = 1;\nfunction f() {\n  return a + 1;\n}\nconst b = 3;\n")
         self.assertEqual(by["frontend/public/extra.js"], "x();\n")
         with self.assertRaisesRegex(ValueError, "hunk 1: SEARCH matches nothing"):
             adapter.parse_repair("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nnope();\n=======\nx\n"
                                  ">>>>>>> REPLACE\n=== END ===\n", stage)
+        # One missed hunk among several: the others apply, the miss quotes the current lines nearest to it.
+        files, _, skipped = adapter.parse_repair(
+            "=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nconst b = 2;\n=======\nconst b = 4;\n>>>>>>> REPLACE\n"
+            "<<<<<<< SEARCH\nfunction f(x) {\n=======\nfunction g() {\n>>>>>>> REPLACE\n=== END ===\n", stage)
+        self.assertIn("const b = 4;", files[0]["content"])
+        self.assertIn("function f() {", files[0]["content"])
+        self.assertEqual(len(skipped), 1)
+        self.assertIn("hunk 2: SEARCH matches nothing", skipped[0])
+        self.assertIn("the current lines there are:\nconst a = 1;\nfunction f() {", skipped[0])
         (stage / "frontend/public/app.js").write_text("x();\nx();\n")
         with self.assertRaisesRegex(ValueError, "matches 2 places"):
             adapter.parse_repair("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nx();\n=======\ny();\n"
@@ -865,8 +874,8 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(list(self.out.glob(".oneshot-*")), [])
 
     def test_call_allowances_come_from_the_environment_and_a_bad_value_stops_before_any_request(self):
-        self.assertEqual(adapter.CallBudget().limits, {"draft": 4, "repair": 6})
-        self.assertEqual(adapter.CallBudget().repair_cny, 3.0)
+        self.assertEqual(adapter.CallBudget().limits, {"draft": 4, "repair": 12})
+        self.assertEqual(adapter.CallBudget().repair_cny, 5.0)
         with patch.dict(os.environ, {"ONESHOT_DRAFT_CALLS": "6", "ONESHOT_REPAIR_CALLS": "0", "ONESHOT_REPAIR_CNY": "0.5"}):
             self.assertEqual(adapter.CallBudget().limits, {"draft": 6, "repair": 0})
             self.assertEqual(adapter.CallBudget().repair_cny, 0.5)
