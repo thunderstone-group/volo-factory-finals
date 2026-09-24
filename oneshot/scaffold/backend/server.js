@@ -1,11 +1,12 @@
 'use strict';
 // Backend scaffold. Mechanics it satisfies: `npm run start` listens on PORT, serves ../frontend/dist
 // with `/` -> index.html, answers GET /api/health with exactly {"code":200,"message":"Backend Ready"}
-// only once the seed is in place, keeps shared data in memory, never lets a handler kill the process.
+// only once the seed is in place, keeps the shared records in memory, never lets a handler kill the process.
 // Add domain routes inside `api()`; keep everything else.
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 process.on('uncaughtException', (e) => console.error('uncaught', e));
 process.on('unhandledRejection', (e) => console.error('unhandled', e));
@@ -15,9 +16,24 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; ch
   '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.ico': 'image/x-icon' };
 
-// Shared in-memory state. The frontend seeds itself from seed.js and writes through here; a fresh
-// process starts from the frontend's seed again (reseed on startup).
-let STATE = null;
+// The shared records every browser session reads (GET /api/state) and writes (PUT /api/state). A fresh
+// process starts from the frontend's seed.js; `session` and `ui` belong to each browser, never here.
+function loadSeed() {
+  for (const file of [path.join(DIST, 'seed.js'), path.resolve(__dirname, '..', 'frontend', 'public', 'seed.js')]) {
+    try {
+      const sandbox = { window: {} };
+      vm.runInNewContext(fs.readFileSync(file, 'utf8'), sandbox, { timeout: 2000 });
+      const seed = sandbox.window.SEED;
+      if (seed && typeof seed === 'object' && !Array.isArray(seed)) {
+        const shared = JSON.parse(JSON.stringify(seed));
+        delete shared.session; delete shared.ui;
+        return shared;
+      }
+    } catch (e) { console.error('seed', file, e.message); }
+  }
+  return null;
+}
+let STATE = loadSeed();
 
 function json(res, status, body) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
@@ -37,7 +53,12 @@ async function api(req, res, url) {
   if (url.pathname === '/api/health') return json(res, 200, { code: 200, message: 'Backend Ready' });
   if (url.pathname === '/api/state') {
     if (req.method === 'GET') return json(res, 200, STATE || {});
-    if (req.method === 'PUT') { STATE = await readBody(req); return json(res, 200, { ok: true }); }
+    if (req.method === 'PUT') {
+      const body = await readBody(req);
+      if (!body || typeof body !== 'object' || Array.isArray(body)) return json(res, 400, { error: 'state must be an object' });
+      STATE = body;
+      return json(res, 200, { ok: true });
+    }
   }
   // Domain routes go here, e.g. if (url.pathname === '/api/items' && req.method === 'GET') ...
   return json(res, 404, { error: 'not found' });

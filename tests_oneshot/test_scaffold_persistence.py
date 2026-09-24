@@ -1,4 +1,4 @@
-"""Real browser regression for same-tab state and fresh-context isolation."""
+"""Real browser regression: records shared across browser sessions, sign-in and view state per browser."""
 import os
 import shutil
 import subprocess
@@ -18,10 +18,19 @@ const initial = {session: null, items: ['initial']};
 const html = '<!doctype html><div id="app"></div><div id="dialog-root" hidden></div>' +
   '<div id="status-root" hidden></div><script>window.SEED=' + JSON.stringify(initial) + ';</script>' +
   '<script src="/arc.js"></script><script>window.APP={screen(){return "<h1>Fixture</h1>"}};</script>';
+let stored = null;  // the scaffold server's /api/state: shared records only
 const server = http.createServer((req, res) => {
-  req.resume();
-  res.setHeader('Content-Type', req.url === '/arc.js' ? 'application/javascript' : 'text/html');
-  res.end(req.url === '/arc.js' ? library : req.url === '/' ? html : '{}');
+  const chunks = [];
+  req.on('data', c => chunks.push(c));
+  req.on('end', () => {
+    if (req.url === '/api/state') {
+      if (req.method === 'PUT') stored = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+      res.setHeader('Content-Type', 'application/json');
+      return res.end(JSON.stringify(req.method === 'PUT' ? {ok: true} : stored || {}));
+    }
+    res.setHeader('Content-Type', req.url === '/arc.js' ? 'application/javascript' : 'text/html');
+    res.end(req.url === '/arc.js' ? library : html);
+  });
 });
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -29,30 +38,47 @@ const server = http.createServer((req, res) => {
   try {
     browser = await chromium.launch();
     const errors = [];
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    page.on('pageerror', error => errors.push(String(error)));
+    const open = async () => {
+      const page = await (await browser.newContext()).newPage();
+      page.on('pageerror', error => errors.push(String(error)));
+      await page.goto(url);
+      return page;
+    };
     const url = 'http://127.0.0.1:' + server.address().port + '/';
-    await page.goto(url);
-    await page.evaluate(() => {
-      ARC.state.session = 'signed-in-user';
+    const first = await open();
+    assert.deepEqual(stored, {items: ['initial']}, 'the first visit shares the seed records, never the session');
+    await first.evaluate(() => {
+      ARC.state.session = 'owner';
       ARC.state.items.push('saved');
+      ARC.state.teams = ['created later'];      // an undeclared array is a record collection too
+      ARC.state.ui = {open: true};              // view state stays in this tab
+      ARC.state.signInError = 'Invalid';        // so does any other non-record key
       ARC.save();
     });
-    await page.goto(url);
-    assert.deepEqual(await page.evaluate(() => ARC.state),
-      {session: 'signed-in-user', items: ['initial', 'saved']});
-    const independent = await browser.newContext();
-    const fresh = await independent.newPage();
-    fresh.on('pageerror', error => errors.push(String(error)));
-    await fresh.goto(url);
-    assert.deepEqual(await fresh.evaluate(() => ARC.state), initial);
-    await page.evaluate(() => { ARC.state.session = null; ARC.save(); });
-    await page.reload();
-    assert.deepEqual(await page.evaluate(() => ARC.state),
-      {session: null, items: ['initial', 'saved']});
+    await first.goto(url);
+    assert.deepEqual(await first.evaluate(() => ARC.state), {session: 'owner', items: ['initial', 'saved'],
+      teams: ['created later'], ui: {open: true}, signInError: 'Invalid'});
+    // Another user's isolated browser session reads the same records, with its own sign-in and view state.
+    const second = await open();
+    assert.deepEqual(await second.evaluate(() => ARC.state),
+      {session: null, items: ['initial', 'saved'], teams: ['created later']});
+    await second.evaluate(() => { ARC.state.session = 'member'; ARC.state.items.push('by member'); ARC.save(); });
+    // The first session sees the member's record on its next navigation, and keeps its own sign-in.
+    await first.evaluate(() => ARC.navigate('#/other'));
+    assert.deepEqual(await first.evaluate(() => [ARC.state.session, ARC.state.items]),
+      ['owner', ['initial', 'saved', 'by member']]);
+    // Signing out lasts across a reload and does not sign the other session out.
+    await first.evaluate(() => { ARC.state.session = null; ARC.save(); });
+    await first.reload();
+    assert.equal(await first.evaluate(() => ARC.state.session), null);
+    await second.reload();
+    assert.equal(await second.evaluate(() => ARC.state.session), 'member');
+    // A second tab in the same browser session shares the sign-in, not the tab's view state.
+    const tab = await second.context().newPage();
+    await tab.goto(url);
+    assert.deepEqual(await tab.evaluate(() => [ARC.state.session, ARC.state.ui]), ['member', undefined]);
     assert.deepEqual(errors, []);
-    console.log('State survives navigation, logout persists, fresh contexts start from seed.');
+    console.log('Records are shared across browser sessions; sign-in and view state stay per browser.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
@@ -63,7 +89,7 @@ const server = http.createServer((req, res) => {
 
 @unittest.skipUnless(shutil.which('node'), 'Node is required')
 class ScaffoldPersistenceCase(unittest.TestCase):
-    def test_navigation_preserves_state_without_leaking_to_a_fresh_context(self):
+    def test_records_are_shared_while_sign_in_and_view_state_stay_per_browser(self):
         env = _child_env()
         if 'PLAYWRIGHT_BROWSERS_PATH' in os.environ:
             env['PLAYWRIGHT_BROWSERS_PATH'] = os.environ['PLAYWRIGHT_BROWSERS_PATH']
