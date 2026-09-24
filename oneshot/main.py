@@ -13,6 +13,7 @@ empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALL
 ONESHOT_REPAIR_CNY (repair spend per task, default 3).
 """
 import argparse
+import collections
 import hashlib
 import json
 import os
@@ -47,6 +48,9 @@ LOSS_RATIO = 3  # A repair that loses passing scenarios is kept only when it gai
 REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce before one has completed.
 REPAIR_SECONDS = 3 * 3600  # No repair round starts after this much time in the repair phase.
 CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this long (a large task at 1 CPU).
+TESTGEN = os.environ.get("ONESHOT_TESTGEN", "0") == "1"  # requirement-written tests drive the repairs (testgen.py); off until validated
+TESTGEN_WAIT = 1200  # seconds the repair phase waits for the suite once the draft is in
+TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
 # Load failures only the jsdom probe reports: jsdom lacks APIs a browser has (ResizeObserver, canvas), so a
 # Chromium scenario run decides whether the application is really broken as a whole.
 DOM_ONLY = ("loading / in a DOM", "frontend script error on load", "after scripts run, / renders no visible text")
@@ -61,7 +65,8 @@ MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so 
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
 SCAFFOLD = os.environ.get("ONESHOT_SCAFFOLD", "1") != "0"  # place oneshot/scaffold in the stage before a fresh generation and show it in the prompt
 SCAFFOLD_DIR = HERE / "scaffold"
-SCAFFOLD_KEEP = {"frontend/public/lib/arc.js": ("ARC.layout", "ARC.openDialog", "ARC.openPopover", "ARC.notify", "ARC.rowActions", "ARC.render"),
+SCAFFOLD_KEEP = {"frontend/public/lib/arc.js": ("ARC.layout", "ARC.openDialog", "ARC.openPopover", "ARC.notify", "ARC.rowActions", "ARC.render",
+                                               "ARC.onPaste", "ARC.pasteFromClipboard"),
                  "frontend/public/app.js": ("window.LAYOUT", "window.APP"),
                  "frontend/public/seed.js": ("window.SEED",)}
 MAX_TEMPLATE_FILES = 256
@@ -231,6 +236,7 @@ class CallBudget:
         self.attempts = []
         self.side_calls = []  # model calls made outside stream_completion: the scenario translation
         self.smoke = None
+        self.suite = None  # what the acceptance-test writer produced (finish_suite)
         self.model = None  # set once the run has switched to the fallback model
         self.progress_path = None
         self._progress_started = time.monotonic()
@@ -270,10 +276,11 @@ class CallBudget:
                 or len(self.failed()) >= self.fail_limit)
 
     def spent(self, phase=None):
-        """Estimated CNY of the calls so far (all phases, or one); the side calls belong to the repair phase."""
+        """Estimated CNY of the calls so far (all phases, or one); a side call counts toward its own phase (the
+        scenario translation toward the repairs, the written tests toward `tests`)."""
         total = sum(call_cost(r) for r in self.attempts if phase in (None, r["phase"]))
-        if phase in (None, "repair"):
-            total += sum(call.get("cost_cny") or 0.0 for call in self.side_calls)
+        total += sum(call.get("cost_cny") or 0.0 for call in self.side_calls
+                     if phase is None or call.get("phase", "repair") == phase)
         return total
 
     def repair_stop(self, messages=(), model=None):
@@ -815,8 +822,16 @@ const { JSDOM, VirtualConsole } = require('jsdom');
     }
     if (clickErrors.length >= 8) break;
   }
+  // The screen table the app dispatches on (the scaffold's APP.screens), for the route-name check in Python.
+  let routes = null;
+  try {
+    const APP = win.APP;
+    if (APP && APP.screens && typeof APP.screens === 'object') {
+      routes = { screens: Object.keys(APP.screens), dispatch: typeof APP.screen === 'function' ? String(APP.screen).slice(0, 4000) : '' };
+    }
+  } catch (e) {}
   console.log(JSON.stringify({ text_chars: text.length, errors: loadErrors.slice(0, 5), landmarks, screens: seen.size,
-                               click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e) }));
+                               routes, click_errors: clickErrors.slice(0, 6).map(({ key, ...e }) => e) }));
   dom.window.close();
 })();
 """
@@ -877,6 +892,8 @@ def _check_dom(stage, port, problems, requirements=None):
         problems.append(f"clicking {who} on screen `{err.get('hash', '#/')}` throws: {err.get('message')}. A click handler "
                         f"that throws renders nothing, so the suite's next step waits for a result that never comes; guard "
                         f"every lookup (a missing record must not dereference undefined) and never throw from a handler")
+    for problem in route_gaps(stage, report.get("routes")):
+        problems.append(problem)
     present = report.get("landmarks") or {}
     for name, (pattern, element) in LANDMARKS.items():
         if requirements and re.search(pattern, requirements, re.I) and name in present and not present[name]:
@@ -884,6 +901,37 @@ def _check_dom(stage, port, problems, requirements=None):
                             f"{name}; every screen, including the home screen, must render through the one shared "
                             f"layout (header, navigation, main content, footer) so the suite finds the same "
                             f"landmarks and controls on every route")
+
+
+# A route name where the app sends the browser: a link, ARC.navigate, a `hash:` entry, a location.hash assignment.
+ROUTE_REF = re.compile(r"""(href\s*=\s*\\?["'`]|navigate\(\s*["'`]|\bhash\s*[:=]\s*["'`])#/([A-Za-z][\w-]*)(/?)""")
+
+
+def route_gaps(stage, routes):
+    """In-app links and navigations whose route name has no screen in the app's screen table, so they render the
+    fallback (the home screen): two of five official-task drafts on 09-24 linked every record to `#/w/<id>` or
+    `#/wb/<id>` while the screen was named `workbook`, and no record could be opened. `routes` is what the DOM probe
+    read from APP.screens; a name the dispatch function spells out itself counts as handled. A missing record page
+    (the route takes a parameter) or a programmatic navigation is fatal: the task's main screens are unreachable. A
+    plain dead link (a `#/login` copied from the scaffold into an app without sign-in) is only a hint."""
+    if not routes or not routes.get("screens"):
+        return []
+    screens, dispatch = set(routes["screens"]), routes.get("dispatch") or ""
+    fatal, plain = set(), set()
+    for how, name, param in ROUTE_REF.findall(_frontend_sources(stage)):
+        if name in screens or any(q + name + q in dispatch for q in "'\"`"):
+            continue
+        (fatal if param or how.startswith("navigate") else plain).add(name)
+    problems = []
+    if fatal:
+        problems.append(f"the app opens route(s) {', '.join('#/' + n for n in sorted(fatal))} (a record page or a "
+                        f"navigation after an action) but its screen table (APP.screens) has no screen by that name "
+                        f"(it has: {', '.join(sorted(screens))}), so they render the fallback screen and the records "
+                        f"cannot be opened: name each screen exactly as the routes that lead to it")
+    if plain - fatal:
+        problems.append(f"unreachable link: {', '.join('#/' + n for n in sorted(plain - fatal))} has no screen in "
+                        f"APP.screens and renders the fallback screen; remove the link or add the screen")
+    return problems
 
 
 def _check_semantic_browser(port, problems, requirements, diagnostics):
@@ -1263,11 +1311,14 @@ def draft_application(stage, files, messages, model, base, key, budget, template
         request = history + [{"role": "user", "content": ask}]
 
 
-def draft_messages(requirements, scaffold=None, snapshot=None):
-    """The draft conversation: the card, the delivery contract, the quoted vocabulary and the requirements, then the
-    scaffold placed in the stage or the existing application being extended."""
+def draft_messages(requirements, scaffold=None, snapshot=None, prerequisites=""):
+    """The draft conversation: the card, the delivery contract, the quoted vocabulary and the requirements (with the
+    task's prerequisites.md when it has content), then the scaffold placed in the stage or the existing application
+    being extended."""
     user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
+    if prerequisites.strip():
+        user += ("\n\n## Prerequisites (the task's prerequisites.md, part of the requirements)\n" + prerequisites.strip())
     if scaffold:
         user += scaffold_context(scaffold)
     if snapshot is not None:
@@ -1275,7 +1326,7 @@ def draft_messages(requirements, scaffold=None, snapshot=None):
     return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
 
 
-def generate(requirements, model, base, key, out, budget=None, template=None):
+def generate(requirements, model, base, key, out, budget=None, template=None, prerequisites=""):
     budget = budget if budget is not None else CallBudget()
     # Reusing a nonempty directory could hide missing files behind an earlier run.
     out = Path(os.path.abspath(out))
@@ -1290,7 +1341,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
     snapshot = read_template(template) if template is not None else {}
     out.parent.mkdir(parents=True, exist_ok=True)
     scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
-    messages = draft_messages(requirements, scaffold, snapshot if template is not None else None)
+    messages = draft_messages(requirements, scaffold, snapshot if template is not None else None, prerequisites)
     files = []
     with tempfile.TemporaryDirectory(prefix=".oneshot-", dir=out.parent) as temp:
         budget.progress_path = Path(temp) / "progress.json"
@@ -1305,6 +1356,9 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
             target = resolve_path(stage, name)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
+        suite = None
+        if TESTGEN and SMOKE and template is None:
+            suite = start_suite(requirements, Path(temp) / "suite", model, base, key, prerequisites)
         try:
             conversation = draft_application(stage, files, messages, model, base, key, budget, template)
             needed = missing_required(stage)
@@ -1314,10 +1368,15 @@ def generate(requirements, model, base, key, out, budget=None, template=None):
                 raise ValueError("upgrade did not change any files")
             if SMOKE:
                 budget.phase = "repair"
+                budget.progress("waiting_for_tests" if suite else "checking_application", force=True)
+                tests = finish_suite(suite, budget)
+                suite = None
                 budget.progress("checking_application", force=True)
                 repair_delivery(stage, files, conversation, model, base, key, budget, template, requirements,
-                                scaffold=bool(scaffold))
+                                scaffold=bool(scaffold), tests=tests)
         except Exception as exc:
+            if suite is not None:
+                finish_suite(suite, budget, wait=0)  # its calls so far stay on the ledger
             # A zero is the only outcome worse than any application (roadmap 4.1): after a spent budget, a
             # transport failure, a protocol error or a crash in the checks, the stage holds every complete file
             # written so far (never a partial one), and it ships when it passes the delivery check.
@@ -1677,7 +1736,7 @@ def _fatal(problem):
     """A smoke problem that zeroes the whole app (nothing renders or serves), as opposed to one that
     costs a family of tests (a click handler that throws, a missing landmark)."""
     return not (problem.startswith(("clicking ", "Requirement-derived UI observation:",
-                                    "browser interaction error:")) or "renders no <" in problem)
+                                    "browser interaction error:", "unreachable link:")) or "renders no <" in problem)
 
 
 def _bare_name(name):
@@ -1693,10 +1752,75 @@ def _scenario_module():
     return scenario_check
 
 
-def check_scenarios(stage, requirements, only=None, translate=True):
-    """Run the requirements' own scenarios against the staged application (scenario_check.py). A checker that cannot
-    run reports why instead of raising: its failure is never the application's fault."""
+def _testgen_module():
     try:
+        from . import testgen
+    except ImportError:  # the flat package
+        import testgen
+    return testgen
+
+
+def start_suite(requirements, directory, model, base, key, prerequisites=""):
+    """Write the requirement-written acceptance tests in a background thread while the draft is written (they read
+    only the requirements). Its calls keep their own ledger; finish_suite() joins it."""
+    import threading
+    job = {"dir": Path(directory), "budgets": [], "manifest": None, "error": None, "started": time.monotonic()}
+
+    def complete(messages):
+        # One ledger per call: parallel streams must not share one transport-failure limit (09-24: five failures
+        # across eight parallel files stopped three of them).
+        own = CallBudget(draft_limit=1, repair_limit=0)
+        job["budgets"].append(own)
+        return stream_completion(messages, model, base, key, own, tries=3)
+
+    def work():
+        try:
+            job["manifest"] = _testgen_module().write_suite(requirements, job["dir"], complete, prerequisites)
+        except Exception as exc:  # the suite is an aid: its failure falls back to the scenario check
+            job["error"] = f"{type(exc).__name__}: {str(exc)[:300]}"
+    job["thread"] = threading.Thread(target=work, name="oneshot-testgen", daemon=True)
+    job["thread"].start()
+    return job
+
+
+def finish_suite(job, budget, wait=TESTGEN_WAIT):
+    """Join the suite writer (at most `wait` seconds), put its calls on the run's ledger as `tests` side calls, and
+    return the suite directory when a test file loaded, else None (the scenario check then stands in)."""
+    if job is None:
+        return None
+    job["thread"].join(wait)
+    records = [record for own in list(job["budgets"]) for record in list(own.attempts)]
+    for number, record in enumerate(records, 1):
+        budget.side_calls.append({**record, "phase": "tests", "call": f"tests-{number}",
+                                  "cost_cny": round(call_cost(record), 6)})
+    summary = {"seconds": round(time.monotonic() - job["started"], 1), "calls": len(records),
+               "cost_cny": round(sum(call_cost(r) for r in records), 6)}
+    if job["thread"].is_alive():
+        summary["error"] = f"the suite was not written within {wait} s of the draft"
+    elif job["error"] or not job["manifest"]:
+        summary["error"] = job["error"] or "no manifest"
+    else:
+        summary.update({k: job["manifest"].get(k) for k in ("scenarios", "tests")},
+                       files=[{k: r.get(k) for k in ("file", "calls", "finish", "error", "syntax") if r.get(k) is not None}
+                              | {"tests": len(r.get("tests") or [])} for r in job["manifest"].get("files", [])])
+    budget.suite = summary
+    ready = "error" not in summary and _testgen_module().runnable(job["manifest"])
+    print(f"[oneshot] acceptance tests: {json.dumps(summary, ensure_ascii=False)[:600]}", file=sys.stderr)
+    return job["dir"] if ready else None
+
+
+def _suite(tests):
+    """The keyword a check call carries only when a written suite exists (the scenario check's call is unchanged)."""
+    return {"tests": tests} if tests is not None else {}
+
+
+def check_scenarios(stage, requirements, only=None, translate=True, tests=None):
+    """Run the requirement-written acceptance tests in `tests` (testgen.py) when there are any, else the requirements'
+    own scenarios (scenario_check.py), against the staged application. A checker that cannot run reports why instead
+    of raising: its failure is never the application's fault."""
+    try:
+        if tests is not None:
+            return _testgen_module().run_suite(stage, tests, requirements or "", only=only)
         return _scenario_module().run(None, stage, text=requirements or "", only=only, translate=translate,
                                       seconds=CHECK_SECONDS)
     except Exception as exc:
@@ -1715,7 +1839,7 @@ def static_gaps(stage, requirements, scaffold):
     return {gate: problems for gate, problems in gates.items() if problems}
 
 
-def assess(stage, requirements, scaffold, translate=True):
+def assess(stage, requirements, scaffold, translate=True, tests=None):
     """What the repair loop decides on: the delivery smoke check (whole-application failures and hints), the static
     gates, the quoted vocabulary, and the scenario report, which is skipped while the application is broken whole.
     A load failure that only the jsdom probe reports stands only when Chromium passes no scenario either."""
@@ -1727,7 +1851,7 @@ def assess(stage, requirements, scaffold, translate=True):
              "static": static_gaps(stage, requirements, scaffold), "vocab": vocab, "missing": missing,
              "browser": browser, "report": None}
     if executed and (not fatal or all(p.startswith(DOM_ONLY) for p in fatal)):
-        state["report"] = check_scenarios(stage, requirements, translate=translate)
+        state["report"] = check_scenarios(stage, requirements, translate=translate, **_suite(tests))
         if fatal and _scenarios(state, "pass"):
             state["fatal"], state["jsdom_only"] = [], fatal  # a real browser renders it: hints, not a dead app
         elif fatal:
@@ -1809,7 +1933,22 @@ def repair_request(state, discarded=None):
     if state["fatal"]:
         sections.append("It is broken as a whole, so no scenario can pass:\n" + "\n".join("- " + p for p in state["fatal"]))
     failing = _scenarios(state, "fail")
-    if failing:
+    written = (state["report"] or {}).get("kind") == "testgen"
+    if failing and written:
+        shown = failing[:TESTGEN_SHOWN]
+        lines = [f"- {s['id']} {s.get('name') or ''}\n  error: {(s.get('observation') or '').strip()[:900]}"
+                 + (f"\n  test code:\n" + "\n".join("    " + line for line in s["source"].splitlines()) if s.get("source") else "")
+                 for s in shown]
+        more = f"\n(and {len(failing) - len(shown)} more failing tests)" if len(failing) > len(shown) else ""
+        sections.append("These acceptance tests fail. Another engineer wrote them from the requirements above without seeing "
+                        "your code, one test per requirement scenario (the id before `#` is the requirement); the code "
+                        "shows what a user does and expects. The requirements are authoritative: where a test and the "
+                        "requirements disagree, keep the requirements' behaviour. Fix the application, not the tests:\n"
+                        + "\n".join(lines) + more)
+        keep = sorted(passing(state))
+        if keep:
+            sections.append("These tests pass and must keep passing: " + ", ".join(keep))
+    elif failing:
         lines = [f"- {s['id']} {s.get('name') or ''}\n  checked: {_checked(s)}\n  observed: {(s.get('observation') or '')[:600]}"
                  for s in failing[:REPAIR_SHOWN]]
         more = f"\n(and {len(failing) - REPAIR_SHOWN} more failing scenarios)" if len(failing) > REPAIR_SHOWN else ""
@@ -1818,6 +1957,7 @@ def repair_request(state, discarded=None):
         keep = sorted(passing(state))
         if keep:
             sections.append("These scenarios pass and must keep passing: " + ", ".join(keep))
+    if failing:
         hints = [i.get("observation") or "" for i in (state["report"] or {}).get("invariants", []) if i.get("status") == "fail"]
         hints += [p for p in state["smoke"] if not _fatal(p)]
         hints += [p for problems in state["static"].values() for p in problems] + state["vocab"]
@@ -1842,7 +1982,7 @@ def _checker_failed(report):
     return bool(statuses) and all(status == "error" for status in statuses)
 
 
-def judge(before, after, stage, requirements, pinned, translate=True, budget=None):
+def judge(before, after, stage, requirements, pinned, translate=True, budget=None, tests=None):
     """(accepted, reason, detail) for a repaired stage against the version before it (roadmap 4.3). A repair is kept
     when it brings a broken application back (whatever else it did), or when at least one scenario that failed now
     passes, it gains LOSS_RATIO of those for every passing scenario it loses, no clean static gate starts flagging, no
@@ -1876,7 +2016,7 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
             detail["waived"] = guards
         return True, "the application works again", detail
     if _checker_failed(after["report"]):
-        after["report"] = check_scenarios(stage, requirements, translate=translate)  # one more try before judging
+        after["report"] = check_scenarios(stage, requirements, translate=translate, **_suite(tests))  # one more try
         if budget is not None:
             account_translation(budget, after["report"])
     if _checker_failed(after["report"]):
@@ -1889,7 +2029,7 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     gained = {sid for sid, status in old.items() if status == "fail" and new.get(sid) == "pass"}
     unsure = lost | (gained if len(gained) <= 2 else set())
     if unsure:
-        recheck = check_scenarios(stage, requirements, only=unsure, translate=translate)
+        recheck = check_scenarios(stage, requirements, only=unsure, translate=translate, **_suite(tests))
         if budget is not None:
             account_translation(budget, recheck)
         again = {s["id"]: s.get("status") for s in recheck.get("scenarios", [])}
@@ -1913,7 +2053,9 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         # A structural fix can expose failures that the broken version passed by accident: the official v24 router fix
         # took the self-check from 9 to 28 passing scenarios and lost two that passed only because every detail link
         # rendered the list (the public suite fails them on the fixed app too). Kept when it gains three per loss.
-        if len(gained) < LOSS_RATIO * len(lost):
+        # Written tests are not calibrated that way: a lost test may be a path the hidden suite takes, so none may go.
+        written = (after["report"] or {}).get("kind") == "testgen"
+        if written or len(gained) < LOSS_RATIO * len(lost):
             return False, broke + (f", and fixed only {len(gained)}" if gained else ", and fixed none"), detail
     if not gained:
         return False, "no failing scenario passes after the change", detail
@@ -1935,7 +2077,8 @@ def _swap_back(stage, backup):
     shutil.rmtree(discarded, ignore_errors=True)
 
 
-def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False):
+def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False,
+                    tests=None):
     """Scenario-driven repair (roadmap 4.3). A repair is requested while the application is broken as a whole or one of
     the requirements' scenarios fails, and it carries those findings; the static gates and the smoke check's
     family-level problems ride along as hints and never trigger a call on their own. judge() decides whether a repair
@@ -1943,7 +2086,13 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     the repair spend, call or time limit, or after REPAIR_REJECTIONS discarded repairs in a row. Each round is
     recorded. The scenario plan stays fixed for the whole loop: a translation that failed once is not retried."""
     started_repairs = time.monotonic()
-    state = assess(stage, requirements, scaffold)
+    state = assess(stage, requirements, scaffold, tests=tests)
+    if tests is not None and _checker_failed(state["report"]) and not state["fatal"] and state["executed"]:
+        # The written suite could not judge this application at all (every test broke on its own): the requirements'
+        # own scenarios stand in, as before the suite existed.
+        budget.suite = dict(budget.suite or {}, fallback=scenario_summary(state["report"]))
+        tests = None
+        state = assess(stage, requirements, scaffold)
     account_translation(budget, state["report"])
     translate = ((state["report"] or {}).get("translation") or {}).get("status") not in ("failed", "no_key")
     budget.smoke = {"executed": state["executed"],
@@ -1953,6 +2102,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         budget.smoke["jsdom_only"] = state["jsdom_only"]
     if state["browser"]:
         budget.smoke["browser_before"] = state["browser"]
+    if budget.suite is not None:
+        budget.smoke["tests"] = dict(budget.suite, used=tests is not None)
     rounds, conversation, discarded = [], list(messages), None
     quoted = {phrase.lower() for phrase in quoted_control_phrases(requirements)}
     while state["fatal"] or _scenarios(state, "fail"):
@@ -1995,9 +2146,9 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             if needed:
                 raise ValueError("the repair broke delivery: " + "; ".join(needed))
             budget.progress("checking_repair", force=True)
-            after = assess(stage, requirements, scaffold, translate)
+            after = assess(stage, requirements, scaffold, translate, tests=tests)
             account_translation(budget, after["report"])
-            accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget)
+            accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget, tests)
             record.update(detail, reason=reason, scenarios=scenario_summary(after["report"]))
             if after["browser"]:
                 record["browser_after"] = after["browser"]
@@ -2042,6 +2193,9 @@ def main(argv=None):
     if not document.is_file():
         print(f"[oneshot] no requirements.yaml under {args.requirement_path}", file=sys.stderr)
         return 1
+    # The runner places prerequisites.md beside the requirements (empty so far); what it says is part of the task.
+    extra = args.requirement_path / "prerequisites.md"
+    prerequisites = extra.read_text(encoding="utf-8", errors="replace") if extra.is_file() else ""
     key = os.environ.get("OPENAI_API_KEY")
     if not key:
         print("[oneshot] OPENAI_API_KEY is not set", file=sys.stderr)
@@ -2064,7 +2218,7 @@ def main(argv=None):
                 files, _ = generate(document.read_text(encoding="utf-8"),
                                     os.environ.get("MODEL", DEFAULT_MODEL),
                                     os.environ.get("OPENAI_BASE_URL", DEFAULT_BASE), key,
-                                    stage, budget)
+                                    stage, budget, prerequisites=prerequisites)
                 for name in APPLICATION_ROOTS:
                     (stage / name).rename(out / name)
             finally:
@@ -2077,7 +2231,7 @@ def main(argv=None):
             files, _ = generate(document.read_text(encoding="utf-8"),
                                 os.environ.get("MODEL", DEFAULT_MODEL),
                                 os.environ.get("OPENAI_BASE_URL", DEFAULT_BASE), key,
-                                out, budget, template=template)
+                                out, budget, template=template, prerequisites=prerequisites)
     except Exception as exc:
         print(("[oneshot] failed: " + str(exc)).replace(key, "[REDACTED]"), file=sys.stderr)
         return 1

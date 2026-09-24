@@ -8,6 +8,7 @@ import http.client
 import io
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -84,6 +85,7 @@ class OfflineCase(unittest.TestCase):
                                                 side_effect=AssertionError("unexpected HTTP")))
         self.enter(patch.object(adapter.time, "sleep"))
         self.enter(patch.object(adapter, "SMOKE", False))
+        self.enter(patch.object(adapter, "TESTGEN", False))  # the written-test path has its own tests
         self.enter(patch.dict(os.environ))  # the code defaults, whatever the developer's shell exports
         for name in ("FALLBACK_MODEL", "ONESHOT_DRAFT_CALLS", "ONESHOT_REPAIR_CALLS", "ONESHOT_REPAIR_CNY"):
             os.environ.pop(name, None)
@@ -777,6 +779,26 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual((requirement / "requirements.yaml").read_text(), "synthetic: true")
         self.assertEqual(list(self.out.glob(".oneshot-*")), [])
 
+    def test_cli_sends_nonempty_prerequisites_with_the_requirements(self):
+        # The runner places prerequisites.md beside requirements.yaml; empty on 09-24, and what it says is the task's.
+        requirement = self.out / "requirements"
+        requirement.mkdir(parents=True)
+        (requirement / "requirements.yaml").write_text("synthetic: true")
+        (self.out / ".arc").mkdir()
+        for text, expected in (("", False), ("Seed account: synthetic-user / synthetic-pass\n", True)):
+            with self.subTest(prerequisites=text):
+                for name in ("frontend", "backend"):
+                    shutil.rmtree(self.out / name, ignore_errors=True)
+                (requirement / "prerequisites.md").write_text(text)
+                self.transport.reset_mock()
+                self.replies(events(application()))
+                with patch.dict(os.environ, {"OPENAI_API_KEY": SYNTHETIC_KEY}, clear=True), \
+                        contextlib.redirect_stderr(io.StringIO()), contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(adapter.main([str(requirement), "--output-dir", str(self.out)]), 0)
+                prompt = json.loads(self.transport.call_args_list[0].args[0].data)["messages"][1]["content"]
+                self.assertEqual("## Prerequisites" in prompt, expected)
+                self.assertEqual("synthetic-user / synthetic-pass" in prompt, expected)
+
     def test_cli_prepopulated_output_receives_the_complete_version_after_an_error(self):
         requirement = self.out / "requirements"
         requirement.mkdir(parents=True)
@@ -997,3 +1019,34 @@ class LocalHTTPTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RouteGapCase(unittest.TestCase):
+    """A route the app opens with no screen of that name renders the fallback: fatal for record pages and
+    navigations after an action, a hint for a plain dead link."""
+
+    def stage(self, source):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        public = Path(temp.name) / "frontend" / "public"
+        public.mkdir(parents=True)
+        (public / "app.js").write_text(source)
+        return Path(temp.name)
+
+    def test_a_record_route_without_its_screen_is_fatal(self):
+        stage = self.stage("const a = `<a href=\"#/w/${w.id}\">${w.name}</a>`;\n"
+                           "function made(id) { ARC.navigate('#/w/' + id); }\n"
+                           "window.LAYOUT = { account: () => '<a href=\"#/login\">Log in</a>' };")
+        routes = {"screens": ["home", "new", "workbook"], "dispatch": "screen(route) { return this.screens[route.name]; }"}
+        gaps = adapter.route_gaps(stage, routes)
+        self.assertEqual(len(gaps), 2)
+        self.assertTrue(adapter._fatal(gaps[0]))
+        self.assertIn("#/w ", gaps[0] + " ")
+        self.assertFalse(adapter._fatal(gaps[1]))
+        self.assertIn("#/login", gaps[1])
+
+    def test_routes_the_screens_or_the_dispatch_handle_pass(self):
+        stage = self.stage("ARC.navigate('#/workbook/' + id); const b = '<a href=\"#/wb/1\">x</a>';")
+        routes = {"screens": ["home", "workbook"], "dispatch": "screen(route) { if (route.name === 'wb') return 1; }"}
+        self.assertEqual(adapter.route_gaps(stage, routes), [])
+        self.assertEqual(adapter.route_gaps(stage, None), [])

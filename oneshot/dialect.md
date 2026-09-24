@@ -137,4 +137,21 @@ editing. Native input semantics apply immediately; live filtering must not wait 
   fails with ERR_CONNECTION_REFUSED (one large-task run died at test 6 of 135 on "Assignment to constant
   variable").
 
+## 8a. Every path the requirements allow: pointer, keyboard, clipboard
+A test reaches a feature through any path the requirements allow, so implement each one:
+- Edit in place: where users edit an item in place (a cell, a title, a row), double-click opens its named editor
+  with the current value, AND typing a printable character while the item is selected opens the same editor
+  starting with that character; Enter commits, Escape cancels, clicking elsewhere commits.
+- Clipboard: register `ARC.onCopy((cut) => text | {text, data})` and `ARC.onPaste((text, data) => ...)`; the
+  scaffold handles Ctrl/Cmd+C, X and V. A menu's "Copy", "Cut" or "Paste" command calls
+  `ARC.copyToClipboard(cut)` or `ARC.pasteFromClipboard()`. Tests put text on the browser clipboard themselves:
+  never keep a private clipboard instead of it, and never preventDefault those keys. Ranges travel as
+  tab-separated columns and newline-separated rows; `data` comes back only when the app pastes its own copy
+  (keep formulas or other detail text cannot carry there).
+- A context menu opens on the real `contextmenu` event of the element the requirements name (a row number, a
+  column header, a cell), as `role="menu"` with `menuitem`s, and acts on what it was opened on: a right-click
+  outside the current selection first selects that item, as a left click would.
+- ARC.render() already waits for a press's click sequence; do not rebuild the pressed element yourself
+  (`innerHTML`) inside a mousedown or mouseup handler, which drops its click and double-click.
+
 Nested route-table callbacks must bind to the table that owns their sibling methods, or use explicit object references.

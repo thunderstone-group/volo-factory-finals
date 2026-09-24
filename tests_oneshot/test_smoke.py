@@ -67,6 +67,7 @@ class SmokeCase(unittest.TestCase):
                                                 side_effect=AssertionError("unexpected HTTP")))
         self.enter(patch.object(adapter, "SMOKE_READY_SECONDS", 8))
         self.enter(patch.object(adapter, "RETRY_WAIT", (0, 0)))  # the waits themselves are tested offline
+        self.enter(patch.object(adapter, "TESTGEN", False))  # the written-test path has its own tests
 
     def enter(self, manager):
         value = manager.__enter__()
