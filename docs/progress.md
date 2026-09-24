@@ -1007,3 +1007,58 @@ any Goal evidence. Evidence:evidence/2026-09-22-lite-v24-nested-seed.json.
     re-emission of a large app.js). Each round CNY 0.32-0.47 and 4-9 minutes locally; the three-discards stop bounded
     the waste. Cost per task 2.58 and 3.51 (old pipeline about 1.1); wall time 33 and 41 minutes; one scenario check on
     the large app took 262-302 s locally (the runner has one CPU).
+
+## 2026-09-24 — Opening day: official tasks, baseline readings, shared-state scaffold
+
+Evidence: `docs/evidence/2026-09-24-opening-day/`.
+
+- **Entry.** Competition `hackathon` ("Agentic Software Factory Hackathon"), two tasks of 100 hidden tests each:
+  `hackathon--github` (47 ATOMIC requirements, 64 scenarios, 181 KB requirements) and `hackathon--sheet`
+  (24 ATOMIC, 48 scenarios, 73 KB). The team was confirmed on the website at about 11:05 with VOLO-AI as leader;
+  competition budget CNY 500 (`arcbench registration hackathon`). Entering needs a confirmed team (HTTP 403 before).
+- **CLI.** arcbench-cli PR #9 (0.4.0, installed from the branch): `upload --official-evaluation` (credential_mode
+  `official_evaluation`, no key sent), `registration`, `requirements`. Requirements zip sha256 `e2f2e10a...`, kept in
+  `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon/`.
+- **Runtime input.** The runner's `requirements/requirements.yaml` is byte-identical to the download; the runner also
+  places an empty `requirements/prerequisites.md`. Official runner base image `gyataro/arcbench-runner:local-base`
+  pulled; local image `arcbench-local-submit:latest` built (amd64 under emulation).
+- **Scenario self-check does not reach the official tasks.** Rules parse 0/48 (Sheet) and 0/64 (GitHub); with the flash
+  translation 0/48 and 1/64 (CNY 0.22 + 0.25). Rejections: Sheet drag 11, formula bar 9, right-click 4, range selection 3;
+  GitHub nearly all "no named account/organization/repository to build the GIVEN state". So on these tasks the package is
+  draft + static gates; the scenario repair loop never starts. Local drafts (practice key): GitHub one call, 88k
+  completion tokens, CNY 0.94, 823 s; Sheet one call, 94k, CNY 0.93, 884 s; zero repair rounds in both.
+- **Official submission 1 (baseline, package bb73b7f4, main df9fcce, flash).** Submission `36429109d6ac`.
+  GitHub run `56e06858dc92`: 5/100, CNY 0.75, 700 s. Sheet run `19ec9fcc0139`: 3/100, CNY 1.20, 1175 s.
+  - The run record carries `failed_tests` with names and error text, although the notice says per-test results are not
+    public. Used for diagnosis only; nothing from it goes into the package.
+  - GitHub: 93 of 95 failures are the evaluator's own fixture error, `Evaluation fixture is missing: set
+    E2E_LOGIN_USERNAME, E2E_LOGIN_EMAIL and E2E_LOGIN_PASSWORD. The requirement must not be skipped` (at
+    `/workspace/tests/support/e2e.ts:20`), over 40 distinct E2E_* groups; only 7 tests ran (5 passed, 2 timed out).
+    Every team on the GitHub board is at 5% or 0. A message to the organizers was drafted and handed to the user at 11:55.
+  - Sheet: all 97 failures are `Test timeout of 10000ms exceeded.` with no locator.
+- **Root cause found for multi-session behavior: the scaffold kept every record in one browser session.** `lib/arc.js`
+  started each browser session from seed.js and never read `/api/state` back. Real checks on the drafts: register in
+  context A, sign in from context B gives "Invalid credentials"; create a workbook in context A, open its URL in
+  context B shows the home page. The official Sheet bundle's basic flows are fast locally (new workbook, formula bar
+  edits in tens of ms), so the all-timeout pattern fits a GIVEN state prepared in another browser session.
+- **Fix: PR #65 (main fd4d548).** Records shared through the server with synchronous GET/PUT, pull before every action
+  and navigation; `session` per browser in localStorage, other non-record keys per tab; server loads seed.js at start.
+  Verified: new persistence test (fails on the old arc.js), 181 one-shot tests, both two-context checks now pass,
+  frozen full-score Lite apps with the new scaffold swapped in replay Keep 32/32 and BookStack 34/34.
+- **Official submission 2 (package 14297021, main fd4d548).** Submission `16dbfd3dcbef`, runs `02eb86092cc9` (GitHub)
+  and `1d84ee5aa3d4` (Sheet), started 11:57. Budget left before it: CNY 498.06.
+- **Board at 11:40.** Overall: Iris 18.5% (37/200, CNY 13.9, 60 M tokens, about 49 min per task). Sheet: Iris 52,
+  Alcor 36. GitHub: VOLO-AI 5, Iris 5, others 0.
+- **Codex (GPT-6) direction review** (read-only, `codex-direction-review.md`): rank E (small calibrated probes that can
+  build their own state), D (resampling), C (prompt), B (module split), A (model-written full test suite). It corrected
+  one of my premises: nothing proves the hidden tests create their data through our UI. It did not see the scaffold
+  store problem, which the two-context checks found afterwards.
+
+### Official submission ledger (roadmap 4.7)
+
+S = p / (b / (1.2 p))^0.1 while b <= 1.2 p; p in percent over both tasks, b in CNY.
+
+| # | time | package | commit | model | GitHub | Sheet | CNY | S | note |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | 09-24 11:17 | bb73b7f4 | df9fcce | flash | 5/100 | 3/100 | 1.95 | 4.4 | baseline; GitHub 93 evaluator fixture errors; Sheet 97 timeouts |
+| 2 | 09-24 11:57 | 14297021 | fd4d548 | flash | running | running | | | shared-state scaffold (PR #65) |

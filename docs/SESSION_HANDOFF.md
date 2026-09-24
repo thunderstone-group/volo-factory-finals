@@ -1,3 +1,31 @@
+# 当前交接 — 2026-09-24 12:00：开赛首日，第二次正式提交在跑
+
+先读 [改进路线图](reference/roadmap.md) 第 12 节第 13 版日志、4.2 和 4.9；赛制见 [初赛规则](reference/preliminary-rules.md) 的「开赛后核实」一节；数字见 [progress.md](progress.md) 09-24 一节和末尾的正式提交账本表。
+
+## 状态（run 以 `arcbench status` 实时读到的为准）
+
+- 正式赛 `hackathon`，两题各 100 条：GitHub、Sheet。VOLO-AI 是队长，比赛额度起始 500 元。
+- CLI：arcbench-cli PR #9（0.4.0，本机已从分支安装，PR 未合）加了 `upload --official-evaluation`、`registration`、`requirements`。
+- 提交 1（包 bb73b7f4）：GitHub 5/100，Sheet 3/100，1.95 元。GitHub 93 条失败是评测环境缺 `E2E_*` 种子数据；Sheet 97 条全是 10 秒超时。
+- 共享状态脚手架（PR #65，main fd4d548）已合：数据经服务器跨浏览器会话共享，登录状态按浏览器隔离。两会话实验由失败变通过。
+- 提交 2（包 14297021，main fd4d548）：submission `16dbfd3dcbef`，run `02eb86092cc9`（GitHub）、`1d84ee5aa3d4`（Sheet），11:57 起跑。
+- 场景自检在正式题上覆盖率接近 0，修复循环不会触发（路线图 4.2）。
+- 本地产物和脚本在本会话 scratchpad（会被清掉）；要保留的证据已拷进 `docs/evidence/2026-09-24-opening-day/`。
+
+## 接下来
+
+1. 读提交 2 的结果和 `failed_tests`（`arcbench --json status RUN`），填账本表，更新路线图。
+2. 如果 Sheet 大幅上升：按失败原因排序，挑能由通用机制解决的（例如双击行内编辑框 `Edit A1` 缺失这类基本编辑流程），做 Codex 建议的小范围可校准探针。
+3. 如果 Sheet 仍然全超时：下载 bundle，在 1 核 2 GB 镜像里复现，查是启动、渲染还是交互卡住。
+4. 等主办方答复 GitHub 种子数据的问题（问题反馈已交甲方发出）。
+
+## 不要做
+
+- 不要把平台返回的失败测试内容写进包里；只用于诊断通用问题。
+- 不要把受控修复的分数当成进展。
+
+---
+
 # 当前交接 — 2026-09-23 16:10：开赛包就绪（main 8285cdb）
 
 先读 [改进路线图](reference/roadmap.md)，第 4 节是每条工作流的状态，第 5 节是开赛首日的步骤，第 12 节是迭代日志。赛制见 [初赛规则](reference/preliminary-rules.md)。本节只写现在在哪一步、接下来做什么。
