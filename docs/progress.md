@@ -1135,3 +1135,18 @@ Evidence: `docs/evidence/2026-09-24-grid-mechanics/` (README has the probe table
   quiet rerun); frozen Lite apps with the new arc.js replay Keep 32/32, BookStack 34/34.
 - **Candidate for submission 4:** commit 9ac8e89, package `9bf0254a331e1a79c393840e0a20f5f55dbde1bd8840690e08ead0044e1b525f`
   (fixes 1-4, card 8a, prerequisites; written tests off). Waiting for the platform.
+
+## 2026-09-24 14:15 — Written-test calibration (roadmap 4.11 criteria 1-2) and two background jobs
+
+Evidence: `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon/testgen-calibration/` (the 30-test suite, two
+run reports, the submission chain script).
+
+- **Criteria 1-2 on submission 2's Sheet app (hidden 42/100), suite of 30 tests (5 of 8 files), no model call:**
+  two runs agree 30/30 (40 s each); 22 pass, 5 fail, 3 error. All five failures lie in requirements with hidden
+  failures (REQ-2-1-4#3, REQ-3-1-1#2, REQ-3-1-2, REQ-3-2-1, REQ-3-2-2#2); the three errors are one helper bug of the
+  test file (`cell(...).click is not a function`) and were kept out of the verdicts, as designed. One sample only.
+- **Background job 1 — submission chain** (`sub4_chain.py`, log `sub4_chain.log` in the 14:00 session scratchpad):
+  waits for submission 3's Sheet run to end, then uploads package 9bf0254a on the competition budget and starts
+  both tasks once (never re-issued), saving each run record to the campaign evidence `official/` directory.
+- **Background job 2 — criterion 3**, one local Sheet run with `ONESHOT_TESTGEN=1` on main 90f6a86 (package
+  6b8e7ec5, practice key), started 14:12; log `gen/hackathon--sheet-tg1.log` in the same scratchpad.

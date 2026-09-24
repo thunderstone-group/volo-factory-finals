@@ -8,6 +8,11 @@
 - 第四次提交候选：提交 9ac8e89，包 `9bf0254a…525f`（交互机制四项修复、方言卡 8a、prerequisites.md；按需求写测试默认关闭）。本地产物在本会话 scratchpad，打包命令 `scripts/package_oneshot.py --output …` 可复现。
 - 余额：比赛额度约 494 元（第三次提交前 495.96）；练习 key 约 88 元。
 
+## 后台在跑（14:15 起，本会话 scratchpad `/private/tmp/claude-501/-Users-e0-7-projects/7f16c387-dfb4-4435-a927-a282ac849158/scratchpad`）
+
+- `sub4_chain.py`：等第三次提交 Sheet 跑完，自动上传包 9bf0254a 并在两题各起一次正式 run（只起一次，不重试），日志 `sub4_chain.log`，run 记录存到 campaign evidence 的 `official/`。接手前先 `ps aux | grep sub4_chain` 和 `arcbench runs`，别重复提交。
+- 4.11 判据 ③：`ONESHOT_TESTGEN=1` 的本地 Sheet 端到端运行，日志 `gen/hackathon--sheet-tg1.log`，产物 `gen/hackathon--sheet-tg1/`。判据 ① ② 已在一份样本上满足（progress 14:15 节）。
+
 ## 接下来
 
 1. 平台恢复：读第三次提交 Sheet（`arcbench status 14de9c6238ff`），填账本；再发第四次提交（`arcbench upload --official-evaluation`，两题各一个 run），跑完读 REQ-3-1-1、REQ-3-1-2、REQ-3-2-1 和 GitHub 严格模式失败有没有下降。
