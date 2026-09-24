@@ -114,10 +114,32 @@
     return (s.users || []).find((u) => u.id === s.session) || null;
   };
 
+  // --- Presses: the browser sends `click`, and `dblclick` on a second press, only to an element that is still
+  // in the document when the button is released. A render inside a mousedown/mouseup handler replaces that
+  // element and silently drops the click and the double-click (09-24: three of three spreadsheet drafts
+  // re-rendered their grid on a press, so no cell ever received a click and the double-click editor never
+  // opened). While a left-button press is in progress, ARC.render() waits for the end of its click sequence
+  // (after `click`, or after `dblclick` on a second press), in the same task.
+  let pressing = false, postponed = false;
+  const settle = () => { pressing = false; if (postponed) { postponed = false; ARC.render(); } };
+  const press = (ev) => { if (ev.button === 0) pressing = true; };
+  const release = (ev) => { if (ev.button === 0) { pressing = true; setTimeout(settle, 0); } };
+  for (const type of ['pointerdown', 'mousedown']) window.addEventListener(type, press, true);
+  for (const type of ['pointerup', 'mouseup']) window.addEventListener(type, release, true);
+  window.addEventListener('click', (ev) => { if (ev.detail < 2) settle(); });
+  // A double-click handler that opened an editor itself (focus is now in a text field of the screen) keeps it:
+  // the render postponed from the second press would wipe it.
+  window.addEventListener('dblclick', () => {
+    const active = document.activeElement, app = document.getElementById('app');
+    if (active && app && app.contains(active) && active.matches('input, textarea, [contenteditable="true"]')) postponed = false;
+    settle();
+  });
+
   // --- Render: rebuild #app from the store in the same tick as the click. Views are unmounted, never
   // cross-faded. Text typed into a form survives in-form clicks because actions call ARC.render()
   // only after they change state, and forms keep their values via ARC.preserveInputs.
   ARC.render = function () {
+    if (pressing) { postponed = true; return; }
     const route = ARC.route();
     ARC._renderedHash = route.hash;
     ARC._popover = null;  // the screen is rebuilt; an open popover goes with it
@@ -245,6 +267,77 @@
     const app = window.APP || {};
     if (change && app.actions && app.actions[change]) app.actions[change]({ value: option.dataset.value, name: input && input.name, el: box });
   };
+
+  // --- Clipboard: copy, cut and paste go through the browser's clipboard, so text another program (or a test)
+  // put there pastes into the app, and what the app copies pastes elsewhere. Outside text fields:
+  //   ARC.onCopy((cut) => text | { text, data } | null)  Ctrl/Cmd+C or X: the text to put on the clipboard
+  //     (tab-separated columns, newline-separated rows for a range); `data` is kept for a paste of that same text.
+  //   ARC.onPaste((text, data) => {})  Ctrl/Cmd+V, and ARC.pasteFromClipboard() for a menu's "Paste" command;
+  //     `data` is what onCopy kept when the clipboard still holds the text the app copied, else null.
+  // The native copy/cut/paste events carry the text: never preventDefault a Ctrl+C/X/V keydown, which cancels
+  // them. When no event follows the keys (a page listener cancelled it), the async clipboard API is used.
+  let onCopy = null, onPaste = null, copied = null, taken, copySeen = true, pasteSeen = true;
+  const editing = (el) => !!(el && el.closest && el.closest('input, textarea, select, [contenteditable="true"], [contenteditable=""]'));
+  ARC.onCopy = function (fn) { onCopy = fn; };
+  ARC.onPaste = function (fn) { onPaste = fn; };
+  const take = (cut) => {
+    const out = onCopy ? onCopy(cut) : null;
+    if (out == null) return null;
+    copied = typeof out === 'object' ? { text: String(out.text == null ? '' : out.text), data: out.data } : { text: String(out), data: null };
+    return copied.text;
+  };
+  const give = (text) => {
+    const same = copied && text.replace(/\r\n/g, '\n') === copied.text.replace(/\r\n/g, '\n');
+    if (onPaste) onPaste(text, same ? copied.data : null);
+  };
+  ARC.pasteFromClipboard = function () {
+    if (!navigator.clipboard || !navigator.clipboard.readText) return Promise.resolve(false);
+    return navigator.clipboard.readText().then((text) => { give(text); return true; }, () => false);
+  };
+  // A menu's "Copy" / "Cut" command.
+  ARC.copyToClipboard = function (cut) {
+    const text = take(!!cut);
+    if (text == null || !navigator.clipboard || !navigator.clipboard.writeText) return Promise.resolve(false);
+    return navigator.clipboard.writeText(text).then(() => true, () => false);
+  };
+  const outside = (ev) => !editing(ev.target) && !editing(document.activeElement);
+  // The keys read the app's selection at once (a later click must not change what is copied); the native event,
+  // dispatched in the same task, carries the text, and a zero-delay fallback covers a cancelled event.
+  window.addEventListener('keydown', (ev) => {
+    const key = (ev.key || '').toLowerCase();
+    if (!(ev.ctrlKey || ev.metaKey) || ev.altKey || key.length !== 1 || !'cxv'.includes(key) || !outside(ev)) return;
+    if (key === 'v') {
+      if (!onPaste) return;
+      pasteSeen = false;
+      setTimeout(() => { if (!pasteSeen) { pasteSeen = true; ARC.pasteFromClipboard(); } }, 0);
+      return;
+    }
+    if (!onCopy) return;
+    const text = take(key === 'x');
+    taken = text;
+    copySeen = false;
+    setTimeout(() => {
+      if (copySeen) return;
+      copySeen = true; taken = undefined;
+      if (text != null && navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(() => {});
+    }, 0);
+  }, true);
+  for (const type of ['copy', 'cut']) {
+    document.addEventListener(type, (ev) => {
+      if (!onCopy || !outside(ev)) return;
+      const text = copySeen ? take(type === 'cut') : taken;
+      copySeen = true; taken = undefined;
+      if (text == null || !ev.clipboardData) return;
+      ev.clipboardData.setData('text/plain', text);
+      ev.preventDefault();
+    });
+  }
+  document.addEventListener('paste', (ev) => {
+    if (!onPaste || !outside(ev)) return;
+    pasteSeen = true;
+    ev.preventDefault();
+    give(ev.clipboardData ? ev.clipboardData.getData('text/plain') : '');
+  });
 
   // --- Notification: a role="status" element carrying the literal message plus an Undo button.
   ARC.notify = function (message, opts) {
