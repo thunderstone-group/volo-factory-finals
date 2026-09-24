@@ -220,12 +220,15 @@ class RunCase(unittest.TestCase):
             suite = root / "suite"
             suite.mkdir()
             (suite / "t01-REQ-1.spec.cjs").write_text(SPEC)
+            # A file that does not parse would make Playwright load no test at all; the run skips it by name.
+            (suite / "t02-REQ-2.spec.cjs").write_text("test('REQ-2-1: x', async () => { const a = `b ${c}` d`; });\n")
             (suite / "suite.json").write_text(json.dumps({"files": [{"file": "t01-REQ-1.spec.cjs", "tests": [
-                "REQ-1-1: Add one", "REQ-1-2: Edit one"]}], "scenarios": 2, "tests": 2}))
+                "REQ-1-1: Add one", "REQ-1-2: Edit one"]}, {"file": "t02-REQ-2.spec.cjs", "tests": ["REQ-2-1: x"],
+                "syntax": "SyntaxError"}], "scenarios": 3, "tests": 3}))
             report = testgen.run_suite(app, suite, REQUIREMENTS)
             self.assertEqual(report.get("kind"), "testgen", report)
             statuses = {e["id"]: e["status"] for e in report["scenarios"]}
-            self.assertEqual(statuses, {"REQ-1-1": "pass", "REQ-1-2": "fail"})
+            self.assertEqual(statuses, {"REQ-1-1": "pass", "REQ-1-2": "fail", "REQ-2-1": "error"})
             again = testgen.run_suite(app, suite, REQUIREMENTS, only={"REQ-1-2"})
             self.assertEqual([(e["id"], e["status"]) for e in again["scenarios"]], [("REQ-1-2", "fail")])
 

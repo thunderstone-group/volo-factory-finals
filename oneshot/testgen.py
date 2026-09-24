@@ -220,7 +220,7 @@ def ensure_runner(env):
 
 
 CONFIG = """module.exports = {{
-  testDir: {suite}, testMatch: /.*\\.spec\\.cjs$/, workers: 1, fullyParallel: false, retries: 0,
+  testDir: {suite}, testMatch: /.*\\.spec\\.cjs$/, testIgnore: {ignore}, workers: 1, fullyParallel: false, retries: 0,
   timeout: {test_ms}, expect: {{ timeout: {action_ms} }}, outputDir: {output},
   reporter: [['json', {{ outputFile: {report} }}]],
   use: {{ baseURL: {base}, permissions: ['clipboard-read', 'clipboard-write'], actionTimeout: {action_ms},
@@ -396,6 +396,8 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
         if not cli:
             return {"unavailable": node_path, "scenarios": [], "invariants": []}
         titles = [t for r in manifest.get("files", []) if not r.get("syntax") for t in (r.get("tests") or [])]
+        # One file that does not parse makes Playwright load no test at all ("Total: 0 tests"); skip it by name.
+        broken = ["**/" + r["file"] for r in manifest.get("files", []) if r.get("syntax") and r.get("file")]
         try:
             workspace = scenario_check.Workspace(app, work, env)
         except (scenario_check.AppError, OSError) as exc:
@@ -406,7 +408,8 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
             return _all(manifest, "fail", f"The backend did not start: {why}", started)
         report_path = work / "report.json"
         (work / "playwright.config.cjs").write_text(CONFIG.format(
-            suite=json.dumps(str(suite)), output=json.dumps(str(work / "results")), report=json.dumps(str(report_path)),
+            suite=json.dumps(str(suite)), ignore=json.dumps(broken),
+            output=json.dumps(str(work / "results")), report=json.dumps(str(report_path)),
             base=json.dumps(f"http://127.0.0.1:{port}"), test_ms=TEST_SECONDS * 1000, action_ms=ACTION_SECONDS * 1000,
             navigation_ms=10000), encoding="utf-8")
         command = [shutil.which("node", path=env.get("PATH")), cli, "test", "--config", str(work / "playwright.config.cjs")]
