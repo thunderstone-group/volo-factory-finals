@@ -1,3 +1,27 @@
+# 当前交接 — 2026-09-24 14:00：第四次提交的包已备好，等平台维护结束
+
+先读 [改进路线图](reference/roadmap.md) 第 12 节第 15 版日志、4.10 和 4.11；数字见 [progress.md](progress.md) 09-24 14:00 节和正式提交账本表。分支 `feat/testgen-loop`（worktree `../volo-factory-worktrees/testgen-loop`）。
+
+## 状态（以 `arcbench status` 实时读到的为准）
+
+- 平台 arc-bench.com 12:57 起返回「系统维护」500。第三次提交的 Sheet run `14de9c6238ff` 未读；它的 GitHub run 是 1/100。
+- 第四次提交候选：提交 9ac8e89，包 `9bf0254a…525f`（交互机制四项修复、方言卡 8a、prerequisites.md；按需求写测试默认关闭）。本地产物在本会话 scratchpad，打包命令 `scripts/package_oneshot.py --output …` 可复现。
+- 余额：比赛额度约 494 元（第三次提交前 495.96）；练习 key 约 88 元。
+
+## 接下来
+
+1. 平台恢复：读第三次提交 Sheet（`arcbench status 14de9c6238ff`），填账本；再发第四次提交（`arcbench upload --official-evaluation`，两题各一个 run），跑完读 REQ-3-1-1、REQ-3-1-2、REQ-3-2-1 和 GitHub 严格模式失败有没有下降。
+2. 分支验收后开 PR 合 main（PR 可自己合）。
+3. 4.11 判据 ①–③：用 `oneshot/testgen.py write/run` 在本地产物上跑；判据过了才把 `ONESHOT_TESTGEN` 默认打开。
+4. GitHub：等主办方补 E2E 变量并重评；prerequisites.md 若有内容，包已会读。
+
+## 不要做
+
+- 不要把平台返回的失败测试内容，或正式题、练习题的专名写进包里。
+- 不要在 4.11 判据跑完前默认打开按需求写测试。
+
+---
+
 # 当前交接 — 2026-09-24 12:45：第三次正式提交在跑
 
 先读 [改进路线图](reference/roadmap.md) 第 12 节第 13、14 版日志和 4.9；赛制见 [初赛规则](reference/preliminary-rules.md)「开赛后核实」；数字见 [progress.md](progress.md) 09-24 两节和正式提交账本表。
