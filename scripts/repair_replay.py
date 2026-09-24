@@ -70,6 +70,8 @@ def main(argv=None):
     parser.add_argument("--model", default=adapter.DEFAULT_MODEL)
     parser.add_argument("--repair-cny", type=float, default=None, help="repair spend limit (default: the adapter's)")
     parser.add_argument("--env-file", default="~/.config/arcbench/volo.env")
+    parser.add_argument("--suite", type=Path, default=None,
+                        help="a written test suite (testgen.py write) that drives the repairs instead of the scenario check")
     args = parser.parse_args(argv)
     app, out = args.app.resolve(), args.out.resolve()
     if out.exists():
@@ -89,7 +91,8 @@ def main(argv=None):
     budget.phase = "repair"
     started, error = time.monotonic(), None
     try:
-        adapter.repair_delivery(stage, files, messages, args.model, base, key, budget, None, requirements, scaffold=True)
+        adapter.repair_delivery(stage, files, messages, args.model, base, key, budget, None, requirements, scaffold=True,
+                                tests=str(args.suite.resolve()) if args.suite else None)
     except Exception as exc:  # recorded; the stage still holds the last kept version
         error = f"{type(exc).__name__}: {exc}"
     shutil.copytree(stage, out / "application", ignore=shutil.ignore_patterns(*SKIP))

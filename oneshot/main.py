@@ -9,11 +9,12 @@ delivery contract, and writes the returned files under `<DIR>`.
 
 Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash),
 FALLBACK_MODEL (default kimi-k2.7-code-highspeed, or deepseek-v4-flash when MODEL is a Kimi model;
-empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 6),
-ONESHOT_REPAIR_CNY (repair spend per task, default 3).
+empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 12),
+ONESHOT_REPAIR_CNY (repair spend per task, default 5).
 """
 import argparse
 import collections
+import difflib
 import hashlib
 import json
 import os
@@ -40,15 +41,16 @@ KIMI_FALLBACK_MODEL = "deepseek-v4-flash"
 KIMI_CODE_MODELS = {"kimi-k2.7-code", "kimi-k2.7-code-highspeed"}
 MAX_TOKENS = 131072  # content cap per call; the gateway has metered >135k output tokens in one request
 DRAFT_CALLS = 4  # Completed draft calls: the first draft, continuations after a cut, redrafts of an empty reply.
-REPAIR_CALLS = 6  # Completed repair calls; the spend limit below usually ends the repairs first.
-REPAIR_CNY = 3.0  # Repair spend per task in CNY: the repair calls plus the scenario translation (roadmap 4.3).
+REPAIR_CALLS = 12  # Completed repair calls; the spend limit below usually ends the repairs first. An edit round costs
+# CNY 0.3-0.5 on a large task: a GitHub replay stopped at 6 calls with CNY 3.7 of its cap left.
+REPAIR_CNY = 5.0  # Repair spend per task in CNY: the repair calls plus the scenario translation (roadmap 4.3).
 REPAIR_REJECTIONS = 3  # Consecutive discarded repairs before the loop gives up.
 REPAIR_SHOWN = 40  # Failing scenarios listed in one repair request.
 LOSS_RATIO = 3  # A repair that loses passing scenarios is kept only when it gains this many per loss.
 REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce before one has completed.
 REPAIR_SECONDS = 3 * 3600  # No repair round starts after this much time in the repair phase.
 CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this long (a large task at 1 CPU).
-TESTGEN = os.environ.get("ONESHOT_TESTGEN", "0") == "1"  # requirement-written tests drive the repairs (testgen.py); off until validated
+TESTGEN = os.environ.get("ONESHOT_TESTGEN", "1") == "1"  # requirement-written tests drive the repairs (testgen.py)
 TESTGEN_WAIT = 1200  # seconds the repair phase waits for the suite once the draft is in
 TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
 # Load failures only the jsdom probe reports: jsdom lacks APIs a browser has (ResizeObserver, canvas), so a
@@ -129,10 +131,13 @@ RESUME = ("{why} These files are complete and must not be emitted again: {done}.
 
 REPAIR = ("The application you delivered was built, started and driven through the requirement scenarios in a "
           "real browser.\n\n{findings}\n\n"
-          "Fix the causes. Re-emit every file that must change as a COMPLETE file block with the same "
-          "`=== FILE: <path> ===` / `=== END ===` framing, and emit nothing else. Do not re-emit files "
-          "that do not change. The check will run again on the result, and a change that breaks a passing "
-          "scenario is discarded.")
+          "Fix the causes. Change an existing file with an EDIT block of one or more search/replace hunks:\n"
+          "=== EDIT: <path> ===\n<<<<<<< SEARCH\n<the current lines, copied exactly, enough to be unique>\n"
+          "=======\n<their replacement>\n>>>>>>> REPLACE\n=== END ===\n"
+          "Emit a new or short file as a COMPLETE `=== FILE: <path> ===` / `=== END ===` block instead. Emit nothing "
+          "else, and leave the lines that do not need to change alone: re-emitting a large file rewrites working code "
+          "and breaks it. The check will run again on the result, and a change that breaks passing scenarios is "
+          "discarded.")
 
 SMOKE = True  # run the delivery smoke check (build, start, GET / and /api/health) before publishing
 SMOKE_BUILD_SECONDS = 90
@@ -510,6 +515,99 @@ def parse_blocks(text):
     if stray:
         print(f"[oneshot] ignored {stray} line(s) outside file blocks", file=sys.stderr)
     return files, [current] if current is not None else []
+
+
+EDIT_BLOCK = re.compile(r"^=== EDIT:[ \t]*(.*?)[ \t]*===[ \t]*\r?\n(.*?)^=== END ===[ \t]*$", re.M | re.S)
+HUNK = re.compile(r"^<<<<<<< SEARCH[ \t]*\r?\n(.*?)^=======[ \t]*\r?\n(.*?)^>>>>>>> REPLACE[ \t]*$", re.M | re.S)
+
+
+class HunkMiss(ValueError):
+    """A SEARCH that matches zero or several places; carries the current lines nearest to what it looked for."""
+
+
+def _nearest(lines, want, shown=14):
+    """The current lines around the place most like the SEARCH's first non-empty line, numbered, for the model to
+    copy from; empty when nothing resembles it."""
+    anchor = next((line for line in want if line), "")
+    best, where = 0.0, None
+    for index, line in enumerate(lines):
+        matcher = difflib.SequenceMatcher(None, anchor, line.strip())
+        if matcher.quick_ratio() > best:
+            score = matcher.ratio()
+            if score > best:
+                best, where = score, index
+    if where is None or best < 0.5:
+        return ""
+    start = max(0, where - 2)
+    return "".join(lines[start:start + shown])
+
+
+def _apply_hunk(content, search, replace, where):
+    """Replace the one place `search` occurs: verbatim first, then line by line ignoring each line's surrounding
+    whitespace (a model re-indents what it copies). Zero or several places raise HunkMiss naming the hunk and
+    quoting the current lines nearest to it."""
+    if not search.strip():
+        raise HunkMiss(f"{where}: empty SEARCH")
+    if re.search(r"^(?:<<<<<<< SEARCH|=======|>>>>>>> REPLACE)[ \t]*$", search + replace, re.M):
+        # A doubled separator leaked `=======` into app.js (a Sheet replay round then shipped a file that did not parse).
+        raise HunkMiss(f"{where}: a marker line (`<<<<<<< SEARCH`, `=======` or `>>>>>>> REPLACE`) sits inside the hunk; "
+                       f"write each hunk as exactly SEARCH, one `=======`, REPLACE")
+    count = content.count(search)
+    if count == 1:
+        return content.replace(search, replace, 1)
+    lines = content.splitlines(keepends=True)
+    want = [line.strip() for line in search.strip("\n").splitlines()]
+    hits = [i for i in range(len(lines) - len(want) + 1)
+            if all(lines[i + k].strip() == want[k] for k in range(len(want)))]
+    if len(hits) != 1:
+        first = next((line for line in want if line), "")[:80]
+        if hits or count:
+            raise HunkMiss(f"{where}: SEARCH matches {max(len(hits), count)} places (it starts `{first}`); "
+                           f"add context lines to make it unique")
+        near = _nearest(lines, want)
+        raise HunkMiss(f"{where}: SEARCH matches nothing (it starts `{first}`)"
+                       + (f"; the current lines there are:\n{near}" if near else ""))
+    start = hits[0]
+    body = replace if replace.endswith("\n") or not replace else replace + "\n"
+    return "".join(lines[:start]) + body + "".join(lines[start + len(want):])
+
+
+def parse_repair(text, stage):
+    """A repair reply: complete `=== FILE ===` blocks and `=== EDIT: <path> ===` blocks of SEARCH/REPLACE hunks,
+    applied to the stage's current file. A hunk whose SEARCH does not match is skipped and reported, the rest apply
+    (one GitHub replay lost a whole 11-hunk round to its last hunk); the tests then judge the result. Returns (files
+    with their full new content, unterminated FILE paths, messages for the skipped hunks). Raises when nothing
+    applies."""
+    edits = [(m.group(1).strip(), m.group(2)) for m in EDIT_BLOCK.finditer(text)]
+    rest = EDIT_BLOCK.sub("", text)
+    files, missing = parse_blocks(rest) if FILE_OPEN.search(rest) or not edits else ([], [])
+    if re.search(r"^=== EDIT:", rest, re.M):
+        raise ValueError("an EDIT block has no closing `=== END ===`")
+    skipped, applied = [], 0
+    for path, body in edits:
+        hunks = HUNK.findall(body)
+        if not hunks:
+            raise ValueError(f"EDIT {path}: no `<<<<<<< SEARCH` / `=======` / `>>>>>>> REPLACE` hunk")
+        prior = next((f for f in files if f["path"] == path), None)
+        if prior is not None:
+            content = prior["content"]
+        else:
+            target = resolve_path(stage, path)
+            if not target.is_file():
+                raise ValueError(f"EDIT {path}: no such file; emit a new file as a complete FILE block")
+            content = target.read_text(encoding="utf-8")
+        changed = False
+        for index, (search, replace) in enumerate(hunks, 1):
+            try:
+                content = _apply_hunk(content, search, replace, f"EDIT {path} hunk {index}")
+                changed, applied = True, applied + 1
+            except HunkMiss as miss:
+                skipped.append(str(miss))
+        if changed:
+            files[:] = [f for f in files if f["path"] != path] + [{"path": path, "content": content}]
+    if edits and not applied and not any(f["path"] not in {p for p, _ in edits} for f in files):
+        raise ValueError(skipped[0] if skipped else "no hunk applied")
+    return files, missing, skipped
 
 
 def write_one(out, item):
@@ -1316,6 +1414,7 @@ def draft_messages(requirements, scaffold=None, snapshot=None, prerequisites="")
     task's prerequisites.md when it has content), then the scaffold placed in the stage or the existing application
     being extended."""
     user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
+            seed_checklist(requirements) +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
     if prerequisites.strip():
         user += ("\n\n## Prerequisites (the task's prerequisites.md, part of the requirements)\n" + prerequisites.strip())
@@ -1343,6 +1442,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
     scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
     messages = draft_messages(requirements, scaffold, snapshot if template is not None else None, prerequisites)
     files = []
+    suites = []
     with tempfile.TemporaryDirectory(prefix=".oneshot-", dir=out.parent) as temp:
         budget.progress_path = Path(temp) / "progress.json"
         budget.progress("preparing", force=True)
@@ -1358,7 +1458,11 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             target.write_bytes(data)
         suite = None
         if TESTGEN and SMOKE and template is None:
-            suite = start_suite(requirements, Path(temp) / "suite", model, base, key, prerequisites)
+            # Its own directory, outside the stage's: a writer still running after the draft failed (or after its
+            # wait ran out) must never make the stage's cleanup raise and turn a delivered run into a non-zero exit.
+            suite = start_suite(requirements, Path(tempfile.mkdtemp(prefix="oneshot-tests-")), model, base, key,
+                                prerequisites)
+            suites.append(suite)
         try:
             conversation = draft_application(stage, files, messages, model, base, key, budget, template)
             needed = missing_required(stage)
@@ -1386,6 +1490,9 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             print(f"[oneshot] delivering the last complete version after an error: {reason}", file=sys.stderr)
         budget.progress("publishing", force=True)
         publish(stage, out, template, snapshot, stamp)
+    for job in suites:
+        if not job["thread"].is_alive():
+            shutil.rmtree(job["dir"], ignore_errors=True)
     return files, budget.summary()
 
 
@@ -1464,6 +1571,67 @@ def vocabulary_table(requirements):
         label, phrases = groups[key]
         head = key if key == "ROOT" else key + (" " + label if label else "")
         lines.append(f"- {head}: " + "; ".join(f"\u201c{p}\u201d" for p in phrases))
+    return "\n".join(lines)
+
+
+# The GIVEN sentence that states a scenario's seed: "Seed values: account `a`, email `b`." / "The evaluation seed
+# contains the workbook `W`, ..." / "The seeded data is (includes) ...". The clause runs to the first sentence end
+# outside backticks (seed values hold dots: `a.b@example.test`).
+SEED_MARKER = re.compile(r"(?:Seed values?:|evaluation seed contains|seeded data (?:is|includes))\s*", re.I)
+SEED_SHOWN = 40
+
+
+def _seed_clause(text, start):
+    ticks = 0
+    for index in range(start, len(text)):
+        char = text[index]
+        if char == "`":
+            ticks ^= 1
+        elif char == "." and not ticks and (index + 1 == len(text) or text[index + 1].isspace()):
+            return text[start:index].strip()
+    return text[start:].strip()
+
+
+def seed_checklist(requirements):
+    """The seed states the scenarios' GIVEN steps declare, deduplicated, each with the requirement ids whose tests
+    start from it — the records the application must hold at startup, handed to the model before it writes."""
+    try:
+        try:
+            from . import scenarios
+        except ImportError:  # the flat package
+            import scenarios
+        leaves = scenarios.load_requirements(requirements or "")
+    except Exception:  # the checklist is an aid; a document the parser cannot read goes without it
+        return ""
+    clauses, order = {}, []
+    for leaf in leaves:
+        for scenario in leaf.get("scenarios") or []:
+            for step in scenario.get("steps") or []:
+                if (step.get("keyword") or "").upper() != "GIVEN":
+                    continue
+                content = re.sub(r"\s+", " ", step.get("content") or "")
+                found = [_seed_clause(content, m.end()) for m in SEED_MARKER.finditer(content)]
+                found = [c for c in found if "`" in c]
+                if not found:
+                    continue
+                clause = found[-1]  # the closing "Seed values:" restates the fullest form
+                if clause not in clauses:
+                    clauses[clause] = []
+                    order.append(clause)
+                if leaf["id"] not in clauses[clause]:
+                    clauses[clause].append(leaf["id"])
+    if not order:
+        return ""
+    lines = ["\n\n## Seed data checklist (the GIVEN seed of every scenario, deduplicated)",
+             "Each hidden test starts at `/` in a fresh, signed-out browser session, against the state below, and "
+             "reaches these records only by clicking what the screens show (§6b). Create every record at startup "
+             "with exactly these names and values; the ids say which requirements' tests expect each line."]
+    for clause in order[:SEED_SHOWN]:
+        ids = clauses[clause]
+        head = ", ".join(ids[:6]) + (f" (+{len(ids) - 6} more)" if len(ids) > 6 else "")
+        lines.append(f"- {head}: {clause}")
+    if len(order) > SEED_SHOWN:
+        lines.append(f"- ({len(order) - SEED_SHOWN} further seed lines are in the requirements' GIVEN steps)")
     return "\n".join(lines)
 
 
@@ -1923,10 +2091,14 @@ def _still_failing(after, targeted, shown=5):
     return "".join(f"; after it {s['id']} still failed: {(s.get('observation') or '')[:300]}" for s in left)
 
 
-def repair_request(state, discarded=None):
+def repair_request(state, discarded=None, unapplied=()):
     """The repair message: what breaks the application as a whole, else the failing scenarios with what the check did
-    and saw, the passing scenarios to keep, and the other findings as hints."""
+    and saw, the passing scenarios to keep, and the other findings as hints. Hunks of the last kept change that did
+    not apply are named with the current lines they missed."""
     sections = []
+    if unapplied:
+        sections.append("Your previous change was kept, but these EDIT hunks did not apply (the file is as shown, "
+                        "copy SEARCH lines from it exactly):\n" + "\n".join("- " + h[:1500] for h in unapplied[:6]))
     if discarded:
         sections.append("Your previous change was discarded and the application is back to the version before it, "
                         f"because {discarded}. Fix the same findings a different way.")
@@ -2025,8 +2197,13 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
             (s.get("observation") for s in (after["report"] or {}).get("scenarios", []) if s.get("status") == "error"), "")
         return False, "the scenario recheck could not run: " + str(why)[:300], detail
     old, new = _status_map(before), _status_map(after)
+    written = (after["report"] or {}).get("kind") == "testgen"
     lost = {sid for sid, status in old.items() if status == "pass" and new.get(sid) in ("fail", "error")}
-    gained = {sid for sid, status in old.items() if status == "fail" and new.get(sid) == "pass"}
+    # A written test blocked by a shared helper line is an `error` that stands for an application defect (the helper
+    # finding carries the verdict); once the defect is fixed the blocked tests pass. Counting only fail -> pass left
+    # such a fix at zero gain (a GitHub replay went from 25 to 32 passing tests and was credited with 4).
+    won = ("fail", "error") if written else ("fail",)
+    gained = {sid for sid, status in old.items() if status in won and new.get(sid) == "pass" and not sid.startswith("helper:")}
     unsure = lost | (gained if len(gained) <= 2 else set())
     if unsure:
         recheck = check_scenarios(stage, requirements, only=unsure, translate=translate, **_suite(tests))
@@ -2053,9 +2230,9 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         # A structural fix can expose failures that the broken version passed by accident: the official v24 router fix
         # took the self-check from 9 to 28 passing scenarios and lost two that passed only because every detail link
         # rendered the list (the public suite fails them on the fixed app too). Kept when it gains three per loss.
-        # Written tests are not calibrated that way: a lost test may be a path the hidden suite takes, so none may go.
-        written = (after["report"] or {}).get("kind") == "testgen"
-        if written or len(gained) < LOSS_RATIO * len(lost):
+        # Written tests follow the same rule: under zero loss a GitHub replay discarded a repair worth 25 -> 32 for
+        # one lost test, and a gained test is as likely a hidden path as a lost one.
+        if len(gained) < LOSS_RATIO * len(lost):
             return False, broke + (f", and fixed only {len(gained)}" if gained else ", and fixed none"), detail
     if not gained:
         return False, "no failing scenario passes after the change", detail
@@ -2104,10 +2281,10 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         budget.smoke["browser_before"] = state["browser"]
     if budget.suite is not None:
         budget.smoke["tests"] = dict(budget.suite, used=tests is not None)
-    rounds, conversation, discarded = [], list(messages), None
+    rounds, conversation, discarded, unapplied = [], list(messages), None, []
     quoted = {phrase.lower() for phrase in quoted_control_phrases(requirements)}
     while state["fatal"] or _scenarios(state, "fail"):
-        ask = repair_request(state, discarded)
+        ask = repair_request(state, discarded, unapplied)
         stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
         if stop is None and len(rounds) >= REPAIR_REJECTIONS and not any(r["accepted"] for r in rounds[-REPAIR_REJECTIONS:]):
             stop = f"{REPAIR_REJECTIONS} repairs in a row were discarded"
@@ -2130,11 +2307,13 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             fixed, _, finish = stream_completion(conversation + [{"role": "user", "content": ask}],
                                                  model, base, key, budget, tries=3)
             replied = True
-            batch, missing = parse_blocks(fixed)
+            batch, missing, skipped = parse_repair(fixed, stage)
+            if skipped:
+                record["skipped_hunks"] = [h[:300] for h in skipped]
             if missing or finish == "length":
-                raise ValueError("the repair output was truncated; emit only the files that must change")
+                raise ValueError("the repair output was truncated; change large files with EDIT blocks")
             if not batch:
-                raise ValueError("the repair emitted no file block")
+                raise ValueError("the repair emitted no FILE or EDIT block")
             for item in batch:
                 target = resolve_path(stage, item["path"])
                 if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
@@ -2157,16 +2336,18 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             for item in batch:
                 files[:] = [f for f in files if f["path"] != item["path"]] + [item]
             conversation += [{"role": "user", "content": ask}, {"role": "assistant", "content": fixed}]
-            state, discarded = after, None
+            state, discarded, unapplied = after, None, skipped
             record.update(accepted=True, files=[item["path"] for item in batch])
             shutil.rmtree(backup, ignore_errors=True)
         except Exception as exc:
             # Keep the version before this repair: a half-applied fix could be worse than the known state.
             _swap_back(stage, backup)
+            unapplied = []
             record["reason"] = str(exc)[:600]
             # The model hears why its change was discarded; not a transport failure or a checker that could not run.
             if replied and not record.get("checker"):
-                discarded = record["reason"] + _still_failing(after, record["failing"])
+                # A missed SEARCH carries the current lines it missed; the model needs them whole to copy from.
+                discarded = str(exc)[:2000] + _still_failing(after, record["failing"])
         finally:
             record["seconds"] = round(time.monotonic() - started, 1)
             record["cost_cny"] = round(sum(call_cost(r) for r in budget.attempts[calls:]), 6)

@@ -950,7 +950,7 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual((smoke["executed"], smoke["problems"], smoke["vocabulary_missing"], smoke["repair"]),
                          (True, [], 0, None))
         usage = json.loads([l for l in capture.getvalue().splitlines() if l.startswith("[oneshot] usage ")][0].split(" ", 2)[2])
-        self.assertEqual(usage["repair_cny_limit"], 3.0)
+        self.assertEqual(usage["repair_cny_limit"], 5.0)
         self.assertNotIn(SYNTHETIC_KEY, capture.getvalue())
 
 if __name__ == "__main__":

@@ -407,6 +407,62 @@ class OfflineCase(unittest.TestCase):
         prompt = budget.attempts[0]["messages"][1]["content"]
         self.assertLess(prompt.index("## Quoted vocabulary checklist"), prompt.index("## Requirements (the application to build)"))
 
+    def test_repair_edits_apply_search_replace_hunks_to_the_current_file(self):
+        stage = Path(self.out)
+        (stage / "frontend/public").mkdir(parents=True, exist_ok=True)
+        (stage / "frontend/public/app.js").write_text("const a = 1;\nfunction f() {\n  return a;\n}\nconst b = 2;\n")
+        reply = ("Fixing.\n=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nfunction f() {\n    return a;\n}\n"
+                 "=======\nfunction f() {\n  return a + 1;\n}\n>>>>>>> REPLACE\n<<<<<<< SEARCH\nconst b = 2;\n=======\n"
+                 "const b = 3;\n>>>>>>> REPLACE\n=== END ===\n=== FILE: frontend/public/extra.js ===\nx();\n=== END ===\n")
+        files, missing, skipped = adapter.parse_repair(reply, stage)
+        self.assertEqual((missing, skipped), ([], []))
+        by = {f["path"]: f["content"] for f in files}
+        self.assertEqual(by["frontend/public/app.js"], "const a = 1;\nfunction f() {\n  return a + 1;\n}\nconst b = 3;\n")
+        self.assertEqual(by["frontend/public/extra.js"], "x();\n")
+        with self.assertRaisesRegex(ValueError, "hunk 1: SEARCH matches nothing"):
+            adapter.parse_repair("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nnope();\n=======\nx\n"
+                                 ">>>>>>> REPLACE\n=== END ===\n", stage)
+        # One missed hunk among several: the others apply, the miss quotes the current lines nearest to it.
+        files, _, skipped = adapter.parse_repair(
+            "=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nconst b = 2;\n=======\nconst b = 4;\n>>>>>>> REPLACE\n"
+            "<<<<<<< SEARCH\nfunction f(x) {\n=======\nfunction g() {\n>>>>>>> REPLACE\n=== END ===\n", stage)
+        self.assertIn("const b = 4;", files[0]["content"])
+        self.assertIn("function f() {", files[0]["content"])
+        self.assertEqual(len(skipped), 1)
+        self.assertIn("hunk 2: SEARCH matches nothing", skipped[0])
+        self.assertIn("the current lines there are:\nconst a = 1;\nfunction f() {", skipped[0])
+        _, _, skipped = adapter.parse_repair(
+            "=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nconst b = 2;\n=======\nconst b = 5;\n=======\nconst c = 1;\n"
+            ">>>>>>> REPLACE\n<<<<<<< SEARCH\nconst a = 1;\n=======\nconst a = 2;\n>>>>>>> REPLACE\n=== END ===\n", stage)
+        self.assertIn("marker line", skipped[0])
+        (stage / "frontend/public/app.js").write_text("x();\nx();\n")
+        with self.assertRaisesRegex(ValueError, "matches 2 places"):
+            adapter.parse_repair("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nx();\n=======\ny();\n"
+                                 ">>>>>>> REPLACE\n=== END ===\n", stage)
+        with self.assertRaisesRegex(ValueError, "no such file"):
+            adapter.parse_repair("=== EDIT: frontend/public/none.js ===\n<<<<<<< SEARCH\nx\n=======\ny\n"
+                                 ">>>>>>> REPLACE\n=== END ===\n", stage)
+
+    def test_seed_checklist_collects_each_given_seed_once_with_its_requirements(self):
+        req = ("id: ROOT\nname: App\ntype: FOLDER\nchildren:\n"
+               "- id: REQ-1\n  name: Sign in\n  type: ATOMIC\n  scenarios:\n"
+               "  - name: one\n    steps:\n    - keyword: GIVEN\n      content: The seeded data is account `ann`. A visitor\n"
+               "        opens the page. Seed values: account `ann`, email `ann.lee@example.test`.\n"
+               "    - keyword: WHEN\n      content: Seed values: account `nobody`.\n"
+               "  - name: two\n    steps:\n    - keyword: GIVEN\n      content: 'Seed values: account `ann`, email `ann.lee@example.test`.'\n"
+               "- id: REQ-2\n  name: Open\n  type: ATOMIC\n  scenarios:\n"
+               "  - name: one\n    steps:\n    - keyword: GIVEN\n      content: The evaluation seed contains the board `Plans`\n"
+               "        with rows `A/1`.\n"
+               "  - name: two\n    steps:\n    - keyword: GIVEN\n      content: No seed here.\n")
+        table = adapter.seed_checklist(req)
+        self.assertIn("- REQ-1: account `ann`, email `ann.lee@example.test`\n", table + "\n")
+        self.assertIn("- REQ-2: the board `Plans` with rows `A/1`", table)
+        self.assertNotIn("nobody", table)
+        self.assertEqual(table.count("ann.lee"), 1)
+        self.assertEqual(adapter.seed_checklist("id: X\nname: none\n"), "")
+        prompt = adapter.draft_messages(req)[1]["content"]
+        self.assertLess(prompt.index("## Seed data checklist"), prompt.index("## Requirements (the application to build)"))
+
     def test_backtick_phrases_are_quoted_vocabulary_and_values_the_user_types_are_not(self):
         # Lite requirements backtick their control names; the old pattern saw none of them. What the test types
         # (fills `Name` with `Shelf Created 1`) is supplied at runtime, so it is no gate phrase, unless the
@@ -822,8 +878,8 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(list(self.out.glob(".oneshot-*")), [])
 
     def test_call_allowances_come_from_the_environment_and_a_bad_value_stops_before_any_request(self):
-        self.assertEqual(adapter.CallBudget().limits, {"draft": 4, "repair": 6})
-        self.assertEqual(adapter.CallBudget().repair_cny, 3.0)
+        self.assertEqual(adapter.CallBudget().limits, {"draft": 4, "repair": 12})
+        self.assertEqual(adapter.CallBudget().repair_cny, 5.0)
         with patch.dict(os.environ, {"ONESHOT_DRAFT_CALLS": "6", "ONESHOT_REPAIR_CALLS": "0", "ONESHOT_REPAIR_CNY": "0.5"}):
             self.assertEqual(adapter.CallBudget().limits, {"draft": 6, "repair": 0})
             self.assertEqual(adapter.CallBudget().repair_cny, 0.5)

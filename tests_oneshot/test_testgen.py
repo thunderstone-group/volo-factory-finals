@@ -220,12 +220,15 @@ class RunCase(unittest.TestCase):
             suite = root / "suite"
             suite.mkdir()
             (suite / "t01-REQ-1.spec.cjs").write_text(SPEC)
+            # A file that does not parse would make Playwright load no test at all; the run skips it by name.
+            (suite / "t02-REQ-2.spec.cjs").write_text("test('REQ-2-1: x', async () => { const a = `b ${c}` d`; });\n")
             (suite / "suite.json").write_text(json.dumps({"files": [{"file": "t01-REQ-1.spec.cjs", "tests": [
-                "REQ-1-1: Add one", "REQ-1-2: Edit one"]}], "scenarios": 2, "tests": 2}))
+                "REQ-1-1: Add one", "REQ-1-2: Edit one"]}, {"file": "t02-REQ-2.spec.cjs", "tests": ["REQ-2-1: x"],
+                "syntax": "SyntaxError"}], "scenarios": 3, "tests": 3}))
             report = testgen.run_suite(app, suite, REQUIREMENTS)
             self.assertEqual(report.get("kind"), "testgen", report)
             statuses = {e["id"]: e["status"] for e in report["scenarios"]}
-            self.assertEqual(statuses, {"REQ-1-1": "pass", "REQ-1-2": "fail"})
+            self.assertEqual(statuses, {"REQ-1-1": "pass", "REQ-1-2": "fail", "REQ-2-1": "error"})
             again = testgen.run_suite(app, suite, REQUIREMENTS, only={"REQ-1-2"})
             self.assertEqual([(e["id"], e["status"]) for e in again["scenarios"]], [("REQ-1-2", "fail")])
 
@@ -279,11 +282,11 @@ class RepairLoopCase(unittest.TestCase):
                                     budget, requirements="synthetic", tests=Path(self.temp.name) / "suite")
         return sent, budget, check
 
-    def test_a_repair_that_loses_a_test_is_discarded_even_when_it_fixes_three(self):
+    def test_a_repair_that_loses_a_test_is_discarded_below_three_gains_per_loss(self):
         from tests_oneshot.test_oneshot import block
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-4": "pass"})
-        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "pass", "REQ-4": "fail"})
-        recheck = self.report({"REQ-4": "fail"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "fail", "REQ-4": "fail"})
+        recheck = self.report({"REQ-4": "fail", "REQ-1": "pass", "REQ-2": "pass"})
         sent, budget, check = self.run_loop([before, after, recheck],
                                             [block("frontend/public/app.js", "// repaired")])
         self.assertIn("test code:", sent[0])
@@ -294,6 +297,24 @@ class RepairLoopCase(unittest.TestCase):
         self.assertIn("broke 1 passing", rounds[0]["reason"])
         self.assertFalse((self.stage / "frontend/public/app.js").exists(), "the discarded repair was rolled back")
         self.assertTrue(all(call.kwargs.get("tests") is not None for call in check.call_args_list))
+
+    def test_a_repair_that_fixes_three_per_lost_test_is_kept(self):
+        from tests_oneshot.test_oneshot import block
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-4": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "pass", "REQ-4": "fail"})
+        recheck = self.report({"REQ-4": "fail"})
+        _, budget, _ = self.run_loop([before, after, recheck], [block("frontend/public/app.js", "// repaired")])
+        self.assertTrue(budget.smoke["rounds"][0]["accepted"], budget.smoke["rounds"][0])
+
+    def test_tests_a_shared_helper_blocked_count_as_gained_when_they_pass(self):
+        from tests_oneshot.test_oneshot import block
+        before = self.report({"REQ-1": "error", "REQ-2": "error", "REQ-3": "error", "REQ-4": "pass",
+                              "helper:t1.spec.cjs:9": "fail"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "pass", "REQ-4": "fail"})
+        recheck = self.report({"REQ-4": "fail"})
+        _, budget, _ = self.run_loop([before, after, recheck], [block("frontend/public/app.js", "// repaired")])
+        self.assertTrue(budget.smoke["rounds"][0]["accepted"], budget.smoke["rounds"][0])
+        self.assertEqual(budget.smoke["rounds"][0]["gained"], ["REQ-1", "REQ-2", "REQ-3"])
 
     def test_a_repair_that_only_gains_is_kept(self):
         from tests_oneshot.test_oneshot import block

@@ -18,6 +18,7 @@ last-reviewed: 2026-09-24 12:00
   - 账户里所有剩余练习额度在 09-24 00:00 清零。
   - 公告原文见 [evidence/2026-09-23-organizer-notice-platform-close.txt](../evidence/2026-09-23-organizer-notice-platform-close.txt)。
 - 初赛 09-24 00:00 至 09-30 23:59。到期关闭提交入口，已经在跑的任务可以跑完。
+  - **09-24 19:05 主办方公告：截止顺延一天（到 10-01 23:59）**；上午误传旧版赛题，以更新后的赛题为准；当天消耗的比赛额度会补齐。原文 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/organizer-notice-2026-09-24-evening.txt`。
 - 单个任务最长运行 48 小时，到时平台会终止。
 
 ## 任务与输入

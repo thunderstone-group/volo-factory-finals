@@ -1087,7 +1087,10 @@ S = p / (b / (1.2 p))^0.1 while b <= 1.2 p; p in percent over both tasks, b in C
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | 09-24 11:17 | bb73b7f4 | df9fcce | flash | 5/100 | 3/100 | 1.95 | 4.4 | baseline; GitHub 93 evaluator fixture errors; Sheet 97 timeouts |
 | 2 | 09-24 11:57 | 14297021 | fd4d548 | flash | 3/100 | 42/100 | 2.10 | 29.0 | shared-state scaffold (PR #65); Sheet 58 failures all timeouts |
-| 3 | 09-24 12:40 | 1b4e26a8 | c93b99c | flash | 1/100 | unread (platform maintenance) | | | clickable combo box, exact/unique/unpolluted names (PR #67); GitHub CNY 0.96, six strict-mode failures on a "Sign in" link in header and body |
+| 3 | 09-24 12:40 | 1b4e26a8 | c93b99c | flash | 1/100 | 1/100 (read 18:51; 99 timeouts, Chinese-named suite) | 2.52 | | clickable combo box, exact/unique/unpolluted names (PR #67); GitHub CNY 0.96, six strict-mode failures on a "Sign in" link in header and body. Both readings are on the task set the organizers later withdrew |
+| 4 | 09-24 18:52 | 9bf0254a | 9ac8e89 | flash | 11/100 | platform error | 3.13 | | first run on the corrected task set; Sheet run `c34ae0a54c1e` never executed a test: the runner's `playwright test --list` failed ("Failed to enumerate Playwright tests"), an evaluator fault; GitHub 89 timeouts |
+| 5 | 09-24 22:36 | 165aece2 | c005012 | flash | 13/100 | platform error | 2.91 | | seed checklist + card 6b (feat/seed-reach); Sheet `4ef5a779acf2` enumeration failure again at 22:51; GitHub gained REQ-3-3 S1, REQ-2-1-1 S2 (home reachability paths), lost REQ-1-2 S1-2 (this draft's sign-out) |
+| 6 | 09-25 00:50 | 9dad2b75 | 400a009 | flash | 21/100 | not run | 10.94 | | written tests + edit repairs on the platform (GitHub only); suite written in 25 min (15 calls, CNY 8.0), repair phase 72 min with 8 whole-app checks, run 97 min, 4.07 M tokens; the run record carries no failed_tests list this time |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1150,3 +1153,88 @@ run reports, the submission chain script).
   both tasks once (never re-issued), saving each run record to the campaign evidence `official/` directory.
 - **Background job 2 — criterion 3**, one local Sheet run with `ONESHOT_TESTGEN=1` on main 90f6a86 (package
   6b8e7ec5, practice key), started 14:12; log `gen/hackathon--sheet-tg1.log` in the same scratchpad.
+
+## 2026-09-24 19:05-23:20 — Corrected task set; evaluator facts; seed checklist and home reachability (submission 5)
+
+Evidence: `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/` (notice, new requirements, runner source,
+official run records); proxy suites and replays in this session's scratchpad (paths below).
+
+- **Organizer notice (~19:05):** the morning task set was an old version uploaded by mistake; the corrected set is
+  authoritative. Hint: the requirements carry the seed data the tests need, do not ignore the scenario fields.
+  Today's competition spend will be refunded; the deadline moves one day later (10-01 23:59).
+- **What changed:** both tasks now have exactly 100 ATOMIC scenarios (was 64 and 48), one per hidden test; the
+  hidden test is named `<REQ id>: <requirement name> - Scenario <n>`, n = the scenario's position in the YAML, so
+  every hidden result maps to its scenario text. Each GIVEN states the seed (`Seed values: account ...`, `The
+  evaluation seed contains ...`). Descriptions changed only curly to straight quotes (and Sheet's "editor URL" became
+  "workbook state"). Sheet scenario names and WHEN steps are templated ("the requested workflow"); GitHub's are
+  readable. Seeds conflict across modules: Sheet's `Q3 Sales` has A1 = `Region` / `Item` / `2` in different modules;
+  GitHub's `acme-docs` belongs to organization `Acme Demo` in REQ-2 and to owner `alice-dev` in REQ-3.
+- **Runner facts** (`/opt/arcbench/run_submission.py` in `gyataro/arcbench-runner:local-base`): one Playwright worker,
+  test and expect timeouts both 10 s, one app instance for the whole suite, no reset between tests. An assertion that
+  fails therefore surfaces as "Test timeout of 10000ms exceeded", which is why the hidden failures carry no locator.
+  Tests share state in file order: a test that changes a seeded password would break every later sign-in. In
+  submission 4, REQ-3-1 S2/S4 (sign in with the seed password) passed after REQ-1-3, so that run's password test did
+  not change it.
+- **Sheet on the corrected set cannot be evaluated yet:** runs `c34ae0a54c1e` (18:52) and `4ef5a779acf2` (22:36)
+  both ended "Failed to enumerate Playwright tests before execution" — the runner's `npx playwright test --list`
+  fails on the evaluator's own test files. Report drafted for the owner to send; no further Sheet runs until fixed.
+- **Proxy suites (practice key):** `testgen.py write` on the corrected GitHub (100 tests, CNY 6.74, 20 min) and Sheet
+  (100 tests, CNY 6.09) requirements. On submission 4's GitHub app the GitHub suite passed 16; one of its tests
+  changes `alice-dev`'s password and blocks 60+ later sign-ins, so the comparisons use a copy with that test skipped
+  (`gh-suite-np`): 22 pass. Against the hidden result (11): 8 shared passes, 3 hidden-only (the suite assumes
+  `alice-dev/acme-docs`), 14 proxy-only. The proxy is looser than the hidden suite and blind to signed-out navigation
+  from `/`; usable for A/B only.
+- **Diagnosis of submission 4's GitHub app:** the signed-out home page shows no seeded record at all (only sign-in and
+  a search box); signed in, it lists repositories but no organization; the organization heading shows the slug
+  `acme-demo`, the seeded name `Acme Demo` only as a paragraph. Every quoted name the proxy missed is present in the
+  source (the vocabulary gate passes) but on screens a test cannot reach or under another role.
+- **Change (feat/seed-reach c005012, 195 unit tests green):** `seed_checklist()` puts the scenarios' GIVEN seeds,
+  deduplicated with their requirement ids, before the requirements in the draft prompt (empty for requirements
+  without seed sentences, so the old tasks are unaffected); card 6b: every test starts signed out at `/` and clicks
+  through, so the home screen links every seeded record a visitor may see by its seeded name (and the user's after
+  sign-in), and headings keep the seeded name, not a slug.
+- **Local A/B (GitHub, proxy `gh-suite-np`):** new package 24 and 22 pass; old package (main) 0 (this draft's
+  sign-in handler throws, a sampling failure); submission 4's app 22. Both new drafts link `Acme Demo` and
+  `acme-docs` from the signed-out home page; the old draft links public repositories but no organization.
+- **Submission 5** (package 165aece2, submission `faf295559b7f`): GitHub `5450c3c63fe0` 13/100 (CNY 1.64); gained
+  REQ-3-3 S1 and REQ-2-1-1 S2 (the signed-out reachability paths), REQ-4-3-1 S1, REQ-1-1-3 S2-3; lost REQ-1-2 S1-2 and
+  REQ-1-1-1 S3 (this draft's sign-out). One sample; direction positive, size within noise.
+- **Remaining failure shape (proxy on the two new drafts):** dozens of detail defects per draft — the same link twice
+  on one screen (strict mode), quoted controls missing or under another role, native selects where the test picks
+  options, missing sections. A card sentence cannot fix these one by one; this is the case for 4.11 (written tests
+  drive the repairs). Controlled repair replay of new draft a with the proxy suite (`scripts/repair_replay.py --suite`,
+  CNY 6 cap) running.
+
+## 2026-09-25 00:00-00:55 — Repair by edits: controlled GitHub replay 25 -> 38; written tests on by default (submission 6)
+
+Controlled replays (evidence about the repair loop, never progress of a candidate): `scripts/repair_replay.py
+--suite` (new option) on local GitHub draft `gh-new-a` with the proxy suite `gh-suite-np`, practice key.
+
+| replay | repair | kept rounds | proxy pass | CNY | minutes |
+|---|---|---|---|---|---|
+| 1 (main's loop) | whole files, written tests zero-loss | 0 of 3 | 25 -> 25 | 2.17 | 54 |
+| 2 (9416c8d) | SEARCH/REPLACE edits, 3 gains per loss, error -> pass counts | 3 of 6 | 25 -> 38 | 2.28 | 58 |
+
+- Replay 1: round 1 took the proxy to 32 but lost one test and zero-loss discarded it (it was credited with only 4
+  gains: tests a shared helper blocked are `error`, and error -> pass was not counted); rounds 2-3 re-emitted the
+  93 KB `app.js` and broke 10 passing tests each.
+- Replay 2: every discarded round died on one SEARCH that did not match the current file (the model misremembered a
+  line; round 1 had 11 hunks and only the 11th missed); the loop stopped at the 6-call cap with CNY 3.7 of its cap
+  left. Edit rounds cost CNY 0.25-0.5 and 3.5-14 minutes locally.
+- Follow-ups (commit after 9416c8d): a missed hunk now skips only itself, and the next request names it with the current
+  lines nearest to it; repair cap 12 calls / CNY 5.
+- `testgen` fixes: (1) one written spec file that does not parse made Playwright load no test at all ("Total: 0 tests",
+  the local Sheet suite judged nothing); such files are now `testIgnore`d by name — the same Sheet suite then reported
+  20 pass / 32 fail / 56 error on the local Sheet draft. The evaluator's corrected Sheet suite shows the same symptom
+  ("Failed to enumerate Playwright tests"), a plausible cause worth telling the organizers. (2) Tests never alter
+  seeded records (act on records they create). (3) The runner image's `/opt/arcbench/node_modules` is searched for
+  `@playwright/test` before npm.
+- `ONESHOT_TESTGEN` now defaults to 1 (400a009). Submission 6 (package 9dad2b75, submission `4982d19c7e1d`) runs
+  GitHub only (`5b0946d978cf`, 00:50) — the first official run of written tests + edit repairs; it checks the hidden
+  score and whether the suite runs inside the 1-CPU platform container.
+- Local Sheet draft (new package, practice key): CNY 1.16, 19 min; proxy 20/100. Controlled Sheet replay running.
+- **Controlled Sheet replay (02:28)** on the local Sheet draft with the Sheet proxy suite, edit repairs, 12-call cap:
+  proxy **20 -> 72** of 100, 8 of 12 rounds kept, CNY 2.87, 88 min; stopped at the call cap while still gaining.
+  Two rounds were lost to malformed hunks (a doubled `=======` leaked into `app.js`; an EDIT without hunk markers) —
+  the gates caught both; a hunk that carries a marker line is now skipped on its own.
+- **Submission 6 read (02:51):** GitHub `5b0946d978cf` **21/100** (submission 5: 13), CNY 10.94 (1.64). Cost x6.7 needs p x1.19 to break even under S; p rose x1.62. The platform log truncates inside the second call's trace, so the repair rounds are not readable there; the stage cleanup race (377492a) did not affect this run (its suite finished before the wait ran out).
