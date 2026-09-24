@@ -1054,6 +1054,31 @@ Evidence: `docs/evidence/2026-09-24-opening-day/`.
   one of my premises: nothing proves the hidden tests create their data through our UI. It did not see the scaffold
   store problem, which the two-context checks found afterwards.
 
+## 2026-09-24 12:45 — Submission 2 read, combo box and name rules, submission 3
+
+- **Submission 2** (`16dbfd3dcbef`): GitHub 3/100 (CNY 1.02; the same 93 fixture errors; three new strict-mode
+  failures: a named link shown in both the header and the form), Sheet **42/100** (CNY 1.08, 1086 s). p 22.5%,
+  S 29.0. The shared-state scaffold took Sheet from 3 to 42. Board at 12:27: Iris 28.5%, VOLO-AI 22.5%.
+- **Organizers' answer (12:28, relayed by the user):** implement the data the requirements describe in the app's
+  database or persistence; the tests have no seed data beyond the requirements; the missing evaluation environment
+  variables will be added and earlier submissions re-evaluated. Open question: how the E2E_* values will match an
+  app's own seed records.
+- **Hidden suite shape** (from the failures we can read): quoted names are located with `exact: true` in strict
+  mode. Timeouts carry no locator, so the 58 Sheet timeouts need our own tests to read.
+- **Flash-written tests** (`docs/evidence/2026-09-24-opening-day/testgen/`): 48 tests, one per Sheet scenario;
+  their failures line up with hidden failures by requirement. Families on submission 2's Sheet app: tab named
+  "<name> <options button>" (both samples), no `Edit A1` inline editor (both samples), paste, absolute references,
+  and every combo box a native `<select>` (options unreachable by click; one option name in three selects).
+- **PR #67 (main c93b99c):** `ARC.combobox` (role=combobox named by its label, listbox of clickable options that
+  exists only while open, hidden input for forms) and card section 2 rewritten: exact and unique names, no named
+  control nested in a tab/button/link/option/menu item, combo boxes through `ARC.combobox`. Neutral examples only.
+  182 tests; Lite replays 32/32 and 34/34.
+- **Local sample with the shared-state package** (Sheet b): the first draft call spent 131,128 completion tokens on
+  reasoning and returned 188 characters; the automatic retry delivered (CNY 2.07, 32 min). Same card as submission 2,
+  whose draft succeeded first time, so this reads as flash's known reasoning runaway, not the card.
+- **Submission 3** (`771fba900991`, package 1b4e26a8, main c93b99c): runs `9de6dee5e02f` (GitHub), `14de9c6238ff`
+  (Sheet), started 12:40. Budget before it: CNY 495.96.
+
 ### Official submission ledger (roadmap 4.7)
 
 S = p / (b / (1.2 p))^0.1 while b <= 1.2 p; p in percent over both tasks, b in CNY.
@@ -1061,4 +1086,5 @@ S = p / (b / (1.2 p))^0.1 while b <= 1.2 p; p in percent over both tasks, b in C
 | # | time | package | commit | model | GitHub | Sheet | CNY | S | note |
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | 09-24 11:17 | bb73b7f4 | df9fcce | flash | 5/100 | 3/100 | 1.95 | 4.4 | baseline; GitHub 93 evaluator fixture errors; Sheet 97 timeouts |
-| 2 | 09-24 11:57 | 14297021 | fd4d548 | flash | running | running | | | shared-state scaffold (PR #65) |
+| 2 | 09-24 11:57 | 14297021 | fd4d548 | flash | 3/100 | 42/100 | 2.10 | 29.0 | shared-state scaffold (PR #65); Sheet 58 failures all timeouts |
+| 3 | 09-24 12:40 | 1b4e26a8 | c93b99c | flash | running | running | | | clickable combo box, exact/unique/unpolluted names (PR #67) |

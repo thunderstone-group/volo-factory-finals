@@ -1,0 +1,779 @@
+{
+  "config": {
+    "configFile": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/gen.config.cjs",
+    "rootDir": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/suite-results/sheet-sub2-req5.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.spec\\.cjs$/"
+        ],
+        "timeout": 15000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "REQ-5.spec.cjs",
+      "file": "REQ-5.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-5-1-1: Sort sales in descending order",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5979,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Sales', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"2\">Sales</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Sales', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"2\">Sales</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.sortRange (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:170:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:41:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Sales', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"2\">Sales</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.sortRange (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:170:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:41:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:07.760Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-1-1-Sort-sales-in-descending-order/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-4395b0c32609c3ce9c53",
+          "file": "REQ-5.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-1-1#2: Preserve formula and validation alignment after sorting",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5792,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Number range', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"number\">Number range</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Number range', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"number\">Number range</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at Object.chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at setNumberValidation (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:12:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:76:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Number range', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"number\">Number range</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at Object.chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at setNumberValidation (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:12:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:76:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:14.169Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-1-1-2-Preserve-da87b-ion-alignment-after-sorting/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-9795f698b30950ec10da",
+          "file": "REQ-5.spec.cjs",
+          "line": 66,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-1-1#3: Preserve an existing filter condition after sorting",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5679,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Greater than', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"Greater than\">Greater than</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Greater than', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"Greater than\">Greater than</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.filterByCondition (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:199:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:118:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Greater than', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"Greater than\">Greater than</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.filterByCondition (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:199:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:118:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:20.322Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-1-1-3-Preserve-10504-ter-condition-after-sorting/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-40376d7be06ad698ec48",
+          "file": "REQ-5.spec.cjs",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-1-2: Filter using conditions on multiple columns",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6112,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Greater than', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"Greater than\">Greater than</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Greater than', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"Greater than\">Greater than</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.filterByCondition (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:199:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:149:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Greater than', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"Greater than\">Greater than</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.filterByCondition (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:199:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:149:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:26.350Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-1-2-Filter-using-conditions-on-multiple-columns/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-a995b7a026365b090f56",
+          "file": "REQ-5.spec.cjs",
+          "line": 135,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-2-1: Enter status using a dropdown rule",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5370,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Dropdown', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"dropdown\">Dropdown</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Dropdown', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"dropdown\">Dropdown</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at Object.chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at setDropdownValidation (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:23:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:179:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Dropdown', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"dropdown\">Dropdown</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at Object.chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at setDropdownValidation (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:23:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:179:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:32.814Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-2-1-Enter-status-using-a-dropdown-rule/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-db524f34c4a545926626",
+          "file": "REQ-5.spec.cjs",
+          "line": 176,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-2-1#2: Reject a number outside the allowed range",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5409,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Number range', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"number\">Number range</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Number range', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"number\">Number range</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at Object.chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at setNumberValidation (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:12:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:194:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Number range', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"number\">Number range</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at Object.chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at setNumberValidation (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:12:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:194:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:38.558Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-2-1-2-Reject-a-number-outside-the-allowed-range/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-4e43c0a669eeca483e76",
+          "file": "REQ-5.spec.cjs",
+          "line": 190,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-2-1#3: Reject a value outside the dropdown rule",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5390,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Dropdown', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"dropdown\">Dropdown</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Dropdown', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"dropdown\">Dropdown</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at Object.chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at setDropdownValidation (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:23:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:219:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Dropdown', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <option value=\"dropdown\">Dropdown</option>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    10 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at Object.chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at setDropdownValidation (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:23:3)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:219:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:44.340Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-2-1-3-Reject-a-value-outside-the-dropdown-rule/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-61334228deb1f8f3c7ad",
+          "file": "REQ-5.spec.cjs",
+          "line": 215,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-3-1: Summarize sales by region",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 783,
+                  "error": {
+                    "message": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n",
+                    "stack": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.createPivot (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:294:13)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:248:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.createPivot (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:294:13)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:248:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:50.082Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-3-1-Summarize-sales-by-region/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-c95c866ed0580c4faa65",
+          "file": "REQ-5.spec.cjs",
+          "line": 236,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-3-1#2: Refresh a pivot table after source data changes",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 702,
+                  "error": {
+                    "message": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n",
+                    "stack": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.createPivot (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:294:13)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:292:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.createPivot (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:294:13)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:292:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:51.227Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-3-1-2-Refresh--e6e2a-e-after-source-data-changes/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-5961e5873e2c522f97f6",
+          "file": "REQ-5.spec.cjs",
+          "line": 282,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-3-1#3: Refresh a pivot table after inserting rows or columns in the source range",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 675,
+                  "error": {
+                    "message": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n",
+                    "stack": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.createPivot (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:294:13)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:340:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.createPivot (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:294:13)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:340:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:52.281Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-3-1-3-Refresh--9d463-columns-in-the-source-range/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-0bea433fa9bac1d91c4e",
+          "file": "REQ-5.spec.cjs",
+          "line": 330,
+          "column": 1
+        },
+        {
+          "title": "REQ-5-3-1#4: Preserve the last pivot result when a selected source field is deleted",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 15000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 597,
+                  "error": {
+                    "message": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n",
+                    "stack": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.createPivot (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:294:13)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:398:3",
+                    "location": {
+                      "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                      "column": 100,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                        "column": 100,
+                        "line": 156
+                      },
+                      "message": "Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Region', exact: true }) resolved to 3 elements:\n    1) <option value=\"Region\">Region</option> aka getByLabel('Rows —RegionSales')\n    2) <option value=\"Region\">Region</option> aka getByLabel('Columns —RegionSales')\n    3) <option value=\"Region\">Region</option> aka getByLabel('Values —RegionSales')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Region', exact: true })\u001b[22m\n\n\n   at fixtures.cjs:156\n\n  154 | async function chooseOption(scope, label, optionName) {\n  155 |   await scope.getByRole('combobox', { name: label, exact: true }).click();\n> 156 |   await (scope.page ? scope.page() : scope).getByRole('option', { name: optionName, exact: true }).click();\n      |                                                                                                    ^\n  157 | }\n  158 |\n  159 | // REQ-5 / REQ-5-1 / REQ-5-2 / REQ-5-3\n    at chooseOption (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:156:100)\n    at Object.createPivot (/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs:294:13)\n    at /private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/REQ-5.spec.cjs:398:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-24T04:30:53.311Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/pwt/test-results/REQ-5-REQ-5-3-1-4-Preserve-5138d-ted-source-field-is-deleted/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/sheet5/fixtures.cjs",
+                    "column": 100,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e7eaacb213535728bcce-bba7d171cc073b23ded3",
+          "file": "REQ-5.spec.cjs",
+          "line": 389,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-24T04:30:07.450Z",
+    "duration": 46575.566999999995,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 11,
+    "flaky": 0
+  }
+}
