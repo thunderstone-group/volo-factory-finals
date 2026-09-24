@@ -50,7 +50,7 @@ LOSS_RATIO = 3  # A repair that loses passing scenarios is kept only when it gai
 REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce before one has completed.
 REPAIR_SECONDS = 3 * 3600  # No repair round starts after this much time in the repair phase.
 CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this long (a large task at 1 CPU).
-TESTGEN = os.environ.get("ONESHOT_TESTGEN", "0") == "1"  # requirement-written tests drive the repairs (testgen.py); off until validated
+TESTGEN = os.environ.get("ONESHOT_TESTGEN", "1") == "1"  # requirement-written tests drive the repairs (testgen.py)
 TESTGEN_WAIT = 1200  # seconds the repair phase waits for the suite once the draft is in
 TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
 # Load failures only the jsdom probe reports: jsdom lacks APIs a browser has (ResizeObserver, canvas), so a
