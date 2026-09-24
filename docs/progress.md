@@ -1232,3 +1232,7 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   GitHub only (`5b0946d978cf`, 00:50) — the first official run of written tests + edit repairs; it checks the hidden
   score and whether the suite runs inside the 1-CPU platform container.
 - Local Sheet draft (new package, practice key): CNY 1.16, 19 min; proxy 20/100. Controlled Sheet replay running.
+- **Controlled Sheet replay (02:28)** on the local Sheet draft with the Sheet proxy suite, edit repairs, 12-call cap:
+  proxy **20 -> 72** of 100, 8 of 12 rounds kept, CNY 2.87, 88 min; stopped at the call cap while still gaining.
+  Two rounds were lost to malformed hunks (a doubled `=======` leaked into `app.js`; an EDIT without hunk markers) —
+  the gates caught both; a hunk that carries a marker line is now skipped on its own.

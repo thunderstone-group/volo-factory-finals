@@ -431,6 +431,10 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(len(skipped), 1)
         self.assertIn("hunk 2: SEARCH matches nothing", skipped[0])
         self.assertIn("the current lines there are:\nconst a = 1;\nfunction f() {", skipped[0])
+        _, _, skipped = adapter.parse_repair(
+            "=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nconst b = 2;\n=======\nconst b = 5;\n=======\nconst c = 1;\n"
+            ">>>>>>> REPLACE\n<<<<<<< SEARCH\nconst a = 1;\n=======\nconst a = 2;\n>>>>>>> REPLACE\n=== END ===\n", stage)
+        self.assertIn("marker line", skipped[0])
         (stage / "frontend/public/app.js").write_text("x();\nx();\n")
         with self.assertRaisesRegex(ValueError, "matches 2 places"):
             adapter.parse_repair("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nx();\n=======\ny();\n"

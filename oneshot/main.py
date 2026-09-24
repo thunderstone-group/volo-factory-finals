@@ -548,6 +548,10 @@ def _apply_hunk(content, search, replace, where):
     quoting the current lines nearest to it."""
     if not search.strip():
         raise HunkMiss(f"{where}: empty SEARCH")
+    if re.search(r"^(?:<<<<<<< SEARCH|=======|>>>>>>> REPLACE)[ \t]*$", search + replace, re.M):
+        # A doubled separator leaked `=======` into app.js (a Sheet replay round then shipped a file that did not parse).
+        raise HunkMiss(f"{where}: a marker line (`<<<<<<< SEARCH`, `=======` or `>>>>>>> REPLACE`) sits inside the hunk; "
+                       f"write each hunk as exactly SEARCH, one `=======`, REPLACE")
     count = content.count(search)
     if count == 1:
         return content.replace(search, replace, 1)
