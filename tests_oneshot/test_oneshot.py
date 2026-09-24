@@ -407,6 +407,29 @@ class OfflineCase(unittest.TestCase):
         prompt = budget.attempts[0]["messages"][1]["content"]
         self.assertLess(prompt.index("## Quoted vocabulary checklist"), prompt.index("## Requirements (the application to build)"))
 
+    def test_repair_edits_apply_search_replace_hunks_to_the_current_file(self):
+        stage = Path(self.out)
+        (stage / "frontend/public").mkdir(parents=True, exist_ok=True)
+        (stage / "frontend/public/app.js").write_text("const a = 1;\nfunction f() {\n  return a;\n}\nconst b = 2;\n")
+        reply = ("Fixing.\n=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nfunction f() {\n    return a;\n}\n"
+                 "=======\nfunction f() {\n  return a + 1;\n}\n>>>>>>> REPLACE\n<<<<<<< SEARCH\nconst b = 2;\n=======\n"
+                 "const b = 3;\n>>>>>>> REPLACE\n=== END ===\n=== FILE: frontend/public/extra.js ===\nx();\n=== END ===\n")
+        files, missing = adapter.parse_repair(reply, stage)
+        self.assertEqual(missing, [])
+        by = {f["path"]: f["content"] for f in files}
+        self.assertEqual(by["frontend/public/app.js"], "const a = 1;\nfunction f() {\n  return a + 1;\n}\nconst b = 3;\n")
+        self.assertEqual(by["frontend/public/extra.js"], "x();\n")
+        with self.assertRaisesRegex(ValueError, "hunk 1: SEARCH matches nothing"):
+            adapter.parse_repair("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nnope();\n=======\nx\n"
+                                 ">>>>>>> REPLACE\n=== END ===\n", stage)
+        (stage / "frontend/public/app.js").write_text("x();\nx();\n")
+        with self.assertRaisesRegex(ValueError, "matches 2 places"):
+            adapter.parse_repair("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nx();\n=======\ny();\n"
+                                 ">>>>>>> REPLACE\n=== END ===\n", stage)
+        with self.assertRaisesRegex(ValueError, "no such file"):
+            adapter.parse_repair("=== EDIT: frontend/public/none.js ===\n<<<<<<< SEARCH\nx\n=======\ny\n"
+                                 ">>>>>>> REPLACE\n=== END ===\n", stage)
+
     def test_seed_checklist_collects_each_given_seed_once_with_its_requirements(self):
         req = ("id: ROOT\nname: App\ntype: FOLDER\nchildren:\n"
                "- id: REQ-1\n  name: Sign in\n  type: ATOMIC\n  scenarios:\n"

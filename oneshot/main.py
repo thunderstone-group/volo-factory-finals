@@ -129,10 +129,13 @@ RESUME = ("{why} These files are complete and must not be emitted again: {done}.
 
 REPAIR = ("The application you delivered was built, started and driven through the requirement scenarios in a "
           "real browser.\n\n{findings}\n\n"
-          "Fix the causes. Re-emit every file that must change as a COMPLETE file block with the same "
-          "`=== FILE: <path> ===` / `=== END ===` framing, and emit nothing else. Do not re-emit files "
-          "that do not change. The check will run again on the result, and a change that breaks a passing "
-          "scenario is discarded.")
+          "Fix the causes. Change an existing file with an EDIT block of one or more search/replace hunks:\n"
+          "=== EDIT: <path> ===\n<<<<<<< SEARCH\n<the current lines, copied exactly, enough to be unique>\n"
+          "=======\n<their replacement>\n>>>>>>> REPLACE\n=== END ===\n"
+          "Emit a new or short file as a COMPLETE `=== FILE: <path> ===` / `=== END ===` block instead. Emit nothing "
+          "else, and leave the lines that do not need to change alone: re-emitting a large file rewrites working code "
+          "and breaks it. The check will run again on the result, and a change that breaks passing scenarios is "
+          "discarded.")
 
 SMOKE = True  # run the delivery smoke check (build, start, GET / and /api/health) before publishing
 SMOKE_BUILD_SECONDS = 90
@@ -510,6 +513,60 @@ def parse_blocks(text):
     if stray:
         print(f"[oneshot] ignored {stray} line(s) outside file blocks", file=sys.stderr)
     return files, [current] if current is not None else []
+
+
+EDIT_BLOCK = re.compile(r"^=== EDIT:[ \t]*(.*?)[ \t]*===[ \t]*\r?\n(.*?)^=== END ===[ \t]*$", re.M | re.S)
+HUNK = re.compile(r"^<<<<<<< SEARCH[ \t]*\r?\n(.*?)^=======[ \t]*\r?\n(.*?)^>>>>>>> REPLACE[ \t]*$", re.M | re.S)
+
+
+def _apply_hunk(content, search, replace, where):
+    """Replace the one place `search` occurs: verbatim first, then line by line ignoring each line's surrounding
+    whitespace (a model re-indents what it copies). Zero or several places is an error naming the hunk."""
+    if not search.strip():
+        raise ValueError(f"{where}: empty SEARCH")
+    count = content.count(search)
+    if count == 1:
+        return content.replace(search, replace, 1)
+    lines = content.splitlines(keepends=True)
+    want = [line.strip() for line in search.strip("\n").splitlines()]
+    hits = [i for i in range(len(lines) - len(want) + 1)
+            if all(lines[i + k].strip() == want[k] for k in range(len(want)))]
+    if len(hits) != 1:
+        first = next((line for line in want if line), "")[:80]
+        found = "matches nothing" if not hits and not count else f"matches {max(len(hits), count)} places"
+        raise ValueError(f"{where}: SEARCH {found} (it starts `{first}`); copy the current lines exactly, "
+                         f"with enough context to be unique")
+    start = hits[0]
+    body = replace if replace.endswith("\n") or not replace else replace + "\n"
+    return "".join(lines[:start]) + body + "".join(lines[start + len(want):])
+
+
+def parse_repair(text, stage):
+    """A repair reply: complete `=== FILE ===` blocks and `=== EDIT: <path> ===` blocks of SEARCH/REPLACE hunks,
+    applied to the stage's current file. Returns (files with their full new content, unterminated FILE paths)."""
+    edits, rest = [], text
+    for match in EDIT_BLOCK.finditer(text):
+        edits.append((match.group(1).strip(), match.group(2)))
+    rest = EDIT_BLOCK.sub("", text)
+    files, missing = parse_blocks(rest) if FILE_OPEN.search(rest) or not edits else ([], [])
+    if re.search(r"^=== EDIT:", rest, re.M):
+        raise ValueError("an EDIT block has no closing `=== END ===`")
+    for path, body in edits:
+        hunks = HUNK.findall(body)
+        if not hunks:
+            raise ValueError(f"EDIT {path}: no `<<<<<<< SEARCH` / `=======` / `>>>>>>> REPLACE` hunk")
+        prior = next((f for f in files if f["path"] == path), None)
+        if prior is not None:
+            content = prior["content"]
+        else:
+            target = resolve_path(stage, path)
+            if not target.is_file():
+                raise ValueError(f"EDIT {path}: no such file; emit a new file as a complete FILE block")
+            content = target.read_text(encoding="utf-8")
+        for index, (search, replace) in enumerate(hunks, 1):
+            content = _apply_hunk(content, search, replace, f"EDIT {path} hunk {index}")
+        files[:] = [f for f in files if f["path"] != path] + [{"path": path, "content": content}]
+    return files, missing
 
 
 def write_one(out, item):
@@ -2087,8 +2144,13 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
             (s.get("observation") for s in (after["report"] or {}).get("scenarios", []) if s.get("status") == "error"), "")
         return False, "the scenario recheck could not run: " + str(why)[:300], detail
     old, new = _status_map(before), _status_map(after)
+    written = (after["report"] or {}).get("kind") == "testgen"
     lost = {sid for sid, status in old.items() if status == "pass" and new.get(sid) in ("fail", "error")}
-    gained = {sid for sid, status in old.items() if status == "fail" and new.get(sid) == "pass"}
+    # A written test blocked by a shared helper line is an `error` that stands for an application defect (the helper
+    # finding carries the verdict); once the defect is fixed the blocked tests pass. Counting only fail -> pass left
+    # such a fix at zero gain (a GitHub replay went from 25 to 32 passing tests and was credited with 4).
+    won = ("fail", "error") if written else ("fail",)
+    gained = {sid for sid, status in old.items() if status in won and new.get(sid) == "pass" and not sid.startswith("helper:")}
     unsure = lost | (gained if len(gained) <= 2 else set())
     if unsure:
         recheck = check_scenarios(stage, requirements, only=unsure, translate=translate, **_suite(tests))
@@ -2115,9 +2177,9 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         # A structural fix can expose failures that the broken version passed by accident: the official v24 router fix
         # took the self-check from 9 to 28 passing scenarios and lost two that passed only because every detail link
         # rendered the list (the public suite fails them on the fixed app too). Kept when it gains three per loss.
-        # Written tests are not calibrated that way: a lost test may be a path the hidden suite takes, so none may go.
-        written = (after["report"] or {}).get("kind") == "testgen"
-        if written or len(gained) < LOSS_RATIO * len(lost):
+        # Written tests follow the same rule: under zero loss a GitHub replay discarded a repair worth 25 -> 32 for
+        # one lost test, and a gained test is as likely a hidden path as a lost one.
+        if len(gained) < LOSS_RATIO * len(lost):
             return False, broke + (f", and fixed only {len(gained)}" if gained else ", and fixed none"), detail
     if not gained:
         return False, "no failing scenario passes after the change", detail
@@ -2192,11 +2254,11 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             fixed, _, finish = stream_completion(conversation + [{"role": "user", "content": ask}],
                                                  model, base, key, budget, tries=3)
             replied = True
-            batch, missing = parse_blocks(fixed)
+            batch, missing = parse_repair(fixed, stage)
             if missing or finish == "length":
-                raise ValueError("the repair output was truncated; emit only the files that must change")
+                raise ValueError("the repair output was truncated; change large files with EDIT blocks")
             if not batch:
-                raise ValueError("the repair emitted no file block")
+                raise ValueError("the repair emitted no FILE or EDIT block")
             for item in batch:
                 target = resolve_path(stage, item["path"])
                 if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS

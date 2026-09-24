@@ -38,6 +38,7 @@ TEST_SECONDS = 15
 ACTION_SECONDS = 5
 RUNNER_PREFIX = Path(tempfile.gettempdir()) / "oneshot-playwright-test-1.57.0"
 RUNNER_PACKAGE = "@playwright/test@1.57.0"
+RUNNER_IMAGE_MODULES = "/opt/arcbench/node_modules"
 SHOWN_ERROR = 700
 SHOWN_SOURCE = 60  # lines of a failing test's body in its report entry
 
@@ -194,7 +195,9 @@ def ensure_runner(env):
     node, npm = shutil.which("node", path=env.get("PATH")), shutil.which("npm", path=env.get("PATH"))
     if not node:
         return None, "node is not on PATH"
-    paths = [p for p in env.get("NODE_PATH", "").split(os.pathsep) if p] + [str(RUNNER_PREFIX / "node_modules")]
+    # The evaluator's runner image ships this exact package in /opt/arcbench/node_modules; use it before the network.
+    paths = ([p for p in env.get("NODE_PATH", "").split(os.pathsep) if p] + [str(RUNNER_PREFIX / "node_modules")]
+             + [RUNNER_IMAGE_MODULES])
     for root in dict.fromkeys(paths):
         cli = Path(root) / "@playwright" / "test" / "cli.js"
         if cli.is_file():
