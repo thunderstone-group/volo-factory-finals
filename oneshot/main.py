@@ -1442,6 +1442,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
     scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
     messages = draft_messages(requirements, scaffold, snapshot if template is not None else None, prerequisites)
     files = []
+    suites = []
     with tempfile.TemporaryDirectory(prefix=".oneshot-", dir=out.parent) as temp:
         budget.progress_path = Path(temp) / "progress.json"
         budget.progress("preparing", force=True)
@@ -1457,7 +1458,11 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             target.write_bytes(data)
         suite = None
         if TESTGEN and SMOKE and template is None:
-            suite = start_suite(requirements, Path(temp) / "suite", model, base, key, prerequisites)
+            # Its own directory, outside the stage's: a writer still running after the draft failed (or after its
+            # wait ran out) must never make the stage's cleanup raise and turn a delivered run into a non-zero exit.
+            suite = start_suite(requirements, Path(tempfile.mkdtemp(prefix="oneshot-tests-")), model, base, key,
+                                prerequisites)
+            suites.append(suite)
         try:
             conversation = draft_application(stage, files, messages, model, base, key, budget, template)
             needed = missing_required(stage)
@@ -1485,6 +1490,9 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             print(f"[oneshot] delivering the last complete version after an error: {reason}", file=sys.stderr)
         budget.progress("publishing", force=True)
         publish(stage, out, template, snapshot, stamp)
+    for job in suites:
+        if not job["thread"].is_alive():
+            shutil.rmtree(job["dir"], ignore_errors=True)
     return files, budget.summary()
 
 
