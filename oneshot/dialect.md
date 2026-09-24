@@ -18,9 +18,21 @@ waits for that button. Defaults:
 - Anything that changes state or triggers an action — sign in/out, submit, save, delete, sort, filter
   toggle, apply, confirm — is a real `<button type="button">` with the exact name.
 - Only navigation to another screen is an `<a href>` link, and it still carries the exact name.
-## 2. Names are case-insensitive SUBSTRING regexes
-`/archive/i` matches "Archive item". Whitespace runs are flexible. A few helpers ANCHOR the pattern
-(`/^settings$/i`). Assume any sidebar navigation target may be matched anchored.
+## 2. Quoted names are matched EXACTLY and must be UNIQUE on the screen
+The formal suite locates a quoted name with `getByRole(role, {name: 'Export report', exact: true})`
+in strict mode: the name must equal the element's whole accessible name, and exactly one element may
+match. One formal run lost three tests because a page showed the same named link both in the header
+and in its form ("strict mode violation ... resolved to 2 elements").
+- Show each quoted control once per screen. Do not repeat a page's own action in the header, sidebar or
+  footer.
+- Never nest a named control inside an element whose name comes from its content (a tab, button, link,
+  option or menu item). A tab holding its options button is named "Draft Options for Draft", so
+  `getByRole('tab', {name: 'Draft', exact: true})` finds nothing. Put such controls BESIDE it:
+  `<span class="tab-wrap"><button role="tab" aria-selected="true">Draft</button><button
+  aria-label="Options for Draft">⋯</button></span>`.
+- A combo box whose options the requirements name (or call clickable, or give the option role) is driven
+  by clicking the box and then the option: use the scaffold's `ARC.combobox`, never a native `<select>`,
+  whose options a click cannot reach.
 ## 3. Preserve exact names within their declared scope
 A row action belongs inside its record; a form action belongs in its form; a sidebar action belongs
 inside the sidebar. Preserve required names even when the same verb appears in another scope.

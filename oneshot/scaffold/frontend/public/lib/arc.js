@@ -121,6 +121,7 @@
     const route = ARC.route();
     ARC._renderedHash = route.hash;
     ARC._popover = null;  // the screen is rebuilt; an open popover goes with it
+    ARC._combobox = null;
     const app = window.APP || {};
     const main = app.screen ? app.screen(route) : '<h1>Home</h1>';
     document.getElementById('app').innerHTML = ARC.layout(main, route);
@@ -186,6 +187,65 @@
     ARC._popover = null;
   };
 
+  // --- Combobox: a named combo box whose options are CLICKED. Suites open the box by its name
+  // (`getByRole('combobox', {name: 'Priority', exact: true})`) and then click the option by its visible name
+  // (`getByRole('option', {name: 'High', exact: true})`). A native <select> fails that: its <option>s are
+  // never visible to a click, and several selects offering the same option name make the option ambiguous.
+  // Here the listbox exists only while its box is open, so an option name shared by several boxes resolves
+  // to one element. The value rides in a hidden input named `name`, so forms submit it like any field.
+  // ARC.combobox({ label, name, options: ['A', 'B'] | [{ value, label }], value, change: 'actionName' })
+  // renders a <label>, the box (role=combobox, named by the label) and the hidden input; `change` names an
+  // APP.actions entry called with { value, name } after a pick.
+  ARC.combobox = function (o) {
+    const id = 'cb-' + String(o.name || o.label).replace(/[^A-Za-z0-9_-]/g, '_') + '-' + (ARC._cbSeq = (ARC._cbSeq || 0) + 1);
+    const options = (o.options || []).map((x) => (typeof x === 'object' ? { value: String(x.value), label: String(x.label != null ? x.label : x.value) } : { value: String(x), label: String(x) }));
+    const current = options.find((x) => x.value === String(o.value == null ? '' : o.value));
+    return `<span class="combobox" data-combobox="${id}"${o.change ? ` data-cb-change="${ARC.esc(o.change)}"` : ''}>` +
+      `<label id="${id}-label" for="${id}">${ARC.esc(o.label)}</label> ` +
+      `<button type="button" id="${id}" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="${id}-list" aria-labelledby="${id}-label"` +
+      ` data-action="arc:combobox" data-options="${ARC.esc(JSON.stringify(options))}">${ARC.esc(current ? current.label : (o.placeholder || 'Select'))}</button>` +
+      `<input type="hidden" name="${ARC.esc(o.name || '')}" value="${ARC.esc(current ? current.value : '')}"></span>`;
+  };
+  ARC._openCombobox = function (box) {
+    const wrap = box.closest('[data-combobox]');
+    const open = wrap.querySelector('[role="listbox"]');
+    ARC.closeCombobox();
+    if (open) return;  // a second click on an open box closes it
+    let options = [];
+    try { options = JSON.parse(box.dataset.options || '[]'); } catch (e) {}
+    const value = (wrap.querySelector('input[type="hidden"]') || {}).value;
+    const list = document.createElement('div');
+    list.id = box.getAttribute('aria-controls');
+    list.className = 'listbox';
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('aria-labelledby', box.getAttribute('aria-labelledby'));
+    list.innerHTML = options.map((x) => `<div role="option" tabindex="-1" aria-selected="${x.value === value}" data-action="arc:option" data-value="${ARC.esc(x.value)}">${ARC.esc(x.label)}</div>`).join('');
+    wrap.appendChild(list);
+    box.setAttribute('aria-expanded', 'true');
+    ARC._combobox = wrap;
+  };
+  ARC.closeCombobox = function () {
+    const wrap = ARC._combobox;
+    ARC._combobox = null;
+    if (!wrap) return;
+    const list = wrap.querySelector('[role="listbox"]');
+    if (list) list.remove();
+    const box = wrap.querySelector('[role="combobox"]');
+    if (box) box.setAttribute('aria-expanded', 'false');
+  };
+  ARC._pickOption = function (option) {
+    const wrap = option.closest('[data-combobox]');
+    const box = wrap.querySelector('[role="combobox"]');
+    const input = wrap.querySelector('input[type="hidden"]');
+    if (input) { input.value = option.dataset.value; input.dispatchEvent(new Event('input', { bubbles: true })); }
+    box.textContent = option.textContent;
+    ARC.closeCombobox();
+    box.focus();
+    const change = wrap.dataset.cbChange;
+    const app = window.APP || {};
+    if (change && app.actions && app.actions[change]) app.actions[change]({ value: option.dataset.value, name: input && input.name, el: box });
+  };
+
   // --- Notification: a role="status" element carrying the literal message plus an Undo button.
   ARC.notify = function (message, opts) {
     const root = document.getElementById('status-root');
@@ -213,6 +273,8 @@
     if (name === 'arc:undo') { const u = ARC._undo; ARC._undo = null; document.getElementById('status-root').hidden = true; if (u) u(); return; }
     if (name === 'arc:close') { ARC.closeDialog(); return; }
     if (name === 'arc:nav') { ARC.navigate(el.dataset.hash || '#/'); return; }
+    if (name === 'arc:combobox') { ARC._openCombobox(el); return; }
+    if (name === 'arc:option') { ARC._pickOption(el); return; }
     const fn = app.actions && app.actions[name];
     if (!fn) return;
     ARC.pull();  // act on the records as they are now, including other sessions' writes
@@ -220,6 +282,7 @@
   }
   document.addEventListener('click', (ev) => {
     if (ARC._popover && !ARC._popover.contains(ev.target) && !ev.target.closest('[data-action]')) ARC.closePopover();
+    if (ARC._combobox && !ARC._combobox.contains(ev.target)) ARC.closeCombobox();
     const el = ev.target.closest('[data-action], button, input, textarea, select, a, label');
     if (!el || !el.hasAttribute('data-action') || el.tagName === 'FORM') {
       // In-app links render synchronously too (see ARC.navigate); the browser's own fragment
@@ -250,7 +313,10 @@
     if (!el) return;
     dispatch(el.dataset.change, el, ev, null);
   });
-  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && ARC._popover) ARC.closePopover(); });
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' && ARC._popover) ARC.closePopover();
+    if (ev.key === 'Escape' && ARC._combobox) ARC.closeCombobox();
+  });
   window.addEventListener('hashchange', () => {
     if ((location.hash || '#/') === ARC._renderedHash) return;  // already rendered in the click's task
     if (ARC.dialogOpen) ARC.closeDialog();
