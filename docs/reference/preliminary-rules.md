@@ -1,6 +1,6 @@
 # 初赛规则（参考）
 
-last-reviewed: 2026-09-23 13:20
+last-reviewed: 2026-09-24 12:00
 
 赛制的唯一真源。
 
@@ -79,9 +79,17 @@ last-reviewed: 2026-09-23 13:20
 - **必须调用大模型**：须知把「不调用或很少调用大模型」的智能体视为固定程序。我们的一次性生成调用模型次数少，所以审核时要能证明业务代码全部来自模型输出。做法是保留生成 trace，平台日志里也有。
 - **违规行为**：泄露、推测或绕过隐藏测试，以及绕过网络、资源或评测限制，都算违规。拿不准的做法，先问赛事工作人员。
 
+## 开赛后核实（09-24）
+
+- **竞赛标识**：`hackathon`（网页标题 Agentic Software Factory Hackathon）。两道题 `hackathon--github`（100 条测试，47 个模块）和 `hackathon--sheet`（100 条，24 个模块），各占一半权重。不再是「一中一大」。
+- **进入竞赛**：必须先有确认过的正式赛队伍（未确认时接口返回 403）。确认只能做一次：点确认的账号成为队长，账号用户名就是队名，每个账号发 500 元初始额度；队员邮箱可选，可以之后再加。VOLO-AI 已确认为队长，队名 VOLO-AI。CLI 用 `arcbench registration hackathon` 查额度，不代办确认。
+- **需求获取**：`arcbench requirements hackathon --output FILE`（接口 `/api/competitions/{id}/requirements-download`）。平台运行时 `requirements/requirements.yaml` 与下载版逐字节一致，另有一个空的 `requirements/prerequisites.md`。
+- **正式提交**：上传时 `credential_mode=official_evaluation`（网页上的「使用比赛额度评测」），不上传个人 key，平台按次建 key 计费；模型可以自选（我们用 deepseek-v4-flash），`visual_model` 默认 deepseek-v4-flash-vision-exp。每题各建一个 run（`arcbench run SUBMISSION --task …`）。
+- **逐条结果**：run 记录里有 `failed_tests`（测试名为中文描述，附报错），与须知「逐条通过信息不公开」的说法不一致。只用于诊断，不把测试内容搬进包里。
+- **种子数据**：两题需求末尾都有 `data` 字段，描述「系统中存在」的种子数据类别，但不给具体名字。GitHub 的隐藏测试通过 `E2E_*` 环境变量读取种子账号、URL 等；09-24 正式评测没有注入这些变量，93/100 条测试直接报 `Evaluation fixture is missing`。已起草问题反馈交给甲方发主办方。
+- **本地模拟镜像**：上游 09-23 改为直接拉 Docker Hub 的 `gyataro/arcbench-runner:local-base`，本机已拉取并构建 `arcbench-local-submit:latest`（amd64 模拟）。
+
 ## 待确认
 
-- 正式竞赛在平台和 CLI 里的标识，以及开赛后需求文档怎样获取。
-- 正式提交时能否自选模型（练习时由 `arcbench upload --model` 决定）。
-- 独立 key 的粒度：每队一个，还是每次运行一个。若两题共用一个 key 并发运行，按模拟器的实现，两题的计量会互相重复计入。
-- CLI 登录的 VOLO-AI 是不是队长账号。
+- GitHub 的 E2E_* 种子数据会不会补、怎么补（评测方通过界面创建，还是要求应用自带某种约定数据），修复后已有提交是否重评。
+- 独立 key 的粒度：每次运行一个还是每队一个（两题的费用分开记账，目前看是每个 run 单独计量）。
