@@ -49,7 +49,6 @@ REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce 
 REPAIR_SECONDS = 3 * 3600  # No repair round starts after this much time in the repair phase.
 CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this long (a large task at 1 CPU).
 TESTGEN = os.environ.get("ONESHOT_TESTGEN", "0") == "1"  # requirement-written tests drive the repairs (testgen.py); off until validated
-TESTGEN_CALLS = 24  # completed calls writing the suite: one per spec file, one retry each
 TESTGEN_WAIT = 1200  # seconds the repair phase waits for the suite once the draft is in
 TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
 # Load failures only the jsdom probe reports: jsdom lacks APIs a browser has (ResizeObserver, canvas), so a
@@ -1765,11 +1764,14 @@ def start_suite(requirements, directory, model, base, key, prerequisites=""):
     """Write the requirement-written acceptance tests in a background thread while the draft is written (they read
     only the requirements). Its calls keep their own ledger; finish_suite() joins it."""
     import threading
-    job = {"dir": Path(directory), "budget": CallBudget(draft_limit=TESTGEN_CALLS, repair_limit=0), "manifest": None,
-           "error": None, "started": time.monotonic()}
+    job = {"dir": Path(directory), "budgets": [], "manifest": None, "error": None, "started": time.monotonic()}
 
     def complete(messages):
-        return stream_completion(messages, model, base, key, job["budget"], tries=3)
+        # One ledger per call: parallel streams must not share one transport-failure limit (09-24: five failures
+        # across eight parallel files stopped three of them).
+        own = CallBudget(draft_limit=1, repair_limit=0)
+        job["budgets"].append(own)
+        return stream_completion(messages, model, base, key, own, tries=3)
 
     def work():
         try:
@@ -1787,11 +1789,12 @@ def finish_suite(job, budget, wait=TESTGEN_WAIT):
     if job is None:
         return None
     job["thread"].join(wait)
-    for record in list(job["budget"].attempts):
-        budget.side_calls.append({**record, "phase": "tests", "call": f"tests-{record.get('call')}",
+    records = [record for own in list(job["budgets"]) for record in list(own.attempts)]
+    for number, record in enumerate(records, 1):
+        budget.side_calls.append({**record, "phase": "tests", "call": f"tests-{number}",
                                   "cost_cny": round(call_cost(record), 6)})
-    summary = {"seconds": round(time.monotonic() - job["started"], 1), "calls": len(job["budget"].attempts),
-               "cost_cny": round(job["budget"].spent(), 6)}
+    summary = {"seconds": round(time.monotonic() - job["started"], 1), "calls": len(records),
+               "cost_cny": round(sum(call_cost(r) for r in records), 6)}
     if job["thread"].is_alive():
         summary["error"] = f"the suite was not written within {wait} s of the draft"
     elif job["error"] or not job["manifest"]:

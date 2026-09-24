@@ -32,7 +32,7 @@ except ImportError:  # run as a script, or from the flat package next to main.py
     import scenarios
 
 GROUP_SCENARIOS = 8  # scenarios per spec file (one model call); requirements are never split across files
-GROUP_WORKERS = 8
+GROUP_WORKERS = 4  # parallel spec calls; a gateway burst cuts several streams at once
 RUN_SECONDS = 900  # one suite run; a hung runner is stopped here
 TEST_SECONDS = 15
 ACTION_SECONDS = 5
@@ -445,12 +445,13 @@ def _cli_complete(model, base, key):
         from . import main as oneshot
     except ImportError:
         import main as oneshot
-    budget = oneshot.CallBudget(draft_limit=64)
-    lock = __import__("threading").Lock()
+    budgets = []
 
     def complete(messages):
-        return oneshot.stream_completion(messages, model, base, key, budget, tries=3)
-    complete.budget, complete.lock = budget, lock
+        own = oneshot.CallBudget(draft_limit=1)
+        budgets.append(own)
+        return oneshot.stream_completion(messages, model, base, key, own, tries=3)
+    complete.budgets = budgets
     return complete
 
 
@@ -475,8 +476,8 @@ def main(argv=None):
         complete = _cli_complete(os.environ.get("MODEL", "deepseek-v4-flash"),
                                  os.environ.get("OPENAI_BASE_URL", "https://api.arc-bench.com/v1"), key)
         manifest = write_suite(text, args.suite, complete)
-        manifest["cost_cny"] = round(complete.budget.spent(), 4)
-        manifest["usage"] = complete.budget.summary()
+        manifest["cost_cny"] = round(sum(b.spent() for b in complete.budgets), 4)
+        manifest["usage"] = [b.summary() for b in complete.budgets]
         (args.suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
         print(json.dumps({k: manifest[k] for k in ("scenarios", "tests", "seconds", "cost_cny")}), file=sys.stderr)
         return 0
