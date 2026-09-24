@@ -1316,6 +1316,7 @@ def draft_messages(requirements, scaffold=None, snapshot=None, prerequisites="")
     task's prerequisites.md when it has content), then the scaffold placed in the stage or the existing application
     being extended."""
     user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
+            seed_checklist(requirements) +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
     if prerequisites.strip():
         user += ("\n\n## Prerequisites (the task's prerequisites.md, part of the requirements)\n" + prerequisites.strip())
@@ -1464,6 +1465,67 @@ def vocabulary_table(requirements):
         label, phrases = groups[key]
         head = key if key == "ROOT" else key + (" " + label if label else "")
         lines.append(f"- {head}: " + "; ".join(f"\u201c{p}\u201d" for p in phrases))
+    return "\n".join(lines)
+
+
+# The GIVEN sentence that states a scenario's seed: "Seed values: account `a`, email `b`." / "The evaluation seed
+# contains the workbook `W`, ..." / "The seeded data is (includes) ...". The clause runs to the first sentence end
+# outside backticks (seed values hold dots: `a.b@example.test`).
+SEED_MARKER = re.compile(r"(?:Seed values?:|evaluation seed contains|seeded data (?:is|includes))\s*", re.I)
+SEED_SHOWN = 40
+
+
+def _seed_clause(text, start):
+    ticks = 0
+    for index in range(start, len(text)):
+        char = text[index]
+        if char == "`":
+            ticks ^= 1
+        elif char == "." and not ticks and (index + 1 == len(text) or text[index + 1].isspace()):
+            return text[start:index].strip()
+    return text[start:].strip()
+
+
+def seed_checklist(requirements):
+    """The seed states the scenarios' GIVEN steps declare, deduplicated, each with the requirement ids whose tests
+    start from it — the records the application must hold at startup, handed to the model before it writes."""
+    try:
+        try:
+            from . import scenarios
+        except ImportError:  # the flat package
+            import scenarios
+        leaves = scenarios.load_requirements(requirements or "")
+    except Exception:  # the checklist is an aid; a document the parser cannot read goes without it
+        return ""
+    clauses, order = {}, []
+    for leaf in leaves:
+        for scenario in leaf.get("scenarios") or []:
+            for step in scenario.get("steps") or []:
+                if (step.get("keyword") or "").upper() != "GIVEN":
+                    continue
+                content = re.sub(r"\s+", " ", step.get("content") or "")
+                found = [_seed_clause(content, m.end()) for m in SEED_MARKER.finditer(content)]
+                found = [c for c in found if "`" in c]
+                if not found:
+                    continue
+                clause = found[-1]  # the closing "Seed values:" restates the fullest form
+                if clause not in clauses:
+                    clauses[clause] = []
+                    order.append(clause)
+                if leaf["id"] not in clauses[clause]:
+                    clauses[clause].append(leaf["id"])
+    if not order:
+        return ""
+    lines = ["\n\n## Seed data checklist (the GIVEN seed of every scenario, deduplicated)",
+             "Each hidden test starts at `/` in a fresh, signed-out browser session, against the state below, and "
+             "reaches these records only by clicking what the screens show (§6b). Create every record at startup "
+             "with exactly these names and values; the ids say which requirements' tests expect each line."]
+    for clause in order[:SEED_SHOWN]:
+        ids = clauses[clause]
+        head = ", ".join(ids[:6]) + (f" (+{len(ids) - 6} more)" if len(ids) > 6 else "")
+        lines.append(f"- {head}: {clause}")
+    if len(order) > SEED_SHOWN:
+        lines.append(f"- ({len(order) - SEED_SHOWN} further seed lines are in the requirements' GIVEN steps)")
     return "\n".join(lines)
 
 

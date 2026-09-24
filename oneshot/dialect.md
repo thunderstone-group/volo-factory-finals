@@ -55,6 +55,14 @@ specified; do not turn scenario descriptions or action instructions into stored 
 Keep the content, actions and dashboard lists needed by a public browsing journey available without
 an extra login step. A seeded verified account does not itself make every list private. Authentication
 changes account controls; apply additional access restrictions only when the requirements state them.
+## 6b. Seeded records are reachable from `/` by name
+Each test opens `/` in a fresh, signed-out browser and never types a URL: it reaches a seeded record by
+clicking a visible link named with that record's seeded name. So the home screen lists, as links named
+exactly by their seeded names, every seeded top-level record a signed-out visitor may see (public groups,
+public projects, shared documents), and after sign-in also the ones that user may see (their groups and
+private projects). Every record screen links onward to its child records the same way. Headings, links
+and `owner/name` paths show the seeded name verbatim (`Team Alpha/site-docs`, never a slug such as
+`team-alpha/site-docs` in its place); an id or slug may live only in the URL.
 ## 7. Verbatim vocabulary — the largest family of lost points on big apps
 The assert-visible ladder ends in `getByRole('button', {name})`; when it fails it means NOTHING on the page
 carried the phrase. Every quoted string and every noun phrase in a THEN step must appear literally as

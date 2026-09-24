@@ -407,6 +407,26 @@ class OfflineCase(unittest.TestCase):
         prompt = budget.attempts[0]["messages"][1]["content"]
         self.assertLess(prompt.index("## Quoted vocabulary checklist"), prompt.index("## Requirements (the application to build)"))
 
+    def test_seed_checklist_collects_each_given_seed_once_with_its_requirements(self):
+        req = ("id: ROOT\nname: App\ntype: FOLDER\nchildren:\n"
+               "- id: REQ-1\n  name: Sign in\n  type: ATOMIC\n  scenarios:\n"
+               "  - name: one\n    steps:\n    - keyword: GIVEN\n      content: The seeded data is account `ann`. A visitor\n"
+               "        opens the page. Seed values: account `ann`, email `ann.lee@example.test`.\n"
+               "    - keyword: WHEN\n      content: Seed values: account `nobody`.\n"
+               "  - name: two\n    steps:\n    - keyword: GIVEN\n      content: 'Seed values: account `ann`, email `ann.lee@example.test`.'\n"
+               "- id: REQ-2\n  name: Open\n  type: ATOMIC\n  scenarios:\n"
+               "  - name: one\n    steps:\n    - keyword: GIVEN\n      content: The evaluation seed contains the board `Plans`\n"
+               "        with rows `A/1`.\n"
+               "  - name: two\n    steps:\n    - keyword: GIVEN\n      content: No seed here.\n")
+        table = adapter.seed_checklist(req)
+        self.assertIn("- REQ-1: account `ann`, email `ann.lee@example.test`\n", table + "\n")
+        self.assertIn("- REQ-2: the board `Plans` with rows `A/1`", table)
+        self.assertNotIn("nobody", table)
+        self.assertEqual(table.count("ann.lee"), 1)
+        self.assertEqual(adapter.seed_checklist("id: X\nname: none\n"), "")
+        prompt = adapter.draft_messages(req)[1]["content"]
+        self.assertLess(prompt.index("## Seed data checklist"), prompt.index("## Requirements (the application to build)"))
+
     def test_backtick_phrases_are_quoted_vocabulary_and_values_the_user_types_are_not(self):
         # Lite requirements backtick their control names; the old pattern saw none of them. What the test types
         # (fills `Name` with `Shelf Created 1`) is supplied at runtime, so it is no gate phrase, unless the
