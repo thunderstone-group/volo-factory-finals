@@ -1346,3 +1346,32 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   f08f3fdf, same limits, log `chain-2026-09-25-pair.jsonl`. Submission 10 (`a2375cd48c2a`) still running: Sheet 15
   rounds, suite 81; GitHub draft 11, suite 23 after 6 rounds.
 
+
+## 2026-09-25 20:30-22:20 — ARC paper lessons, repair in dependency order (4.18), Sheet gap diagnosis (4.19)
+
+- **Owner question "any strong ARC papers":** the organizers' own paper (arXiv 2602.13723, ISSTA 2026) compiles
+  requirement trees feature by feature in dependency order with tests first; Gemini 3 Pro, 75-92 % on the six old
+  apps, 2.5-6 h and 12-27 M tokens per app. Its ablation: no dependency (DFS) order costs 16-52 points, no tests 17-47.
+  Owner approved trying the dependency-order lesson on GitHub.
+- **Data from the 19:00 local GitHub run** (suite on the delivered app and on draft 2): helper findings (tests stopping
+  at one shared helper line) were appended after every single failing test; with 36 failing, the 13 helpers (42 blocked
+  tests) of draft 2 sat at positions 23-35 and none reached the 20 a repair request lists. Three of fifteen suite files
+  began with a Markdown fence (```js) and did not parse: 21 tests never ran.
+- **4.18 (`feat/repair-order` 1d363e1):** failures ordered by the depth of their requirement in the requirements'
+  dependency graph, then by tests represented; the suite writer strips a code fence. On draft 2's data the request
+  covers 41 tests instead of 20 (9 of 13 helpers). Controlled replay on draft 2 with the unfenced suite (8 calls,
+  practice key): 4 of 8 rounds kept, suite 10 -> 26 -> 45 -> 50, 3-6 helpers per request, CNY 2.30, 61 min (evidence
+  about the loop, not progress).
+- **Relay round 1 (package f08f3fdf, submission `259ce02ed3bc`):** GitHub draft pair judged both drafts (first 12,
+  flagged by the route gate but run on the suite; second 15), chose the second, 17.4 min from suite to verdict (4.17
+  criterion 3 met); Sheet `538e10fe0724` **80/100** (best Sheet so far).
+- **Sheet gap diagnosis (subagent, `docs/evidence/2026-09-25-sheet-gap/README.md`, practice CNY 5.00):** submission 9
+  lost REQ-2-1-3 x3 to a repair that renamed the quoted field by `aria-label` (the rename guard read the label text);
+  shared gaps on all four Sheet drafts: range copy/cut from the context menu, the popover left inside the cell, a filter
+  hiding its own header, contradictory seed descriptions. Five line-broken quoted messages and `Sheet3` were misjudged
+  as invented names by the written-suite grounding.
+- **4.19 (`feat/repair-order` d03dd43):** the rename guard drops a label text its field overrides (`label_overrides`
+  flags only submission 9 among 10 saved platform bundles); grounding runs on whitespace-joined text, grounds the next
+  of a numbered series, and an all-placeholder phrase no longer matches every name (it did once the text was joined:
+  caught before shipping); the `repair end` line lists written tests still failing or in error. 220 unit tests green.
+  Package 30ef9677; local Sheet end-to-end check running before it replaces f08f3fdf on the relay.
