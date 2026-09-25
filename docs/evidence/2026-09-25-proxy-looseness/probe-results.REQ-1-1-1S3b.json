@@ -1,0 +1,22 @@
+[
+ {
+  "key": "REQ-1-1-1 S3 b:duplicate-username",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username alice-dev",
+   "ok   0.1s fill Email unused",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm",
+   "ok   0.1s check terms",
+   "ok   0.2s click \"Create account\"",
+   "ok   0.2s \"Username already exists\" visible",
+   "ok   0.2s username retained",
+   "ok   0.2s email retained"
+  ]
+ }
+]

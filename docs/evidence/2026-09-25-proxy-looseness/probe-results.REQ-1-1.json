@@ -1,0 +1,132 @@
+[
+ {
+  "key": "REQ-1-1-1 S3 a:multi-invalid-together",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "\"Username format is invalid\" visible",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('Username format is invalid') / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/register",
+   "snap": "- main:\n  - heading \"Create an account\" [level=1]\n  - text: Username\n  - textbox \"Username\": \"-bad-user\"\n  - text: Email\n  - textbox \"Email\": not-an-email\n  - text: Password\n  - textbox \"Password\": short\n  - text: Confirm password\n  - textbox \"Confirm password\": different\n  - checkbox \"Agree to the terms\"\n  - text: Agree to the terms\n  - button \"Create account\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username \"-bad-user\"",
+   "ok   0.1s fill Email \"not-an-email\"",
+   "ok   0.1s fill Password \"short\"",
+   "ok   0.1s fill Confirm \"different\"",
+   "ok   0.1s terms initially unchecked",
+   "ok   0.2s click \"Create account\"",
+   "FAIL 2.7s \"Username format is invalid\" visible"
+  ]
+ },
+ {
+  "key": "REQ-1-1-1 S3 b:duplicate-username",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username alice-dev",
+   "ok   0.1s fill Email unused",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm",
+   "ok   0.1s check terms",
+   "ok   0.2s click \"Create account\"",
+   "ok   0.2s \"Username already exists\" visible",
+   "ok   0.2s username retained",
+   "ok   0.2s email retained"
+  ]
+ },
+ {
+  "key": "REQ-1-1-1 S3 c:success-signin-by-email-reload",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username",
+   "ok   0.1s fill Email",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm password",
+   "ok   0.1s check \"Agree to the terms\"",
+   "ok   0.1s click \"Create account\"",
+   "ok   0.1s sign-in form shown",
+   "ok   0.2s fill \"Username or email\" with email",
+   "ok   0.2s fill Password",
+   "ok   0.2s click \"Sign in\"",
+   "ok   0.2s username visible (exact text)",
+   "ok   0.2s reload",
+   "ok   0.2s username visible after reload"
+  ]
+ },
+ {
+  "key": "REQ-1-1-2 S3 a:unknown-account-generic-failure",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill unknown user",
+   "ok   0.1s fill Password",
+   "ok   0.1s click \"Sign in\"",
+   "ok   0.1s \"Invalid credentials\" (exact)",
+   "ok   0.1s no Account menu",
+   "ok   0.1s reload",
+   "ok   0.2s still on sign-in form after reload",
+   "ok   0.2s still no Account menu after reload"
+  ]
+ },
+ {
+  "key": "REQ-1-1-2 S3 b:wrong-password-then-success-and-protected-reopen",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill alice-dev",
+   "ok   0.1s fill wrong Password",
+   "ok   0.1s click \"Sign in\"",
+   "ok   0.1s \"Invalid credentials\"",
+   "ok   0.1s fill alice email",
+   "ok   0.1s fill Password",
+   "ok   0.2s click \"Sign in\"",
+   "ok   0.2s \"Invalid credentials\" gone",
+   "ok   0.2s username alice-dev visible (exact)",
+   "ok   0.2s click button \"Account menu\"",
+   "ok   0.2s click link \"Your organizations\"",
+   "ok   0.2s protected page heading \"Your organizations\"",
+   "ok   0.2s reload protected page",
+   "ok   0.2s still signed in after reload",
+   "ok   0.2s protected content after reload (link \"New organization\")"
+  ]
+ },
+ {
+  "key": "REQ-1-1-2 S3 c:signed-in-sees-authorized-private-repo-from-workspace",
+  "elapsed": "0.1",
+  "passed": false,
+  "fail": {
+   "label": "workspace lists private repo link \"secret-research\" (strict)",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByRole('link', { name: 'secret-research', exact: true }) / Expected: visible / Error: strict mode violation: getByRole('link', { name: 'secret-research', exact: true }) resolved to 2 elements:",
+   "url": "http://127.0.0.1:3205/#/",
+   "snap": "- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/acme-demo/secret-research\"\n    - paragraph: Acme Demo/secret-research · Private · Private research\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/alice-dev/secret-research\"\n    - paragraph: alice-dev/secret-research · Private · Personal private research\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "FAIL 0.1s workspace lists private repo link \"secret-research\" (strict)"
+  ]
+ }
+]

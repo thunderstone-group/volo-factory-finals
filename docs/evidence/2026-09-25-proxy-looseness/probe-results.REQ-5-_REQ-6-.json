@@ -1,0 +1,231 @@
+[
+ {
+  "key": "REQ-5-4 S2 a:viewer=bob-reviewer",
+  "elapsed": "2.9",
+  "passed": false,
+  "fail": {
+   "label": "signed in as bob-reviewer (button \"Account menu\" visible)",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByRole('button', { name: 'Account menu', exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/login",
+   "snap": "- main:\n  - heading \"Sign in\" [level=1]\n  - alert: Invalid credentials\n  - text: Username or email\n  - textbox \"Username or email\"\n  - text: Password\n  - textbox \"Password\"\n  - button \"Sign in\"\n  - paragraph:\n    - link \"Create an account\":\n      - /url: \"#/register\""
+  },
+  "log": [
+   "ok   0.2s goto /",
+   "ok   0.3s click link \"Sign in\"",
+   "ok   0.3s fill \"Username or email\"",
+   "ok   0.3s fill \"Password\"",
+   "ok   0.4s click button \"Sign in\"",
+   "FAIL 2.9s signed in as bob-reviewer (button \"Account menu\" visible)"
+  ]
+ },
+ {
+  "key": "REQ-5-4 S2 a2:bob(Write)-sees-close-button (bob pw from app seed)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "no \"Close issue\" for Write user",
+   "error": "expect(locator).toHaveCount(expected) failed / Locator:  getByRole('button', { name: 'Close issue', exact: true }) / Expected: 0 / Received: 1",
+   "url": "http://127.0.0.1:3205/#/issue/acme-demo/acme-docs/1",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Open\"\n  - paragraph: Describe the onboarding improvement.\n  - paragraph: Acme Demo/acme-docs\n  - complementary:\n    - heading \"Assignees\" [level=3]\n    - text: bob-reviewer\n    - button \"Assignees\"\n    - heading \"Labels\" [level=3]\n    - text: bug, documentation\n    - button \"Labels\"\n    - heading \"Milestone\" [level=3]\n    - text: Q3 launch\n    - button \"Milestone\"\n  - heading \"Comment\" [level=2]\n  - text: Comment\n  - textbox \"Comment\"\n  - button \"Comment\"\n  - heading \"Activity\" [level=2]\n  - article:\n    - strong: alice-dev\n    - text: 2 days ago\n    - paragraph: Please comment on the onboarding flow.\n  - button \"Close issue\"\n  - button \"Edit issue title\"\n  - button \"Edit issue description\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as bob-reviewer (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.2s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Issues\"",
+   "ok   0.2s click issue \"Improve onboarding\"",
+   "FAIL 2.7s no \"Close issue\" for Write user"
+  ]
+ },
+ {
+  "key": "REQ-5-4 S2 b:viewer=fresh-registered (Read on public repo)",
+  "elapsed": "0.3",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username",
+   "ok   0.1s fill Email",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm password",
+   "ok   0.1s check \"Agree to the terms\"",
+   "ok   0.2s click \"Create account\"",
+   "ok   0.2s sign-in form shown",
+   "ok   0.2s goto /",
+   "ok   0.2s click link \"Sign in\"",
+   "ok   0.2s fill \"Username or email\"",
+   "ok   0.2s fill \"Password\"",
+   "ok   0.2s click button \"Sign in\"",
+   "ok   0.2s signed in as pw-ro-mugfmt7t26pv (button \"Account menu\" visible)",
+   "ok   0.2s fill searchbox \"Search\"",
+   "ok   0.2s press Enter",
+   "ok   0.3s click link \"acme-docs\" (strict)",
+   "ok   0.3s heading contains \"acme-docs\"",
+   "ok   0.3s click \"Issues\"",
+   "ok   0.3s click issue \"Improve onboarding\"",
+   "ok   0.3s status \"Open\" visible",
+   "ok   0.3s no Close issue",
+   "ok   0.3s no Reopen issue",
+   "ok   0.3s reload",
+   "ok   0.3s still Open"
+  ]
+ },
+ {
+  "key": "REQ-6-3-1 S3 visitor-PR-tabs-summaries",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "\"Commit summary\" visible",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText(/Commit summary/) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1/commits",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Open · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Commits\" [level=2]\n  - article: Add feature search · alice-dev\n  - article: Document search flow · alice-dev\n  - article: Initial commit · alice-dev\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n  - button \"Merge pull request\" [disabled]"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click \"Pull requests\"",
+   "ok   0.1s click PR \"Improve onboarding\"",
+   "ok   0.1s heading exact title",
+   "ok   0.2s click \"Commits\"",
+   "FAIL 2.7s \"Commit summary\" visible"
+  ]
+ },
+ {
+  "key": "REQ-6-3-1 S3 variant open-PR=\"Fix search\"",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "click PR \"Fix search\" in default list",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Fix search', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3205/#/prs/acme-demo/acme-docs",
+   "snap": "- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - link \"Draft\":\n    - /url: \"#/prs/acme-demo/acme-docs/Draft\"\n  - link \"Open\":\n    - /url: \"#/prs/acme-demo/acme-docs/Open\"\n  - link \"Closed\":\n    - /url: \"#/prs/acme-demo/acme-docs/Closed\"\n  - link \"Merged\":\n    - /url: \"#/prs/acme-demo/acme-docs/Merged\"\n  - text: Author\n  - textbox \"Author\"\n  - heading \"Pull requests\" [level=2]\n  - article:\n    - text: \"#1\"\n    - link \"Improve onboarding\":\n      - /url: \"#/pr/acme-demo/acme-docs/1\"\n    - text: Open alice-dev main ← feature-search\n  - article:\n    - text: \"#3\"\n    - link \"Search improvements\":\n      - /url: \"#/pr/acme-demo/acme-docs/3\"\n    - text: Open bob-reviewer main ← search-tweaks"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click \"Pull requests\"",
+   "FAIL 2.6s click PR \"Fix search\" in default list"
+  ]
+ },
+ {
+  "key": "REQ-6-3-2 S1 visitor-files-changed",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "one added + one modified file (2 file rows)",
+   "error": "expect(locator).toHaveCount(expected) failed / Locator:  getByRole('article') / Expected: 2 / Received: 3",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1/files",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Open · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Changed files\" [level=2]\n  - paragraph: 4 additions, 2 deletions\n  - article:\n    - heading \"src/search.ts\" [level=3]:\n      - link \"src/search.ts\":\n        - /url: \"#/blob/acme-demo/acme-docs/src/search.ts\"\n    - paragraph: +2 −1\n  - article:\n    - heading \"main-only.md\" [level=3]:\n      - link \"main-only.md\":\n        - /url: \"#/blob/acme-demo/acme-docs/main-only.md\"\n    - paragraph: +1 −0\n  - article:\n    - heading \"README.md\" [level=3]:\n      - link \"README.md\":\n        - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n    - paragraph: +1 −1\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n  - button \"Merge pull request\" [disabled]"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click \"Pull requests\"",
+   "ok   0.1s click PR \"Improve onboarding\"",
+   "ok   0.2s click \"Files changed\"",
+   "ok   0.2s path \"src/search.ts\" verbatim",
+   "ok   0.2s aggregate \"<n> additions, <m> deletions\"",
+   "FAIL 2.7s one added + one modified file (2 file rows)"
+  ]
+ },
+ {
+  "key": "REQ-6-4 S1 request-then-remove-bob",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "precondition: no bob-reviewer on the PR page yet",
+   "error": "expect(locator).toHaveCount(expected) failed / Locator:  getByText('bob-reviewer', { exact: true }) / Expected: 0 / Received: 1",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Open · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Conversation\" [level=2]\n  - paragraph: Update onboarding docs with search flow.\n  - article:\n    - strong: alice-dev\n    - paragraph: This PR is ready for review.\n  - article:\n    - strong: bob-reviewer\n    - text: Approve\n    - paragraph: Looks good.\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n    - button \"Reviewers\"\n  - button \"Merge pull request\"\n  - button \"Close pull request\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Pull requests\"",
+   "ok   0.2s click PR \"Improve onboarding\"",
+   "FAIL 2.7s precondition: no bob-reviewer on the PR page yet"
+  ]
+ },
+ {
+  "key": "REQ-6-5 S1 merge-eligible (fresh seed)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "\"Create a merge commit\" is the only method, visible before merging",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('Create a merge commit') / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Open · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Conversation\" [level=2]\n  - paragraph: Update onboarding docs with search flow.\n  - article:\n    - strong: alice-dev\n    - paragraph: This PR is ready for review.\n  - article:\n    - strong: bob-reviewer\n    - text: Approve\n    - paragraph: Looks good.\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n    - button \"Reviewers\"\n  - button \"Merge pull request\"\n  - button \"Close pull request\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Pull requests\"",
+   "ok   0.2s click PR \"Improve onboarding\"",
+   "FAIL 2.7s \"Create a merge commit\" is the only method, visible before merging"
+  ]
+ },
+ {
+  "key": "REQ-6-5 S1 merge-eligible (click-through, exact Merged)",
+  "elapsed": "0.2",
+  "passed": false,
+  "fail": {
+   "label": "\"Merged\" (strict, exact)",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('Merged', { exact: true }) / Expected: visible / Error: strict mode violation: getByText('Merged', { exact: true }) resolved to 2 elements:",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Merged · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Conversation\" [level=2]\n  - paragraph: Update onboarding docs with search flow.\n  - article:\n    - strong: alice-dev\n    - paragraph: This PR is ready for review.\n  - article:\n    - strong: bob-reviewer\n    - text: Approve\n    - paragraph: Looks good.\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n    - button \"Reviewers\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Pull requests\"",
+   "ok   0.2s click PR \"Improve onboarding\"",
+   "ok   0.2s \"Merge pull request\" enabled",
+   "ok   0.2s click \"Merge pull request\"",
+   "ok   0.2s \"Create a merge commit\" shown",
+   "ok   0.2s click \"Confirm merge\"",
+   "FAIL 0.2s \"Merged\" (strict, exact)"
+  ]
+ }
+]

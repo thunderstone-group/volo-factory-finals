@@ -1,0 +1,971 @@
+{
+ "REQ-1-1-1": {
+  "id": "REQ-1-1-1",
+  "name": "Register a New GitHub Account",
+  "type": "ATOMIC",
+  "dependencies": [],
+  "description": "The registration page is the form opened by the unique link named “Create an account” from the sign-in page. The form contains exactly one textbox labeled “Username”, one textbox labeled “Email”, one password input labeled “Password”, one password input labeled “Confirm password”, one initially unchecked checkbox named “Agree to the terms”, and one enabled button named “Create account”. The username and email identify the account, while passwords must not be echoed on the page. This product directly marks the email of a successfully registered account as verified and does not provide a subsequent email-verification page. The visitor enters a unique username, email, password, and matching confirmation, checks “Agree to the terms”, and activates “Create account”. The username must consist of 1 to 39 lowercase ASCII letters, digits, or single hyphens (`-`) and must not begin or end with a hyphen; after trimming leading and trailing whitespace, the email must contain exactly one `@`, be no longer than 254 characters, and have at least one dot and non-empty domain labels after the `@`; the password must contain 12 to 128 characters, include at least one uppercase letter, one lowercase letter, one digit, and one non-alphanumeric special character, and contain no whitespace characters. The system stores a sign-in-capable account together with its verified-email status and enters the sign-in page; if the username or email conflicts, any field is missing, the email format is invalid, the terms are not accepted, the password is noncompliant, or the confirmation does not match, the system retains the username and email input, displays an itemized message beside the corresponding field, and does not create an account. The corresponding visible field message contains “Username already exists”, “Username format is invalid”, “Email format is invalid”, “Password requirements are not satisfied”, or “Agree to terms is required”, as applicable. Visitors can use this capability on the account-access page. The system validates input rules, displays field errors, and prevents duplicate accounts; on success, it directly creates an available account. Submitting several invalid fields together must show the username, email, password, and missing-terms messages together, rather than revealing only one error per submission; the submit button remains actionable so these messages can be read. For example, a username beginning with a hyphen, email “not-an-email”, password “short”, confirmation “different”, and unchecked terms produce these field errors and preserve the attempted username. A duplicate username paired with a different unused email displays “Username already exists” and retains both attempted values. A successful registration accepts a unique username such as “pw-user-<unique suffix>”, its “@example.test” email, and password “Valid-password-123!”; the sign-in form is immediately available, accepts that email, and the resulting signed-in username remains visible after reload.\n\nScreenshot reference:\n![image](reference/github-sign-up.png)",
+  "scenarios": [
+   {
+    "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`. The visitor clicks “Sign in” on the home page to enter the account-access page, then clicks “Create an account”. The registration page displays visibly labeled Username, Email, Password, Confirm password, a terms-agreement checkbox, and the “Create account” button; the current username and email are both unused. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The visitor enters a compliant 1–39-character username, a compliant email, a compliant 12–128-character password, and an identical confirmation password, checks the terms-agreement checkbox, and clicks “Create account”. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The system displays registration success and redirects to the sign-in page without displaying the password; the account's email can now be used for sign-in and password recovery. If the username, email, any required field, terms, or password rules are not satisfied, the system remains on the registration page, displays the reason beside the corresponding field, retains the username and email input, and does not create an account. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The visitor can immediately sign in with the new account and enter the workspace; after a failed submission, reopening the registration page shows that no new account corresponding to the failed input exists. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the register a new github account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the register a new github account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 3",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the register a new github account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the register a new github account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-1-1-2": {
+  "id": "REQ-1-1-2",
+  "name": "Sign In with an Existing Account",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-1-1-1"
+  ],
+  "description": "This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-1-1-1 (Register a New GitHub Account); it must reuse that context and keep pages and data consistent after the context changes. The sign-in page is the form on the account-access page containing “Username or email”, “Password”, and “Sign in”. A “session” is the current-browser login record saved after successful account authentication, represented in the frontend by the upper-right account menu and access to protected pages. The visitor enters a username or email and a password and submits the form. The system looks up the account and validates its credentials and availability status; if authentication fails due to an unknown username/email, incorrect password, or unavailable account, the system displays exactly the same generic failure message “Invalid credentials”, does not disclose whether the account exists or which credential was wrong, and does not create a session. After successful authentication, the system stores a session with a unique session identifier, account identifier, and active status, then redirects to the workspace accessible to that user; the session remains valid after refreshing or reopening the workspace, and subsequent protected organization, repository, and work-item requests must use this session to determine the current user.\n\nScreenshot reference:\n![image](reference/github-sign-in.png)",
+  "scenarios": [
+   {
+    "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`. The visitor enters the account-access page from the home page; a verified and available account exists, and the visitor has the account's username or verified email and current password. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The visitor enters the username or verified email in “Username or email”, enters the correct password in “Password”, and clicks “Sign in”. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The system enters the user's workspace, the account menu displays the username, and the user can access organizations, repositories, and work items they are authorized to view. An unknown account, incorrect password, or unavailable account all produce exactly the same generic failure message, remain on the sign-in page, and do not display the account menu. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After successful sign-in, refreshing the workspace or directly reopening the previously accessible protected page still shows the signed-in user; after failed sign-in, refreshing or opening the visible protected page still requires authentication. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the sign in with an existing account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the sign in with an existing account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 3",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the sign in with an existing account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the sign in with an existing account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 4",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the sign in with an existing account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the sign in with an existing account workflow. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: account `alice-dev`, email `alice.dev@example.test`, password `Valid-password-123!`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-2-1-1": {
+  "id": "REQ-2-1-1",
+  "name": "Browse Organization Repositories",
+  "type": "ATOMIC",
+  "dependencies": [],
+  "description": "The organization page presents “Repositories” as a navigation link, visually usable as a tab, and a textbox labeled “Find a repository”. Filtering updates the visible results as the user types, without a separate submit action. Each result has a link named exactly with the repository name, and opens a heading displaying “organization name/repository name”. Returning with browser Back keeps the public result available; filtering by the exact private repository name never exposes its link to a visitor. The seed organization has a public repository and a distinct private repository inaccessible to visitors. From the organization page, the user clicks the “Repositories” link, can enter a repository name in the filter box, select a public/private filter, and click a repository name in the list to open its overview. The system displays only the names, descriptions, visibility, and update times of repositories visible to the current user; clicking a result opens that repository's overview. Visitors can view public repositories on a public organization overview page; signed-in accounts can see only repositories for which they have read permission on the Repositories tab of the organization overview. The list reads repository name, description, visibility, and update time and provides no write operations; private repositories must first be validated under the already defined repository-access rules.\n\nScreenshot reference:\n![image](reference/github-organization-repositories.png)",
+  "scenarios": [
+   {
+    "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data includes the existing organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`. A visitor has opened the overview page of a public organization, or a signed-in organization member has opened that organization's overview page; the organization contains both a public repository and a private repository that the visitor is not authorized to view. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user clicks the “Repositories” tab, enters the full name of the public repository in the filter box, selects the “Public” filter, and clicks the repository name. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The list shows only the name, description, visibility, and update time of repositories visible to the current user; the visitor cannot see the private repository name, and clicking the public repository opens the repository overview page titled “organization name/repository name”. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After returning to the organization page or refreshing it, the filtered results still do not reveal unauthorized repositories; if the visitor opens the private repository from the visible repository list, the system requires sign-in or displays that access is not permitted. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the browse organization repositories workflow. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the browse organization repositories workflow. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-2-1-2": {
+  "id": "REQ-2-1-2",
+  "name": "Create an Organization After Authentication",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-1-1-2"
+  ],
+  "description": "The account-menu link “Your organizations” opens a page with the link “New organization”. Its form has fields labeled “Organization name” and “Display name” and a button “Create organization”. The new overview uses a heading containing the organization identifier, which remains after reload. Submitting an existing identifier must show “Organization name already exists” even when the display name is also missing; it must not navigate to a heading for the existing organization. The malformed identifier “-invalid-organization” and a whitespace-only display name are rejected with the applicable field error. Seed data supplies a verified creator and an existing organization identifier for the duplicate case. A signed-in user enters a unique organization name and display information on the organization-creation page and confirms. The organization name must comply with the 1–39-character lowercase ASCII REQ-1 username format and be globally unique; the display name must contain 1–100 non-empty characters after trimming leading and trailing whitespace. The system validates these rules, creates the organization identifier, display name, and creation time, and saves the current user as both initial owner and member; if the name or display name is noncompliant, the name conflicts, or persistence fails, the system retains non-sensitive input, displays the reason in the corresponding field, and does not create the organization. The applicable visible message is “Organization name already exists”, “Organization name format is invalid”, or “Display name is required”. On success, the user is redirected to the new organization overview page, the organization appears in the current user's accessible-organization list, and subsequent team, member, and repository authorization is scoped by that organization identifier. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes.",
+  "scenarios": [
+   {
+    "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`. A signed-in user enters the “Your organizations” page from the account menu and clicks “New organization”; the candidate organization identifier is `mobile-guild` and does not exist in the system, and the creation form displays organization-identifier and display-name fields. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user enters organization identifier `mobile-guild`, a display name `Mobile Guild`, and clicks “Create organization”. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The system enters the new organization overview page, whose title displays the organization identifier; the current user is shown as Owner and organization member, and the organization appears in the “Your organizations” list. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing the overview page and reopening the organization list, the organization still exists; if the organization identifier is duplicated, malformed, or the display name is empty, the corresponding field displays the reason and no organization is created. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the create an organization after authentication workflow. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the create an organization after authentication workflow. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the create an organization after authentication workflow. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the create an organization after authentication workflow. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-2-2-3": {
+  "id": "REQ-2-2-3",
+  "name": "Directly Add a User as an Organization Member",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-2-1-2"
+  ],
+  "description": "The organization overview opens “People” through a link. Its button “Add member” opens the labeled field “Username or email”, a combobox “Role” defaulting to Member, and a submission button “Add member”. Opening Role exposes clickable options “Member” and “Owner”. If the opening button remains present, the form submission button follows it in page order. The successful People list displays the full target username and Member role, with no Pending or Awaiting state; reload preserves the row. On duplicate or unknown-account failure, keep the form open so the username can be corrected and resubmitted; the existing member's complete username appears only once in the People list. A separately signed-in new member sees the organization identifier as complete visible text in Your organizations, while an ungranted private repository shows “Access denied”. The scenarios provide an Owner, a registered nonmember, a different existing member, an unknown username, and a private organization repository with no direct or team grant to the new member. On the “People” page, an organization Owner clicks “Add member”, enters the username or verified email of an existing account, selects “Member” or “Owner”, and clicks “Add member”. The system atomically stores the “organization-account-role” membership relationship and immediately displays the organization in both the People list and the target account's “Your organizations” list; the target account can see the organization on its next sign-in, after refreshing the workspace, or after reopening the organization overview. A Member gains only organization visibility and eligibility to become a candidate for team/repository authorization; an Owner additionally gains Admin permission over the organization and its repositories. For an existing member, unknown account, unsupported role, or persistence failure, the system displays the reason and does not change the membership relationship; an existing member displays “Account is already a member”, and the unknown username `unknown-reviewer` displays “Account not found”. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-2-1-2 (Create an Organization After Authentication); it must reuse that context and keep pages and data consistent after the context changes.",
+  "scenarios": [
+   {
+    "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`. An organization Owner is signed in and has opened the organization's “People” page; the system contains a registered account that is not yet a member of the organization and can subsequently sign in independently. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The Owner clicks “Add member”, enters that account's username or verified email, selects “Member”, and clicks “Add member”. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The “People” page immediately displays the account with the Member role and no Pending state; after that account signs in, both “Your organizations” in the account menu and the organization overview display the organization, but the account has not gained access to any private repository that was not separately authorized. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After the Owner refreshes the “People” page and the target account signs in and refreshes the “Your organizations” page, both read the same membership relationship; an existing member, unknown account, unsupported role, or persistence failure does not create a duplicate membership relationship. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the directly add a user as an organization member workflow. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the directly add a user as an organization member workflow. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-2-2-4": {
+  "id": "REQ-2-2-4",
+  "name": "Remove a Member from an Organization",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-2-1-2"
+  ],
+  "description": "Open the organization's “People” link to read member usernames. Each removable member has a button named “Member menu <username>”; it opens the menuitem “Remove from organization”, followed by the confirmation button “Remove”. Successful removal makes the complete username absent from People immediately and after reload. A non-Owner viewing the same member has no member-menu button and no Remove from organization menuitem, rather than merely a disabled control. Each independent scenario starts with that member present; the non-Owner is an ordinary organization member. On the “People” page, an organization Owner locates a member, clicks “Remove from organization” in that member's action menu, and clicks “Remove” in the confirmation dialog. The system atomically deletes that member's organization-membership relationship, all of the account's memberships in teams of that organization, and all direct grants to that account on repositories of the organization; if the account still obtains repository permission through another organization Owner status or an undeleted team grant, effective permission is recalculated according to the valid permission rules, otherwise access is denied. The system must not delete the personal account, personal repositories, relationships with other organizations, teams themselves, or team grants; the last Owner must not be removed. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-2-1-2 (Create an Organization After Authentication); it must reuse that context and keep pages and data consistent after the context changes.",
+  "scenarios": [
+   {
+    "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`. An organization Owner is signed in and has opened the organization's “People” page; the list contains a member who also has an accessible personal account and personal repository. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The Owner locates the row by the member's username, clicks “Remove from organization” in the action menu, and clicks “Remove” in the confirmation dialog. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The system removes the account from the organization-member list and revokes access obtained solely through that organization membership; direct access by the account to private organization resources is denied. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing the “People” page, the account is still absent from the member list; after signing in with that account, the personal account and personal repository still exist and remain accessible. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`. The attempted descendant is `frontend-child` and the original parent is `platform-team`. A signed-in user who is not an organization Owner opens the organization's People page and can see a member. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user opens the member action menu and attempts to remove that member. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The removal operation is unavailable to the non-Owner or is rejected, and after reload the member still belongs to the organization. Seed values: organization `Acme Demo`, repository `acme-docs`, member `bob-reviewer`, team `frontend-team`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-3-2-1": {
+  "id": "REQ-3-2-1",
+  "name": "Create a Repository with Owner, Visibility, and Initialization Options",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-1-1-2"
+  ],
+  "description": "This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes. The signed-in workspace provides a “New repository” link. The form labels are “Owner”, “Repository name”, and “Description”; the signed-in user's personal namespace is selected by default, so it is possible to submit without changing the owner. Visibility choices are radio controls “Public” and “Private”; initialization is a checkbox “Add a README file”; submission uses the button “Create repository”. Other defaults must allow duplicate-name and empty-name validation without further input. A successful initialized private repository shows a heading containing the new name, a visible Private marker, and a README file link; the overview persists after reload. The optional description “Repository created by Playwright” is saved when entered. An existing repository in this same default personal namespace is supplied for duplicate validation, which stays on the form and does not open the existing repository heading. On the repository-creation page, a signed-in user selects a personal or organization owner, enters a repository name and description, selects public or private visibility, and chooses whether to create an initial commit with a README. The system verifies that the user may create a repository in that owner's namespace, that the name is unique, and that the options are valid; on success, it stores the repository identifier, owner, visibility, default branch, and creator. If initialization is selected, it must also atomically create the initial branch, README file, and initial commit; failure at any step must leave no partially created repository. On success, the new repository overview page is opened.\n\nScreenshot reference:\n![image](reference/github-create-repository.png)",
+  "scenarios": [
+   {
+    "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`. A signed-in user opens the creation page from “New repository”; the personal namespace is selectable. If an organization namespace is selected, the user has permission to create repositories for that organization, and the candidate repository name is unused in the target namespace. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user selects the target owner, enters a valid and unique repository name and optional description, selects “Private”, checks “Add a README file”, and clicks “Create repository”. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The system enters the “owner/repository name” overview page, marked Private; the default branch contains a README file, and the commit history contains one initialization commit; the repository also appears in the target owner's repository list. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing the overview page, the owner, visibility, README, and initialization commit remain; if the name is empty or duplicated, the user lacks organization-creation permission, or any step fails during creation, the system displays the reason and leaves no partially created repository. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the create a repository with owner, visibility, and initialization options workflow. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the create a repository with owner, visibility, and initialization options workflow. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 3",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the create a repository with owner, visibility, and initialization options workflow. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the create a repository with owner, visibility, and initialization options workflow. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: public repository `acme-docs`, private repository `secret-research`, owner `alice-dev`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-4-2-1": {
+  "id": "REQ-4-2-1",
+  "name": "View Repository Commit History",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-4-1"
+  ],
+  "description": "This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-4-1 (Browse Repository Files and Directories); it must reuse that context and keep pages and data consistent after the context changes. Any user with repository-view permission can read branch history on the Commits page, or from a file page read only the history that modified that file; each record references the stored commit identifier, author, time, message, parent commit, and changed files. The repository and file pages each expose one history link named “Commits” (a commit count may accompany the visible label without introducing another matching link). Seed history includes a known commit message and author, displayed in full as distinct readable text values, and a relative timestamp containing “ago”. Opening the branch history directly from the repository must show these values without first selecting a file-specific scope.\n\nScreenshot reference:\n![image](reference/github-commit-history.png)",
+  "scenarios": [
+   {
+    "name": "REQ-4-2-1: View Repository Commit History - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. The user has opened the default branch of an accessible repository; the branch contains at least two commits, and the later commit modified a known file. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user clicks the commit-count link above the file list or “Commits”, then selects the history scope for the known file. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The history page displays commits within that scope with the newest first; each item shows the short hash, commit message, author, and time, and the file-scoped history does not display commits that did not modify that file. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After clicking any commit to enter its detail page, the corresponding parent revision and changed files remain visible; refreshing the history page does not change commit order or content. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-4-2-2": {
+  "id": "REQ-4-2-2",
+  "name": "Inspect Commit and Revision Differences",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-4-2-1"
+  ],
+  "description": "This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-4-2-1 (View Repository Commit History); it must reuse that context and keep pages and data consistent after the context changes. Any user with repository-view permission can compare two readable commits or revisions on the diff page; the page reads and displays the changed files and line-by-line additions and deletions between them without creating a review, comment, or commit. A seeded commit has an accessible commit entry, a known changed-file path `src/search.ts`, and a readable parent revision. Opening that commit entry as a visitor displays the changed-file path as an exact text value, the “Changed files” summary, and the numeric additions/deletions summary described below, without requiring previous navigation through history.\n\nScreenshot reference:\n![image](reference/github-commit-diff.png)",
+  "scenarios": [
+   {
+    "name": "REQ-4-2-2: Inspect Commit and Revision Differences - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. The user has opened commit history for an accessible repository; there is a commit containing added and modified files, and its parent commit is accessible. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user clicks the short hash of that commit, or selects its parent commit as base and that commit as compare on the comparison page and clicks “Compare”. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The diff page displays the base and compare identifiers, the list of changed files, and added/deleted lines for each file; clicking a changed file navigates to that file's diff, and unchanged files do not appear in the list. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "Refreshing or returning to commit history does not cause the read-only comparison to modify repository branches, commits, or files; if the user lacks permission to view either revision, its diff content is not displayed. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-4-2-3": {
+  "id": "REQ-4-2-3",
+  "name": "Search Code Within a Repository",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-4-1"
+  ],
+  "description": "The user enters a code keyword in the search box at the top of the repository page and presses Enter, selects the “Code” results page, can further filter by path or language, and clicks a matching file. The system displays matching snippets, file paths, and branch/revision context within the visible code scope of the current repository; clicking a result opens the corresponding file location. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-4-1 (Browse Repository Files and Directories); it must reuse that context and keep pages and data consistent after the context changes. Visitors can search from the Code page of a public repository, while signed-in accounts can search any repository they are authorized to view; the results page only reads file content, matching snippets, and paths from currently visible branches of the current repository and cannot leak results across repositories or write code. The repository page and search results expose one searchbox named “Search”; after Enter, a unique link named “Code” selects code results. This results-type link must remain distinguishable from repository navigation so the active search page has only one Code link. Path and language filters are optional, and an unfiltered search can immediately open a result link whose exact accessible name is the matching file name. Seed data provides the known query `search flow`, a matching file `README.md` with that query visible as a complete text value, and the absent query `no-such-token`, which does not occur in searchable code. Opening the matching file shows that text; refreshing preserves the file context, text, and a link named exactly after the file. For the absent query, show “No code results” and retain the exact query in Search. Returning to the repository and repeating the same search produces the same empty state without stale matches.\n\nScreenshot reference:\n![image](reference/github-repository-code-search.png)",
+  "scenarios": [
+   {
+    "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. The user has opened an accessible repository; two files on the default branch contain a unique code term, one under the `src/` path, and an unauthorized private repository also contains the term. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user enters the unique code term in the search box at the top of the repository page and presses Enter, selects the “Code” result type, then limits the path filter to `src/` and clicks a matching file. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The results page lists only matching files in the current repository and under `src/`, displaying the matching snippet, file path, and branch or revision context; clicking a result opens the file near the match. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After clearing the path filter, the user can see other matching files in the current repository but no content from unauthorized private repositories; the search does not create commits or change files. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. The user has already selected repository scope on the repository code-search page. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user enters a query that matches no code and opens the Code results view. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The system displays an empty-results state, keeps the repository scope and filters unchanged, and does not open any file. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 3",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the search code within a repository workflow. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the search code within a repository workflow. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 4",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the search code within a repository workflow. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the search code within a repository workflow. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-4-3-3": {
+  "id": "REQ-4-3-3",
+  "name": "Change the Repository Default Branch",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-4-3-1",
+   "REQ-1-1-2"
+  ],
+  "description": "A repository administrator enters “Settings” → “Branches”, selects an existing branch from the “Default branch” dropdown, clicks “Update”, and then confirms the change. The system saves the new default branch and updates the initial branch shown when the repository is newly opened; it does not delete or rewrite the previous default branch. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-4-3-1 (List and Switch Repository Branches) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes. Only a repository Admin or organization Owner may change the default branch on repository code and version-control pages; other roles may only view. The system validates the role, stores the new default branch together with the operator and time, and rejects unauthorized requests. “Settings” and “Branches” are unique links on their respective pages; “Default branch” is a native HTML select element exposing the combobox role, with options labeled by exact existing branch names; selecting an option must use the native selection behavior. The administrator selects a different seeded branch, activates the “Update” button, and then the “Confirm” button in the confirmation dialog. Opening the repository page entry without a branch then shows “Branch <new default branch name>”; opening that selector still offers an option named exactly after the old default branch. A non-Admin may have Settings or Branches links hidden or may open a read-only settings page, but no “Default branch” combobox or default-branch update button is rendered for that user; a merely disabled editable selector is insufficient.\n\nScreenshot reference:\n![image](reference/github-default-branch-settings.png)",
+  "scenarios": [
+   {
+    "name": "REQ-4-3-3: Change the Repository Default Branch - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. A repository Admin is signed in; the repository already has `main` and `release` branches, the current default branch is `main`, and both branches retain their respective commit histories. Seed values: repository `acme-docs`, branches `main` and `release`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The Admin enters “Settings” → “Branches”, selects `release` from the “Default branch” dropdown, clicks “Update”, and confirms in the confirmation dialog. Seed values: repository `acme-docs`, branches `main` and `release`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The system saves `release` as the default branch; newly opening the repository overview displays `release` by default, while the `main` branch and its commits remain available in the selector. Seed values: repository `acme-docs`, branches `main` and `release`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing the settings page, the default branch is still `release`; only existing branches can be selected, and for a non-Admin the update entry is unavailable or the request is rejected with the default branch unchanged. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-4-3-3: Change the Repository Default Branch - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. A signed-in user without repository-administration permission opens the Branches page in repository settings. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user attempts to view or update the default-branch setting. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The default-branch update operation is unavailable to the non-administrator or is rejected, and the saved default branch remains unchanged. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-4-4": {
+  "id": "REQ-4-4",
+  "name": "Manage Repository Files Through the Web Interface",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-4-1",
+   "REQ-1-1-2"
+  ],
+  "description": "This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-4-1 (Browse Repository Files and Directories) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes. The file editor is the form opened from Edit or Add file on the Code page; the user edits file content at a path on the current branch and submits it. Only Write, Maintain, Admin, or organization Owner may submit; Read and Triage may only view. A single submission stores the file-path and content change, commit message, author, parent commit, and target branch as one indivisible record and moves the target branch to point to that new commit. A new or renamed file path must not be empty, must not begin with `/`, must not contain a `..` path segment, and must not conflict with an existing file or directory on the current branch; the commit message must contain 1–72 non-empty characters after trimming leading and trailing whitespace. If the path conflicts, content validation fails, the commit message is noncompliant, the branch is protected, or persistence fails, the page displays the reason and does not change the file, branch head, or commit history. An invalid path displays “Invalid file path”, and an empty commit message displays “Commit message is required”. From the writable Code page, the unique “Add file” button opens the “Create new file” menuitem. The editor has a field labeled “File name”, a textbox named “File contents”, an initially empty field labeled “Commit message”, and a “Commit changes” button. Creating a unique file such as `pw-file-<unique suffix>.md` with nonempty text and a message such as `Add <file name>` immediately opens a view displaying the exact saved content. Its “Commits” link opens history displaying the exact submitted message. Submitting `../invalid.md` with content `must not be saved` and no commit message reports the invalid path and/or required message and changes neither files nor history. The example content is ordinary text, not a forbidden content value by itself; rejection follows from the invalid path or missing message.\n\nScreenshot reference:\n![image](reference/github-web-file-editor.png)",
+  "scenarios": [
+   {
+    "name": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. A signed-in contributor opens the file-browser page on an unprotected branch of a writable repository; the branch-head commit is known, and the target new file path `docs/guide.md` does not yet exist. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user clicks “Add file” → “Create new file”, enters the path `docs/guide.md` and file content, enters a commit message whose trimmed length is 1 to 72, and clicks “Commit changes”. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The system creates a new commit whose parent is the original branch head; the commit details record the author, message, and newly added path; the branch head is updated to the new commit, and the file-browser page displays the new file and its content. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing the file page and commit history, the new file and commit still exist; if the path is empty, begins with `/`, contains `..`, conflicts with an existing file, the commit message is noncompliant, the branch is protected, or persistence fails, the system displays the reason and leaves the file, branch head, and history unchanged. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the manage repository files through the web interface workflow. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the manage repository files through the web interface workflow. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: repository `acme-docs`, branches `main` and `feature-search`, file `README.md`, commit `Document search flow`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-5-4": {
+  "id": "REQ-5-4",
+  "name": "Close or Reopen an Issue",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-5-1-2"
+  ],
+  "description": "Only users with Triage, Maintain, or Admin may close or reopen an issue from the issue detail view; Write and Read users may only view the status. The system stores the Open or Closed status, operator, and time, records the transition in activity history, and shows it to subsequent viewers; the status transition must not modify the title, description, comments, labels, assignees, or milestone. The closable seed issue starts Open. The detail page offers a “Close issue” button when Open and a “Reopen issue” button when Closed; activating either immediately saves the change without an additional confirmation. Closing displays Closed status and a “Closed issue” activity, and reopening displays Open status. After reopening and reload the “Close issue” button is available again. On the separate protected issue, the Read viewer sees neither close nor reopen button; hiding both controls is required, in addition to rejecting unauthorized requests. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-5-1-2 (View an Issue and Its Discussion); it must reuse that context and keep pages and data consistent after the context changes.",
+  "scenarios": [
+   {
+    "name": "REQ-5-4: Close or Reopen an Issue - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, issue `Improve onboarding`, labels `bug` and `documentation`, milestone `Q3 launch`. A signed-in user with issue-management permission opens an Open issue detail page that displays the number, title, and activity timeline. Seed values: repository `acme-docs`, issue `Improve onboarding`, labels `bug` and `documentation`, milestone `Q3 launch`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user clicks “Close issue”, confirms that the page displays Closed, and then clicks “Reopen issue”. Seed values: repository `acme-docs`, issue `Improve onboarding`, labels `bug` and `documentation`, milestone `Q3 launch`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The issue displays Closed and then Open status in sequence, and the timeline appends close and reopen events in sequence; the issue number, title, description, comments, and metadata do not change because of the status transitions. Seed values: repository `acme-docs`, issue `Improve onboarding`, labels `bug` and `documentation`, milestone `Q3 launch`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing the detail page and issue list, the final Open state remains consistent; for users without management permission, close or reopen operations are unavailable or rejected and the status does not change. Seed values: repository `acme-docs`, issue `Improve onboarding`, labels `bug` and `documentation`, milestone `Q3 launch`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-5-4: Close or Reopen an Issue - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is repository `acme-docs`, issue `Improve onboarding`, labels `bug` and `documentation`, milestone `Q3 launch`. A signed-in user who can only view the issue and lacks issue-management permission opens the issue detail page. Seed values: repository `acme-docs`, issue `Improve onboarding`, labels `bug` and `documentation`, milestone `Q3 launch`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user attempts to close or reopen the issue. Seed values: repository `acme-docs`, issue `Improve onboarding`, labels `bug` and `documentation`, milestone `Q3 launch`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "Close and reopen operations are unavailable to that user or are rejected, and the issue status remains unchanged. Seed values: repository `acme-docs`, issue `Improve onboarding`, labels `bug` and `documentation`, milestone `Q3 launch`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-6-3-1": {
+  "id": "REQ-6-3-1",
+  "name": "View Pull Request Overview and Commits",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-6-2-3"
+  ],
+  "description": "The PR detail page is the unified read view for the same PR number. A seeded public Open PR is directly viewable without sign-in and displays its exact title in a heading. Commits and Files changed are links; the Commits view displays a Commit summary, and the Files changed view displays a Changed files summary. Reloading preserves the heading and usable navigation links; leaving and reopening the same visible page restores the same PR and allows the same navigation. Seed data includes its stable title, description, discussion comment, and at least one comparable commit. Conversation is the timeline for the author's description, ordinary comments, review summaries, and status events; Commits is the list of commits on the PR's current compare branch relative to base; Files changed is the entry point to the current diff. Users with repository-view permission can switch among the three tabs; all read the same persisted PR, branch, and commit data and do not create comments, reviews, or merges. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-2-3 (Create a Pull Request from Comparison Results); it must reuse that context and keep pages and data consistent after the context changes.",
+  "scenarios": [
+   {
+    "name": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`. A reviewer sees an Open PR in the PR list of an accessible repository; the PR has a title, description, at least one commit, and one discussion comment. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The reviewer clicks the PR title and opens the “Conversation”, “Commits”, and “Files changed” tabs in sequence. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "Conversation displays the title, description, base/compare branches, and discussion; Commits displays the commits for the PR; Files changed displays the change summary; all three refer to the same PR number. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing any tab, the PR title, branches, and commits remain unchanged; viewing operations do not create comments, reviews, or branch updates. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the view pull request overview and commits workflow. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the view pull request overview and commits workflow. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 3",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the view pull request overview and commits workflow. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the view pull request overview and commits workflow. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-6-3-2": {
+  "id": "REQ-6-3-2",
+  "name": "Inspect Changed Files and Aggregate Diff",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-6-3-1"
+  ],
+  "description": "Files changed is the read-only diff view on a PR detail page computed from the current base and compare commits. From a visible public pull request entry, a visitor activates the Files changed link and sees the known changed file path verbatim and visible aggregate text such as 3 additions, 1 deletions. This public PR seed contains the same known changed-file path `src/search.ts` supplied for branch comparison, with one added file and one modified file; it requires no sign-in. Each diff block displays the file path and added/deleted lines; aggregate statistics show the current PR's number of changed files and line counts in the format “<addition count> additions, <deletion count> deletions”. Users with repository-view permission may expand files or navigate to lines, but this operation does not modify files, commits, branches, comments, or review status. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-3-1 (View Pull Request Overview and Commits); it must reuse that context and keep pages and data consistent after the context changes.",
+  "scenarios": [
+   {
+    "name": "REQ-6-3-2: Inspect Changed Files and Aggregate Diff - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`. The user has opened an accessible PR detail page whose comparison contains one added file and one modified file. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user clicks “Files changed”, selects the modified file, and expands its diff block. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the PR's changed file paths, added/deleted lines for each file, and aggregate statistics; unchanged files are not displayed, and the diff corresponds to the current source/base commits. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or switching back to Conversation, the files, PR status, and review status remain unchanged; users without permission to view a private PR cannot obtain its diff content. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-6-4": {
+  "id": "REQ-6-4",
+  "name": "Request or Remove Pull Request Reviewers",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-6-2-3",
+   "REQ-1-1-2"
+  ],
+  "description": "The Reviewers button opens a picker with a textbox named Search. Typing an eligible username immediately reveals an option with that exact accessible name. Selecting the option saves the request immediately without a separate Save action, closes the picker, and displays the username in the reviewer area; it remains after reload. Each requested reviewer has a button named Remove followed by a space and the username; clicking it immediately removes the request and the username from that area, without a confirmation step. The seed PR is Open, belongs to the signed-in author, and initially has no request or submitted review from the eligible target reviewer; the target is a distinct non-author collaborator with Write or higher permission. Removing a request persists across reload. A “reviewer request” is a pending-review relationship between a PR and a candidate reviewer account, displayed in the Reviewers area on the right side of the PR detail page; it is not the same as a submitted review decision. The author of an Open or Draft PR, Maintain, Admin, or organization Owner may create or delete this relationship. Matching reviewer options update as the user types in the search textbox; pressing Enter or activating a separate search button is not required before selecting an option. A candidate reviewer must have Write, Maintain, or Admin on the repository and must not be the PR author; the system stores or deletes the “PR-reviewer request” relationship together with the operator and time. Removing a request does not delete reviews, comments, or activity records already submitted by that user and does not change the user's effective review decision. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-2-3 (Create a Pull Request from Comparison Results) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes.",
+  "scenarios": [
+   {
+    "name": "REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`. The PR author or a maintainer is signed in and has opened an Open PR detail page; the repository contains a collaborator who is eligible to be requested as a reviewer. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user searches for and selects the collaborator under “Reviewers” on the right, saves, and then clicks the remove button beside that collaborator. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After selection, the account is shown on the right as a requested reviewer; after removal, the request disappears; this does not automatically generate an approval or comment. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing the detail page, only the final request set remains; a user who is neither the author nor a maintainer cannot modify requests. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     }
+    ]
+   }
+  ]
+ },
+ "REQ-6-5": {
+  "id": "REQ-6-5",
+  "name": "Merge an Eligible Pull Request",
+  "type": "ATOMIC",
+  "dependencies": [
+   "REQ-6-3-4",
+   "REQ-6-1"
+  ],
+  "description": "On an eligible PR, Merge pull request and then Confirm merge are buttons; confirming displays Merged, and that state remains after reload. A blocked PR keeps a visible disabled Merge pull request button and explains its unmet review or protection condition before any click. Seed data supplies a Maintain account and separate Open PRs for success and refusal. The eligible PR targets protected main, has a current non-author approval and test: success, and has no conflicts. The blocked PR targets a protected branch and lacks the required valid approval; its disabled button is accompanied by Review required by branch protection. Each seed state is restored independently before reuse. “Merge” is the only write operation that writes the current compare commit's changes from an Open PR into the base branch; it is not simply marking the PR as complete. Only Maintain, Admin, or organization Owner may merge from the PR detail page using the sole supported “Create a merge commit” method; the merge confirmation area should display satisfied and unsatisfied conditions. Before confirmation, the system rereads the target branch head, current compare commit, merge-conflict state, and protection rules — there must be no valid Request changes; if the target is protected, each enabled rule requirement is enforced independently, requiring 1 valid non-author Approve for the current compare commit when Require 1 approval is enabled and requiring `test` success when Require status check test is enabled. An unprotected target has no additional approval-count or check-success requirement, but merging still requires no merge conflicts and no valid Request changes review. After validation succeeds, the system atomically creates a merge commit whose parents are the target-branch head at merge time and the current compare commit, updates the target-branch head, sets the PR to Merged, and stores the merger, time, and resulting commit identifier. If any condition is unsatisfied or persistence fails, the page explains the applicable reason and neither the target branch nor PR changes; a missing required approval displays “Review required by branch protection”. Merged is terminal. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-3-4 (Submit a Pull Request Review) and REQ-6-1 (Protect Branches with Review and Status-Check Requirements); it must reuse that context and keep pages and data consistent after the context changes.",
+  "scenarios": [
+   {
+    "name": "REQ-6-5: Merge an Eligible Pull Request - Scenario 1",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`. A signed-in user with Maintain, Admin, or organization Owner status opens an Open, non-draft PR; its target `main` branch is protected, it has 1 valid non-author Approve for the current compare commit, `test` is success in Checks, and the current diff has no merge conflict. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The maintainer confirms that the only selectable method on the page is “Create a merge commit”, clicks “Merge pull request”, and clicks “Confirm merge” in the confirmation box. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The PR displays Merged, the merger, time, and resulting commit identifier; the `main` branch head is updated to the merge result, and the PR's source- and target-branch content is integrated according to the selected merge method. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing the PR and `main` branch, the merged status and resulting commit remain; if the PR is a draft, lacks approval, has a failed check, is unmergeable, or the user lacks permission, the merge entry is disabled or rejected and the target branch and PR state remain unchanged. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     }
+    ]
+   },
+   {
+    "name": "REQ-6-5: Merge an Eligible Pull Request - Scenario 2",
+    "steps": [
+     {
+      "keyword": "GIVEN",
+      "content": "The visitor starts at the application home page in a fresh unauthenticated browser session. The seeded data is pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`. The visitor starts at the application home page in a fresh unauthenticated browser session. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "WHEN",
+      "content": "The user signs in as `alice-dev` with `Valid-password-123!` and follows the visible controls for the merge an eligible pull request workflow. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "The page displays the required headings, controls, values, and status for the merge an eligible pull request workflow. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     },
+     {
+      "keyword": "THEN",
+      "content": "After refreshing or reopening the visible destination, the successful result remains persisted; a rejected action leaves the original state unchanged. Seed values: pull requests `Improve onboarding` and `Fix search`, branches `main` and `feature-search`, reviewer `bob-reviewer`, check `test`."
+     }
+    ]
+   }
+  ]
+ }
+}

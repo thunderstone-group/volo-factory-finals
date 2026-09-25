@@ -1,0 +1,393 @@
+[
+ {
+  "key": "REQ-3-2-1 S1 private-readme-with-owner-select(click)",
+  "elapsed": "0.3",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.2s click \"New repository\"",
+   "ok   0.2s Owner defaults to alice-dev",
+   "ok   0.2s open Owner and pick alice-dev",
+   "ok   0.2s fill Repository name",
+   "ok   0.2s fill Description",
+   "ok   0.2s check radio Private",
+   "ok   0.2s check \"Add a README file\"",
+   "ok   0.2s click \"Create repository\"",
+   "ok   0.2s heading contains new name",
+   "ok   0.2s Private marker",
+   "ok   0.2s README.md link",
+   "ok   0.2s description saved",
+   "ok   0.2s reload",
+   "ok   0.2s heading after reload",
+   "ok   0.3s click \"Commits\"",
+   "ok   0.3s exactly one commit listed"
+  ]
+ },
+ {
+  "key": "REQ-3-2-1 S1 variant owner-selectOption",
+  "elapsed": "0.2",
+  "passed": false,
+  "fail": {
+   "label": "selectOption Owner=alice-dev (native select contract)",
+   "error": "locator.selectOption: Error: Element is not a <select> element / Call log: / \u001b[2m  - waiting for getByLabel('Owner', { exact: true })\u001b[22m / \u001b[2m    - locator resolved to <button type=\"button\" id=\"cb-owner-1\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-owner-1-list\" aria-labelledby=\"cb-owner-1-label\" data-options=\"[{\"value\":\"alice-dev\",\"label\":\"alice-dev\"},{\"value\":\"acme-demo\",\"label\":\"Acme Demo\"}]\">alice-dev</button>\u001b[22m",
+   "url": "http://127.0.0.1:3205/#/new-repo",
+   "snap": "- main:\n  - heading \"New repository\" [level=1]\n  - text: Owner\n  - combobox \"Owner\": alice-dev\n  - text: Repository name\n  - textbox \"Repository name\"\n  - text: Description\n  - textbox \"Description\"\n  - group \"Visibility\":\n    - text: Visibility\n    - radio \"Public\"\n    - text: Public\n    - radio \"Private\" [checked]\n    - text: Private\n  - checkbox \"Add a README file\"\n  - text: Add a README file\n  - button \"Create repository\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s click \"New repository\"",
+   "FAIL 0.2s selectOption Owner=alice-dev (native select contract)"
+  ]
+ },
+ {
+  "key": "REQ-3-2-1 S2/S3 a:duplicate-in-default-namespace",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s click \"New repository\"",
+   "ok   0.1s fill name secret-research (existing in alice-dev)",
+   "ok   0.2s click \"Create repository\"",
+   "ok   0.2s stays on form",
+   "ok   0.2s no heading alice-dev/secret-research",
+   "ok   0.2s an error message mentions the name"
+  ]
+ },
+ {
+  "key": "REQ-3-2-1 S2/S3 b:empty-name",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.2s click \"New repository\"",
+   "ok   0.2s click \"Create repository\" with defaults",
+   "ok   0.2s stays on form",
+   "ok   0.2s a required/invalid message shown"
+  ]
+ },
+ {
+  "key": "REQ-3-2-1 S1 THEN: repo appears in owner repository list",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "owner link \"alice-dev\" (owner repository list entry)",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByRole('link', { name: 'alice-dev', exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/",
+   "snap": "- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"pw-repo-mugfl2kzvrb2\" [level=3]:\n      - link \"pw-repo-mugfl2kzvrb2\":\n        - /url: \"#/repo/alice-dev/pw-repo-mugfl2kzvrb2\"\n    - paragraph: alice-dev/pw-repo-mugfl2kzvrb2 · Private ·\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/acme-demo/secret-research\"\n    - paragraph: Acme Demo/secret-research · Private · Private research\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/alice-dev/secret-research\"\n    - paragraph: alice-dev/secret-research · Private · Personal private research\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s click \"New repository\"",
+   "ok   0.1s fill Repository name",
+   "ok   0.2s check \"Add a README file\"",
+   "ok   0.2s click \"Create repository\"",
+   "ok   0.2s back to workspace",
+   "ok   0.2s new repo link in workspace repository list",
+   "FAIL 2.7s owner link \"alice-dev\" (owner repository list entry)"
+  ]
+ },
+ {
+  "key": "REQ-4-2-1 S1 visitor-history-values",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "author \"alice-dev\" as distinct exact text",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('alice-dev', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/commits/acme-demo/acme-docs",
+   "snap": "- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - heading \"Commits\" [level=2]\n  - article:\n    - heading \"Document search flow\" [level=3]:\n      - link \"Document search flow\":\n        - /url: \"#/commit/acme-demo/acme-docs/c2\"\n    - paragraph: alice-dev · 2 days ago\n  - article:\n    - heading \"Initial commit\" [level=3]:\n      - link \"Initial commit\":\n        - /url: \"#/commit/acme-demo/acme-docs/c1\"\n    - paragraph: alice-dev · 3 days ago"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click \"Commits\" (strict)",
+   "ok   0.1s message \"Document search flow\" exact",
+   "FAIL 2.6s author \"alice-dev\" as distinct exact text"
+  ]
+ },
+ {
+  "key": "REQ-4-2-1 S1 THEN: short hash + file scope + parent",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "a short hash (7+ hex) is visible",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText(/\\b[0-9a-f]{7,40}\\b/).first() / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/commits/acme-demo/acme-docs",
+   "snap": "- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - heading \"Commits\" [level=2]\n  - article:\n    - heading \"Document search flow\" [level=3]:\n      - link \"Document search flow\":\n        - /url: \"#/commit/acme-demo/acme-docs/c2\"\n    - paragraph: alice-dev · 2 days ago\n  - article:\n    - heading \"Initial commit\" [level=3]:\n      - link \"Initial commit\":\n        - /url: \"#/commit/acme-demo/acme-docs/c1\"\n    - paragraph: alice-dev · 3 days ago"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click \"Commits\"",
+   "FAIL 2.6s a short hash (7+ hex) is visible"
+  ]
+ },
+ {
+  "key": "REQ-4-2-2 S1 visitor-commit-diff",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "parent/base identifier visible",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText(/parent|base/i) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/commit/acme-demo/acme-docs/c2",
+   "snap": "- main:\n  - heading \"Document search flow\" [level=1]\n  - paragraph: alice-dev · 2 days ago\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - heading \"Changed files\" [level=2]\n  - paragraph: 4 additions, 1 deletions\n  - article:\n    - heading \"src/search.ts\" [level=3]:\n      - link \"src/search.ts\":\n        - /url: \"#/blob/acme-demo/acme-docs/src/search.ts\"\n    - paragraph: +3 −0\n  - article:\n    - heading \"README.md\" [level=3]:\n      - link \"README.md\":\n        - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n    - paragraph: +1 −1\n  - paragraph:\n    - link \"Compare\":\n      - /url: \"#/compare/acme-demo/acme-docs/c1/c2\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click \"Commits\"",
+   "ok   0.1s click commit entry \"Document search flow\"",
+   "ok   0.1s changed path \"src/search.ts\" exact",
+   "ok   0.1s \"Changed files\" summary",
+   "ok   0.1s numeric \"N additions, M deletions\"",
+   "FAIL 2.6s parent/base identifier visible"
+  ]
+ },
+ {
+  "key": "REQ-4-2-3 S3/S4 a:known-query-code-link-result",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "\"search flow\" visible as complete text value",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('search flow', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/blob/acme-demo/acme-docs/README.md",
+   "snap": "- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"README.md\" [level=2]\n  - text: \"# acme-docs This repository documents the search flow.\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s fill Search \"search flow\"",
+   "ok   0.1s Enter",
+   "ok   0.1s exactly one link \"Code\" on results page",
+   "ok   0.1s click \"Code\" (results type)",
+   "ok   0.2s still on results page (Search keeps query)",
+   "ok   0.2s result link \"README.md\" (strict)",
+   "ok   0.2s click README.md result",
+   "FAIL 2.7s \"search flow\" visible as complete text value"
+  ]
+ },
+ {
+  "key": "REQ-4-2-3 S3/S4 a2:known-query-without-Code-click",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "\"search flow\" visible as complete text value",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('search flow', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/blob/acme-demo/acme-docs/README.md",
+   "snap": "- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"README.md\" [level=2]\n  - text: \"# acme-docs This repository documents the search flow.\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s fill Search \"search flow\"",
+   "ok   0.1s Enter",
+   "ok   0.1s result link \"README.md\" (strict)",
+   "ok   0.1s click README.md result",
+   "FAIL 2.6s \"search flow\" visible as complete text value"
+  ]
+ },
+ {
+  "key": "REQ-4-2-3 S3/S4 b:absent-query-empty-state-repeat",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "\"No code results\"",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('No code results', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/repo/acme-demo/acme-docs",
+   "snap": "- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - paragraph: Documentation and search flow documentation\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"Files\" [level=2]\n  - link \"docs/\":\n    - /url: \"#/tree/acme-demo/acme-docs/docs\"\n  - link \"src/\":\n    - /url: \"#/tree/acme-demo/acme-docs/src\"\n  - link \"README.md\":\n    - /url: \"#/blob/acme-demo/acme-docs/README.md\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s fill Search \"no-such-token\"",
+   "ok   0.1s Enter",
+   "ok   0.1s click \"Code\" (results type)",
+   "FAIL 2.6s \"No code results\""
+  ]
+ },
+ {
+  "key": "REQ-4-3-3 S2 a:non-admin=bob-reviewer",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "signed in as bob-reviewer (button \"Account menu\" visible)",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByRole('button', { name: 'Account menu', exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/login",
+   "snap": "- main:\n  - heading \"Sign in\" [level=1]\n  - alert: Invalid credentials\n  - text: Username or email\n  - textbox \"Username or email\"\n  - text: Password\n  - textbox \"Password\"\n  - button \"Sign in\"\n  - paragraph:\n    - link \"Create an account\":\n      - /url: \"#/register\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "FAIL 2.6s signed in as bob-reviewer (button \"Account menu\" visible)"
+  ]
+ },
+ {
+  "key": "REQ-4-3-3 S2 b:non-admin=fresh-registered-user",
+  "elapsed": "0.3",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username",
+   "ok   0.1s fill Email",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm password",
+   "ok   0.1s check \"Agree to the terms\"",
+   "ok   0.1s click \"Create account\"",
+   "ok   0.1s sign-in form shown",
+   "ok   0.2s goto /",
+   "ok   0.2s click link \"Sign in\"",
+   "ok   0.2s fill \"Username or email\"",
+   "ok   0.2s fill \"Password\"",
+   "ok   0.2s click button \"Sign in\"",
+   "ok   0.2s signed in as pw-na-mugflkxqxf3d (button \"Account menu\" visible)",
+   "ok   0.2s fill searchbox \"Search\"",
+   "ok   0.2s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Settings\"",
+   "ok   0.3s click \"Branches\"",
+   "ok   0.3s no \"Default branch\" combobox",
+   "ok   0.3s no \"Update\" button",
+   "ok   0.3s click \"Code\"",
+   "ok   0.3s \"Branch main\" unchanged"
+  ]
+ },
+ {
+  "key": "REQ-4-4 S2 a:create-unique-file",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Add file\"",
+   "ok   0.2s click menuitem \"Create new file\"",
+   "ok   0.2s fill \"File name\"",
+   "ok   0.2s fill textbox \"File contents\"",
+   "ok   0.2s \"Commit message\" initially empty",
+   "ok   0.2s fill \"Commit message\"",
+   "ok   0.2s click \"Commit changes\"",
+   "ok   0.2s exact saved content visible",
+   "ok   0.2s click \"Commits\"",
+   "ok   0.2s history shows exact message"
+  ]
+ },
+ {
+  "key": "REQ-4-4 S2 b:invalid-path-no-message",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "\"Invalid file path\" as exact text",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('Invalid file path', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/repo/acme-demo/acme-docs",
+   "snap": ""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Add file\"",
+   "ok   0.2s click menuitem \"Create new file\"",
+   "ok   0.2s fill \"File name\" ../invalid.md",
+   "ok   0.2s fill \"File contents\"",
+   "ok   0.2s click \"Commit changes\"",
+   "FAIL 2.7s \"Invalid file path\" as exact text"
+  ]
+ },
+ {
+  "key": "REQ-4-4 S2 b2:invalid-path-substring-and-role",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "message exposed to a11y (role status/alert contains it)",
+   "error": "expect(locator).toContainText(expected) failed / Locator: getByRole('status').or(getByRole('alert')) / Expected substring: \"Invalid file path\" / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/repo/acme-demo/acme-docs",
+   "snap": ""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Add file\"",
+   "ok   0.2s click menuitem \"Create new file\"",
+   "ok   0.2s fill \"File name\" ../invalid.md",
+   "ok   0.2s fill \"File contents\"",
+   "ok   0.2s click \"Commit changes\"",
+   "ok   0.2s \"Invalid file path\" substring",
+   "FAIL 2.7s message exposed to a11y (role status/alert contains it)"
+  ]
+ }
+]
