@@ -119,6 +119,9 @@ editing. Native input semantics apply immediately; live filtering must not wait 
   element inside the card whose `title` is the state word (`<span title="Starred">`): suites read
   `article >> [title="Starred"]`.
 - Toggle buttons carry `aria-pressed` reflecting the state.
+- A filter or search hides only the records it does not match. The header row, toolbar or field that carries its
+  controls never counts as a record: it stays visible while any filter is applied, so every other filter control
+  can still be opened and the applied one can be changed or cleared.
 - Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
   header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
   only its feed loses every header, navigation, login and sidebar test at once (one practice run: 1 of 66).
