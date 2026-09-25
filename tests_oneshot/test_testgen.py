@@ -424,109 +424,102 @@ class RepairLoopCase(unittest.TestCase):
         self.assertEqual((self.stage / "frontend/public/app.js").read_text().strip(), "// repaired")
 
 
-class DraftPairCase(unittest.TestCase):
-    """main.generate with a written suite writes a second draft alongside the first; pick_draft judges it only when
-    the first passes fewer than a third of the written tests, and the draft passing more goes on (roadmap 4.17)."""
+class FenceCase(unittest.TestCase):
+    def test_a_fenced_body_loses_its_fence_and_an_unfenced_one_is_unchanged(self):
+        self.assertEqual(testgen.unfence("```js\nconst a = 1;\n```"), "const a = 1;")
+        self.assertEqual(testgen.unfence("```cjs\nconst a = 1;\n```\n"), "const a = 1;")
+        self.assertEqual(testgen.unfence("```\nconst a = 1;"), "const a = 1;")  # the closing fence was cut
+        plain = "const a = `x`;\n// ```js in a comment\n"
+        self.assertEqual(testgen.unfence(plain), plain)
 
-    def setUp(self):
-        import threading
-        from unittest.mock import patch
+    def test_the_suite_writer_saves_a_fenced_reply_as_a_file_that_parses(self):
+        body = "```js\nconst { test } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => {});\n```"
+        with tempfile.TemporaryDirectory() as temp:
+            manifest = testgen.write_suite(REQUIREMENTS, temp, lambda m: (f"=== FILE: x.spec.cjs ===\n{body}\n=== END ===",
+                                                                          {}, "stop"), workers=1)
+            text = (Path(temp) / manifest["files"][0]["file"]).read_text()
+        self.assertTrue(text.startswith("const { test }"))
+        if shutil.which("node"):
+            self.assertNotIn("syntax", manifest["files"][0])
+
+
+class DependencyOrderCase(unittest.TestCase):
+    GRAPH = textwrap.dedent("""\
+        id: ROOT
+        type: FOLDER
+        children:
+        - id: REQ-1
+          type: ATOMIC
+          scenarios: [{name: a, steps: []}]
+        - id: REQ-2
+          type: FOLDER
+          dependencies: [REQ-1]
+          children:
+          - id: REQ-2-1
+            type: ATOMIC
+            scenarios: [{name: b, steps: []}]
+          - id: REQ-2-2
+            type: ATOMIC
+            dependencies: [REQ-2-1]
+            scenarios: [{name: c, steps: []}]
+        - id: REQ-3
+          type: ATOMIC
+          dependencies: [REQ-4]
+          scenarios: [{name: d, steps: []}]
+        - id: REQ-4
+          type: ATOMIC
+          dependencies: [REQ-3]
+          scenarios: [{name: e, steps: []}]
+        """)
+
+    def test_depth_counts_the_longest_chain_including_folder_dependencies_and_survives_a_cycle(self):
+        depths = testgen.depths(self.GRAPH)
+        self.assertEqual((depths["REQ-1"], depths["REQ-2-1"], depths["REQ-2-2"]), (0, 1, 2))
+        self.assertIn(depths["REQ-3"], (0, 1))
+
+    def test_failures_others_depend_on_come_first_and_helpers_are_no_longer_cut(self):
         from oneshot import main as adapter
-        self.adapter, self.patch = adapter, patch
-        self.temp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.temp.cleanup)
-        done = threading.Thread(target=lambda: None)
-        done.start()
-        done.join()
-        suite_dir = Path(self.temp.name) / "suite"
-        suite_dir.mkdir()
+        depths = testgen.depths(self.GRAPH)
+        failing = ([{"id": "REQ-2-2", "status": "fail"}] * 25
+                   + [{"id": "REQ-2-1", "status": "fail"},
+                      {"id": "helper:t01.spec.cjs:9", "status": "fail", "blocks": ["REQ-2-1#2", "REQ-2-2#2", "REQ-2-2#3"]},
+                      {"id": "REQ-1", "status": "fail"}])
+        ordered = adapter.dependency_order(failing, depths)
+        self.assertEqual([e["id"] for e in ordered[:3]], ["REQ-1", "helper:t01.spec.cjs:9", "REQ-2-1"])
+        self.assertIn("helper:t01.spec.cjs:9", [e["id"] for e in ordered[:adapter.TESTGEN_SHOWN]])
+        self.assertEqual([e["id"] for e in adapter.dependency_order(failing, {})][:1], ["helper:t01.spec.cjs:9"])
 
-        def finish(job, budget, wait=None):
-            budget.suite = {"tests": 9}
-            return suite_dir
-        for target, value in (("SCAFFOLD", False), ("TESTGEN", True), ("SMOKE", True)):
-            self.enter(patch.object(adapter, target, value))
-        for target, kwargs in (("smoke_check", {"return_value": ([], True)}),
-                               ("vocabulary_gaps", {"return_value": ([], 0)}), ("static_gaps", {"return_value": {}}),
-                               ("start_suite", {"return_value": {"thread": done, "dir": Path(self.temp.name) / "x"}}),
-                               ("finish_suite", {"side_effect": finish})):
-            self.enter(patch.object(adapter, target, **kwargs))
 
-    def enter(self, manager):
-        value = manager.__enter__()
-        self.addCleanup(manager.__exit__, None, None, None)
-        return value
+class GroundingFlatCase(unittest.TestCase):
+    TEXT = textwrap.dedent("""\
+        id: REQ-1
+        type: ATOMIC
+        description: The dialog shows "Worksheet name
+          already exists" and names new sheets Sheet1, Sheet2 in order; the chart title is "<target worksheet name>".
+        scenarios: []
+        """)
 
-    def generate(self, drafts, passes):
-        """`drafts` are the first and the second draft's app.js; `passes` maps a marker in app.js to how many of the
-        nine written tests pass on it. Returns the published app.js, the budget and the app.js of each judged draft."""
-        import threading
-        from tests_oneshot.test_oneshot import application, block
-        adapter, judged = self.adapter, []
-        replies = [application(block("frontend/public/app.js", d)) for d in drafts]
+    def test_a_phrase_broken_across_lines_and_a_numbered_name_are_grounded_but_an_invented_one_is_not(self):
+        import re as _re
+        flat = _re.sub(r"\s+", " ", self.TEXT)
+        quoted = testgen._phrases(flat)
+        for name, expected in (("Worksheet name already exists", False), ("Sheet3", False), ("Totally invented", True)):
+            self.assertEqual(testgen.ungrounded(name, f"'{name}'", flat, quoted), expected, name)
 
-        def complete(messages, model, base, key, budget, tries=3, salvage=None):
-            record = budget.start(messages, model)
-            record.update(status="completed", usage={"prompt_tokens": 10, "completion_tokens": 10})
-            return replies[threading.current_thread().name == "oneshot-draft-2"], {}, "stop"
 
-        def check(stage, requirements, only=None, translate=True, tests=None):
-            text = (Path(stage) / "frontend/public/app.js").read_text()
-            judged.append(text.strip())
-            count = next(n for marker, n in passes.items() if marker in text)
-            return {"kind": "testgen", "invariants": [], "scenarios": [
-                {"id": f"REQ-{i}", "name": f"REQ-{i}", "status": "pass" if i < count else "fail", "steps": [],
-                 "observation": "synthetic", "source": ""} for i in range(9)]}
-        budget = adapter.CallBudget(repair_limit=0)
-        out = Path(self.temp.name) / "out"
-        with self.patch.object(adapter, "stream_completion", side_effect=complete), \
-                self.patch.object(adapter, "check_scenarios", side_effect=check):
-            adapter.generate(REQUIREMENTS, "m", "https://synthetic.invalid/v1", "k", out, budget)
-        return (out / "frontend/public/app.js").read_text().strip(), budget, judged
-
-    def test_a_weak_first_draft_gives_way_to_a_second_that_passes_more(self):
-        published, budget, judged = self.generate(["// weak", "// strong"], {"weak": 1, "strong": 5})
-        self.assertEqual(published, "// strong")
-        self.assertEqual(judged, ["// weak", "// strong"])
-        pair = budget.summary()["draft_pair"]
-        self.assertEqual((pair["first"], pair["second"], pair["chosen"]), (1, 5, 2))
-        self.assertEqual([c["phase"] for c in budget.side_calls if c["call"].startswith("draft2-")], ["draft"])
-
-    def test_a_weaker_second_draft_is_judged_and_dropped(self):
-        published, budget, judged = self.generate(["// weak", "// weaker"], {"weaker": 0, "weak": 2})
-        self.assertEqual(published, "// weak")
-        self.assertEqual(judged, ["// weak", "// weaker"])
-        self.assertEqual(budget.pair["chosen"], 1)
-
-    def test_a_first_draft_passing_a_third_goes_on_without_judging_the_second(self):
-        published, budget, judged = self.generate(["// fine", "// better"], {"fine": 3, "better": 8})
-        self.assertEqual(judged, ["// fine"])
-        self.assertEqual(published, "// fine")
-        self.assertEqual(budget.pair["second"], "not judged")
-        self.assertEqual(budget.pair["chosen"], 1)
-
-    def test_a_tie_keeps_the_first_draft(self):
-        published, budget, judged = self.generate(["// one", "// two"], {"one": 2, "two": 2})
-        self.assertEqual(judged, ["// one", "// two"])
-        self.assertEqual(published, "// one")
-        self.assertEqual(budget.pair["chosen"], 1)
-
-    def smoke_by_draft(self, problems):
-        """smoke_check reports `problems[marker]` on the draft whose app.js holds `marker`."""
-        def smoke(stage, requirements=None, diagnostics=None):
-            text = (Path(stage) / "frontend/public/app.js").read_text()
-            return next((p for marker, p in problems.items() if marker in text), []), True
-        self.enter(self.patch.object(self.adapter, "smoke_check", side_effect=smoke))
-
-    def test_a_draft_only_the_route_gate_calls_broken_is_still_run_on_the_suite(self):
-        self.smoke_by_draft({"routed": [self.adapter.ROUTE_FATAL + "#/settings (a record page ...)"]})
-        published, budget, judged = self.generate(["// weak", "// routed"], {"weak": 1, "routed": 5})
-        self.assertEqual(published, "// routed")
-        self.assertEqual((budget.pair["second"], budget.pair["second_fatal"], budget.pair["chosen"]), (5, True, 2))
-
-    def test_a_draft_that_does_not_build_is_not_run_on_the_suite(self):
-        self.smoke_by_draft({"unbuilt": ["frontend `npm run build` exited 1: synthetic"]})
-        published, budget, judged = self.generate(["// weak", "// unbuilt"], {"weak": 1, "unbuilt": 5})
-        self.assertEqual(judged, ["// weak"])
-        self.assertEqual(published, "// weak")
-        self.assertEqual((budget.pair["second"], budget.pair["chosen"]), (0, 1))
+class LabelOverrideCase(unittest.TestCase):
+    def test_an_aria_label_that_renames_a_labelled_field_hides_the_label_from_the_control_names(self):
+        from oneshot import main as adapter
+        clean = '<label for="ws">Worksheet name</label><input id="ws" name="ws">'
+        renamed = '<label for="ws">Worksheet name</label><input id="ws" aria-label="Workbook name">'
+        same = '<label for="ws">Worksheet name</label><input id="ws" aria-label="Worksheet name">'
+        self.assertEqual(adapter.label_overrides(clean), set())
+        self.assertEqual(adapter.label_overrides(renamed), {"worksheet name"})
+        self.assertEqual(adapter.label_overrides(same), set())
+        with tempfile.TemporaryDirectory() as temp:
+            public = Path(temp) / "frontend" / "public"
+            public.mkdir(parents=True)
+            (public / "app.js").write_text("const html = `" + renamed + "`;")
+            names = adapter.control_names(Path(temp))
+        self.assertNotIn("worksheet name", names)
+        self.assertIn("workbook name", names)
