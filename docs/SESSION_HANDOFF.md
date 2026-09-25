@@ -1,3 +1,31 @@
+# 当前交接 — 2026-09-25 19:50：双初稿择优上线（包 f08f3fdf），夜间接力已换包；第十次在跑
+
+先读 [改进路线图](reference/roadmap.md) 第 21 版日志和 4.17；数字见 [progress.md](progress.md) 账本表第 10、11+ 行和「09-25 19:50」一节。
+
+## 状态
+
+- 甲方 18:38 拍板按推荐走：GitHub 做双初稿择优（4.17）。包 `f08f3fdf`（提交 2328d2c，PR `feat/draft-pair`）：第二份初稿与第一份并行起草，第一份书面测试过不到三分之一才评第二份，通过多的进修复。本地 GitHub 真实运行过了判据 ①②，并修掉了路由门禁让第二份不被测的缺陷。
+- 夜间接力：19:46 起用包 f08f3fdf（旧的 c5152707 接力在上传前停掉，没有产生提交）。进程 `scripts/submission_chain.py`（nohup，5 轮、保留 200 元、09-26 09:00 后不再起新提交），日志 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/official/chain-2026-09-25-pair.jsonl`，输出同目录 `.out`，包存档 `packages/pkg-f08f3fdf.zip`。它会先等第十次两题跑完。接手先 `ps aux | grep submission_chain` 和 `arcbench runs --limit 6`，别重复提交。
+- 第十次提交（`a2375cd48c2a`，包 c5152707）在跑：Sheet `ed1ef8fb5d78` 修到 15 轮、书面测试 81；GitHub `d58e50066c0a` 初稿 11，6 轮后 23。
+- 总榜第 1 仍是第九次（S 55.27）。比赛额度约 466 元（第十次起跑前）；练习 key 约 228 元。
+- **arcbench 会话**：甲方 09-25 重新登录了 Chrome「Profile 1」，19:50 已重新 `arcbench session --profile "Profile 1"`，env 里的 cookie 10-09 15:09 过期，赛期内不用再登录。注意 Profile 1 里还留着一条 09-29 过期的 `www.arc-bench.com` 旧 cookie，CLI 按读到的顺序取最后一条（这次取对了）；再抓会话后用 `arcbench whoami` 确认。
+
+## 接下来
+
+1. 第十次出分：填账本第 10 行。
+2. 接力每轮出分：按提交填账本第 11 行起；GitHub 日志里找 `draft pair` 行，核 4.17 判据 ③（两份的通过数都在，`acceptance tests` 到 `draft pair` 不超过 20 分钟）和 ④（GitHub 隐藏分不低于 17）。④ 不过就停接力、换回 c5152707。
+3. 提分方向（按证据强弱）：GitHub 代理太松（4.13）；Sheet 别队 90–99%、我们 79；修复都停在「连续 4 轮被拒」。
+4. 生成侧候选（证据弱）：同名种子只种一份；没写密码的种子账号用需求给出的密码。
+
+## 不要做
+
+- 不要把平台返回的失败测试内容，或正式题、练习题的专名写进包里。
+- 不要把受控回放的分数当成进展。
+- 不要改校准判据来让候选过关。
+- 不要在接力脚本运行时手动上传提交（只有最新提交能起 run，会打断接力）。
+
+---
+
 # 当前交接 — 2026-09-25 17:40：第九次提交 p 50.5%，总榜第 1；第十次在跑；夜间接力抽样
 
 先读 [改进路线图](reference/roadmap.md) 第 20 版日志、4.13–4.16；数字见 [progress.md](progress.md) 账本表第 7–10 行和 09-25 各节；计分与并发的实测规则见 [preliminary-rules.md](reference/preliminary-rules.md)「09-25」两段。

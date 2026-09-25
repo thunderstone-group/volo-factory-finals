@@ -1095,6 +1095,7 @@ S = p / (b / (0.8 p))^0.1 while b <= 0.8 p, else ^0.2; p in percent over both ta
 | 8 | 09-25 12:55 | d3769ab0 | 20dcdbd | flash | 7/100 | 53/100 | 16.64 | 32.4 | `feat/repair-visibility`: repair rounds in the log, repair budget 24 calls / CNY 10, scaffold `this` sharing (roadmap 4.14); submission `1503bf3a1f15`. GitHub `95ec6880ee7f`: draft broken as a whole, 8 repair rounds (3 kept, incl. the revival), written suite 0 -> 22, stopped at three discards in a row (one was a gateway HTTP 400), CNY 10.02, 92 min. Sheet `e6cf53b272c1`: 3 rounds all discarded (two by the vocabulary guard at 47 -> 59 and 65), CNY 6.62, 64 min |
 | 9 | 09-25 14:45 | 6143d95f | fc05229 | flash | 22/100 | 79/100 | 16.39 | 55.27 (board) | `feat/repair-guards`: guards weigh as lost tests under written tests, four discards in a row, unanswered rounds do not count, testgen id fix (roadmap 4.15); submission `dfce9da4382a`, runs `564563986f7f` (GitHub), `2c8e9b1f5e5f` (Sheet). Sheet: draft did not load (revived in round 1, suite 51), then +26, +6, +3, +3: suite 88, 11 rounds 5 kept, CNY 7.09, 71 min. GitHub: round 1 +30 (14 -> 44) kept over a newly flagging static gate, then +14, +12, +5, +1, three discards, +2, four discards: suite 77, 13 rounds 6 kept, repair CNY 3.89, CNY 9.29, 145 min. p 50.5 %, **board 1st** (Iris 36.34) |
 | 10 | 09-25 16:45 | c5152707 | 6017ef4 | flash | | | | | in-round follow-up (SEARCH all missed / script does not parse) and cell-address grounding (roadmap 4.16); submission `a2375cd48c2a`; Sheet `ed1ef8fb5d78` started 16:45; GitHub `d58e50066c0a` started 17:24 after run 9's GitHub ended (one run per task at a time; attempt `ce95a7580c1f` refused with 409) |
+| 11+ | from ~09-25 20:30 | f08f3fdf | 2328d2c | flash | | | | | draft pair (roadmap 4.17), resampled by the night relay (`chain-2026-09-25-pair.jsonl`, 5 rounds, reserve CNY 200, no new submission after 09-26 09:00); one row per round |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1324,3 +1325,24 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   88 against hidden 79. On GitHub the suite reached 77 against hidden 22: the GitHub proxy is still loose (roadmap 4.13).
 - Readable repair logs show the loop's stops: four discards in a row on both tasks; repair spend CNY 1.5 (Sheet) and 3.9
   (GitHub) of the CNY 10 cap; GitHub repair time 2 h of the 3 h cap.
+
+## 2026-09-25 19:50 — Draft pair (roadmap 4.17); night relay switched to package f08f3fdf
+
+- **Owner decision (18:38):** follow the previous session's recommendations, i.e. two drafts on GitHub, replacing the
+  09-18 "no best-of-2" (ADR 0002 marked superseded in part). The package names no task: the second draft is judged
+  only when the first passes under a third of the written tests (GitHub drafts of submissions 9, 10: 14 and 11 of 100;
+  a Sheet draft that loaded: 47).
+- **Mechanism (`feat/draft-pair`):** with a written suite, a second draft of the same request runs in a background
+  thread into its own stage while the first draft and the suite are written (draft ~10-14 min, suite 20-27 min, so no
+  wait is added before the suite is in); `draft pair` log line and `draft_pair` in the usage record. 214 unit tests
+  green (six new).
+- **Local GitHub run (practice key, repair capped at 1 call):** the two temperature-0 drafts differ (app.js 110 KB and
+  88 KB, 14 and 10 min). First draft 2 of 100 written tests; the second was scored as broken as a whole by the route gate
+  (one navigation to `#/settings`, a screen the table lacks), so assess() skipped the suite and the first went on;
+  repair round 1 took it 2 -> 15. Run 37 min, CNY 6.21 (second draft CNY 0.56). The second draft's page built, served
+  and walked twelve screens without an error, so a draft only the route gate (or jsdom) calls broken is now run on the
+  suite for the comparison (2328d2c); re-judged offline on the saved drafts and suite: first 2, second 8, second chosen.
+- **Relay:** the 17:30 relay (package c5152707) had not uploaded yet; stopped at 19:46 and restarted with package
+  f08f3fdf, same limits, log `chain-2026-09-25-pair.jsonl`. Submission 10 (`a2375cd48c2a`) still running: Sheet 15
+  rounds, suite 81; GitHub draft 11, suite 23 after 6 rounds.
+
