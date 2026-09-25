@@ -510,3 +510,23 @@ class DraftPairCase(unittest.TestCase):
         self.assertEqual(judged, ["// one", "// two"])
         self.assertEqual(published, "// one")
         self.assertEqual(budget.pair["chosen"], 1)
+
+    def smoke_by_draft(self, problems):
+        """smoke_check reports `problems[marker]` on the draft whose app.js holds `marker`."""
+        def smoke(stage, requirements=None, diagnostics=None):
+            text = (Path(stage) / "frontend/public/app.js").read_text()
+            return next((p for marker, p in problems.items() if marker in text), []), True
+        self.enter(self.patch.object(self.adapter, "smoke_check", side_effect=smoke))
+
+    def test_a_draft_only_the_route_gate_calls_broken_is_still_run_on_the_suite(self):
+        self.smoke_by_draft({"routed": [self.adapter.ROUTE_FATAL + "#/settings (a record page ...)"]})
+        published, budget, judged = self.generate(["// weak", "// routed"], {"weak": 1, "routed": 5})
+        self.assertEqual(published, "// routed")
+        self.assertEqual((budget.pair["second"], budget.pair["second_fatal"], budget.pair["chosen"]), (5, True, 2))
+
+    def test_a_draft_that_does_not_build_is_not_run_on_the_suite(self):
+        self.smoke_by_draft({"unbuilt": ["frontend `npm run build` exited 1: synthetic"]})
+        published, budget, judged = self.generate(["// weak", "// unbuilt"], {"weak": 1, "unbuilt": 5})
+        self.assertEqual(judged, ["// weak"])
+        self.assertEqual(published, "// weak")
+        self.assertEqual((budget.pair["second"], budget.pair["chosen"]), (0, 1))

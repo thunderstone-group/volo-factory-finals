@@ -6,7 +6,7 @@ Date: 2026-09-18. Status: accepted (owner, 09:50–11:00).
 - Generator: `deepseek-v4-flash`, temperature 0, explicit `max_tokens` 131072.
 - Same-model retries (three per call) first; only when all are transport failures does the run switch
   to `FALLBACK_MODEL` (`qwen3.7-plus`) for the rest of the run. Permanent HTTP errors never switch.
-- No best-of-2 drafts; the whole-app bad samples are attacked with gates instead.
+- No best-of-2 drafts; the whole-app bad samples are attacked with gates instead. *Superseded 09-25 by the owner: two drafts, the second judged by the written tests when the first passes under a third of them (roadmap 4.17).*
 - glm-5.3 is out on this gateway.
 - Gateway balance is not a guard before the preliminary (organizer tops up).
 

@@ -1011,6 +1011,9 @@ def _check_dom(stage, port, problems, requirements=None):
 ROUTE_REF = re.compile(r"""(href\s*=\s*\\?["'`]|navigate\(\s*["'`]|\bhash\s*[:=]\s*["'`])#/([A-Za-z][\w-]*)(/?)""")
 
 
+ROUTE_FATAL = "the app opens route(s) "
+
+
 def route_gaps(stage, routes):
     """In-app links and navigations whose route name has no screen in the app's screen table, so they render the
     fallback (the home screen): two of five official-task drafts on 09-24 linked every record to `#/w/<id>` or
@@ -1028,7 +1031,7 @@ def route_gaps(stage, routes):
         (fatal if param or how.startswith("navigate") else plain).add(name)
     problems = []
     if fatal:
-        problems.append(f"the app opens route(s) {', '.join('#/' + n for n in sorted(fatal))} (a record page or a "
+        problems.append(f"{ROUTE_FATAL}{', '.join('#/' + n for n in sorted(fatal))} (a record page or a "
                         f"navigation after an action) but its screen table (APP.screens) has no screen by that name "
                         f"(it has: {', '.join(sorted(screens))}), so they render the fallback screen and the records "
                         f"cannot be opened: name each screen exactly as the routes that lead to it")
@@ -2037,6 +2040,17 @@ def finish_draft(job, budget, wait=None):
     return job["error"] is None
 
 
+def _draft_passes(state, stage, requirements, tests):
+    """Written tests a draft passes. assess() skips the suite on a draft broken as a whole; when only the route gate
+    (or a jsdom load failure) says so, the page was built, served and parsed, and it is run on the suite anyway: a local
+    GitHub draft whose one navigation named a missing screen walked twelve screens without a page error. A draft that
+    does not build, start or parse passes none."""
+    if (tests is not None and state["report"] is None and state["executed"] and state["fatal"]
+            and all(p.startswith((ROUTE_FATAL,) + DOM_ONLY) for p in state["fatal"])):
+        return len(passing(dict(state, report=check_scenarios(stage, requirements, tests=tests))))
+    return len(passing(state))
+
+
 def pick_draft(stage, files, conversation, second, requirements, scaffold, tests, budget):
     """Best of two drafts (roadmap 4.17). The first draft is judged by the written suite; when it passes fewer than
     PAIR_SHARE of the tests, the second is judged too, and the one passing more (a tie keeps the first; then one that
@@ -2044,16 +2058,17 @@ def pick_draft(stage, files, conversation, second, requirements, scaffold, tests
     assessment of the draft that goes on; `files` is updated in place."""
     state = assess(stage, requirements, scaffold, tests=tests)
     total = (budget.suite or {}).get("tests") or 0
-    record = {"first": len(passing(state)), "first_fatal": bool(state["fatal"]), "tests": total, "chosen": 1}
-    if tests is None or record["first"] >= PAIR_SHARE * total:
+    first = _draft_passes(state, stage, requirements, tests)
+    record = {"first": first, "first_fatal": bool(state["fatal"]), "tests": total, "chosen": 1}
+    if tests is None or first >= PAIR_SHARE * total:
         finish_draft(second, budget, wait=0)
         record["second"] = "not judged"
     elif not finish_draft(second, budget):
         record["second"] = second["error"]
     else:
         other = assess(second["stage"], requirements, scaffold, tests=tests)
-        record.update(second=len(passing(other)), second_fatal=bool(other["fatal"]))
-        if (len(passing(other)), not other["fatal"]) > (len(passing(state)), not state["fatal"]):
+        record.update(second=_draft_passes(other, second["stage"], requirements, tests), second_fatal=bool(other["fatal"]))
+        if (record["second"], not other["fatal"]) > (first, not state["fatal"]):
             copied = stage.with_name(stage.name + ".second")
             shutil.copytree(second["stage"], copied, symlinks=True)
             _swap_back(stage, copied)
