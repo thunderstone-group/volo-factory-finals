@@ -1823,7 +1823,26 @@ def control_names(stage):
     for m in re.finditer(r"<button\b[^>]*>\s*([^<{$\n]{1,40}?)\s*<", source):
         names.add(re.sub(r"\s+", " ", m.group(1)).strip().lower())
     names.discard("")
-    return names
+    return names - label_overrides(source)
+
+
+LABEL_FOR = re.compile(r"""<label\b[^>]*\bfor=\\?["']([\w:.-]+)\\?["'][^>]*>\s*([^<{]{1,60}?)\s*</label>""")
+
+
+def label_overrides(source):
+    """Lower-cased label texts whose field says otherwise: an `aria-label` on the `<label for>` target wins its
+    accessible name, so the visible label no longer finds the field. A submission 9 Sheet repair gave the field labelled
+    with the quoted "Worksheet name" `aria-label="Workbook name"`, the rename guard still read the label text, and the
+    three scenarios of that requirement failed (09-25 diagnosis)."""
+    found = set()
+    for m in LABEL_FOR.finditer(source):
+        text = re.sub(r"\s+", " ", m.group(2)).strip().lower()
+        for field in re.finditer(r"<(?:input|textarea|select)\b[^>]*\bid=\\?[\"']" + re.escape(m.group(1))
+                                 + r"\\?[\"'][^>]*>", source):
+            aria = re.search(r"""aria-label=\\?["']([^"'\\]+)""", field.group(0))
+            if aria and re.sub(r"\s+", " ", aria.group(1)).strip().lower() != text:
+                found.add(text)
+    return found
 
 
 def aria_collision_gaps(stage, requirements=None):
@@ -2552,6 +2571,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     print("[oneshot] repair end " + json.dumps(
         {"rounds": len(rounds), "accepted": sum(1 for r in rounds if r["accepted"]), "stopped": budget.smoke.get("stopped"),
          "counts_after": (budget.smoke["scenarios_after"] or {}).get("counts"),
+         # Which of our own tests still fail or error, readable in the capped platform log (the smoke record is not).
+         "failing": [s["id"] for s in _scenarios(state, "fail")], "errors": [s["id"] for s in _scenarios(state, "error")],
          "seconds": round(time.monotonic() - started_repairs, 1), "repair_cny": round(budget.spent("repair"), 4)}),
         file=sys.stderr)
 

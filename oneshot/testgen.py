@@ -292,8 +292,9 @@ def _phrases(text):
     for match in re.finditer(r'`([^`\n]{1,80})`|[“"]([^”"\n]{1,80})[”"]|‘([^’\n]{1,80})’', text):
         phrase = next(g for g in match.groups() if g)
         found.add(phrase.strip())
-    patterns = [re.compile("^" + ".+".join(re.escape(part) for part in re.split(r"<[^<>]{1,40}>", p)) + "$", re.S)
-                for p in found if "<" in p]
+    # A phrase that is all placeholder (`<target worksheet name>`) would match any name; it grounds nothing.
+    patterns = [re.compile("^" + ".+".join(re.escape(part) for part in parts) + "$", re.S)
+                for parts in (re.split(r"<[^<>]{1,40}>", p) for p in found if "<" in p) if "".join(parts).strip()]
     return found, patterns
 
 
@@ -307,6 +308,9 @@ def ungrounded(name, source, text, quoted):
         # A grid cell's address is how any spreadsheet names its cells, not something the test made up (09-25: nine
         # Sheet tests addressing E1, F1, H2 or B5 were set aside as errors and never drove a repair).
         return False
+    numbered = re.fullmatch(r"(.*\D)\d+", name)
+    if numbered and re.search(re.escape(numbered.group(1)) + r"\d", text):
+        return False  # the next of a numbered series the requirements name (`Sheet3` after `Sheet1`, `Sheet2`)
     phrases, patterns = quoted
     return name not in phrases and not any(p.match(name) for p in patterns)
 
@@ -363,7 +367,10 @@ def _test_id(title):
 def parse(report_path, suite, manifest, text):
     """The Playwright JSON report as scenario-check entries, one per test the manifest lists."""
     suite = Path(suite)
-    quoted = _phrases(text or "")
+    # One line per phrase: YAML folds long descriptions, and five quoted Sheet messages ("Worksheet name already
+    # exists") were broken across lines, so tests asserting them were set aside as using names never given.
+    text = re.sub(r"\s+", " ", text or "")
+    quoted = _phrases(text)
     try:
         data = json.loads(Path(report_path).read_text(encoding="utf-8"))
     except (OSError, ValueError):

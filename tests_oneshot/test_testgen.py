@@ -596,3 +596,38 @@ class DependencyOrderCase(unittest.TestCase):
         self.assertEqual([e["id"] for e in ordered[:3]], ["REQ-1", "helper:t01.spec.cjs:9", "REQ-2-1"])
         self.assertIn("helper:t01.spec.cjs:9", [e["id"] for e in ordered[:adapter.TESTGEN_SHOWN]])
         self.assertEqual([e["id"] for e in adapter.dependency_order(failing, {})][:1], ["helper:t01.spec.cjs:9"])
+
+
+class GroundingFlatCase(unittest.TestCase):
+    TEXT = textwrap.dedent("""\
+        id: REQ-1
+        type: ATOMIC
+        description: The dialog shows "Worksheet name
+          already exists" and names new sheets Sheet1, Sheet2 in order; the chart title is "<target worksheet name>".
+        scenarios: []
+        """)
+
+    def test_a_phrase_broken_across_lines_and_a_numbered_name_are_grounded_but_an_invented_one_is_not(self):
+        import re as _re
+        flat = _re.sub(r"\s+", " ", self.TEXT)
+        quoted = testgen._phrases(flat)
+        for name, expected in (("Worksheet name already exists", False), ("Sheet3", False), ("Totally invented", True)):
+            self.assertEqual(testgen.ungrounded(name, f"'{name}'", flat, quoted), expected, name)
+
+
+class LabelOverrideCase(unittest.TestCase):
+    def test_an_aria_label_that_renames_a_labelled_field_hides_the_label_from_the_control_names(self):
+        from oneshot import main as adapter
+        clean = '<label for="ws">Worksheet name</label><input id="ws" name="ws">'
+        renamed = '<label for="ws">Worksheet name</label><input id="ws" aria-label="Workbook name">'
+        same = '<label for="ws">Worksheet name</label><input id="ws" aria-label="Worksheet name">'
+        self.assertEqual(adapter.label_overrides(clean), set())
+        self.assertEqual(adapter.label_overrides(renamed), {"worksheet name"})
+        self.assertEqual(adapter.label_overrides(same), set())
+        with tempfile.TemporaryDirectory() as temp:
+            public = Path(temp) / "frontend" / "public"
+            public.mkdir(parents=True)
+            (public / "app.js").write_text("const html = `" + renamed + "`;")
+            names = adapter.control_names(Path(temp))
+        self.assertNotIn("worksheet name", names)
+        self.assertIn("workbook name", names)
