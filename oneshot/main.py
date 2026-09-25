@@ -53,7 +53,9 @@ REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce 
 REPAIR_SECONDS = 3 * 3600  # No repair round starts after this much time in the repair phase.
 CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this long (a large task at 1 CPU).
 TESTGEN = os.environ.get("ONESHOT_TESTGEN", "1") == "1"  # requirement-written tests drive the repairs (testgen.py)
-TESTGEN_WAIT = 1200  # seconds the repair phase waits for the suite once the draft is in
+TESTGEN_WAIT = 3600  # seconds the repair phase waits for the suite once the draft is in: platform suites took 1206-1970 s
+# against drafts of 10-17 min, and a local run on 09-25 22:15 (six cut streams, two HTTP 400) missed a 1200 s wait and
+# shipped the bare draft with no repair at all; waiting costs time only
 TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
 PAIR_SHARE = 1 / 3  # the second draft is judged when the first passes fewer than this share of the written tests: the
 # GitHub drafts of submissions 9 and 10 passed 14 and 11 of 100, a Sheet draft that loaded 47 (roadmap 4.17)
