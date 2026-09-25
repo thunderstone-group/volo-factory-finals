@@ -422,3 +422,111 @@ class RepairLoopCase(unittest.TestCase):
         _, budget, _ = self.run_loop([before, after], [block("frontend/public/app.js", "// repaired")])
         self.assertTrue(budget.smoke["rounds"][0]["accepted"])
         self.assertEqual((self.stage / "frontend/public/app.js").read_text().strip(), "// repaired")
+
+
+class DraftPairCase(unittest.TestCase):
+    """main.generate with a written suite writes a second draft alongside the first; pick_draft judges it only when
+    the first passes fewer than a third of the written tests, and the draft passing more goes on (roadmap 4.17)."""
+
+    def setUp(self):
+        import threading
+        from unittest.mock import patch
+        from oneshot import main as adapter
+        self.adapter, self.patch = adapter, patch
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        done = threading.Thread(target=lambda: None)
+        done.start()
+        done.join()
+        suite_dir = Path(self.temp.name) / "suite"
+        suite_dir.mkdir()
+
+        def finish(job, budget, wait=None):
+            budget.suite = {"tests": 9}
+            return suite_dir
+        for target, value in (("SCAFFOLD", False), ("TESTGEN", True), ("SMOKE", True)):
+            self.enter(patch.object(adapter, target, value))
+        for target, kwargs in (("smoke_check", {"return_value": ([], True)}),
+                               ("vocabulary_gaps", {"return_value": ([], 0)}), ("static_gaps", {"return_value": {}}),
+                               ("start_suite", {"return_value": {"thread": done, "dir": Path(self.temp.name) / "x"}}),
+                               ("finish_suite", {"side_effect": finish})):
+            self.enter(patch.object(adapter, target, **kwargs))
+
+    def enter(self, manager):
+        value = manager.__enter__()
+        self.addCleanup(manager.__exit__, None, None, None)
+        return value
+
+    def generate(self, drafts, passes):
+        """`drafts` are the first and the second draft's app.js; `passes` maps a marker in app.js to how many of the
+        nine written tests pass on it. Returns the published app.js, the budget and the app.js of each judged draft."""
+        import threading
+        from tests_oneshot.test_oneshot import application, block
+        adapter, judged = self.adapter, []
+        replies = [application(block("frontend/public/app.js", d)) for d in drafts]
+
+        def complete(messages, model, base, key, budget, tries=3, salvage=None):
+            record = budget.start(messages, model)
+            record.update(status="completed", usage={"prompt_tokens": 10, "completion_tokens": 10})
+            return replies[threading.current_thread().name == "oneshot-draft-2"], {}, "stop"
+
+        def check(stage, requirements, only=None, translate=True, tests=None):
+            text = (Path(stage) / "frontend/public/app.js").read_text()
+            judged.append(text.strip())
+            count = next(n for marker, n in passes.items() if marker in text)
+            return {"kind": "testgen", "invariants": [], "scenarios": [
+                {"id": f"REQ-{i}", "name": f"REQ-{i}", "status": "pass" if i < count else "fail", "steps": [],
+                 "observation": "synthetic", "source": ""} for i in range(9)]}
+        budget = adapter.CallBudget(repair_limit=0)
+        out = Path(self.temp.name) / "out"
+        with self.patch.object(adapter, "stream_completion", side_effect=complete), \
+                self.patch.object(adapter, "check_scenarios", side_effect=check):
+            adapter.generate(REQUIREMENTS, "m", "https://synthetic.invalid/v1", "k", out, budget)
+        return (out / "frontend/public/app.js").read_text().strip(), budget, judged
+
+    def test_a_weak_first_draft_gives_way_to_a_second_that_passes_more(self):
+        published, budget, judged = self.generate(["// weak", "// strong"], {"weak": 1, "strong": 5})
+        self.assertEqual(published, "// strong")
+        self.assertEqual(judged, ["// weak", "// strong"])
+        pair = budget.summary()["draft_pair"]
+        self.assertEqual((pair["first"], pair["second"], pair["chosen"]), (1, 5, 2))
+        self.assertEqual([c["phase"] for c in budget.side_calls if c["call"].startswith("draft2-")], ["draft"])
+
+    def test_a_weaker_second_draft_is_judged_and_dropped(self):
+        published, budget, judged = self.generate(["// weak", "// weaker"], {"weaker": 0, "weak": 2})
+        self.assertEqual(published, "// weak")
+        self.assertEqual(judged, ["// weak", "// weaker"])
+        self.assertEqual(budget.pair["chosen"], 1)
+
+    def test_a_first_draft_passing_a_third_goes_on_without_judging_the_second(self):
+        published, budget, judged = self.generate(["// fine", "// better"], {"fine": 3, "better": 8})
+        self.assertEqual(judged, ["// fine"])
+        self.assertEqual(published, "// fine")
+        self.assertEqual(budget.pair["second"], "not judged")
+        self.assertEqual(budget.pair["chosen"], 1)
+
+    def test_a_tie_keeps_the_first_draft(self):
+        published, budget, judged = self.generate(["// one", "// two"], {"one": 2, "two": 2})
+        self.assertEqual(judged, ["// one", "// two"])
+        self.assertEqual(published, "// one")
+        self.assertEqual(budget.pair["chosen"], 1)
+
+    def smoke_by_draft(self, problems):
+        """smoke_check reports `problems[marker]` on the draft whose app.js holds `marker`."""
+        def smoke(stage, requirements=None, diagnostics=None):
+            text = (Path(stage) / "frontend/public/app.js").read_text()
+            return next((p for marker, p in problems.items() if marker in text), []), True
+        self.enter(self.patch.object(self.adapter, "smoke_check", side_effect=smoke))
+
+    def test_a_draft_only_the_route_gate_calls_broken_is_still_run_on_the_suite(self):
+        self.smoke_by_draft({"routed": [self.adapter.ROUTE_FATAL + "#/settings (a record page ...)"]})
+        published, budget, judged = self.generate(["// weak", "// routed"], {"weak": 1, "routed": 5})
+        self.assertEqual(published, "// routed")
+        self.assertEqual((budget.pair["second"], budget.pair["second_fatal"], budget.pair["chosen"]), (5, True, 2))
+
+    def test_a_draft_that_does_not_build_is_not_run_on_the_suite(self):
+        self.smoke_by_draft({"unbuilt": ["frontend `npm run build` exited 1: synthetic"]})
+        published, budget, judged = self.generate(["// weak", "// unbuilt"], {"weak": 1, "unbuilt": 5})
+        self.assertEqual(judged, ["// weak"])
+        self.assertEqual(published, "// weak")
+        self.assertEqual((budget.pair["second"], budget.pair["chosen"]), (0, 1))
