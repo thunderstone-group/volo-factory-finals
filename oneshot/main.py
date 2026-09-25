@@ -2464,7 +2464,9 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                  "counts_after": ((record.get("scenarios") or {}).get("counts")), "seconds": record["seconds"],
                  "cost_cny": record["cost_cny"], "reason": (record.get("reason") or "")[:200]}), file=sys.stderr)
     if "stopped" not in budget.smoke and _checker_failed(state["report"]) and not state["fatal"] and state["executed"]:
-        why = (state["report"] or {}).get("unavailable") or "every scenario ended in an error"
+        report = state["report"] or {}
+        why = report.get("unavailable") or ("every scenario ended in an error"
+                                            + (f" (runner: {report['runner']})" if report.get("runner") else ""))
         budget.smoke["stopped"] = "the scenario check could not run: " + str(why)[:300]
     budget.smoke["problems_after"] = state["smoke"]
     budget.smoke["scenarios_after"] = scenario_summary(state["report"])

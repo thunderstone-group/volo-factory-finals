@@ -134,6 +134,14 @@
     if (active && app && app.contains(active) && active.matches('input, textarea, [contenteditable="true"]')) postponed = false;
     settle();
   });
+  // A press on a popover belongs to the popover. Grid and list pointer handlers took the cell around a menu as the
+  // pressed cell and re-selected it, so a menu Copy on a dragged range copied one cell (two of four spreadsheet
+  // drafts, 09-25). The press still counts above; the click still reaches the popover's commands.
+  for (const type of ['pointerdown', 'mousedown', 'pointerup', 'mouseup']) {
+    window.addEventListener(type, (ev) => {
+      if (ev.target && ev.target.closest && ev.target.closest('[data-popover]')) ev.stopPropagation();
+    }, true);
+  }
 
   // --- Helpers reachable through `this` from any part of APP. A helper written on APP.screens and called as
   // `this.helper()` from a screen that runs with APP as `this` (or the other way round, or from an action)
@@ -219,7 +227,9 @@
   // Command menus are not a replacement for the entity's named field editor.
   // items are { label, action, extra? }; kind 'buttons' renders native buttons;
   // kind 'menu' explicitly renders role=menu and role=menuitem.
-  // The popover closes on render, Escape, or a click outside it.
+  // The popover closes on render, Escape, a click outside it, and after one of its menu items ran: a menu left
+  // open inside a grid cell became part of the cell's text ("PenCopyCutPaste" after a menu Cut, 09-25).
+  // It stays inside the host: apps find the record or cell a command acts on through the menu's ancestors.
   ARC.openPopover = function (host, items, opts) {
     const record = host && host.closest('article[data-id], [role="article"][data-id]');
     const id = (opts && opts.id) != null ? String(opts.id) :
@@ -321,13 +331,28 @@
     copied = typeof out === 'object' ? { text: String(out.text == null ? '' : out.text), data: out.data } : { text: String(out), data: null };
     return copied.text;
   };
+  // Pasted text arrives with \n line ends and without the one line break that ends copied rows (spreadsheets and
+  // text editors put it there; it is not an extra empty row).
+  const lines = (text) => String(text == null ? '' : text).replace(/\r\n?/g, '\n').replace(/\n$/, '');
   const give = (text) => {
-    const same = copied && text.replace(/\r\n/g, '\n') === copied.text.replace(/\r\n/g, '\n');
+    text = lines(text);
+    const same = copied && text === lines(copied.text);
     if (onPaste) onPaste(text, same ? copied.data : null);
   };
+  // A menu's Paste reads the browser clipboard. Where that read is missing, refused (no clipboard permission) or
+  // does not answer, the app's own last copy is pasted instead, so a menu Copy followed by a menu Paste works in
+  // any browser context.
   ARC.pasteFromClipboard = function () {
-    if (!navigator.clipboard || !navigator.clipboard.readText) return Promise.resolve(false);
-    return navigator.clipboard.readText().then((text) => { give(text); return true; }, () => false);
+    const own = () => { if (!copied) return false; give(copied.text); return true; };
+    if (!navigator.clipboard || !navigator.clipboard.readText) return Promise.resolve(own());
+    return new Promise((resolve) => {
+      let settled = false;
+      const finish = (fn) => { if (settled) return; settled = true; clearTimeout(timer); resolve(fn()); };
+      const timer = setTimeout(() => finish(own), 400);
+      navigator.clipboard.readText().then(
+        (text) => finish(() => { if (text === '' && copied) return own(); give(text); return true; }),
+        () => finish(own));
+    });
   };
   // A menu's "Copy" / "Cut" command.
   ARC.copyToClipboard = function (cut) {
@@ -406,7 +431,10 @@
     const fn = app.actions && app.actions[name];
     if (!fn) return;
     ARC.shareHelpers(app);
-    ARC.pull();  // act on the records as they are now, including other sessions' writes
+    // Act on the records as they are now, including other sessions' writes. A popover command acts on what the app
+    // set up when it opened the popover instead: a right-click that selected a cell without saving yet was undone
+    // by reading the records back, and the command acted on the old selection.
+    if (!el.closest('[data-popover]')) ARC.pull();
     fn.call(app.actions, { id: el.dataset.id, data: { ...el.dataset }, el, event, form });
   }
   document.addEventListener('click', (ev) => {
@@ -426,7 +454,14 @@
     // Native controls must keep their own activation behavior. In particular,
     // cancelling checkbox clicks reverts the checked state after our handler.
     if (!el.matches('input, textarea, select, label')) ev.preventDefault();
+    // An activated menu item is done with its menu (a Copy that renders nothing left it open over the grid),
+    // unless the action opened another popover in its place.
+    const menu = el.getAttribute('role') === 'menuitem' ? el.closest('[data-popover]') : null;
     dispatch(el.dataset.action, el, ev, null);
+    if (menu && (ARC._popover === menu || ARC._popover === null)) {
+      if (menu.parentNode) menu.parentNode.removeChild(menu);
+      if (ARC._popover === menu) ARC._popover = null;
+    }
   });
   document.addEventListener('submit', (ev) => {
     const formEl = ev.target.closest('form[data-action]');

@@ -119,6 +119,9 @@ editing. Native input semantics apply immediately; live filtering must not wait 
   element inside the card whose `title` is the state word (`<span title="Starred">`): suites read
   `article >> [title="Starred"]`.
 - Toggle buttons carry `aria-pressed` reflecting the state.
+- A filter or search hides only the records it does not match. The header row, toolbar or field that carries its
+  controls never counts as a record: it stays visible while any filter is applied, so every other filter control
+  can still be opened and the applied one can be changed or cleared.
 - Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
   header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
   only its feed loses every header, navigation, login and sidebar test at once (one practice run: 1 of 66).
@@ -158,7 +161,8 @@ A test reaches a feature through any path the requirements allow, so implement e
   (keep formulas or other detail text cannot carry there).
 - A context menu opens on the real `contextmenu` event of the element the requirements name (a row number, a
   column header, a cell), as `role="menu"` with `menuitem`s, and acts on what it was opened on: a right-click
-  outside the current selection first selects that item, as a left click would.
+  outside the current selection first selects that item, as a left click would; a right-click inside a multi-item
+  selection keeps the whole selection, so the menu's commands (Copy, Cut, Delete) act on all of it.
 - ARC.render() already waits for a press's click sequence; do not rebuild the pressed element yourself
   (`innerHTML`) inside a mousedown or mouseup handler, which drops its click and double-click.
 
