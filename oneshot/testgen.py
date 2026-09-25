@@ -477,12 +477,40 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
         for name in ("PLAYWRIGHT_BROWSERS_PATH",):
             if name in os.environ:
                 runner_env[name] = os.environ[name]
-        timed_out = False
+        timed_out, run = False, None
         try:
-            subprocess.run(command, cwd=work, env=runner_env, capture_output=True, text=True, timeout=seconds)
+            run = subprocess.run(command, cwd=work, env=runner_env, capture_output=True, text=True, timeout=seconds)
         except subprocess.TimeoutExpired:
             timed_out = True
-        report = {"kind": "testgen", "scenarios": parse(report_path, suite, manifest, text), "invariants": []}
+        entries = parse(report_path, suite, manifest, text)
+        if not timed_out and titles and all((e.get("observation") or "").startswith("Not run:") for e in entries):
+            # Nothing ran: a file Playwright cannot load (a duplicate title, a throw at module level) stops the whole
+            # run although it parses (09-25 23:07 Sheet run: all 100 tests "Not run" in 1.7 s, repairs stopped after
+            # one round). Find the files that do not load on their own, set them aside for this suite, run again.
+            unloadable = _unloadable(command[:3] + ["--config", str(work / "playwright.config.cjs")], manifest, suite,
+                                     work, runner_env)
+            if unloadable:
+                for record in manifest.get("files", []):
+                    if record.get("file") in unloadable:
+                        record["syntax"] = "Playwright cannot load it: " + unloadable[record["file"]]
+                _save_marks(suite, unloadable)
+                broken = ["**/" + r["file"] for r in manifest.get("files", []) if r.get("syntax") and r.get("file")]
+                titles = [t for r in manifest.get("files", []) if not r.get("syntax") for t in (r.get("tests") or [])]
+                (work / "playwright.config.cjs").write_text(CONFIG.format(
+                    suite=json.dumps(str(suite)), ignore=json.dumps(broken),
+                    output=json.dumps(str(work / "results")), report=json.dumps(str(report_path)),
+                    base=json.dumps(f"http://127.0.0.1:{port}"), test_ms=TEST_SECONDS * 1000,
+                    action_ms=ACTION_SECONDS * 1000, navigation_ms=10000), encoding="utf-8")
+                report_path.unlink(missing_ok=True)
+                try:
+                    run = subprocess.run(command, cwd=work, env=runner_env, capture_output=True, text=True,
+                                         timeout=seconds)
+                except subprocess.TimeoutExpired:
+                    timed_out, run = True, None
+                entries = parse(report_path, suite, manifest, text)
+        report = {"kind": "testgen", "scenarios": entries, "invariants": []}
+        if run is not None and all((e.get("observation") or "").startswith("Not run:") for e in entries):
+            report["runner"] = ANSI.sub("", (run.stderr or "") + (run.stdout or ""))[-600:]  # why nothing ran
         if timed_out:
             report["timed_out"] = seconds
         counts = collections.Counter(e["status"] for e in report["scenarios"])
@@ -493,6 +521,35 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
         if backend:
             backend.stop()
         shutil.rmtree(work, ignore_errors=True)
+
+
+def _unloadable(base, manifest, suite, work, env):
+    """{file: why} for the suite files Playwright cannot load on their own (`test --list` on each one)."""
+    found = {}
+    for record in manifest.get("files", []):
+        if record.get("syntax") or not record.get("file"):
+            continue
+        try:
+            probe = subprocess.run(base + ["--list", "--reporter=list", str(Path(suite) / record["file"])], cwd=work,
+                                   env=env, capture_output=True, text=True, timeout=120)
+        except subprocess.TimeoutExpired:
+            continue
+        if probe.returncode:
+            found[record["file"]] = ANSI.sub("", (probe.stderr or "") + (probe.stdout or "")).strip()[-300:]
+    return found
+
+
+def _save_marks(suite, marks):
+    """Record in suite.json which files cannot load, so later runs set them aside without probing again."""
+    path = Path(suite) / "suite.json"
+    try:
+        saved = json.loads(path.read_text(encoding="utf-8"))
+        for record in saved.get("files", []):
+            if record.get("file") in marks:
+                record["syntax"] = "Playwright cannot load it: " + marks[record["file"]]
+        path.write_text(json.dumps(saved, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    except (OSError, ValueError):
+        pass
 
 
 def _all(manifest, status, observation, started):
