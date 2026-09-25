@@ -67,7 +67,8 @@ How the tests run:
 - Every file runs in order against ONE application that is never reset between tests, as the hidden suite does. A
   scenario that changes a seeded account's credentials, or deletes or renames a seeded record, acts on a record the
   test creates first, so later tests still find the seed as the requirements give it; any other scenario uses the seed.
-  Names the test creates get a unique suffix, for example
+  Use the scenario's literal input values (the names, identifiers, passwords and texts it quotes), never a convenient
+  variant; only a name the text does not give gets a unique suffix, for example
   `const u = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);`, within the format rules the
   requirements state.
 - Locate elements the way a user perceives them, only with what the requirements state:
@@ -80,17 +81,26 @@ How the tests run:
   label or value exactly (`exact: true`, `toHaveText`, `toHaveValue`), never with a regular expression or a substring,
   and never a neighbouring value in place of the one the text states (the identifier where the text says identifier,
   the display name where it says display name; the stated rejection message, not merely that something is absent).
+- Reach a record the way that user would: from the home page through the entry offered to them (a link on the home
+  page, the account menu, a list, the navigation the requirements name), after the stated sign-in if any. Use a search
+  box only when the scenario says to search.
 - After each click that opens another page, dialog or menu, assert what the requirements say is there (its heading or
   its quoted controls) before the next step.
 - Perform every WHEN step as written, including the filters, scopes and options it names, and assert every THEN
   clause, including the ones after a refresh (`page.reload()`), browser back (`page.goBack()`) or reopening through the
-  home page.
+  home page. When a THEN clause lists failure cases (a wrong value, a missing field, a mismatch), exercise each one it
+  lists with its stated message.
+- Assert what the requirement and its scenarios state. A general principle stated only in a parent section (keep or
+  clear inputs after a failure, never redisplay a secret) is asserted only where the requirement or the scenario
+  repeats it; a case the description attaches to one scenario (an unknown email, a duplicate name) is tested in that
+  scenario, not in another.
 - Some scenarios are generic ("follows the visible controls for the ... workflow", "displays the required headings,
   controls, values, and status"). For those the requirement's description is the specification: the first generic
-  scenario of a requirement performs the description's main successful flow end to end and asserts every name,
-  heading, message and value the description gives for it; a further generic scenario of the same requirement takes the
-  next flow the description states (another stated path, then a stated rejection with its exact message). Never make
-  a generic scenario a bare sign-in, a re-run of another scenario, or only a negative case.
+  scenario of a requirement performs the description's fully spelled-out successful example end to end (its literal
+  values) and asserts every name, heading, message and value the description gives for it; a further generic scenario
+  of the same requirement takes the next flow the description spells out (another stated path, then a stated
+  rejection with its exact message). Never make a generic scenario a bare sign-in, a re-run of another scenario, or
+  only a negative case.
 - Where the requirements allow several ways to do the same thing (in a grid or a separate field, with a keyboard
   shortcut or a menu command, with a button or the Enter key), spread the tests of that requirement across those ways,
   as different users would.
