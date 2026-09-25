@@ -135,6 +135,26 @@
     settle();
   });
 
+  // --- Helpers reachable through `this` from any part of APP. A helper written on APP.screens and called as
+  // `this.helper()` from a screen that runs with APP as `this` (or the other way round, or from an action)
+  // threw "this.helper is not a function" and blanked the screen: dozens of drafts on six tasks. Every
+  // function on APP, APP.screens, APP.actions and APP.helpers is also reachable from the others under the
+  // same name (non-enumerable, never replacing an own entry); actions run with APP.actions as `this`.
+  const RESERVED = new Set(['screen', 'screens', 'actions', 'helpers', 'afterRender']);
+  ARC.shareHelpers = function (app) {
+    const holders = [app, app && app.screens, app && app.actions, app && app.helpers]
+      .filter((o) => o && typeof o === 'object');
+    for (const from of holders) {
+      for (const key of Object.keys(from)) {
+        if (RESERVED.has(key) || typeof from[key] !== 'function') continue;
+        for (const to of holders) {
+          if (to === from || Object.prototype.hasOwnProperty.call(to, key)) continue;
+          try { Object.defineProperty(to, key, { value: from[key], writable: true, configurable: true, enumerable: false }); } catch (e) { /* frozen */ }
+        }
+      }
+    }
+  };
+
   // --- Render: rebuild #app from the store in the same tick as the click. Views are unmounted, never
   // cross-faded. Text typed into a form survives in-form clicks because actions call ARC.render()
   // only after they change state, and forms keep their values via ARC.preserveInputs.
@@ -145,6 +165,7 @@
     ARC._popover = null;  // the screen is rebuilt; an open popover goes with it
     ARC._combobox = null;
     const app = window.APP || {};
+    ARC.shareHelpers(app);
     const main = app.screen ? app.screen(route) : '<h1>Home</h1>';
     document.getElementById('app').innerHTML = ARC.layout(main, route);
     if (ARC.dialogOpen) ARC.setInert(true);
@@ -279,7 +300,7 @@
     box.focus();
     const change = wrap.dataset.cbChange;
     const app = window.APP || {};
-    if (change && app.actions && app.actions[change]) app.actions[change]({ value: option.dataset.value, name: input && input.name, el: box });
+    if (change && app.actions && app.actions[change]) { ARC.shareHelpers(app); app.actions[change]({ value: option.dataset.value, name: input && input.name, el: box }); }
   };
 
   // --- Clipboard: copy, cut and paste go through the browser's clipboard, so text another program (or a test)
@@ -384,8 +405,9 @@
     if (name === 'arc:option') { ARC._pickOption(el); return; }
     const fn = app.actions && app.actions[name];
     if (!fn) return;
+    ARC.shareHelpers(app);
     ARC.pull();  // act on the records as they are now, including other sessions' writes
-    fn({ id: el.dataset.id, data: { ...el.dataset }, el, event, form });
+    fn.call(app.actions, { id: el.dataset.id, data: { ...el.dataset }, el, event, form });
   }
   document.addEventListener('click', (ev) => {
     if (ARC._popover && !ARC._popover.contains(ev.target) && !ev.target.closest('[data-action]')) ARC.closePopover();

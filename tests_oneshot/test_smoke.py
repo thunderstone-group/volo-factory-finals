@@ -364,7 +364,8 @@ class SmokeCase(unittest.TestCase):
         files, budget = self.generate(repairs=2)
         self.assertEqual(self.transport.call_count, 3)
         self.assertEqual([r["accepted"] for r in budget.smoke["rounds"]], [True, False])
-        self.assertIn("still broken as a whole", budget.smoke["rounds"][1]["reason"])
+        # The regression does not parse; the in-round follow-up that would fix it has no call left.
+        self.assertIn("no follow-up for the syntax problem: repair call limit reached (2)", budget.smoke["rounds"][1]["reason"])
         self.assertIn("repair call limit reached (2)", budget.smoke["stopped"])
         self.assertEqual((self.out / "frontend/public/app.js").read_text(), partial + "\n")
         self.assertEqual(next(f for f in files if f["path"] == "frontend/public/app.js")["content"], partial + "\n")
@@ -778,14 +779,15 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("repair spend limit reached (CNY 2.38 spent, the next call is estimated at", budget.smoke["stopped"])
         self.assertAlmostEqual(budget.summary()["estimated_repair_cost_cny"], 2.38)
 
-    def test_three_discarded_repairs_in_a_row_end_the_loop(self):
-        self.draft_js("const zero = 0;", "const a = 1;", "const b = 2;", "const c = 3;")
+    def test_discarded_repairs_in_a_row_end_the_loop(self):
+        n = adapter.REPAIR_REJECTIONS
+        self.draft_js("const zero = 0;", *[f"const r{i} = {i};" for i in range(n)])
         self.scenarios({"REQ-1": lambda t: "fixed" in t})
         files, budget = self.generate()
-        self.assertEqual(self.transport.call_count, 4)
-        self.assertEqual([r["accepted"] for r in budget.smoke["rounds"]], [False, False, False])
+        self.assertEqual(self.transport.call_count, n + 1)
+        self.assertEqual([r["accepted"] for r in budget.smoke["rounds"]], [False] * n)
         self.assertTrue(all(r["reason"] == "no failing scenario passes after the change" for r in budget.smoke["rounds"]))
-        self.assertEqual(budget.smoke["stopped"], "3 repairs in a row were discarded")
+        self.assertEqual(budget.smoke["stopped"], f"{n} repairs in a row were discarded")
         # The next request says what the discarded change left failing, as the check observed it.
         self.assertIn("after it REQ-1 still failed: synthetic observation for REQ-1",
                       budget.attempts[2]["messages"][-1]["content"])
@@ -950,7 +952,7 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual((smoke["executed"], smoke["problems"], smoke["vocabulary_missing"], smoke["repair"]),
                          (True, [], 0, None))
         usage = json.loads([l for l in capture.getvalue().splitlines() if l.startswith("[oneshot] usage ")][0].split(" ", 2)[2])
-        self.assertEqual(usage["repair_cny_limit"], 5.0)
+        self.assertEqual(usage["repair_cny_limit"], 10.0)
         self.assertNotIn(SYNTHETIC_KEY, capture.getvalue())
 
 if __name__ == "__main__":

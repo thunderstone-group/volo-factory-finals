@@ -1081,7 +1081,7 @@ Evidence: `docs/evidence/2026-09-24-opening-day/`.
 
 ### Official submission ledger (roadmap 4.7)
 
-S = p / (b / (1.2 p))^0.1 while b <= 1.2 p; p in percent over both tasks, b in CNY.
+S = p / (b / (0.8 p))^0.1 while b <= 0.8 p, else ^0.2; p in percent over both tasks, b in CNY (checked against the board's own `score` on 09-25; the S column before row 8 used 1.2 p and reads about 1 point high: row 7 is 33.2 on the board).
 
 | # | time | package | commit | model | GitHub | Sheet | CNY | S | note |
 |---|---|---|---|---|---|---|---|---|---|
@@ -1091,7 +1091,10 @@ S = p / (b / (1.2 p))^0.1 while b <= 1.2 p; p in percent over both tasks, b in C
 | 4 | 09-24 18:52 | 9bf0254a | 9ac8e89 | flash | 11/100 | platform error | 3.13 | | first run on the corrected task set; Sheet run `c34ae0a54c1e` never executed a test: the runner's `playwright test --list` failed ("Failed to enumerate Playwright tests"), an evaluator fault; GitHub 89 timeouts |
 | 5 | 09-24 22:36 | 165aece2 | c005012 | flash | 13/100 | platform error | 2.91 | | seed checklist + card 6b (feat/seed-reach); Sheet `4ef5a779acf2` enumeration failure again at 22:51; GitHub gained REQ-3-3 S1, REQ-2-1-1 S2 (home reachability paths), lost REQ-1-2 S1-2 (this draft's sign-out) |
 | 6 | 09-25 00:50 | 9dad2b75 | 400a009 | flash | 21/100 | not run | 10.94 | | written tests + edit repairs on the platform (GitHub only); suite written in 25 min (15 calls, CNY 8.0), repair phase 72 min with 8 whole-app checks, run 97 min, 4.07 M tokens; the run record carries no failed_tests list this time |
-| 7 | 09-25 03:05 | 38e217d1 | 3c761e2 | flash | 21/100 | not run | 7.75 | | main after PR #71 (adds the marker-hunk skip and the suite temp-dir fix); run 81 min, 2.82 M tokens; second sample of the written-test line, same 21 |
+| 7 | 09-25 03:05 | 38e217d1 | 3c761e2 | flash | 21/100 | 43/100 | 17.81 | 34.6 | main after PR #71 (adds the marker-hunk skip and the suite temp-dir fix); GitHub run 81 min, 2.82 M tokens, CNY 7.75; Sheet `b491936e86f2` started 09-25 11:06 after the organizers fixed the Sheet suite: 91 min, 2.69 M tokens, CNY 10.06 (suite CNY 6.77); p = 32.0 %, board 2nd (Iris 40.5 %) |
+| 8 | 09-25 12:55 | d3769ab0 | 20dcdbd | flash | 7/100 | 53/100 | 16.64 | 32.4 | `feat/repair-visibility`: repair rounds in the log, repair budget 24 calls / CNY 10, scaffold `this` sharing (roadmap 4.14); submission `1503bf3a1f15`. GitHub `95ec6880ee7f`: draft broken as a whole, 8 repair rounds (3 kept, incl. the revival), written suite 0 -> 22, stopped at three discards in a row (one was a gateway HTTP 400), CNY 10.02, 92 min. Sheet `e6cf53b272c1`: 3 rounds all discarded (two by the vocabulary guard at 47 -> 59 and 65), CNY 6.62, 64 min |
+| 9 | 09-25 14:45 | 6143d95f | fc05229 | flash | 22/100 | 79/100 | 16.39 | 55.27 (board) | `feat/repair-guards`: guards weigh as lost tests under written tests, four discards in a row, unanswered rounds do not count, testgen id fix (roadmap 4.15); submission `dfce9da4382a`, runs `564563986f7f` (GitHub), `2c8e9b1f5e5f` (Sheet). Sheet: draft did not load (revived in round 1, suite 51), then +26, +6, +3, +3: suite 88, 11 rounds 5 kept, CNY 7.09, 71 min. GitHub: round 1 +30 (14 -> 44) kept over a newly flagging static gate, then +14, +12, +5, +1, three discards, +2, four discards: suite 77, 13 rounds 6 kept, repair CNY 3.89, CNY 9.29, 145 min. p 50.5 %, **board 1st** (Iris 36.34) |
+| 10 | 09-25 16:45 | c5152707 | 6017ef4 | flash | | | | | in-round follow-up (SEARCH all missed / script does not parse) and cell-address grounding (roadmap 4.16); submission `a2375cd48c2a`; Sheet `ed1ef8fb5d78` started 16:45; GitHub `d58e50066c0a` started 17:24 after run 9's GitHub ended (one run per task at a time; attempt `ce95a7580c1f` refused with 409) |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1240,3 +1243,84 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   the gates caught both; a hunk that carries a marker line is now skipped on its own.
 - **Submission 6 read (02:51):** GitHub `5b0946d978cf` **21/100** (submission 5: 13), CNY 10.94 (1.64). Cost x6.7 needs p x1.19 to break even under S; p rose x1.62. The platform log truncates inside the second call's trace, so the repair rounds are not readable there; the stage cleanup race (377492a) did not affect this run (its suite finished before the wait ran out).
 - **Submission 7 read (04:29):** main 3c761e2 package 38e217d1, GitHub `5cbff8ffc75c` **21/100**, CNY 7.75, 81 min. Two samples of the written-test line both at 21 (13 and 11 before it). No failed_tests list again.
+
+## 2026-09-25 11:00- — Organizer notice; Sheet on submission 7; proxy looseness measured; repair visibility + budget
+
+- **Organizer notice (10:56):** the Sheet "Failed to enumerate Playwright tests before execution" is fixed; the
+  organizers will re-run the tests (no regeneration, no spend) on apps generated before the fix and on runs that hit
+  it (our `c34ae0a54c1e`, `4ef5a779acf2`), which takes time. Stage 3 "Execute" stops spinning when an evaluation ends
+  (10-20 min). Tests always target `127.0.0.1:3000` (the scaffold listens on `PORT` or 3000 on all interfaces, fine).
+  Teams: only the captain account confirms and submits; budgets are per team. Registration now shows CNY 500 remaining
+  (the 09-24 spend was refunded). Requirements re-downloaded: byte-identical to the 09-24 evening set (sha256 9884f23e).
+- **Sheet on submission 7** (`3b1bef245862`, main 3c761e2): run `b491936e86f2` started 11:06 so that submission
+  carries both tasks. Suite written in 23 min, 16 calls, CNY 6.77; the draft had a page error
+  `this.editorHtml is not a function` (the known `this`-binding slip), gone after the first repair round.
+- **Proxy vs hidden, per test** (`testgen.py run` with the 09-24 proxy suite `gh-suite-np` on the platform bundles):
+
+  | app | hidden | proxy pass | both pass | proxy-only | hidden-only |
+  |---|---|---|---|---|---|
+  | submission 4 (`7e3f4dba7736`) | 11 | 21 | 8 | 13 | 3 |
+  | submission 5 (`5450c3c63fe0`) | 13 | 31 | 9 | 22 | 4 |
+  | submission 7 (`5cbff8ffc75c`) | 21 | 48 | – | – | – (no per-test hidden list) |
+
+  The proxy passes about 2.3x what the hidden suite passes. Hidden passes on both labelled apps sit almost only in
+  requirements without dependencies (register, sign in, sign out, repository search, public overview); every
+  requirement that depends on another (organizations, teams, files, issues, pull requests) is close to 0. Proxy-only
+  passes split evenly between templated scenarios ("follows the visible controls for the … workflow", 36 of 100) and
+  specific ones. Strict probes (from `/`, exact names, no `.first()`) of "create an organization" fail on all three
+  apps at different real defects: submission 4's "New organization" link lands on "Organization not found"
+  (`#/org/new` routed as an organization id); submission 5 titles the new organization with its display name, not the
+  identifier the description asks for; submission 7 never shows "Owner". The written suite caught submission 5's
+  heading defect; its templated S2/S3 tests chose negative paths (duplicate, malformed name) that pass while the
+  hidden suite fails all three. A per-case diagnosis of the 22 proxy-only passes on submission 5 is running.
+- **Platform log visibility:** the platform keeps about the first 512 KB of a run's log; the exit-time trace came
+  before the smoke record, so no official run showed how many repairs ran or why they stopped (submission 7's log ends
+  inside call 2's trace). Branch `feat/repair-visibility` (032bd80): one `[oneshot] repair round` line per round as it
+  ends, a `[oneshot] repair end` line with the stop reason, then usage, smoke, trace in that order.
+- **Repair budget 12 calls / CNY 5 -> 24 / CNY 10** (same commit): both controlled replays stopped at the call cap
+  while still gaining. Under S, doubling cost costs 2^0.1 = 7 % and needs that much pass-rate gain to break even.
+  199 unit tests green. Package `5b7e089f` waits for the Sheet run to finish before upload.
+
+## 2026-09-25 13:00-14:45 — Strict written tests v2/v3 calibrated (both miss); submission 8 Sheet 53; guards as losses
+
+- **Strict written tests (roadmap 4.13), calibration with ids fixed** (`calib.sh` in the session scratchpad: the suite on
+  the submission 4 and 5 GitHub bundles, compared per test with the hidden lists saved on 09-24):
+
+  | suite | sub 4 proxy-only | sub 4 hidden-only | sub 5 proxy-only | sub 5 hidden-only | CNY to write |
+  |---|---|---|---|---|---|
+  | 09-24 (`gh-suite-np`) | 14 | 3 | 22 | 4 | 6.74 |
+  | v2 (strict prompt) | 10 | 3 | 9 | 6 | 7.19 |
+  | v3 (+ round-2 rules) | 7 | 7 | 12 | 7 | 7.53 |
+  | criterion | ≤ 7 | ≤ 3 | ≤ 11 | ≤ 4 | ≤ 8.76 |
+
+  v2 meets two of four, v3 one; neither ships. v2's extra hidden-only on submission 5 are all `error` (the tests used
+  `alice-dev/acme-docs`, a string the requirements never give verbatim, which never drives a repair); false alarms
+  (`fail` where the hidden test passes) stay at 1 and 2 as with the 09-24 suite. On submission 7's GitHub app (hidden
+  21) the 09-24 suite passes 48, v2 39. On submission 7's Sheet app (hidden 43) the 09-24 Sheet suite passes 30 (four of
+  its files do not parse), a v2 Sheet suite 45 (CNY 7.59). One written suite is one sample: v2 -> v3 moved as much as
+  noise can, so a prompt comparison needs two or three suites per version.
+- **testgen id fix (e44f4ce on `feat/repair-guards`):** titles like `REQ-3-1: ... - Scenario 2` made four tests share
+  one id (9-10 of 100 in every suite so far), so the repair ledger counted them as one; the scenario number now
+  restores `#n`.
+- **Round 2 diagnosis** (evidence README, "Round 2"): all 176 hidden failures on the two labelled apps are timeouts,
+  none an instant strict-mode error; submission 4's signed-out home page has no repository link, which is why its
+  REQ-3-3 and REQ-4 visitor scenarios fail and submission 5's (card 6b) pass.
+- **Submission 8 Sheet** `e6cf53b272c1`: **53/100**, CNY 6.62, 64 min (suite CNY 4.75, 16 calls). First readable repair
+  log: round 1 broke 12 passing tests (discarded); rounds 2 and 3 took the written suite from 47 to 59 and 65 passing
+  and were discarded because one quoted phrase of 55 went missing; the loop stopped at "3 repairs in a row were
+  discarded" after CNY 1.21. So 43 -> 53 is the draft (sampling, and the `this` fix), not repairs.
+- **Guards as losses (dc1ee79, `feat/repair-guards`, roadmap 4.15):** with written tests judging, a newly flagging
+  static gate, a missing quoted phrase or a renamed quoted control each count as one lost test under the 3:1 rule; the
+  scenario check keeps the veto. Four discarded rounds in a row end the loop (GitHub run `95ec6880ee7f` kept a fourth
+  round, +14, after two discards). 204 unit tests green. Package `0b5eb613`; submission 9 once submission 8's GitHub run
+  ends.
+
+## 2026-09-25 17:30 — Submission 9: p 50.5 %, board 1st
+
+- Submission 9 (guards as losses, package 6143d95f): GitHub `564563986f7f` 22/100, Sheet `2c8e9b1f5e5f` 79/100, CNY
+  16.39, board S 55.27 (reward regime, expected cost 0.8 p = 40.4), **1st** ahead of Iris 36.34 (p 40.5, CNY 55.71,
+  penalty regime, deepseek-v4-pro). Task boards: GitHub we lead at 21-22 %, others <= 11 %; Sheet others reach 90-99 %.
+- What changed the Sheet from 43/53 to 79: the repair loop now keeps rounds (5 of 11 kept vs 0 of 3), the written suite
+  88 against hidden 79. On GitHub the suite reached 77 against hidden 22: the GitHub proxy is still loose (roadmap 4.13).
+- Readable repair logs show the loop's stops: four discards in a row on both tasks; repair spend CNY 1.5 (Sheet) and 3.9
+  (GitHub) of the CNY 10 cap; GitHub repair time 2 h of the 3 h cap.

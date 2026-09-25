@@ -9,8 +9,8 @@ delivery contract, and writes the returned files under `<DIR>`.
 
 Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash),
 FALLBACK_MODEL (default kimi-k2.7-code-highspeed, or deepseek-v4-flash when MODEL is a Kimi model;
-empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 12),
-ONESHOT_REPAIR_CNY (repair spend per task, default 5).
+empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 24),
+ONESHOT_REPAIR_CNY (repair spend per task, default 10).
 """
 import argparse
 import collections
@@ -41,10 +41,12 @@ KIMI_FALLBACK_MODEL = "deepseek-v4-flash"
 KIMI_CODE_MODELS = {"kimi-k2.7-code", "kimi-k2.7-code-highspeed"}
 MAX_TOKENS = 131072  # content cap per call; the gateway has metered >135k output tokens in one request
 DRAFT_CALLS = 4  # Completed draft calls: the first draft, continuations after a cut, redrafts of an empty reply.
-REPAIR_CALLS = 12  # Completed repair calls; the spend limit below usually ends the repairs first. An edit round costs
-# CNY 0.3-0.5 on a large task: a GitHub replay stopped at 6 calls with CNY 3.7 of its cap left.
-REPAIR_CNY = 5.0  # Repair spend per task in CNY: the repair calls plus the scenario translation (roadmap 4.3).
-REPAIR_REJECTIONS = 3  # Consecutive discarded repairs before the loop gives up.
+REPAIR_CALLS = 24  # Completed repair calls. An edit round costs CNY 0.25-0.5 on a large task; the GitHub (6 calls,
+# 25 -> 38) and Sheet (12 calls, 20 -> 72) replays both stopped at the call cap while still gaining. Cost enters the
+# score only at the 0.1 power, so doubling it pays for itself at a pass-rate gain of about 7 %.
+REPAIR_CNY = 10.0  # Repair spend per task in CNY: the repair calls plus the scenario translation (roadmap 4.3).
+REPAIR_REJECTIONS = 4  # Consecutive discarded repairs before the loop gives up. On 09-25 (GitHub, run 95ec6880ee7f) a
+# fourth round gained 14 tests after two discarded ones; a round costs CNY 0.2-0.5 and about 12 minutes on the platform.
 REPAIR_SHOWN = 40  # Failing scenarios listed in one repair request.
 LOSS_RATIO = 3  # A repair that loses passing scenarios is kept only when it gains this many per loss.
 REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce before one has completed.
@@ -2158,19 +2160,22 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     """(accepted, reason, detail) for a repaired stage against the version before it (roadmap 4.3). A repair is kept
     when it brings a broken application back (whatever else it did), or when at least one scenario that failed now
     passes, it gains LOSS_RATIO of those for every passing scenario it loses, no clean static gate starts flagging, no
-    quoted phrase disappears and no control name the requirement quotes is renamed. Only verdicts both checks reached
+    quoted phrase disappears and no control name the requirement quotes is renamed (under written tests those three
+    guards weigh as lost tests instead: one per newly flagging gate, missing phrase or renamed control). Only verdicts both checks reached
     compare: a scenario that was unparsed or errored before never counts as gained, and one that is unparsed after as
     lost. Lost scenarios, and gains of at most two, are rechecked once for flakiness. A check that could not run at all
     is the checker's failure, marked `checker` in the detail, not the repair's."""
     detail = {}
     if after["fatal"]:
         return False, "the application is still broken as a whole: " + "; ".join(after["fatal"])[:500], detail
-    guards = []
+    guards, penalty = [], 0  # penalty: what the guards weigh as lost tests when written tests judge (below)
     newly = sorted(set(after["static"]) - set(before["static"]))
     if newly:
         guards.append("a static gate that was clean now flags: " + "; ".join(p for g in newly for p in after["static"][g])[:500])
+        penalty += len(newly)
     if after["missing"] > before["missing"]:
         guards.append(f"the change removed quoted vocabulary ({before['missing']} -> {after['missing']} missing)")
+        penalty += after["missing"] - before["missing"]
     # A literal button can become a data-driven menu entry: a successful browser activation proves the name exists.
     observed = {re.sub(r"\s+", " ", action["name"]).strip().lower()
                 for report in after["browser"] if report.get("executed")
@@ -2181,6 +2186,7 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     if renamed:
         detail["renamed_controls"] = renamed
         guards.append("the change renamed quoted control(s): " + ", ".join(renamed[:8]))
+        penalty += len(renamed)
     if before["fatal"]:
         # A blank or dead application that works again is kept: a rename guard once shipped the blank page instead
         # (09-19, a large task at 0/125). The waived guards stay on the record.
@@ -2232,13 +2238,20 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         # rendered the list (the public suite fails them on the fixed app too). Kept when it gains three per loss.
         # Written tests follow the same rule: under zero loss a GitHub replay discarded a repair worth 25 -> 32 for
         # one lost test, and a gained test is as likely a hidden path as a lost one.
-        if len(gained) < LOSS_RATIO * len(lost):
-            return False, broke + (f", and fixed only {len(gained)}" if gained else ", and fixed none"), detail
+        if len(gained) < LOSS_RATIO * (len(lost) + (penalty if written else 0)):
+            return False, broke + (f", and fixed only {len(gained)}" if gained else ", and fixed none") + (
+                "; " + "; ".join(guards) if written and guards else ""), detail
     if not gained:
         return False, "no failing scenario passes after the change", detail
     if guards:
-        return False, "; ".join(guards), detail
-    return True, f"{len(gained)} more scenario(s) pass" + (f", {len(lost)} lost" if lost else ""), detail
+        # Against a hundred written tests a guard is one more lost test, not a veto: on 09-25 (Sheet, run
+        # e6cf53b272c1) two repairs that took the suite from 47 to 59 and 65 passing were discarded because one quoted
+        # phrase of 55 went missing. The scenario check, with its thin coverage, keeps the veto.
+        if not written or len(gained) < LOSS_RATIO * (len(lost) + penalty):
+            return False, "; ".join(guards), detail
+        detail["waived"] = guards
+    return True, f"{len(gained)} more scenario(s) pass" + (f", {len(lost)} lost" if lost else "") + (
+        f" (outweighs: {'; '.join(guards)})" if guards else ""), detail
 
 
 def _swap_back(stage, backup):
@@ -2252,6 +2265,33 @@ def _swap_back(stage, backup):
         discarded.rename(stage)
         raise
     shutil.rmtree(discarded, ignore_errors=True)
+
+
+FOLLOW_SEARCH = ("Your change was not applied: {problem}\n\nEmit the same change again as EDIT blocks whose SEARCH "
+                 "lines are copied exactly from the current file shown above. Emit nothing else.")
+FOLLOW_SYNTAX = ("Your change was applied, but a script no longer parses: {problem}\n\nFix that line with an EDIT "
+                 "block (copy the SEARCH lines exactly from the current file). Emit nothing else.")
+
+
+def _follow_up(messages, ask, model, base, key, budget, record, kind):
+    """One more call inside a repair round, for a change that could not be applied or left a script that does not
+    parse. Returns the two new messages; the round's record notes it. Obeys the repair limits."""
+    stop = budget.repair_stop(messages + [{"role": "user", "content": ask}], model)
+    if stop:
+        raise ValueError(f"no follow-up for the {kind} problem: {stop}")
+    reply, _, finish = stream_completion(messages + [{"role": "user", "content": ask}], model, base, key, budget, tries=3)
+    record["follow_up"], record["follow_up_finish"] = kind, finish
+    return [{"role": "user", "content": ask}, {"role": "assistant", "content": reply}]
+
+
+def _write_repair(stage, batch, template):
+    for item in batch:
+        target = resolve_path(stage, item["path"])
+        if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
+                                        for part in PurePosixPath(item["path"]).parts):
+            raise ValueError("repair cannot edit local metadata or build artifacts: " + item["path"])
+        item["path"] = target.relative_to(stage.resolve()).as_posix()
+        write_one(stage, item)
 
 
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False,
@@ -2286,7 +2326,10 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     while state["fatal"] or _scenarios(state, "fail"):
         ask = repair_request(state, discarded, unapplied)
         stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
-        if stop is None and len(rounds) >= REPAIR_REJECTIONS and not any(r["accepted"] for r in rounds[-REPAIR_REJECTIONS:]):
+        # Only rounds the model answered count: a transport failure (run 95ec6880ee7f lost a round to "model HTTP 400")
+        # says nothing about the repairs, and the global failure limit already bounds those.
+        answered = [r for r in rounds if r.get("replied", True)]
+        if stop is None and len(answered) >= REPAIR_REJECTIONS and not any(r["accepted"] for r in answered[-REPAIR_REJECTIONS:]):
             stop = f"{REPAIR_REJECTIONS} repairs in a row were discarded"
         if stop is None and time.monotonic() - started_repairs > REPAIR_SECONDS:
             stop = f"the repair time limit was reached ({REPAIR_SECONDS} s)"
@@ -2301,26 +2344,49 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
         shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
         record = {"round": len(rounds) + 1, "fatal": len(state["fatal"]),
-                  "failing": [s["id"] for s in _scenarios(state, "fail")], "accepted": False}
+                  "failing": [s["id"] for s in _scenarios(state, "fail")], "passing_before": len(passing(state)),
+                  "accepted": False}
         calls, started, replied, after = len(budget.attempts), time.monotonic(), False, None
+        exchange = [{"role": "user", "content": ask}]
         try:
-            fixed, _, finish = stream_completion(conversation + [{"role": "user", "content": ask}],
-                                                 model, base, key, budget, tries=3)
+            fixed, _, finish = stream_completion(conversation + exchange, model, base, key, budget, tries=3)
             replied = True
-            batch, missing, skipped = parse_repair(fixed, stage)
+            exchange.append({"role": "assistant", "content": fixed})
+            try:
+                batch, missing, skipped = parse_repair(fixed, stage)
+            except ValueError as exc:
+                # Every SEARCH missed: one follow-up in the same round with the current lines (run 95ec6880ee7f lost
+                # a round this way), instead of spending the next round on it.
+                if "SEARCH matches nothing" not in str(exc):
+                    raise
+                follow = _follow_up(conversation + exchange, FOLLOW_SEARCH.format(problem=str(exc)[:2000]),
+                                    model, base, key, budget, record, "search")
+                exchange += follow
+                batch, missing, skipped = parse_repair(follow[-1]["content"], stage)
+                finish = record.get("follow_up_finish", finish)
             if skipped:
                 record["skipped_hunks"] = [h[:300] for h in skipped]
             if missing or finish == "length":
                 raise ValueError("the repair output was truncated; change large files with EDIT blocks")
             if not batch:
                 raise ValueError("the repair emitted no FILE or EDIT block")
-            for item in batch:
-                target = resolve_path(stage, item["path"])
-                if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
-                                                for part in PurePosixPath(item["path"]).parts):
-                    raise ValueError("repair cannot edit local metadata or build artifacts: " + item["path"])
-                item["path"] = target.relative_to(stage.resolve()).as_posix()
-                write_one(stage, item)
+            _write_repair(stage, batch, template)
+            broken = []
+            node = shutil.which("node")
+            if node and not record.get("follow_up"):
+                _check_syntax(stage, node, broken)
+            if broken:
+                # The change left a script that does not parse (run 95ec6880ee7f: a duplicate `const cur`): one
+                # follow-up in the same round names the line, before the whole suite runs on a blank app.
+                follow = _follow_up(conversation + exchange, FOLLOW_SYNTAX.format(problem="\n".join(broken)[:2000]),
+                                    model, base, key, budget, record, "syntax")
+                exchange += follow
+                extra, missing, more = parse_repair(follow[-1]["content"], stage)
+                if missing or record.get("follow_up_finish") == "length":
+                    raise ValueError("the repair output was truncated; change large files with EDIT blocks")
+                _write_repair(stage, extra, template)
+                skipped += more
+                batch = [b for b in batch if b["path"] not in {e["path"] for e in extra}] + extra
             needed = missing_required(stage)
             if needed:
                 raise ValueError("the repair broke delivery: " + "; ".join(needed))
@@ -2335,7 +2401,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 raise ValueError(reason)
             for item in batch:
                 files[:] = [f for f in files if f["path"] != item["path"]] + [item]
-            conversation += [{"role": "user", "content": ask}, {"role": "assistant", "content": fixed}]
+            conversation += exchange
             state, discarded, unapplied = after, None, skipped
             record.update(accepted=True, files=[item["path"] for item in batch])
             shutil.rmtree(backup, ignore_errors=True)
@@ -2349,17 +2415,30 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 # A missed SEARCH carries the current lines it missed; the model needs them whole to copy from.
                 discarded = str(exc)[:2000] + _still_failing(after, record["failing"])
         finally:
+            record["replied"] = replied
             record["seconds"] = round(time.monotonic() - started, 1)
             record["cost_cny"] = round(sum(call_cost(r) for r in budget.attempts[calls:]), 6)
             rounds.append(record)
             budget.smoke["rounds"] = rounds
             budget.smoke["repair"] = {k: record[k] for k in ("accepted", "reason", "files", "waived",
                                                              "renamed_controls") if k in record}
+            # One short line per round, printed as it ends: the platform log is capped, and the trace printed at
+            # exit is large enough to push everything after it out.
+            print("[oneshot] repair round " + json.dumps(
+                {"round": record["round"], "accepted": record["accepted"], "failing_before": len(record["failing"]),
+                 "passing_before": record["passing_before"],
+                 "counts_after": ((record.get("scenarios") or {}).get("counts")), "seconds": record["seconds"],
+                 "cost_cny": record["cost_cny"], "reason": (record.get("reason") or "")[:200]}), file=sys.stderr)
     if "stopped" not in budget.smoke and _checker_failed(state["report"]) and not state["fatal"] and state["executed"]:
         why = (state["report"] or {}).get("unavailable") or "every scenario ended in an error"
         budget.smoke["stopped"] = "the scenario check could not run: " + str(why)[:300]
     budget.smoke["problems_after"] = state["smoke"]
     budget.smoke["scenarios_after"] = scenario_summary(state["report"])
+    print("[oneshot] repair end " + json.dumps(
+        {"rounds": len(rounds), "accepted": sum(1 for r in rounds if r["accepted"]), "stopped": budget.smoke.get("stopped"),
+         "counts_after": (budget.smoke["scenarios_after"] or {}).get("counts"),
+         "seconds": round(time.monotonic() - started_repairs, 1), "repair_cny": round(budget.spent("repair"), 4)}),
+        file=sys.stderr)
 
 
 def main(argv=None):
@@ -2425,14 +2504,16 @@ def main(argv=None):
         print(f"[oneshot] wrote {len(files)} files in {time.monotonic() - started:.1f}s")
         return 0
     finally:
+        # Smallest first: the platform keeps only the head of a long log, and the smoke record (every round's
+        # failing scenarios) and the trace below can each exceed it.
+        print("[oneshot] usage " + json.dumps(budget.summary(), sort_keys=True), file=sys.stderr)
+        if budget.smoke is not None:
+            print("[oneshot] smoke " + json.dumps(budget.smoke, ensure_ascii=False).replace(key, "[REDACTED]"),
+                  file=sys.stderr)
         # True prompts, responses, timing and usage, including failures; never headers or keys.
         for attempt in budget.attempts + budget.side_calls:
             print("[oneshot] trace " + json.dumps(attempt, ensure_ascii=False).replace(key, "[REDACTED]"),
                   file=sys.stderr)
-        if budget.smoke is not None:
-            print("[oneshot] smoke " + json.dumps(budget.smoke, ensure_ascii=False).replace(key, "[REDACTED]"),
-                  file=sys.stderr)
-        print("[oneshot] usage " + json.dumps(budget.summary(), sort_keys=True), file=sys.stderr)
 
 
 if __name__ == "__main__":

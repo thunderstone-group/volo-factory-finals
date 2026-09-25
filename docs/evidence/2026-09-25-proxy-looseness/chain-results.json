@@ -1,0 +1,453 @@
+[
+ {
+  "key": "CHAIN REQ-5-4 S1 -> S2 (fresh Read viewer)",
+  "elapsed": "5.5",
+  "passed": false,
+  "fail": {
+   "label": "[S2] click issue \"Improve onboarding\" in default list",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3205/#/issues/acme-demo/acme-docs",
+   "snap": "- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - link \"Open\":\n    - /url: \"#/issues/acme-demo/acme-docs/Open\"\n  - link \"Closed\":\n    - /url: \"#/issues/acme-demo/acme-docs/Closed\"\n  - text: Search issues\n  - textbox \"Search issues\"\n  - heading \"Issues\" [level=2]\n  - article:\n    - text: \"#3\"\n    - link \"Original issue title\":\n      - /url: \"#/issue/acme-demo/acme-docs/3\"\n    - text: Open alice-dev"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.2s fill searchbox \"Search\"",
+   "ok   0.2s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s [S1] click \"Issues\"",
+   "ok   0.2s [S1] click issue",
+   "ok   0.2s [S1] click \"Close issue\"",
+   "ok   0.2s [S1] status Closed",
+   "FAIL 2.7s [S1] \"Closed issue\" activity",
+   "(predecessor stopped at: [S1] \"Closed issue\" activity)",
+   "ok   2.8s goto /",
+   "ok   2.8s click link \"Sign in\"",
+   "ok   2.8s click link \"Create an account\"",
+   "ok   2.8s fill Username",
+   "ok   2.8s fill Email",
+   "ok   2.8s fill Password",
+   "ok   2.8s fill Confirm password",
+   "ok   2.9s check \"Agree to the terms\"",
+   "ok   2.9s click \"Create account\"",
+   "ok   2.9s sign-in form shown",
+   "ok   2.9s goto /",
+   "ok   2.9s click link \"Sign in\"",
+   "ok   2.9s fill \"Username or email\"",
+   "ok   2.9s fill \"Password\"",
+   "ok   2.9s click button \"Sign in\"",
+   "ok   2.9s signed in as pw-ro-mugfpmb2437c (button \"Account menu\" visible)",
+   "ok   2.9s fill searchbox \"Search\"",
+   "ok   2.9s press Enter",
+   "ok   3.0s click link \"acme-docs\" (strict)",
+   "ok   3.0s heading contains \"acme-docs\"",
+   "ok   3.0s [S2] click \"Issues\"",
+   "FAIL 5.5s [S2] click issue \"Improve onboarding\" in default list"
+  ]
+ },
+ {
+  "key": "CHAIN REQ-6-1 S1 -> REQ-6-5 S1 (merge)",
+  "elapsed": "3.0",
+  "passed": false,
+  "fail": {
+   "label": "[6-5] \"Merge pull request\" enabled",
+   "error": "expect(locator).toBeEnabled() failed / Locator:  getByRole('button', { name: 'Merge pull request', exact: true }) / Expected: enabled / Received: disabled",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Open · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Conversation\" [level=2]\n  - paragraph: Update onboarding docs with search flow.\n  - article:\n    - strong: alice-dev\n    - paragraph: This PR is ready for review.\n  - article:\n    - strong: bob-reviewer\n    - text: Approve\n    - paragraph: Looks good.\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n    - button \"Reviewers\"\n  - button \"Merge pull request\" [disabled]\n  - alert: Required check test is not success\n  - button \"Close pull request\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s [6-1] click \"Settings\"",
+   "ok   0.2s [6-1] click \"Branches\"",
+   "ok   0.2s [6-1] click \"Add branch protection rule\"",
+   "ok   0.2s [6-1] fill \"Branch name pattern\" main",
+   "ok   0.2s [6-1] check \"Require 1 approval\"",
+   "ok   0.2s [6-1] check \"Require status check test\"",
+   "ok   0.3s [6-1] click \"Create\"",
+   "FAIL 0.3s [6-1] rule shows \"main\"",
+   "(predecessor stopped at: [6-1] rule shows \"main\")",
+   "ok   0.3s goto /",
+   "ok   0.3s click link \"Sign in\"",
+   "ok   0.3s fill \"Username or email\"",
+   "ok   0.4s fill \"Password\"",
+   "ok   0.4s click button \"Sign in\"",
+   "ok   0.4s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.4s fill searchbox \"Search\"",
+   "ok   0.4s press Enter",
+   "ok   0.4s click link \"acme-docs\" (strict)",
+   "ok   0.4s heading contains \"acme-docs\"",
+   "ok   0.4s [6-5] click \"Pull requests\"",
+   "ok   0.4s [6-5] click PR \"Improve onboarding\"",
+   "FAIL 3.0s [6-5] \"Merge pull request\" enabled"
+  ]
+ },
+ {
+  "key": "CHAIN REQ-2-1-2 S1 -> duplicate mobile-guild",
+  "elapsed": "5.4",
+  "passed": false,
+  "fail": {
+   "label": "[S2] \"mobile-guild\" listed in Your organizations (identifier text)",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('mobile-guild', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/orgs",
+   "snap": "- main:\n  - heading \"Your organizations\" [level=1]\n  - paragraph:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - paragraph:\n    - link \"Mobile Guild\":\n      - /url: \"#/org/mobile-guild\"\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s click button \"Account menu\"",
+   "ok   0.2s click link \"Your organizations\"",
+   "ok   0.2s [S1] click \"New organization\"",
+   "ok   0.2s [S1] fill mobile-guild",
+   "ok   0.2s [S1] fill Mobile Guild",
+   "ok   0.2s [S1] click \"Create organization\"",
+   "FAIL 2.7s [S1] heading contains mobile-guild",
+   "(predecessor stopped at: [S1] heading contains mobile-guild)",
+   "ok   2.8s goto /",
+   "ok   2.8s click link \"Sign in\"",
+   "ok   2.8s fill \"Username or email\"",
+   "ok   2.8s fill \"Password\"",
+   "ok   2.8s click button \"Sign in\"",
+   "ok   2.8s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   2.8s click button \"Account menu\"",
+   "ok   2.9s click link \"Your organizations\"",
+   "FAIL 5.4s [S2] \"mobile-guild\" listed in Your organizations (identifier text)"
+  ]
+ },
+ {
+  "key": "CHAIN REQ-2-1-2 S1 -> duplicate mobile-guild form",
+  "elapsed": "2.9",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.2s click button \"Account menu\"",
+   "ok   0.2s click link \"Your organizations\"",
+   "ok   0.2s [S1] click \"New organization\"",
+   "ok   0.2s [S1] fill mobile-guild",
+   "ok   0.2s [S1] fill Mobile Guild",
+   "ok   0.2s [S1] click \"Create organization\"",
+   "FAIL 2.7s [S1] heading contains mobile-guild",
+   "(predecessor stopped at: [S1] heading contains mobile-guild)",
+   "ok   2.8s goto /",
+   "ok   2.8s click link \"Sign in\"",
+   "ok   2.8s fill \"Username or email\"",
+   "ok   2.8s fill \"Password\"",
+   "ok   2.8s click button \"Sign in\"",
+   "ok   2.8s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   2.9s click button \"Account menu\"",
+   "ok   2.9s click link \"Your organizations\"",
+   "ok   2.9s [S2] click \"New organization\"",
+   "ok   2.9s [S2] fill mobile-guild",
+   "ok   2.9s [S2] click \"Create organization\"",
+   "ok   2.9s [S2] \"Organization name already exists\""
+  ]
+ },
+ {
+  "key": "FACET REQ-1-1-1 native email validation blocks submit",
+  "elapsed": "0.1",
+  "passed": false,
+  "fail": {
+   "label": "email input is not natively blocking (type!=email or novalidate)",
+   "error": "native constraint validation blocks submit: Please include an '@' in the email address. 'not-an-email' is missing an '@'.",
+   "url": "http://127.0.0.1:3205/#/register",
+   "snap": "- main:\n  - heading \"Create an account\" [level=1]\n  - text: Username\n  - textbox \"Username\"\n  - text: Email\n  - textbox \"Email\": not-an-email\n  - text: Password\n  - textbox \"Password\"\n  - text: Confirm password\n  - textbox \"Confirm password\"\n  - checkbox \"Agree to the terms\"\n  - text: Agree to the terms\n  - button \"Create account\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Email \"not-an-email\"",
+   "email input: {\"type\":\"email\",\"valid\":false,\"msg\":\"Please include an '@' in the email address. 'not-an-email' is missing an '@'.\",\"formNoValidate\":false}",
+   "FAIL 0.1s email input is not natively blocking (type!=email or novalidate)"
+  ]
+ },
+ {
+  "key": "FACET REQ-1-1-1 multi-invalid w/ valid email shape (isolates native block)",
+  "elapsed": "0.2",
+  "passed": false,
+  "fail": {
+   "label": "\"Password requirements are not satisfied\" (strict)",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('Password requirements are not satisfied') / Expected: visible / Error: strict mode violation: getByText('Password requirements are not satisfied') resolved to 2 elements:",
+   "url": "http://127.0.0.1:3205/#/register",
+   "snap": "- main:\n  - heading \"Create an account\" [level=1]\n  - text: Username\n  - textbox \"Username\": \"-bad-user\"\n  - alert: Username format is invalid\n  - text: Email\n  - textbox \"Email\": a@b\n  - alert: Email format is invalid\n  - text: Password\n  - textbox \"Password\"\n  - alert: Password requirements are not satisfied\n  - text: Confirm password\n  - textbox \"Confirm password\"\n  - alert: Password requirements are not satisfied\n  - checkbox \"Agree to the terms\"\n  - text: Agree to the terms\n  - alert: Agree to terms is required\n  - button \"Create account\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username \"-bad-user\"",
+   "ok   0.1s fill Email \"a@b\"",
+   "ok   0.1s fill Password \"short\"",
+   "ok   0.1s fill Confirm \"different\"",
+   "ok   0.1s click \"Create account\"",
+   "ok   0.1s \"Username format is invalid\"",
+   "ok   0.1s \"Email format is invalid\"",
+   "FAIL 0.1s \"Password requirements are not satisfied\" (strict)"
+  ]
+ },
+ {
+  "key": "FACET REQ-1-1-2 S3 d:signed-in org overview heading has identifier",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "heading contains \"acme-demo\"",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByRole('heading', { name: /acme-demo/ }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/org/acme-demo",
+   "snap": "- main:\n  - heading \"Acme Demo\" [level=1]\n  - navigation:\n    - link \"Repositories\":\n      - /url: \"#/org-repos/acme-demo\"\n    - link \"People\":\n      - /url: \"#/org-people/acme-demo\"\n    - link \"Teams\":\n      - /url: \"#/org-teams/acme-demo\"\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"acme-docs\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n  - paragraph:\n    - link \"secret-research\":\n      - /url: \"#/repo/acme-demo/secret-research\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.2s click org \"Acme Demo\"",
+   "FAIL 2.7s heading contains \"acme-demo\""
+  ]
+ },
+ {
+  "key": "FACET REQ-2-2-3 S1 ungranted private repo shows \"Access denied\"",
+  "elapsed": "3.0",
+  "passed": false,
+  "fail": {
+   "label": "\"Access denied\"",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('Access denied') / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/repo/acme-demo/secret-research",
+   "snap": "- main:\n  - heading \"Not found\" [level=1]\n  - paragraph:\n    - link \"Home\":\n      - /url: \"#/\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username",
+   "ok   0.1s fill Email",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm password",
+   "ok   0.1s check \"Agree to the terms\"",
+   "ok   0.2s click \"Create account\"",
+   "ok   0.2s sign-in form shown",
+   "ok   0.2s goto /",
+   "ok   0.2s click link \"Sign in\"",
+   "ok   0.2s fill \"Username or email\"",
+   "ok   0.3s fill \"Password\"",
+   "ok   0.3s click button \"Sign in\"",
+   "ok   0.3s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.3s click org \"Acme Demo\"",
+   "ok   0.3s click org repo \"secret-research\"",
+   "ok   0.4s click \"People\"",
+   "ok   0.4s add member",
+   "ok   0.5s goto /",
+   "ok   0.5s click link \"Sign in\"",
+   "ok   0.5s fill \"Username or email\"",
+   "ok   0.5s fill \"Password\"",
+   "ok   0.5s click button \"Sign in\"",
+   "ok   0.5s signed in as pw-mem-mugfq136howm (button \"Account menu\" visible)",
+   "ok   0.5s direct open ungranted private repo address",
+   "FAIL 3.0s \"Access denied\""
+  ]
+ },
+ {
+  "key": "FACET REQ-3-2-1 Owner default asserted by value",
+  "elapsed": "0.2",
+  "passed": false,
+  "fail": {
+   "label": "Owner toHaveValue(\"alice-dev\")",
+   "error": "expect(locator).toHaveValue(expected) failed / Locator: getByLabel('Owner', { exact: true }) / Expected: \"alice-dev\" / Error: Not an input element",
+   "url": "http://127.0.0.1:3205/#/new-repo",
+   "snap": "- main:\n  - heading \"New repository\" [level=1]\n  - text: Owner\n  - combobox \"Owner\": alice-dev\n  - text: Repository name\n  - textbox \"Repository name\"\n  - text: Description\n  - textbox \"Description\"\n  - group \"Visibility\":\n    - text: Visibility\n    - radio \"Public\"\n    - text: Public\n    - radio \"Private\" [checked]\n    - text: Private\n  - checkbox \"Add a README file\"\n  - text: Add a README file\n  - button \"Create repository\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.2s click \"New repository\"",
+   "FAIL 0.2s Owner toHaveValue(\"alice-dev\")"
+  ]
+ },
+ {
+  "key": "FACET REQ-4-2-2 click changed file -> file diff lines",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "file diff shows added lines (+ prefix) / still a diff page",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText(/^\\+/).first() / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/blob/acme-demo/acme-docs/src/search.ts",
+   "snap": "- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"src/search.ts\" [level=2]\n  - text: \"export function searchFlow() { return \\\"search flow\\\"; }\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click \"Commits\"",
+   "ok   0.1s click commit \"Document search flow\"",
+   "ok   0.2s click changed file \"src/search.ts\"",
+   "FAIL 2.7s file diff shows added lines (+ prefix) / still a diff page"
+  ]
+ },
+ {
+  "key": "FACET REQ-4-4 S2 b3: substring messages, then files/history unchanged",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Add file\"",
+   "ok   0.2s click menuitem \"Create new file\"",
+   "ok   0.2s fill \"File name\" ../invalid.md",
+   "ok   0.2s fill \"File contents\"",
+   "ok   0.2s click \"Commit changes\"",
+   "ok   0.2s getByText(\"Invalid file path\") default (substring)",
+   "ok   0.2s getByText(\"Commit message is required\") default (substring)",
+   "ok   0.2s reload",
+   "ok   0.2s no \"invalid.md\" in files",
+   "ok   0.2s click \"Commits\"",
+   "ok   0.2s history unchanged (2 commits)"
+  ]
+ },
+ {
+  "key": "FACET REQ-6-3-2 exact example aggregate \"3 additions, 1 deletions\"",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "\"3 additions, 1 deletions\"",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('3 additions, 1 deletions') / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1/files",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Open · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Changed files\" [level=2]\n  - paragraph: 4 additions, 2 deletions\n  - article:\n    - heading \"src/search.ts\" [level=3]:\n      - link \"src/search.ts\":\n        - /url: \"#/blob/acme-demo/acme-docs/src/search.ts\"\n    - paragraph: +2 −1\n  - article:\n    - heading \"main-only.md\" [level=3]:\n      - link \"main-only.md\":\n        - /url: \"#/blob/acme-demo/acme-docs/main-only.md\"\n    - paragraph: +1 −0\n  - article:\n    - heading \"README.md\" [level=3]:\n      - link \"README.md\":\n        - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n    - paragraph: +1 −1\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n  - button \"Merge pull request\" [disabled]"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click \"Pull requests\"",
+   "ok   0.1s click PR \"Improve onboarding\"",
+   "ok   0.1s click \"Files changed\"",
+   "FAIL 2.7s \"3 additions, 1 deletions\""
+  ]
+ },
+ {
+  "key": "FACET REQ-6-4 without seed precondition: username visibility after select/remove",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "reviewer area (complementary) shows bob-reviewer",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByRole('complementary').getByText('bob-reviewer', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Open · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Conversation\" [level=2]\n  - paragraph: Update onboarding docs with search flow.\n  - article:\n    - strong: alice-dev\n    - paragraph: This PR is ready for review.\n  - article:\n    - strong: bob-reviewer\n    - text: Approve\n    - paragraph: Looks good.\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n    - text: bob-reviewer\n    - button \"Remove bob-reviewer\"\n    - button \"Reviewers\"\n  - button \"Merge pull request\"\n  - button \"Close pull request\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Pull requests\"",
+   "ok   0.2s click PR \"Improve onboarding\"",
+   "ok   0.2s click \"Reviewers\"",
+   "ok   0.2s type in textbox \"Search\"",
+   "ok   0.2s click option \"bob-reviewer\"",
+   "after select: getByText(bob-reviewer) count=2, exact count=1",
+   "FAIL 2.7s reviewer area (complementary) shows bob-reviewer"
+  ]
+ },
+ {
+  "key": "FACET REQ-6-5 S1 test check success before merge",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "\"test: success\" seeded",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('test: success') / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1/checks",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Open · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Checks\" [level=2]\n  - text: \"test: pending test status\"\n  - combobox \"test status\":\n    - option \"pending\" [selected]\n    - option \"success\"\n    - option \"failure\"\n  - button \"Save\"\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n    - button \"Reviewers\"\n  - button \"Merge pull request\"\n  - button \"Close pull request\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.2s click link \"acme-docs\" (strict)",
+   "ok   0.2s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Pull requests\"",
+   "ok   0.2s click PR \"Improve onboarding\"",
+   "ok   0.2s click \"Checks\"",
+   "FAIL 2.7s \"test: success\" seeded"
+  ]
+ },
+ {
+  "key": "FACET REQ-6-5 S1 merger/time/commit id after merge",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "merger \"alice-dev\" shown in main",
+   "error": "expect(locator).toBeVisible() failed / Locator: locator('main').getByText(/merged by alice-dev|alice-dev merged/i) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3205/#/pr/acme-demo/acme-docs/1",
+   "snap": "- main:\n  - heading \"Improve onboarding\" [level=1]\n  - paragraph: \"#1 · Merged · main ← feature-search\"\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - navigation:\n    - link \"Conversation\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/conversation\"\n    - link \"Commits\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/commits\"\n    - link \"Files changed\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/files\"\n    - link \"Checks\":\n      - /url: \"#/pr/acme-demo/acme-docs/1/checks\"\n  - heading \"Conversation\" [level=2]\n  - paragraph: Update onboarding docs with search flow.\n  - article:\n    - strong: alice-dev\n    - paragraph: This PR is ready for review.\n  - article:\n    - strong: bob-reviewer\n    - text: Approve\n    - paragraph: Looks good.\n  - complementary:\n    - heading \"Reviewers\" [level=3]\n    - button \"Reviewers\""
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\"",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in as alice-dev (button \"Account menu\" visible)",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.2s click \"Pull requests\"",
+   "ok   0.2s click PR \"Improve onboarding\"",
+   "ok   0.2s click \"Merge pull request\"",
+   "ok   0.2s click \"Confirm merge\"",
+   "ok   0.2s status \"Merged\" inside main (scoped)",
+   "FAIL 2.7s merger \"alice-dev\" shown in main"
+  ]
+ }
+]

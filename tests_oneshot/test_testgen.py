@@ -204,6 +204,22 @@ test('REQ-1-2: Edit one', async ({ page }) => {
 
 
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "node and npm are required")
+class TestIdCase(unittest.TestCase):
+    def test_a_dropped_scenario_suffix_is_restored_from_the_scenario_number(self):
+        self.assertEqual(testgen._test_id("REQ-3-1: REQ-3-1: Search - Scenario 2"), ("REQ-3-1#2", "REQ-3-1: Search - Scenario 2"))
+        self.assertEqual(testgen._test_id("REQ-3-1: Search - Scenario 1"), ("REQ-3-1", "Search - Scenario 1"))
+        self.assertEqual(testgen._test_id("REQ-3-1#3: REQ-3-1: Search - Scenario 3"), ("REQ-3-1#3", "REQ-3-1: Search - Scenario 3"))
+        self.assertEqual(testgen._test_id("REQ-2: Plain name"), ("REQ-2", "Plain name"))
+
+
+class GroundingCase(unittest.TestCase):
+    def test_a_cell_address_is_grounded_but_an_invented_name_is_not(self):
+        quoted = testgen._phrases("Cell `A1` holds `Region`.")
+        source = "getByRole('gridcell', { name: 'E1', exact: true }); getByRole('button', { name: 'Frobnicate' })"
+        self.assertFalse(testgen.ungrounded("E1", source, "Cell `A1` holds `Region`.", quoted))
+        self.assertTrue(testgen.ungrounded("Frobnicate", source, "Cell `A1` holds `Region`.", quoted))
+
+
 class RunCase(unittest.TestCase):
     def test_runs_a_suite_against_a_live_application(self):
         env = dict(os.environ)
@@ -315,6 +331,89 @@ class RepairLoopCase(unittest.TestCase):
         _, budget, _ = self.run_loop([before, after, recheck], [block("frontend/public/app.js", "// repaired")])
         self.assertTrue(budget.smoke["rounds"][0]["accepted"], budget.smoke["rounds"][0])
         self.assertEqual(budget.smoke["rounds"][0]["gained"], ["REQ-1", "REQ-2", "REQ-3"])
+
+    def test_a_lost_quoted_phrase_weighs_as_one_lost_test_under_written_tests(self):
+        from tests_oneshot.test_oneshot import block
+        many = {f"REQ-{i}": "fail" for i in range(1, 7)}
+        before = self.report({**many, "REQ-9": "pass"})
+        after = self.report({**{k: "pass" for k in many}, "REQ-9": "pass"})
+        vocab = iter([([], 0), ([], 1)])
+        with self.patch.object(self.adapter, "vocabulary_gaps", side_effect=lambda *a, **k: next(vocab, ([], 1))):
+            _, budget, _ = self.run_loop([before, after], [block("frontend/public/app.js", "// repaired")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertIn("removed quoted vocabulary", record["waived"][0])
+
+    def test_a_lost_quoted_phrase_still_outweighs_a_small_gain(self):
+        from tests_oneshot.test_oneshot import block
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-9": "pass"})
+        recheck = self.report({"REQ-1": "pass", "REQ-2": "pass"})
+        vocab = iter([([], 0), ([], 1)])
+        with self.patch.object(self.adapter, "vocabulary_gaps", side_effect=lambda *a, **k: next(vocab, ([], 1))):
+            _, budget, _ = self.run_loop([before, after, recheck], [block("frontend/public/app.js", "// repaired")])
+        record = budget.smoke["rounds"][0]
+        self.assertFalse(record["accepted"], record)
+        self.assertIn("removed quoted vocabulary", record["reason"])
+
+    def test_a_round_the_model_never_answered_does_not_count_toward_the_discard_limit(self):
+        adapter, sent = self.adapter, []
+        before = self.report({"REQ-1": "fail", "REQ-9": "pass"})
+        unchanged = self.report({"REQ-1": "fail", "REQ-9": "pass"})
+        n = adapter.REPAIR_REJECTIONS
+        outcomes = ["http"] + ["same"] * n
+
+        def complete(messages, model, base, key, budget, tries=3, salvage=None):
+            kind = outcomes.pop(0)
+            record = budget.start(messages, model)
+            if kind == "http":
+                raise RuntimeError("model HTTP 400")
+            record.update(status="completed", usage={"prompt_tokens": 10, "completion_tokens": 10})
+            from tests_oneshot.test_oneshot import block
+            return block("frontend/public/app.js", "// tried"), {}, "stop"
+        budget = adapter.CallBudget(repair_limit=n + 1)
+        budget.phase = "repair"
+        with self.patch.object(adapter, "check_scenarios", side_effect=[before] + [unchanged] * (n + 2)), \
+                self.patch.object(adapter, "stream_completion", side_effect=complete):
+            adapter.repair_delivery(self.stage, list(self.files), [{"role": "user", "content": "draft"}], "m", "b", "k",
+                                    budget, requirements="synthetic", tests=Path(self.temp.name) / "suite")
+        rounds = budget.smoke["rounds"]
+        self.assertEqual(len(rounds), n + 1, [r.get("reason") for r in rounds])
+        self.assertFalse(rounds[0]["replied"])
+        self.assertEqual(budget.smoke["stopped"], f"{n} repairs in a row were discarded")
+
+    @staticmethod
+    def edit(path, search, replace):
+        return f"=== EDIT: {path} ===\n<<<<<<< SEARCH\n{search}\n=======\n{replace}\n>>>>>>> REPLACE\n=== END ===\n"
+
+    def test_a_repair_that_breaks_parsing_gets_one_follow_up_in_the_same_round(self):
+        if not shutil.which("node"):
+            self.skipTest("node is required")
+        from tests_oneshot.test_oneshot import block
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-9": "pass"})
+        recheck = self.report({"REQ-1": "pass", "REQ-2": "pass"})
+        sent, budget, _ = self.run_loop([before, after, recheck], [
+            block("frontend/public/app.js", "const shown = ;"),
+            self.edit("frontend/public/app.js", "const shown = ;", "const shown = 1;")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertEqual(record["follow_up"], "syntax")
+        self.assertIn("does not parse", sent[1])
+        self.assertEqual((self.stage / "frontend/public/app.js").read_text().strip(), "const shown = 1;")
+
+    def test_a_repair_whose_every_search_missed_gets_one_follow_up_in_the_same_round(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-9": "pass"})
+        recheck = self.report({"REQ-1": "pass", "REQ-2": "pass"})
+        sent, budget, _ = self.run_loop([before, after, recheck], [
+            self.edit("frontend/build.js", "// a line that is not there", "// fixed"),
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// fixed")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertEqual(record["follow_up"], "search")
+        self.assertIn("was not applied", sent[1])
+        self.assertEqual((self.stage / "frontend/build.js").read_text().strip(), "// fixed")
 
     def test_a_repair_that_only_gains_is_kept(self):
         from tests_oneshot.test_oneshot import block

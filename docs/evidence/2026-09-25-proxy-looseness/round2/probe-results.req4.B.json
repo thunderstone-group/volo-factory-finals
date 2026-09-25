@@ -1,0 +1,231 @@
+[
+ {
+  "app": "B",
+  "key": "REQ-4-2-3 S2 via search: absent query + scope",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "\"No code results\"",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('No code results', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3302/#/repo/acme-demo/acme-docs",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\": no-such-token\n  - button \"Search\"\n- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - paragraph: Documentation and search flow documentation\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"Files\" [level=2]\n  - link \"docs/\":\n    - /url: \"#/tree/acme-demo/acme-docs/docs\"\n  - link \"src/\":\n    - /url: \"#/tree/acme-demo/acme-docs/src\"\n  - link \"README.md\":\n    - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s fill Search \"no-such-token\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s exactly one link \"Code\" (results type)",
+   "ok   0.1s click \"Code\" results type",
+   "FAIL 2.7s \"No code results\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-4-2-3 S2 via search: filters present/unchanged (Path)",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "\"No code results\"",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('No code results', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3302/#/repo/acme-demo/acme-docs",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\": no-such-token\n  - button \"Search\"\n- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - paragraph: Documentation and search flow documentation\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"Files\" [level=2]\n  - link \"docs/\":\n    - /url: \"#/tree/acme-demo/acme-docs/docs\"\n  - link \"src/\":\n    - /url: \"#/tree/acme-demo/acme-docs/src\"\n  - link \"README.md\":\n    - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s fill Search \"no-such-token\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s exactly one link \"Code\" (results type)",
+   "ok   0.1s click \"Code\" results type",
+   "FAIL 2.6s \"No code results\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-4-2-3 S2 via search: return to repository and repeat",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "\"No code results\"",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('No code results', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3302/#/repo/acme-demo/acme-docs",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\": no-such-token\n  - button \"Search\"\n- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - paragraph: Documentation and search flow documentation\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"Files\" [level=2]\n  - link \"docs/\":\n    - /url: \"#/tree/acme-demo/acme-docs/docs\"\n  - link \"src/\":\n    - /url: \"#/tree/acme-demo/acme-docs/src\"\n  - link \"README.md\":\n    - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s fill Search \"no-such-token\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s exactly one link \"Code\" (results type)",
+   "ok   0.1s click \"Code\" results type",
+   "FAIL 2.6s \"No code results\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-4-2-3 S2 via homeLink",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "\"No code results\"",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('No code results', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3302/#/repo/acme-demo/acme-docs",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\": no-such-token\n  - button \"Search\"\n- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - paragraph: Documentation and search flow documentation\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"Files\" [level=2]\n  - link \"docs/\":\n    - /url: \"#/tree/acme-demo/acme-docs/docs\"\n  - link \"src/\":\n    - /url: \"#/tree/acme-demo/acme-docs/src\"\n  - link \"README.md\":\n    - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s home: click link \"acme-docs\" (repository entry, no search)",
+   "ok   0.1s heading contains acme-docs",
+   "ok   0.1s fill Search \"no-such-token\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s exactly one link \"Code\" (results type)",
+   "ok   0.1s click \"Code\" results type",
+   "FAIL 2.7s \"No code results\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-4-3-1 S1 via homeLink",
+  "elapsed": "0.1",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s home: click link \"acme-docs\" (repository entry, no search)",
+   "ok   0.1s heading contains acme-docs"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-4-3-1 S1 via search: full THEN incl. README content differs",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "only matching branch options (no \"Create branch: feature-search\" for an existing branch)",
+   "error": "expect(locator).toHaveCount(expected) failed / Locator:  getByRole('option') / Expected: 1 / Received: 2",
+   "url": "http://127.0.0.1:3302/#/repo/acme-demo/acme-docs",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\": acme-docs\n  - button \"Search\"\n- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - paragraph: Documentation and search flow documentation\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - 'button \"Branch main feature-search feature-search Create branch: feature-search\"':\n    - text: Branch main\n    - textbox \"Find branch\": feature-search\n    - option \"feature-search\"\n    - 'option \"Create branch: feature-search\"'\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"Files\" [level=2]\n  - link \"docs/\":\n    - /url: \"#/tree/acme-demo/acme-docs/docs\"\n  - link \"src/\":\n    - /url: \"#/tree/acme-demo/acme-docs/src\"\n  - link \"README.md\":\n    - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click link \"Code\" (repo nav)",
+   "ok   0.1s button \"Branch main\"",
+   "ok   0.1s click \"Branch main\"",
+   "ok   0.1s options main and feature-search listed",
+   "ok   0.1s current branch marked (aria-selected on main)",
+   "ok   0.2s type \"feature-search\" (pressSequentially)",
+   "FAIL 2.7s only matching branch options (no \"Create branch: feature-search\" for an existing branch)"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-4-3-3 S2 non-admin bob-reviewer (seed password)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "signed in (button \"Account menu\" visible)",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByRole('button', { name: 'Account menu', exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3302/#/login",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Sign in\" [level=1]\n  - alert: Invalid credentials\n  - text: Username or email\n  - textbox \"Username or email\"\n  - text: Password\n  - textbox \"Password\"\n  - button \"Sign in\"\n  - paragraph:\n    - link \"Create an account\":\n      - /url: \"#/register\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" bob-reviewer",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "FAIL 2.7s signed in (button \"Account menu\" visible)"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "CHAIN REQ-4-3-3 S1 -> S2 non-admin sees default unchanged",
+  "elapsed": "2.9",
+  "passed": false,
+  "fail": {
+   "label": "signed in (button \"Account menu\" visible)",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByRole('button', { name: 'Account menu', exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3302/#/login",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Sign in\" [level=1]\n  - alert: Invalid credentials\n  - text: Username or email\n  - textbox \"Username or email\"\n  - text: Password\n  - textbox \"Password\"\n  - button \"Sign in\"\n  - paragraph:\n    - link \"Create an account\":\n      - /url: \"#/register\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" alice-dev",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in (button \"Account menu\" visible)",
+   "ok   0.1s username \"alice-dev\" visible before opening the repository entry",
+   "ok   0.1s home: click link \"acme-docs\" (repository entry, no search)",
+   "ok   0.1s heading contains acme-docs",
+   "ok   0.2s click link \"Code\" (repo nav)",
+   "ok   0.2s button \"Branch main\"",
+   "ok   0.2s [pred] Settings",
+   "ok   0.2s [pred] Branches",
+   "ok   0.2s [pred] select release",
+   "ok   0.2s [pred] Update",
+   "ok   0.2s [pred] Confirm",
+   "(predecessor defaultToRelease completed)",
+   "ok   0.3s goto /",
+   "ok   0.3s click link \"Sign in\"",
+   "ok   0.3s fill \"Username or email\" bob-reviewer",
+   "ok   0.3s fill \"Password\"",
+   "ok   0.4s click button \"Sign in\"",
+   "FAIL 2.9s signed in (button \"Account menu\" visible)"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "CHAIN REQ-3-2-1 dup + REQ-3-4 -> REQ-4-3-1 S1 via search",
+  "elapsed": "0.4",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" alice-dev",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in (button \"Account menu\" visible)",
+   "ok   0.2s [pred] click link \"New repository\"",
+   "(predecessor dupRepoLink completed)",
+   "ok   0.2s goto /",
+   "ok   0.2s click link \"Sign in\"",
+   "ok   0.2s fill \"Username or email\" alice-dev",
+   "ok   0.2s fill \"Password\"",
+   "ok   0.3s click button \"Sign in\"",
+   "ok   0.3s signed in (button \"Account menu\" visible)",
+   "ok   0.3s [pred] search secret-research",
+   "FAIL 0.3s [pred] open secret-research",
+   "(predecessor visibilityGeneral stopped at: [pred] open secret-research)",
+   "ok   0.3s goto /",
+   "ok   0.3s fill searchbox \"Search\"",
+   "ok   0.4s press Enter",
+   "ok   0.4s click link \"acme-docs\" (strict)",
+   "ok   0.4s heading contains \"acme-docs\"",
+   "ok   0.4s click link \"Code\" (repo nav)",
+   "ok   0.4s button \"Branch main\""
+  ]
+ }
+]
