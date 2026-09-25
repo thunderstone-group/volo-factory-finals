@@ -2194,7 +2194,19 @@ def _still_failing(after, targeted, shown=5):
     return "".join(f"; after it {s['id']} still failed: {(s.get('observation') or '')[:300]}" for s in left)
 
 
-def repair_request(state, discarded=None, unapplied=()):
+def dependency_order(failing, depths):
+    """Failing tests with what others depend on first (roadmap 4.18): by the shallowest requirement a finding touches,
+    then by how many tests it stands for (a helper line several tests stop at), then as reported. Helper findings used
+    to come last, after every single test, and fell outside the TESTGEN_SHOWN a request lists: on one GitHub draft all
+    13 of them (42 blocked tests) were cut."""
+    def key(item):
+        index, entry = item
+        ids = entry.get("blocks") or [entry["id"]]
+        return (min(depths.get(i.split("#")[0], 0) for i in ids), -len(ids), index)
+    return [entry for _, entry in sorted(enumerate(failing), key=key)]
+
+
+def repair_request(state, discarded=None, unapplied=(), depths=None):
     """The repair message: what breaks the application as a whole, else the failing scenarios with what the check did
     and saw, the passing scenarios to keep, and the other findings as hints. Hunks of the last kept change that did
     not apply are named with the current lines they missed."""
@@ -2210,7 +2222,7 @@ def repair_request(state, discarded=None, unapplied=()):
     failing = _scenarios(state, "fail")
     written = (state["report"] or {}).get("kind") == "testgen"
     if failing and written:
-        shown = failing[:TESTGEN_SHOWN]
+        shown = dependency_order(failing, depths or {})[:TESTGEN_SHOWN]
         lines = [f"- {s['id']} {s.get('name') or ''}\n  error: {(s.get('observation') or '').strip()[:900]}"
                  + (f"\n  test code:\n" + "\n".join("    " + line for line in s["source"].splitlines()) if s.get("source") else "")
                  for s in shown]
@@ -2425,8 +2437,9 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         budget.smoke["tests"] = dict(budget.suite, used=tests is not None)
     rounds, conversation, discarded, unapplied = [], list(messages), None, []
     quoted = {phrase.lower() for phrase in quoted_control_phrases(requirements)}
+    depths = _testgen_module().depths(requirements or "") if tests is not None else {}
     while state["fatal"] or _scenarios(state, "fail"):
-        ask = repair_request(state, discarded, unapplied)
+        ask = repair_request(state, discarded, unapplied, depths)
         stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
         # Only rounds the model answered count: a transport failure (run 95ec6880ee7f lost a round to "model HTTP 400")
         # says nothing about the repairs, and the global failure limit already bounds those.

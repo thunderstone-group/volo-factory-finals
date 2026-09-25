@@ -140,6 +140,37 @@ def _node():
     return shutil.which("node")
 
 
+FENCE = re.compile(r"\A[ \t]*```[\w-]*[ \t]*\r?\n(.*?)(?:\r?\n[ \t]*```[ \t]*)?\s*\Z", re.S)
+
+
+def unfence(body):
+    """A file body without the Markdown code fence a reply may wrap it in: three of fifteen files of one GitHub suite
+    began with ```js, which turns the whole file into template literals that do not parse (21 of 100 tests never ran)."""
+    match = FENCE.match(body)
+    return match.group(1) if match else body
+
+
+def depths(text):
+    """Requirement id -> the length of its longest dependency chain (0 when it depends on nothing), counting what its
+    folders depend on. The repair request lists what others depend on first: in ARC's ablation (arXiv 2602.13723,
+    Table 6) building requirements in an arbitrary rather than dependency order cost 16-52 points of pass rate."""
+    reqs = {r["id"]: r for r in scenarios.load_requirements(text)}
+    memo = {}
+
+    def declared(rid):
+        found, node = set(), reqs.get(rid)
+        while node:
+            found.update(d for d in node.get("dependencies") or [] if d in reqs)
+            node = reqs.get(node.get("parent"))
+        return found
+
+    def depth(rid, trail):
+        if rid not in memo:
+            memo[rid] = 1 + max((depth(d, trail | {rid}) for d in declared(rid) if d not in trail | {rid}), default=-1)
+        return memo[rid]
+    return {rid: depth(rid, frozenset()) for rid in reqs}
+
+
 def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
     """Write one spec file per group into `suite` with `complete(messages) -> (content, usage, finish)`; a reply
     without a file block is asked once more. Returns the manifest (also saved as suite.json)."""
@@ -162,7 +193,7 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
             record["finish"] = finish
             found = [m for m in FILE_BLOCK.finditer(content or "") if m.group(1).strip().endswith(".cjs")]
             if found:
-                body = found[-1].group(2)
+                body = unfence(found[-1].group(2))
                 break
             record["error"] = "the reply had no file block"
         if body is None:

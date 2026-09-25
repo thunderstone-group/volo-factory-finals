@@ -530,3 +530,69 @@ class DraftPairCase(unittest.TestCase):
         self.assertEqual(judged, ["// weak"])
         self.assertEqual(published, "// weak")
         self.assertEqual((budget.pair["second"], budget.pair["chosen"]), (0, 1))
+
+
+class FenceCase(unittest.TestCase):
+    def test_a_fenced_body_loses_its_fence_and_an_unfenced_one_is_unchanged(self):
+        self.assertEqual(testgen.unfence("```js\nconst a = 1;\n```"), "const a = 1;")
+        self.assertEqual(testgen.unfence("```cjs\nconst a = 1;\n```\n"), "const a = 1;")
+        self.assertEqual(testgen.unfence("```\nconst a = 1;"), "const a = 1;")  # the closing fence was cut
+        plain = "const a = `x`;\n// ```js in a comment\n"
+        self.assertEqual(testgen.unfence(plain), plain)
+
+    def test_the_suite_writer_saves_a_fenced_reply_as_a_file_that_parses(self):
+        body = "```js\nconst { test } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => {});\n```"
+        with tempfile.TemporaryDirectory() as temp:
+            manifest = testgen.write_suite(REQUIREMENTS, temp, lambda m: (f"=== FILE: x.spec.cjs ===\n{body}\n=== END ===",
+                                                                          {}, "stop"), workers=1)
+            text = (Path(temp) / manifest["files"][0]["file"]).read_text()
+        self.assertTrue(text.startswith("const { test }"))
+        if shutil.which("node"):
+            self.assertNotIn("syntax", manifest["files"][0])
+
+
+class DependencyOrderCase(unittest.TestCase):
+    GRAPH = textwrap.dedent("""\
+        id: ROOT
+        type: FOLDER
+        children:
+        - id: REQ-1
+          type: ATOMIC
+          scenarios: [{name: a, steps: []}]
+        - id: REQ-2
+          type: FOLDER
+          dependencies: [REQ-1]
+          children:
+          - id: REQ-2-1
+            type: ATOMIC
+            scenarios: [{name: b, steps: []}]
+          - id: REQ-2-2
+            type: ATOMIC
+            dependencies: [REQ-2-1]
+            scenarios: [{name: c, steps: []}]
+        - id: REQ-3
+          type: ATOMIC
+          dependencies: [REQ-4]
+          scenarios: [{name: d, steps: []}]
+        - id: REQ-4
+          type: ATOMIC
+          dependencies: [REQ-3]
+          scenarios: [{name: e, steps: []}]
+        """)
+
+    def test_depth_counts_the_longest_chain_including_folder_dependencies_and_survives_a_cycle(self):
+        depths = testgen.depths(self.GRAPH)
+        self.assertEqual((depths["REQ-1"], depths["REQ-2-1"], depths["REQ-2-2"]), (0, 1, 2))
+        self.assertIn(depths["REQ-3"], (0, 1))
+
+    def test_failures_others_depend_on_come_first_and_helpers_are_no_longer_cut(self):
+        from oneshot import main as adapter
+        depths = testgen.depths(self.GRAPH)
+        failing = ([{"id": "REQ-2-2", "status": "fail"}] * 25
+                   + [{"id": "REQ-2-1", "status": "fail"},
+                      {"id": "helper:t01.spec.cjs:9", "status": "fail", "blocks": ["REQ-2-1#2", "REQ-2-2#2", "REQ-2-2#3"]},
+                      {"id": "REQ-1", "status": "fail"}])
+        ordered = adapter.dependency_order(failing, depths)
+        self.assertEqual([e["id"] for e in ordered[:3]], ["REQ-1", "helper:t01.spec.cjs:9", "REQ-2-1"])
+        self.assertIn("helper:t01.spec.cjs:9", [e["id"] for e in ordered[:adapter.TESTGEN_SHOWN]])
+        self.assertEqual([e["id"] for e in adapter.dependency_order(failing, {})][:1], ["helper:t01.spec.cjs:9"])
