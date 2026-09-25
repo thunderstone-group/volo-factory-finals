@@ -6,7 +6,7 @@
 
 - 第九次提交（`dfce9da4382a`，包 6143d95f，4.15 守卫计入 3:1）：GitHub 22、Sheet 79，p 50.5%，费用 16.39 元，S 55.27，**总榜第 1**（Iris 36.34）。main 已合入 PR #73（到 4.16 与接力脚本）。
 - 第十次提交（`a2375cd48c2a`，包 c5152707，4.16 轮内追问 + 单元格坐标）：Sheet `ed1ef8fb5d78`（16:45 起）、GitHub `d58e50066c0a`（17:24 起）。
-- 夜间接力：`scripts/submission_chain.py` 在第十次两题结束后，把包 c5152707 当新提交重复上传、两题各跑一次、一次一轮；日志 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/official/chain-2026-09-25.jsonl`，进程输出在本会话 scratchpad `chain.log`。停止条件：轮数用完、额度低于保留线、到点。接手先 `ps aux | grep submission_chain` 和 `arcbench runs --limit 6`，别重复提交。
+- 夜间接力：`scripts/submission_chain.py` 在第十次两题结束后，把包 c5152707 当新提交重复上传、两题各跑一次、一次一轮；日志 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/official/chain-2026-09-25.jsonl`，进程输出同目录 `chain-2026-09-25.out`（nohup 脱离会话运行，09-25 17:30 起，参数：5 轮、保留 200 元、09-26 09:00 后不再起新提交；包存档在同目录 `packages/pkg-c5152707.zip`）。停止条件：轮数用完、额度低于保留线、到点。接手先 `ps aux | grep submission_chain` 和 `arcbench runs --limit 6`，别重复提交。
 - 规则：同一道题同时只能有一个正式 run（再起返回 409）；只有最新提交能起 run，所以提交节奏由较慢的 GitHub 决定。正式评测按 run 计费，并发不串费用。
 - 比赛额度约 466 元（第十次起跑前）；练习 key 约 205 元。
 - **arcbench 会话**：cookie 取自 Chrome「Profile 1」（`arcbench session --profile "Profile 1"`），09-29 11:35 过期，到期前要甲方在该 profile 重新登录。
