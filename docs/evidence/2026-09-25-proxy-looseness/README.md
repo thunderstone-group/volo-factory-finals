@@ -73,3 +73,42 @@ bob-reviewer's password (rows 8, 16, 18; the only password stated is `Valid-pass
 (8); a Maintain account, two Open PRs while REQ-6-2-1 needs one Open and one Closed, a clean start after permanent
 merges (22); a Read-only viewer and a "separate protected issue" (18); conflicting ownership of `acme-docs`
 (alice-dev in the seed line, the organization in REQ-2-1-1) (10-11).
+
+## Round 2: what the strict suite (v2) still gets wrong (submission 4 app A, submission 5 app B)
+
+v2 calibration (ids fixed): app A proxy-only 10, hidden-only 3; app B proxy-only 9, hidden-only 6 (of the 6, four are
+`error` — names like `alice-dev/acme-docs` the requirements never give verbatim — and two `fail`). Probes in
+`round2/` (`harness2.cjs`, `probes-*.cjs`, `chain-req13.cjs`, `strict-check.cjs`, `forgot-check.cjs`).
+
+- **No strict-mode failure in any hidden run:** all 176 hidden failures (89 on A, 87 on B) have status `timedOut`; a
+  strict-mode violation fails in 0.01 s with its own error. Duplicate matches did not directly fail a hidden test
+  unless the hidden helpers retry on errors. This weakens category C of round 1.
+- **R (new): the entry a role would use.** Opening `acme-docs` three ways on fresh backends (global search, the
+  "Repositories" link, the home-page link), only the home-page link separates the apps: A has none and fails hidden
+  REQ-3-3 S1 / REQ-4-3-1 S1, B has it and passes them. v2 reached repositories through search.
+
+| Scenario | App | v2 skipped / loosened / over-asserted | Strict probe, first failing step | Cat. | Evidence |
+|---|---|---|---|---|---|
+| REQ-1-3 S1 | A | Only the success path. | "short"/"short" shows "Password updated"; empty New+Confirm sets an empty password; mismatch only a toast outside the form. | B | defects confirmed, mapping inferred |
+| REQ-1-3 S2 | A | Nothing clear. | Described case passes; candidates: required-field message is a 6 s toast outside the form. | F | inferred |
+| REQ-1-3 S3 | A | Confirmation equal to the new password instead of the stated mismatch. | Only "Current password is incorrect"; no confirmation error. | A | defect confirmed, mapping inferred |
+| REQ-4-2-3 S2 | A | Opened the repo through search; skipped "filters unchanged". | No repository link from home; no Path/Language filter; results page has no repository navigation. | R, B | differential confirmed |
+| REQ-4-2-3 S4 | A | Picked the absent-query example. | Known query: "search flow" never a whole text value; after reload no "README.md" link. | B | confirmed, mapping inferred |
+| REQ-4-3-1 S1 | A | Opened the repo through search. | Home page has no repository link; everything after opening passes. | R | differential confirmed |
+| REQ-4-3-2 S1 | A | Skipped base, branch history, error cases. | Base not shown; no "Commits" link; an existing name still offers "Create branch: feature-search" and the click does nothing. | B | confirmed, mapping inferred |
+| REQ-4-3-2 S2 | A | Unique branch name. | After S1 created `feature/api-v2` the app still offers "Create branch: feature/api-v2", click does nothing. | E, B | chain confirmed |
+| REQ-4-3-3 S1 | A | Skipped "main and its commits remain". | No "Commits" link. | B | step confirmed |
+| REQ-4-3-3 S2 | A | Fresh non-admin, no earlier change. | After S1 is replayed, the code page shows "Branch release", so "default unchanged" fails. | E | chain confirmed |
+| REQ-1-1-1 S3 | A | Over-asserted: password fields empty after a failed submit. | Only that extra check fails. | O1 | confirmed |
+| REQ-1-1-2 S4 | B | Over-asserted: "Username or email" keeps the value after failure. | B clears the field; hidden passes. | O1 | confirmed |
+| REQ-1-1-3 S3 | B | Over-asserted: unknown email case put in S3. | Hidden S3 tests another case. | O2 | confirmed |
+
+The over-assertions in O1 come only from a parent-folder sentence ("non-sensitive input is retained … password fields
+must not redisplay submitted values") that neither atomic requirement repeats. Side finding: on app A "Forgot
+password" crashes in a fresh session (`Cannot read properties of undefined (reading 'recovery')`), which explains its
+REQ-1-1-3 hidden failures.
+
+Rules adopted in v3 (testgen system prompt): reach records through the entry the role would use, search only when
+the scenario searches (R); literal scenario values (A); exercise every failure case a THEN lists (B); fixed names
+from the scenario, so earlier tests leave the same state as the hidden suite (E); parent-only principles and cases
+the description attaches to another scenario are not asserted (O1, O2).

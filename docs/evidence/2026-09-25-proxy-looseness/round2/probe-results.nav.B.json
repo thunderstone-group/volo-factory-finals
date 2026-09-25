@@ -1,0 +1,209 @@
+[
+ {
+  "app": "B",
+  "key": "REQ-3-3 S1 via search",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "default branch \"main\" as exact text",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('main', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3302/#/repo/acme-demo/acme-docs",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\": acme-docs\n  - button \"Search\"\n- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - paragraph: Documentation and search flow documentation\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"Files\" [level=2]\n  - link \"docs/\":\n    - /url: \"#/tree/acme-demo/acme-docs/docs\"\n  - link \"src/\":\n    - /url: \"#/tree/acme-demo/acme-docs/src\"\n  - link \"README.md\":\n    - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s Public marker exact",
+   "ok   0.1s link \"Code\" (strict)",
+   "ok   0.1s button \"Code\" (clone, strict)",
+   "ok   0.1s link \"Issues\"",
+   "ok   0.1s link \"Pull requests\"",
+   "FAIL 2.6s default branch \"main\" as exact text"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-3-3 S1 via search (no exact main)",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s Public marker exact",
+   "ok   0.1s click file link \"README.md\"",
+   "ok   0.1s file page shows \"README.md\"",
+   "ok   0.2s reload",
+   "ok   0.2s after reload heading contains acme-docs"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-4-3-1 S1 via search",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s fill searchbox \"Search\"",
+   "ok   0.1s press Enter",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains \"acme-docs\"",
+   "ok   0.1s click link \"Code\"",
+   "ok   0.1s button \"Branch main\"",
+   "ok   0.1s click \"Branch main\"",
+   "ok   0.1s fill \"Find branch\" feature-search",
+   "ok   0.2s click option \"feature-search\"",
+   "ok   0.2s button \"Branch feature-search\"",
+   "ok   0.2s link \"main-only.md\"",
+   "ok   0.2s reopen selector",
+   "ok   0.2s option main visible",
+   "ok   0.2s option feature-search marked selected",
+   "ok   0.2s click option \"main\"",
+   "ok   0.2s button \"Branch main\"",
+   "ok   0.2s no \"main-only.md\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-3-3 S1 via homeLink",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "default branch \"main\" as exact text",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('main', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3302/#/repo/acme-demo/acme-docs",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - paragraph: Documentation and search flow documentation\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"Files\" [level=2]\n  - link \"docs/\":\n    - /url: \"#/tree/acme-demo/acme-docs/docs\"\n  - link \"src/\":\n    - /url: \"#/tree/acme-demo/acme-docs/src\"\n  - link \"README.md\":\n    - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s home: click link \"acme-docs\" (strict, no search)",
+   "ok   0.1s heading contains acme-docs",
+   "ok   0.1s Public marker exact",
+   "ok   0.1s link \"Code\" (strict)",
+   "ok   0.1s button \"Code\" (clone, strict)",
+   "ok   0.1s link \"Issues\"",
+   "ok   0.1s link \"Pull requests\"",
+   "FAIL 2.6s default branch \"main\" as exact text"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-3-3 S1 via homeLink (no exact main)",
+  "elapsed": "0.1",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s home: click link \"acme-docs\" (strict, no search)",
+   "ok   0.1s heading contains acme-docs",
+   "ok   0.1s Public marker exact",
+   "ok   0.1s click file link \"README.md\"",
+   "ok   0.1s file page shows \"README.md\"",
+   "ok   0.1s reload",
+   "ok   0.1s after reload heading contains acme-docs"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-4-3-1 S1 via homeLink",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s home: click link \"acme-docs\" (strict, no search)",
+   "ok   0.1s heading contains acme-docs",
+   "ok   0.1s click link \"Code\"",
+   "ok   0.1s button \"Branch main\"",
+   "ok   0.1s click \"Branch main\"",
+   "ok   0.1s fill \"Find branch\" feature-search",
+   "ok   0.2s click option \"feature-search\"",
+   "ok   0.2s button \"Branch feature-search\"",
+   "ok   0.2s link \"main-only.md\"",
+   "ok   0.2s reopen selector",
+   "ok   0.2s option main visible",
+   "ok   0.2s option feature-search marked selected",
+   "ok   0.2s click option \"main\"",
+   "ok   0.2s button \"Branch main\"",
+   "ok   0.2s no \"main-only.md\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-3-3 S1 via reposLink",
+  "elapsed": "2.6",
+  "passed": false,
+  "fail": {
+   "label": "default branch \"main\" as exact text",
+   "error": "expect(locator).toBeVisible() failed / Locator: getByText('main', { exact: true }) / Expected: visible / Timeout: 2500ms",
+   "url": "http://127.0.0.1:3302/#/repo/acme-demo/acme-docs",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - link \"Sign in\":\n    - /url: \"#/login\"\n  - link \"Sign up\":\n    - /url: \"#/register\"\n  - link \"Forgot password\":\n    - /url: \"#/forgot\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Acme Demo/acme-docs\" [level=1]\n  - text: Public\n  - paragraph: Documentation and search flow documentation\n  - navigation \"Repository navigation\":\n    - link \"Code\":\n      - /url: \"#/repo/acme-demo/acme-docs\"\n    - link \"Issues\":\n      - /url: \"#/issues/acme-demo/acme-docs\"\n    - link \"Pull requests\":\n      - /url: \"#/prs/acme-demo/acme-docs\"\n    - link \"Settings\":\n      - /url: \"#/settings/acme-demo/acme-docs\"\n  - button \"Branch main\"\n  - button \"Code\"\n  - link \"Commits\":\n    - /url: \"#/commits/acme-demo/acme-docs\"\n  - heading \"Files\" [level=2]\n  - link \"docs/\":\n    - /url: \"#/tree/acme-demo/acme-docs/docs\"\n  - link \"src/\":\n    - /url: \"#/tree/acme-demo/acme-docs/src\"\n  - link \"README.md\":\n    - /url: \"#/blob/acme-demo/acme-docs/README.md\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Repositories\" (strict)",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains acme-docs",
+   "ok   0.1s Public marker exact",
+   "ok   0.1s link \"Code\" (strict)",
+   "ok   0.1s button \"Code\" (clone, strict)",
+   "ok   0.1s link \"Issues\"",
+   "ok   0.1s link \"Pull requests\"",
+   "FAIL 2.6s default branch \"main\" as exact text"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-3-3 S1 via reposLink (no exact main)",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Repositories\" (strict)",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains acme-docs",
+   "ok   0.1s Public marker exact",
+   "ok   0.1s click file link \"README.md\"",
+   "ok   0.1s file page shows \"README.md\"",
+   "ok   0.1s reload",
+   "ok   0.2s after reload heading contains acme-docs"
+  ]
+ },
+ {
+  "app": "B",
+  "key": "REQ-4-3-1 S1 via reposLink",
+  "elapsed": "0.2",
+  "passed": true,
+  "fail": null,
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Repositories\" (strict)",
+   "ok   0.1s click link \"acme-docs\" (strict)",
+   "ok   0.1s heading contains acme-docs",
+   "ok   0.1s click link \"Code\"",
+   "ok   0.1s button \"Branch main\"",
+   "ok   0.1s click \"Branch main\"",
+   "ok   0.1s fill \"Find branch\" feature-search",
+   "ok   0.2s click option \"feature-search\"",
+   "ok   0.2s button \"Branch feature-search\"",
+   "ok   0.2s link \"main-only.md\"",
+   "ok   0.2s reopen selector",
+   "ok   0.2s option main visible",
+   "ok   0.2s option feature-search marked selected",
+   "ok   0.2s click option \"main\"",
+   "ok   0.2s button \"Branch main\"",
+   "ok   0.2s no \"main-only.md\""
+  ]
+ }
+]

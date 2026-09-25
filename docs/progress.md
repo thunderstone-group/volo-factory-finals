@@ -1092,7 +1092,7 @@ S = p / (b / (1.2 p))^0.1 while b <= 1.2 p; p in percent over both tasks, b in C
 | 5 | 09-24 22:36 | 165aece2 | c005012 | flash | 13/100 | platform error | 2.91 | | seed checklist + card 6b (feat/seed-reach); Sheet `4ef5a779acf2` enumeration failure again at 22:51; GitHub gained REQ-3-3 S1, REQ-2-1-1 S2 (home reachability paths), lost REQ-1-2 S1-2 (this draft's sign-out) |
 | 6 | 09-25 00:50 | 9dad2b75 | 400a009 | flash | 21/100 | not run | 10.94 | | written tests + edit repairs on the platform (GitHub only); suite written in 25 min (15 calls, CNY 8.0), repair phase 72 min with 8 whole-app checks, run 97 min, 4.07 M tokens; the run record carries no failed_tests list this time |
 | 7 | 09-25 03:05 | 38e217d1 | 3c761e2 | flash | 21/100 | 43/100 | 17.81 | 34.6 | main after PR #71 (adds the marker-hunk skip and the suite temp-dir fix); GitHub run 81 min, 2.82 M tokens, CNY 7.75; Sheet `b491936e86f2` started 09-25 11:06 after the organizers fixed the Sheet suite: 91 min, 2.69 M tokens, CNY 10.06 (suite CNY 6.77); p = 32.0 %, board 2nd (Iris 40.5 %) |
-| 8 | 09-25 12:55 | d3769ab0 | 20dcdbd | flash | | | | | `feat/repair-visibility`: repair rounds in the log, repair budget 24 calls / CNY 10, scaffold `this` sharing (roadmap 4.14); submission `1503bf3a1f15`, runs `95ec6880ee7f` (GitHub), `e6cf53b272c1` (Sheet) |
+| 8 | 09-25 12:55 | d3769ab0 | 20dcdbd | flash | (running) | 53/100 | | | `feat/repair-visibility`: repair rounds in the log, repair budget 24 calls / CNY 10, scaffold `this` sharing (roadmap 4.14); submission `1503bf3a1f15`, runs `95ec6880ee7f` (GitHub), `e6cf53b272c1` (Sheet) |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1278,3 +1278,37 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - **Repair budget 12 calls / CNY 5 -> 24 / CNY 10** (same commit): both controlled replays stopped at the call cap
   while still gaining. Under S, doubling cost costs 2^0.1 = 7 % and needs that much pass-rate gain to break even.
   199 unit tests green. Package `5b7e089f` waits for the Sheet run to finish before upload.
+
+## 2026-09-25 13:00-14:45 — Strict written tests v2/v3 calibrated (both miss); submission 8 Sheet 53; guards as losses
+
+- **Strict written tests (roadmap 4.13), calibration with ids fixed** (`calib.sh` in the session scratchpad: the suite on
+  the submission 4 and 5 GitHub bundles, compared per test with the hidden lists saved on 09-24):
+
+  | suite | sub 4 proxy-only | sub 4 hidden-only | sub 5 proxy-only | sub 5 hidden-only | CNY to write |
+  |---|---|---|---|---|---|
+  | 09-24 (`gh-suite-np`) | 14 | 3 | 22 | 4 | 6.74 |
+  | v2 (strict prompt) | 10 | 3 | 9 | 6 | 7.19 |
+  | v3 (+ round-2 rules) | 7 | 7 | 12 | 7 | 7.53 |
+  | criterion | ≤ 7 | ≤ 3 | ≤ 11 | ≤ 4 | ≤ 8.76 |
+
+  v2 meets two of four, v3 one; neither ships. v2's extra hidden-only on submission 5 are all `error` (the tests used
+  `alice-dev/acme-docs`, a string the requirements never give verbatim, which never drives a repair); false alarms
+  (`fail` where the hidden test passes) stay at 1 and 2 as with the 09-24 suite. On submission 7's GitHub app (hidden
+  21) the 09-24 suite passes 48, v2 39. On submission 7's Sheet app (hidden 43) the 09-24 Sheet suite passes 30 (four of
+  its files do not parse), a v2 Sheet suite 45 (CNY 7.59). One written suite is one sample: v2 -> v3 moved as much as
+  noise can, so a prompt comparison needs two or three suites per version.
+- **testgen id fix (e44f4ce on `feat/repair-guards`):** titles like `REQ-3-1: ... - Scenario 2` made four tests share
+  one id (9-10 of 100 in every suite so far), so the repair ledger counted them as one; the scenario number now
+  restores `#n`.
+- **Round 2 diagnosis** (evidence README, "Round 2"): all 176 hidden failures on the two labelled apps are timeouts,
+  none an instant strict-mode error; submission 4's signed-out home page has no repository link, which is why its
+  REQ-3-3 and REQ-4 visitor scenarios fail and submission 5's (card 6b) pass.
+- **Submission 8 Sheet** `e6cf53b272c1`: **53/100**, CNY 6.62, 64 min (suite CNY 4.75, 16 calls). First readable repair
+  log: round 1 broke 12 passing tests (discarded); rounds 2 and 3 took the written suite from 47 to 59 and 65 passing
+  and were discarded because one quoted phrase of 55 went missing; the loop stopped at "3 repairs in a row were
+  discarded" after CNY 1.21. So 43 -> 53 is the draft (sampling, and the `this` fix), not repairs.
+- **Guards as losses (dc1ee79, `feat/repair-guards`, roadmap 4.15):** with written tests judging, a newly flagging
+  static gate, a missing quoted phrase or a renamed quoted control each count as one lost test under the 3:1 rule; the
+  scenario check keeps the veto. Four discarded rounds in a row end the loop (GitHub run `95ec6880ee7f` kept a fourth
+  round, +14, after two discards). 204 unit tests green. Package `0b5eb613`; submission 9 once submission 8's GitHub run
+  ends.

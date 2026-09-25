@@ -1,0 +1,802 @@
+[
+ {
+  "key": "REQ-1-1-1 S1",
+  "proxy_id": "REQ-1-1-1",
+  "proxy": "pass",
+  "hidden": "pass",
+  "file": "t01-REQ-1.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-1-1-1 S2",
+  "proxy_id": "REQ-1-1-1#2",
+  "proxy": "pass",
+  "hidden": "pass",
+  "file": "t01-REQ-1.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-1-1-1 S3",
+  "proxy_id": "REQ-1-1-1#3",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t01-REQ-1.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Username format is invalid', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Username format is invalid', { exact: true })\n\n\n  118 |   });\n  119 |\n> 120 |   await expect(page.getByText('Username format is invalid', { exact: true })).toBeVisible();\n      |                                                                               ^\n  121 |   await expect(page.getByText('Email format is invalid', { exact: true })).to"
+ },
+ {
+  "key": "REQ-1-1-2 S1",
+  "proxy_id": "REQ-1-1-2",
+  "proxy": "pass",
+  "hidden": "pass",
+  "file": "t01-REQ-1.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-1-1-2 S2",
+  "proxy_id": "REQ-1-1-2#2",
+  "proxy": "pass",
+  "hidden": "pass",
+  "file": "t01-REQ-1.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-1-1-2 S3",
+  "proxy_id": "REQ-1-1-2#3",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t01-REQ-1.spec.cjs",
+  "observation": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByLabel('Username or email', { exact: true })\nExpected: \"alice-dev\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 5000ms\n  - waiting for getByLabel('Username or email', { exact: true })\n    9 \u00d7 locator resolved to <input id=\"login-id\" name=\"identifier\" autocomplete=\"username\"/>\n      - unexpected value \"\"\n\n\n  165 |   await expect(page.getByText('Invalid credentials', { exact: true })).toBeVisible();\n  166 |   await expect(page.getByRole('button', { name: 'Account menu', exact: true })).toHaveCoun"
+ },
+ {
+  "key": "REQ-1-1-2 S4",
+  "proxy_id": "REQ-1-1-2#4",
+  "proxy": "fail",
+  "hidden": "pass",
+  "file": "t01-REQ-1.spec.cjs",
+  "observation": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByLabel('Username or email', { exact: true })\nExpected: \"ghost-mughhwmgvapk\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 5000ms\n  - waiting for getByLabel('Username or email', { exact: true })\n    9 \u00d7 locator resolved to <input id=\"login-id\" name=\"identifier\" autocomplete=\"username\"/>\n      - unexpected value \"\"\n\n\n  183 |   await expect(page.getByText('Invalid credentials', { exact: true })).toBeVisible();\n  184 |   await expect(page.getByRole('button', { name: 'Account menu', exact: true })).t"
+ },
+ {
+  "key": "REQ-1-1-3 S1",
+  "proxy_id": "REQ-1-1-3",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t02-REQ-1.spec.cjs",
+  "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('Password updated', { exact: true })\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByText('Password updated', { exact: true })\n    9 \u00d7 locator resolved to 1 element\n      - unexpected value \"1\"\n\n\n  124 |   await submitRecoveryEmail(page, unknownEmail);\n  125 |   await submitReset(page, '123456', 'Another-password-789!');\n> 126 |   await expect(page.getByText('Password updated', { exact: true })).toHaveCount(0);\n      |                                   "
+ },
+ {
+  "key": "REQ-1-1-3 S2",
+  "proxy_id": "REQ-1-1-3#2",
+  "proxy": "pass",
+  "hidden": "pass",
+  "file": "t02-REQ-1.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-1-1-3 S3",
+  "proxy_id": "REQ-1-1-3#3",
+  "proxy": "fail",
+  "hidden": "pass",
+  "file": "t02-REQ-1.spec.cjs",
+  "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('Password updated', { exact: true })\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByText('Password updated', { exact: true })\n    9 \u00d7 locator resolved to 1 element\n      - unexpected value \"1\"\n\n\n  160 |   await submitReset(page, '123456', candidatePassword);\n  161 |\n> 162 |   await expect(page.getByText('Password updated', { exact: true })).toHaveCount(0);\n      |                                                                     ^\n  163 |\n  164 |   a"
+ },
+ {
+  "key": "REQ-1-2 S1",
+  "proxy_id": "REQ-1-2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t02-REQ-1.spec.cjs",
+  "observation": "Blocked by helper:t02-REQ-1.spec.cjs:76 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-1-2 S2",
+  "proxy_id": "REQ-1-2#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t02-REQ-1.spec.cjs",
+  "observation": "Blocked by helper:t02-REQ-1.spec.cjs:76 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-1-3 S1",
+  "proxy_id": "REQ-1-3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t02-REQ-1.spec.cjs",
+  "observation": "Blocked by helper:t02-REQ-1.spec.cjs:76 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-1-3 S2",
+  "proxy_id": "REQ-1-3#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t02-REQ-1.spec.cjs",
+  "observation": "Blocked by helper:t02-REQ-1.spec.cjs:76 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-1-3 S3",
+  "proxy_id": "REQ-1-3#3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t02-REQ-1.spec.cjs",
+  "observation": "Blocked by helper:t02-REQ-1.spec.cjs:76 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-2-1-1 S1",
+  "proxy_id": "REQ-2-1-1",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t03-REQ-2.spec.cjs",
+  "observation": "The test used the name 'acme-demo/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+ },
+ {
+  "key": "REQ-2-1-1 S2",
+  "proxy_id": "REQ-2-1-1#2",
+  "proxy": "error",
+  "hidden": "pass",
+  "file": "t03-REQ-2.spec.cjs",
+  "observation": "The test used the name 'acme-demo/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+ },
+ {
+  "key": "REQ-2-1-2 S1",
+  "proxy_id": "REQ-2-1-2",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t03-REQ-2.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'mobile-guild', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'mobile-guild', exact: true })\n\n\n  85 |   await page.getByRole('button', { name: 'Create organization', exact: true }).click();\n  86 |\n> 87 |   await expect(page.getByRole('heading', { name: 'mobile-guild', exact: true })).toBeVisible();\n     |                                                                               "
+ },
+ {
+  "key": "REQ-2-1-2 S2",
+  "proxy_id": "REQ-2-1-2#2",
+  "proxy": "pass",
+  "hidden": "fail",
+  "file": "t03-REQ-2.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-2-1-2 S3",
+  "proxy_id": "REQ-2-1-2#3",
+  "proxy": "pass",
+  "hidden": "fail",
+  "file": "t03-REQ-2.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-2-2-1 S1",
+  "proxy_id": "REQ-2-2-1",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t03-REQ-2.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'pw-org-mughj8v7ailt/mobile-team', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'pw-org-mughj8v7ailt/mobile-team', exact: true })\n\n\n  141 |   await page.getByRole('button', { name: 'Create team', exact: true }).click();\n  142 |\n> 143 |   await expect(page.getByRole('heading', { name: `${orgName}/mobile-team`, exact: true })).toBeVisible();\n      |                                   "
+ },
+ {
+  "key": "REQ-2-2-1 S2",
+  "proxy_id": "REQ-2-2-1#2",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t03-REQ-2.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'pw-org-mughjd6a753p/backend-team', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'pw-org-mughjd6a753p/backend-team', exact: true })\n\n\n  163 |   await page.getByLabel('Team name', { exact: true }).fill('backend-team');\n  164 |   await page.getByRole('button', { name: 'Create team', exact: true }).click();\n> 165 |   await expect(page.getByRole('heading', { name: `${orgName}/backend-t"
+ },
+ {
+  "key": "REQ-2-2-2 S1",
+  "proxy_id": "REQ-2-2-2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t04-REQ-2.spec.cjs",
+  "observation": "Blocked by helper:t04-REQ-2.spec.cjs:67 (shared with 1 other test(s))."
+ },
+ {
+  "key": "REQ-2-2-2 S2",
+  "proxy_id": "REQ-2-2-2#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t04-REQ-2.spec.cjs",
+  "observation": "Blocked by helper:t04-REQ-2.spec.cjs:67 (shared with 1 other test(s))."
+ },
+ {
+  "key": "REQ-2-2-3 S1",
+  "proxy_id": "REQ-2-2-3",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t04-REQ-2.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row', { name: 'user-mughjq6i44ic' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('row', { name: 'user-mughjq6i44ic' })\n\n\n  178 |\n  179 |   const row = page.getByRole('row', { name: username, exact: false });\n> 180 |   await expect(row).toBeVisible();\n      |                     ^\n  181 |   await expect(row).toContainText('Member');\n  182 |   await expect(page.getByText('Pending', { exact: true })).toHaveCount(0);\n  183 |\n    at /pr"
+ },
+ {
+  "key": "REQ-2-2-3 S2",
+  "proxy_id": "REQ-2-2-3#2",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t04-REQ-2.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row', { name: 'user-mughjulyymva' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('row', { name: 'user-mughjulyymva' })\n\n\n  205 |   await openPeople(page);\n  206 |   await addOrgMember(page, email);\n> 207 |   await expect(page.getByRole('row', { name: username, exact: false })).toBeVisible();\n      |                                                                         ^\n  208 |\n  209 |   await page.reload();\n  210 |   await addOr"
+ },
+ {
+  "key": "REQ-2-2-4 S1",
+  "proxy_id": "REQ-2-2-4",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t04-REQ-2.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row', { name: 'user-mughjz0vlxwd' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('row', { name: 'user-mughjz0vlxwd' })\n\n\n  228 |   await openPeople(page);\n  229 |   await addOrgMember(page, username);\n> 230 |   await expect(page.getByRole('row', { name: username, exact: false })).toBeVisible();\n      |                                                                         ^\n  231 |\n  232 |   await signOut(page);\n  233 |   await si"
+ },
+ {
+  "key": "REQ-2-2-4 S2",
+  "proxy_id": "REQ-2-2-4#2",
+  "proxy": "pass",
+  "hidden": "fail",
+  "file": "t04-REQ-2.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-2-3 S1",
+  "proxy_id": "REQ-2-3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t04-REQ-2.spec.cjs",
+  "observation": "Blocked by helper:t04-REQ-2.spec.cjs:91 (shared with 1 other test(s))."
+ },
+ {
+  "key": "REQ-2-3 S2",
+  "proxy_id": "REQ-2-3#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t04-REQ-2.spec.cjs",
+  "observation": "Blocked by helper:t04-REQ-2.spec.cjs:91 (shared with 1 other test(s))."
+ },
+ {
+  "key": "REQ-3-1 S1",
+  "proxy_id": "REQ-3-1",
+  "proxy": "error",
+  "hidden": "pass",
+  "file": "t05-REQ-3.spec.cjs",
+  "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+ },
+ {
+  "key": "REQ-3-1 S2",
+  "proxy_id": "REQ-3-1#2",
+  "proxy": "error",
+  "hidden": "pass",
+  "file": "t05-REQ-3.spec.cjs",
+  "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+ },
+ {
+  "key": "REQ-3-1 S3",
+  "proxy_id": "REQ-3-1#3",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t05-REQ-3.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'secret-research', exact: true })\nExpected: visible\nError: strict mode violation: getByRole('link', { name: 'secret-research', exact: true }) resolved to 2 elements:\n    1) <a href=\"#/repo/acme-demo/secret-research\">secret-research</a> aka getByRole('article').filter({ hasText: 'secret-researchAcme Demo/' }).getByRole('link')\n    2) <a href=\"#/repo/alice-dev/secret-research\">secret-research</a> aka getByRole('article').filter({ hasText: 'secret-researchalice-dev/' }).getByRole('link')\n\nCall log:\n  - Expect \"toBeVis"
+ },
+ {
+  "key": "REQ-3-1 S4",
+  "proxy_id": "REQ-3-1#4",
+  "proxy": "pass",
+  "hidden": "pass",
+  "file": "t05-REQ-3.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-3-2-1 S1",
+  "proxy_id": "REQ-3-2-1",
+  "proxy": "pass",
+  "hidden": "fail",
+  "file": "t05-REQ-3.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-3-2-1 S2",
+  "proxy_id": "REQ-3-2-1#2",
+  "proxy": "pass",
+  "hidden": "fail",
+  "file": "t05-REQ-3.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-3-2-1 S3",
+  "proxy_id": "REQ-3-2-1#3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t05-REQ-3.spec.cjs",
+  "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+ },
+ {
+  "key": "REQ-3-2-2 S1",
+  "proxy_id": "REQ-3-2-2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t06-REQ-3.spec.cjs",
+  "observation": "Blocked by helper:t06-REQ-3.spec.cjs:20 (shared with 3 other test(s))."
+ },
+ {
+  "key": "REQ-3-2-2 S2",
+  "proxy_id": "REQ-3-2-2#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t06-REQ-3.spec.cjs",
+  "observation": "Blocked by helper:t06-REQ-3.spec.cjs:20 (shared with 3 other test(s))."
+ },
+ {
+  "key": "REQ-3-2-3 S1",
+  "proxy_id": "REQ-3-2-3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t06-REQ-3.spec.cjs",
+  "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+ },
+ {
+  "key": "REQ-3-2-3 S2",
+  "proxy_id": "REQ-3-2-3#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t06-REQ-3.spec.cjs",
+  "observation": "Blocked by helper:t06-REQ-3.spec.cjs:20 (shared with 3 other test(s))."
+ },
+ {
+  "key": "REQ-3-3 S1",
+  "proxy_id": "REQ-3-3",
+  "proxy": "error",
+  "hidden": "pass",
+  "file": "t06-REQ-3.spec.cjs",
+  "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+ },
+ {
+  "key": "REQ-3-4 S1",
+  "proxy_id": "REQ-3-4",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t06-REQ-3.spec.cjs",
+  "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Change visibility', exact: true })\n\n\n  160 |   await page.getByRole('link', { name: 'Settings', exact: true }).click();\n  161 |   await page.getByRole('link', { name: 'General', exact: true }).click();\n> 162 |   await page.getByRole('button', { name: 'Change visibility', exact: true }).click();\n      |                                                                              ^\n  163 |   await page.getByLabel('Public', { exact: true }).check();\n  164 |   await page.getByRole('button',"
+ },
+ {
+  "key": "REQ-3-4 S2",
+  "proxy_id": "REQ-3-4#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t06-REQ-3.spec.cjs",
+  "observation": "Blocked by helper:t06-REQ-3.spec.cjs:20 (shared with 3 other test(s))."
+ },
+ {
+  "key": "REQ-4-1 S1",
+  "proxy_id": "REQ-4-1",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t07-REQ-4.spec.cjs",
+  "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'src', exact: true })\n\n\n  40 |   await openCodePage(page);\n  41 |\n> 42 |   await page.getByRole('link', { name: 'src', exact: true }).click();\n     |                                                              ^\n  43 |   await expect(page.getByRole('link', { name: 'search.ts', exact: true })).toBeVisible();\n  44 |   await page.getByRole('link', { name: 'search.ts', exact: true }).click();\n  45 |   await expect(page.getByText('search flow', { exact: false })).toBeVisible();\n    at /private"
+ },
+ {
+  "key": "REQ-4-2-1 S1",
+  "proxy_id": "REQ-4-2-1",
+  "proxy": "pass",
+  "hidden": "fail",
+  "file": "t07-REQ-4.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-4-2-2 S1",
+  "proxy_id": "REQ-4-2-2",
+  "proxy": "pass",
+  "hidden": "fail",
+  "file": "t07-REQ-4.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-4-2-3 S1",
+  "proxy_id": "REQ-4-2-3",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t07-REQ-4.spec.cjs",
+  "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Path', { exact: true })\n\n\n   99 |   await performCodeSearch(page, 'search flow');\n  100 |\n> 101 |   await page.getByLabel('Path', { exact: true }).fill('src/');\n      |                                                  ^\n  102 |   await page.getByRole('link', { name: 'search.ts', exact: true }).click();\n  103 |   await expect(page.getByText('search flow', { exact: false })).toBeVisible();\n  104 |\n    at /private/tmp/claude-501/-Users-e0-7-projects/425683f3-24c0-420e-befc-1badcf2e5635/scratchpad/gh-suite-v"
+ },
+ {
+  "key": "REQ-4-2-3 S2",
+  "proxy_id": "REQ-4-2-3#2",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t07-REQ-4.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('No code results', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('No code results', { exact: true })\n\n\n  115 |\n  116 |   await performCodeSearch(page, 'no-such-token');\n> 117 |   await expect(page.getByText('No code results', { exact: true })).toBeVisible();\n      |                                                                    ^\n  118 |   await expect(page.getByRole('searchbox', { name: 'Search', exact: true }))."
+ },
+ {
+  "key": "REQ-4-2-3 S3",
+  "proxy_id": "REQ-4-2-3#3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t07-REQ-4.spec.cjs",
+  "observation": "Blocked by helper:t07-REQ-4.spec.cjs:15 (shared with 1 other test(s))."
+ },
+ {
+  "key": "REQ-4-2-3 S4",
+  "proxy_id": "REQ-4-2-3#4",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t07-REQ-4.spec.cjs",
+  "observation": "Blocked by helper:t07-REQ-4.spec.cjs:15 (shared with 1 other test(s))."
+ },
+ {
+  "key": "REQ-4-3-1 S1",
+  "proxy_id": "REQ-4-3-1",
+  "proxy": "pass",
+  "hidden": "pass",
+  "file": "t08-REQ-4.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-4-3-1 S2",
+  "proxy_id": "REQ-4-3-1#2",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t08-REQ-4.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('No matching branch', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('No matching branch', { exact: true })\n\n\n  93 |   await openBranchSelector(page, 'main');\n  94 |   await page.getByLabel('Find branch', { exact: true }).fill('no-such-branch');\n> 95 |   await expect(page.getByText('No matching branch', { exact: true })).toBeVisible();\n     |                                                                       ^\n  96 "
+ },
+ {
+  "key": "REQ-4-3-2 S1",
+  "proxy_id": "REQ-4-3-2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t08-REQ-4.spec.cjs",
+  "observation": "Blocked by helper:t08-REQ-4.spec.cjs:34 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-4-3-2 S2",
+  "proxy_id": "REQ-4-3-2#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t08-REQ-4.spec.cjs",
+  "observation": "Blocked by helper:t08-REQ-4.spec.cjs:34 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-4-3-3 S1",
+  "proxy_id": "REQ-4-3-3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t08-REQ-4.spec.cjs",
+  "observation": "Blocked by helper:t08-REQ-4.spec.cjs:34 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-4-3-3 S2",
+  "proxy_id": "REQ-4-3-3#2",
+  "proxy": "pass",
+  "hidden": "fail",
+  "file": "t08-REQ-4.spec.cjs",
+  "observation": ""
+ },
+ {
+  "key": "REQ-4-4 S1",
+  "proxy_id": "REQ-4-4",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t08-REQ-4.spec.cjs",
+  "observation": "Blocked by helper:t08-REQ-4.spec.cjs:34 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-4-4 S2",
+  "proxy_id": "REQ-4-4#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t08-REQ-4.spec.cjs",
+  "observation": "Blocked by helper:t08-REQ-4.spec.cjs:34 (shared with 4 other test(s))."
+ },
+ {
+  "key": "REQ-5-1-1 S1",
+  "proxy_id": "REQ-5-1-1",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t09-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t09-REQ-5.spec.cjs:21 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-1-1 S2",
+  "proxy_id": "REQ-5-1-1#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t09-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t09-REQ-5.spec.cjs:21 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-1-2 S1",
+  "proxy_id": "REQ-5-1-2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t09-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t09-REQ-5.spec.cjs:21 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-1-2 S2",
+  "proxy_id": "REQ-5-1-2#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t09-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t09-REQ-5.spec.cjs:21 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-1-2 S3",
+  "proxy_id": "REQ-5-1-2#3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t09-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t09-REQ-5.spec.cjs:21 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-2-1 S1",
+  "proxy_id": "REQ-5-2-1",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t09-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t09-REQ-5.spec.cjs:21 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-2-1 S2",
+  "proxy_id": "REQ-5-2-1#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t09-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t09-REQ-5.spec.cjs:21 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-2-2 S1",
+  "proxy_id": "REQ-5-2-2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t10-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t10-REQ-5.spec.cjs:26 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-2-2 S2",
+  "proxy_id": "REQ-5-2-2#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t10-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t10-REQ-5.spec.cjs:26 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-2-3 S1",
+  "proxy_id": "REQ-5-2-3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t10-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t10-REQ-5.spec.cjs:26 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-2-3 S2",
+  "proxy_id": "REQ-5-2-3#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t10-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t10-REQ-5.spec.cjs:26 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-3-1 S1",
+  "proxy_id": "REQ-5-3-1",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t10-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t10-REQ-5.spec.cjs:26 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-3-2 S1",
+  "proxy_id": "REQ-5-3-2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t10-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t10-REQ-5.spec.cjs:26 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-3-3 S1",
+  "proxy_id": "REQ-5-3-3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t10-REQ-5.spec.cjs",
+  "observation": "Blocked by helper:t10-REQ-5.spec.cjs:26 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-5-4 S1",
+  "proxy_id": "REQ-5-4",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t11-REQ-5.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'acme-docs', exact: true })\nExpected: visible\nError: strict mode violation: getByRole('link', { name: 'acme-docs', exact: true }) resolved to 2 elements:\n    1) <a href=\"#/repo/alice-dev/acme-docs\">acme-docs</a> aka getByRole('article').filter({ hasText: 'acme-docsalice-dev/acme-docs' }).getByRole('link')\n    2) <a href=\"#/repo/acme-demo/acme-docs\">acme-docs</a> aka getByRole('article').filter({ hasText: 'acme-docsAcme Demo/acme-docs' }).getByRole('link')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - "
+ },
+ {
+  "key": "REQ-5-4 S2",
+  "proxy_id": "REQ-5-4#2",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t11-REQ-5.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search issues', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search issues', exact: true })\n\n\n  62 | async function openIssueDetail(page) {\n  63 |   await page.getByRole('link', { name: 'Issues', exact: true }).click();\n> 64 |   await expect(page.getByRole('searchbox', { name: 'Search issues', exact: true })).toBeVisible();\n     |                                              "
+ },
+ {
+  "key": "REQ-6-1 S1",
+  "proxy_id": "REQ-6-1",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t12-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t12-REQ-6.spec.cjs:43 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-6-1 S2",
+  "proxy_id": "REQ-6-1#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t12-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t12-REQ-6.spec.cjs:43 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-6-1 S3",
+  "proxy_id": "REQ-6-1#3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t12-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t12-REQ-6.spec.cjs:43 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-6-2-1 S1",
+  "proxy_id": "REQ-6-2-1",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t12-REQ-6.spec.cjs",
+  "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  39 |\n  40 | async function openRepository(page, repo = REPO) {\n> 41 |   await page.getByRole('searchbox', { name: 'Search', exact: true }).fill(repo);\n     |                                                                      ^\n  42 |   await page.keyboard.press('Enter');\n  43 |   await page.getByRole('link', { name: repo, exact: true }).click();\n  44 |   await expect(page.getByRole('link', { name: 'Pull requests', exact: true })).toBeVisible();\n    at ope"
+ },
+ {
+  "key": "REQ-6-2-1 S2",
+  "proxy_id": "REQ-6-2-1#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t12-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t12-REQ-6.spec.cjs:43 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-6-2-1 S3",
+  "proxy_id": "REQ-6-2-1#3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t12-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t12-REQ-6.spec.cjs:43 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-6-2-2 S1",
+  "proxy_id": "REQ-6-2-2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t12-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t12-REQ-6.spec.cjs:43 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-6-2-2 S2",
+  "proxy_id": "REQ-6-2-2#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t12-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t12-REQ-6.spec.cjs:43 (shared with 6 other test(s))."
+ },
+ {
+  "key": "REQ-6-2-3 S1",
+  "proxy_id": "REQ-6-2-3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t13-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t13-REQ-6.spec.cjs:17 (shared with 5 other test(s))."
+ },
+ {
+  "key": "REQ-6-2-3 S2",
+  "proxy_id": "REQ-6-2-3#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t13-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t13-REQ-6.spec.cjs:17 (shared with 5 other test(s))."
+ },
+ {
+  "key": "REQ-6-2-4 S1",
+  "proxy_id": "REQ-6-2-4",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t13-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t13-REQ-6.spec.cjs:17 (shared with 5 other test(s))."
+ },
+ {
+  "key": "REQ-6-2-4 S2",
+  "proxy_id": "REQ-6-2-4#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t13-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t13-REQ-6.spec.cjs:17 (shared with 5 other test(s))."
+ },
+ {
+  "key": "REQ-6-3-1 S1",
+  "proxy_id": "REQ-6-3-1",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t13-REQ-6.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Commit summary', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Commit summary', { exact: true })\n\n\n  222 |\n  223 |   await page.getByRole('link', { name: 'Commits', exact: true }).click();\n> 224 |   await expect(page.getByText('Commit summary', { exact: true })).toBeVisible();\n      |                                                                   ^\n  225 |\n  226 |   await page.getByRole('link', { name: 'Files cha"
+ },
+ {
+  "key": "REQ-6-3-1 S2",
+  "proxy_id": "REQ-6-3-1#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t13-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t13-REQ-6.spec.cjs:17 (shared with 5 other test(s))."
+ },
+ {
+  "key": "REQ-6-3-1 S3",
+  "proxy_id": "REQ-6-3-1#3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t13-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t13-REQ-6.spec.cjs:17 (shared with 5 other test(s))."
+ },
+ {
+  "key": "REQ-6-3-2 S1",
+  "proxy_id": "REQ-6-3-2",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t13-REQ-6.spec.cjs",
+  "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Fix search', exact: true })\n\n\n  33 | async function openPRByTitle(page, title) {\n  34 |   await openPRList(page);\n> 35 |   await page.getByRole('link', { name: title, exact: true }).click();\n     |                                                              ^\n  36 |   await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n  37 | }\n  38 |\n    at openPRByTitle (/private/tmp/claude-501/-Users-e0-7-projects/425683f3-24c0-420e-befc-1badcf2e5635/scratchpad/gh-suit"
+ },
+ {
+  "key": "REQ-6-3-3 S1",
+  "proxy_id": "REQ-6-3-3",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t14-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t14-REQ-6.spec.cjs:17 (shared with 3 other test(s))."
+ },
+ {
+  "key": "REQ-6-3-3 S2",
+  "proxy_id": "REQ-6-3-3#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t14-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t14-REQ-6.spec.cjs:17 (shared with 3 other test(s))."
+ },
+ {
+  "key": "REQ-6-3-4 S1",
+  "proxy_id": "REQ-6-3-4",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t14-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t14-REQ-6.spec.cjs:17 (shared with 3 other test(s))."
+ },
+ {
+  "key": "REQ-6-3-4 S2",
+  "proxy_id": "REQ-6-3-4#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t14-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t14-REQ-6.spec.cjs:17 (shared with 3 other test(s))."
+ },
+ {
+  "key": "REQ-6-4 S1",
+  "proxy_id": "REQ-6-4",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t14-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t14-REQ-6.spec.cjs:24 (shared with 2 other test(s))."
+ },
+ {
+  "key": "REQ-6-5 S1",
+  "proxy_id": "REQ-6-5",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t14-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t14-REQ-6.spec.cjs:24 (shared with 2 other test(s))."
+ },
+ {
+  "key": "REQ-6-5 S2",
+  "proxy_id": "REQ-6-5#2",
+  "proxy": "error",
+  "hidden": "fail",
+  "file": "t14-REQ-6.spec.cjs",
+  "observation": "Blocked by helper:t14-REQ-6.spec.cjs:24 (shared with 2 other test(s))."
+ },
+ {
+  "key": "REQ-6-6 S1",
+  "proxy_id": "REQ-6-6",
+  "proxy": "fail",
+  "hidden": "fail",
+  "file": "t15-REQ-6.spec.cjs",
+  "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'acme-docs', exact: true })\nExpected: visible\nError: strict mode violation: getByRole('link', { name: 'acme-docs', exact: true }) resolved to 2 elements:\n    1) <a href=\"#/repo/alice-dev/acme-docs\">acme-docs</a> aka getByRole('article').filter({ hasText: 'acme-docsalice-dev/acme-docs' }).getByRole('link')\n    2) <a href=\"#/repo/acme-demo/acme-docs\">acme-docs</a> aka getByRole('article').filter({ hasText: 'acme-docsAcme Demo/acme-docs' }).getByRole('link')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - "
+ },
+ {
+  "key": "REQ-6-6 S2",
+  "proxy_id": "REQ-6-6#2",
+  "proxy": "pass",
+  "hidden": "fail",
+  "file": "t15-REQ-6.spec.cjs",
+  "observation": ""
+ }
+]

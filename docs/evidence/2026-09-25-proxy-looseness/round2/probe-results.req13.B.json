@@ -1,0 +1,318 @@
+[
+ {
+  "app": "B",
+  "key": "S1 success fresh account",
+  "elapsed": "2.8",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "Account created",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: pw-user-mugifq05zvcb\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph: No organizations.\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username",
+   "ok   0.1s fill Email",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm password",
+   "ok   0.2s check \"Agree to the terms\"",
+   "ok   0.2s click \"Create account\"",
+   "ok   0.2s sign-in form shown",
+   "ok   0.2s fill \"Username or email\" pw-user-mugifq05zvcb@example.test",
+   "ok   0.2s fill \"Password\" Valid-password-123!",
+   "ok   0.2s click button \"Sign in\"",
+   "ok   0.2s signed in (Account menu)",
+   "ok   0.2s click \"Account menu\"",
+   "FAIL 2.8s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S1 success alice-dev",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: alice-dev\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/acme-demo/secret-research\"\n    - paragraph: Acme Demo/secret-research · Private · Private research\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/alice-dev/secret-research\"\n    - paragraph: alice-dev/secret-research · Private · Personal private research\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" alice-dev",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in (button \"Account menu\" visible)",
+   "ok   0.1s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S1 facet noncompliant new password (fresh)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "Account created",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: pw-user-mugifus03ftz\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph: No organizations.\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username",
+   "ok   0.1s fill Email",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm password",
+   "ok   0.1s check \"Agree to the terms\"",
+   "ok   0.2s click \"Create account\"",
+   "ok   0.2s sign-in form shown",
+   "ok   0.2s fill \"Username or email\" pw-user-mugifus03ftz@example.test",
+   "ok   0.2s fill \"Password\" Valid-password-123!",
+   "ok   0.2s click button \"Sign in\"",
+   "ok   0.2s signed in (Account menu)",
+   "ok   0.2s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S1 facet all fields empty (fresh)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "Account created",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: pw-user-mugifx67s3sb\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph: No organizations.\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username",
+   "ok   0.1s fill Email",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm password",
+   "ok   0.1s check \"Agree to the terms\"",
+   "ok   0.2s click \"Create account\"",
+   "ok   0.2s sign-in form shown",
+   "ok   0.2s fill \"Username or email\" pw-user-mugifx67s3sb@example.test",
+   "ok   0.2s fill \"Password\" Valid-password-123!",
+   "ok   0.2s click button \"Sign in\"",
+   "ok   0.2s signed in (Account menu)",
+   "ok   0.2s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S1 facet current ok, new+confirm empty (fresh)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "Account created",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: pw-user-mugifzk6oc8p\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph: No organizations.\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username",
+   "ok   0.1s fill Email",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm password",
+   "ok   0.1s check \"Agree to the terms\"",
+   "ok   0.2s click \"Create account\"",
+   "ok   0.2s sign-in form shown",
+   "ok   0.2s fill \"Username or email\" pw-user-mugifzk6oc8p@example.test",
+   "ok   0.2s fill \"Password\" Valid-password-123!",
+   "ok   0.2s click button \"Sign in\"",
+   "ok   0.2s signed in (Account menu)",
+   "ok   0.2s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S1 facet mismatched confirmation (fresh)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "Account created",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: pw-user-mugig1y29d9o\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph: No organizations.\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s click link \"Create an account\"",
+   "ok   0.1s fill Username",
+   "ok   0.1s fill Email",
+   "ok   0.1s fill Password",
+   "ok   0.1s fill Confirm password",
+   "ok   0.2s check \"Agree to the terms\"",
+   "ok   0.2s click \"Create account\"",
+   "ok   0.2s sign-in form shown",
+   "ok   0.2s fill \"Username or email\" pw-user-mugig1y29d9o@example.test",
+   "ok   0.2s fill \"Password\" Valid-password-123!",
+   "ok   0.2s click button \"Sign in\"",
+   "ok   0.2s signed in (Account menu)",
+   "ok   0.2s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S2 missing current (alice-dev)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: alice-dev\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/acme-demo/secret-research\"\n    - paragraph: Acme Demo/secret-research · Private · Private research\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/alice-dev/secret-research\"\n    - paragraph: alice-dev/secret-research · Private · Personal private research\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" alice-dev",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in (button \"Account menu\" visible)",
+   "ok   0.2s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S2 missing current (alice-dev), toast-agnostic credential check",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: alice-dev\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/acme-demo/secret-research\"\n    - paragraph: Acme Demo/secret-research · Private · Private research\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/alice-dev/secret-research\"\n    - paragraph: alice-dev/secret-research · Private · Personal private research\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" alice-dev",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in (button \"Account menu\" visible)",
+   "ok   0.2s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S3 wrong current + does-not-match (alice-dev)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: alice-dev\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/acme-demo/secret-research\"\n    - paragraph: Acme Demo/secret-research · Private · Private research\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/alice-dev/secret-research\"\n    - paragraph: alice-dev/secret-research · Private · Personal private research\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" alice-dev",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in (button \"Account menu\" visible)",
+   "ok   0.2s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S3 wrong current + does-not-match, current error then credentials (alice-dev)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: alice-dev\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/acme-demo/secret-research\"\n    - paragraph: Acme Demo/secret-research · Private · Private research\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/alice-dev/secret-research\"\n    - paragraph: alice-dev/secret-research · Private · Personal private research\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" alice-dev",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in (button \"Account menu\" visible)",
+   "ok   0.1s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S3 resubmit twice (error duplicates?)",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: alice-dev\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/acme-demo/secret-research\"\n    - paragraph: Acme Demo/secret-research · Private · Private research\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/alice-dev/secret-research\"\n    - paragraph: alice-dev/secret-research · Private · Personal private research\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" alice-dev",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in (button \"Account menu\" visible)",
+   "ok   0.1s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ },
+ {
+  "app": "B",
+  "key": "S1 password fields cleared after failure",
+  "elapsed": "2.7",
+  "passed": false,
+  "fail": {
+   "label": "click link \"Settings\"",
+   "error": "locator.click: Timeout 2500ms exceeded. / Call log: / \u001b[2m  - waiting for getByRole('link', { name: 'Settings', exact: true })\u001b[22m",
+   "url": "http://127.0.0.1:3302/#/",
+   "status": "",
+   "snap": "- banner:\n  - button \"GitHub\"\n  - link \"GitHub\":\n    - /url: \"#/\"\n  - navigation \"Main navigation\"\n  - text: alice-dev\n  - button \"Account menu\":\n    - text: Account menu\n    - menu \"Account menu\":\n      - link \"Your organizations\":\n        - /url: \"#/orgs\"\n      - link \"Password and authentication\":\n        - /url: \"#/password\"\n      - link \"Sign out\":\n        - /url: \"#/signout\"\n  - searchbox \"Search\"\n  - button \"Search\"\n- main:\n  - heading \"Home\" [level=1]\n  - paragraph: Welcome to the GitHub Collaboration Platform.\n  - heading \"Repositories\" [level=2]\n  - paragraph:\n    - link \"Repositories\":\n      - /url: \"#/repos\"\n  - article:\n    - heading \"acme-docs\" [level=3]:\n      - link \"acme-docs\":\n        - /url: \"#/repo/acme-demo/acme-docs\"\n    - paragraph: Acme Demo/acme-docs · Public · Documentation and search flow documentation\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/acme-demo/secret-research\"\n    - paragraph: Acme Demo/secret-research · Private · Private research\n  - article:\n    - heading \"secret-research\" [level=3]:\n      - link \"secret-research\":\n        - /url: \"#/repo/alice-dev/secret-research\"\n    - paragraph: alice-dev/secret-research · Private · Personal private research\n  - heading \"Organizations\" [level=2]\n  - article:\n    - link \"Acme Demo\":\n      - /url: \"#/org/acme-demo\"\n  - heading \"Your organizations\" [level=2]\n  - paragraph\n  - paragraph:\n    - link \"New organization\":\n      - /url: \"#/org-new\"\n  - paragraph:\n    - link \"New repository\":\n      - /url: \"#/new-repo\"\n- complementary:\n  - button \"Home\"\n- contentinfo: Footer Header · Sidebar · Main content · Footer"
+  },
+  "log": [
+   "ok   0.1s goto /",
+   "ok   0.1s click link \"Sign in\"",
+   "ok   0.1s fill \"Username or email\" alice-dev",
+   "ok   0.1s fill \"Password\"",
+   "ok   0.1s click button \"Sign in\"",
+   "ok   0.1s signed in (button \"Account menu\" visible)",
+   "ok   0.2s click \"Account menu\"",
+   "FAIL 2.7s click link \"Settings\""
+  ]
+ }
+]
