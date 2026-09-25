@@ -1,3 +1,31 @@
+# 当前交接 — 2026-09-25 13:30：第七次提交两题齐全（p 32%，榜第 2）；第八次提交在跑；严格书面测试校准未过
+
+先读 [改进路线图](reference/roadmap.md) 第 18 版日志、4.13、4.14；数字见 [progress.md](progress.md) 账本表第 7、8 行和「09-25 11:00-」一节；分歧归因见 `docs/evidence/2026-09-25-proxy-looseness/README.md`。
+
+## 状态
+
+- 主办方 10:56：Sheet 列不出用例已修，旧 run 只重跑测试重评（我们的 `c34ae0a54c1e`、`4ef5a779acf2` 截至 13:30 未重评）。平台 run 记录不再返回 `failed_tests`，连旧记录里的也被清掉了；逐条隐藏读数只剩 campaign evidence 里 09-24 存下的两份（第四次 `run-7e3f4dba7736.json`、第五次 `run-5450c3c63fe0.json`）。
+- 第七次提交（`3b1bef245862`）：GitHub 21、Sheet 43（`b491936e86f2`，10.06 元），p 32.0%，S ≈ 34.6，榜第 2（Iris 40.5%）。比赛额度 489.94 元。
+- 第八次提交（`1503bf3a1f15`，包 d3769ab0，分支 `feat/repair-visibility` 20dcdbd）：GitHub `95ec6880ee7f`、Sheet `e6cf53b272c1`，12:56 起跑。改动见 4.14。出分后读日志里的 `[oneshot] repair round` / `repair end` 行（第一次能看到平台上修复跑了几轮、为什么停），填账本第 8 行；隐藏分不降就开 PR 合 `feat/repair-visibility`。
+- 严格书面测试 v2（分支 `feat/testgen-strict`，叠在 repair-visibility 上）：四项判据过两项（第五次提交代理多过 22→9 过；第四次 14→10 未过 ≤7；第五次隐藏独过 4→6 未过 ≤4，多出来的都是 `error`；写套件 7.19 元过）。未进包。第四次提交上剩余 10 条和 3 条误报在子 agent 复查中，结果回来后改 v3、用同一判据再校准。同分支修了测试 id 解析（模型漏写 `#n` 时四条测试共用一个 id，修复记账会错）。
+- 校准脚本 `scratchpad/calib.sh SUITE TAG`（本会话 scratchpad `/private/tmp/claude-501/-Users-e0-7-projects/425683f3-24c0-420e-befc-1badcf2e5635/scratchpad/`，平台产物 `b-7e3f`、`b-5450`、`b-5cbf`、`b-b491`，套件 `gh-suite-v2`）。
+- **arcbench 会话**：cookie 取自 Chrome「Profile 1」（`arcbench session --profile "Profile 1"`），09-29 11:35 过期，到期前要甲方在该 profile 重新登录。
+
+## 接下来
+
+1. 读第八次提交（两题），填账本；修复是否撞到 24 次/10 元上限、还是连续 3 次被拒。
+2. v3 书面测试校准；过了就作为下一个候选（行为改动，按第 7 节至少多样本）。
+3. 生成侧候选（未做，证据弱）：同名种子只种一份；没写明密码的种子账号用需求给出的密码。先本地量机制指标。
+4. Sheet：代理套件比隐藏更严（本地 30 对隐藏 43），4 个文件解析失败、种子在模块间矛盾；没有逐条隐藏读数，暂不深挖。
+
+## 不要做
+
+- 不要把平台返回的失败测试内容，或正式题、练习题的专名写进包里。
+- 不要把受控回放的分数当成进展。
+- 不要改校准判据来让候选过关。
+
+---
+
 # 当前交接 — 2026-09-25 04:30：GitHub 稳定 21/100；等主办方修 Sheet
 
 先读 [改进路线图](reference/roadmap.md) 第 17 版日志、4.11、4.12；数字见 [progress.md](progress.md) 正式提交账本表（第 1–7 行）和最后两节。main 3c761e2 = 当前最好的包（书面测试 + 定点编辑修复默认开）。
