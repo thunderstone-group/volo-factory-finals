@@ -32,7 +32,22 @@ def arc(*args):
 
 def arc_json(*args):
     text = arc(*args, "--json")
+    if "[" not in text and "{" not in text:
+        raise RuntimeError(f"arcbench {' '.join(args)} returned no JSON: {text.strip()[-300:]}")
     return json.loads(text[text.index("[") if text.lstrip().startswith("[") else text.index("{"):])
+
+
+def patient(fn, *args, tries=5):
+    """A read that the platform answered without JSON is asked again: on 09-25 one such answer to a status poll ended the
+    relay in its first round and the queue stood idle. Uploads and run starts are never repeated."""
+    for attempt in range(tries):
+        try:
+            return fn(*args)
+        except (RuntimeError, ValueError, subprocess.TimeoutExpired) as exc:
+            if attempt == tries - 1:
+                raise
+            print(f"retrying {fn.__name__}: {str(exc)[:300]}", file=sys.stderr, flush=True)
+            time.sleep(POLL)
 
 
 def active_runs():
@@ -68,9 +83,9 @@ def main(argv=None):
     args = parser.parse_args(argv)
     until = dt.datetime.fromisoformat(args.until) if args.until else None
     for number in range(1, args.rounds + 1):
-        while active_runs():
+        while patient(active_runs):
             time.sleep(POLL)
-        left = budget()
+        left = patient(budget)
         if left < args.reserve:
             log(args.log, {"event": "stop", "reason": f"budget {left:.2f} below reserve {args.reserve}"})
             return 0
@@ -96,7 +111,7 @@ def main(argv=None):
             for run_id in runs:
                 if run_id in results:
                     continue
-                record = status(run_id)
+                record = patient(status, run_id)
                 if record.get("status") not in ("RUNNING", "QUEUED", "PENDING"):
                     results[run_id] = {k: record.get(k) for k in ("requirement_id", "status", "passed", "failed",
                                                                   "cost", "duration_seconds", "failure_reason")}
