@@ -254,10 +254,29 @@ def ensure_runner(env):
 CONFIG = """module.exports = {{
   testDir: {suite}, testMatch: /.*\\.spec\\.cjs$/, testIgnore: {ignore}, workers: 1, fullyParallel: false, retries: 0,
   timeout: {test_ms}, expect: {{ timeout: {action_ms} }}, outputDir: {output},
-  reporter: [['json', {{ outputFile: {report} }}]],
+  reporter: [['json', {{ outputFile: {report} }}], [{progress_reporter}, {{ outputFile: {progress} }}]],
   use: {{ baseURL: {base}, permissions: ['clipboard-read', 'clipboard-write'], actionTimeout: {action_ms},
          navigationTimeout: {navigation_ms}, trace: 'off', video: 'off', screenshot: 'off' }},
 }};
+"""
+
+
+# The JSON report is written only when the run ends; a run stopped at RUN_SECONDS left none, and every test read "Not
+# run" (09-25 Sheet run dca5df727dcb: a draft that overflowed its stack made each test wait out its timeouts, the suite
+# was stopped at 900 s, the written tests fell back to unparsable requirement scenarios, and no repair was made).
+# This reporter appends each finished test at once, so a stopped run still reports the tests it finished.
+PROGRESS_REPORTER = """const fs = require('fs');
+class Progress {
+  constructor(options) { this.file = options.outputFile; }
+  onTestEnd(test, result) {
+    const errors = (result.errors || []).map((e) => ({ message: e.message, stack: e.stack, location: e.location,
+                                                       snippet: e.snippet }));
+    fs.appendFileSync(this.file, JSON.stringify({ spec: { title: test.title, line: test.location && test.location.line },
+                                                  result: { status: result.status, duration: result.duration, errors } }) + '\\n');
+  }
+  printsToStdio() { return false; }
+}
+module.exports = Progress;
 """
 
 
@@ -364,8 +383,9 @@ def _test_id(title):
     return sid, name
 
 
-def parse(report_path, suite, manifest, text):
-    """The Playwright JSON report as scenario-check entries, one per test the manifest lists."""
+def parse(report_path, suite, manifest, text, progress_path=None, missing="the runner did not report it"):
+    """The Playwright JSON report as scenario-check entries, one per test the manifest lists. Without a report, the
+    tests the progress file recorded; a test in neither is an error reading `Not run: <missing>`."""
     suite = Path(suite)
     # One line per phrase: YAML folds long descriptions, and five quoted Sheet messages ("Worksheet name already
     # exists") were broken across lines, so tests asserting them were set aside as using names never given.
@@ -378,6 +398,17 @@ def parse(report_path, suite, manifest, text):
     found = []
     for node in data.get("suites") or []:
         _walk(node, found)
+    if not found and progress_path:
+        try:
+            lines = Path(progress_path).read_text(encoding="utf-8").splitlines()
+        except OSError:
+            lines = []
+        for line in lines:
+            try:
+                record = json.loads(line)
+            except ValueError:
+                continue  # the line being written when the run was stopped
+            found.append((record.get("spec") or {}, record.get("result") or {}))
     by_title = {}
     for spec, result in found:
         by_title[spec.get("title")] = (spec, result)
@@ -392,7 +423,7 @@ def parse(report_path, suite, manifest, text):
             if record.get("syntax"):
                 entry.update(status="error", observation="The test file does not parse: " + record["syntax"][:300])
             elif title not in by_title:
-                why = next((e for e in load_errors if record["file"] in e), None) or "the runner did not report it"
+                why = next((e for e in load_errors if record["file"] in e), None) or missing
                 entry.update(status="error", observation="Not run: " + why)
             else:
                 spec, result = by_title[title]
@@ -464,12 +495,25 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
         port, ready, why = scenario_check._start_backend(backend, workspace, None)
         if not ready:
             return _all(manifest, "fail", f"The backend did not start: {why}", started)
-        report_path = work / "report.json"
-        (work / "playwright.config.cjs").write_text(CONFIG.format(
-            suite=json.dumps(str(suite)), ignore=json.dumps(broken),
-            output=json.dumps(str(work / "results")), report=json.dumps(str(report_path)),
-            base=json.dumps(f"http://127.0.0.1:{port}"), test_ms=TEST_SECONDS * 1000, action_ms=ACTION_SECONDS * 1000,
-            navigation_ms=10000), encoding="utf-8")
+        report_path, progress_path = work / "report.json", work / "progress.jsonl"
+        (work / "progress-reporter.cjs").write_text(PROGRESS_REPORTER, encoding="utf-8")
+
+        def configure(broken):
+            report_path.unlink(missing_ok=True)
+            progress_path.unlink(missing_ok=True)
+            (work / "playwright.config.cjs").write_text(CONFIG.format(
+                suite=json.dumps(str(suite)), ignore=json.dumps(broken),
+                output=json.dumps(str(work / "results")), report=json.dumps(str(report_path)),
+                progress_reporter=json.dumps(str(work / "progress-reporter.cjs")), progress=json.dumps(str(progress_path)),
+                base=json.dumps(f"http://127.0.0.1:{port}"), test_ms=TEST_SECONDS * 1000,
+                action_ms=ACTION_SECONDS * 1000, navigation_ms=10000), encoding="utf-8")
+
+        def read(timed_out):
+            return parse(report_path, suite, manifest, text, progress_path,
+                         f"the suite was stopped at its {seconds} s limit before this test" if timed_out
+                         else "the runner did not report it")
+
+        configure(broken)
         command = [shutil.which("node", path=env.get("PATH")), cli, "test", "--config", str(work / "playwright.config.cjs")]
         if only is not None and titles:
             command += ["--grep", _grep(titles)]
@@ -482,7 +526,7 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
             run = subprocess.run(command, cwd=work, env=runner_env, capture_output=True, text=True, timeout=seconds)
         except subprocess.TimeoutExpired:
             timed_out = True
-        entries = parse(report_path, suite, manifest, text)
+        entries = read(timed_out)
         if not timed_out and titles and all((e.get("observation") or "").startswith("Not run:") for e in entries):
             # Nothing ran: a file Playwright cannot load (a duplicate title, a throw at module level) stops the whole
             # run although it parses (09-25 23:07 Sheet run: all 100 tests "Not run" in 1.7 s, repairs stopped after
@@ -496,18 +540,13 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
                 _save_marks(suite, unloadable)
                 broken = ["**/" + r["file"] for r in manifest.get("files", []) if r.get("syntax") and r.get("file")]
                 titles = [t for r in manifest.get("files", []) if not r.get("syntax") for t in (r.get("tests") or [])]
-                (work / "playwright.config.cjs").write_text(CONFIG.format(
-                    suite=json.dumps(str(suite)), ignore=json.dumps(broken),
-                    output=json.dumps(str(work / "results")), report=json.dumps(str(report_path)),
-                    base=json.dumps(f"http://127.0.0.1:{port}"), test_ms=TEST_SECONDS * 1000,
-                    action_ms=ACTION_SECONDS * 1000, navigation_ms=10000), encoding="utf-8")
-                report_path.unlink(missing_ok=True)
+                configure(broken)
                 try:
                     run = subprocess.run(command, cwd=work, env=runner_env, capture_output=True, text=True,
                                          timeout=seconds)
                 except subprocess.TimeoutExpired:
                     timed_out, run = True, None
-                entries = parse(report_path, suite, manifest, text)
+                entries = read(timed_out)
         report = {"kind": "testgen", "scenarios": entries, "invariants": []}
         if run is not None and all((e.get("observation") or "").startswith("Not run:") for e in entries):
             report["runner"] = ANSI.sub("", (run.stderr or "") + (run.stdout or ""))[-600:]  # why nothing ran
