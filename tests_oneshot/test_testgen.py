@@ -212,6 +212,14 @@ class TestIdCase(unittest.TestCase):
         self.assertEqual(testgen._test_id("REQ-2: Plain name"), ("REQ-2", "Plain name"))
 
 
+class GroundingCase(unittest.TestCase):
+    def test_a_cell_address_is_grounded_but_an_invented_name_is_not(self):
+        quoted = testgen._phrases("Cell `A1` holds `Region`.")
+        source = "getByRole('gridcell', { name: 'E1', exact: true }); getByRole('button', { name: 'Frobnicate' })"
+        self.assertFalse(testgen.ungrounded("E1", source, "Cell `A1` holds `Region`.", quoted))
+        self.assertTrue(testgen.ungrounded("Frobnicate", source, "Cell `A1` holds `Region`.", quoted))
+
+
 class RunCase(unittest.TestCase):
     def test_runs_a_suite_against_a_live_application(self):
         env = dict(os.environ)

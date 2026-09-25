@@ -94,6 +94,7 @@ FILE_BLOCK = re.compile(r"=== FILE:[ \t]*(.*?)[ \t]*===[ \t]*\r?\n(.*?)\r?\n=== 
 TITLE = re.compile(r"""\btest(?:\.(?:skip|only|fixme))?\(\s*(['"`])((?:\\.|(?!\1).)*)\1""")
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
 OWN_ERROR = re.compile(r"^(?:ReferenceError|TypeError|SyntaxError|RangeError)\b")
+CELL = re.compile(r"[A-Z]{1,3}[1-9][0-9]{0,5}")
 NAMED = re.compile(r"""getBy(?:Role\(\s*'[a-z]+'\s*,\s*\{\s*name:\s*|Label\(\s*|Text\(\s*|Placeholder\(\s*)'((?:\\.|[^'\\])*)'""")
 
 
@@ -270,6 +271,10 @@ def ungrounded(name, source, text, quoted):
     up. Names built at run time (unique suffixes, values the test entered) are not literals and are not judged."""
     literal = ("'" + name + "'") in source or ('"' + name + '"') in source or ("`" + name + "`") in source
     if not literal or len(name) < 2 or name in text:
+        return False
+    if CELL.fullmatch(name):
+        # A grid cell's address is how any spreadsheet names its cells, not something the test made up (09-25: nine
+        # Sheet tests addressing E1, F1, H2 or B5 were set aside as errors and never drove a repair).
         return False
     phrases, patterns = quoted
     return name not in phrases and not any(p.match(name) for p in patterns)
