@@ -1,3 +1,31 @@
+# 当前交接 — 2026-09-25 23:15：接力跑包 13640cc2（依赖顺序修复 + Sheet 诊断修正）；双初稿择优已撤回
+
+先读 [改进路线图](reference/roadmap.md) 第 22 版日志和 4.17–4.19；数字见 [progress.md](progress.md) 账本表第 11、12 行和 09-25 晚上三节；Sheet 诊断全文 `docs/evidence/2026-09-25-sheet-gap/README.md`。
+
+## 状态
+
+- 总榜第 1 仍是第九次提交（S 55.27）。第十次 p 46.0%，接力第一轮 p 48.0%（Sheet 80 是 Sheet 最好，GitHub 16）。
+- 夜间接力：23:07 起用包 `13640cc2`（提交 27501d3，分支 `feat/repair-order`）。进程 `scripts/submission_chain.py`（从 worktree `../volo-factory-worktrees/repair-order` 起的，nohup，5 轮、保留 200 元、09-26 09:00 后不再起新提交），日志 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/official/chain-2026-09-25-order.jsonl`，输出同目录 `.out`。第一轮提交 `907c6878f22f`（GitHub `1f0760580523`、Sheet `7936cf7a0ab0`）。接手先 `ps aux | grep submission_chain` 和 `arcbench runs --limit 6`，别重复提交；脚本崩了就看 `.out`，按账本补记后重启。
+- 包内改动：修复请求按需求依赖深度排序、helper 不再被截掉（4.18）；测试文件去 Markdown 围栏；改名守卫看得见 `aria-label` 覆盖字段名（4.19）；书面测试 grounding 合并空白、认编号名；等书面测试上限 3600 秒。
+- 双初稿择优（4.17）按判据 ④ 撤回，代码已删。
+- 比赛额度 416.46 元（23:07）；练习 key 约 205 元。arcbench cookie 10-09 过期。
+
+## 接下来
+
+1. 接力每轮出分：填账本第 12 行起；GitHub 日志的 `repair end` 行现在带着最后失败、error 的书面测试 id。4.18 判据 ④：第一次 GitHub 不低于 17。
+2. Sheet 下一批（诊断排序，见 4.19「未做的候选」）：脚手架菜单与选区（预计 +2..+4）、种子描述冲突合并（+1..+3，GitHub 同类）、卡片「筛选不藏自己的控件」（+1..+2）、新会话不改共享状态的检查。每项先按诊断里写的本地验证方法做，再进包。
+3. GitHub：代理仍松（书面 84 对隐藏 16）；4.13 的严格测试要多套比较。
+4. PR `feat/repair-order` 合 main 后删 worktree（接力脚本正从该 worktree 运行，等接力结束再删）。
+
+## 不要做
+
+- 不要把平台返回的失败测试内容，或正式题、练习题的专名写进包里。
+- 不要把受控回放的分数当成进展。
+- 不要改校准判据来让候选过关。
+- 不要在接力脚本运行时手动上传提交（只有最新提交能起 run，会打断接力）。
+
+---
+
 # 当前交接 — 2026-09-25 19:50：双初稿择优上线（包 f08f3fdf），夜间接力已换包；第十次在跑
 
 先读 [改进路线图](reference/roadmap.md) 第 21 版日志和 4.17；数字见 [progress.md](progress.md) 账本表第 10、11+ 行和「09-25 19:50」一节。

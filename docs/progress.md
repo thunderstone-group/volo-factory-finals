@@ -1095,7 +1095,8 @@ S = p / (b / (0.8 p))^0.1 while b <= 0.8 p, else ^0.2; p in percent over both ta
 | 8 | 09-25 12:55 | d3769ab0 | 20dcdbd | flash | 7/100 | 53/100 | 16.64 | 32.4 | `feat/repair-visibility`: repair rounds in the log, repair budget 24 calls / CNY 10, scaffold `this` sharing (roadmap 4.14); submission `1503bf3a1f15`. GitHub `95ec6880ee7f`: draft broken as a whole, 8 repair rounds (3 kept, incl. the revival), written suite 0 -> 22, stopped at three discards in a row (one was a gateway HTTP 400), CNY 10.02, 92 min. Sheet `e6cf53b272c1`: 3 rounds all discarded (two by the vocabulary guard at 47 -> 59 and 65), CNY 6.62, 64 min |
 | 9 | 09-25 14:45 | 6143d95f | fc05229 | flash | 22/100 | 79/100 | 16.39 | 55.27 (board) | `feat/repair-guards`: guards weigh as lost tests under written tests, four discards in a row, unanswered rounds do not count, testgen id fix (roadmap 4.15); submission `dfce9da4382a`, runs `564563986f7f` (GitHub), `2c8e9b1f5e5f` (Sheet). Sheet: draft did not load (revived in round 1, suite 51), then +26, +6, +3, +3: suite 88, 11 rounds 5 kept, CNY 7.09, 71 min. GitHub: round 1 +30 (14 -> 44) kept over a newly flagging static gate, then +14, +12, +5, +1, three discards, +2, four discards: suite 77, 13 rounds 6 kept, repair CNY 3.89, CNY 9.29, 145 min. p 50.5 %, **board 1st** (Iris 36.34) |
 | 10 | 09-25 16:45 | c5152707 | 6017ef4 | flash | 14/100 | 78/100 | 20.71 | 48.7 | Sheet `ed1ef8fb5d78`: 22 rounds 11 kept, stopped at the 24-call cap still gaining (+1, +1), suite 86, CNY 9.84, 170 min; GitHub `d58e50066c0a`: draft 11 of 101 written tests (70 errors), 12 rounds 5 kept, suite 26, stopped at four discards, CNY 10.87, 162 min. p 46.0 %, below submission 9; in-round follow-up (SEARCH all missed / script does not parse) and cell-address grounding (roadmap 4.16); submission `a2375cd48c2a`; Sheet `ed1ef8fb5d78` started 16:45; GitHub `d58e50066c0a` started 17:24 after run 9's GitHub ended (one run per task at a time; attempt `ce95a7580c1f` refused with 409) |
-| 11 | 09-25 20:23 | f08f3fdf | 2328d2c | flash | | | | | draft pair (roadmap 4.17), relay round 1 (`chain-2026-09-25-pair.jsonl`, 5 rounds, reserve CNY 200, no new submission after 09-26 09:00); submission `259ce02ed3bc`, GitHub `e53edcaca334`, Sheet `538e10fe0724`, team budget CNY 436.19 before |
+| 11 | 09-25 20:23 | f08f3fdf | 2328d2c | flash | 16/100 | 80/100 | 19.73 | 51.3 | draft pair (roadmap 4.17), relay round 1 (`chain-2026-09-25-pair.jsonl`, 5 rounds, reserve CNY 200, no new submission after 09-26 09:00); submission `259ce02ed3bc`, GitHub `e53edcaca334`, Sheet `538e10fe0724`, team budget CNY 436.19 before. GitHub: pair judged 12 vs 15, chose draft 2, suite reached 84+, hidden 16, CNY 9.27, 130 min; Sheet: suite 1970 s, 91 written tests passing, hidden **80** (best Sheet), CNY 10.46, 87 min. Draft pair withdrawn (roadmap 4.17 criterion 4) |
+| 12 | 09-25 23:07 | 13640cc2 | 27501d3 | flash | | | | | repair in dependency order + unfenced suite files (4.18), rename guard sees aria-label overrides + grounding fixes (4.19), suite wait 3600 s; relay `chain-2026-09-25-order.jsonl`, submission `907c6878f22f`, runs `1f0760580523`, `7936cf7a0ab0`, team budget CNY 416.46 before |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1375,3 +1376,20 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   of a numbered series, and an all-placeholder phrase no longer matches every name (it did once the text was joined:
   caught before shipping); the `repair end` line lists written tests still failing or in error. 220 unit tests green.
   Package 30ef9677; local Sheet end-to-end check running before it replaces f08f3fdf on the relay.
+
+## 2026-09-25 22:50-23:15 — Round 1 read; draft pair withdrawn; suite wait; relay restarted
+
+- **Relay round 1** (package f08f3fdf): GitHub 16, Sheet 80, p 48.0 %, CNY 19.73, S 51.3 (board stays at submission
+  9's 55.27). Roadmap 4.17 criterion 4 (GitHub >= 17) missed; submissions 6-10 without the pair averaged 17. The pair is
+  withdrawn (code and its six tests removed, 27501d3).
+- **Relay crash:** the 19:46 relay ended in round 1 on a status poll that came back without JSON (traceback in
+  `chain-2026-09-25-pair.out`), so no round 2 started; round 1's result was logged by hand. Reads now retry five times;
+  uploads and run starts never repeat.
+- **Suite wait:** a local Sheet run of package 30ef9677 (22:15, practice key) had six cut streams and two HTTP 400 among
+  its 21 suite calls; the suite was still unwritten 1200 s after the draft, so the run shipped the bare draft without a
+  single repair (exit 0). Platform suites so far: 1206, 1279, 1434, 1662, 1970 s. `TESTGEN_WAIT` 1200 -> 3600 s.
+- **4.19 on real suites:** the new grounding leaves the diagnosis's main Sheet suite on submission 9 unchanged (87/13)
+  and turns 2 of the 09-24 suite's errors into fails.
+- **Relay restarted 23:07** with package 13640cc2 (27501d3: 4.18 + 4.19 + suite wait), 5 rounds, reserve CNY 200, no new
+  submission after 09-26 09:00: submission `907c6878f22f`.
+
