@@ -1,3 +1,30 @@
+# 当前交接 — 2026-09-26 01:50：接力换成包 f37fc67d（GitHub 24 的依赖顺序修复 + Sheet 修正）
+
+先读 [改进路线图](reference/roadmap.md) 第 23 版日志和 4.18–4.21；数字见 [progress.md](progress.md) 账本表第 12–14 行。
+
+## 状态
+
+- 总榜第 1 仍是第九次（S 55.27）。GitHub 最好 24（包 13640cc2），Sheet 最好 80（包 f08f3fdf）；还没有一次提交把两者凑齐。
+- 夜间接力：01:46 起用包 `f37fc67d`（main 上 `fix/suite-load` 合入后的代码），进程 `scripts/submission_chain.py`（main 里起的，nohup，4 轮、保留 200 元、09-26 09:00 后不再起新提交），日志 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/official/chain-2026-09-26.jsonl`，输出同目录 `.out`。换包时 13640cc2 的第二轮（提交 `4e6ef6222609`，GitHub `4dc11acce4d1`、Sheet `dca5df727dcb`）还在跑，新接力等它结束才上传；它的结果要手工填账本第 13 行。
+- 包 f37fc67d 比 13640cc2 多：书面测试文件加载不了时找出来跳过（4.20）；脚手架菜单修正、筛选不藏控件的卡片规则（4.21）。
+- 比赛额度 399.30 元（01:21）；练习 key 约 190 元。arcbench cookie 10-09 过期。
+
+## 接下来
+
+1. 早上读接力结果：账本第 13 行起；4.21 判据（Sheet 不低于 78）、4.18 继续看 GitHub。日志 `repair end` 行带最后失败、error 的书面测试 id；停止原因若是「测试跑不了」会带运行器报错。
+2. 若某次提交两题都到最好水平（GitHub 20+、Sheet 80+），S 会明显超过 55.27；接力就是在抽这个样本。
+3. 暂缓项：种子冲突合并（`feat/sheet-batch2` 的 babbaa3），证据弱；要用得先多写两套测试比较。
+4. worktree `repair-order`、`suite-load`、`sheet-batch2` 在分支合入后可删（接力脚本从 main 运行）。
+
+## 不要做
+
+- 不要把平台返回的失败测试内容，或正式题、练习题的专名写进包里。
+- 不要把受控回放的分数当成进展。
+- 不要改校准判据来让候选过关。
+- 不要在接力脚本运行时手动上传提交（只有最新提交能起 run，会打断接力）。
+
+---
+
 # 当前交接 — 2026-09-25 23:15：接力跑包 13640cc2（依赖顺序修复 + Sheet 诊断修正）；双初稿择优已撤回
 
 先读 [改进路线图](reference/roadmap.md) 第 22 版日志和 4.17–4.19；数字见 [progress.md](progress.md) 账本表第 11、12 行和 09-25 晚上三节；Sheet 诊断全文 `docs/evidence/2026-09-25-sheet-gap/README.md`。

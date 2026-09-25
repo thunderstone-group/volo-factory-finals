@@ -1096,7 +1096,9 @@ S = p / (b / (0.8 p))^0.1 while b <= 0.8 p, else ^0.2; p in percent over both ta
 | 9 | 09-25 14:45 | 6143d95f | fc05229 | flash | 22/100 | 79/100 | 16.39 | 55.27 (board) | `feat/repair-guards`: guards weigh as lost tests under written tests, four discards in a row, unanswered rounds do not count, testgen id fix (roadmap 4.15); submission `dfce9da4382a`, runs `564563986f7f` (GitHub), `2c8e9b1f5e5f` (Sheet). Sheet: draft did not load (revived in round 1, suite 51), then +26, +6, +3, +3: suite 88, 11 rounds 5 kept, CNY 7.09, 71 min. GitHub: round 1 +30 (14 -> 44) kept over a newly flagging static gate, then +14, +12, +5, +1, three discards, +2, four discards: suite 77, 13 rounds 6 kept, repair CNY 3.89, CNY 9.29, 145 min. p 50.5 %, **board 1st** (Iris 36.34) |
 | 10 | 09-25 16:45 | c5152707 | 6017ef4 | flash | 14/100 | 78/100 | 20.71 | 48.7 | Sheet `ed1ef8fb5d78`: 22 rounds 11 kept, stopped at the 24-call cap still gaining (+1, +1), suite 86, CNY 9.84, 170 min; GitHub `d58e50066c0a`: draft 11 of 101 written tests (70 errors), 12 rounds 5 kept, suite 26, stopped at four discards, CNY 10.87, 162 min. p 46.0 %, below submission 9; in-round follow-up (SEARCH all missed / script does not parse) and cell-address grounding (roadmap 4.16); submission `a2375cd48c2a`; Sheet `ed1ef8fb5d78` started 16:45; GitHub `d58e50066c0a` started 17:24 after run 9's GitHub ended (one run per task at a time; attempt `ce95a7580c1f` refused with 409) |
 | 11 | 09-25 20:23 | f08f3fdf | 2328d2c | flash | 16/100 | 80/100 | 19.73 | 51.3 | draft pair (roadmap 4.17), relay round 1 (`chain-2026-09-25-pair.jsonl`, 5 rounds, reserve CNY 200, no new submission after 09-26 09:00); submission `259ce02ed3bc`, GitHub `e53edcaca334`, Sheet `538e10fe0724`, team budget CNY 436.19 before. GitHub: pair judged 12 vs 15, chose draft 2, suite reached 84+, hidden 16, CNY 9.27, 130 min; Sheet: suite 1970 s, 91 written tests passing, hidden **80** (best Sheet), CNY 10.46, 87 min. Draft pair withdrawn (roadmap 4.17 criterion 4) |
-| 12 | 09-25 23:07 | 13640cc2 | 27501d3 | flash | | | | | repair in dependency order + unfenced suite files (4.18), rename guard sees aria-label overrides + grounding fixes (4.19), suite wait 3600 s; relay `chain-2026-09-25-order.jsonl`, submission `907c6878f22f`, runs `1f0760580523`, `7936cf7a0ab0`, team budget CNY 416.46 before |
+| 12 | 09-25 23:07 | 13640cc2 | 27501d3 | flash | 24/100 | 59/100 | 17.16 | 44.33 | GitHub `1f0760580523` 17 rounds 9 kept, suite 90, CNY 11.34, 117 min (best GitHub); Sheet `7936cf7a0ab0` stopped after round 1: every written test "Not run" (a file Playwright could not load), CNY 5.82, 30 min; repair in dependency order + unfenced suite files (4.18), rename guard sees aria-label overrides + grounding fixes (4.19), suite wait 3600 s; relay `chain-2026-09-25-order.jsonl`, submission `907c6878f22f`, runs `1f0760580523`, `7936cf7a0ab0`, team budget CNY 416.46 before |
+| 13 | 09-26 01:21 | 13640cc2 | 27501d3 | flash | | | | | relay round 2, submission `4e6ef6222609`, runs `4dc11acce4d1`, `dca5df727dcb`, team budget CNY 399.30 before; the relay was replaced at 01:45 while it ran, so fill this row by hand |
+| 14+ | after row 13 | f37fc67d | c1342e3+ | flash | | | | | suite load fix (4.20), scaffold menus + filter card rule (4.21); relay `chain-2026-09-26.jsonl`, 4 rounds, reserve CNY 200, no new submission after 09-26 09:00 |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1392,4 +1394,18 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   and turns 2 of the 09-24 suite's errors into fails.
 - **Relay restarted 23:07** with package 13640cc2 (27501d3: 4.18 + 4.19 + suite wait), 5 rounds, reserve CNY 200, no new
   submission after 09-26 09:00: submission `907c6878f22f`.
+
+## 2026-09-26 01:20-01:50 — Package 13640cc2 round 1; suite load failure fixed; Sheet batch 2
+
+- Round 1 of 13640cc2 (submission `907c6878f22f`): GitHub **24/100** (best GitHub; 17 rounds, 9 kept, suite 90), Sheet
+  59/100: after repair round 1 revived the draft, the suite finished in 1.7 s with all 100 tests "Not run" and the loop
+  stopped as if the checker could not run. p 41.5 %, CNY 17.16, S 44.33. Board unchanged (submission 9, S 55.27).
+- Reproduced locally: a duplicate test title in one file passes `node --check` yet Playwright loads no test (0.8 s,
+  100 errors). Fix (4.20): when nothing ran, list each file on its own, mark those that fail in suite.json, run again
+  (117 results on the reproduction); the runner's output tail joins the stop reason.
+- Sheet batch 2 (subagent, practice CNY 10.30): scaffold menus (Lite replays 32/32, 34/34; probes +3/+3/+4/+0 on four
+  official Sheet drafts with only arc.js swapped; REQ-3-2-1 0/4 -> 4/4 on submission 10) and the filter card rule are
+  in; the seed-conflict merge stays on `feat/sheet-batch2` (weak evidence).
+- Package f37fc67d (215 unit tests; the menu browser test needs Playwright on NODE_PATH) replaced 13640cc2 on the relay
+  at 01:46; relay round 2 (`4e6ef6222609`) was running at the switch.
 
