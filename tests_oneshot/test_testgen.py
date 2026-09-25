@@ -259,6 +259,33 @@ class RunCase(unittest.TestCase):
                              {"REQ-1-1": "pass", "REQ-1-2": "fail", "REQ-2-1": "error"})
             self.assertIn("cannot load", json.loads((suite / "suite.json").read_text())["files"][1]["syntax"])
 
+    def test_a_run_stopped_at_its_time_limit_keeps_the_tests_it_finished(self):
+        env = dict(os.environ)
+        cli, why = testgen.ensure_runner(env)
+        if not cli:
+            self.skipTest("the Playwright test runner is unavailable: " + why)
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            app = root / "app"
+            (app / "backend").mkdir(parents=True)
+            (app / "frontend").mkdir()
+            (app / "backend" / "server.js").write_text(APP_SERVER)
+            (app / "backend" / "package.json").write_text('{"scripts": {"start": "node server.js"}}')
+            suite = root / "suite"
+            suite.mkdir()
+            # The third test outlasts the run's limit while staying inside its own timeout: a stuck application.
+            (suite / "t01-REQ-1.spec.cjs").write_text(SPEC + "test('REQ-1-3: Slow', async ({ page }) => {\n"
+                                                      "  await page.goto('/');\n  await page.waitForTimeout(14000);\n});\n")
+            (suite / "suite.json").write_text(json.dumps({"files": [{"file": "t01-REQ-1.spec.cjs", "tests": [
+                "REQ-1-1: Add one", "REQ-1-2: Edit one", "REQ-1-3: Slow"]}], "scenarios": 3, "tests": 3}))
+            report = testgen.run_suite(app, suite, REQUIREMENTS, seconds=16)
+            self.assertEqual(report.get("timed_out"), 16, report)
+            entries = {e["id"]: e for e in report["scenarios"]}
+            self.assertEqual({k: e["status"] for k, e in entries.items()},
+                             {"REQ-1-1": "pass", "REQ-1-2": "fail", "REQ-1-3": "error"})
+            self.assertIn("Archive", entries["REQ-1-2"]["observation"])
+            self.assertIn("stopped at its 16 s limit", entries["REQ-1-3"]["observation"])
+
 
 if __name__ == "__main__":
     unittest.main()
