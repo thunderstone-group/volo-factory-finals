@@ -45,7 +45,8 @@ REPAIR_CALLS = 24  # Completed repair calls. An edit round costs CNY 0.25-0.5 on
 # 25 -> 38) and Sheet (12 calls, 20 -> 72) replays both stopped at the call cap while still gaining. Cost enters the
 # score only at the 0.1 power, so doubling it pays for itself at a pass-rate gain of about 7 %.
 REPAIR_CNY = 10.0  # Repair spend per task in CNY: the repair calls plus the scenario translation (roadmap 4.3).
-REPAIR_REJECTIONS = 3  # Consecutive discarded repairs before the loop gives up.
+REPAIR_REJECTIONS = 4  # Consecutive discarded repairs before the loop gives up. On 09-25 (GitHub, run 95ec6880ee7f) a
+# fourth round gained 14 tests after two discarded ones; a round costs CNY 0.2-0.5 and about 12 minutes on the platform.
 REPAIR_SHOWN = 40  # Failing scenarios listed in one repair request.
 LOSS_RATIO = 3  # A repair that loses passing scenarios is kept only when it gains this many per loss.
 REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce before one has completed.
@@ -2159,19 +2160,22 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     """(accepted, reason, detail) for a repaired stage against the version before it (roadmap 4.3). A repair is kept
     when it brings a broken application back (whatever else it did), or when at least one scenario that failed now
     passes, it gains LOSS_RATIO of those for every passing scenario it loses, no clean static gate starts flagging, no
-    quoted phrase disappears and no control name the requirement quotes is renamed. Only verdicts both checks reached
+    quoted phrase disappears and no control name the requirement quotes is renamed (under written tests those three
+    guards weigh as lost tests instead: one per newly flagging gate, missing phrase or renamed control). Only verdicts both checks reached
     compare: a scenario that was unparsed or errored before never counts as gained, and one that is unparsed after as
     lost. Lost scenarios, and gains of at most two, are rechecked once for flakiness. A check that could not run at all
     is the checker's failure, marked `checker` in the detail, not the repair's."""
     detail = {}
     if after["fatal"]:
         return False, "the application is still broken as a whole: " + "; ".join(after["fatal"])[:500], detail
-    guards = []
+    guards, penalty = [], 0  # penalty: what the guards weigh as lost tests when written tests judge (below)
     newly = sorted(set(after["static"]) - set(before["static"]))
     if newly:
         guards.append("a static gate that was clean now flags: " + "; ".join(p for g in newly for p in after["static"][g])[:500])
+        penalty += len(newly)
     if after["missing"] > before["missing"]:
         guards.append(f"the change removed quoted vocabulary ({before['missing']} -> {after['missing']} missing)")
+        penalty += after["missing"] - before["missing"]
     # A literal button can become a data-driven menu entry: a successful browser activation proves the name exists.
     observed = {re.sub(r"\s+", " ", action["name"]).strip().lower()
                 for report in after["browser"] if report.get("executed")
@@ -2182,6 +2186,7 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     if renamed:
         detail["renamed_controls"] = renamed
         guards.append("the change renamed quoted control(s): " + ", ".join(renamed[:8]))
+        penalty += len(renamed)
     if before["fatal"]:
         # A blank or dead application that works again is kept: a rename guard once shipped the blank page instead
         # (09-19, a large task at 0/125). The waived guards stay on the record.
@@ -2233,13 +2238,20 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         # rendered the list (the public suite fails them on the fixed app too). Kept when it gains three per loss.
         # Written tests follow the same rule: under zero loss a GitHub replay discarded a repair worth 25 -> 32 for
         # one lost test, and a gained test is as likely a hidden path as a lost one.
-        if len(gained) < LOSS_RATIO * len(lost):
-            return False, broke + (f", and fixed only {len(gained)}" if gained else ", and fixed none"), detail
+        if len(gained) < LOSS_RATIO * (len(lost) + (penalty if written else 0)):
+            return False, broke + (f", and fixed only {len(gained)}" if gained else ", and fixed none") + (
+                "; " + "; ".join(guards) if written and guards else ""), detail
     if not gained:
         return False, "no failing scenario passes after the change", detail
     if guards:
-        return False, "; ".join(guards), detail
-    return True, f"{len(gained)} more scenario(s) pass" + (f", {len(lost)} lost" if lost else ""), detail
+        # Against a hundred written tests a guard is one more lost test, not a veto: on 09-25 (Sheet, run
+        # e6cf53b272c1) two repairs that took the suite from 47 to 59 and 65 passing were discarded because one quoted
+        # phrase of 55 went missing. The scenario check, with its thin coverage, keeps the veto.
+        if not written or len(gained) < LOSS_RATIO * (len(lost) + penalty):
+            return False, "; ".join(guards), detail
+        detail["waived"] = guards
+    return True, f"{len(gained)} more scenario(s) pass" + (f", {len(lost)} lost" if lost else "") + (
+        f" (outweighs: {'; '.join(guards)})" if guards else ""), detail
 
 
 def _swap_back(stage, backup):

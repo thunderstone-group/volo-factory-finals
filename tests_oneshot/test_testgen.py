@@ -324,6 +324,30 @@ class RepairLoopCase(unittest.TestCase):
         self.assertTrue(budget.smoke["rounds"][0]["accepted"], budget.smoke["rounds"][0])
         self.assertEqual(budget.smoke["rounds"][0]["gained"], ["REQ-1", "REQ-2", "REQ-3"])
 
+    def test_a_lost_quoted_phrase_weighs_as_one_lost_test_under_written_tests(self):
+        from tests_oneshot.test_oneshot import block
+        many = {f"REQ-{i}": "fail" for i in range(1, 7)}
+        before = self.report({**many, "REQ-9": "pass"})
+        after = self.report({**{k: "pass" for k in many}, "REQ-9": "pass"})
+        vocab = iter([([], 0), ([], 1)])
+        with self.patch.object(self.adapter, "vocabulary_gaps", side_effect=lambda *a, **k: next(vocab, ([], 1))):
+            _, budget, _ = self.run_loop([before, after], [block("frontend/public/app.js", "// repaired")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertIn("removed quoted vocabulary", record["waived"][0])
+
+    def test_a_lost_quoted_phrase_still_outweighs_a_small_gain(self):
+        from tests_oneshot.test_oneshot import block
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-9": "pass"})
+        recheck = self.report({"REQ-1": "pass", "REQ-2": "pass"})
+        vocab = iter([([], 0), ([], 1)])
+        with self.patch.object(self.adapter, "vocabulary_gaps", side_effect=lambda *a, **k: next(vocab, ([], 1))):
+            _, budget, _ = self.run_loop([before, after, recheck], [block("frontend/public/app.js", "// repaired")])
+        record = budget.smoke["rounds"][0]
+        self.assertFalse(record["accepted"], record)
+        self.assertIn("removed quoted vocabulary", record["reason"])
+
     def test_a_repair_that_only_gains_is_kept(self):
         from tests_oneshot.test_oneshot import block
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-4": "pass"})
