@@ -1091,7 +1091,8 @@ S = p / (b / (1.2 p))^0.1 while b <= 1.2 p; p in percent over both tasks, b in C
 | 4 | 09-24 18:52 | 9bf0254a | 9ac8e89 | flash | 11/100 | platform error | 3.13 | | first run on the corrected task set; Sheet run `c34ae0a54c1e` never executed a test: the runner's `playwright test --list` failed ("Failed to enumerate Playwright tests"), an evaluator fault; GitHub 89 timeouts |
 | 5 | 09-24 22:36 | 165aece2 | c005012 | flash | 13/100 | platform error | 2.91 | | seed checklist + card 6b (feat/seed-reach); Sheet `4ef5a779acf2` enumeration failure again at 22:51; GitHub gained REQ-3-3 S1, REQ-2-1-1 S2 (home reachability paths), lost REQ-1-2 S1-2 (this draft's sign-out) |
 | 6 | 09-25 00:50 | 9dad2b75 | 400a009 | flash | 21/100 | not run | 10.94 | | written tests + edit repairs on the platform (GitHub only); suite written in 25 min (15 calls, CNY 8.0), repair phase 72 min with 8 whole-app checks, run 97 min, 4.07 M tokens; the run record carries no failed_tests list this time |
-| 7 | 09-25 03:05 | 38e217d1 | 3c761e2 | flash | 21/100 | not run | 7.75 | | main after PR #71 (adds the marker-hunk skip and the suite temp-dir fix); run 81 min, 2.82 M tokens; second sample of the written-test line, same 21 |
+| 7 | 09-25 03:05 | 38e217d1 | 3c761e2 | flash | 21/100 | 43/100 | 17.81 | 34.6 | main after PR #71 (adds the marker-hunk skip and the suite temp-dir fix); GitHub run 81 min, 2.82 M tokens, CNY 7.75; Sheet `b491936e86f2` started 09-25 11:06 after the organizers fixed the Sheet suite: 91 min, 2.69 M tokens, CNY 10.06 (suite CNY 6.77); p = 32.0 %, board 2nd (Iris 40.5 %) |
+| 8 | 09-25 12:55 | d3769ab0 | 20dcdbd | flash | | | | | `feat/repair-visibility`: repair rounds in the log, repair budget 24 calls / CNY 10, scaffold `this` sharing (roadmap 4.14); submission `1503bf3a1f15`, runs `95ec6880ee7f` (GitHub), `e6cf53b272c1` (Sheet) |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 

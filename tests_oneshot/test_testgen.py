@@ -204,6 +204,14 @@ test('REQ-1-2: Edit one', async ({ page }) => {
 
 
 @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "node and npm are required")
+class TestIdCase(unittest.TestCase):
+    def test_a_dropped_scenario_suffix_is_restored_from_the_scenario_number(self):
+        self.assertEqual(testgen._test_id("REQ-3-1: REQ-3-1: Search - Scenario 2"), ("REQ-3-1#2", "REQ-3-1: Search - Scenario 2"))
+        self.assertEqual(testgen._test_id("REQ-3-1: Search - Scenario 1"), ("REQ-3-1", "Search - Scenario 1"))
+        self.assertEqual(testgen._test_id("REQ-3-1#3: REQ-3-1: Search - Scenario 3"), ("REQ-3-1#3", "REQ-3-1: Search - Scenario 3"))
+        self.assertEqual(testgen._test_id("REQ-2: Plain name"), ("REQ-2", "Plain name"))
+
+
 class RunCase(unittest.TestCase):
     def test_runs_a_suite_against_a_live_application(self):
         env = dict(os.environ)

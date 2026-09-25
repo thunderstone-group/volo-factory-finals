@@ -309,6 +309,21 @@ def _walk(suite_node, found):
         _walk(child, found)
 
 
+SCENARIO_NUMBER = re.compile(r"Scenario\s+(\d+)\s*$")
+
+
+def _test_id(title):
+    """`<scenario id>: <scenario name>` as (id, name). A model often drops the `#n` of a later scenario and titles it
+    `REQ-3-1: ... - Scenario 2`; four tests then shared one id and the repair ledger counted them as one. The scenario
+    number at the end of the name restores it."""
+    sid, _, name = title.partition(": ")
+    sid, name = sid.strip(), name.strip()
+    number = SCENARIO_NUMBER.search(name)
+    if "#" not in sid and number and int(number.group(1)) > 1:
+        sid = f"{sid}#{int(number.group(1))}"
+    return sid, name
+
+
 def parse(report_path, suite, manifest, text):
     """The Playwright JSON report as scenario-check entries, one per test the manifest lists."""
     suite = Path(suite)
@@ -329,8 +344,8 @@ def parse(report_path, suite, manifest, text):
         path = suite / record["file"]
         source_text = path.read_text(encoding="utf-8", errors="replace") if path.is_file() else ""
         for title in record.get("tests") or []:
-            sid, _, name = title.partition(": ")
-            entry = {"id": sid.strip(), "name": name.strip(), "file": record["file"], "steps": []}
+            sid, name = _test_id(title)
+            entry = {"id": sid, "name": name, "file": record["file"], "steps": []}
             if record.get("syntax"):
                 entry.update(status="error", observation="The test file does not parse: " + record["syntax"][:300])
             elif title not in by_title:
@@ -384,7 +399,7 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
         only = None  # a helper finding spans tests its id does not name: run them all
     if only is not None:
         keep = set(only)
-        manifest = {**manifest, "files": [{**r, "tests": [t for t in (r.get("tests") or []) if t.partition(": ")[0].strip() in keep]}
+        manifest = {**manifest, "files": [{**r, "tests": [t for t in (r.get("tests") or []) if _test_id(t)[0] in keep]}
                                           for r in manifest.get("files", [])]}
     work = Path(tempfile.mkdtemp(prefix="testgen-run-"))
     backend = None
@@ -441,8 +456,8 @@ def _all(manifest, status, observation, started):
     entries = []
     for record in manifest.get("files", []):
         for title in record.get("tests") or []:
-            sid, _, name = title.partition(": ")
-            entries.append({"id": sid.strip(), "name": name.strip(), "status": status, "observation": observation,
+            sid, name = _test_id(title)
+            entries.append({"id": sid, "name": name, "status": status, "observation": observation,
                             "steps": [], "file": record["file"]})
     return {"kind": "testgen", "scenarios": entries, "invariants": [], "seconds": round(time.monotonic() - started, 1)}
 
