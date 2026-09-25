@@ -1,3 +1,31 @@
+# 当前交接 — 2026-09-26 03:15：接力换成包 9bbd6939（f37fc67d + 书面测试超时保留结果）
+
+先读 [改进路线图](reference/roadmap.md) 第 24 版日志和 4.20–4.22；数字见 [progress.md](progress.md) 账本表第 13、14 行。
+
+## 状态
+
+- 总榜第 1 仍是第九次（S 55.27）。GitHub 最好 24（包 13640cc2），Sheet 最好 80（包 f08f3fdf）；还没有一次提交把两者凑齐。
+- 13640cc2 第二轮 Sheet `dca5df727dcb` 隐藏 **1/100**：初稿栈溢出，书面测试在平台上跑过 900 秒被掐断、零结果，修复 0 轮（4.22）。f37fc67d 同样会中招，所以在它第一次上传前换成包 `9bbd6939`（分支 `fix/suite-timeout` 66adb30，PR 合入 main）。
+- 夜间接力：03:11 起用包 `9bbd6939`，进程 `scripts/submission_chain.py`（main 里起的，nohup，4 轮、保留 200 元、09-26 09:00 后不再起新提交），日志 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/official/chain-2026-09-26-timeout.jsonl`，输出同目录 `.out`。它先等 13640cc2 第二轮的 GitHub `4dc11acce4d1` 结束；那条 GitHub 分数要手工填账本第 13 行。
+- 受控回放（4.22 判据 ③）在本机跑：`/private/tmp/claude-501/-Users-e0-7-projects/876b5ae9-a273-497b-89d5-e2ea073c5e55/scratchpad/dca5/replay-new/`，第一轮 1→38 pass 已接受。
+- 比赛额度 391.02 元（03:15，GitHub `4dc11acce4d1` 仍在跑）；`arcbench balance` 显示 402.69 元（as_of 19:12 UTC）。arcbench cookie 10-09 过期。
+
+## 接下来
+
+1. 早上读接力结果：账本第 13 行补 GitHub，第 14 行起逐轮填；日志 `repair end` 行里 `counts_after` 不应再是全 `unparsed`，超时的运行会有「stopped at its 900 s limit」的未运行条目。
+2. 4.21 判据（Sheet 不低于 78）、4.18 继续看 GitHub。
+3. 暂缓项：种子冲突合并（`feat/sheet-batch2` 的 babbaa3），证据弱。
+4. worktree `repair-order`、`suite-load`、`sheet-batch2`、`suite-timeout` 在分支合入后可删。
+
+## 不要做
+
+- 不要把平台返回的失败测试内容，或正式题、练习题的专名写进包里。
+- 不要把受控回放的分数当成进展。
+- 不要改校准判据来让候选过关。
+- 不要在接力脚本运行时手动上传提交（只有最新提交能起 run，会打断接力）。
+
+---
+
 # 当前交接 — 2026-09-26 01:50：接力换成包 f37fc67d（GitHub 24 的依赖顺序修复 + Sheet 修正）
 
 先读 [改进路线图](reference/roadmap.md) 第 23 版日志和 4.18–4.21；数字见 [progress.md](progress.md) 账本表第 12–14 行。
