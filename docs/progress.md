@@ -1240,3 +1240,40 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   the gates caught both; a hunk that carries a marker line is now skipped on its own.
 - **Submission 6 read (02:51):** GitHub `5b0946d978cf` **21/100** (submission 5: 13), CNY 10.94 (1.64). Cost x6.7 needs p x1.19 to break even under S; p rose x1.62. The platform log truncates inside the second call's trace, so the repair rounds are not readable there; the stage cleanup race (377492a) did not affect this run (its suite finished before the wait ran out).
 - **Submission 7 read (04:29):** main 3c761e2 package 38e217d1, GitHub `5cbff8ffc75c` **21/100**, CNY 7.75, 81 min. Two samples of the written-test line both at 21 (13 and 11 before it). No failed_tests list again.
+
+## 2026-09-25 11:00- — Organizer notice; Sheet on submission 7; proxy looseness measured; repair visibility + budget
+
+- **Organizer notice (10:56):** the Sheet "Failed to enumerate Playwright tests before execution" is fixed; the
+  organizers will re-run the tests (no regeneration, no spend) on apps generated before the fix and on runs that hit
+  it (our `c34ae0a54c1e`, `4ef5a779acf2`), which takes time. Stage 3 "Execute" stops spinning when an evaluation ends
+  (10-20 min). Tests always target `127.0.0.1:3000` (the scaffold listens on `PORT` or 3000 on all interfaces, fine).
+  Teams: only the captain account confirms and submits; budgets are per team. Registration now shows CNY 500 remaining
+  (the 09-24 spend was refunded). Requirements re-downloaded: byte-identical to the 09-24 evening set (sha256 9884f23e).
+- **Sheet on submission 7** (`3b1bef245862`, main 3c761e2): run `b491936e86f2` started 11:06 so that submission
+  carries both tasks. Suite written in 23 min, 16 calls, CNY 6.77; the draft had a page error
+  `this.editorHtml is not a function` (the known `this`-binding slip), gone after the first repair round.
+- **Proxy vs hidden, per test** (`testgen.py run` with the 09-24 proxy suite `gh-suite-np` on the platform bundles):
+
+  | app | hidden | proxy pass | both pass | proxy-only | hidden-only |
+  |---|---|---|---|---|---|
+  | submission 4 (`7e3f4dba7736`) | 11 | 21 | 8 | 13 | 3 |
+  | submission 5 (`5450c3c63fe0`) | 13 | 31 | 9 | 22 | 4 |
+  | submission 7 (`5cbff8ffc75c`) | 21 | 48 | – | – | – (no per-test hidden list) |
+
+  The proxy passes about 2.3x what the hidden suite passes. Hidden passes on both labelled apps sit almost only in
+  requirements without dependencies (register, sign in, sign out, repository search, public overview); every
+  requirement that depends on another (organizations, teams, files, issues, pull requests) is close to 0. Proxy-only
+  passes split evenly between templated scenarios ("follows the visible controls for the … workflow", 36 of 100) and
+  specific ones. Strict probes (from `/`, exact names, no `.first()`) of "create an organization" fail on all three
+  apps at different real defects: submission 4's "New organization" link lands on "Organization not found"
+  (`#/org/new` routed as an organization id); submission 5 titles the new organization with its display name, not the
+  identifier the description asks for; submission 7 never shows "Owner". The written suite caught submission 5's
+  heading defect; its templated S2/S3 tests chose negative paths (duplicate, malformed name) that pass while the
+  hidden suite fails all three. A per-case diagnosis of the 22 proxy-only passes on submission 5 is running.
+- **Platform log visibility:** the platform keeps about the first 512 KB of a run's log; the exit-time trace came
+  before the smoke record, so no official run showed how many repairs ran or why they stopped (submission 7's log ends
+  inside call 2's trace). Branch `feat/repair-visibility` (032bd80): one `[oneshot] repair round` line per round as it
+  ends, a `[oneshot] repair end` line with the stop reason, then usage, smoke, trace in that order.
+- **Repair budget 12 calls / CNY 5 -> 24 / CNY 10** (same commit): both controlled replays stopped at the call cap
+  while still gaining. Under S, doubling cost costs 2^0.1 = 7 % and needs that much pass-rate gain to break even.
+  199 unit tests green. Package `5b7e089f` waits for the Sheet run to finish before upload.
