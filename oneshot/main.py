@@ -2267,6 +2267,33 @@ def _swap_back(stage, backup):
     shutil.rmtree(discarded, ignore_errors=True)
 
 
+FOLLOW_SEARCH = ("Your change was not applied: {problem}\n\nEmit the same change again as EDIT blocks whose SEARCH "
+                 "lines are copied exactly from the current file shown above. Emit nothing else.")
+FOLLOW_SYNTAX = ("Your change was applied, but a script no longer parses: {problem}\n\nFix that line with an EDIT "
+                 "block (copy the SEARCH lines exactly from the current file). Emit nothing else.")
+
+
+def _follow_up(messages, ask, model, base, key, budget, record, kind):
+    """One more call inside a repair round, for a change that could not be applied or left a script that does not
+    parse. Returns the two new messages; the round's record notes it. Obeys the repair limits."""
+    stop = budget.repair_stop(messages + [{"role": "user", "content": ask}], model)
+    if stop:
+        raise ValueError(f"no follow-up for the {kind} problem: {stop}")
+    reply, _, finish = stream_completion(messages + [{"role": "user", "content": ask}], model, base, key, budget, tries=3)
+    record["follow_up"], record["follow_up_finish"] = kind, finish
+    return [{"role": "user", "content": ask}, {"role": "assistant", "content": reply}]
+
+
+def _write_repair(stage, batch, template):
+    for item in batch:
+        target = resolve_path(stage, item["path"])
+        if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
+                                        for part in PurePosixPath(item["path"]).parts):
+            raise ValueError("repair cannot edit local metadata or build artifacts: " + item["path"])
+        item["path"] = target.relative_to(stage.resolve()).as_posix()
+        write_one(stage, item)
+
+
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False,
                     tests=None):
     """Scenario-driven repair (roadmap 4.3). A repair is requested while the application is broken as a whole or one of
@@ -2320,24 +2347,46 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                   "failing": [s["id"] for s in _scenarios(state, "fail")], "passing_before": len(passing(state)),
                   "accepted": False}
         calls, started, replied, after = len(budget.attempts), time.monotonic(), False, None
+        exchange = [{"role": "user", "content": ask}]
         try:
-            fixed, _, finish = stream_completion(conversation + [{"role": "user", "content": ask}],
-                                                 model, base, key, budget, tries=3)
+            fixed, _, finish = stream_completion(conversation + exchange, model, base, key, budget, tries=3)
             replied = True
-            batch, missing, skipped = parse_repair(fixed, stage)
+            exchange.append({"role": "assistant", "content": fixed})
+            try:
+                batch, missing, skipped = parse_repair(fixed, stage)
+            except ValueError as exc:
+                # Every SEARCH missed: one follow-up in the same round with the current lines (run 95ec6880ee7f lost
+                # a round this way), instead of spending the next round on it.
+                if "SEARCH matches nothing" not in str(exc):
+                    raise
+                follow = _follow_up(conversation + exchange, FOLLOW_SEARCH.format(problem=str(exc)[:2000]),
+                                    model, base, key, budget, record, "search")
+                exchange += follow
+                batch, missing, skipped = parse_repair(follow[-1]["content"], stage)
+                finish = record.get("follow_up_finish", finish)
             if skipped:
                 record["skipped_hunks"] = [h[:300] for h in skipped]
             if missing or finish == "length":
                 raise ValueError("the repair output was truncated; change large files with EDIT blocks")
             if not batch:
                 raise ValueError("the repair emitted no FILE or EDIT block")
-            for item in batch:
-                target = resolve_path(stage, item["path"])
-                if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
-                                                for part in PurePosixPath(item["path"]).parts):
-                    raise ValueError("repair cannot edit local metadata or build artifacts: " + item["path"])
-                item["path"] = target.relative_to(stage.resolve()).as_posix()
-                write_one(stage, item)
+            _write_repair(stage, batch, template)
+            broken = []
+            node = shutil.which("node")
+            if node and not record.get("follow_up"):
+                _check_syntax(stage, node, broken)
+            if broken:
+                # The change left a script that does not parse (run 95ec6880ee7f: a duplicate `const cur`): one
+                # follow-up in the same round names the line, before the whole suite runs on a blank app.
+                follow = _follow_up(conversation + exchange, FOLLOW_SYNTAX.format(problem="\n".join(broken)[:2000]),
+                                    model, base, key, budget, record, "syntax")
+                exchange += follow
+                extra, missing, more = parse_repair(follow[-1]["content"], stage)
+                if missing or record.get("follow_up_finish") == "length":
+                    raise ValueError("the repair output was truncated; change large files with EDIT blocks")
+                _write_repair(stage, extra, template)
+                skipped += more
+                batch = [b for b in batch if b["path"] not in {e["path"] for e in extra}] + extra
             needed = missing_required(stage)
             if needed:
                 raise ValueError("the repair broke delivery: " + "; ".join(needed))
@@ -2352,7 +2401,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 raise ValueError(reason)
             for item in batch:
                 files[:] = [f for f in files if f["path"] != item["path"]] + [item]
-            conversation += [{"role": "user", "content": ask}, {"role": "assistant", "content": fixed}]
+            conversation += exchange
             state, discarded, unapplied = after, None, skipped
             record.update(accepted=True, files=[item["path"] for item in batch])
             shutil.rmtree(backup, ignore_errors=True)

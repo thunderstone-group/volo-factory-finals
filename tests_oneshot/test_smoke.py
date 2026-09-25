@@ -364,7 +364,8 @@ class SmokeCase(unittest.TestCase):
         files, budget = self.generate(repairs=2)
         self.assertEqual(self.transport.call_count, 3)
         self.assertEqual([r["accepted"] for r in budget.smoke["rounds"]], [True, False])
-        self.assertIn("still broken as a whole", budget.smoke["rounds"][1]["reason"])
+        # The regression does not parse; the in-round follow-up that would fix it has no call left.
+        self.assertIn("no follow-up for the syntax problem: repair call limit reached (2)", budget.smoke["rounds"][1]["reason"])
         self.assertIn("repair call limit reached (2)", budget.smoke["stopped"])
         self.assertEqual((self.out / "frontend/public/app.js").read_text(), partial + "\n")
         self.assertEqual(next(f for f in files if f["path"] == "frontend/public/app.js")["content"], partial + "\n")

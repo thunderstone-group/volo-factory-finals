@@ -374,6 +374,39 @@ class RepairLoopCase(unittest.TestCase):
         self.assertFalse(rounds[0]["replied"])
         self.assertEqual(budget.smoke["stopped"], f"{n} repairs in a row were discarded")
 
+    @staticmethod
+    def edit(path, search, replace):
+        return f"=== EDIT: {path} ===\n<<<<<<< SEARCH\n{search}\n=======\n{replace}\n>>>>>>> REPLACE\n=== END ===\n"
+
+    def test_a_repair_that_breaks_parsing_gets_one_follow_up_in_the_same_round(self):
+        if not shutil.which("node"):
+            self.skipTest("node is required")
+        from tests_oneshot.test_oneshot import block
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-9": "pass"})
+        recheck = self.report({"REQ-1": "pass", "REQ-2": "pass"})
+        sent, budget, _ = self.run_loop([before, after, recheck], [
+            block("frontend/public/app.js", "const shown = ;"),
+            self.edit("frontend/public/app.js", "const shown = ;", "const shown = 1;")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertEqual(record["follow_up"], "syntax")
+        self.assertIn("does not parse", sent[1])
+        self.assertEqual((self.stage / "frontend/public/app.js").read_text().strip(), "const shown = 1;")
+
+    def test_a_repair_whose_every_search_missed_gets_one_follow_up_in_the_same_round(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-9": "pass"})
+        recheck = self.report({"REQ-1": "pass", "REQ-2": "pass"})
+        sent, budget, _ = self.run_loop([before, after, recheck], [
+            self.edit("frontend/build.js", "// a line that is not there", "// fixed"),
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// fixed")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertEqual(record["follow_up"], "search")
+        self.assertIn("was not applied", sent[1])
+        self.assertEqual((self.stage / "frontend/build.js").read_text().strip(), "// fixed")
+
     def test_a_repair_that_only_gains_is_kept(self):
         from tests_oneshot.test_oneshot import block
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-4": "pass"})
