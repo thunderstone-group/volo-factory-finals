@@ -158,7 +158,8 @@ A test reaches a feature through any path the requirements allow, so implement e
   (keep formulas or other detail text cannot carry there).
 - A context menu opens on the real `contextmenu` event of the element the requirements name (a row number, a
   column header, a cell), as `role="menu"` with `menuitem`s, and acts on what it was opened on: a right-click
-  outside the current selection first selects that item, as a left click would.
+  outside the current selection first selects that item, as a left click would; a right-click inside a multi-item
+  selection keeps the whole selection, so the menu's commands (Copy, Cut, Delete) act on all of it.
 - ARC.render() already waits for a press's click sequence; do not rebuild the pressed element yourself
   (`innerHTML`) inside a mousedown or mouseup handler, which drops its click and double-click.
 
