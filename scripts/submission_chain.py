@@ -103,7 +103,8 @@ def main(argv=None):
         passed = sum((r.get("passed") or 0) for r in results.values())
         cost = sum(((r.get("cost") or {}).get("amount") or 0) for r in results.values())
         p = passed / 2
-        score = p / (cost / (1.2 * p)) ** 0.1 if p and cost else 0
+        ratio = cost / (0.8 * p) if p else 0  # the board's expected cost is 0.8 p (docs/reference/preliminary-rules.md)
+        score = p / ratio ** (0.1 if ratio <= 1 else 0.2) if p and cost else 0
         log(args.log, {"event": "finished", "round": number, "submission": submission, "results": results,
                        "p": p, "cost": round(cost, 4), "S": round(score, 2)})
     return 0
