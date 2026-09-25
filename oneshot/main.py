@@ -55,6 +55,8 @@ CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this l
 TESTGEN = os.environ.get("ONESHOT_TESTGEN", "1") == "1"  # requirement-written tests drive the repairs (testgen.py)
 TESTGEN_WAIT = 1200  # seconds the repair phase waits for the suite once the draft is in
 TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
+PAIR_SHARE = 1 / 3  # the second draft is judged when the first passes fewer than this share of the written tests: the
+# GitHub drafts of submissions 9 and 10 passed 14 and 11 of 100, a Sheet draft that loaded 47 (roadmap 4.17)
 # Load failures only the jsdom probe reports: jsdom lacks APIs a browser has (ResizeObserver, canvas), so a
 # Chromium scenario run decides whether the application is really broken as a whole.
 DOM_ONLY = ("loading / in a DOM", "frontend script error on load", "after scripts run, / renders no visible text")
@@ -244,6 +246,7 @@ class CallBudget:
         self.side_calls = []  # model calls made outside stream_completion: the scenario translation
         self.smoke = None
         self.suite = None  # what the acceptance-test writer produced (finish_suite)
+        self.pair = None  # how the two drafts compared (pick_draft)
         self.model = None  # set once the run has switched to the fallback model
         self.progress_path = None
         self._progress_started = time.monotonic()
@@ -332,6 +335,7 @@ class CallBudget:
         result["estimated_repair_cost_cny"] = round(self.spent("repair"), 6)
         result["repair_cny_limit"] = self.repair_cny
         result["side_calls"] = len(self.side_calls)
+        result["draft_pair"] = self.pair
         result["fallback_model"] = self.model
         result["billing_status"] = ("not_called" if not self.attempts else
                                     "unknown" if unknown else "tokens_reported_cost_not_estimated")
@@ -1444,7 +1448,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
     scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
     messages = draft_messages(requirements, scaffold, snapshot if template is not None else None, prerequisites)
     files = []
-    suites = []
+    suites, seconds = [], []
     with tempfile.TemporaryDirectory(prefix=".oneshot-", dir=out.parent) as temp:
         budget.progress_path = Path(temp) / "progress.json"
         budget.progress("preparing", force=True)
@@ -1458,13 +1462,16 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             target = resolve_path(stage, name)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
-        suite = None
+        suite = second = None
         if TESTGEN and SMOKE and template is None:
             # Its own directory, outside the stage's: a writer still running after the draft failed (or after its
             # wait ran out) must never make the stage's cleanup raise and turn a delivered run into a non-zero exit.
             suite = start_suite(requirements, Path(tempfile.mkdtemp(prefix="oneshot-tests-")), model, base, key,
                                 prerequisites)
             suites.append(suite)
+            if _testgen_module().plan(requirements):  # without scenarios there is nothing to judge two drafts by
+                second = start_draft(messages, model, base, key, scaffold)
+                seconds.append(second)
         try:
             conversation = draft_application(stage, files, messages, model, base, key, budget, template)
             needed = missing_required(stage)
@@ -1478,11 +1485,18 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
                 tests = finish_suite(suite, budget)
                 suite = None
                 budget.progress("checking_application", force=True)
+                state = None
+                if second is not None:
+                    conversation, state = pick_draft(stage, files, conversation, second, requirements,
+                                                     bool(scaffold), tests, budget)
+                    second = None
                 repair_delivery(stage, files, conversation, model, base, key, budget, template, requirements,
-                                scaffold=bool(scaffold), tests=tests)
+                                scaffold=bool(scaffold), tests=tests, state=state)
         except Exception as exc:
             if suite is not None:
                 finish_suite(suite, budget, wait=0)  # its calls so far stay on the ledger
+            if second is not None:
+                finish_draft(second, budget, wait=0)
             # A zero is the only outcome worse than any application (roadmap 4.1): after a spent budget, a
             # transport failure, a protocol error or a crash in the checks, the stage holds every complete file
             # written so far (never a partial one), and it ships when it passes the delivery check.
@@ -1492,7 +1506,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             print(f"[oneshot] delivering the last complete version after an error: {reason}", file=sys.stderr)
         budget.progress("publishing", force=True)
         publish(stage, out, template, snapshot, stamp)
-    for job in suites:
+    for job in suites + seconds:
         if not job["thread"].is_alive():
             shutil.rmtree(job["dir"], ignore_errors=True)
     return files, budget.summary()
@@ -1979,6 +1993,78 @@ def finish_suite(job, budget, wait=TESTGEN_WAIT):
     return job["dir"] if ready else None
 
 
+def start_draft(messages, model, base, key, scaffold):
+    """A second draft of the same request, written in a background thread into its own stage (outside the run's
+    temporary directory, like the suite) while the first draft and the suite are written. At temperature 0 the drafts
+    still differ: the same draft request gave GitHub drafts passing 14 and 11 written tests (submissions 9 and 10). Its
+    calls keep their own ledger; finish_draft() joins it."""
+    import threading
+    directory = Path(tempfile.mkdtemp(prefix="oneshot-draft-"))
+    stage = directory / "app"
+    stage.mkdir()
+    for name, data in scaffold.items():
+        target = resolve_path(stage, name)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+    job = {"dir": directory, "stage": stage, "files": [], "conversation": None, "error": None,
+           "budget": CallBudget(repair_limit=0)}
+
+    def work():
+        try:
+            conversation = draft_application(stage, job["files"], messages, model, base, key, job["budget"], None)
+            needed = missing_required(stage)
+            if needed:
+                raise ValueError("incomplete delivery: " + "; ".join(needed))
+            job["conversation"] = conversation
+        except Exception as exc:  # the second draft is an aid: the first goes on alone
+            job["error"] = f"{type(exc).__name__}: {str(exc).replace(key, '[REDACTED]')[:300]}"
+    job["thread"] = threading.Thread(target=work, name="oneshot-draft-2", daemon=True)
+    job["thread"].start()
+    return job
+
+
+def finish_draft(job, budget, wait=None):
+    """Join the second draft (at most `wait` seconds, or until it ends) and put its calls on the run's ledger as `draft`
+    side calls. True when it delivered a complete application."""
+    job["thread"].join(wait)
+    if not job.get("recorded"):  # once: an error after pick_draft() joined it must not book the calls twice
+        job["recorded"] = True
+        for number, record in enumerate(list(job["budget"].attempts), 1):
+            budget.side_calls.append({**record, "phase": "draft", "call": f"draft2-{number}",
+                                      "cost_cny": round(call_cost(record), 6)})
+    if job["thread"].is_alive():
+        job["error"] = f"still drafting after {wait} s"
+    return job["error"] is None
+
+
+def pick_draft(stage, files, conversation, second, requirements, scaffold, tests, budget):
+    """Best of two drafts (roadmap 4.17). The first draft is judged by the written suite; when it passes fewer than
+    PAIR_SHARE of the tests, the second is judged too, and the one passing more (a tie keeps the first; then one that
+    loads beats one that does not) replaces the stage and goes on to the repairs. Returns the conversation and the
+    assessment of the draft that goes on; `files` is updated in place."""
+    state = assess(stage, requirements, scaffold, tests=tests)
+    total = (budget.suite or {}).get("tests") or 0
+    record = {"first": len(passing(state)), "first_fatal": bool(state["fatal"]), "tests": total, "chosen": 1}
+    if tests is None or record["first"] >= PAIR_SHARE * total:
+        finish_draft(second, budget, wait=0)
+        record["second"] = "not judged"
+    elif not finish_draft(second, budget):
+        record["second"] = second["error"]
+    else:
+        other = assess(second["stage"], requirements, scaffold, tests=tests)
+        record.update(second=len(passing(other)), second_fatal=bool(other["fatal"]))
+        if (len(passing(other)), not other["fatal"]) > (len(passing(state)), not state["fatal"]):
+            copied = stage.with_name(stage.name + ".second")
+            shutil.copytree(second["stage"], copied, symlinks=True)
+            _swap_back(stage, copied)
+            files[:] = second["files"]
+            conversation, state, record["chosen"] = second["conversation"], other, 2
+    record["second_cny"] = round(sum(call_cost(r) for r in second["budget"].attempts), 6)
+    budget.pair = record
+    print("[oneshot] draft pair " + json.dumps(record), file=sys.stderr)
+    return conversation, state
+
+
 def _suite(tests):
     """The keyword a check call carries only when a written suite exists (the scenario check's call is unchanged)."""
     return {"tests": tests} if tests is not None else {}
@@ -2295,15 +2381,16 @@ def _write_repair(stage, batch, template):
 
 
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False,
-                    tests=None):
+                    tests=None, state=None):
     """Scenario-driven repair (roadmap 4.3). A repair is requested while the application is broken as a whole or one of
     the requirements' scenarios fails, and it carries those findings; the static gates and the smoke check's
     family-level problems ride along as hints and never trigger a call on their own. judge() decides whether a repair
     is kept; a discarded one puts the stage back and the next request says why. The loop ends when nothing fails, at
     the repair spend, call or time limit, or after REPAIR_REJECTIONS discarded repairs in a row. Each round is
-    recorded. The scenario plan stays fixed for the whole loop: a translation that failed once is not retried."""
+    recorded. The scenario plan stays fixed for the whole loop: a translation that failed once is not retried. `state`
+    is the stage's assessment when pick_draft() has just made it."""
     started_repairs = time.monotonic()
-    state = assess(stage, requirements, scaffold, tests=tests)
+    state = state if state is not None else assess(stage, requirements, scaffold, tests=tests)
     if tests is not None and _checker_failed(state["report"]) and not state["fatal"] and state["executed"]:
         # The written suite could not judge this application at all (every test broke on its own): the requirements'
         # own scenarios stand in, as before the suite existed.
