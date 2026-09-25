@@ -462,6 +462,36 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(adapter.seed_checklist("id: X\nname: none\n"), "")
         prompt = adapter.draft_messages(req)[1]["content"]
         self.assertLess(prompt.index("## Seed data checklist"), prompt.index("## Requirements (the application to build)"))
+        self.assertNotIn("One record, several seed lines", table)  # no record is described twice here
+
+    def test_seed_checklist_asks_once_for_a_record_several_lines_describe_differently(self):
+        def given(text):
+            return f"  - name: s\n    steps:\n    - keyword: GIVEN\n      content: 'The evaluation seed contains {text}.'\n"
+        req = ("id: ROOT\nname: App\ntype: FOLDER\nchildren:\n"
+               "- id: REQ-1\n  name: Open\n  type: ATOMIC\n  scenarios:\n" + given("the board `Plans`, column `Todo`") +
+               "- id: REQ-2\n  name: Edit\n  type: ATOMIC\n  scenarios:\n" + given("the board `Plans`, column `Doing`") +
+               "- id: REQ-3\n  name: Share\n  type: ATOMIC\n  scenarios:\n" + given("the user `ann` and the board `Plans`") +
+               "- id: REQ-4\n  name: Other\n  type: ATOMIC\n  scenarios:\n" + given("the team `Core` with user `ann`"))
+        groups = adapter.seed_record_groups(req)
+        # `Plans` starts two lines, so every line naming it describes it (REQ-3 starts from `ann`); `ann` and `Core`
+        # start one line each.
+        self.assertEqual([(g["name"], len(g["lines"]), g["ids"]) for g in groups],
+                         [("Plans", 3, ["REQ-1", "REQ-2", "REQ-3"])])
+        table = adapter.seed_checklist(req)
+        self.assertIn("- `Plans` is described by 3 lines above (REQ-1, REQ-2, REQ-3).", table)
+        self.assertIn("Seed each such record ONCE", table)
+        self.assertIn("add no copies, extra sheets, rows or records", table)
+
+    def test_official_requirements_each_have_one_record_described_by_several_seed_lines(self):
+        root = Path(os.environ.get("SEED_TEST_REQUIREMENTS_ROOT", str(
+            Path.home() / "projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/requirements")))
+        files = sorted(root.glob("*/requirements.yaml"))
+        if len(files) < 2:
+            self.skipTest(f"official requirements not found under {root}")
+        for path in files:
+            groups = adapter.seed_record_groups(path.read_text(encoding="utf-8"))
+            self.assertEqual(len(groups), 1, (path.parent.name, [g["name"] for g in groups]))
+            self.assertGreaterEqual(len(groups[0]["lines"]), 4, path.parent.name)
 
     def test_backtick_phrases_are_quoted_vocabulary_and_values_the_user_types_are_not(self):
         # Lite requirements backtick their control names; the old pattern saw none of them. What the test types

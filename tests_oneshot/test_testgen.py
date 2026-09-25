@@ -74,6 +74,8 @@ class PlanCase(unittest.TestCase):
         self.assertIn("- REQ-1-1#2: Add two  (scenario 2 of REQ-1-1)", user["content"])
         self.assertIn("Seed: synthetic", user["content"])
         self.assertIn("const { test, expect } = require('@playwright/test');", system["content"])
+        # A record the requirements seed differently in different places is never asserted in a contradicted form.
+        self.assertIn("never assert a seeded value that another part of the requirements contradicts", system["content"])
 
 
 class WriteCase(unittest.TestCase):

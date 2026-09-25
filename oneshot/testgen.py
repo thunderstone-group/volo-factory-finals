@@ -60,6 +60,10 @@ How the tests run:
   There is no test API and no database access. When a GIVEN state cannot be built through flows the requirements
   describe (it needs seed records whose names the requirements do not give, or another system), write that test as
   `test.skip(title, async () => {{}})` with a one-line comment saying why, instead of guessing.
+- The requirements can describe one seeded record differently in different places (other values in the same cells or
+  rows, another owner), each description written for other tests. The application holds only one version. Where your
+  scenario needs values such a description gives, enter them through the user interface in a record your test
+  creates, and never assert a seeded value that another part of the requirements contradicts.
 - Names that must be unique (usernames, emails, titles, record names) get a unique suffix, for example
   `const u = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);`, within the format rules the
   requirements state.

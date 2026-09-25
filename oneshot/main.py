@@ -1596,9 +1596,9 @@ def _seed_clause(text, start):
     return text[start:].strip()
 
 
-def seed_checklist(requirements):
-    """The seed states the scenarios' GIVEN steps declare, deduplicated, each with the requirement ids whose tests
-    start from it — the records the application must hold at startup, handed to the model before it writes."""
+def _seed_lines(requirements):
+    """(order, clauses): the seed states the scenarios' GIVEN steps declare, deduplicated in document order, and for
+    each the requirement ids whose tests start from it."""
     try:
         try:
             from . import scenarios
@@ -1606,7 +1606,7 @@ def seed_checklist(requirements):
             import scenarios
         leaves = scenarios.load_requirements(requirements or "")
     except Exception:  # the checklist is an aid; a document the parser cannot read goes without it
-        return ""
+        return [], {}
     clauses, order = {}, []
     for leaf in leaves:
         for scenario in leaf.get("scenarios") or []:
@@ -1624,6 +1624,36 @@ def seed_checklist(requirements):
                     order.append(clause)
                 if leaf["id"] not in clauses[clause]:
                     clauses[clause].append(leaf["id"])
+    return order, clauses
+
+
+SEED_NAME = re.compile(r"`([^`\n]{1,80})`")
+
+
+def _record_groups(order, clauses):
+    """Records several seed lines describe: a name that two or more lines start from (their first named record),
+    with every line that names it and the requirement ids behind those lines."""
+    firsts = collections.Counter(m.group(1) for m in (SEED_NAME.search(c) for c in order) if m)
+    groups = []
+    for name, count in firsts.items():  # document order of first appearance
+        if count < 2:
+            continue
+        lines = [c for c in order if f"`{name}`" in c]
+        groups.append({"name": name, "lines": lines, "ids": list(dict.fromkeys(i for c in lines for i in clauses[c]))})
+    return groups
+
+
+def seed_record_groups(requirements):
+    """The records that several GIVEN seed lines describe (see _record_groups). Different requirements' tests can seed
+    one record differently (other values in the same cells, another owner); an application holds one version."""
+    return _record_groups(*_seed_lines(requirements))
+
+
+def seed_checklist(requirements):
+    """The seed states the scenarios' GIVEN steps declare, deduplicated, each with the requirement ids whose tests
+    start from it — the records the application must hold at startup, handed to the model before it writes. A record
+    that several lines describe gets a note: seed it once, and invent no copies for versions the lines disagree on."""
+    order, clauses = _seed_lines(requirements)
     if not order:
         return ""
     lines = ["\n\n## Seed data checklist (the GIVEN seed of every scenario, deduplicated)",
@@ -1636,6 +1666,18 @@ def seed_checklist(requirements):
         lines.append(f"- {head}: {clause}")
     if len(order) > SEED_SHOWN:
         lines.append(f"- ({len(order) - SEED_SHOWN} further seed lines are in the requirements' GIVEN steps)")
+    groups = _record_groups(order, clauses)
+    if groups:
+        lines.append("\nOne record, several seed lines (they were written for different requirements' tests):")
+        for group in groups:
+            ids = group["ids"]
+            head = ", ".join(ids[:6]) + (f" (+{len(ids) - 6} more)" if len(ids) > 6 else "")
+            lines.append(f"- `{group['name']}` is described by {len(group['lines'])} lines above ({head}).")
+        lines.append("Seed each such record ONCE, under that name. Keep every detail of its lines that fits together "
+                     "(its child records, members, branches, files). Where the lines give it different contents "
+                     "(another owner, other values in the same cells or rows), seed the version most of them share "
+                     "and add no copies, extra sheets, rows or records to hold the other versions: the tests that "
+                     "need those values enter them through the user interface.")
     return "\n".join(lines)
 
 
