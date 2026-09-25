@@ -1093,8 +1093,8 @@ S = p / (b / (0.8 p))^0.1 while b <= 0.8 p, else ^0.2; p in percent over both ta
 | 6 | 09-25 00:50 | 9dad2b75 | 400a009 | flash | 21/100 | not run | 10.94 | | written tests + edit repairs on the platform (GitHub only); suite written in 25 min (15 calls, CNY 8.0), repair phase 72 min with 8 whole-app checks, run 97 min, 4.07 M tokens; the run record carries no failed_tests list this time |
 | 7 | 09-25 03:05 | 38e217d1 | 3c761e2 | flash | 21/100 | 43/100 | 17.81 | 34.6 | main after PR #71 (adds the marker-hunk skip and the suite temp-dir fix); GitHub run 81 min, 2.82 M tokens, CNY 7.75; Sheet `b491936e86f2` started 09-25 11:06 after the organizers fixed the Sheet suite: 91 min, 2.69 M tokens, CNY 10.06 (suite CNY 6.77); p = 32.0 %, board 2nd (Iris 40.5 %) |
 | 8 | 09-25 12:55 | d3769ab0 | 20dcdbd | flash | 7/100 | 53/100 | 16.64 | 32.4 | `feat/repair-visibility`: repair rounds in the log, repair budget 24 calls / CNY 10, scaffold `this` sharing (roadmap 4.14); submission `1503bf3a1f15`. GitHub `95ec6880ee7f`: draft broken as a whole, 8 repair rounds (3 kept, incl. the revival), written suite 0 -> 22, stopped at three discards in a row (one was a gateway HTTP 400), CNY 10.02, 92 min. Sheet `e6cf53b272c1`: 3 rounds all discarded (two by the vocabulary guard at 47 -> 59 and 65), CNY 6.62, 64 min |
-| 9 | 09-25 14:45 | 6143d95f | fc05229 | flash | (running) | 79/100 | | | `feat/repair-guards`: guards weigh as lost tests under written tests, four discards in a row, unanswered rounds do not count, testgen id fix (roadmap 4.15); submission `dfce9da4382a`, runs `564563986f7f` (GitHub), `2c8e9b1f5e5f` (Sheet). Sheet: draft did not load (revived in round 1, suite 51), then +26, +6, +3, +3: suite 88, 11 rounds 5 kept, CNY 7.09, 71 min. GitHub: round 1 +30 (14 -> 44) kept over a newly flagging static gate, then +14, +12, +5, +1, three discards, +2 |
-| 10 | 09-25 16:45 | c5152707 | 6017ef4 | flash | | | | | in-round follow-up (SEARCH all missed / script does not parse) and cell-address grounding (roadmap 4.16); submission `a2375cd48c2a`; Sheet `ed1ef8fb5d78` started 16:45; GitHub waits for run 9's GitHub (one run per task at a time; attempt `ce95a7580c1f` refused with 409) |
+| 9 | 09-25 14:45 | 6143d95f | fc05229 | flash | 22/100 | 79/100 | 16.39 | 55.27 (board) | `feat/repair-guards`: guards weigh as lost tests under written tests, four discards in a row, unanswered rounds do not count, testgen id fix (roadmap 4.15); submission `dfce9da4382a`, runs `564563986f7f` (GitHub), `2c8e9b1f5e5f` (Sheet). Sheet: draft did not load (revived in round 1, suite 51), then +26, +6, +3, +3: suite 88, 11 rounds 5 kept, CNY 7.09, 71 min. GitHub: round 1 +30 (14 -> 44) kept over a newly flagging static gate, then +14, +12, +5, +1, three discards, +2, four discards: suite 77, 13 rounds 6 kept, repair CNY 3.89, CNY 9.29, 145 min. p 50.5 %, **board 1st** (Iris 36.34) |
+| 10 | 09-25 16:45 | c5152707 | 6017ef4 | flash | | | | | in-round follow-up (SEARCH all missed / script does not parse) and cell-address grounding (roadmap 4.16); submission `a2375cd48c2a`; Sheet `ed1ef8fb5d78` started 16:45; GitHub `d58e50066c0a` started 17:24 after run 9's GitHub ended (one run per task at a time; attempt `ce95a7580c1f` refused with 409) |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1314,3 +1314,13 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   scenario check keeps the veto. Four discarded rounds in a row end the loop (GitHub run `95ec6880ee7f` kept a fourth
   round, +14, after two discards). 204 unit tests green. Package `0b5eb613`; submission 9 once submission 8's GitHub run
   ends.
+
+## 2026-09-25 17:30 — Submission 9: p 50.5 %, board 1st
+
+- Submission 9 (guards as losses, package 6143d95f): GitHub `564563986f7f` 22/100, Sheet `2c8e9b1f5e5f` 79/100, CNY
+  16.39, board S 55.27 (reward regime, expected cost 0.8 p = 40.4), **1st** ahead of Iris 36.34 (p 40.5, CNY 55.71,
+  penalty regime, deepseek-v4-pro). Task boards: GitHub we lead at 21-22 %, others <= 11 %; Sheet others reach 90-99 %.
+- What changed the Sheet from 43/53 to 79: the repair loop now keeps rounds (5 of 11 kept vs 0 of 3), the written suite
+  88 against hidden 79. On GitHub the suite reached 77 against hidden 22: the GitHub proxy is still loose (roadmap 4.13).
+- Readable repair logs show the loop's stops: four discards in a row on both tasks; repair spend CNY 1.5 (Sheet) and 3.9
+  (GitHub) of the CNY 10 cap; GitHub repair time 2 h of the 3 h cap.
