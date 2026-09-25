@@ -45,6 +45,7 @@ last-reviewed: 2026-09-24 12:00
 - p 是两题合计通过数除以合计测试数（百分数，0～100）。
 - b 是两题总开销，单位是元。
 - 参数固定：b₀ = 1.2，α = 0.1，β = 0.2。
+- **09-25 从榜单原始数据核实（以此为准）：** 平台实际用的预期费用是 `expected_cost = 0.8 × p`（p 为百分数，费用单位元），不是 1.2p；`cost_ratio = b / (0.8p)`，≤ 1 为 reward 区，S = p / ratio^0.1；> 1 为 penalty 区，S = p / ratio^0.2。核对：VOLO-AI 第七次 p 32、b 17.81，ratio 0.696，S 33.18；Iris p 40.5、b 55.71，ratio 1.72，S 36.34，与榜上 `score` 一致。榜单 JSON（`arcbench leaderboard --competition hackathon --json`）直接给出 `expected_cost`、`cost_ratio`、`score_regime`、`score`。总榜每队只取一次提交（两题来自同一提交），单题榜各自取最好。
 - 得分公式：
   - p = 0 时，S = 0；
   - b ≤ b₀p 时，S = p / (b/(b₀p))^α；

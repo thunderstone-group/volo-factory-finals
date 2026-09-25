@@ -1081,7 +1081,7 @@ Evidence: `docs/evidence/2026-09-24-opening-day/`.
 
 ### Official submission ledger (roadmap 4.7)
 
-S = p / (b / (1.2 p))^0.1 while b <= 1.2 p; p in percent over both tasks, b in CNY.
+S = p / (b / (0.8 p))^0.1 while b <= 0.8 p, else ^0.2; p in percent over both tasks, b in CNY (checked against the board's own `score` on 09-25; the S column before row 8 used 1.2 p and reads about 1 point high: row 7 is 33.2 on the board).
 
 | # | time | package | commit | model | GitHub | Sheet | CNY | S | note |
 |---|---|---|---|---|---|---|---|---|---|
