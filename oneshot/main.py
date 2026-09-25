@@ -9,8 +9,8 @@ delivery contract, and writes the returned files under `<DIR>`.
 
 Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash),
 FALLBACK_MODEL (default kimi-k2.7-code-highspeed, or deepseek-v4-flash when MODEL is a Kimi model;
-empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 12),
-ONESHOT_REPAIR_CNY (repair spend per task, default 5).
+empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 24),
+ONESHOT_REPAIR_CNY (repair spend per task, default 10).
 """
 import argparse
 import collections
@@ -41,9 +41,10 @@ KIMI_FALLBACK_MODEL = "deepseek-v4-flash"
 KIMI_CODE_MODELS = {"kimi-k2.7-code", "kimi-k2.7-code-highspeed"}
 MAX_TOKENS = 131072  # content cap per call; the gateway has metered >135k output tokens in one request
 DRAFT_CALLS = 4  # Completed draft calls: the first draft, continuations after a cut, redrafts of an empty reply.
-REPAIR_CALLS = 12  # Completed repair calls; the spend limit below usually ends the repairs first. An edit round costs
-# CNY 0.3-0.5 on a large task: a GitHub replay stopped at 6 calls with CNY 3.7 of its cap left.
-REPAIR_CNY = 5.0  # Repair spend per task in CNY: the repair calls plus the scenario translation (roadmap 4.3).
+REPAIR_CALLS = 24  # Completed repair calls. An edit round costs CNY 0.25-0.5 on a large task; the GitHub (6 calls,
+# 25 -> 38) and Sheet (12 calls, 20 -> 72) replays both stopped at the call cap while still gaining. Cost enters the
+# score only at the 0.1 power, so doubling it pays for itself at a pass-rate gain of about 7 %.
+REPAIR_CNY = 10.0  # Repair spend per task in CNY: the repair calls plus the scenario translation (roadmap 4.3).
 REPAIR_REJECTIONS = 3  # Consecutive discarded repairs before the loop gives up.
 REPAIR_SHOWN = 40  # Failing scenarios listed in one repair request.
 LOSS_RATIO = 3  # A repair that loses passing scenarios is kept only when it gains this many per loss.
@@ -2301,7 +2302,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         backup = Path(tempfile.mkdtemp(prefix=".oneshot-prerepair-", dir=stage.parent))
         shutil.copytree(stage, backup, dirs_exist_ok=True, symlinks=True)
         record = {"round": len(rounds) + 1, "fatal": len(state["fatal"]),
-                  "failing": [s["id"] for s in _scenarios(state, "fail")], "accepted": False}
+                  "failing": [s["id"] for s in _scenarios(state, "fail")], "passing_before": len(passing(state)),
+                  "accepted": False}
         calls, started, replied, after = len(budget.attempts), time.monotonic(), False, None
         try:
             fixed, _, finish = stream_completion(conversation + [{"role": "user", "content": ask}],
@@ -2355,11 +2357,23 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             budget.smoke["rounds"] = rounds
             budget.smoke["repair"] = {k: record[k] for k in ("accepted", "reason", "files", "waived",
                                                              "renamed_controls") if k in record}
+            # One short line per round, printed as it ends: the platform log is capped, and the trace printed at
+            # exit is large enough to push everything after it out.
+            print("[oneshot] repair round " + json.dumps(
+                {"round": record["round"], "accepted": record["accepted"], "failing_before": len(record["failing"]),
+                 "passing_before": record["passing_before"],
+                 "counts_after": ((record.get("scenarios") or {}).get("counts")), "seconds": record["seconds"],
+                 "cost_cny": record["cost_cny"], "reason": (record.get("reason") or "")[:200]}), file=sys.stderr)
     if "stopped" not in budget.smoke and _checker_failed(state["report"]) and not state["fatal"] and state["executed"]:
         why = (state["report"] or {}).get("unavailable") or "every scenario ended in an error"
         budget.smoke["stopped"] = "the scenario check could not run: " + str(why)[:300]
     budget.smoke["problems_after"] = state["smoke"]
     budget.smoke["scenarios_after"] = scenario_summary(state["report"])
+    print("[oneshot] repair end " + json.dumps(
+        {"rounds": len(rounds), "accepted": sum(1 for r in rounds if r["accepted"]), "stopped": budget.smoke.get("stopped"),
+         "counts_after": (budget.smoke["scenarios_after"] or {}).get("counts"),
+         "seconds": round(time.monotonic() - started_repairs, 1), "repair_cny": round(budget.spent("repair"), 4)}),
+        file=sys.stderr)
 
 
 def main(argv=None):
@@ -2425,14 +2439,16 @@ def main(argv=None):
         print(f"[oneshot] wrote {len(files)} files in {time.monotonic() - started:.1f}s")
         return 0
     finally:
+        # Smallest first: the platform keeps only the head of a long log, and the smoke record (every round's
+        # failing scenarios) and the trace below can each exceed it.
+        print("[oneshot] usage " + json.dumps(budget.summary(), sort_keys=True), file=sys.stderr)
+        if budget.smoke is not None:
+            print("[oneshot] smoke " + json.dumps(budget.smoke, ensure_ascii=False).replace(key, "[REDACTED]"),
+                  file=sys.stderr)
         # True prompts, responses, timing and usage, including failures; never headers or keys.
         for attempt in budget.attempts + budget.side_calls:
             print("[oneshot] trace " + json.dumps(attempt, ensure_ascii=False).replace(key, "[REDACTED]"),
                   file=sys.stderr)
-        if budget.smoke is not None:
-            print("[oneshot] smoke " + json.dumps(budget.smoke, ensure_ascii=False).replace(key, "[REDACTED]"),
-                  file=sys.stderr)
-        print("[oneshot] usage " + json.dumps(budget.summary(), sort_keys=True), file=sys.stderr)
 
 
 if __name__ == "__main__":

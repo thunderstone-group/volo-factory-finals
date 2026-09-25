@@ -878,8 +878,8 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(list(self.out.glob(".oneshot-*")), [])
 
     def test_call_allowances_come_from_the_environment_and_a_bad_value_stops_before_any_request(self):
-        self.assertEqual(adapter.CallBudget().limits, {"draft": 4, "repair": 12})
-        self.assertEqual(adapter.CallBudget().repair_cny, 5.0)
+        self.assertEqual(adapter.CallBudget().limits, {"draft": 4, "repair": 24})
+        self.assertEqual(adapter.CallBudget().repair_cny, 10.0)
         with patch.dict(os.environ, {"ONESHOT_DRAFT_CALLS": "6", "ONESHOT_REPAIR_CALLS": "0", "ONESHOT_REPAIR_CNY": "0.5"}):
             self.assertEqual(adapter.CallBudget().limits, {"draft": 6, "repair": 0})
             self.assertEqual(adapter.CallBudget().repair_cny, 0.5)
