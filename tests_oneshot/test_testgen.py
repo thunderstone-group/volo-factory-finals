@@ -348,6 +348,32 @@ class RepairLoopCase(unittest.TestCase):
         self.assertFalse(record["accepted"], record)
         self.assertIn("removed quoted vocabulary", record["reason"])
 
+    def test_a_round_the_model_never_answered_does_not_count_toward_the_discard_limit(self):
+        adapter, sent = self.adapter, []
+        before = self.report({"REQ-1": "fail", "REQ-9": "pass"})
+        unchanged = self.report({"REQ-1": "fail", "REQ-9": "pass"})
+        n = adapter.REPAIR_REJECTIONS
+        outcomes = ["http"] + ["same"] * n
+
+        def complete(messages, model, base, key, budget, tries=3, salvage=None):
+            kind = outcomes.pop(0)
+            record = budget.start(messages, model)
+            if kind == "http":
+                raise RuntimeError("model HTTP 400")
+            record.update(status="completed", usage={"prompt_tokens": 10, "completion_tokens": 10})
+            from tests_oneshot.test_oneshot import block
+            return block("frontend/public/app.js", "// tried"), {}, "stop"
+        budget = adapter.CallBudget(repair_limit=n + 1)
+        budget.phase = "repair"
+        with self.patch.object(adapter, "check_scenarios", side_effect=[before] + [unchanged] * (n + 2)), \
+                self.patch.object(adapter, "stream_completion", side_effect=complete):
+            adapter.repair_delivery(self.stage, list(self.files), [{"role": "user", "content": "draft"}], "m", "b", "k",
+                                    budget, requirements="synthetic", tests=Path(self.temp.name) / "suite")
+        rounds = budget.smoke["rounds"]
+        self.assertEqual(len(rounds), n + 1, [r.get("reason") for r in rounds])
+        self.assertFalse(rounds[0]["replied"])
+        self.assertEqual(budget.smoke["stopped"], f"{n} repairs in a row were discarded")
+
     def test_a_repair_that_only_gains_is_kept(self):
         from tests_oneshot.test_oneshot import block
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-4": "pass"})

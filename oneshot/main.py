@@ -2299,7 +2299,10 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     while state["fatal"] or _scenarios(state, "fail"):
         ask = repair_request(state, discarded, unapplied)
         stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
-        if stop is None and len(rounds) >= REPAIR_REJECTIONS and not any(r["accepted"] for r in rounds[-REPAIR_REJECTIONS:]):
+        # Only rounds the model answered count: a transport failure (run 95ec6880ee7f lost a round to "model HTTP 400")
+        # says nothing about the repairs, and the global failure limit already bounds those.
+        answered = [r for r in rounds if r.get("replied", True)]
+        if stop is None and len(answered) >= REPAIR_REJECTIONS and not any(r["accepted"] for r in answered[-REPAIR_REJECTIONS:]):
             stop = f"{REPAIR_REJECTIONS} repairs in a row were discarded"
         if stop is None and time.monotonic() - started_repairs > REPAIR_SECONDS:
             stop = f"the repair time limit was reached ({REPAIR_SECONDS} s)"
@@ -2363,6 +2366,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 # A missed SEARCH carries the current lines it missed; the model needs them whole to copy from.
                 discarded = str(exc)[:2000] + _still_failing(after, record["failing"])
         finally:
+            record["replied"] = replied
             record["seconds"] = round(time.monotonic() - started, 1)
             record["cost_cny"] = round(sum(call_cost(r) for r in budget.attempts[calls:]), 6)
             rounds.append(record)
