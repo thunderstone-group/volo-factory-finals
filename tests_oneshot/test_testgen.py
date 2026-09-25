@@ -247,6 +247,17 @@ class RunCase(unittest.TestCase):
             self.assertEqual(statuses, {"REQ-1-1": "pass", "REQ-1-2": "fail", "REQ-2-1": "error"})
             again = testgen.run_suite(app, suite, REQUIREMENTS, only={"REQ-1-2"})
             self.assertEqual([(e["id"], e["status"]) for e in again["scenarios"]], [("REQ-1-2", "fail")])
+            # A file that parses but that Playwright cannot load (a duplicate title) also stops every test; the run
+            # finds it, sets it aside in suite.json and runs the rest.
+            (suite / "t02-REQ-2.spec.cjs").write_text("const { test } = require('@playwright/test');\n"
+                                                      "test('REQ-2-1: x', async () => {});\ntest('REQ-2-1: x', async () => {});\n")
+            saved = json.loads((suite / "suite.json").read_text())
+            saved["files"][1].pop("syntax")
+            (suite / "suite.json").write_text(json.dumps(saved))
+            third = testgen.run_suite(app, suite, REQUIREMENTS)
+            self.assertEqual({e["id"]: e["status"] for e in third["scenarios"]},
+                             {"REQ-1-1": "pass", "REQ-1-2": "fail", "REQ-2-1": "error"})
+            self.assertIn("cannot load", json.loads((suite / "suite.json").read_text())["files"][1]["syntax"])
 
 
 if __name__ == "__main__":
