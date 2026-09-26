@@ -1416,3 +1416,27 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - Package f37fc67d (215 unit tests; the menu browser test needs Playwright on NODE_PATH) replaced 13640cc2 on the relay
   at 01:46; relay round 2 (`4e6ef6222609`) was running at the switch.
 
+## 2026-09-27 04:00-05:15 — Plateau: the repair loop stops early and the written tests break on their own
+
+- **Owner asked to break the two-day plateau** (best S 55.37 since 09-26 09:10). Board check: legitimate GitHub best is
+  ours (25; a fixed-answer entry has 35), legitimate Sheet best 90 (MorningW1nd, CNY 34), so both tasks sit at the field's
+  frontier and the next points must come from our own mechanisms.
+- **Repair loop, 15 official runs:** 234 rounds, 116 kept; of 118 discards, 51 fixed some tests but broke others below
+  3:1 and 47 fixed none. Almost every loop stopped at four discards in a row with most of the 24-call / CNY 10 limit
+  unused. Relay round 1 of 43ad48bd (Sheet `f49ba294f647`, hidden **80**) is the pattern: round 1 took the written suite
+  to 90 pass / 10 error / 1 helper finding, then four rounds on that one helper line, CNY 0.85 of repair in all.
+- **Written tests broken in their own code:** on the eight saved Sheet apps with known hidden scores the current suite had
+  13-19 such tests each, whole REQ-5 files (helper using a `page` it was never given; `async` locator helpers called
+  without await). Hardening (roadmap 4.25) on the same suite files, no model spend: 0 left on every app, rank
+  correlation with hidden 0.97 -> 0.93, mean errors 28.5 -> 13.4, 4-9 newly visible failures on weaker apps.
+- **Vocabulary:** folded YAML lines broke quoted phrases: Sheet missed 11 (5 messages) and carried `, rows`-style junk,
+  GitHub missed 12. Fixed (4.27) with a card line for seed accounts named without a password.
+- **Cost probe, withdrawn:** flash accepts `reasoning_effort`; a `low` Sheet suite cost CNY 2.06 in 9 min but ranked the
+  eight apps at Spearman 0.42 with 34 own-code errors after hardening.
+- **Codex adversarial review** (`docs/evidence/2026-09-27-breakthrough/`): adopted in-order recheck of lost tests,
+  faithful rewrites, cost threshold `p_new/p_old > (b_new/b_old)^(1/11)`, official budget in batches of two.
+- **Local A/B** (practice key, scratchpad `ab/`): Sheet, package 43ad48bd vs 81df605 (4.25 + 4.26 without the review
+  fixes), three runs each, scored by two fixed judge suites. Mihomo restarted at 04:41 and cut every local stream; some
+  test files of both arms fell back to Kimi. Mechanics check of the current branch head (package 63201b76) on both
+  tasks started 05:05.
+- Relay stopped at 04:15 while it waited on round 1 (runs keep going); next package from `feat/test-hygiene`.
