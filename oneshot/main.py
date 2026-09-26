@@ -2033,6 +2033,39 @@ def finish_suite(job, budget, wait=TESTGEN_WAIT):
     return job["dir"] if ready else None
 
 
+def mend_suite(stage, tests, state, requirements, scaffold, model, base, key, budget):
+    """The written tests that broke in their own code on their first run over a working application go back to the
+    writer once (testgen.fix_suite), and the suite runs again. Their calls join the run's ledger as `tests` side
+    calls; the log line says how many broken tests the rewrite left."""
+    testgen = _testgen_module()
+    broken = testgen.own_breaks(state["report"])
+    if not broken:
+        return state
+    budgets, started = [], time.monotonic()
+
+    def complete(messages):
+        own = CallBudget(draft_limit=1, repair_limit=0)
+        budgets.append(own)
+        return stream_completion(messages, model, base, key, own, tries=3)
+    budget.progress("mending_tests", force=True)
+    fixed = testgen.fix_suite(requirements or "", tests, state["report"], complete)
+    records = [record for own in budgets for record in own.attempts]
+    for number, record in enumerate(records, 1):
+        budget.side_calls.append({**record, "phase": "tests", "call": f"tests-fix-{number}",
+                                  "cost_cny": round(call_cost(record), 6)})
+    summary = {"broken": sum(len(v) for v in broken.values()), "files": fixed, "calls": len(records),
+               "cost_cny": round(sum(call_cost(r) for r in records), 6),
+               "counts_before": (scenario_summary(state["report"]) or {}).get("counts")}
+    if fixed:
+        state = assess(stage, requirements, scaffold, tests=tests)
+        summary["broken_after"] = sum(len(v) for v in testgen.own_breaks(state["report"]).values())
+        summary["counts_after"] = (scenario_summary(state["report"]) or {}).get("counts")
+    summary["seconds"] = round(time.monotonic() - started, 1)
+    budget.suite = dict(budget.suite or {}, mended=summary)
+    print("[oneshot] suite mend " + json.dumps(summary), file=sys.stderr)
+    return state
+
+
 def _suite(tests):
     """The keyword a check call carries only when a written suite exists (the scenario check's call is unchanged)."""
     return {"tests": tests} if tests is not None else {}
@@ -2390,6 +2423,19 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     rounds, conversation, discarded, unapplied = [], list(messages), None, []
     quoted = {phrase.lower() for phrase in quoted_control_phrases(requirements)}
     depths = _testgen_module().depths(requirements or "") if tests is not None else {}
+    mended = [False]
+
+    def mend(state):
+        # Once, on the first report over an application that works (the draft, or the round that revived it).
+        if mended[0] or tests is None or state["fatal"] or not (state["report"] or {}).get("scenarios"):
+            return state
+        mended[0] = True
+        try:
+            return mend_suite(stage, tests, state, requirements, scaffold, model, base, key, budget)
+        except Exception as exc:  # the tests are an aid: a failed mend leaves them as they were
+            print(f"[oneshot] suite mend failed: {type(exc).__name__}: {str(exc)[:200]}", file=sys.stderr)
+            return state
+    state = mend(state)
     while state["fatal"] or _scenarios(state, "fail"):
         ask = repair_request(state, discarded, unapplied, depths)
         stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
@@ -2472,6 +2518,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             state, discarded, unapplied = after, None, skipped
             record.update(accepted=True, files=[item["path"] for item in batch])
             shutil.rmtree(backup, ignore_errors=True)
+            state = mend(state)
         except Exception as exc:
             # Keep the version before this repair: a half-applied fix could be worse than the known state.
             _swap_back(stage, backup)

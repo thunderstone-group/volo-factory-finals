@@ -144,6 +144,18 @@ def _node():
     return shutil.which("node")
 
 
+def _parses(node, path, text):
+    """Whether `text` passes `node --check` as the CommonJS file `path` would."""
+    probe = Path(path).with_name(Path(path).name + ".check.cjs")
+    try:
+        probe.write_text(text + "\n", encoding="utf-8")
+        return subprocess.run([node, "--check", str(probe)], capture_output=True, text=True, timeout=30).returncode == 0
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+    finally:
+        probe.unlink(missing_ok=True)
+
+
 FENCE = re.compile(r"\A[ \t]*```[\w-]*[ \t]*\r?\n(.*?)(?:\r?\n[ \t]*```[ \t]*)?\s*\Z", re.S)
 
 
@@ -152,6 +164,126 @@ def unfence(body):
     began with ```js, which turns the whole file into template literals that do not parse (21 of 100 tests never ran)."""
     match = FENCE.match(body)
     return match.group(1) if match else body
+
+
+# Two slips of the writer kill whole files whatever the application does. In eight Sheet suites (09-27) 13-19 tests
+# per application threw in their own code, nearly all in the REQ-5 files (sort, filter, validation, pivot), the area
+# the hidden suite fails most: a helper that uses `page` without taking it as a parameter (`ReferenceError: page is
+# not defined`), and an `async` helper that only returns a locator, whose caller forgets `await` and calls a method
+# on the Promise (`startCell.scrollIntoViewIfNeeded is not a function`). Those tests never drove a repair.
+PAGE_SHIM = ("\n// Added by the suite runner: a helper that uses `page` without taking it as a parameter sees the "
+             "running test's page.\nrequire('@playwright/test').test.beforeEach(async ({ page }) => "
+             "{ globalThis.page = page; });\n")
+ASYNC_HEAD = re.compile(r"\basync\s+(?:function\b[^{]*?\)\s*|\([^()]*\)\s*=>\s*|[A-Za-z_$][\w$]*\s*=>\s*)(?=\{)")
+REGEX_BEFORE = set("(,=:[!&|?{};+-*%<>~^") | {""}
+
+
+def _skip_quoted(src, i):
+    """Index just past the string literal that opens at src[i]."""
+    quote, i = src[i], i + 1
+    while i < len(src) and src[i] != quote and src[i] != "\n":
+        i += 2 if src[i] == "\\" else 1
+    return i + 1
+
+
+def _skip_regex(src, i):
+    """Index just past the regular expression literal that opens at src[i] (flags included)."""
+    i, in_class = i + 1, False
+    while i < len(src) and src[i] != "\n":
+        c = src[i]
+        if c == "\\":
+            i += 2
+            continue
+        if c == "[":
+            in_class = True
+        elif c == "]":
+            in_class = False
+        elif c == "/" and not in_class:
+            i += 1
+            while i < len(src) and (src[i].isalnum() or src[i] == "_"):
+                i += 1
+            return i
+        i += 1
+    return i
+
+
+def _block_end(src, i):
+    """Index of the `}` closing the block or template substitution opened at src[i] (`{`), skipping strings,
+    template literals, comments and regular expressions; -1 when it never closes."""
+    depth, j, n = 0, i, len(src)
+    while j < n:
+        c = src[j]
+        if c in "'\"":
+            j = _skip_quoted(src, j)
+            continue
+        if c == "`":
+            j += 1
+            while j < n and src[j] != "`":
+                if src[j] == "\\":
+                    j += 2
+                elif src.startswith("${", j):
+                    end = _block_end(src, j + 1)
+                    if end < 0:
+                        return -1
+                    j = end + 1
+                else:
+                    j += 1
+            j += 1
+            continue
+        if src.startswith("//", j):
+            j = src.find("\n", j)
+            if j < 0:
+                return -1
+            continue
+        if src.startswith("/*", j):
+            j = src.find("*/", j + 2)
+            if j < 0:
+                return -1
+            j += 2
+            continue
+        if c == "/":
+            k = j - 1
+            while k >= 0 and src[k] in " \t\r\n":
+                k -= 1
+            before = src[k] if k >= 0 else ""
+            if before in REGEX_BEFORE or re.search(r"\b(?:return|typeof|case|in|of)$", src[max(0, k - 6):k + 1]):
+                j = _skip_regex(src, j)
+                continue
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return j
+        j += 1
+    return -1
+
+
+def _needless_async(src):
+    """The source with `async` dropped from every function whose body never awaits: it returns its value itself
+    instead of a Promise of it, so a caller that forgot `await` still gets the locator."""
+    cuts = []
+    for match in ASYNC_HEAD.finditer(src):
+        start = match.end()
+        end = _block_end(src, start)
+        if end < 0:
+            continue
+        if not re.search(r"\bawait\b", src[start:end]):
+            cuts.append(match.start())
+    for at in reversed(cuts):
+        src = src[:at] + re.sub(r"^async\s+", "", src[at:], count=1)
+    return src
+
+
+def harden(body, check=None):
+    """The file with the two slips above made harmless. `check(text) -> bool` says whether a text still parses;
+    when the async rewrite does not, the file keeps its own functions (the page shim alone never breaks parsing)."""
+    hardened = _needless_async(body)
+    if hardened != body and check is not None and not check(hardened):
+        hardened = body
+    if "globalThis.page = page" not in hardened:
+        hardened = hardened.rstrip("\n") + "\n" + PAGE_SHIM
+    return hardened
 
 
 def depths(text):
@@ -203,9 +335,10 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
         if body is None:
             return record
         path = suite / group["file"]
+        node = _node()
+        body = harden(body, (lambda text: _parses(node, path, text)) if node else None)
         path.write_text(body + "\n", encoding="utf-8")
         record.pop("error", None)
-        node = _node()
         if node:
             check = subprocess.run([node, "--check", str(path)], capture_output=True, text=True, timeout=30)
             if check.returncode:
@@ -217,9 +350,98 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
         records = list(pool.map(one, groups))
     manifest = {"files": records, "scenarios": sum(len(g["items"]) for g in groups),
                 "tests": sum(len(r.get("tests") or []) for r in records),
-                "seconds": round(time.monotonic() - started, 1)}
+                "seconds": round(time.monotonic() - started, 1), "prerequisites": prerequisites}
     (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     return manifest
+
+
+FIX = """Running `{file}` against the application, these tests broke in the test file's own code before the
+application was judged:
+{problems}
+
+Fix only the test code that broke: a helper that uses a variable it was not given, a missing `await`, a method called
+on the wrong object, a Playwright API used the wrong way, a name the requirements never give (use the one they give).
+Keep every scenario, step, locator, value and assertion that follows the requirements. Reply with the whole corrected
+file and nothing else:
+=== FILE: {file} ===
+<file content>
+=== END ==="""
+OWN_BREAK = ("The test's own code threw", "The test used the name", "The test file does not parse")
+FIX_SHOWN = 12
+
+
+def own_breaks(report):
+    """File name -> the tests of the report that broke in the test file's own code (not blocked by a helper finding,
+    not skipped): the ones only the test writer can mend."""
+    found = collections.defaultdict(list)
+    for entry in (report or {}).get("scenarios", []):
+        if entry.get("status") == "error" and entry.get("file") and (entry.get("observation") or "").startswith(OWN_BREAK):
+            found[entry["file"]].append(entry)
+    return dict(found)
+
+
+def fix_suite(text, suite, report, complete, workers=GROUP_WORKERS):
+    """One more writer call for each spec file whose tests broke in their own code on the first run (09-27: 13-19 such
+    tests per Sheet application, whole REQ-5 files, never a repair target). The call continues the file's own
+    request with the file as the writer's reply and the errors it raised; a reply that does not parse leaves the file
+    as it was. Returns the files rewritten."""
+    suite = Path(suite)
+    try:
+        manifest = json.loads((suite / "suite.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    broken = own_breaks(report)
+    groups = {g["file"]: g for g in plan(text)}
+    records = {r["file"]: r for r in manifest.get("files", [])}
+    todo = [name for name in broken if name in groups and name in records and (suite / name).is_file()]
+    node = _node()
+
+    def one(name):
+        path = suite / name
+        body = path.read_text(encoding="utf-8", errors="replace")
+        lines = body.splitlines()
+        problems, seen = [], set()
+        for entry in broken[name]:
+            first = (entry.get("observation") or "").splitlines()[0]
+            where = entry.get("at") or ""
+            if (first, where) in seen:
+                continue
+            seen.add((first, where))
+            at = ""
+            if where.startswith(name + ":"):
+                number = where.rsplit(":", 1)[1]
+                if number.isdigit() and 0 < int(number) <= len(lines):
+                    at = f"\n  at line {number}: {lines[int(number) - 1].strip()[:200]}"
+            problems.append(f"- {entry['id']}: {first[:400]}{at}")
+        ask = FIX.format(file=name, problems="\n".join(problems[:FIX_SHOWN]))
+        messages = request(text, groups[name], manifest.get("prerequisites") or "")
+        messages += [{"role": "assistant", "content": f"=== FILE: {name} ===\n{body.rstrip()}\n=== END ==="},
+                     {"role": "user", "content": ask}]
+        try:
+            content, _, _ = complete(messages)
+        except Exception:
+            return None
+        found = [m for m in FILE_BLOCK.finditer(content or "") if m.group(1).strip() == name]
+        if not found:
+            return None
+        fixed = harden(unfence(found[-1].group(2)), (lambda t: _parses(node, path, t)) if node else None)
+        if node and not _parses(node, path, fixed):
+            return None
+        titles = [m.group(2) for m in TITLE.finditer(fixed)]
+        if not titles:
+            return None
+        path.write_text(fixed + "\n", encoding="utf-8")
+        records[name]["tests"] = titles
+        records[name].pop("syntax", None)
+        records[name]["fixed"] = len(problems)
+        return name
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        done = [name for name in pool.map(one, todo) if name]
+    if done:
+        manifest["tests"] = sum(len(r.get("tests") or []) for r in manifest.get("files", []))
+        (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    return done
 
 
 def runnable(manifest):

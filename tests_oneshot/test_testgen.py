@@ -612,3 +612,113 @@ class SecondLookCase(unittest.TestCase):
         budget, calls, started, suites = self.run_look(stop="repair call limit reached (24)")
         self.assertFalse(started.called)
         self.assertEqual(calls, [])
+
+
+SLIPS = r"""const { test, expect } = require('@playwright/test');
+async function cell(page, name) {
+  return page.getByRole('button', { name, exact: true });
+}
+async function press(name) {
+  await page.getByRole('button', { name, exact: true }).click();
+}
+const pattern = /[{'"`]/;
+test('REQ-1-1: Add one', async ({ page }) => {
+  await page.goto('/');
+  await cell(page, 'Add note').scrollIntoViewIfNeeded();
+  await press('Add note');
+  await expect(page.getByText('Added', { exact: true })).toBeVisible();
+});
+"""
+
+
+class HardenCase(unittest.TestCase):
+    def test_an_async_function_that_never_awaits_loses_async_and_one_that_awaits_keeps_it(self):
+        out = testgen._needless_async(SLIPS)
+        self.assertIn("\nfunction cell(page, name) {", out)
+        self.assertIn("async function press(name) {", out)
+        self.assertIn("async ({ page }) => {", out)  # the test body awaits
+        arrow = "const f = async (x) => { return x.locator('a{'); };\nconst g = async (y) => { await y; };\n"
+        self.assertEqual(testgen._needless_async(arrow),
+                         "const f = (x) => { return x.locator('a{'); };\nconst g = async (y) => { await y; };\n")
+
+    def test_the_page_shim_is_added_once_and_a_rewrite_that_does_not_parse_is_dropped(self):
+        once = testgen.harden(SLIPS)
+        self.assertEqual(once.count("globalThis.page = page"), 1)
+        self.assertEqual(testgen.harden(once).count("globalThis.page = page"), 1)
+        kept = testgen.harden(SLIPS, check=lambda text: False)
+        self.assertIn("async function cell(page, name)", kept)  # the rewrite was refused, the shim stays
+        self.assertIn("globalThis.page = page", kept)
+
+    @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "node and npm are required")
+    def test_a_hardened_file_runs_where_the_written_one_broke_in_its_own_code(self):
+        env = dict(os.environ)
+        cli, why = testgen.ensure_runner(env)
+        if not cli:
+            self.skipTest("the Playwright test runner is unavailable: " + why)
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            app = root / "app"
+            (app / "backend").mkdir(parents=True)
+            (app / "frontend").mkdir()
+            (app / "backend" / "server.js").write_text(APP_SERVER)
+            (app / "backend" / "package.json").write_text('{"scripts": {"start": "node server.js"}}')
+            suite = root / "suite"
+            suite.mkdir()
+            (suite / "t01-REQ-1.spec.cjs").write_text(SLIPS)
+            (suite / "suite.json").write_text(json.dumps({"files": [{"file": "t01-REQ-1.spec.cjs",
+                                                                     "tests": ["REQ-1-1: Add one"]}]}))
+            before = testgen.run_suite(app, suite, REQUIREMENTS)
+            self.assertEqual(before["scenarios"][0]["status"], "error", before)
+            self.assertTrue(before["scenarios"][0]["observation"].startswith("The test's own code threw"))
+            path = suite / "t01-REQ-1.spec.cjs"
+            path.write_text(testgen.harden(SLIPS, lambda t: testgen._parses(shutil.which("node"), path, t)))
+            after = testgen.run_suite(app, suite, REQUIREMENTS)
+            self.assertEqual(after["scenarios"][0]["status"], "pass", after)
+
+
+class FixSuiteCase(unittest.TestCase):
+    def suite(self, temp, body):
+        suite = Path(temp)
+        (suite / "t01-REQ-1.spec.cjs").write_text(body)
+        (suite / "suite.json").write_text(json.dumps({"files": [{"file": "t01-REQ-1.spec.cjs", "tests": [
+            "REQ-1-1: Add one", "REQ-1-2: Edit one"]}], "tests": 2, "prerequisites": ""}))
+        return suite
+
+    REPORT = {"kind": "testgen", "scenarios": [
+        {"id": "REQ-1-1", "status": "error", "file": "t01-REQ-1.spec.cjs", "at": "t01-REQ-1.spec.cjs:2",
+         "observation": "The test's own code threw: ReferenceError: grid is not defined"},
+        {"id": "REQ-1-2", "status": "error", "file": "t01-REQ-1.spec.cjs",
+         "observation": "Blocked by helper:t01-REQ-1.spec.cjs:9 (shared with 1 other test(s))."}]}
+
+    def test_only_tests_broken_in_their_own_code_go_back_and_the_reply_replaces_the_file(self):
+        self.assertEqual({k: [e["id"] for e in v] for k, v in testgen.own_breaks(self.REPORT).items()},
+                         {"t01-REQ-1.spec.cjs": ["REQ-1-1"]})
+        body = "const { test } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => { grid; });\n"
+        fixed = ("const { test } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => {});\n"
+                 "test('REQ-1-2: Edit one', async () => {});\n")
+        seen = []
+
+        def complete(messages):
+            seen.append(messages)
+            return f"=== FILE: t01-REQ-1.spec.cjs ===\n{fixed}=== END ===", {}, "stop"
+        with tempfile.TemporaryDirectory() as temp:
+            suite = self.suite(temp, body)
+            self.assertEqual(testgen.fix_suite(REQUIREMENTS, suite, self.REPORT, complete), ["t01-REQ-1.spec.cjs"])
+            self.assertEqual(len(seen), 1)
+            self.assertEqual(seen[0][-2]["role"], "assistant")  # the file as written is the writer's own reply
+            self.assertIn("REQ-1-1: The test's own code threw: ReferenceError: grid is not defined", seen[0][-1]["content"])
+            self.assertIn("at line 2: test('REQ-1-1: Add one'", seen[0][-1]["content"])
+            self.assertNotIn("REQ-1-2:", seen[0][-1]["content"].split("=== FILE")[0])
+            written = (suite / "t01-REQ-1.spec.cjs").read_text()
+            self.assertIn("test('REQ-1-2: Edit one'", written)
+            self.assertIn("globalThis.page = page", written)
+            self.assertEqual(json.loads((suite / "suite.json").read_text())["files"][0]["fixed"], 1)
+
+    @unittest.skipUnless(shutil.which("node"), "node is required")
+    def test_a_reply_that_does_not_parse_leaves_the_file_as_it_was(self):
+        body = "const { test } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => { grid; });\n"
+        with tempfile.TemporaryDirectory() as temp:
+            suite = self.suite(temp, body)
+            reply = "=== FILE: t01-REQ-1.spec.cjs ===\ntest('REQ-1-1: Add one', async () => { `x ${ });\n=== END ==="
+            self.assertEqual(testgen.fix_suite(REQUIREMENTS, suite, self.REPORT, lambda m: (reply, {}, "stop")), [])
+            self.assertEqual((suite / "t01-REQ-1.spec.cjs").read_text(), body)
