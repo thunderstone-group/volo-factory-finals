@@ -77,7 +77,7 @@ How the tests run:
   shortcut or a menu command, with a button or the Enter key), spread the tests of that requirement across those ways,
   as different users would.
 
-Write ONE self-contained file `{file}`: small helper functions at the top (creating the records the scenarios assume,
+Write ONE self-contained file (named at the end): small helper functions at the top (creating the records the scenarios assume,
 entering values the way the requirements describe, opening menus), then one `test(...)` per scenario listed, titled
 exactly `<scenario id>: <scenario name>` as listed. Each test builds the GIVEN state, performs the WHEN steps in order
 and asserts what the THEN steps state with web-first assertions (`await expect(locator).toBeVisible()`, `toHaveText`,
@@ -85,8 +85,8 @@ and asserts what the THEN steps state with web-first assertions (`await expect(l
 (`page.reload()`, or back through the home page) and assert again. Assert only what the text states; do not invent
 labels or messages.
 
-Reply with exactly one file block and nothing else:
-=== FILE: {file} ===
+Reply with exactly one file block for that file and nothing else:
+=== FILE: <file name> ===
 <file content>
 === END ==="""
 
@@ -131,8 +131,12 @@ def request(text, group, prerequisites=""):
     user = "Requirements document (YAML):\n\n" + text
     if prerequisites.strip():
         user += "\n\nPrerequisites (the task's prerequisites.md, part of the requirements):\n" + prerequisites.strip()
-    user += f"\n\nWrite `{group['file']}` with one test per scenario below (ids and names exactly as listed):\n{listed}"
-    system = SYSTEM.format(file=group["file"], test_seconds=TEST_SECONDS, action_seconds=ACTION_SECONDS)
+    # Everything before this point is the same for every file of the suite, so the gateway's prefix cache serves it
+    # after the first call (09-26: the file name sat in the system prompt, no call shared a prefix, and the
+    # requirements were billed uncached sixteen times).
+    user += (f"\n\nWrite `{group['file']}` with one test per scenario below (ids and names exactly as listed):\n{listed}"
+             f"\n\nReply with exactly one file block:\n=== FILE: {group['file']} ===\n<file content>\n=== END ===")
+    system = SYSTEM.format(test_seconds=TEST_SECONDS, action_seconds=ACTION_SECONDS)
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
 

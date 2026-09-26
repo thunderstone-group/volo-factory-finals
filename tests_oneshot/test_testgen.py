@@ -70,7 +70,11 @@ class PlanCase(unittest.TestCase):
     def test_request_lists_the_scenarios_and_carries_prerequisites(self):
         group = testgen.plan(REQUIREMENTS)[0]
         system, user = testgen.request(REQUIREMENTS, group, "Seed: synthetic")
-        self.assertIn("t01-REQ-1.spec.cjs", system["content"])
+        self.assertIn("=== FILE: t01-REQ-1.spec.cjs ===", user["content"])
+        # Every file's request shares everything up to its scenario list, so the gateway's prefix cache serves it.
+        other = testgen.request(REQUIREMENTS, testgen.plan(REQUIREMENTS)[1], "Seed: synthetic")
+        self.assertEqual(system, other[0])
+        self.assertEqual(user["content"].split("\n\nWrite `")[0], other[1]["content"].split("\n\nWrite `")[0])
         self.assertIn("- REQ-1-1#2: Add two  (scenario 2 of REQ-1-1)", user["content"])
         self.assertIn("Seed: synthetic", user["content"])
         self.assertIn("const { test, expect } = require('@playwright/test');", system["content"])
@@ -81,8 +85,8 @@ class WriteCase(unittest.TestCase):
         calls = []
 
         def complete(messages):
-            calls.append(messages[0]["content"])
-            name = next(g["file"] for g in testgen.plan(REQUIREMENTS) if g["file"] in messages[0]["content"])
+            calls.append(messages[-1]["content"])
+            name = next(g["file"] for g in testgen.plan(REQUIREMENTS) if g["file"] in messages[-1]["content"])
             if name.startswith("t02"):
                 raise RuntimeError("synthetic transport failure")
             if sum(name in c for c in calls) == 1:
