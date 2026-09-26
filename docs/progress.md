@@ -1440,3 +1440,11 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   test files of both arms fell back to Kimi. Mechanics check of the current branch head (package 63201b76) on both
   tasks started 05:05.
 - Relay stopped at 04:15 while it waited on round 1 (runs keep going); next package from `feat/test-hygiene`.
+- **Local A/B result (05:58).** Runs 1-2 of both arms are void: after the 04:41 mihomo restart their main budgets fell
+  back to Kimi, so repair rounds cost CNY 1.3-4.5 and every loop hit the CNY 10 cap after 2-6 rounds. Clean pair (run 3
+  of each arm, flash only): main (43ad48bd) 10 rounds 5 kept, stopped at four discards with the written suite at 81 pass
+  / 1 fail / 18 error, judge suites 88 / 88, CNY 7.33; branch (81df605) 5 rounds all kept, written suite 100/100, judge
+  suites **95 / 91**, CNY 6.81. One sample each; mechanics also seen in the current head's runs (`suite mend` rewrote
+  one file on Sheet and one on GitHub, broken 1 -> 0).
+- **PR #89 merged** (main 4d62756, package **63201b76**). Relay `chain-2026-09-27-hygiene.jsonl` started 05:59 with 2
+  rounds, reserve CNY 150; it waits for relay-1's GitHub `b95608a40de6`.
