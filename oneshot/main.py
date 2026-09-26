@@ -2192,21 +2192,39 @@ def dependency_order(failing, depths):
     return [entry for _, entry in sorted(enumerate(failing), key=key)]
 
 
-def repair_request(state, discarded=None, unapplied=(), depths=None):
+def failure_groups(state, depths):
+    """The failing written tests as repair targets, in dependency order: one group per requirement, and one per helper
+    finding (it stands for the tests it blocks). Each group is (key, ids)."""
+    groups = {}
+    for entry in dependency_order(_scenarios(state, "fail"), depths or {}):
+        key = entry["id"] if entry["id"].startswith("helper:") else entry["id"].split("#")[0]
+        groups.setdefault(key, []).append(entry["id"])
+    return list(groups.items())
+
+
+def repair_request(state, discarded=None, unapplied=(), depths=None, focus=None):
     """The repair message: what breaks the application as a whole, else the failing scenarios with what the check did
     and saw, the passing scenarios to keep, and the other findings as hints. Hunks of the last kept change that did
-    not apply are named with the current lines they missed."""
+    not apply are named with the current lines they missed. With `focus` (failing test ids), only those are listed and
+    the round is asked to fix just them."""
     sections = []
     if unapplied:
         sections.append("Your previous change was kept, but these EDIT hunks did not apply (the file is as shown, "
                         "copy SEARCH lines from it exactly):\n" + "\n".join("- " + h[:1500] for h in unapplied[:6]))
     if discarded:
         sections.append("Your previous change was discarded and the application is back to the version before it, "
-                        f"because {discarded}. Fix the same findings a different way.")
+                        f"because {discarded}." + (" This round, leave the findings it aimed at aside." if focus else
+                                                   " Fix the same findings a different way."))
     if state["fatal"]:
         sections.append("It is broken as a whole, so no scenario can pass:\n" + "\n".join("- " + p for p in state["fatal"]))
     failing = _scenarios(state, "fail")
     written = (state["report"] or {}).get("kind") == "testgen"
+    if failing and written and focus:
+        others = len(failing) - len([s for s in failing if s["id"] in focus])
+        failing = [s for s in failing if s["id"] in focus] or failing
+        sections.append(f"Work on one finding at a time: this round, make only the {len(failing)} test(s) below pass "
+                        f"with the smallest change that does it, and change nothing else ({others} other failing "
+                        f"test(s) wait for later rounds).")
     if failing and written:
         shown = dependency_order(failing, depths or {})[:TESTGEN_SHOWN]
         lines = [f"- {s['id']} {s.get('name') or ''}\n  error: {(s.get('observation') or '').strip()[:900]}"
@@ -2372,6 +2390,32 @@ FOLLOW_SYNTAX = ("Your change was applied, but a script no longer parses: {probl
                  "block (copy the SEARCH lines exactly from the current file). Emit nothing else.")
 
 
+FOLLOW_REGRESSION = ("Your change made {gained} failing test(s) pass but broke {lost} that passed before:\n{details}\n\n"
+                     "Keep what the change fixed and make these pass again with EDIT blocks against the files as they "
+                     "are now (copy SEARCH lines exactly). Emit nothing else.")
+
+
+def _lost_details(after, lost, shown=8):
+    """The tests a change broke, as the check after it saw them: the error, the test code, and the helper finding
+    for a test that now stops at a shared helper line."""
+    entries = {s["id"]: s for s in (after["report"] or {}).get("scenarios", [])}
+    helpers = [s for s in entries.values() if s["id"].startswith("helper:")]
+    lines = []
+    for sid in sorted(lost)[:shown]:
+        entry = entries.get(sid) or {}
+        observation = (entry.get("observation") or "").strip()
+        helper = next((h for h in helpers if sid in (h.get("blocks") or [])), None)
+        if helper:
+            entry, observation = helper, f"stops at {helper['id']}: " + (helper.get("observation") or "").strip()
+        text = f"- {sid} {entry.get('name') or ''}\n  error: {observation[:700]}"
+        if entry.get("source"):
+            text += "\n  test code:\n" + "\n".join("    " + line for line in entry["source"].splitlines()[:40])
+        lines.append(text)
+    if len(lost) > shown:
+        lines.append(f"(and {len(lost) - shown} more)")
+    return "\n".join(lines)
+
+
 def _follow_up(messages, ask, model, base, key, budget, record, kind):
     """One more call inside a repair round, for a change that could not be applied or left a script that does not
     parse. Returns the two new messages; the round's record notes it. Obeys the repair limits."""
@@ -2436,14 +2480,28 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             print(f"[oneshot] suite mend failed: {type(exc).__name__}: {str(exc)[:200]}", file=sys.stderr)
             return state
     state = mend(state)
+    # After a discarded round the next ones each take one failing requirement (or helper finding), in dependency
+    # order, until one is kept (09-27: of 118 discarded rounds in 15 official runs, 51 broke passing tests and 47
+    # fixed none; every loop stopped at four discards in a row with most of its call and spend limits unused).
+    narrow, tried = False, set()
     while state["fatal"] or _scenarios(state, "fail"):
-        ask = repair_request(state, discarded, unapplied, depths)
+        focus = None
+        untried = []
+        if tests is not None and not state["fatal"]:
+            untried = [(key, ids) for key, ids in failure_groups(state, depths) if key not in tried]
+            if narrow and untried:
+                key, ids = untried[0]
+                focus = set(ids)
+        ask = repair_request(state, discarded, unapplied, depths, focus)
         stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
         # Only rounds the model answered count: a transport failure (run 95ec6880ee7f lost a round to "model HTTP 400")
         # says nothing about the repairs, and the global failure limit already bounds those.
         answered = [r for r in rounds if r.get("replied", True)]
-        if stop is None and len(answered) >= REPAIR_REJECTIONS and not any(r["accepted"] for r in answered[-REPAIR_REJECTIONS:]):
+        if (stop is None and len(answered) >= REPAIR_REJECTIONS and not focus
+                and not any(r["accepted"] for r in answered[-REPAIR_REJECTIONS:])):
             stop = f"{REPAIR_REJECTIONS} repairs in a row were discarded"
+        if focus:
+            tried.add(key)
         if stop is None and time.monotonic() - started_repairs > REPAIR_SECONDS:
             stop = f"the repair time limit was reached ({REPAIR_SECONDS} s)"
         if stop:
@@ -2459,6 +2517,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         record = {"round": len(rounds) + 1, "fatal": len(state["fatal"]),
                   "failing": [s["id"] for s in _scenarios(state, "fail")], "passing_before": len(passing(state)),
                   "accepted": False}
+        if focus:
+            record["focus"] = sorted(focus)
         calls, started, replied, after = len(budget.attempts), time.monotonic(), False, None
         exchange = [{"role": "user", "content": ask}]
         try:
@@ -2507,6 +2567,35 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             after = assess(stage, requirements, scaffold, translate, tests=tests)
             account_translation(budget, after["report"])
             accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget, tests)
+            if (not accepted and tests is not None and detail.get("lost") and detail.get("gained")
+                    and not detail.get("checker")):
+                # It fixed some and broke others: one follow-up in the same round names what broke, keeping the fix
+                # (51 of 118 discarded rounds in 15 official runs were this; each was thrown away whole).
+                record["first_try"] = {"reason": reason, "gained": len(detail["gained"]), "lost": len(detail["lost"])}
+                ask_back = FOLLOW_REGRESSION.format(gained=len(detail["gained"]), lost=len(detail["lost"]),
+                                                    details=_lost_details(after, detail["lost"]))
+                if budget.repair_stop(conversation + exchange + [{"role": "user", "content": ask_back}], model):
+                    raise ValueError(reason)  # no call left for it: the round stands as judged
+                follow = _follow_up(conversation + exchange, ask_back, model, base, key, budget, record, "regression")
+                exchange += follow
+                extra, missing, more = parse_repair(follow[-1]["content"], stage)
+                if missing or record.get("follow_up_finish") == "length":
+                    raise ValueError("the repair output was truncated; change large files with EDIT blocks")
+                if not extra:
+                    raise ValueError(reason)
+                _write_repair(stage, extra, template)
+                skipped += more
+                batch = [b for b in batch if b["path"] not in {e["path"] for e in extra}] + extra
+                broken = []
+                if node:
+                    _check_syntax(stage, node, broken)
+                if broken:
+                    raise ValueError("after the follow-up a script does not parse: " + "; ".join(broken)[:600])
+                needed = missing_required(stage)
+                if needed:
+                    raise ValueError("the repair broke delivery: " + "; ".join(needed))
+                after = assess(stage, requirements, scaffold, translate, tests=tests)
+                accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget, tests)
             record.update(detail, reason=reason, scenarios=scenario_summary(after["report"]))
             if after["browser"]:
                 record["browser_after"] = after["browser"]
@@ -2516,6 +2605,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 files[:] = [f for f in files if f["path"] != item["path"]] + [item]
             conversation += exchange
             state, discarded, unapplied = after, None, skipped
+            narrow = False
+            tried.clear()
             record.update(accepted=True, files=[item["path"] for item in batch])
             shutil.rmtree(backup, ignore_errors=True)
             state = mend(state)
@@ -2527,7 +2618,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             # The model hears why its change was discarded; not a transport failure or a checker that could not run.
             if replied and not record.get("checker"):
                 # A missed SEARCH carries the current lines it missed; the model needs them whole to copy from.
-                discarded = str(exc)[:2000] + _still_failing(after, record["failing"])
+                discarded = str(exc)[:2000] + _still_failing(after, record.get("focus") or record["failing"])
+                narrow = tests is not None
         finally:
             record["replied"] = replied
             record["seconds"] = round(time.monotonic() - started, 1)

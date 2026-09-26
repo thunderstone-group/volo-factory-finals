@@ -457,6 +457,48 @@ class RepairLoopCase(unittest.TestCase):
         self.assertIn("was not applied", sent[1])
         self.assertEqual((self.stage / "frontend/build.js").read_text().strip(), "// fixed")
 
+    def test_a_repair_that_fixes_some_and_breaks_others_gets_one_follow_up_that_can_save_it(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-8": "pass", "REQ-9": "pass"})
+        broke = self.report({"REQ-1": "pass", "REQ-2": "fail", "REQ-8": "pass", "REQ-9": "fail"})
+        mended = self.report({"REQ-1": "pass", "REQ-2": "fail", "REQ-8": "pass", "REQ-9": "pass"})
+        sent, budget, _ = self.run_loop([before, broke, broke, mended, mended], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// step one"),
+            self.edit("frontend/build.js", "// step one", "// step two")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertEqual(record["follow_up"], "regression")
+        self.assertEqual(record["first_try"]["lost"], 1)
+        self.assertIn("broke 1 that passed before", sent[1])
+        self.assertIn("- REQ-9 ", sent[1])
+        self.assertEqual((self.stage / "frontend/build.js").read_text().strip(), "// step two")
+
+    def test_after_a_discard_each_round_takes_one_failing_requirement_until_every_one_had_a_round(self):
+        before = self.report({f"REQ-{i}": "fail" for i in range(1, 7)} | {"REQ-9": "pass"})
+        replies = [self.edit("frontend/build.js", "// Synthetic build fixture", "// same") for _ in range(8)]
+        sent, budget, _ = self.run_loop([before] * 9, replies)
+        rounds = budget.smoke["rounds"]
+        self.assertEqual(len(rounds), 7, [r.get("reason") for r in rounds])
+        self.assertNotIn("focus", rounds[0])
+        self.assertEqual([r["focus"] for r in rounds[1:]], [[f"REQ-{i}"] for i in range(1, 7)])
+        self.assertIn("make only the 1 test(s) below pass", sent[1])
+        self.assertIn("- REQ-1 ", sent[1])
+        self.assertNotIn("- REQ-2 ", sent[1])
+        self.assertEqual(budget.smoke["stopped"], f"{self.adapter.REPAIR_REJECTIONS} repairs in a row were discarded")
+
+    def test_a_kept_round_after_a_focused_one_goes_back_to_the_whole_list(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
+        fixed = self.report({"REQ-1": "pass", "REQ-2": "fail", "REQ-9": "pass"})
+        sent, budget, _ = self.run_loop([before, before, fixed, fixed, fixed], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// same"),
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// one"),
+            self.edit("frontend/build.js", "// one", "// two")])
+        rounds = budget.smoke["rounds"]
+        self.assertFalse(rounds[0]["accepted"])
+        self.assertEqual(rounds[1]["focus"], ["REQ-1"])
+        self.assertTrue(rounds[1]["accepted"], rounds[1])
+        self.assertNotIn("focus", rounds[2])
+        self.assertNotIn("Work on one finding at a time", sent[2])
+
     def test_a_repair_that_only_gains_is_kept(self):
         from tests_oneshot.test_oneshot import block
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-4": "pass"})
