@@ -60,6 +60,9 @@ SECOND_SUITE = os.environ.get("ONESHOT_SECOND_SUITE", "0") == "1"  # off (roadma
 TESTGEN_WAIT = 3600  # seconds the repair phase waits for the suite once the draft is in: platform suites took 1206-1970 s
 # against drafts of 10-17 min, and a local run on 09-25 22:15 (six cut streams, two HTTP 400) missed a 1200 s wait and
 # shipped the bare draft with no repair at all; waiting costs time only
+# `reasoning_effort` for the test writer's calls; empty sends none (the provider's default, which reasons at length:
+# nine tenths of a suite's output tokens are reasoning). `low` cut one probe's reasoning 2664 -> 168 tokens.
+TEST_EFFORT = os.environ.get("ONESHOT_TEST_EFFORT", "")
 TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
 # Load failures only the jsdom probe reports: jsdom lacks APIs a browser has (ResizeObserver, canvas), so a
 # Chromium scenario run decides whether the application is really broken as a whole.
@@ -355,7 +358,7 @@ def fallback_model(budget, model):
     return KIMI_FALLBACK_MODEL if model in KIMI_CODE_MODELS else FALLBACK_MODEL
 
 
-def stream_completion(messages, model, base, key, budget, tries=3, salvage=None):
+def stream_completion(messages, model, base, key, budget, tries=3, salvage=None, effort=None):
     """Buffer each attempt separately; a failed attempt's text is discarded. The primary model is
     retried `tries` times on transport failures; when those are spent the run switches to its
     fallback model for this and every later call (a cut route rarely heals within one run), with
@@ -369,6 +372,8 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None)
                "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
     if model in KIMI_CODE_MODELS:
         payload["temperature"] = 1.0  # Fixed by the provider; other values are rejected.
+    elif effort:
+        payload["reasoning_effort"] = effort
     req = request.Request(base.rstrip("/") + "/chat/completions",
                           data=json.dumps(payload).encode("utf-8"),
                           headers={"Content-Type": "application/json",
@@ -1509,7 +1514,15 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
 
 # A phrase in paired `backticks` (how the Lite requirements name controls: 56 of 81 names of one task never appear in
 # double quotes), or in straight or curly double quotes.
-QUOTED = re.compile(r'`([^`\n]{2,80})`|[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
+QUOTED = re.compile(r'`([^`\n]{1,80})`|[\u201c"]([^\u201d"\n]{1,80})[\u201d"]')
+
+
+def joined(text):
+    """The requirement text with its folded lines joined. YAML folds long descriptions, and a phrase broken across two
+    lines never matched: its closing quote paired with the next phrase's opening one, so the vocabulary held `, rows `
+    and `, and` while missing 11 of Sheet's quoted phrases (5 of its messages) and 12 of GitHub's (09-27). A quoted
+    single character (`/`) matches too, for the same reason, and is dropped by the length filters after it."""
+    return re.sub(r"[ \t]*\r?\n[ \t]*", " ", text or "")
 # What precedes a value the user types: "fills `Name` with `Item 4.3.1`", "enters `user@example.com`". The field
 # between fill and with stays in one clause; its quoted name may hold punctuation (`Write your text here...`).
 TYPED = re.compile(r"(?:(?<![\w-])fill(?:s|ed|ing)?\b(?:[^.;\n`\"]|`[^`\n]*`|\"[^\"\n]*\")*\bwith"
@@ -1526,7 +1539,7 @@ def runtime_values(requirements):
     """Lower-cased phrases that only backticks quote and that the user types somewhere: the suite supplies
     them at runtime, so the application's source need not contain them. A phrase the requirement also
     double-quotes (a seeded account the user types at login) stays required."""
-    text = requirements or ""
+    text = joined(requirements)
     typed, declared = set(), set()
     for match in QUOTED.finditer(text):
         if match.group(2) is not None:
@@ -1546,15 +1559,20 @@ def vocabulary_table(requirements):
     groups, order, seen = {}, [], set()
     current, name = None, None
     runtime = runtime_values(requirements)
+    chunks, lines_of = [], []
     for line in (requirements or "").splitlines():
         m = REQ_ID.match(line)
         if m:
-            current, name = m.group(1), None
+            chunks.append((current, name, lines_of))
+            current, name, lines_of = m.group(1), None, []
             continue
         n = REQ_NAME.match(line)
         if n and current and name is None:
             name = n.group(1)
-        for match in QUOTED.finditer(line):
+        lines_of.append(line)
+    chunks.append((current, name, lines_of))
+    for current, name, lines_of in chunks:
+        for match in QUOTED.finditer(joined("\n".join(lines_of))):
             phrase = _phrase(match)
             if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
                     or phrase.lower() in seen or phrase.lower() in runtime):
@@ -1657,7 +1675,7 @@ def quoted_control_phrases(requirements):
     """Quoted phrases whose requirement context names a control (button, field, tab, dialog...), short enough
     to be an accessible name and not a sentence or message. Original casing, first occurrence wins."""
     seen, phrases = set(), []
-    text_req = requirements or ""
+    text_req = joined(requirements)
     runtime = runtime_values(text_req)
     for match in QUOTED.finditer(text_req):
         phrase = _phrase(match)
@@ -1725,7 +1743,7 @@ def vocabulary_gaps(stage, requirements):
     messages, seed titles, accounts). Return the ones absent from the delivered source."""
     seen, phrases = set(), []
     runtime = runtime_values(requirements)
-    for match in QUOTED.finditer(requirements or ""):
+    for match in QUOTED.finditer(joined(requirements)):
         phrase = _phrase(match)
         if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
                 or phrase.lower() in seen or phrase.lower() in runtime):
@@ -1797,7 +1815,7 @@ def _frontend_sources(stage):
 
 def _quoted_lower(requirements):
     """Every quoted phrase of the requirement, lower-cased and space-normalised."""
-    text = requirements or ""
+    text = joined(requirements)
     phrases = [_phrase(m) for m in QUOTED.finditer(text)]
     phrases += re.findall(r"`([^`\n]{1,80})`", text)
     return {re.sub(r"\s+", " ", phrase).strip().lower() for phrase in phrases}
@@ -1995,7 +2013,7 @@ def start_suite(requirements, directory, model, base, key, prerequisites=""):
         # across eight parallel files stopped three of them).
         own = CallBudget(draft_limit=1, repair_limit=0)
         job["budgets"].append(own)
-        return stream_completion(messages, model, base, key, own, tries=3)
+        return stream_completion(messages, model, base, key, own, tries=3, effort=TEST_EFFORT)
 
     def work():
         try:
@@ -2046,7 +2064,7 @@ def mend_suite(stage, tests, state, requirements, scaffold, model, base, key, bu
     def complete(messages):
         own = CallBudget(draft_limit=1, repair_limit=0)
         budgets.append(own)
-        return stream_completion(messages, model, base, key, own, tries=3)
+        return stream_completion(messages, model, base, key, own, tries=3, effort=TEST_EFFORT)
     budget.progress("mending_tests", force=True)
     fixed = testgen.fix_suite(requirements or "", tests, state["report"], complete)
     records = [record for own in budgets for record in own.attempts]
