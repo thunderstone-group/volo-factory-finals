@@ -1,3 +1,32 @@
+# 当前交接 — 2026-09-26 15:10：接力跑包 60380c6d（4.23 第二套书面测试），3 轮
+
+先读 [改进路线图](reference/roadmap.md) 第 27 版日志和 4.23；证据 `docs/evidence/2026-09-26-second-suite/README.md`；数字见 [progress.md](progress.md) 账本表第 15、16 行。
+
+## 状态
+
+- 总榜第 1，S 55.37（提交 `2d65ddb1c133`，包 9bbd6939：GitHub 25、Sheet 79）。
+- 甲方 15:07「都按推荐」：4.23 上正式提交，基底 main（含 4.21），GitHub 也开第二套书面测试。
+- 接力：15:09 起用包 `60380c6d`（main a6d7529），进程 `scripts/submission_chain.py`（main 里起的，nohup，3 轮、保留 200 元、10-01 23:00 后不再起新提交），日志 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/official/chain-2026-09-26-second.jsonl`，输出同目录 `.out`。第一轮提交 `0ca9c21d4bf9`：GitHub `d34e9b03b172`、Sheet `fa94581a6fa7`。
+- 每次提交预计约 40 元（多写两套测试），每轮可能比以前长 1–2 小时。比赛额度 334.37 元（15:09）。
+
+## 接下来
+
+1. 每轮出分填账本第 16 行起。日志里每题应有两条 `acceptance tests` 和两条 `repair end`；第二条 `acceptance tests` 缺失，或出现 `second suite skipped`，要看原因。
+2. 4.23 判据 ③：3 次提交后 Sheet 均值高于 77.0、GitHub 不低于 20，不过就关掉 `ONESHOT_SECOND_SUITE`。
+3. 已知风险：3:1 规则会放过真退步（ed1e 回放里公式复制被丢了一条）。
+4. 小候选（没做）：书面测试的 API 误用（`toHaveText can be only used with Locator object`）不算测试自身错误；可加进 `OWN_ERROR`。
+5. worktree `repair-order`、`suite-load`、`sheet-batch2`、`suite-timeout`、`no-4-21`、`second-suite` 可删；分支 `relay/without-4.21`（包 50eb9932）留作备选。
+
+## 不要做
+
+- 不要把平台返回的失败测试内容，或正式题、练习题的专名写进包里。
+- 不要把受控回放的分数当成进展。
+- 不要改校准判据来让候选过关。
+- 不要在接力脚本运行时手动上传提交（只有最新提交能起 run，会打断接力）。
+- 停接力要在它等 run 的时候停；run 一结束它会在两分钟内上传下一轮。
+
+---
+
 # 当前交接 — 2026-09-26 09:10：榜首更新为 S 55.37（包 9bbd6939 第二轮）；接力已停，下一包待甲方定
 
 先读 [改进路线图](reference/roadmap.md) 第 26 版日志和 4.20–4.22；数字见 [progress.md](progress.md) 账本表第 13–15 行。
