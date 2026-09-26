@@ -53,6 +53,10 @@ REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce 
 REPAIR_SECONDS = 3 * 3600  # No repair round starts after this much time in the repair phase.
 CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this long (a large task at 1 CPU).
 TESTGEN = os.environ.get("ONESHOT_TESTGEN", "1") == "1"  # requirement-written tests drive the repairs (testgen.py)
+# When the repairs stop, a second suite written afresh drives more (roadmap 4.23): at the stop the first suite had one
+# or two failing tests left while 11-18 of its tests could not judge the application, and hidden scores sat 1-10 under
+# it; a second suite found 10-12 new failures on two stopped Sheet apps, in the blocks the first could not judge.
+SECOND_SUITE = os.environ.get("ONESHOT_SECOND_SUITE", "1") == "1"
 TESTGEN_WAIT = 3600  # seconds the repair phase waits for the suite once the draft is in: platform suites took 1206-1970 s
 # against drafts of 10-17 min, and a local run on 09-25 22:15 (six cut streams, two HTTP 400) missed a 1200 s wait and
 # shipped the bare draft with no repair at all; waiting costs time only
@@ -1482,6 +1486,9 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
                 budget.progress("checking_application", force=True)
                 repair_delivery(stage, files, conversation, model, base, key, budget, template, requirements,
                                 scaffold=bool(scaffold), tests=tests)
+                if tests is not None and SECOND_SUITE:
+                    second_look(stage, files, messages, model, base, key, budget, template, requirements,
+                                bool(scaffold), prerequisites, suites)
         except Exception as exc:
             if suite is not None:
                 finish_suite(suite, budget, wait=0)  # its calls so far stay on the ledger
@@ -1949,6 +1956,32 @@ def _testgen_module():
     except ImportError:  # the flat package
         import testgen
     return testgen
+
+
+def second_look(stage, files, messages, model, base, key, budget, template, requirements, scaffold, prerequisites,
+                suites):
+    """After the repairs on the first written suite stop, write a second suite afresh and repair against it (roadmap
+    4.23). The conversation restarts from the draft request with the current files as the assistant's reply, as a
+    controlled replay does. Skipped when the repair budget is spent."""
+    stop = budget.repair_stop(messages, model)
+    if stop:
+        print(f"[oneshot] second suite skipped: {stop}", file=sys.stderr)
+        return
+    first = budget.smoke or {}
+    suite = start_suite(requirements, Path(tempfile.mkdtemp(prefix="oneshot-tests-")), model, base, key, prerequisites)
+    suites.append(suite)
+    budget.progress("waiting_for_tests", force=True)
+    tests = finish_suite(suite, budget)
+    if tests is None:
+        return
+    budget.progress("checking_application", force=True)
+    current = "".join(f"=== FILE: {f['path']} ===\n{f['content'].rstrip(chr(10))}\n=== END ===\n" for f in files)
+    repair_delivery(stage, files, list(messages) + [{"role": "assistant", "content": current}], model, base, key,
+                    budget, template, requirements, scaffold=scaffold, tests=tests)
+    budget.smoke["first_suite"] = {k: first.get(k) for k in ("stopped", "scenarios_after", "tests")
+                                   if first.get(k) is not None}
+    if first.get("rounds"):
+        budget.smoke["first_suite"]["rounds"] = len(first["rounds"])
 
 
 def start_suite(requirements, directory, model, base, key, prerequisites=""):

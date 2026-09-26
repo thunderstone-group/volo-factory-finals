@@ -561,3 +561,50 @@ class LabelOverrideCase(unittest.TestCase):
             names = adapter.control_names(Path(temp))
         self.assertNotIn("worksheet name", names)
         self.assertIn("workbook name", names)
+
+
+class SecondLookCase(unittest.TestCase):
+    """main.second_look: after the first suite's repairs stop, a second suite drives more repairs from the current
+    files (roadmap 4.23)."""
+
+    def run_look(self, stop=None):
+        from unittest.mock import patch
+        from oneshot import main as adapter
+        budget = adapter.CallBudget()
+        budget.phase = "repair"
+        budget.smoke = {"stopped": "4 repairs in a row were discarded", "rounds": [{}, {}]}
+        files = [{"path": "frontend/public/app.js", "content": "// repaired\n"}]
+        calls, made = [], []
+
+        def repair(*args, **kwargs):
+            calls.append((args, kwargs))
+            budget.smoke = {"stopped": None}
+
+        def start(requirements, directory, *rest):
+            made.append(directory)
+            return {"job": 1}
+        with patch.object(adapter, "start_suite", side_effect=start) as started, \
+                patch.object(adapter, "finish_suite", return_value=Path("/suite-b")), \
+                patch.object(adapter, "repair_delivery", side_effect=repair), \
+                patch.object(budget, "repair_stop", return_value=stop):
+            suites = []
+            adapter.second_look(Path("/stage"), files, [{"role": "system", "content": "s"}, {"role": "user", "content": "u"}],
+                                "m", "b", "k", budget, None, "reqs", True, "", suites)
+        for directory in made:
+            shutil.rmtree(directory, ignore_errors=True)
+        return budget, calls, started, suites
+
+    def test_a_second_suite_repairs_from_the_current_files(self):
+        budget, calls, started, suites = self.run_look()
+        self.assertEqual(len(calls), 1)
+        args, kwargs = calls[0]
+        self.assertEqual(kwargs["tests"], Path("/suite-b"))
+        self.assertEqual(args[2][-1]["role"], "assistant")
+        self.assertIn("=== FILE: frontend/public/app.js ===\n// repaired\n=== END ===", args[2][-1]["content"])
+        self.assertEqual(budget.smoke["first_suite"], {"stopped": "4 repairs in a row were discarded", "rounds": 2})
+        self.assertEqual(suites, [{"job": 1}])
+
+    def test_a_spent_repair_budget_writes_no_second_suite(self):
+        budget, calls, started, suites = self.run_look(stop="repair call limit reached (24)")
+        self.assertFalse(started.called)
+        self.assertEqual(calls, [])
