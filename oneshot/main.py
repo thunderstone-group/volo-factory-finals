@@ -2334,7 +2334,9 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         return False, "the scenario recheck could not run: " + str(why)[:300], detail
     old, new = _status_map(before), _status_map(after)
     written = (after["report"] or {}).get("kind") == "testgen"
-    lost = {sid for sid, status in old.items() if status == "pass" and new.get(sid) in ("fail", "error")}
+    # A passing test the changed run never reached (its time ran out) is lost too: the evaluator's time runs out the
+    # same way.
+    lost = {sid for sid, status in old.items() if status == "pass" and new.get(sid) in ("fail", "error", "unrun")}
     # A written test blocked by a shared helper line is an `error` that stands for an application defect (the helper
     # finding carries the verdict); once the defect is fixed the blocked tests pass. Counting only fail -> pass left
     # such a fix at zero gain (a GitHub replay went from 25 to 32 passing tests and was credited with 4).
@@ -2347,6 +2349,17 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
             account_translation(budget, recheck)
         again = {s["id"]: s.get("status") for s in recheck.get("scenarios", [])}
         flaky = sorted(sid for sid in lost if again.get(sid) == "pass")
+        if flaky and written:
+            # Passing alone is not passing in order: the evaluator runs every test in order on one application that is
+            # never reset, and a recheck of just these tests starts a fresh one. A lost test is flaky only when it also
+            # passes in a whole run in order (09-27 review: a change that broke B through state left by earlier tests
+            # was kept as "B flaky").
+            whole = check_scenarios(stage, requirements, translate=translate, **_suite(tests))
+            if budget is not None:
+                account_translation(budget, whole)
+            in_order = _status_map({"report": whole})
+            detail["order_recheck"] = {sid: in_order.get(sid) for sid in flaky}
+            flaky = [sid for sid in flaky if in_order.get(sid) == "pass"]
         doubtful = sorted(sid for sid in gained & unsure if again.get(sid) != "pass")
         if flaky:
             detail["flaky"] = flaky
@@ -2580,6 +2593,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             after = assess(stage, requirements, scaffold, translate, tests=tests)
             account_translation(budget, after["report"])
             accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget, tests)
+            record.update(detail)
             if (not accepted and tests is not None and detail.get("lost") and detail.get("gained")
                     and not detail.get("checker")):
                 # It fixed some and broke others: one follow-up in the same round names what broke, keeping the fix
@@ -2608,6 +2622,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 if needed:
                     raise ValueError("the repair broke delivery: " + "; ".join(needed))
                 after = assess(stage, requirements, scaffold, translate, tests=tests)
+                for name in detail:
+                    record.pop(name, None)  # the first try's verdict lives on in first_try
                 accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget, tests)
             record.update(detail, reason=reason, scenarios=scenario_summary(after["report"]))
             if after["browser"]:

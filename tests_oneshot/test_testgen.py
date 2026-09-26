@@ -499,6 +499,39 @@ class RepairLoopCase(unittest.TestCase):
         self.assertNotIn("focus", rounds[2])
         self.assertNotIn("Work on one finding at a time", sent[2])
 
+    def test_a_lost_test_that_passes_alone_but_fails_in_order_stays_lost(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-8": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "fail", "REQ-8": "fail"})
+        alone = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-8": "pass"})
+        in_order = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "fail", "REQ-8": "fail"})
+        _, budget, _ = self.run_loop([before, after, alone, in_order], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// one")])
+        record = budget.smoke["rounds"][0]
+        self.assertFalse(record["accepted"], record)
+        self.assertIn("broke 1 passing scenario(s): REQ-8", record["reason"])
+        self.assertEqual(record["order_recheck"], {"REQ-8": "fail"})
+
+    def test_a_lost_test_that_passes_alone_and_in_order_is_flaky(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-8": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "fail", "REQ-8": "fail"})
+        alone = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-8": "pass"})
+        in_order = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "fail", "REQ-8": "pass"})
+        _, budget, _ = self.run_loop([before, after, alone, in_order], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// one")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertEqual(record["flaky"], ["REQ-8"])
+
+    def test_a_passing_test_the_changed_run_never_reached_is_lost(self):
+        before = self.report({"REQ-1": "fail", "REQ-8": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-8": "error"})
+        after["scenarios"][1]["observation"] = "Not run: the suite was stopped at its 900 s limit"
+        _, budget, _ = self.run_loop([before, after, after], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// one")])
+        record = budget.smoke["rounds"][0]
+        self.assertFalse(record["accepted"], record)
+        self.assertIn("REQ-8", record["reason"])
+
     def test_a_repair_that_only_gains_is_kept(self):
         from tests_oneshot.test_oneshot import block
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-4": "pass"})
@@ -755,6 +788,31 @@ class FixSuiteCase(unittest.TestCase):
             self.assertIn("test('REQ-1-2: Edit one'", written)
             self.assertIn("globalThis.page = page", written)
             self.assertEqual(json.loads((suite / "suite.json").read_text())["files"][0]["fixed"], 1)
+
+    def test_a_rewrite_that_drops_a_test_skips_one_or_loses_an_assertion_leaves_the_file(self):
+        body = ("const { test, expect } = require('@playwright/test');\n"
+                "test('REQ-1-1: Add one', async ({ page }) => { grid; await expect(page).toHaveTitle('x'); });\n"
+                "test('REQ-1-2: Edit one', async ({ page }) => { await expect(page).toHaveTitle('y'); });\n")
+        replies = {
+            "dropped": "const { test, expect } = require('@playwright/test');\n"
+                       "test('REQ-1-1: Add one', async ({ page }) => { await expect(page).toHaveTitle('x'); });\n",
+            "skipped": body.replace("grid; ", "").replace("test('REQ-1-2", "test.skip('REQ-1-2"),
+            "weaker": body.replace("grid; await expect(page).toHaveTitle('x');", ""),
+        }
+        for kind, fixed in replies.items():
+            with self.subTest(kind), tempfile.TemporaryDirectory() as temp:
+                suite = self.suite(temp, body)
+                reply = f"=== FILE: t01-REQ-1.spec.cjs ===\n{fixed}=== END ==="
+                self.assertEqual(testgen.fix_suite(REQUIREMENTS, suite, self.REPORT, lambda m: (reply, {}, "stop")), [])
+                self.assertEqual((suite / "t01-REQ-1.spec.cjs").read_text(), body)
+        self.assertTrue(testgen.faithful(body, body.replace("grid; ", "")))
+
+    def test_an_expect_on_something_other_than_a_locator_is_the_tests_own_error(self):
+        result = {"status": "failed", "errors": [{"message": "Error: toHaveText can be only used with Locator object",
+                                                  "stack": "Error: toHaveText can be only used with Locator object\n at x"}]}
+        status, observation, _ = testgen._classify(result, "", "", (set(), []))
+        self.assertEqual(status, "error")
+        self.assertTrue(observation.startswith("The test's own code threw"))
 
     @unittest.skipUnless(shutil.which("node"), "node is required")
     def test_a_reply_that_does_not_parse_leaves_the_file_as_it_was(self):

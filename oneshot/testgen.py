@@ -93,7 +93,8 @@ Reply with exactly one file block for that file and nothing else:
 FILE_BLOCK = re.compile(r"=== FILE:[ \t]*(.*?)[ \t]*===[ \t]*\r?\n(.*?)\r?\n=== END ===", re.S)
 TITLE = re.compile(r"""\btest(?:\.(?:skip|only|fixme))?\(\s*(['"`])((?:\\.|(?!\1).)*)\1""")
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
-OWN_ERROR = re.compile(r"^(?:ReferenceError|TypeError|SyntaxError|RangeError)\b")
+OWN_ERROR = re.compile(r"^(?:ReferenceError|TypeError|SyntaxError|RangeError)\b"
+                       r"|can be only used with (?:Locator|Page|APIResponse) object")
 CELL = re.compile(r"[A-Z]{1,3}[1-9][0-9]{0,5}")
 NAMED = re.compile(r"""getBy(?:Role\(\s*'[a-z]+'\s*,\s*\{\s*name:\s*|Label\(\s*|Text\(\s*|Placeholder\(\s*)'((?:\\.|[^'\\])*)'""")
 
@@ -370,6 +371,18 @@ OWN_BREAK = ("The test's own code threw", "The test used the name", "The test fi
 FIX_SHOWN = 12
 
 
+SKIPPING = re.compile(r"\btest\.(?:skip|only|fixme)\b|\btest\.describe\.(?:skip|only|fixme)\b")
+
+
+def faithful(before, after):
+    """Whether a rewritten file still measures what the written one did: every test id it had, no new skip, only or
+    fixme, and no fewer assertions. A rewrite that drops or weakens tests would turn errors into passes by deleting
+    the check, not by mending it."""
+    ids = lambda text: {_test_id(m.group(2))[0] for m in TITLE.finditer(text)}
+    return (ids(before) <= ids(after) and len(SKIPPING.findall(after)) <= len(SKIPPING.findall(before))
+            and after.count("expect(") >= before.count("expect("))
+
+
 def own_breaks(report):
     """File name -> the tests of the report that broke in the test file's own code (not blocked by a helper finding,
     not skipped): the ones only the test writer can mend."""
@@ -428,7 +441,7 @@ def fix_suite(text, suite, report, complete, workers=GROUP_WORKERS):
         if node and not _parses(node, path, fixed):
             return None
         titles = [m.group(2) for m in TITLE.finditer(fixed)]
-        if not titles:
+        if not titles or not faithful(body, fixed):
             return None
         path.write_text(fixed + "\n", encoding="utf-8")
         records[name]["tests"] = titles
@@ -572,7 +585,7 @@ def _classify(result, source_text, text, quoted):
     stack = ANSI.sub("", (errors[0].get("stack") if errors else "") or "")
     location = (errors[0].get("location") if errors else None) or None
     first = message.splitlines()[0] if message else f"the test ended {status}"
-    if OWN_ERROR.match(first) or OWN_ERROR.match(stack.strip()):
+    if OWN_ERROR.search(first) or OWN_ERROR.match(stack.strip()):
         return "error", "The test's own code threw: " + first[:300], location
     for name in NAMED.findall(message):
         name = name.replace("\\'", "'")
