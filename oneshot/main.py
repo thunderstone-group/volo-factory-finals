@@ -1509,7 +1509,15 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
 
 # A phrase in paired `backticks` (how the Lite requirements name controls: 56 of 81 names of one task never appear in
 # double quotes), or in straight or curly double quotes.
-QUOTED = re.compile(r'`([^`\n]{2,80})`|[\u201c"]([^\u201d"\n]{2,80})[\u201d"]')
+QUOTED = re.compile(r'`([^`\n]{1,80})`|[\u201c"]([^\u201d"\n]{1,80})[\u201d"]')
+
+
+def joined(text):
+    """The requirement text with its folded lines joined. YAML folds long descriptions, and a phrase broken across two
+    lines never matched: its closing quote paired with the next phrase's opening one, so the vocabulary held `, rows `
+    and `, and` while missing 11 of Sheet's quoted phrases (5 of its messages) and 12 of GitHub's (09-27). A quoted
+    single character (`/`) matches too, for the same reason, and is dropped by the length filters after it."""
+    return re.sub(r"[ \t]*\r?\n[ \t]*", " ", text or "")
 # What precedes a value the user types: "fills `Name` with `Item 4.3.1`", "enters `user@example.com`". The field
 # between fill and with stays in one clause; its quoted name may hold punctuation (`Write your text here...`).
 TYPED = re.compile(r"(?:(?<![\w-])fill(?:s|ed|ing)?\b(?:[^.;\n`\"]|`[^`\n]*`|\"[^\"\n]*\")*\bwith"
@@ -1526,7 +1534,7 @@ def runtime_values(requirements):
     """Lower-cased phrases that only backticks quote and that the user types somewhere: the suite supplies
     them at runtime, so the application's source need not contain them. A phrase the requirement also
     double-quotes (a seeded account the user types at login) stays required."""
-    text = requirements or ""
+    text = joined(requirements)
     typed, declared = set(), set()
     for match in QUOTED.finditer(text):
         if match.group(2) is not None:
@@ -1546,15 +1554,20 @@ def vocabulary_table(requirements):
     groups, order, seen = {}, [], set()
     current, name = None, None
     runtime = runtime_values(requirements)
+    chunks, lines_of = [], []
     for line in (requirements or "").splitlines():
         m = REQ_ID.match(line)
         if m:
-            current, name = m.group(1), None
+            chunks.append((current, name, lines_of))
+            current, name, lines_of = m.group(1), None, []
             continue
         n = REQ_NAME.match(line)
         if n and current and name is None:
             name = n.group(1)
-        for match in QUOTED.finditer(line):
+        lines_of.append(line)
+    chunks.append((current, name, lines_of))
+    for current, name, lines_of in chunks:
+        for match in QUOTED.finditer(joined("\n".join(lines_of))):
             phrase = _phrase(match)
             if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
                     or phrase.lower() in seen or phrase.lower() in runtime):
@@ -1657,7 +1670,7 @@ def quoted_control_phrases(requirements):
     """Quoted phrases whose requirement context names a control (button, field, tab, dialog...), short enough
     to be an accessible name and not a sentence or message. Original casing, first occurrence wins."""
     seen, phrases = set(), []
-    text_req = requirements or ""
+    text_req = joined(requirements)
     runtime = runtime_values(text_req)
     for match in QUOTED.finditer(text_req):
         phrase = _phrase(match)
@@ -1725,7 +1738,7 @@ def vocabulary_gaps(stage, requirements):
     messages, seed titles, accounts). Return the ones absent from the delivered source."""
     seen, phrases = set(), []
     runtime = runtime_values(requirements)
-    for match in QUOTED.finditer(requirements or ""):
+    for match in QUOTED.finditer(joined(requirements)):
         phrase = _phrase(match)
         if (len(phrase) < 2 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
                 or phrase.lower() in seen or phrase.lower() in runtime):
@@ -1797,7 +1810,7 @@ def _frontend_sources(stage):
 
 def _quoted_lower(requirements):
     """Every quoted phrase of the requirement, lower-cased and space-normalised."""
-    text = requirements or ""
+    text = joined(requirements)
     phrases = [_phrase(m) for m in QUOTED.finditer(text)]
     phrases += re.findall(r"`([^`\n]{1,80})`", text)
     return {re.sub(r"\s+", " ", phrase).strip().lower() for phrase in phrases}
@@ -2033,6 +2046,39 @@ def finish_suite(job, budget, wait=TESTGEN_WAIT):
     return job["dir"] if ready else None
 
 
+def mend_suite(stage, tests, state, requirements, scaffold, model, base, key, budget):
+    """The written tests that broke in their own code on their first run over a working application go back to the
+    writer once (testgen.fix_suite), and the suite runs again. Their calls join the run's ledger as `tests` side
+    calls; the log line says how many broken tests the rewrite left."""
+    testgen = _testgen_module()
+    broken = testgen.own_breaks(state["report"])
+    if not broken:
+        return state
+    budgets, started = [], time.monotonic()
+
+    def complete(messages):
+        own = CallBudget(draft_limit=1, repair_limit=0)
+        budgets.append(own)
+        return stream_completion(messages, model, base, key, own, tries=3)
+    budget.progress("mending_tests", force=True)
+    fixed = testgen.fix_suite(requirements or "", tests, state["report"], complete)
+    records = [record for own in budgets for record in own.attempts]
+    for number, record in enumerate(records, 1):
+        budget.side_calls.append({**record, "phase": "tests", "call": f"tests-fix-{number}",
+                                  "cost_cny": round(call_cost(record), 6)})
+    summary = {"broken": sum(len(v) for v in broken.values()), "files": fixed, "calls": len(records),
+               "cost_cny": round(sum(call_cost(r) for r in records), 6),
+               "counts_before": (scenario_summary(state["report"]) or {}).get("counts")}
+    if fixed:
+        state = assess(stage, requirements, scaffold, tests=tests)
+        summary["broken_after"] = sum(len(v) for v in testgen.own_breaks(state["report"]).values())
+        summary["counts_after"] = (scenario_summary(state["report"]) or {}).get("counts")
+    summary["seconds"] = round(time.monotonic() - started, 1)
+    budget.suite = dict(budget.suite or {}, mended=summary)
+    print("[oneshot] suite mend " + json.dumps(summary), file=sys.stderr)
+    return state
+
+
 def _suite(tests):
     """The keyword a check call carries only when a written suite exists (the scenario check's call is unchanged)."""
     return {"tests": tests} if tests is not None else {}
@@ -2159,21 +2205,39 @@ def dependency_order(failing, depths):
     return [entry for _, entry in sorted(enumerate(failing), key=key)]
 
 
-def repair_request(state, discarded=None, unapplied=(), depths=None):
+def failure_groups(state, depths):
+    """The failing written tests as repair targets, in dependency order: one group per requirement, and one per helper
+    finding (it stands for the tests it blocks). Each group is (key, ids)."""
+    groups = {}
+    for entry in dependency_order(_scenarios(state, "fail"), depths or {}):
+        key = entry["id"] if entry["id"].startswith("helper:") else entry["id"].split("#")[0]
+        groups.setdefault(key, []).append(entry["id"])
+    return list(groups.items())
+
+
+def repair_request(state, discarded=None, unapplied=(), depths=None, focus=None):
     """The repair message: what breaks the application as a whole, else the failing scenarios with what the check did
     and saw, the passing scenarios to keep, and the other findings as hints. Hunks of the last kept change that did
-    not apply are named with the current lines they missed."""
+    not apply are named with the current lines they missed. With `focus` (failing test ids), only those are listed and
+    the round is asked to fix just them."""
     sections = []
     if unapplied:
         sections.append("Your previous change was kept, but these EDIT hunks did not apply (the file is as shown, "
                         "copy SEARCH lines from it exactly):\n" + "\n".join("- " + h[:1500] for h in unapplied[:6]))
     if discarded:
         sections.append("Your previous change was discarded and the application is back to the version before it, "
-                        f"because {discarded}. Fix the same findings a different way.")
+                        f"because {discarded}." + (" This round, leave the findings it aimed at aside." if focus else
+                                                   " Fix the same findings a different way."))
     if state["fatal"]:
         sections.append("It is broken as a whole, so no scenario can pass:\n" + "\n".join("- " + p for p in state["fatal"]))
     failing = _scenarios(state, "fail")
     written = (state["report"] or {}).get("kind") == "testgen"
+    if failing and written and focus:
+        others = len(failing) - len([s for s in failing if s["id"] in focus])
+        failing = [s for s in failing if s["id"] in focus] or failing
+        sections.append(f"Work on one finding at a time: this round, make only the {len(failing)} test(s) below pass "
+                        f"with the smallest change that does it, and change nothing else ({others} other failing "
+                        f"test(s) wait for later rounds).")
     if failing and written:
         shown = dependency_order(failing, depths or {})[:TESTGEN_SHOWN]
         lines = [f"- {s['id']} {s.get('name') or ''}\n  error: {(s.get('observation') or '').strip()[:900]}"
@@ -2270,7 +2334,9 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         return False, "the scenario recheck could not run: " + str(why)[:300], detail
     old, new = _status_map(before), _status_map(after)
     written = (after["report"] or {}).get("kind") == "testgen"
-    lost = {sid for sid, status in old.items() if status == "pass" and new.get(sid) in ("fail", "error")}
+    # A passing test the changed run never reached (its time ran out) is lost too: the evaluator's time runs out the
+    # same way.
+    lost = {sid for sid, status in old.items() if status == "pass" and new.get(sid) in ("fail", "error", "unrun")}
     # A written test blocked by a shared helper line is an `error` that stands for an application defect (the helper
     # finding carries the verdict); once the defect is fixed the blocked tests pass. Counting only fail -> pass left
     # such a fix at zero gain (a GitHub replay went from 25 to 32 passing tests and was credited with 4).
@@ -2283,6 +2349,17 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
             account_translation(budget, recheck)
         again = {s["id"]: s.get("status") for s in recheck.get("scenarios", [])}
         flaky = sorted(sid for sid in lost if again.get(sid) == "pass")
+        if flaky and written:
+            # Passing alone is not passing in order: the evaluator runs every test in order on one application that is
+            # never reset, and a recheck of just these tests starts a fresh one. A lost test is flaky only when it also
+            # passes in a whole run in order (09-27 review: a change that broke B through state left by earlier tests
+            # was kept as "B flaky").
+            whole = check_scenarios(stage, requirements, translate=translate, **_suite(tests))
+            if budget is not None:
+                account_translation(budget, whole)
+            in_order = _status_map({"report": whole})
+            detail["order_recheck"] = {sid: in_order.get(sid) for sid in flaky}
+            flaky = [sid for sid in flaky if in_order.get(sid) == "pass"]
         doubtful = sorted(sid for sid in gained & unsure if again.get(sid) != "pass")
         if flaky:
             detail["flaky"] = flaky
@@ -2339,6 +2416,32 @@ FOLLOW_SYNTAX = ("Your change was applied, but a script no longer parses: {probl
                  "block (copy the SEARCH lines exactly from the current file). Emit nothing else.")
 
 
+FOLLOW_REGRESSION = ("Your change made {gained} failing test(s) pass but broke {lost} that passed before:\n{details}\n\n"
+                     "Keep what the change fixed and make these pass again with EDIT blocks against the files as they "
+                     "are now (copy SEARCH lines exactly). Emit nothing else.")
+
+
+def _lost_details(after, lost, shown=8):
+    """The tests a change broke, as the check after it saw them: the error, the test code, and the helper finding
+    for a test that now stops at a shared helper line."""
+    entries = {s["id"]: s for s in (after["report"] or {}).get("scenarios", [])}
+    helpers = [s for s in entries.values() if s["id"].startswith("helper:")]
+    lines = []
+    for sid in sorted(lost)[:shown]:
+        entry = entries.get(sid) or {}
+        observation = (entry.get("observation") or "").strip()
+        helper = next((h for h in helpers if sid in (h.get("blocks") or [])), None)
+        if helper:
+            entry, observation = helper, f"stops at {helper['id']}: " + (helper.get("observation") or "").strip()
+        text = f"- {sid} {entry.get('name') or ''}\n  error: {observation[:700]}"
+        if entry.get("source"):
+            text += "\n  test code:\n" + "\n".join("    " + line for line in entry["source"].splitlines()[:40])
+        lines.append(text)
+    if len(lost) > shown:
+        lines.append(f"(and {len(lost) - shown} more)")
+    return "\n".join(lines)
+
+
 def _follow_up(messages, ask, model, base, key, budget, record, kind):
     """One more call inside a repair round, for a change that could not be applied or left a script that does not
     parse. Returns the two new messages; the round's record notes it. Obeys the repair limits."""
@@ -2390,14 +2493,41 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     rounds, conversation, discarded, unapplied = [], list(messages), None, []
     quoted = {phrase.lower() for phrase in quoted_control_phrases(requirements)}
     depths = _testgen_module().depths(requirements or "") if tests is not None else {}
+    mended = [False]
+
+    def mend(state):
+        # Once, on the first report over an application that works (the draft, or the round that revived it).
+        if mended[0] or tests is None or state["fatal"] or not (state["report"] or {}).get("scenarios"):
+            return state
+        mended[0] = True
+        try:
+            return mend_suite(stage, tests, state, requirements, scaffold, model, base, key, budget)
+        except Exception as exc:  # the tests are an aid: a failed mend leaves them as they were
+            print(f"[oneshot] suite mend failed: {type(exc).__name__}: {str(exc)[:200]}", file=sys.stderr)
+            return state
+    state = mend(state)
+    # After a discarded round the next ones each take one failing requirement (or helper finding), in dependency
+    # order, until one is kept (09-27: of 118 discarded rounds in 15 official runs, 51 broke passing tests and 47
+    # fixed none; every loop stopped at four discards in a row with most of its call and spend limits unused).
+    narrow, tried = False, set()
     while state["fatal"] or _scenarios(state, "fail"):
-        ask = repair_request(state, discarded, unapplied, depths)
+        focus = None
+        untried = []
+        if tests is not None and not state["fatal"]:
+            untried = [(key, ids) for key, ids in failure_groups(state, depths) if key not in tried]
+            if narrow and untried:
+                key, ids = untried[0]
+                focus = set(ids)
+        ask = repair_request(state, discarded, unapplied, depths, focus)
         stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
         # Only rounds the model answered count: a transport failure (run 95ec6880ee7f lost a round to "model HTTP 400")
         # says nothing about the repairs, and the global failure limit already bounds those.
         answered = [r for r in rounds if r.get("replied", True)]
-        if stop is None and len(answered) >= REPAIR_REJECTIONS and not any(r["accepted"] for r in answered[-REPAIR_REJECTIONS:]):
+        if (stop is None and len(answered) >= REPAIR_REJECTIONS and not focus
+                and not any(r["accepted"] for r in answered[-REPAIR_REJECTIONS:])):
             stop = f"{REPAIR_REJECTIONS} repairs in a row were discarded"
+        if focus:
+            tried.add(key)
         if stop is None and time.monotonic() - started_repairs > REPAIR_SECONDS:
             stop = f"the repair time limit was reached ({REPAIR_SECONDS} s)"
         if stop:
@@ -2413,6 +2543,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         record = {"round": len(rounds) + 1, "fatal": len(state["fatal"]),
                   "failing": [s["id"] for s in _scenarios(state, "fail")], "passing_before": len(passing(state)),
                   "accepted": False}
+        if focus:
+            record["focus"] = sorted(focus)
         calls, started, replied, after = len(budget.attempts), time.monotonic(), False, None
         exchange = [{"role": "user", "content": ask}]
         try:
@@ -2461,6 +2593,38 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             after = assess(stage, requirements, scaffold, translate, tests=tests)
             account_translation(budget, after["report"])
             accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget, tests)
+            record.update(detail)
+            if (not accepted and tests is not None and detail.get("lost") and detail.get("gained")
+                    and not detail.get("checker")):
+                # It fixed some and broke others: one follow-up in the same round names what broke, keeping the fix
+                # (51 of 118 discarded rounds in 15 official runs were this; each was thrown away whole).
+                record["first_try"] = {"reason": reason, "gained": len(detail["gained"]), "lost": len(detail["lost"])}
+                ask_back = FOLLOW_REGRESSION.format(gained=len(detail["gained"]), lost=len(detail["lost"]),
+                                                    details=_lost_details(after, detail["lost"]))
+                if budget.repair_stop(conversation + exchange + [{"role": "user", "content": ask_back}], model):
+                    raise ValueError(reason)  # no call left for it: the round stands as judged
+                follow = _follow_up(conversation + exchange, ask_back, model, base, key, budget, record, "regression")
+                exchange += follow
+                extra, missing, more = parse_repair(follow[-1]["content"], stage)
+                if missing or record.get("follow_up_finish") == "length":
+                    raise ValueError("the repair output was truncated; change large files with EDIT blocks")
+                if not extra:
+                    raise ValueError(reason)
+                _write_repair(stage, extra, template)
+                skipped += more
+                batch = [b for b in batch if b["path"] not in {e["path"] for e in extra}] + extra
+                broken = []
+                if node:
+                    _check_syntax(stage, node, broken)
+                if broken:
+                    raise ValueError("after the follow-up a script does not parse: " + "; ".join(broken)[:600])
+                needed = missing_required(stage)
+                if needed:
+                    raise ValueError("the repair broke delivery: " + "; ".join(needed))
+                after = assess(stage, requirements, scaffold, translate, tests=tests)
+                for name in detail:
+                    record.pop(name, None)  # the first try's verdict lives on in first_try
+                accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget, tests)
             record.update(detail, reason=reason, scenarios=scenario_summary(after["report"]))
             if after["browser"]:
                 record["browser_after"] = after["browser"]
@@ -2470,8 +2634,11 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 files[:] = [f for f in files if f["path"] != item["path"]] + [item]
             conversation += exchange
             state, discarded, unapplied = after, None, skipped
+            narrow = False
+            tried.clear()
             record.update(accepted=True, files=[item["path"] for item in batch])
             shutil.rmtree(backup, ignore_errors=True)
+            state = mend(state)
         except Exception as exc:
             # Keep the version before this repair: a half-applied fix could be worse than the known state.
             _swap_back(stage, backup)
@@ -2480,7 +2647,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             # The model hears why its change was discarded; not a transport failure or a checker that could not run.
             if replied and not record.get("checker"):
                 # A missed SEARCH carries the current lines it missed; the model needs them whole to copy from.
-                discarded = str(exc)[:2000] + _still_failing(after, record["failing"])
+                discarded = str(exc)[:2000] + _still_failing(after, record.get("focus") or record["failing"])
+                narrow = tests is not None
         finally:
             record["replied"] = replied
             record["seconds"] = round(time.monotonic() - started, 1)

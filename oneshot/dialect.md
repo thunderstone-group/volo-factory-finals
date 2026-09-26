@@ -51,6 +51,8 @@ a scenario title, GIVEN state reached by dependencies, or THEN result. Operation
 delete, pin and favorite must create their own results through the UI. Keep distinct named fixtures
 distinct. Use the supplied initial text exactly. Leave optional record bodies empty when no content is
 specified; do not turn scenario descriptions or action instructions into stored user content.
+Every seeded account signs in with the password the requirements give; an account they name without
+one uses the seed password they do state, never an invented one.
 ## 6a. Do not invent an authentication prerequisite
 Keep the content, actions and dashboard lists needed by a public browsing journey available without
 an extra login step. A seeded verified account does not itself make every list private. Authentication

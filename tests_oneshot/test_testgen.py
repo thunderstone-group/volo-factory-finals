@@ -457,6 +457,81 @@ class RepairLoopCase(unittest.TestCase):
         self.assertIn("was not applied", sent[1])
         self.assertEqual((self.stage / "frontend/build.js").read_text().strip(), "// fixed")
 
+    def test_a_repair_that_fixes_some_and_breaks_others_gets_one_follow_up_that_can_save_it(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-8": "pass", "REQ-9": "pass"})
+        broke = self.report({"REQ-1": "pass", "REQ-2": "fail", "REQ-8": "pass", "REQ-9": "fail"})
+        mended = self.report({"REQ-1": "pass", "REQ-2": "fail", "REQ-8": "pass", "REQ-9": "pass"})
+        sent, budget, _ = self.run_loop([before, broke, broke, mended, mended], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// step one"),
+            self.edit("frontend/build.js", "// step one", "// step two")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertEqual(record["follow_up"], "regression")
+        self.assertEqual(record["first_try"]["lost"], 1)
+        self.assertIn("broke 1 that passed before", sent[1])
+        self.assertIn("- REQ-9 ", sent[1])
+        self.assertEqual((self.stage / "frontend/build.js").read_text().strip(), "// step two")
+
+    def test_after_a_discard_each_round_takes_one_failing_requirement_until_every_one_had_a_round(self):
+        before = self.report({f"REQ-{i}": "fail" for i in range(1, 7)} | {"REQ-9": "pass"})
+        replies = [self.edit("frontend/build.js", "// Synthetic build fixture", "// same") for _ in range(8)]
+        sent, budget, _ = self.run_loop([before] * 9, replies)
+        rounds = budget.smoke["rounds"]
+        self.assertEqual(len(rounds), 7, [r.get("reason") for r in rounds])
+        self.assertNotIn("focus", rounds[0])
+        self.assertEqual([r["focus"] for r in rounds[1:]], [[f"REQ-{i}"] for i in range(1, 7)])
+        self.assertIn("make only the 1 test(s) below pass", sent[1])
+        self.assertIn("- REQ-1 ", sent[1])
+        self.assertNotIn("- REQ-2 ", sent[1])
+        self.assertEqual(budget.smoke["stopped"], f"{self.adapter.REPAIR_REJECTIONS} repairs in a row were discarded")
+
+    def test_a_kept_round_after_a_focused_one_goes_back_to_the_whole_list(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
+        fixed = self.report({"REQ-1": "pass", "REQ-2": "fail", "REQ-9": "pass"})
+        sent, budget, _ = self.run_loop([before, before, fixed, fixed, fixed], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// same"),
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// one"),
+            self.edit("frontend/build.js", "// one", "// two")])
+        rounds = budget.smoke["rounds"]
+        self.assertFalse(rounds[0]["accepted"])
+        self.assertEqual(rounds[1]["focus"], ["REQ-1"])
+        self.assertTrue(rounds[1]["accepted"], rounds[1])
+        self.assertNotIn("focus", rounds[2])
+        self.assertNotIn("Work on one finding at a time", sent[2])
+
+    def test_a_lost_test_that_passes_alone_but_fails_in_order_stays_lost(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-8": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "fail", "REQ-8": "fail"})
+        alone = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-8": "pass"})
+        in_order = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "fail", "REQ-8": "fail"})
+        _, budget, _ = self.run_loop([before, after, alone, in_order], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// one")])
+        record = budget.smoke["rounds"][0]
+        self.assertFalse(record["accepted"], record)
+        self.assertIn("broke 1 passing scenario(s): REQ-8", record["reason"])
+        self.assertEqual(record["order_recheck"], {"REQ-8": "fail"})
+
+    def test_a_lost_test_that_passes_alone_and_in_order_is_flaky(self):
+        before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-8": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "fail", "REQ-8": "fail"})
+        alone = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-8": "pass"})
+        in_order = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-3": "fail", "REQ-8": "pass"})
+        _, budget, _ = self.run_loop([before, after, alone, in_order], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// one")])
+        record = budget.smoke["rounds"][0]
+        self.assertTrue(record["accepted"], record)
+        self.assertEqual(record["flaky"], ["REQ-8"])
+
+    def test_a_passing_test_the_changed_run_never_reached_is_lost(self):
+        before = self.report({"REQ-1": "fail", "REQ-8": "pass"})
+        after = self.report({"REQ-1": "pass", "REQ-8": "error"})
+        after["scenarios"][1]["observation"] = "Not run: the suite was stopped at its 900 s limit"
+        _, budget, _ = self.run_loop([before, after, after], [
+            self.edit("frontend/build.js", "// Synthetic build fixture", "// one")])
+        record = budget.smoke["rounds"][0]
+        self.assertFalse(record["accepted"], record)
+        self.assertIn("REQ-8", record["reason"])
+
     def test_a_repair_that_only_gains_is_kept(self):
         from tests_oneshot.test_oneshot import block
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-3": "fail", "REQ-4": "pass"})
@@ -612,3 +687,138 @@ class SecondLookCase(unittest.TestCase):
         budget, calls, started, suites = self.run_look(stop="repair call limit reached (24)")
         self.assertFalse(started.called)
         self.assertEqual(calls, [])
+
+
+SLIPS = r"""const { test, expect } = require('@playwright/test');
+async function cell(page, name) {
+  return page.getByRole('button', { name, exact: true });
+}
+async function press(name) {
+  await page.getByRole('button', { name, exact: true }).click();
+}
+const pattern = /[{'"`]/;
+test('REQ-1-1: Add one', async ({ page }) => {
+  await page.goto('/');
+  await cell(page, 'Add note').scrollIntoViewIfNeeded();
+  await press('Add note');
+  await expect(page.getByText('Added', { exact: true })).toBeVisible();
+});
+"""
+
+
+class HardenCase(unittest.TestCase):
+    def test_an_async_function_that_never_awaits_loses_async_and_one_that_awaits_keeps_it(self):
+        out = testgen._needless_async(SLIPS)
+        self.assertIn("\nfunction cell(page, name) {", out)
+        self.assertIn("async function press(name) {", out)
+        self.assertIn("async ({ page }) => {", out)  # the test body awaits
+        arrow = "const f = async (x) => { return x.locator('a{'); };\nconst g = async (y) => { await y; };\n"
+        self.assertEqual(testgen._needless_async(arrow),
+                         "const f = (x) => { return x.locator('a{'); };\nconst g = async (y) => { await y; };\n")
+
+    def test_the_page_shim_is_added_once_and_a_rewrite_that_does_not_parse_is_dropped(self):
+        once = testgen.harden(SLIPS)
+        self.assertEqual(once.count("globalThis.page = page"), 1)
+        self.assertEqual(testgen.harden(once).count("globalThis.page = page"), 1)
+        kept = testgen.harden(SLIPS, check=lambda text: False)
+        self.assertIn("async function cell(page, name)", kept)  # the rewrite was refused, the shim stays
+        self.assertIn("globalThis.page = page", kept)
+
+    @unittest.skipUnless(shutil.which("node") and shutil.which("npm"), "node and npm are required")
+    def test_a_hardened_file_runs_where_the_written_one_broke_in_its_own_code(self):
+        env = dict(os.environ)
+        cli, why = testgen.ensure_runner(env)
+        if not cli:
+            self.skipTest("the Playwright test runner is unavailable: " + why)
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            app = root / "app"
+            (app / "backend").mkdir(parents=True)
+            (app / "frontend").mkdir()
+            (app / "backend" / "server.js").write_text(APP_SERVER)
+            (app / "backend" / "package.json").write_text('{"scripts": {"start": "node server.js"}}')
+            suite = root / "suite"
+            suite.mkdir()
+            (suite / "t01-REQ-1.spec.cjs").write_text(SLIPS)
+            (suite / "suite.json").write_text(json.dumps({"files": [{"file": "t01-REQ-1.spec.cjs",
+                                                                     "tests": ["REQ-1-1: Add one"]}]}))
+            before = testgen.run_suite(app, suite, REQUIREMENTS)
+            self.assertEqual(before["scenarios"][0]["status"], "error", before)
+            self.assertTrue(before["scenarios"][0]["observation"].startswith("The test's own code threw"))
+            path = suite / "t01-REQ-1.spec.cjs"
+            path.write_text(testgen.harden(SLIPS, lambda t: testgen._parses(shutil.which("node"), path, t)))
+            after = testgen.run_suite(app, suite, REQUIREMENTS)
+            self.assertEqual(after["scenarios"][0]["status"], "pass", after)
+
+
+class FixSuiteCase(unittest.TestCase):
+    def suite(self, temp, body):
+        suite = Path(temp)
+        (suite / "t01-REQ-1.spec.cjs").write_text(body)
+        (suite / "suite.json").write_text(json.dumps({"files": [{"file": "t01-REQ-1.spec.cjs", "tests": [
+            "REQ-1-1: Add one", "REQ-1-2: Edit one"]}], "tests": 2, "prerequisites": ""}))
+        return suite
+
+    REPORT = {"kind": "testgen", "scenarios": [
+        {"id": "REQ-1-1", "status": "error", "file": "t01-REQ-1.spec.cjs", "at": "t01-REQ-1.spec.cjs:2",
+         "observation": "The test's own code threw: ReferenceError: grid is not defined"},
+        {"id": "REQ-1-2", "status": "error", "file": "t01-REQ-1.spec.cjs",
+         "observation": "Blocked by helper:t01-REQ-1.spec.cjs:9 (shared with 1 other test(s))."}]}
+
+    def test_only_tests_broken_in_their_own_code_go_back_and_the_reply_replaces_the_file(self):
+        self.assertEqual({k: [e["id"] for e in v] for k, v in testgen.own_breaks(self.REPORT).items()},
+                         {"t01-REQ-1.spec.cjs": ["REQ-1-1"]})
+        body = "const { test } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => { grid; });\n"
+        fixed = ("const { test } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => {});\n"
+                 "test('REQ-1-2: Edit one', async () => {});\n")
+        seen = []
+
+        def complete(messages):
+            seen.append(messages)
+            return f"=== FILE: t01-REQ-1.spec.cjs ===\n{fixed}=== END ===", {}, "stop"
+        with tempfile.TemporaryDirectory() as temp:
+            suite = self.suite(temp, body)
+            self.assertEqual(testgen.fix_suite(REQUIREMENTS, suite, self.REPORT, complete), ["t01-REQ-1.spec.cjs"])
+            self.assertEqual(len(seen), 1)
+            self.assertEqual(seen[0][-2]["role"], "assistant")  # the file as written is the writer's own reply
+            self.assertIn("REQ-1-1: The test's own code threw: ReferenceError: grid is not defined", seen[0][-1]["content"])
+            self.assertIn("at line 2: test('REQ-1-1: Add one'", seen[0][-1]["content"])
+            self.assertNotIn("REQ-1-2:", seen[0][-1]["content"].split("=== FILE")[0])
+            written = (suite / "t01-REQ-1.spec.cjs").read_text()
+            self.assertIn("test('REQ-1-2: Edit one'", written)
+            self.assertIn("globalThis.page = page", written)
+            self.assertEqual(json.loads((suite / "suite.json").read_text())["files"][0]["fixed"], 1)
+
+    def test_a_rewrite_that_drops_a_test_skips_one_or_loses_an_assertion_leaves_the_file(self):
+        body = ("const { test, expect } = require('@playwright/test');\n"
+                "test('REQ-1-1: Add one', async ({ page }) => { grid; await expect(page).toHaveTitle('x'); });\n"
+                "test('REQ-1-2: Edit one', async ({ page }) => { await expect(page).toHaveTitle('y'); });\n")
+        replies = {
+            "dropped": "const { test, expect } = require('@playwright/test');\n"
+                       "test('REQ-1-1: Add one', async ({ page }) => { await expect(page).toHaveTitle('x'); });\n",
+            "skipped": body.replace("grid; ", "").replace("test('REQ-1-2", "test.skip('REQ-1-2"),
+            "weaker": body.replace("grid; await expect(page).toHaveTitle('x');", ""),
+        }
+        for kind, fixed in replies.items():
+            with self.subTest(kind), tempfile.TemporaryDirectory() as temp:
+                suite = self.suite(temp, body)
+                reply = f"=== FILE: t01-REQ-1.spec.cjs ===\n{fixed}=== END ==="
+                self.assertEqual(testgen.fix_suite(REQUIREMENTS, suite, self.REPORT, lambda m: (reply, {}, "stop")), [])
+                self.assertEqual((suite / "t01-REQ-1.spec.cjs").read_text(), body)
+        self.assertTrue(testgen.faithful(body, body.replace("grid; ", "")))
+
+    def test_an_expect_on_something_other_than_a_locator_is_the_tests_own_error(self):
+        result = {"status": "failed", "errors": [{"message": "Error: toHaveText can be only used with Locator object",
+                                                  "stack": "Error: toHaveText can be only used with Locator object\n at x"}]}
+        status, observation, _ = testgen._classify(result, "", "", (set(), []))
+        self.assertEqual(status, "error")
+        self.assertTrue(observation.startswith("The test's own code threw"))
+
+    @unittest.skipUnless(shutil.which("node"), "node is required")
+    def test_a_reply_that_does_not_parse_leaves_the_file_as_it_was(self):
+        body = "const { test } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => { grid; });\n"
+        with tempfile.TemporaryDirectory() as temp:
+            suite = self.suite(temp, body)
+            reply = "=== FILE: t01-REQ-1.spec.cjs ===\ntest('REQ-1-1: Add one', async () => { `x ${ });\n=== END ==="
+            self.assertEqual(testgen.fix_suite(REQUIREMENTS, suite, self.REPORT, lambda m: (reply, {}, "stop")), [])
+            self.assertEqual((suite / "t01-REQ-1.spec.cjs").read_text(), body)

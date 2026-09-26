@@ -495,6 +495,19 @@ class OfflineCase(unittest.TestCase):
         self.assertIn('"Save Shelf"', gaps[0])
         self.assertNotIn("Shelf Created 1", gaps[0])
 
+    def test_a_phrase_folded_across_lines_is_vocabulary_and_a_quoted_single_character_shifts_no_pairing(self):
+        # YAML folds long descriptions: a quoted message broken across two lines was missed and its closing quote
+        # paired with the next opening one (`, rows `, `, and` in the Sheet vocabulary, 09-27).
+        req = ("- id: REQ-2\n  name: Rename a worksheet\n"
+               "  description: An empty name shows `Worksheet name\n    cannot be empty`, and the path must not start "
+               "with `/`, contain `..`, or end\n    with `.lock`; the button is named `Rename`.\n")
+        table = adapter.vocabulary_table(req)
+        self.assertIn("“Worksheet name cannot be empty”", table)
+        self.assertIn("“Rename”", table)
+        self.assertNotIn("“, ", table)
+        self.assertNotIn("“/”", table)
+        self.assertIn("Rename", adapter.quoted_control_phrases(req))
+
     def test_the_draft_allowance_bounds_continuations(self):
         budget = adapter.CallBudget(draft_limit=1)
         prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
