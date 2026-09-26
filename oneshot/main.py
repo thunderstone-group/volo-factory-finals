@@ -56,7 +56,7 @@ TESTGEN = os.environ.get("ONESHOT_TESTGEN", "1") == "1"  # requirement-written t
 # When the repairs stop, a second suite written afresh drives more (roadmap 4.23): at the stop the first suite had one
 # or two failing tests left while 11-18 of its tests could not judge the application, and hidden scores sat 1-10 under
 # it; a second suite found 10-12 new failures on two stopped Sheet apps, in the blocks the first could not judge.
-SECOND_SUITE = os.environ.get("ONESHOT_SECOND_SUITE", "1") == "1"
+SECOND_SUITE = os.environ.get("ONESHOT_SECOND_SUITE", "0") == "1"  # off (roadmap 4.23): its ~CNY 16 costs ~3 S points
 TESTGEN_WAIT = 3600  # seconds the repair phase waits for the suite once the draft is in: platform suites took 1206-1970 s
 # against drafts of 10-17 min, and a local run on 09-25 22:15 (six cut streams, two HTTP 400) missed a 1200 s wait and
 # shipped the bare draft with no repair at all; waiting costs time only
