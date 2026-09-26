@@ -60,9 +60,6 @@ SECOND_SUITE = os.environ.get("ONESHOT_SECOND_SUITE", "0") == "1"  # off (roadma
 TESTGEN_WAIT = 3600  # seconds the repair phase waits for the suite once the draft is in: platform suites took 1206-1970 s
 # against drafts of 10-17 min, and a local run on 09-25 22:15 (six cut streams, two HTTP 400) missed a 1200 s wait and
 # shipped the bare draft with no repair at all; waiting costs time only
-# `reasoning_effort` for the test writer's calls; empty sends none (the provider's default, which reasons at length:
-# nine tenths of a suite's output tokens are reasoning). `low` cut one probe's reasoning 2664 -> 168 tokens.
-TEST_EFFORT = os.environ.get("ONESHOT_TEST_EFFORT", "")
 TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
 # Load failures only the jsdom probe reports: jsdom lacks APIs a browser has (ResizeObserver, canvas), so a
 # Chromium scenario run decides whether the application is really broken as a whole.
@@ -358,7 +355,7 @@ def fallback_model(budget, model):
     return KIMI_FALLBACK_MODEL if model in KIMI_CODE_MODELS else FALLBACK_MODEL
 
 
-def stream_completion(messages, model, base, key, budget, tries=3, salvage=None, effort=None):
+def stream_completion(messages, model, base, key, budget, tries=3, salvage=None):
     """Buffer each attempt separately; a failed attempt's text is discarded. The primary model is
     retried `tries` times on transport failures; when those are spent the run switches to its
     fallback model for this and every later call (a cut route rarely heals within one run), with
@@ -372,8 +369,6 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None,
                "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
     if model in KIMI_CODE_MODELS:
         payload["temperature"] = 1.0  # Fixed by the provider; other values are rejected.
-    elif effort:
-        payload["reasoning_effort"] = effort
     req = request.Request(base.rstrip("/") + "/chat/completions",
                           data=json.dumps(payload).encode("utf-8"),
                           headers={"Content-Type": "application/json",
@@ -2013,7 +2008,7 @@ def start_suite(requirements, directory, model, base, key, prerequisites=""):
         # across eight parallel files stopped three of them).
         own = CallBudget(draft_limit=1, repair_limit=0)
         job["budgets"].append(own)
-        return stream_completion(messages, model, base, key, own, tries=3, effort=TEST_EFFORT)
+        return stream_completion(messages, model, base, key, own, tries=3)
 
     def work():
         try:
@@ -2064,7 +2059,7 @@ def mend_suite(stage, tests, state, requirements, scaffold, model, base, key, bu
     def complete(messages):
         own = CallBudget(draft_limit=1, repair_limit=0)
         budgets.append(own)
-        return stream_completion(messages, model, base, key, own, tries=3, effort=TEST_EFFORT)
+        return stream_completion(messages, model, base, key, own, tries=3)
     budget.progress("mending_tests", force=True)
     fixed = testgen.fix_suite(requirements or "", tests, state["report"], complete)
     records = [record for own in budgets for record in own.attempts]

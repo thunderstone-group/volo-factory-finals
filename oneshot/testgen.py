@@ -840,7 +840,7 @@ def _cli_complete(model, base, key):
     def complete(messages):
         own = oneshot.CallBudget(draft_limit=1)
         budgets.append(own)
-        return oneshot.stream_completion(messages, model, base, key, own, tries=3, effort=oneshot.TEST_EFFORT)
+        return oneshot.stream_completion(messages, model, base, key, own, tries=3)
     complete.budgets = budgets
     return complete
 
