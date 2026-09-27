@@ -72,6 +72,14 @@ PRICES = {"deepseek-v4-flash": (3.0, 0.1, 9.0), "kimi-k2.7-code-highspeed": (13.
 RETRY_WAIT = (5, 30)
 MAX_FAILURES = 5  # Transport failures (cut streams, 5xx) counted separately so a cut cannot eat the continuation:
 #                 three on the primary model, then up to two on the fallback.
+# A gateway that refuses a request before generating anything (HTTP 401, 403, 429) is waited out instead of counted:
+# on 09-27 the gateway answered 401 for a few minutes, five repair rounds failed in the same second, the failure limit
+# stopped the loop and one Sheet run shipped a draft that passed 8 written tests (hidden 1/100). Nothing is billed for
+# a refusal, and switching models does not help an account-wide refusal. One call waits at most REFUSAL_WAIT_TOTAL
+# seconds in all, then the refusal counts as an ordinary failure.
+REFUSED = (401, 403, 429)
+REFUSAL_WAIT = (15, 30, 60, 120, 240)
+REFUSAL_WAIT_TOTAL = 1200
 MAX_TEMPLATE_BYTES = 2 * 1024 * 1024
 SCAFFOLD = os.environ.get("ONESHOT_SCAFFOLD", "1") != "0"  # place oneshot/scaffold in the stage before a fresh generation and show it in the prompt
 SCAFFOLD_DIR = HERE / "scaffold"
@@ -281,7 +289,12 @@ class CallBudget:
         return [r for r in self.attempts if r["status"] == "completed" and phase in (None, r["phase"])]
 
     def failed(self):
-        return [r for r in self.attempts if r["status"] != "completed"]
+        """Attempts that count toward the failure limit: everything but completed calls and refusals that were
+        waited out (a refusal generates and bills nothing)."""
+        return [r for r in self.attempts if r["status"] not in ("completed", "refused")]
+
+    def refused(self):
+        return [r for r in self.attempts if r["status"] == "refused"]
 
     def exhausted(self):
         """No completed call left in the current phase, or no transport failure left in the run."""
@@ -326,7 +339,8 @@ class CallBudget:
     def summary(self):
         result = {"calls": len(self.attempts), "draft_call_limit": self.limits["draft"],
                   "repair_call_limit": self.limits["repair"], "completed_calls": len(self.completed()),
-                  "failed_calls": len(self.failed()), "failure_limit": self.fail_limit}
+                  "failed_calls": len(self.failed()), "failure_limit": self.fail_limit,
+                  "refused_calls": len(self.refused())}
         unknown = [r["call"] for r in self.attempts
                    if any(field not in r["usage"] for field in TOKEN_FIELDS)]
         for field in TOKEN_FIELDS:
@@ -373,7 +387,8 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None)
                           data=json.dumps(payload).encode("utf-8"),
                           headers={"Content-Type": "application/json",
                                    "Authorization": "Bearer " + key}, method="POST")
-    for attempt in range(tries):
+    attempt, refusals, refusal_waited = 0, 0, 0
+    while attempt < tries:
         record = budget.start(messages, model)
         record["request_sha256"] = hashlib.sha256(req.data).hexdigest()
         observed = {"received_bytes": 0, "sse_events": 0, "content_chars": 0, "reasoning_chars": 0}
@@ -445,6 +460,15 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None)
             record["elapsed_seconds"] = round(time.monotonic() - started, 3)
             budget.progress("completed" if record["status"] == "completed" else "call_failed",
                             record, force=True)
+        if record.get("http_status") in REFUSED and not observed["received_bytes"]:
+            wait = REFUSAL_WAIT[min(refusals, len(REFUSAL_WAIT) - 1)]
+            if refusal_waited + wait <= REFUSAL_WAIT_TOTAL:
+                record["status"] = "refused"  # nothing generated or billed; not counted toward the failure limit
+                refusals, refusal_waited = refusals + 1, refusal_waited + wait
+                print(f"[oneshot] call {record['call']} refused (HTTP {record['http_status']}); waiting {wait} s "
+                      f"({refusal_waited} of {REFUSAL_WAIT_TOTAL} s for this call)", file=sys.stderr)
+                time.sleep(wait)
+                continue
         if retryable and salvage is not None and record["content"] and salvage(record["content"]):
             # The stream broke off after complete files (the gateway cuts one stream at about 1200 s; a large-task
             # draft needed 1101 s): hand them over rather than redraft from scratch into the same wall. The
@@ -463,6 +487,7 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None)
         wait = RETRY_WAIT[min(attempt, len(RETRY_WAIT) - 1)]
         print(f"[oneshot] call {record['call']} failed; bounded retry in {wait} s", file=sys.stderr)
         time.sleep(wait)
+        attempt += 1
     raise RuntimeError("no model call attempted")
 
 
