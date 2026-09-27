@@ -1110,6 +1110,7 @@ S = p / (b / (0.8 p))^0.1 while b <= 0.8 p, else ^0.2; p in percent over both ta
 | 20 | 09-27 05:58 | 63201b76 | 4d62756 | flash | 24/100 | 1/100 | 13.77 | 11.73 | relay round 1, submission `35bcfb42991b`. Sheet `4c3520246339`: weak draft, two rounds kept (written 0 -> 8 pass, 76 error), then five repair rounds failed in the same second on gateway HTTP 401 (09-26 23:03 UTC) and the loop stopped at the global failure limit (5): shipped with 8 written tests passing. GitHub `433d9936fb07`: 16 rounds 7 kept, written 93/5/3, stopped the same way (401 at 23:57 UTC) |
 | 21 | 09-27 08:14 | 63201b76 | 4d62756 | flash | 22/100 | **81/100** | 13.96 | **57.39 (board 1st)** | relay round 2, submission `0af8f16a62d6`. Sheet `f6861552bce1` (**best Sheet**): draft 81 written, 9 rounds 3 kept, written 96/3/2, stopped by 401 (01:03 UTC); GitHub `6dd494f9556b`: draft 10 written, 7 rounds all kept to 98/2, stopped by 401 (01:38 UTC). All four runs of this package ended on 401 bursts (roadmap 4.28) |
 | 22+ | 09-27 20:19 | 8ce58c4e | 4e84fa5 | flash | | | | | 63201b76 + refusals waited out (roadmap 4.28, PR #93); relay `chain-2026-09-27-backoff.jsonl`, 2 rounds, reserve CNY 150 (owner, 20:18). Round 1: submission `3e6a22eb304e`, runs `cff89feab6bf` (GitHub), `8eeef5b03f45` (Sheet), team budget CNY 183.12 before |
+| 22 | 09-27 20:19 | 8ce58c4e | 4e84fa5 | flash | 17/100 | 76/100 | 14.48 | | relay round 1, submission `3e6a22eb304e`. Gateway outage 13:56-14:16 UTC (22:00 local) hit both runs: Sheet `8eeef5b03f45` waited out 401s for the full 1200 s of one call (4.28 working, outage longer), GitHub `cff89feab6bf` hit five cut streams at the failure limit with written 68 pass. Round 2: submission `fed24f850ff7`, runs `d725c866ad98`, `f73bc44d9d89`, budget CNY 168.64 before |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1479,4 +1480,32 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - **Running:** hidden-intent evaluator (five agents; GitHub calibrated per test on submissions 4 and 5, Sheet on the
   hidden totals of 14 apps), a written-suite intent-coverage audit, literature and GitHub-project research, an offline
   probe of how well flash recovers masked intents.
+
+## 2026-09-27 20:30-23:15 — Hidden-intent evaluator: the GitHub suite breaks its own seed account; Sheet tests miss described behaviours
+
+- **Owner (22:16):** inferring the test set locally is fine as long as no code probes the server; the package carries
+  generic rules only.
+- **Evaluator** (five agents, Opus; assets in `~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/`, main
+  session only): one Playwright test per hidden intent (the 09-24 titles), run like the official runner (one never-reset
+  backend, one worker, 10 s). GitHub, 18 apps: Spearman 0.72 with hidden totals, oracle 40 above hidden on average; on
+  the two apps with per-test hidden labels agreement 86 and 81 of 100, every hidden pass is an oracle pass.
+- **GitHub finding:** the hidden suite very likely changes the seed account alice-dev's password in REQ-1-1-3 S3 (order
+  10) or REQ-1-3 S1 (order 13): on both labelled apps the hidden passes are exactly the passes before that point plus
+  the visitor scenarios after it. v1 used dedicated fixture accounts (`E2E_PASSWORD_CHANGE_*`); v2's requirements name
+  only alice-dev. With a simulated reset at order 10 the oracle gives 32-40 on apps hidden 20-25; without it 64-78.
+  A report for the organizers is drafted (owner to send).
+- **Sheet finding:** on the best apps (hidden 81, 82) the evaluator fails: filter hides the header row, sort does not
+  rewrite relative references, a pure-reference cycle shows 0 or blank instead of `#REF!`, a reopened validation rule
+  is not prefilled (editing fails), a dropdown option is covered by the next row's button. None of these are tested by
+  the written suites. Oracle ~98 against hidden 81 on the best app: about 17 hidden failures still unexplained (likely
+  the hidden suite changing the seeded workbook, not reproduced).
+- **Written-suite intent coverage** (audit, Sonnet): Sheet full 43 / partial 30 / none 24, GitHub 63 / 22 / 12. Gaps:
+  several cases of one kind tested once (22), feature interactions untested (12, Sheet), boundaries (11); persistence
+  re-checked by title only.
+- **Can flash recover masked intents** (offline, practice CNY 3.3): same-index GitHub 81/97, Sheet 31/97; same-requirement
+  coverage GitHub 93/97, Sheet 63 + 19 partial. The written suite's problem is coverage, not guessing.
+- **Research** (papers, GitHub projects; notes in the assets dir `research/`): feedback quality, not repair rounds or
+  sampling, limits repair and selection when self-tests are false positives (Olausson, Revisit Self-Debugging, CodeT,
+  R2E-Gym); spec-literal contracts shared by generation and tests (CodeT, WebApp1K, MSEval with deepseek-v4-flash:
+  tests first 52 vs 21-41 at round 1). About 12 public repos from other teams; none report a GitHub hidden score.
 
