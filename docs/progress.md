@@ -1107,7 +1107,9 @@ S = p / (b / (0.8 p))^0.1 while b <= 0.8 p, else ^0.2; p in percent over both ta
 | 18 | 09-26 22:45 | 60380c6d | a6d7529 | flash | 24/100 | 78/100 | 38.06 | 51.36 | relay round 3 (last). GitHub `99a2bc046345` CNY 21.91, 215 min; Sheet `3ba6769a64c2` CNY 16.15, 154 min. At CNY 22 the same p would score 54.2: the second suite costs about 3 S points a submission. Team budget CNY 228.16 after. Roadmap 4.23 closed (Sheet 82, 56, 78: mean 72 < 77.0) |
 | 19+ | 09-27 03:52 | 43ad48bd | 7a2b2e8 | flash | | | | | test writer shares one prompt prefix (roadmap 4.24), second suite off; relay `chain-2026-09-27-cache.jsonl`, 3 rounds, reserve CNY 150. Round 1: submission `dac35e56e2a4`, runs `b95608a40de6`, `f49ba294f647`, team budget CNY 228.16 before. Check the `acceptance tests` line's `cost_cny` (old order: 6.8-7.5) |
 | 19 | 09-27 03:52 | 43ad48bd | 7a2b2e8 | flash | 23/100 | 80/100 | 17.31 | **56.17 (board 1st)** | relay round 1 (relay stopped 04:15 while it waited). GitHub `b95608a40de6` CNY 10.42, 110 min; Sheet `f49ba294f647` CNY 6.89, 51 min: suite CNY 5.02 (cache works; old order 7.2-7.5), repair CNY 0.85, stopped after round 1 at four discards on one helper finding with 10 written tests in error. p 51.5 %, **S 56.17, board 1st** (爱吃葡萄的猫 55.73): the same pass rate as before at CNY 17 instead of 22 |
-| 20+ | 09-27 05:58 | 63201b76 | 4d62756 | flash | | | | | test hygiene, repair persistence, joined vocabulary (roadmap 4.25-4.27, PR #89); relay `chain-2026-09-27-hygiene.jsonl`, 2 rounds, reserve CNY 150. Round 1: submission `35bcfb42991b`, runs `433d9936fb07`, `4c3520246339`, team budget CNY 210.85 before |
+| 20 | 09-27 05:58 | 63201b76 | 4d62756 | flash | 24/100 | 1/100 | 13.77 | 11.73 | relay round 1, submission `35bcfb42991b`. Sheet `4c3520246339`: weak draft, two rounds kept (written 0 -> 8 pass, 76 error), then five repair rounds failed in the same second on gateway HTTP 401 (09-26 23:03 UTC) and the loop stopped at the global failure limit (5): shipped with 8 written tests passing. GitHub `433d9936fb07`: 16 rounds 7 kept, written 93/5/3, stopped the same way (401 at 23:57 UTC) |
+| 21 | 09-27 08:14 | 63201b76 | 4d62756 | flash | 22/100 | **81/100** | 13.96 | **57.39 (board 1st)** | relay round 2, submission `0af8f16a62d6`. Sheet `f6861552bce1` (**best Sheet**): draft 81 written, 9 rounds 3 kept, written 96/3/2, stopped by 401 (01:03 UTC); GitHub `6dd494f9556b`: draft 10 written, 7 rounds all kept to 98/2, stopped by 401 (01:38 UTC). All four runs of this package ended on 401 bursts (roadmap 4.28) |
+| 22+ | 09-27 20:19 | 8ce58c4e | 4e84fa5 | flash | | | | | 63201b76 + refusals waited out (roadmap 4.28, PR #93); relay `chain-2026-09-27-backoff.jsonl`, 2 rounds, reserve CNY 150 (owner, 20:18). Round 1: submission `3e6a22eb304e`, runs `cff89feab6bf` (GitHub), `8eeef5b03f45` (Sheet), team budget CNY 183.12 before |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1450,3 +1452,31 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   one file on Sheet and one on GitHub, broken 1 -> 0).
 - **PR #89 merged** (main 4d62756, package **63201b76**). Relay `chain-2026-09-27-hygiene.jsonl` started 05:59 with 2
   rounds, reserve CNY 150; it waits for relay-1's GitHub `b95608a40de6`.
+
+## 2026-09-27 19:30-20:30 — Every run of 63201b76 stopped on gateway 401s; the written suites and the hidden suite test different things
+
+- **Board (19:30):** overall 1st, S 57.39 (row 21). Task boards: GitHub 35 (Hzwuu_u, 0.001 M tokens, 234 s: a fixed
+  answer), MoQiiiii 26, ours 24; Sheet 99 (jackyjiang, fixed answer), MorningW1nd 90 (CNY 34), ours 81. Team budget
+  CNY 183.12.
+- **401 bursts:** all four runs of package 63201b76 ended with five repair rounds failing in the same second on HTTP 401
+  (09-26 23:03, 23:57, 09-27 01:03, 01:38 UTC) and the global failure limit (5) stopping the loop; Sheet round 1 shipped
+  a draft with 8 written tests passing (hidden 1). 401/403/429 were treated as permanent or counted failures. Roadmap
+  4.28 (PR #93, main 4e84fa5, package 8ce58c4e): a refusal before any reply byte waits 15..240 s on the same model, at
+  most 1200 s per call, and is not counted. 162 unit tests pass.
+- **Written suite against hidden, 31 official runs** (logs in the 19:30 session scratchpad `diag/`): on GitHub the
+  final written pass count does not track the hidden score among apps that load (written 61 -> hidden 25, 98 -> 22,
+  93 -> 24, 77 -> 19, 85 -> 16); on Sheet written 80-96 maps to hidden 78-82. `feature_implemented_count` (requirements
+  with every scenario passing): GitHub 6-8 of 47 on every app since row 6, Sheet at most 13 of 24.
+- **Why the written tests miss:** the new task set masks Sheet scenarios (100 of 100 read "the requested workflow" with a
+  few surviving words: `C3`, `A1:B2`, `Sheet1`, `COUNT`...) and GitHub has 36 templated ones ("follows the visible
+  controls for the ... workflow"). The failure records of the withdrawn 09-24 morning set carry the hidden test titles
+  (Sheet 97, GitHub 98): per requirement their counts equal the new scenario counts, and the surviving words line up in
+  order, so they give the intent of each hidden test. Example, Sheet REQ-4-2-2: hidden tests cover five error kinds,
+  fixing #DIV/0!, an indirect cycle, unknown function + incomplete expression, overwriting a self-reference; the
+  written suite tested #DIV/0!, #REF!, #NAME?, #ERROR! and a direct self-reference.
+- **Owner (20:18):** these titles may be used for a local hidden-intent evaluator (diagnosis and local comparison of
+  harness changes); nothing from them goes into the package, and only generic rules may come out of it.
+- **Running:** hidden-intent evaluator (five agents; GitHub calibrated per test on submissions 4 and 5, Sheet on the
+  hidden totals of 14 apps), a written-suite intent-coverage audit, literature and GitHub-project research, an offline
+  probe of how well flash recovers masked intents.
+
