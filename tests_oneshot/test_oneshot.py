@@ -229,7 +229,9 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(list(self.root.glob(".oneshot-*")), [])
 
     def test_permanent_http_4xx_including_402_are_not_retried(self):
-        for status in (400, 401, 402, 403, 404, 405, 409, 410, 413, 422):
+        # 401 and 403 left this list on 09-27: the gateway refuses with them for minutes at a time, so they are waited
+        # out (test_a_refusal_is_waited_out_without_counting_toward_the_failure_limit).
+        for status in (400, 402, 404, 405, 409, 410, 413, 422):
             with self.subTest(status=status):
                 budget = adapter.CallBudget()
                 self.replies(HTTPError("https://synthetic.invalid", status, "synthetic", {}, None))
@@ -242,7 +244,7 @@ class OfflineCase(unittest.TestCase):
     def test_transient_http_errors_share_global_failure_cap(self):
         budget = adapter.CallBudget(fail_limit=3)
         self.replies(*[HTTPError("https://synthetic.invalid", status, "synthetic", {}, None)
-                       for status in (408, 429, 503)])
+                       for status in (408, 502, 503)])  # 429 is waited out, not counted (09-27)
         with self.assertRaisesRegex(RuntimeError, "HTTP 503"):
             self.generate(budget)
         self.assertEqual(self.transport.call_count, 3)
@@ -344,6 +346,43 @@ class OfflineCase(unittest.TestCase):
                 self.generate(budget)
         self.assertEqual(self.transport.call_count, 1)
         self.assertIsNone(budget.summary()["fallback_model"])
+
+    def test_a_refusal_is_waited_out_without_counting_toward_the_failure_limit(self):
+        # 09-27: the gateway answered 401 for a few minutes; five repair rounds failed in the same second and the loop
+        # stopped at the failure limit. Five refusals in a row now wait 15..240 s and the call goes through.
+        budget = adapter.CallBudget()
+        refusal = lambda: HTTPError("https://synthetic.invalid", 401, "synthetic", {}, None)
+        self.replies(refusal(), refusal(), refusal(), refusal(), refusal(), events(application()))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": "synthetic-fallback"}):
+            files, _ = self.generate(budget)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(self.transport.call_count, 6)
+        self.assertEqual([c.args for c in adapter.time.sleep.call_args_list], [(15,), (30,), (60,), (120,), (240,)])
+        summary = budget.summary()
+        self.assertEqual((summary["failed_calls"], summary["refused_calls"], summary["completed_calls"]), (0, 5, 1))
+        self.assertEqual({r["model"] for r in budget.attempts}, {"synthetic-model"})  # no switch for a refusal
+        self.assertIsNone(summary["fallback_model"])
+
+    def test_a_rate_limit_is_waited_out_on_the_same_model(self):
+        budget = adapter.CallBudget()
+        limit = lambda: HTTPError("https://synthetic.invalid", 429, "synthetic", {}, None)
+        self.replies(limit(), limit(), limit(), events(application()))
+        with patch.dict(os.environ, {"FALLBACK_MODEL": "synthetic-fallback"}):
+            self.generate(budget)
+        self.assertEqual([r["model"] for r in budget.attempts], ["synthetic-model"] * 4)
+        self.assertEqual(budget.summary()["failed_calls"], 0)
+
+    def test_refusals_past_the_wait_total_count_as_ordinary_failures(self):
+        budget = adapter.CallBudget()
+        refusal = lambda: HTTPError("https://synthetic.invalid", 401, "synthetic", {}, None)
+        self.replies(refusal(), refusal())
+        with patch.object(adapter, "REFUSAL_WAIT_TOTAL", 20):
+            with self.assertRaisesRegex(RuntimeError, "HTTP 401"):
+                self.generate(budget)
+        self.assertEqual(self.transport.call_count, 2)
+        self.assertEqual([c.args for c in adapter.time.sleep.call_args_list], [(15,)])
+        summary = budget.summary()
+        self.assertEqual((summary["refused_calls"], summary["failed_calls"]), (1, 1))
 
     def test_fallback_can_be_disabled(self):
         budget = adapter.CallBudget()

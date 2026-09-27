@@ -55,8 +55,11 @@ repairs (`ONESHOT_REPAIR_CALLS`). The repairs also stop at a spend limit, CNY 3 
 (`ONESHOT_REPAIR_CNY`), which counts the repair calls and the scenario translation; costs are
 estimated from the reported usage with the gateway's price list, and a cut stream from its
 characters. A malformed value stops the CLI before any request.
-Transport failures (cut streams, 408/429/5xx) share one cap of five across both phases and never
-consume a completed call. A call makes at most three attempts on its model; then the rest of the
+Transport failures (cut streams, 408/5xx) share one cap of five across both phases and never
+consume a completed call. A refusal before any reply byte (HTTP 401, 403, 429) is not counted: the
+call waits 15, 30, 60, 120, 240 s between tries on the same model, at most 1200 s in all, and only
+then counts as an ordinary failure (09-27: a few minutes of gateway 401s stopped a repair loop in
+one second). A call makes at most three attempts on its model; then the rest of the
 run switches to the fallback: `kimi-k2.7-code-highspeed` for flash or any other non-Kimi model,
 `deepseek-v4-flash` for a Kimi model, each request with its own model's parameters (Kimi's
 provider-required temperature is 1.0). `FALLBACK_MODEL` overrides the pairing and an empty value
