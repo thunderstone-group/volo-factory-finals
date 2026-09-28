@@ -22,7 +22,7 @@
 
 1. 两轮出分后决定剩余额度：费用与分数都正常就继续用 bfddd36c 抽样（每轮约 10–14 元），额度留约 10 元余量；截止 10-01 23:59，接力 `--until 2026-10-01T23:00`。
 2. 候选（未做）：生成的首页链接指向未注册路由时静默回到首页（本地 Sheet 起草 2/6 整题 0 分，flash 写 `#/w/wb1` 而路由不认），通用检查「点链接后屏幕未变 → 报路由未注册」；完整流水线里修复第一轮通常能救回，所以优先级低。
-3. 证据：本日实验数据在会话 scratchpad（`cheap/`、`tcost/`，含 CRITERIA.md），关键数字已进 roadmap 4.30–4.33 与 progress；评估器与 5 份顶级应用的逐条结果在 `acceptance-hidden/oracle-2026-09-27/`（主会话专用）。
+3. 证据：本日实验数据在 `~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/experiments-2026-09-28/`（`cheap/`、`tcost/`，含 CRITERIA.md 与脚本），关键数字已进 roadmap 4.30–4.33 与 progress；评估器与 5 份顶级应用的逐条结果在 `acceptance-hidden/oracle-2026-09-27/`（主会话专用）。
 
 ## 不要做
 
