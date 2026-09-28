@@ -67,6 +67,21 @@ class PlanCase(unittest.TestCase):
         self.assertEqual([[i["id"] for i in g["items"]] for g in small],
                          [["REQ-1-1", "REQ-1-1#2"], ["REQ-1-2"], ["REQ-2-1"]])
 
+    def test_bare_scenario_names_get_their_ids_in_listed_order(self):
+        # 09-28: masked names repeat within a requirement; a file titling tests by the bare name did not load.
+        group = {"items": [{"id": "REQ-1", "name": "REQ-1 -the requested workflow"},
+                           {"id": "REQ-1#2", "name": "REQ-1 -the requested workflow"},
+                           {"id": "REQ-1#3", "name": "REQ-1 -the requested workflow"}]}
+        body = ("test('REQ-1#2: REQ-1 -the requested workflow', async () => {});\n"
+                "test('REQ-1 -the requested workflow', async () => {});\n"
+                "test(\"REQ-1 -the requested workflow\", async () => {});\n"
+                "test('Something else', async () => {});\n")
+        named = testgen.name_tests(body, group)
+        self.assertEqual([m.group(2) for m in testgen.TITLE.finditer(named)],
+                         ["REQ-1#2: REQ-1 -the requested workflow", "REQ-1: REQ-1 -the requested workflow",
+                          "REQ-1#3: REQ-1 -the requested workflow", "Something else"])
+        self.assertEqual(testgen.name_tests(named, group), named)
+
     def test_request_lists_the_scenarios_and_carries_prerequisites(self):
         group = testgen.plan(REQUIREMENTS)[0]
         system, user = testgen.request(REQUIREMENTS, group, "Seed: synthetic")

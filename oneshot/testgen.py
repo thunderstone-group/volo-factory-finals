@@ -77,6 +77,12 @@ How the tests run:
   record's credentials, never delete or rename a seeded record: when a scenario does that (change a password, delete
   a repository, rename a workbook), the test first creates its own record through the UI and acts on that one, so the
   seeded state stays as the requirements give it for every later test.
+- A scenario whose name or steps are generic ("the requested workflow") is specified by its requirement's
+  description. Across the tests of one requirement, cover every behaviour the description states: each case it lists
+  (every kind of error, option, direction or input form), how the feature works together with the others it names (a
+  formula after a sort, a rule after an insert, a filter with a header row), the boundary values it gives, and the
+  rejected paths with their stated messages. When a requirement states more behaviours than it has scenarios, one test
+  checks several of them in sequence. After a refresh or reopen, assert the changed content itself, not only a title.
 - Where the requirements allow several ways to do the same thing (in a grid or a separate field, with a keyboard
   shortcut or a menu command, with a button or the Enter key), spread the tests of that requirement across those ways,
   as different users would.
@@ -312,6 +318,30 @@ def depths(text):
     return {rid: depth(rid, frozenset()) for rid in reqs}
 
 
+def name_tests(body, group):
+    """The file with every test titled by its bare scenario name given its `<scenario id>: ` prefix: the first scenario
+    of that name without a test yet, in listed order. Masked names repeat within a requirement ("REQ-1-3-2 -the
+    requested workflow" four times), Playwright refuses a file with two tests of one title, and on 09-28 one such file
+    took 13 tests of a Sheet suite with it. Titles that already carry a listed id are left alone."""
+    ids = {item["id"] for item in group["items"]}
+    used = {_test_id(m.group(2))[0] for m in TITLE.finditer(body)} & ids
+    out, last = [], 0
+    for m in TITLE.finditer(body):
+        title = m.group(2)
+        if _test_id(title)[0] in ids:
+            continue
+        match = next((item for item in group["items"]
+                      if item["id"] not in used and item["name"].strip() == title.strip()), None)
+        if match is None:
+            continue
+        used.add(match["id"])
+        quote = m.group(1)
+        new = f"{match['id']}: {match['name']}".replace("\\", "\\\\").replace(quote, "\\" + quote)
+        out.append(body[last:m.start(2)] + new)
+        last = m.end(2)
+    return "".join(out) + body[last:]
+
+
 def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
     """Write one spec file per group into `suite` with `complete(messages) -> (content, usage, finish)`; a reply
     without a file block is asked once more. Returns the manifest (also saved as suite.json)."""
@@ -341,7 +371,7 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
             return record
         path = suite / group["file"]
         node = _node()
-        body = harden(body, (lambda text: _parses(node, path, text)) if node else None)
+        body = name_tests(harden(body, (lambda text: _parses(node, path, text)) if node else None), group)
         path.write_text(body + "\n", encoding="utf-8")
         record.pop("error", None)
         if node:
@@ -441,7 +471,8 @@ def fix_suite(text, suite, report, complete, workers=GROUP_WORKERS):
         found = [m for m in FILE_BLOCK.finditer(content or "") if m.group(1).strip() == name]
         if not found:
             return None
-        fixed = harden(unfence(found[-1].group(2)), (lambda t: _parses(node, path, t)) if node else None)
+        fixed = name_tests(harden(unfence(found[-1].group(2)), (lambda t: _parses(node, path, t)) if node else None),
+                           groups[name])
         if node and not _parses(node, path, fixed):
             return None
         titles = [m.group(2) for m in TITLE.finditer(fixed)]
