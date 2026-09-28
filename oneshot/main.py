@@ -9,7 +9,7 @@ delivery contract, and writes the returned files under `<DIR>`.
 
 Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash),
 FALLBACK_MODEL (default kimi-k2.7-code-highspeed, or deepseek-v4-flash when MODEL is a Kimi model;
-empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 24),
+the one call whose retries on MODEL are spent; empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 24),
 ONESHOT_REPAIR_CNY (repair spend per task, default 10).
 """
 import argparse
@@ -353,6 +353,7 @@ class CallBudget:
         result["repair_cny_limit"] = self.repair_cny
         result["side_calls"] = len(self.side_calls)
         result["fallback_model"] = self.model
+        result["calls_by_model"] = dict(collections.Counter(r["model"] for r in self.attempts))
         result["billing_status"] = ("not_called" if not self.attempts else
                                     "unknown" if unknown else "tokens_reported_cost_not_estimated")
         return result
@@ -369,16 +370,17 @@ def fallback_model(budget, model):
     return KIMI_FALLBACK_MODEL if model in KIMI_CODE_MODELS else FALLBACK_MODEL
 
 
-def stream_completion(messages, model, base, key, budget, tries=3, salvage=None):
+def stream_completion(messages, model, base, key, budget, tries=3, salvage=None, fallback=None):
     """Buffer each attempt separately; a failed attempt's text is discarded. The primary model is
-    retried `tries` times on transport failures; when those are spent the run switches to its
-    fallback model for this and every later call (a cut route rarely heals within one run), with
-    that model's own request parameters. A stream that ends normally without content (the reasoning
+    retried `tries` times on transport failures; when those are spent this one call is retried on
+    the fallback model, with that model's own request parameters, and the next call starts on the
+    primary again. (Until 09-28 the whole rest of the run switched: a 09-27 gateway blip moved one
+    Sheet run's written tests and repairs to Kimi HighSpeed, CNY 28 for 5 hidden passes.) A stream that ends normally without content (the reasoning
     used the whole output) is a completed, billed call: the caller decides whether to ask again.
     With `salvage`, a stream that breaks off after text for which salvage(text) is true is returned
     with the finish reason "cut" instead of being retried; the attempt stays a failed one."""
     model = budget.model or model
-    fallback = fallback_model(budget, model)
+    fallback = fallback_model(budget, model) if fallback is None else fallback
     payload = {"model": model, "messages": messages, "max_tokens": MAX_TOKENS,
                "temperature": 0.0, "stream": True, "stream_options": {"include_usage": True}}
     if model in KIMI_CODE_MODELS:
@@ -480,9 +482,8 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None)
             raise failure
         if attempt + 1 >= tries:
             if fallback and fallback != model:
-                print(f"[oneshot] {model} failed {tries} times; the rest of this run uses {fallback}", file=sys.stderr)
-                budget.model = fallback
-                return stream_completion(messages, fallback, base, key, budget, tries, salvage)
+                print(f"[oneshot] {model} failed {tries} times; this call is retried on {fallback}", file=sys.stderr)
+                return stream_completion(messages, fallback, base, key, budget, tries, salvage, fallback="")
             raise failure
         wait = RETRY_WAIT[min(attempt, len(RETRY_WAIT) - 1)]
         print(f"[oneshot] call {record['call']} failed; bounded retry in {wait} s", file=sys.stderr)
