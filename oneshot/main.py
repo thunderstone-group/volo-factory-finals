@@ -2540,9 +2540,12 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         focus = None
         untried = []
         if tests is not None and not state["fatal"]:
-            untried = [(key, ids) for key, ids in failure_groups(state, depths) if key not in tried]
+            untried = [(group, ids) for group, ids in failure_groups(state, depths) if group not in tried]
             if narrow and untried:
-                key, ids = untried[0]
+                # `group`, never `key`: from 09-27 06:00 to 09-28 this line rebound the API key to a requirement id, so
+                # every call after the first discarded round went out as "Bearer REQ-..." and got HTTP 401 for the rest
+                # of the run (all ten runs of packages 63201b76, 8ce58c4e and 3484d5f7 that had a discard).
+                group, ids = untried[0]
                 focus = set(ids)
         ask = repair_request(state, discarded, unapplied, depths, focus)
         stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
@@ -2553,7 +2556,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 and not any(r["accepted"] for r in answered[-REPAIR_REJECTIONS:])):
             stop = f"{REPAIR_REJECTIONS} repairs in a row were discarded"
         if focus:
-            tried.add(key)
+            tried.add(group)
         if stop is None and time.monotonic() - started_repairs > REPAIR_SECONDS:
             stop = f"the repair time limit was reached ({REPAIR_SECONDS} s)"
         if stop:

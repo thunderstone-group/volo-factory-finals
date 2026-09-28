@@ -327,8 +327,11 @@ class RepairLoopCase(unittest.TestCase):
     def run_loop(self, reports, replies):
         adapter, sent = self.adapter, []
 
+        self.keys = []
+
         def complete(messages, model, base, key, budget, tries=3, salvage=None):
             sent.append(messages[-1]["content"])
+            self.keys.append(key)
             record = budget.start(messages, model)
             record.update(status="completed", usage={"prompt_tokens": 10, "completion_tokens": 10})
             return replies.pop(0), {}, "stop"
@@ -484,6 +487,8 @@ class RepairLoopCase(unittest.TestCase):
         self.assertIn("- REQ-1 ", sent[1])
         self.assertNotIn("- REQ-2 ", sent[1])
         self.assertEqual(budget.smoke["stopped"], f"{self.adapter.REPAIR_REJECTIONS} repairs in a row were discarded")
+        # 09-28: the focused rounds rebound the API key to a requirement id and every later call got HTTP 401.
+        self.assertEqual(set(self.keys), {"k"})
 
     def test_a_kept_round_after_a_focused_one_goes_back_to_the_whole_list(self):
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
