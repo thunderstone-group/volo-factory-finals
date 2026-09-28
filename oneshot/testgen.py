@@ -77,6 +77,12 @@ How the tests run:
   record's credentials, never delete or rename a seeded record: when a scenario does that (change a password, delete
   a repository, rename a workbook), the test first creates its own record through the UI and acts on that one, so the
   seeded state stays as the requirements give it for every later test.
+- A scenario whose name or steps are generic ("the requested workflow") is specified by its requirement's
+  description. Across the tests of one requirement, cover every behaviour the description states: each case it lists
+  (every kind of error, option, direction or input form), how the feature works together with the others it names (a
+  formula after a sort, a rule after an insert, a filter with a header row), the boundary values it gives, and the
+  rejected paths with their stated messages. When a requirement states more behaviours than it has scenarios, one test
+  checks several of them in sequence. After a refresh or reopen, assert the changed content itself, not only a title.
 - Where the requirements allow several ways to do the same thing (in a grid or a separate field, with a keyboard
   shortcut or a menu command, with a button or the Enter key), spread the tests of that requirement across those ways,
   as different users would.
