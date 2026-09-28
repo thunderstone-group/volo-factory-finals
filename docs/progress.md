@@ -1514,7 +1514,7 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 
 - **Owner's goal: overall S 60** (now 57.39: p 51.5, b 13.96). In the reward regime S = p (0.8 p / b)^0.1: at p 51.5,
   b 8.9 gives 60; at b 14 it needs p 53.6 (108 of 200).
-- **Per-run key wall.** Since 09-27 06:00 (Beijing) four of six official runs had their key start answering HTTP 401
+- **Per-run key wall (13:00: wrong, see the next section).** Since 09-27 06:00 (Beijing) four of six official runs had their key start answering HTTP 401
   mid-run and never recover (d725c866ad98: 16:43-17:42 UTC); the other task of the same submission kept calling at
   the same time (0af8f16a62d6: Sheet 401 from 01:03 UTC, GitHub 5 more calls 01:04-01:38). Platform cost at the wall
   6.17, 7.60, 7.22, 6.73, 7.33 CNY. Before 09-27 06:00 single runs spent up to CNY 22 with no 401. The replayed 401
@@ -1533,4 +1533,18 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - **4.30 first version** (describe-every-behaviour prompt, 8 per file): caught 13 of 18 evaluator-failed requirements
   on the five best apps (8 per file 7, per group 10), but 24 own-code errors on every app and CNY 5.98: fails the
   pre-written error criterion. A per-group version is being written.
+
+## 2026-09-28 12:45-13:10 — The "401 wall" was our own bug: the focused repair round overwrote the API key
+
+- Package 3484d5f7's Sheet run `3ee098d8b1d2` hit the 401 at about CNY 3.3, right after its first discarded round, which
+  ruled out a CNY 7 platform quota. In every post-09-27 run the 401 starts at the first discarded round.
+- Cause: roadmap 4.26 (package 63201b76, first official upload 09-27 05:58) binds the focused failure group to `key` in
+  `repair_delivery`, the name of the API key parameter; every later call went out as `Bearer REQ-...`. Fix: PR #98
+  (main ef754e7), `group`, with the focus test asserting the key never changes (fails on the old code).
+- Consequence: every official repair loop since 09-27 stopped at its first discard (57.39's Sheet at written 96/3/2,
+  GitHub 98/2). The organizer report on 401 is void; the GitHub password report stands.
+- 4.30 + test-title normalisation (PR #97): see roadmap 4.30. GitHub per-group vs 8-per-file suites rank six apps the
+  same (Spearman 0.551 both), errors 31.8 vs 27.8.
+- Package **bfddd36c** (main 709945a) queued: relay `chain-2026-09-28-keyfix.jsonl`, 2 rounds, reserve CNY 80, starts
+  when submission `d69840667dbd` (package 3484d5f7, both runs cut by the bug) ends.
 
