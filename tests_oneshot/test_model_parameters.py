@@ -52,14 +52,15 @@ class ModelParametersCase(unittest.TestCase):
     def test_transport_fallback_pairs_flash_and_kimi_with_the_fallback_models_own_parameters(self):
         # Owner's decision (09-23): flash falls back to Kimi HighSpeed and a Kimi primary to flash. Kimi was
         # previously exempt, so a cut Kimi route zeroed the task; each model keeps its own temperature.
+        # Since 09-28 the pairing answers the one failing call; the run stays on its primary model.
         captured, budget = self.fallback_run('deepseek-v4-flash', {})
         self.assertEqual(captured, [('deepseek-v4-flash', 0.0)] * 3 + [('kimi-k2.7-code-highspeed', 1.0)])
-        self.assertEqual(budget.summary()['fallback_model'], 'kimi-k2.7-code-highspeed')
+        self.assertIsNone(budget.model)
         for kimi in ('kimi-k2.7-code-highspeed', 'kimi-k2.7-code'):
             with self.subTest(model=kimi):
                 captured, budget = self.fallback_run(kimi, {})
                 self.assertEqual(captured, [(kimi, 1.0)] * 3 + [('deepseek-v4-flash', 0.0)])
-                self.assertEqual(budget.summary()['fallback_model'], 'deepseek-v4-flash')
+                self.assertIsNone(budget.model)
 
     def test_fallback_model_environment_overrides_or_disables_the_pairing(self):
         captured, _ = self.fallback_run('kimi-k2.7-code-highspeed', {'FALLBACK_MODEL': 'qwen3.7-plus'})

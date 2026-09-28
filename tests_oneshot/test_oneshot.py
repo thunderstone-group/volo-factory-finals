@@ -268,7 +268,9 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.summary()["completed_calls"], 2)
         self.assertTrue((self.out / "backend" / "server.js").exists())
 
-    def test_primary_model_retries_are_spent_then_the_run_switches_to_the_fallback(self):
+    def test_primary_model_retries_are_spent_then_only_that_call_uses_the_fallback(self):
+        # 09-27: a gateway blip moved the rest of one Sheet run (written tests, repairs) to Kimi HighSpeed, CNY 28
+        # for 5 hidden passes. The fallback now answers the one call; the continuation is back on the primary.
         budget = adapter.CallBudget()
         prefix = block("backend/package.json", '{"scripts":{"start":"node server.js"}}')
         rest = application()[len(prefix):]
@@ -279,8 +281,9 @@ class OfflineCase(unittest.TestCase):
             self.generate(budget)
         self.assertEqual(self.transport.call_count, 5)
         self.assertEqual([r["model"] for r in budget.attempts],
-                         ["synthetic-model"] * 3 + ["synthetic-fallback"] * 2)
-        self.assertEqual(budget.summary()["fallback_model"], "synthetic-fallback")
+                         ["synthetic-model"] * 3 + ["synthetic-fallback", "synthetic-model"])
+        self.assertIsNone(budget.summary()["fallback_model"])
+        self.assertEqual(budget.summary()["calls_by_model"], {"synthetic-model": 4, "synthetic-fallback": 1})
         self.assertEqual(budget.summary()["failed_calls"], 3)
         self.assertTrue((self.out / "backend" / "server.js").exists())
 

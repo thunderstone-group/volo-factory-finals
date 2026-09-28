@@ -31,7 +31,11 @@ except ImportError:  # run as a script, or from the flat package next to main.py
     import scenario_check
     import scenarios
 
-GROUP_SCENARIOS = 8  # scenarios per spec file (one model call); requirements are never split across files
+GROUP_SCENARIOS = 30  # scenarios per spec file (one model call); requirements are never split across files. One
+# file per top-level requirement group (Sheet 5 files of 13-26, GitHub 6 of 14-25) cost CNY 2.29 against 5.16 for
+# 8 per file (16 files) on 09-28, and ranked ten apps with known hidden scores better (Spearman 0.94 vs 0.86, errors
+# per app 5.8 vs 21.3; one suite each). 92 % of the output is reasoning,
+# and each call re-reads the whole requirements document before it writes.
 GROUP_WORKERS = 4  # parallel spec calls; a gateway burst cuts several streams at once
 RUN_SECONDS = 900  # one suite run; a hung runner is stopped here
 TEST_SECONDS = 15
