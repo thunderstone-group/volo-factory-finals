@@ -1111,6 +1111,7 @@ S = p / (b / (0.8 p))^0.1 while b <= 0.8 p, else ^0.2; p in percent over both ta
 | 21 | 09-27 08:14 | 63201b76 | 4d62756 | flash | 22/100 | **81/100** | 13.96 | **57.39 (board 1st)** | relay round 2, submission `0af8f16a62d6`. Sheet `f6861552bce1` (**best Sheet**): draft 81 written, 9 rounds 3 kept, written 96/3/2, stopped by 401 (01:03 UTC); GitHub `6dd494f9556b`: draft 10 written, 7 rounds all kept to 98/2, stopped by 401 (01:38 UTC). All four runs of this package ended on 401 bursts (roadmap 4.28) |
 | 22+ | 09-27 20:19 | 8ce58c4e | 4e84fa5 | flash | | | | | 63201b76 + refusals waited out (roadmap 4.28, PR #93); relay `chain-2026-09-27-backoff.jsonl`, 2 rounds, reserve CNY 150 (owner, 20:18). Round 1: submission `3e6a22eb304e`, runs `cff89feab6bf` (GitHub), `8eeef5b03f45` (Sheet), team budget CNY 183.12 before |
 | 22 | 09-27 20:19 | 8ce58c4e | 4e84fa5 | flash | 17/100 | 76/100 | 14.48 | | relay round 1, submission `3e6a22eb304e`. Gateway outage 13:56-14:16 UTC (22:00 local) hit both runs: Sheet `8eeef5b03f45` waited out 401s for the full 1200 s of one call (4.28 working, outage longer), GitHub `cff89feab6bf` hit five cut streams at the failure limit with written 68 pass. Round 2: submission `fed24f850ff7`, runs `d725c866ad98`, `f73bc44d9d89`, budget CNY 168.64 before |
+| 23 | 09-27 22:46 | 8ce58c4e | 4e84fa5 | flash | 25/100 | 5/100 | 42.68 | 11.6 | relay round 2, submission `fed24f850ff7`. Sheet `f73bc44d9d89`: flash failed three times on the draft and the whole rest of the run switched to Kimi HighSpeed (written tests 43 calls CNY 17.53; repair stopped at the CNY 10 spend limit after 2 rounds), CNY 28.02, written 8 pass / 65 fail / 33 error (roadmap 4.31). GitHub `d725c866ad98`: also switched to Kimi for part of the run, 5 of 9 rounds kept to written 77/10/6, then its key answered HTTP 401 from 16:43 to 17:42 UTC without recovering, CNY 14.66. Team budget CNY 125.96 after |
 
 ## 2026-09-24 14:00 — Grid clicks lost to press-time renders; clipboard helper; route gate; written tests (off)
 
@@ -1508,4 +1509,28 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
   sampling, limits repair and selection when self-tests are false positives (Olausson, Revisit Self-Debugging, CodeT,
   R2E-Gym); spec-literal contracts shared by generation and tests (CodeT, WebApp1K, MSEval with deepseek-v4-flash:
   tests first 52 vs 21-41 at round 1). About 12 public repos from other teams; none report a GitHub hidden score.
+
+## 2026-09-28 10:00-12:00 — Per-run key wall, per-call fallback, draft-only negative, one test file per group
+
+- **Owner's goal: overall S 60** (now 57.39: p 51.5, b 13.96). In the reward regime S = p (0.8 p / b)^0.1: at p 51.5,
+  b 8.9 gives 60; at b 14 it needs p 53.6 (108 of 200).
+- **Per-run key wall.** Since 09-27 06:00 (Beijing) four of six official runs had their key start answering HTTP 401
+  mid-run and never recover (d725c866ad98: 16:43-17:42 UTC); the other task of the same submission kept calling at
+  the same time (0af8f16a62d6: Sheet 401 from 01:03 UTC, GitHub 5 more calls 01:04-01:38). Platform cost at the wall
+  6.17, 7.60, 7.22, 6.73, 7.33 CNY. Before 09-27 06:00 single runs spent up to CNY 22 with no 401. The replayed 401
+  request answers 200 on the practice key, so it is not the request. Likely a per-run key quota (one-api/new-api
+  answer 401 once a token's quota is used up). Report for the organizers in campaign evidence
+  `official/organizer-report-key-401-2026-09-28.md` (owner sends).
+- **Owner (10:39):** compliant unless hard-coded with no LLM call at all.
+- **Per-call fallback (roadmap 4.31, PR #96).** Kimi answers only the call whose flash retries are spent.
+- **Draft-only (withdrawn).** 6 + 6 practice drafts, no written tests, no repairs, evaluator-scored: CNY 0.64-2.1 each;
+  half broke as a whole (two GitHub `app.js` syntax errors, two Sheet drafts at 1); the usable ones Sheet 66, 47,
+  GitHub polluted 22, 19, 10. Best of 24 pairs S 40.5 against 57.4 needed. Written tests + repair are worth 25-40
+  Sheet passes.
+- **One written-test file per requirement group (roadmap 4.32, PR #96).** Sheet suites on ten apps with known hidden
+  scores: 8 per file CNY 5.16, Spearman 0.863, 21.3 errors per app; 16 per file 2.85, 0.890, 9.4; per group (5 files)
+  2.29, 0.942, 5.8. GitHub per group: 6 files, CNY 2.58, all finished normally.
+- **4.30 first version** (describe-every-behaviour prompt, 8 per file): caught 13 of 18 evaluator-failed requirements
+  on the five best apps (8 per file 7, per group 10), but 24 own-code errors on every app and CNY 5.98: fails the
+  pre-written error criterion. A per-group version is being written.
 
