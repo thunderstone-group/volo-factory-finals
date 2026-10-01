@@ -53,6 +53,7 @@ REPAIR_OUTPUT_FLOOR = 8000  # Output tokens a repair call is assumed to produce 
 REPAIR_SECONDS = 3 * 3600  # No repair round starts after this much time in the repair phase.
 CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this long (a large task at 1 CPU).
 TESTGEN = os.environ.get("ONESHOT_TESTGEN", "1") == "1"  # requirement-written tests drive the repairs (testgen.py)
+SOURCE_CONTRACTS = os.environ.get("ONESHOT_SOURCE_CONTRACTS", "1") == "1"  # S70 candidate; official promotion remains gated
 # When the repairs stop, a second suite written afresh drives more (roadmap 4.23): at the stop the first suite had one
 # or two failing tests left while 11-18 of its tests could not judge the application, and hidden scores sat 1-10 under
 # it; a second suite found 10-12 new failures on two stopped Sheet apps, in the blocks the first could not judge.
@@ -633,6 +634,12 @@ def parse_repair(text, stage):
         raise ValueError("an EDIT block has no closing `=== END ===`")
     skipped, applied = [], 0
     for path, body in edits:
+        # A captured gateway reply used a second separator as the closing marker in each single-hunk block.
+        # Recover only that unambiguous framing variant; SEARCH text and replacement bytes stay unchanged.
+        if (not HUNK.search(body) and len(re.findall(r"^<<<<<<< SEARCH[ \t]*$", body, re.M)) == 1
+                and len(re.findall(r"^=======[ \t]*$", body, re.M)) == 2
+                and re.search(r"^=======[ \t]*\s*\Z", body, re.M)):
+            body = re.sub(r"^=======[ \t]*\s*\Z", ">>>>>>> REPLACE\n", body, flags=re.M)
         hunks = HUNK.findall(body)
         if not hunks:
             raise ValueError(f"EDIT {path}: no `<<<<<<< SEARCH` / `=======` / `>>>>>>> REPLACE` hunk")
@@ -1526,6 +1533,9 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
                 budget.progress("checking_application", force=True)
                 repair_delivery(stage, files, conversation, model, base, key, budget, template, requirements,
                                 scaffold=bool(scaffold), tests=tests)
+                if tests is not None and SOURCE_CONTRACTS:
+                    source_review(stage, files, messages, model, base, key, budget, template, requirements,
+                                  bool(scaffold), tests)
                 if tests is not None and SECOND_SUITE:
                     second_look(stage, files, messages, model, base, key, budget, template, requirements,
                                 bool(scaffold), prerequisites, suites)
@@ -2011,6 +2021,53 @@ def _testgen_module():
     return testgen
 
 
+def _contracts_module():
+    try:
+        from . import source_contracts
+    except ImportError:
+        import source_contracts
+    return source_contracts
+
+
+def source_review(stage, files, messages, model, base, key, budget, template, requirements, scaffold, tests):
+    """Once after UI repair, discover and validate source counterexamples, then repair with both fixed suites."""
+    first = budget.smoke or {}
+    if not ((first.get("scenarios_after") or {}).get("counts") or {}).get("pass"):
+        return  # A broken or unjudged application needs its browser/delivery loop first.
+    started, call_start = time.monotonic(), len(budget.attempts)
+    record = {}
+
+    def complete(prompts):
+        stop = budget.repair_stop(prompts, model)
+        if stop:
+            raise ValueError(stop)
+        offset = len(budget.attempts)
+        try:
+            return stream_completion(prompts, model, base, key, budget, tries=1, fallback="")
+        finally:
+            for call in budget.attempts[offset:]:
+                call["purpose"] = "source_contract_review"
+
+    try:
+        budget.progress("reviewing_source_contracts", force=True)
+        result = _contracts_module().prepare(stage, requirements or "", tests, complete)
+        record.update(proposed=len(result.get("proposed", [])), probes=len(result.get("probes", [])),
+                      results=result.get("validation", []), skipped=result.get("skipped"))
+        budget.suite = dict(budget.suite or {}, source_contracts=record["probes"])
+        if any(r["status"] == "fail" for r in result.get("validation", [])):
+            current = "".join(f"=== FILE: {f['path']} ===\n{f['content'].rstrip(chr(10))}\n=== END ===\n" for f in files)
+            repair_delivery(stage, files, list(messages) + [{"role": "assistant", "content": current}],
+                            model, base, key, budget, template, requirements, scaffold=scaffold, tests=tests)
+            budget.smoke["before_source_review"] = {k: first.get(k) for k in ("stopped", "scenarios_after", "tests")}
+            budget.smoke["before_source_review"]["rounds"] = len(first.get("rounds", []))
+    except Exception as exc:
+        record["error"] = type(exc).__name__ + ": " + str(exc)[:500]
+    record.update(seconds=round(time.monotonic() - started, 1), calls=len(budget.attempts) - call_start,
+                  cost_cny=round(sum(call_cost(r) for r in budget.attempts[call_start:]), 6))
+    budget.smoke = dict(budget.smoke or first, source_review=record)
+    print("[oneshot] source review " + json.dumps(record, ensure_ascii=False)[:2000], file=sys.stderr)
+
+
 def second_look(stage, files, messages, model, base, key, budget, template, requirements, scaffold, prerequisites,
                 suites):
     """After the repairs on the first written suite stop, write a second suite afresh and repair against it (roadmap
@@ -2132,7 +2189,18 @@ def check_scenarios(stage, requirements, only=None, translate=True, tests=None):
     of raising: its failure is never the application's fault."""
     try:
         if tests is not None:
-            return _testgen_module().run_suite(stage, tests, requirements or "", only=only)
+            browser_only = None if only is None else [sid for sid in only if "#contract-" not in sid]
+            report = (_testgen_module().run_suite(stage, tests, requirements or "", only=browser_only)
+                      if browser_only is None or browser_only else {"kind": "testgen", "scenarios": [], "invariants": []})
+            try:
+                entries = _contracts_module().check(stage, tests, requirements or "", only=only)
+            except Exception as exc:
+                entries = []
+                report["source_contracts_error"] = type(exc).__name__ + ": " + str(exc)[:300]
+            if entries:
+                report["scenarios"].extend(entries)
+                report["source_contracts"] = dict(collections.Counter(e["status"] for e in entries))
+            return report
         return _scenario_module().run(None, stage, text=requirements or "", only=only, translate=translate,
                                       seconds=CHECK_SECONDS)
     except Exception as exc:
@@ -2191,6 +2259,7 @@ def scenario_summary(report):
         counts[scenario.get("status")] = counts.get(scenario.get("status"), 0) + 1
     translation = report.get("translation") or {}
     return {"counts": counts, "coverage": report.get("coverage"), "seconds": report.get("seconds"),
+            "source_contracts": report.get("source_contracts", {}),
             "failing": [{"id": s["id"], "observation": (s.get("observation") or "")[:400]}
                         for s in report.get("scenarios", []) if s.get("status") in ("fail", "error")],
             "invariants": [{"id": i.get("id"), "observation": (i.get("observation") or "")[:400]}
@@ -2287,10 +2356,11 @@ def repair_request(state, discarded=None, unapplied=(), depths=None, focus=None)
                  + (f"\n  test code:\n" + "\n".join("    " + line for line in s["source"].splitlines()) if s.get("source") else "")
                  for s in shown]
         more = f"\n(and {len(failing) - len(shown)} more failing tests)" if len(failing) > len(shown) else ""
-        sections.append("These acceptance tests fail. Another engineer wrote them from the requirements above without seeing "
-                        "your code, one test per requirement scenario (the id before `#` is the requirement); the code "
-                        "shows what a user does and expects. The requirements are authoritative: where a test and the "
-                        "requirements disagree, keep the requirements' behaviour. Fix the application, not the tests:\n"
+        sections.append("These checks fail. Browser tests were written from the requirements without seeing the application. "
+                        "Entries with #contract- are source-derived counterexamples that invoke actual functions with "
+                        "explicit fixtures; they are diagnostics, not browser tests or acceptance certification. "
+                        "The id before # identifies the requirement. The requirements are authoritative: where a check "
+                        "and the requirements disagree, preserve the requirements' behavior. Fix the application, not the checks:\n"
                         + "\n".join(lines) + more)
         keep = sorted(passing(state))
         if keep:
@@ -2384,7 +2454,8 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     # finding carries the verdict); once the defect is fixed the blocked tests pass. Counting only fail -> pass left
     # such a fix at zero gain (a GitHub replay went from 25 to 32 passing tests and was credited with 4).
     won = ("fail", "error") if written else ("fail",)
-    gained = {sid for sid, status in old.items() if status in won and new.get(sid) == "pass" and not sid.startswith("helper:")}
+    gained = {sid for sid, status in old.items() if status in won and new.get(sid) == "pass" and not sid.startswith("helper:")
+              and ("#contract-" not in sid or status == "fail")}
     unsure = lost | (gained if len(gained) <= 2 else set())
     if unsure:
         recheck = check_scenarios(stage, requirements, only=unsure, translate=translate, **_suite(tests))
@@ -2543,6 +2614,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         if mended[0] or tests is None or state["fatal"] or not (state["report"] or {}).get("scenarios"):
             return state
         mended[0] = True
+        if (Path(tests) / _contracts_module().MANIFEST).is_file():
+            return state  # The source-review phase reuses the already-mended, fixed browser suite.
         try:
             return mend_suite(stage, tests, state, requirements, scaffold, model, base, key, budget)
         except Exception as exc:  # the tests are an aid: a failed mend leaves them as they were

@@ -1,0 +1,125 @@
+{
+  "at": "2026-10-02T06:17:19.250952+08:00",
+  "candidate_sha256": "1d509a809cc5f5e7bb52523a76b3627c331cfd76d77e496d9fa18646e037314d",
+  "evidence_root": "~/projects/arcbench-campaign/evidence/2026-10-02-s70",
+  "comparisons": [
+    {
+      "task": "github",
+      "autonomously_validated_probes_sha256": "eb28e661f3144002e04fd307285bb1d20ebb3323d6b5b91950d73a80dc442426",
+      "source_counterexamples": {
+        "before": [
+          {
+            "id": "REQ-6-1#contract-1",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-6-3-4#contract-1",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-3-2-1#contract-1",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-5-2-2#contract-1",
+            "status": "fail"
+          }
+        ],
+        "after": [
+          {
+            "id": "REQ-6-1#contract-1",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-6-3-4#contract-1",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-3-2-1#contract-1",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-5-2-2#contract-1",
+            "status": "pass"
+          }
+        ]
+      },
+      "independent_browser_before": [
+        69,
+        66
+      ],
+      "independent_browser_after": [
+        69,
+        66
+      ],
+      "browser_suite_original_scenarios_each": 100
+    },
+    {
+      "task": "sheet",
+      "autonomously_validated_probes_sha256": "642f8b510672948c3eb001f08f3cb03a180a176f1184194f22052725b85017ad",
+      "source_counterexamples": {
+        "before": [
+          {
+            "id": "REQ-2-2-2#contract-1",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-2-2-1#contract-2",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-4-1-2#contract-3",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-4-2-2#contract-4",
+            "status": "fail"
+          }
+        ],
+        "after": [
+          {
+            "id": "REQ-2-2-2#contract-1",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-2-2-1#contract-2",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-4-1-2#contract-3",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-4-2-2#contract-4",
+            "status": "pass"
+          }
+        ]
+      },
+      "independent_browser_before": [
+        89,
+        93
+      ],
+      "independent_browser_after": [
+        90,
+        96
+      ],
+      "browser_suite_original_scenarios_each": 100
+    }
+  ],
+  "method": "Model source review, actual-source execution, autonomous semantic/fixture verification; controlled model repair; fixed public-requirement browser judges excluded from repair.",
+  "calibration_boundary": "Initial repairs used operator-calibrated proposals; independently model-corrected raw proposals were then replayed unchanged before and after. Full fresh generation is running to validate the integrated autonomous path.",
+  "runtime_fixes": [
+    "Separate precondition and check block scopes",
+    "Only check-phase calls and assertions count",
+    "Resolve exact same-scope source dependencies",
+    "Supply standard timer cancellation with no scheduled work"
+  ],
+  "delivery_fix": "Recovered the captured single-hunk EDIT variant whose closing marker was a second separator; no source content invented.",
+  "rejected_direction": "Skipped-UI scenario recovery repeatedly violated preconditions/locator scope; prototype removed from candidate and retained only as an evidence patch.",
+  "candidate_changes": [
+    "Source contracts enabled once after UI repairs",
+    "Extra requirement-only UI audit opt-in",
+    "No task fixture, expected answer, or probe hardcoded in package"
+  ],
+  "formal_result": null
+}

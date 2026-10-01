@@ -527,6 +527,21 @@ class OfflineCase(unittest.TestCase):
             adapter.parse_repair("=== EDIT: frontend/public/none.js ===\n<<<<<<< SEARCH\nx\n=======\ny\n"
                                  ">>>>>>> REPLACE\n=== END ===\n", stage)
 
+    def test_single_hunk_separator_closure_is_recovered_without_guessing_content(self):
+        # Framing minimized from a captured 10-02 gateway repair, not a new transport fixture.
+        stage = Path(self.out)
+        (stage / "frontend/public").mkdir(parents=True, exist_ok=True)
+        (stage / "frontend/public/app.js").write_text("const a = 1;\n")
+        reply = ("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nconst a = 1;\n=======\n"
+                 "const a = 2;\n=======\n=== END ===\n")
+        files, missing, skipped = adapter.parse_repair(reply, stage)
+        self.assertEqual(files, [{"path": "frontend/public/app.js", "content": "const a = 2;\n"}])
+        self.assertEqual((missing, skipped), ([], []))
+        with self.assertRaisesRegex(ValueError, "no .*hunk"):
+            adapter.parse_repair(reply.replace("const a = 2;\n", "const a = 2;\n=======\nextra();\n"), stage)
+        with self.assertRaisesRegex(ValueError, "no .*hunk"):
+            adapter.parse_repair(reply.replace("=======\n=== END", "=======\nextra();\n=== END"), stage)
+
     def test_seed_checklist_collects_each_given_seed_once_with_its_requirements(self):
         req = ("id: ROOT\nname: App\ntype: FOLDER\nchildren:\n"
                "- id: REQ-1\n  name: Sign in\n  type: ATOMIC\n  scenarios:\n"

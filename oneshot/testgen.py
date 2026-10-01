@@ -37,7 +37,7 @@ GROUP_SCENARIOS = 30  # scenarios per spec file (one model call); requirements a
 # per app 5.8 vs 21.3; one suite each). 92 % of the output is reasoning,
 # and each call re-reads the whole requirements document before it writes.
 GROUP_WORKERS = 1  # serialize long streams; preserve the completed file before starting the next one
-AUDIT = os.environ.get("ONESHOT_TEST_AUDIT", "1") == "1"  # enabled in the isolated coverage candidate (roadmap 4.34)
+AUDIT = os.environ.get("ONESHOT_TEST_AUDIT", "0") == "1"  # opt-in; replaced by source counterexamples in the S70 candidate
 AUDIT_LIMIT = 6  # Additional requirement-grounded checks per file, after reviewing the existing tests.
 RUN_SECONDS = 900  # one suite run; a hung runner is stopped here
 TEST_SECONDS = 15

@@ -1,6 +1,6 @@
 # One-shot candidate inside VOLO
 
-Last reviewed: 2026-09-23.
+Last reviewed: 2026-10-02.
 
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
@@ -14,9 +14,9 @@ The original three source hashes and Git head are in `oneshot/source_manifest.js
 ```
 
 The default artifact is `oneshot/dist/oneshot.zip`, with a sibling `.zip.manifest.json`.
-The root allowlist is `main.py`, `dialect.md`, `requirements.txt`, `semantic_probe.cjs`, and the scenario
-self-check files `scenarios.py`, `scenario_check.py` and `scenario_check.cjs`;
-regular scaffold files are packaged under `scaffold/`.
+The root allowlist is maintained in `scripts/package_oneshot.py:FILES`. It contains the entrypoint,
+dialect, scenario/browser checkers and source-contract diagnostic executor; regular scaffold files
+are packaged under `scaffold/`.
 Timestamps, order, permissions and uncompressed ZIP encoding are fixed. The external
 manifest binds every current source file to the ZIP hash and retains import provenance.
 Neither forum tools nor platform sessions, test fixtures, or run evidence are packaged.
@@ -50,8 +50,8 @@ outside temporary cleanup. Gateway redirects are refused.
 ## Model calls
 
 The default model is `deepseek-v4-flash` (`MODEL`). Completed calls are capped per phase: four
-for the draft (first draft, continuations, redrafts; `ONESHOT_DRAFT_CALLS`) and six for the
-repairs (`ONESHOT_REPAIR_CALLS`). The repairs also stop at a spend limit, CNY 3 per task by default
+for the draft (first draft, continuations, redrafts; `ONESHOT_DRAFT_CALLS`) and 24 for the
+repairs (`ONESHOT_REPAIR_CALLS`). The repairs also stop at a spend limit, CNY 10 per task by default
 (`ONESHOT_REPAIR_CNY`), which counts the repair calls and the scenario translation; costs are
 estimated from the reported usage with the gateway's price list, and a cut stream from its
 characters. A malformed value stops the CLI before any request.
@@ -120,7 +120,7 @@ vocabulary, and, when the application is not broken as a whole, the scenario sel
   and never trigger a call on their own.
 - **Request.** The whole-application failures, else each failing scenario with the steps the
   browser performed and what it observed (up to 40), the ids of the passing scenarios to keep, and
-  the hints. The files are re-emitted whole.
+  the hints. Existing files use exact SEARCH/REPLACE edits; new or short files may be emitted whole.
 - **Acceptance.** A repair that makes a broken application work again is kept whatever else it did
   (the waived guards are listed in `rounds[].waived`). Otherwise it is kept only when at least one
   scenario that failed now passes, it gains three such scenarios for every passing one it loses, no
@@ -139,7 +139,7 @@ vocabulary, and, when the application is not broken as a whole, the scenario sel
 - **Stop.** When nothing fails; when the next call would exceed the spend limit (spend so far plus an
   estimate: the whole prompt uncached and as much output as the largest completed repair, at least
   8000 tokens; the retries of one failing stream and an unusually long reply can still overrun it);
-  at the repair call or transport failure limit; after three discarded repairs in a row; or after
+  at the repair call or transport failure limit; after four discarded repairs in a row; or after
   three hours of repairs. One scenario check starts no scenario after 30 minutes (those left are
   `Not run`).
 - **Record.** `smoke.rounds` holds every round: `fatal` and `failing` (what triggered it), `reason`,
@@ -155,6 +155,33 @@ The browser helper uses Playwright 1.57.0. It reuses a reachable Node package an
 or installs the pinned package and headless Chromium into runtime caches with bounded waits.
 `NODE_PATH` and `PLAYWRIGHT_BROWSERS_PATH` may supply existing installations. Generated apps still
 receive no gateway credentials. The root `main.py` / `volo/` remain frozen legacy components.
+
+## Source counterexamples (S70 candidate)
+
+`source_contracts.py` runs once after the first written browser suite's repairs, when that suite
+has passing scenarios. One model call proposes up to four business-rule counterexamples from public
+requirements and the current generated JavaScript. Exact current functions, object methods and
+constants are extracted with Acorn 8.15.0 and executed in a fresh synchronous JS context. A second
+model call reviews fixture validity and requirement semantics using the execution feedback.
+
+The definitions then stay fixed while repairs run against both browser tests and the source checks.
+Each check rebinds the current source, so cached old function bodies cannot produce a gain. A
+failed precondition, missing dependency or other fixture/runtime error is unjudged. A gain requires
+a failing assertion to become passing; error-to-pass source checks never count as gains. Only calls
+and assertions during the check phase count, independently from its precondition.
+
+These checks are diagnostics, not acceptance certification. They do not populate
+`verified_requirements`. The trace retains both review prompts and responses, actual usage, the
+first phase's summary and the source-review outcome. The VM is not a security boundary; execution
+receives the existing minimal child environment without model credentials. The pinned parser is
+reused from a runtime cache or installed through npm with a bounded wait, and is not an application
+dependency. No task-specific probe or generated application source is shipped in the agent ZIP.
+
+The isolated candidate enables `ONESHOT_SOURCE_CONTRACTS=1` and makes the earlier extra UI audit
+opt-in (`ONESHOT_TEST_AUDIT=0`). This is an experimental default until fresh generation and a complete
+official pair establish its effect. The controlled pilot found four reproducible defects per task;
+the unchanged independent browser judges held at 69/66 for GitHub and improved 89/93 to 90/96 for
+Sheet. These are local diagnostics, not official scores.
 
 ## Scenario self-check
 
