@@ -256,3 +256,15 @@ No official run, real model generation, new Keep/Bookstack score, or quality imp
 is claimed. Next validation must use a fixed candidate, independent Lite generations,
 and the actual official worker/time-limit environment. Static delivery checks do not
 replace that measurement. The completed-call allowances are not a monetary budget.
+
+## October 2 coverage candidate (not yet promoted)
+
+The isolated candidate reviewed in roadmap 4.34 writes the draft before it starts paid test generation, then writes
+and audits one test file at a time. ONESHOT_TEST_AUDIT defaults to 1 in that candidate; 0 disables the extra audit.
+Each added check cites a verbatim atomic-requirement description. Unsupported claims are discarded individually,
+while all original test declarations remain intact. The audit is still a diagnostic oracle, not official acceptance.
+Playwright failure-page context is bounded and read only from the current test runner's output tree; it accompanies
+repair requests as observations. Current completed-call limits are 4 draft / 24 repair and the repair spend limit is
+CNY 10. Fallback handles the failing call only. Vision pricing was refreshed from the official October 1 catalogue.
+See the current handoff for candidate status and real generation evidence; packaging and deterministic tests alone
+do not establish quality or a score gain.

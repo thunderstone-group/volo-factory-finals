@@ -46,3 +46,5 @@
 - `handoffs/2026-09-22-2221.md`: v24 controlled BookStack 34/34 and the prepared official trial, before the official 9/34 result and the harness review.
 
 - `handoffs/2026-09-23-0955.md`: pre-opening handoff written with the review and roadmap v1, before consolidation and the first workstreams.
+
+- `handoffs/2026-10-01-before-extension-push.md` — Frozen handoff before the October 1 extension and behaviour-coverage experiment.

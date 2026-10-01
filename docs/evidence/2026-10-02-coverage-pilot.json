@@ -1,0 +1,163 @@
+{
+  "observed_at": "2026-10-02T01:34:27.051173+08:00",
+  "baseline_package": "bfddd36c",
+  "candidate_package": "c2a2b32a",
+  "candidate_source_commit": "0df8483",
+  "pilot": {
+    "pilot_cost_cny_estimated": 1.2032464,
+    "calls": 4,
+    "captured_response_replay_calls": 0,
+    "accepted_claims": 18,
+    "added_results": {
+      "sheet": {
+        "pass": 8,
+        "fail": 1
+      },
+      "github": {
+        "pass": 6,
+        "fail": 3
+      }
+    },
+    "review": [
+      {
+        "id": "REQ-3-1-1#audit-2",
+        "classification": "confirmed product defect",
+        "evidence": "After invalid inline edit, commitCellEditor clears editing state and notifies but returns without rendering the old value. Browser observed blank cell instead of 50.",
+        "source": "sheet-81-cbe0e2b43105/template/frontend/public/app.js:702"
+      },
+      {
+        "id": "REQ-6-2-2#audit-1",
+        "classification": "product permission defect confirmed; test assertion overly specific",
+        "evidence": "screens.compare checks only currentUser and canViewRepo, then exposes Create pull request. Requirement restricts compare creation to writing roles. The pilot asserts disabled link rather than attempting the prohibited flow; revised prompt must avoid inventing that UI detail.",
+        "source": "github-24-65c9a5df6145/template/frontend/public/app.js:252"
+      },
+      {
+        "id": "REQ-6-1#audit-1",
+        "classification": "test navigation assumption",
+        "evidence": "Test looks for Code while still on branch settings; that navigation is not established by the cited requirement. It never exercised direct-write rejection."
+      },
+      {
+        "id": "REQ-6-2-3#audit-1",
+        "classification": "test navigation assumption",
+        "evidence": "Test looks for Pull requests on a PR detail screen rather than returning through the documented repository entry. It never exercised duplicate submission."
+      }
+    ],
+    "decision": "Pilot shows novel coverage and two source-confirmed defect classes. Prompt tightened for unsupported navigation and implied disabled-control assertions. No independent-generation or official improvement has yet been established.",
+    "formal_baseline": {
+      "submission": "91bc50f2f30d",
+      "github": "49930bdb20c3",
+      "sheet": "06836d4c5363",
+      "package": "bfddd36c"
+    }
+  },
+  "kimi_full_trial": {
+    "candidate": "kimi-sheet-1",
+    "package": "66809c07",
+    "model": "kimi-k2.7-code-highspeed",
+    "decision": "reject for official promotion",
+    "basis": "Both fixed independent judges score this generated app substantially below the frozen baseline, at materially higher estimated generation cost. One sample does not establish a universal model ranking.",
+    "judges": {
+      "baseline-sheet-81-cov99n-arm": {
+        "app": "baseline-sheet-81",
+        "judge": "cov99n-arm",
+        "counts": {
+          "pass": 88,
+          "fail": 12
+        },
+        "seconds": 90.4,
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        }
+      },
+      "kimi-sheet-1-g99": {
+        "app": "kimi-sheet-1",
+        "judge": "g99",
+        "counts": {
+          "pass": 29,
+          "fail": 39,
+          "error": 36
+        },
+        "seconds": 430.6,
+        "coverage": {
+          "total": 100,
+          "parsed": 68
+        }
+      },
+      "baseline-sheet-81-g99": {
+        "app": "baseline-sheet-81",
+        "judge": "g99",
+        "counts": {
+          "pass": 90,
+          "fail": 10
+        },
+        "seconds": 72.5,
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        }
+      },
+      "kimi-sheet-1-cov99n-arm": {
+        "app": "kimi-sheet-1",
+        "judge": "cov99n-arm",
+        "counts": {
+          "pass": 25,
+          "fail": 37,
+          "error": 46
+        },
+        "seconds": 447.8,
+        "coverage": {
+          "total": 100,
+          "parsed": 62
+        }
+      }
+    }
+  },
+  "transport_control": {
+    "request_sha256": "94e31e7843c3895e94398a8eeb99a701cdd1d9eb0b8078ee5959973eaf43b224",
+    "curl_exit": 0,
+    "http_status_version": "200 1.1",
+    "stderr": "",
+    "seconds": 64.7,
+    "events": 15924,
+    "done": true,
+    "finish": "stop",
+    "content_chars": 6785,
+    "reasoning_chars": 53229,
+    "usage": {
+      "completion_tokens": 15923,
+      "completion_tokens_details": {
+        "reasoning_tokens": 14065
+      },
+      "prompt_cache_hit_tokens": 1024,
+      "prompt_cache_miss_tokens": 233,
+      "prompt_tokens": 1257,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024
+      },
+      "total_tokens": 17180
+    },
+    "invalid_frames": []
+  },
+  "python_replay": {
+    "status": "completed",
+    "finish": "length",
+    "usage": {
+      "prompt_tokens": 1257,
+      "completion_tokens": 16384
+    },
+    "content_chars": 0,
+    "seconds": 69.1,
+    "estimated_cost_cny": 0.06578948
+  },
+  "validation": {
+    "oneshot_total": 245,
+    "passed": 242,
+    "skipped": 3,
+    "legacy_total": 226,
+    "legacy_skipped": 12,
+    "secret_scan": "no leaks in candidate source and four new commits"
+  },
+  "official_status": "The frozen baseline pair was cancelled after repeated truncated streams; no new official score exists yet. Candidate Vision generation is active and has not been uploaded.",
+  "full_local_evidence_root": "~/projects/arcbench-campaign/evidence/2026-10-01-leaderboard-push"
+}
