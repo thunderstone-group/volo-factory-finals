@@ -13,6 +13,7 @@
 - 新模块 `oneshot/source_contracts.py`、`contract_bindings.cjs`、`contract_runner.cjs`；包 allowlist 已更新。执行器重新提取实际函数，自动连接同词法作用域依赖；precondition/check 分块，只统计 check 中的真实调用和断言。
 - 新通用修复：真实模型 EDIT 响应以第二个 `=======` 结束单 hunk；仅该无歧义形式会恢复成闭合标记，不改 SEARCH/替换内容。
 - **v2 新包** `E2/candidate-contracts-v2.zip`，SHA **7f3a549d2db87722fa6b35b6cf88b4720ba3831a4e664843aac65e0ab5ff89be**。新生成 Sheet 使用 `SP.fn = function...`，v1 提取器不支持；v2 绑定实际命名空间、全部实际成员/常量和调用 receiver。针对性 12 项回归、真实新应用坐标函数往返、旧八项反例前后回放通过。v1 进程及其解包代码完全未改。
+- **v2b 修正包（尚未全程运行）** `E2/candidate-contracts-v2b.zip`，SHA **b106172445872686fc6e4d349576cc3a5f5ce58b31f48e58a4b4b47642e28cfd**，实现提交 **6a8c37a**。只比 v2 改动 `source_contracts.py`：另一个命名空间的常量引用也必须恢复真实成员，已用实际会误判成应用 fail 的合成用例复现并修复，现有针对性共 **13 项通过**。生成、UI 套件、浏览器修复各文件与 v2 字节相同，源代码审查提示也未变；不能把它说成已经完整运行的新包。见 `E2/v2b-validation-plan.json`。
 - 早先 skipped-test recovery 原型在三份冻结应用上有错误前置条件/定位，已完全从候选源码撤掉，仅外部证据保留 `recovery-prototype.patch`。不要重新打开它。
 
 ## 正在运行，不能重复启动
@@ -22,6 +23,7 @@
 - E2 `generate_candidate.py` 的两个正式公共需求本地全新生成，**practice credit，Vision 模型**，精确解包执行上述 ZIP。输出 `generate-contracts-github/`、`generate-contracts-sheet/`；`process.json` 有子 PID，`.oneshot-*/progress.json` 是实时阶段，`stderr.log` 是真 trace。06:28 两个初稿已完成并在等待 UI 套件；Vision 流正常，没有 HTTP 错误。
 - 主生成 exec session **59202**。不要重启这两个非空目录。
 - **v2** E2 `generate_candidate_v2.py` 已另起完整双题，session **38485**，输出 `generate-contracts-v2-{github,sheet}`；自动独立裁判 watcher `watch_generation_v2.py` session **76732**，日志 `generation-v2-watch.log`，最终 `fresh-pair-v2-validation.json`。费用沿用 practice，模型 Vision。不要重复启动。
+- **v2 UI checkpoint watcher**：E2 `capture_ui_checkpoint.py`，session **66380**，日志 `checkpoint-watch.log`；已精确按创建时间绑定 G 套件 `oneshot-tests-fxmnxhec`、S 套件 `oneshot-tests-oac23864`。它会在各自首次 `repair end` 后、代码审查期间冻结 `ui-checkpoint-v2-{task}/{application,suite,checkpoint.json}`，不改运行中的 app。可用来独立复查 v2b 检查器并验证后续真实源代码修复阶段，避免为无关的生成/UI 前半段反复花费。仍须如实区分完整生成与分段续跑证据。
 - E2 `watch_generation.py` 已启动，exec session **97285**，日志 `generation-watch.log`。它等每个生成结束，解析 stderr 的 usage/smoke 到 `run-summary.json`，然后自动跑两套固定独立裁判；完成写 `fresh-pair-validation.json`。**它不会正式提交。**
 - 冻结初稿副本 `draft-contracts-{github,sheet}/application` 已保存，用来量同一初稿修复前后变化。它们的独立裁判另在运行，session G **99227**、S **47923**；初稿 G 的 gh8 已是 36/100，其他未读。初稿分不是最终候选分，也不喂给修复。
 - 固定裁判工具 E2 `judge_contract_repair.py --task TASK --name NAME`，使用 E1 `frozen-judge-harness`，题目来源都是公共需求。结果 E2 `judges/NAME-JUDGE/{report,summary}.json`。每套 100 个原始场景，helper 汇总可能让状态条目数超过 100，不能据此改分母。
