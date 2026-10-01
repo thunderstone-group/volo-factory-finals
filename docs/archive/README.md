@@ -50,3 +50,5 @@
 - `handoffs/2026-10-01-before-extension-push.md` — Frozen handoff before the October 1 extension and behaviour-coverage experiment.
 
 - `handoffs/2026-10-02-before-paired-result.md` — In-flight coverage experiment before the complete 27/73 official result.
+
+- `handoffs/2026-10-02-0338.md` — Complete 27/73 result and priorities before the explicit S70 goal.

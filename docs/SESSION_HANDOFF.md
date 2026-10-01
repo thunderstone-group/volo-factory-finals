@@ -1,48 +1,52 @@
-# 当前交接 — 2026-10-02 03:38：正式 27 / 73，本轮不晋升
+# 当前交接 — 2026-10-02 06:28：S70 目标进行中，代码反例候选全新双题生成
 
-先读 `docs/reference/roadmap.md` 4.35、`docs/evidence/2026-10-02-paired-official-r1.json` 和 progress 最新条目。用户要求继续冲榜并保持泛化能力；不要把任务简化为无改动抽样，也不要再问已授权的小额调用许可。
+**继续执行，不要只回状态后结束。** 用户明确「定一个目标：把 s 提升到 70」「我去睡觉了，你这边持续优化吧」。目标工具已 active：同一次正式完整双题提交总榜 S ≥ 70，保留泛化能力；没有 token budget。现有练习与正式余额可用，不重复询问小额许可，不购买或充值。未达标不 complete。没有授权派子 agent，本轮未派发。
 
-## 当前结果
+先读 `docs/reports/2026-10-02-generalization-bottlenecks.md`、roadmap 4.36、`docs/evidence/2026-10-02-source-contract-pilot.json`。当前新代码全部在隔离工作树；主 checkout 保持 main。源码现场用 git 查，文档提交不会改变下列精确包。
 
-- 正式提交 **1b6b453f30dc**，模型 **deepseek-v4-flash-vision-exp**，精确包 **c2a2b32a5ed1ff709859cfe3989143cc44bc1343d8937d8ed20e110eb6f518b0**。
-- GitHub **47d482ac1890**：**27/100**，10/47 功能，**3.019351 元**；Sheet **6f78f5bdce60**：**73/100**，11/24 功能，**4.026317 元**。两题官方测试均已终止，费用合计 **7.045668 元**，总通过 **100/200**。
-- 旧最佳同提交为 GitHub 24、Sheet 81，105/200；总榜仍保留 **S 59.751714998087095**，观察时第 7。历史 Sheet 单题最好 86。本轮未提升整体，不晋升覆盖审查与 Vision 的组合；不能由一个组合样本隔离模型、审查、页面反馈各自的因果效果。
-- **没有活跃的本地生成、官方运行、裁判或 watcher。** 所有本轮进程已结束。不要恢复取消的旧 baseline，也不要重复启动本轮输出目录。
+## 代码与包
 
-## 代码与边界
+- 工作树：`~/projects/volo-factory-worktrees/s70-20261002`，分支 `goal/s70-20261002`；从 main f643e2f 创建后 fast-forward 到上一实验 13b5880，保留 ancestry。
+- 实现提交 eb6b0c2，分析文档 cdbd627；草稿 PR **https://github.com/thunderstone-group/volo-factory/pull/111**，未合并。旧草稿 #110 未关闭。
+- 当前精确 ZIP：`~/projects/arcbench-campaign/evidence/2026-10-02-s70/candidate-contracts.zip`，SHA **1d509a809cc5f5e7bb52523a76b3627c331cfd76d77e496d9fa18646e037314d**。
+- `SOURCE_CONTRACTS` 默认 1，额外 UI `AUDIT` 默认 0，正常 UI 测试生成仍启用。先跑原浏览器修复，再提出/执行/校验至多四项当前源代码反例，定义冻结后对两类检查一起修复。夹具错误不算缺陷或修复收益。Acorn 8.15.0 按需安装到临时缓存，执行子进程无模型密钥。包不含应用答案或任务反例。
+- 新模块 `oneshot/source_contracts.py`、`contract_bindings.cjs`、`contract_runner.cjs`；包 allowlist 已更新。执行器重新提取实际函数，自动连接同词法作用域依赖；precondition/check 分块，只统计 check 中的真实调用和断言。
+- 新通用修复：真实模型 EDIT 响应以第二个 `=======` 结束单 hunk；仅该无歧义形式会恢复成闭合标记，不改 SEARCH/替换内容。
+- 早先 skipped-test recovery 原型在三份冻结应用上有错误前置条件/定位，已完全从候选源码撤掉，仅外部证据保留 `recovery-prototype.patch`。不要重新打开它。
 
-- 主仓库 `~/projects/volo-factory` 保持 main，基线 f643e2f，对应旧包 bfddd36c。
-- 工作树 `~/projects/volo-factory-worktrees/behavior-coverage-20261001`，分支 `exp/behavior-coverage-20261001`。草稿 PR **https://github.com/thunderstone-group/volo-factory/pull/110**，未合并。现场用 git 查看文档 HEAD；最新实现提交是 **29aaf9c**。
-- c2a2b32a 已正式测试；后续 **66befa6** 修复已有断言 helper 被拒收、entry point 误触发控件名判断；**29aaf9c** 只补实时 GLM Flash 价格。这些后续改动**不在**上述正式提交中。
-- 后续准备包：`candidate-guards.zip` 为 **ee70a3ce3ee9d49165ee62416acef2d7d881783c8781c2f352f9823e8b177701**；含 GLM 定价的 `candidate-guards-glm.zip` 为 **2a88e7983e364f41ae8d3e6a7523c42404c3e063912afb65608bdd8595c4fb65**。两者均无新正式分数。
-- active 仍为 oneshot；legacy 不改。新增程序包不含任务答案、固定任务路由或推测的隐藏测试。
+## 正在运行，不能重复启动
 
-## 已证实的瓶颈
+外部当前证据目录简称 **E2**：`~/projects/arcbench-campaign/evidence/2026-10-02-s70`；上一轮 **E1**：同父目录 `2026-10-01-leaderboard-push`。
 
-同一份正式应用也有明显的裁判差距，不能只归因于本地和线上生成了不同应用：
+- E2 `generate_candidate.py` 的两个正式公共需求本地全新生成，**practice credit，Vision 模型**，精确解包执行上述 ZIP。输出 `generate-contracts-github/`、`generate-contracts-sheet/`；`process.json` 有子 PID，`.oneshot-*/progress.json` 是实时阶段，`stderr.log` 是真 trace。06:28 两个初稿已完成并在等待 UI 套件；Vision 流正常，没有 HTTP 错误。
+- 主生成 exec session **59202**。不要重启这两个非空目录。
+- E2 `watch_generation.py` 已启动，exec session **97285**，日志 `generation-watch.log`。它等每个生成结束，解析 stderr 的 usage/smoke 到 `run-summary.json`，然后自动跑两套固定独立裁判；完成写 `fresh-pair-validation.json`。**它不会正式提交。**
+- 冻结初稿副本 `draft-contracts-{github,sheet}/application` 已保存，用来量同一初稿修复前后变化。它们的独立裁判另在运行，session G **99227**、S **47923**；初稿 G 的 gh8 已是 36/100，其他未读。初稿分不是最终候选分，也不喂给修复。
+- 固定裁判工具 E2 `judge_contract_repair.py --task TASK --name NAME`，使用 E1 `frozen-judge-harness`，题目来源都是公共需求。结果 E2 `judges/NAME-JUDGE/{report,summary}.json`。每套 100 个原始场景，helper 汇总可能让状态条目数超过 100，不能据此改分母。
+- 没有本轮新正式 run。不要恢复前一轮取消的 baseline，也不要重新运行已终态的正式 pair。
 
-| 产物 | 书面自测 | 独立书面裁判 | 正式 |
-|---|---:|---:|---:|
-| 正式 GitHub | 112 过，13 未判定 | gh99 69 / gh8 66 | 27 |
-| 正式 Sheet | 112/112 | g99 89 / cov99n-arm 93 | 73 |
+## 已完成的机制验证
 
-- 旧对照独立分：GitHub 61 / 69；Sheet 90 / 88。本地 Vision 的另一份产物为 GitHub 65 / 64、Sheet 94 / 94。每套独立裁判有 100 个原始场景；helper 汇总会增加错误条目，不能把错误数简单加成分母。
-- 正式 GitHub 的 13 未判定中，7 项被归为组合名称缺少原文依据，6 项主动跳过；本地 GitHub 也跳过了 7 条审阅/权限路径。跳过不代表该功能正确，也不证明前置状态不可构造。
-- 正式 GitHub 源码的真实业务函数已复现：同一 reviewer 从 Request changes 改为 Approve，旧决定仍阻止合并，违反公开需求的有效决定替换规则。保留历史与替换有效状态未正确区分。此为独立函数复现，不冒称隐藏用例定位。
-- 原审查误拒了用已有 helper 断言的两组测试；用原模型响应离线重放恢复 11 条。浏览器回放：本地 Vision Sheet 11/11，旧 81 分产物 10/11，正式 73 分产物 10/11。正式产物的 Is empty 在混合空/非空值时把空行也隐藏；默认值勾选列表和条件组合不一致。
-- 固定独立裁判未参与生成或修复，harness 已固定到 c2a2b32a 解出的 `frozen-judge-harness`。两题输入需求 SHA 与当前公开文档、基线归档逐字节一致。
-- 平台两题的 failed_tests 都为空；不能把未公开的失败直接归因到某条隐藏断言，也不能再主张 GitHub 存在 24 分上限。观察时公开最高已为 GitHub 70、Sheet 99。
+- 冻结正式应用 E1 `official-{github,sheet}-r1/application`。原始模型审查、校验脚本和真 trace 都在 E2 `contracts-*`；`contracts-verified-*` 是仅从原始提案和运行反馈自动校验的反例，没有操作员改写这些返回定义。
+- GitHub 自动校验后四项在原产物均 fail，在模型修复产物均 pass；涉及提交推进使旧审核失效、同 reviewer 最新决定、owner 范围唯一性、标题长度。Sheet 四项也均 fail 到 pass，涉及删列保持其他行、插行迁移透视范围、公式越界及非法引用。
+- 受控修复应用 E2 `contract-repair-{github,sheet}/application`。原始修复输入曾由操作员校准；随后自动校验的原始提案在前后原样回放。不能仅凭这组结果声称完整自主流水线有效，新生成就是补这个关口。
+- 未参与修复的固定独立裁判：GitHub **69/66 到 69/66**；Sheet **89/93 到 90/96**。
+- 新版完整确定性检查：one-shot **259 运行、256 过、3 可选就绪跳过**；legacy **226 运行、214 过、12 可选集成跳过**。E2 `tests-contract-final.log`、`tests-legacy.log`。source/package gitleaks 都 0，精确 ZIP 对两个真实配置凭据字段扫描 0 匹配。
+- Node 缓存通常是 `/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/{oneshot-playwright-test-1.57.0,oneshot-jsdom}/node_modules`。Python 用 `~/projects/volo-factory/.venv/bin/python`。
 
-## 验证、费用与模型对照
+## 晋升与下次正式提交
 
-- 断言/helper 与名称修复后：one-shot 248 项运行，245 通过、3 个可选浏览器就绪检查跳过；legacy 226 项运行，214 通过、12 个可选集成跳过。之后只新增 GLM 价格，实时目录全量比对与费用计算针对性检查通过。秘密扫描无发现。
-- GLM 全任务请求 max_tokens=131072，却在 16384 输出 token 处以 length 结束，全部推理、零代码。只改 reasoning_effort=low 的同请求对照也相同。默认第二次尝试由操作者中断；没有产物和质量分，不再重复该调用路线。不能据此断言模型本身只能输出 16k，或参数确被网关采用。
-- Kimi 完整 Sheet 样本被独立裁判否决（29 / 25 对基线 90 / 88）；早前 Flash 正式基线与本地样本因流截断取消，没有质量分。截断帧已有真实夹具；未替换 HTTP 客户端。
-- 截至本轮结束的读取：练习 **439.583993 元**，相对起点减少 **34.488680 元**，pending billing events 为 0；正式 **227.577645 元**，减少 **7.045668 元**。首批内部上限仍为练习 80、正式 40；现有余额已授权，余额不足才通知，不购买、不充值。
-- 主办方通知截止 **10-03 23:59**，追加练习 300、评测 200。以用户公告为准，不沿用通用网页的旧日期。
+- 已在新产物结果前记录 E2 `candidate-gates.json`：两题完整交付、source review 实际执行，不能所有代码反例都未判定；独立 G 两套至少 66/63 且合计 ≥ 135，独立 S 至少 86/90 且合计 ≥ 182。它们只是回归方向关口，不能预测正式分。
+- 过关后核实当前 run/预算、精确包 hash，直接正式上传并发起同一次提交的两题，不重新询问许可。模型与本地相同 Vision。监控到两题正式测试终态，读取对应总榜；不把上传/运行中当评分，不拼接单题最好分。
+- CLI 唯一入口 `arcbench --env-file ~/.config/arcbench/volo.env`，不要打印 env 真值。正式上传 `upload --competition hackathon --official-evaluation --model deepseek-v4-flash-vision-exp --runtime python --name NAME ZIP --json`；`run SUBMISSION --all-tasks --json`。status/logs/download 的用法以 help/现有 E1 watcher 为准。
+- 06:27 刚通过 CLI 下载新的公开 requirements ZIP，E2 `requirements-live.zip`。两题 SHA 仍逐字节相同：G **bdc17d23265a6b1948aec150e69d0b2accfa37db4c569305c97be7ff7f3b0b8f**，S **9cddf67be50748106289ed158648629a6c50c30a490d0eda5bd570c557440b96**。没有新映射资料证据。论坛匿名读取拒绝、Chrome 没有论坛登录标签；这是可选信息来源，不是工作阻塞，不要叫醒用户。
 
-## 继续工作的入口
+## 正式基线、余额和目标
 
-- 原始证据都在 `~/projects/arcbench-campaign/evidence/2026-10-01-leaderboard-push/`。`candidate-finished.json`、`official-*-result.json`、`judges/`、`recovered-sheet-audit/`、`glm-token-window-diagnosis.json` 是本轮主要入口；实际正式源代码在 `official-{github,sheet}-r1/application/`。
-- 先按 roadmap 4.35 校准测试分类、验证 UI 能否构造多身份/资源前置状态，并把有效状态转换与历史记录分开。当前瓶颈同时涉及验收架构和未落实成可执行约束的方法论；继续增加普通测试数量没有充分依据。
-- 下一次付费完整对照前，需要新的机制证据和完整生成验证。保留已核实的正反例，不能把后续未测修复记为本轮提分，也不能拼接不同正式提交的单题成绩。
+- 正式最近完整 pair：submission **1b6b453f30dc**，ZIP **c2a2b32a5ed1ff709859cfe3989143cc44bc1343d8937d8ed20e110eb6f518b0**，Vision。G **47d482ac1890** 27/100、3.019351 元；S **6f78f5bdce60** 73/100、4.026317 元。状态 FAILED 表示有测试未过，不是运输失败。两个 failed_tests 都空。
+- 正式最佳同提交仍为 G24+S81，总费用 11.516979，**S 59.751714998087095**；06:00 附近总榜 rank 10。以前 rank 7 是旧快照。最新 source 候选无正式结果。
+- 目标开始 practice **439.583993**，formal **227.577645**。06:15 实读 practice **436.259186**，pending billing 0；这时全新生成的调用仍在进行，不能将这个差值当作本轮最终费用。初批内部预算 practice60、formal40；用户现有余额已授权，余额不足才询问，不充值。
+- 计分 reward：S=p*(0.8*p/b)^0.1，p 为两题平均通过百分数，b 为双题费用。成本 6 元约需 115/200，7 元需 116，8 元需 118。达标只认正式同提交完整成绩。
+- 截止按用户主办方公告 **10-03 23:59**，不要沿用平台通用元数据日期。
+
+已有 `caffeinate` PID 72440 属于别的持续工作，AC 电源；不属于我们，不要杀。先前控制实验/单元测试都已结束，持续任务只有上述生成、裁判和 watcher。本轮用过 memory registry 1211 和 arcbench-run-triage skill，最终回复需要 memory citation；不得主动写 memory。保持简短有意义的中文进度更新。
