@@ -1,4 +1,8 @@
-# 当前交接 — 2026-10-02 01:35：Vision 两题独立生成中，尚无新正式成绩
+# 当前交接 — 2026-10-02 02:01：正式双题已启动，本地验证继续
+
+最新状态优先于下文旧检查点：用户追问何时提交测评，已在 **01:51** 提前提交同一冻结包 c2a2b32a，正式提交 **1b6b453f30dc**，模型 deepseek-v4-flash-vision-exp。GitHub **47d482ac1890**、Sheet **6f78f5bdce60** 均已确认 RUNNING，部署完成、agent 执行中，尚未出分。上传下载哈希一致，当前官网两份需求与本地逐字节一致。为这一组有限正式实验放宽了「等本地全部修复结束才提交」的内部关口，不再等候上传，也不要重复启动。正式与练习凭据隔离。
+
+继续读取证据目录 candidate-latest.json / candidate-finished.json；只读 watcher watch_candidate.py 正在运行。judge_when_ready.py 等待两份本地 finished.json 后自动执行固定独立裁判，勿重复启动相同裁判目录。GitHub 旧正式 24 分产物的独立裁判 gh99 / gh8 为 **61 / 69**；Sheet 基线为 **90 / 88**。本地 Vision Sheet 首轮修复自测 **94 -> 113**，117 条中剩 4 条失败；GitHub 补充审查即将完成。两份本地产物尚未结束。PR **#110** 保持 draft，未合并，正式分数及真实费用待读取。
 
 先读 `docs/reference/roadmap.md` 4.34、`docs/reference/preliminary-rules.md` 当前截止更新，以及 `docs/evidence/2026-10-02-coverage-pilot.json`。继续用户的冲榜任务，不要只做报告或重新询问小额模型调用许可。
 
@@ -36,8 +40,8 @@
 ## 接下来必须完成
 
 1. 监控两份 Vision 生成，保留真实模型调用、失败、费用与最终源码。若网络失败，按传输分类，不据此评价模型能力。不要继续叠加候选代码改动。
-2. 完成后用固定独立裁判评分：Sheet 运行 `judge_generated.py vision-sheet-1`；GitHub 使用冻结 gh99 套件，并同旧 GitHub 24 分产物对照。测试不参与这些生成过程。
-3. 两题满足本地关口后，核对实时任务/额度、精确包哈希、代码扫描和当前官方需求，再按完整两题发正式提交。不得拼接不同提交单题；不能把自测/打包/上传当正式成绩。
+2. 完成后用固定独立裁判评分：已启动 `judge_when_ready.py`，依次调用 Sheet 的 `judge_generated.py` 和 GitHub 的 `judge_github.py`；先检查已有结果，不重复执行。测试不参与这些生成过程。
+3. 正式候选双题已经启动，跟踪当前两个 run 至终态。不重复上传，不拼接不同提交单题，不能把自测/打包/上传当正式成绩。
 4. 读取正式终态、真实费用和对应提交榜单；达到晋升依据再考虑合并 PR。所有异常与负面结果也进账本。若差于基线，不盲目继续同包抽样。
 
 旧交接原样保留在 `docs/archive/handoffs/2026-10-01-before-extension-push.md`。课程仓库 origin/main 1d1f0bb 无新提交；新需求映射与即时调试支持尚未看到公开入口。Chrome 的 brixton profile 有 VOLO-AI 会话，必要时复用；优先用已配置的独立 arcbench CLI。
