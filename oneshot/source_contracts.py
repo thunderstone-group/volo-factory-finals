@@ -137,7 +137,8 @@ def definitions(reply, requirements):
             raise ValueError("Duplicate counterexample id")
         seen.add(p["id"])
         for name in ("setup", "precondition", "check", "explanation"):
-            if not isinstance(p.get(name), str) or not p[name].strip() or len(p[name]) > 20000:
+            if (not isinstance(p.get(name), str) or len(p[name]) > 20000
+                    or name != "setup" and not p[name].strip()):
                 raise ValueError("Missing or oversized probe " + name)
         code = "\n".join(p[k] for k in ("setup", "precondition", "check"))
         if re.search(r"\b(?:require|process|fetch|setTimeout|setInterval|import)\b", code):

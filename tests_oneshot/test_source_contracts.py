@@ -69,6 +69,15 @@ class SourceContractCase(unittest.TestCase):
         result = self.run_probe(p)["results"][0]
         self.assertEqual((result["status"], result["phase"]), ("error", "precondition"))
 
+    def test_pure_functions_need_no_external_setup(self):
+        self.file.write_text("function adjust(n){return n*2;}")
+        p = copy.deepcopy(PROBE)
+        p.update(setup="", initializers=[], precondition="assert.equal(adjust(0),0);",
+                 check="assert.equal(adjust(3),6);")
+        result = self.run_probe(p)["results"][0]
+        self.assertEqual(result["status"], "pass")
+        self.assertEqual(result["assertions"], 1)
+
     def test_namespace_assignments_use_actual_helpers_values_and_receiver(self):
         self.file.write_text('''const unit=2; var Rules={};
 Rules.scale=unit; Rules.calls=0;
