@@ -64,9 +64,10 @@ TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
 # Load failures only the jsdom probe reports: jsdom lacks APIs a browser has (ResizeObserver, canvas), so a
 # Chromium scenario run decides whether the application is really broken as a whole.
 DOM_ONLY = ("loading / in a DOM", "frontend script error on load", "after scripts run, / renders no visible text")
-# CNY per million tokens (input, cache-hit input, output), from the gateway catalogue (`arcbench models`, 09-23).
+# CNY per million tokens (input, cache-hit input, output), from the gateway catalogue (`arcbench models`).
 PRICES = {"deepseek-v4-flash": (3.0, 0.1, 9.0), "deepseek-v4-flash-vision-exp": (1.0, 0.02, 4.0),
-          "kimi-k2.7-code-highspeed": (13.0, 2.6, 54.0)}  # vision pricing rechecked in the catalogue on 10-01
+          "glm-5.3-flash": (0.8, 0.23, 2.8),
+          "kimi-k2.7-code-highspeed": (13.0, 2.6, 54.0)}  # catalogue refreshed on 10-02
 # Seconds before the second and the third attempt of a call. A local network blip (09-23 13:58, every running
 # generation cut in the same second) spent three one-second retries and moved whole runs to the six times dearer
 # fallback model.
