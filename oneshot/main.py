@@ -2064,6 +2064,8 @@ def finish_suite(job, budget, wait=TESTGEN_WAIT):
         summary["error"] = job["error"] or "no manifest"
     else:
         summary.update({k: job["manifest"].get(k) for k in ("scenarios", "tests")},
+                       audit_checks=job["manifest"].get("audit_checks", 0),
+                       audit_errors=sum(bool(r.get("audit", {}).get("error")) for r in job["manifest"].get("files", [])),
                        files=[{k: r.get(k) for k in ("file", "calls", "finish", "error", "syntax") if r.get(k) is not None}
                               | {"tests": len(r.get("tests") or [])} for r in job["manifest"].get("files", [])])
     budget.suite = summary

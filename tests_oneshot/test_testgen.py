@@ -112,7 +112,7 @@ class WriteCase(unittest.TestCase):
             return f"=== FILE: {name} ===\n{body}=== END ===", {}, "stop"
 
         with tempfile.TemporaryDirectory() as temp:
-            manifest = testgen.write_suite(REQUIREMENTS, temp, complete, workers=1)
+            manifest = testgen.write_suite(REQUIREMENTS, temp, complete, workers=1, audit=False)
             saved = json.loads((Path(temp) / "suite.json").read_text())
         self.assertEqual(saved, manifest)
         first, second = manifest["files"]
@@ -121,6 +121,72 @@ class WriteCase(unittest.TestCase):
         self.assertIn("synthetic transport failure", second["error"])
         self.assertTrue(testgen.runnable(manifest))
         self.assertFalse(testgen.runnable({"files": [second]}))
+
+
+class AuditCase(unittest.TestCase):
+    """Synthetic model replies exercise preservation and grounding, not generation quality."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.suite = Path(self.temp.name)
+        self.group = testgen.plan(REQUIREMENTS)[0]
+        self.path = self.suite / self.group["file"]
+        self.original = "const { test, expect } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => { expect(1).toBe(1); });\n"
+        self.path.write_text(self.original)
+        self.manifest = {"scenarios": 3, "files": [{"file": self.path.name, "tests": ["REQ-1-1: Add one"]}]}
+        (self.suite / "suite.json").write_text(json.dumps(self.manifest))
+        self.claim = {"id": "REQ-1-2#audit-1", "requirement": "REQ-1-2",
+                      "quote": 'Double-clicking a note opens a text box named “Edit <note title>”.',
+                      "gap": "The existing test never checks the editor."}
+        self.addition = "test('REQ-1-2#audit-1: Editor', async ({ page }) => { await expect(page.getByRole('textbox')).toBeVisible(); });"
+
+    def complete(self, messages):
+        self.assertIn(self.original.rstrip(), messages[-2]["content"])
+        return ("=== FILE: coverage.json ===\n" + json.dumps([self.claim]) + "\n=== END ===\n"
+                "=== FILE: additions.cjs ===\n" + self.addition + "\n=== END ==="), {}, "stop"
+
+    def test_appends_grounded_checks_without_rewriting_old_tests_and_is_idempotent(self):
+        manifest = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+        self.assertTrue(self.path.read_text().startswith(self.original))
+        self.assertEqual(manifest["audit_checks"], 1)
+        self.assertEqual(manifest["tests"], 2)
+        self.assertEqual(manifest["files"][0]["tests"][0], "REQ-1-1: Add one")
+        again = testgen.audit_suite(REQUIREMENTS, self.suite, lambda _: self.fail("audit repeated"), workers=1)
+        self.assertEqual(again["tests"], 2)
+
+    def test_unfounded_quote_preserves_the_original_suite(self):
+        self.claim["quote"] = "An invented requirement which was never in the document."
+        manifest = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+        self.assertEqual(self.path.read_text(), self.original)
+        self.assertEqual(manifest["audit_checks"], 0)
+        self.assertIn("verbatim", manifest["files"][0]["audit"]["error"])
+
+    def test_one_unfounded_check_does_not_discard_a_separate_grounded_check(self):
+        def complete(messages):
+            content, usage, finish = self.complete(messages)
+            bad = dict(self.claim, id="REQ-1-2#audit-2", quote="A made up obligation which is not in the requirement.")
+            content = content.replace(json.dumps([self.claim]), json.dumps([self.claim, bad]))
+            content = content.replace(self.addition, self.addition + "\n" +
+                                      self.addition.replace("#audit-1", "#audit-2"))
+            return content, usage, finish
+        result = testgen.audit_suite(REQUIREMENTS, self.suite, complete, workers=1)
+        self.assertEqual(result["audit_checks"], 1)
+        self.assertIn("#audit-1", self.path.read_text())
+        self.assertNotIn("#audit-2", self.path.read_text())
+        self.assertEqual(result["files"][0]["audit"]["rejected"][0]["id"], "REQ-1-2#audit-2")
+
+    def test_unmatched_ids_or_suite_configuration_cannot_be_appended(self):
+        original_addition = self.addition
+        for addition in [original_addition.replace("REQ-1-2#audit-1", "REQ-2-1#audit-1"),
+                         "test.beforeEach(() => {});\n" + original_addition,
+                         original_addition.replace("test(", "test.only(")]:
+            with self.subTest(addition=addition):
+                (self.suite / "suite.json").write_text(json.dumps(self.manifest))
+                self.addition = addition
+                result = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+                self.assertIn("error", result["files"][0]["audit"])
+                self.assertEqual(self.path.read_text(), self.original)
 
 
 def result(status, message="", line=None, file="t01-REQ-1.spec.cjs", snippet=""):

@@ -37,6 +37,8 @@ GROUP_SCENARIOS = 30  # scenarios per spec file (one model call); requirements a
 # per app 5.8 vs 21.3; one suite each). 92 % of the output is reasoning,
 # and each call re-reads the whole requirements document before it writes.
 GROUP_WORKERS = 4  # parallel spec calls; a gateway burst cuts several streams at once
+AUDIT = os.environ.get("ONESHOT_TEST_AUDIT", "1") == "1"  # enabled in the isolated coverage candidate (roadmap 4.34)
+AUDIT_LIMIT = 6  # Additional requirement-grounded checks per file, after reviewing the existing tests.
 RUN_SECONDS = 900  # one suite run; a hung runner is stopped here
 TEST_SECONDS = 15
 ACTION_SECONDS = 5
@@ -342,7 +344,7 @@ def name_tests(body, group):
     return "".join(out) + body[last:]
 
 
-def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
+def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS, audit=None):
     """Write one spec file per group into `suite` with `complete(messages) -> (content, usage, finish)`; a reply
     without a file block is asked once more. Returns the manifest (also saved as suite.json)."""
     suite = Path(suite)
@@ -386,6 +388,156 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
     manifest = {"files": records, "scenarios": sum(len(g["items"]) for g in groups),
                 "tests": sum(len(r.get("tests") or []) for r in records),
                 "seconds": round(time.monotonic() - started, 1), "prerequisites": prerequisites}
+    (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    if (AUDIT if audit is None else audit):
+        manifest = audit_suite(text, suite, complete, workers=workers)
+        manifest["seconds"] = round(time.monotonic() - started, 1)
+        (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    return manifest
+
+
+AUDIT_REQUEST = """Review the test file you just wrote against the requirements, without seeing any application.
+The existing tests are immutable. Find explicit behaviours that they do NOT establish, especially a state change
+used by a later feature, a rejected operation leaving all affected records unchanged, independent records or users,
+invalidation after an earlier result changes, a described boundary/input variant, and equivalent interaction paths.
+An assertion of a heading or success message alone does not establish the changed data or its persistence.
+
+Add at most {limit} focused tests for the most consequential uncovered behaviours of this file's requirements.
+Each test must be justified by a verbatim quote from its ATOMIC requirement description; use only the stated public
+behaviour, never infer an evaluator implementation. Exercise real UI state transitions on fresh records the UI
+creates. Reuse the existing helpers, following their exact signatures. Assert the effect and what must not change.
+Use varied valid inputs where names/values are implementation-independent. Do not mutate shared seed credentials.
+Do not duplicate existing coverage, add performance expectations, or require an unspecified control or message.
+Each test still has the original timeout: prefer a short discriminating sequence over a long kitchen-sink journey.
+For a property that must hold across multiple stated modes or directions, contrast those modes with the same
+discriminating data; testing the property in only the easiest mode leaves the other modes unverified.
+A named control is not guaranteed on every screen. Follow the navigation the requirement actually describes;
+when returning to an entity, reopen it through the documented entry path rather than assuming sibling navigation
+on its detail/settings screens. Do not require an absent/disabled control unless the requirement says so: otherwise
+perform the attempted operation and check its permitted or rejected effect.
+
+Reply with exactly two file blocks. The first is a JSON array (empty if no defensible gap is found):
+=== FILE: coverage.json ===
+[{"id":"<requirement id>#audit-1","requirement":"<requirement id>","quote":"<verbatim description excerpt>","gap":"<what the old tests fail to establish>"}]
+=== END ===
+The second contains ONLY additional test(...) declarations, no imports, helpers, hooks, configuration changes,
+test.skip/only/fixme, or edits to existing code. Titles are exactly '<id>: <short description of the behaviour>'.
+Number ids uniquely within each requirement. Every added test must have an entry in coverage.json and vice versa.
+=== FILE: additions.cjs ===
+<additional tests, or empty when the array is empty>
+=== END ==="""
+
+
+def _audit_test_blocks(body):
+    """Only standalone test(title, async (...) => {...}) declarations; preserve their bodies exactly."""
+    blocks, end = {}, 0
+    clean = lambda value: re.sub(r"/\*.*?\*/|//[^\n]*", "", value, flags=re.S).strip()
+    for match in TITLE.finditer(body):
+        if clean(body[end:match.start()]):
+            raise ValueError("audit additions contain code outside test declarations")
+        head = re.match(r"\s*,\s*(?:async\s+)?\([^)]*\)\s*=>\s*(\{)", body[match.end():])
+        if not head:
+            raise ValueError("audit test must have an inline callback")
+        close = _block_end(body, match.end() + head.end() - 1)
+        tail = re.match(r"\s*\)\s*;?", body[close + 1:]) if close >= 0 else None
+        if not tail:
+            raise ValueError("audit test declaration is incomplete")
+        end = close + 1 + tail.end()
+        sid = _test_id(match.group(2))[0]
+        if sid in blocks:
+            raise ValueError("audit test ids must be unique")
+        blocks[sid] = body[match.start():end]
+    if clean(body[end:]):
+        raise ValueError("audit additions contain trailing non-test code")
+    return blocks
+
+
+def _audit_additions(content, group, requirements, original, node, path):
+    """Validate provenance and identifiers before appending checks; this does not certify their semantics."""
+    blocks = {m.group(1).strip(): m.group(2) for m in FILE_BLOCK.finditer(content or "")}
+    if set(blocks) != {"coverage.json", "additions.cjs"}:
+        raise ValueError("audit must return coverage.json and additions.cjs")
+    claims = json.loads(blocks["coverage.json"])
+    if not isinstance(claims, list) or len(claims) > AUDIT_LIMIT:
+        raise ValueError("audit coverage must be a bounded list")
+    body = unfence(blocks["additions.cjs"]).strip()
+    allowed = {item["requirement"] for item in group["items"]}
+    normalize = lambda value: re.sub(r"\s+", " ", value).strip()
+    ids, grounded, rejected = [], [], []
+    for claim in claims:
+        if not isinstance(claim, dict) or not all(isinstance(claim.get(k), str) for k in ("id", "requirement", "quote", "gap")):
+            raise ValueError("audit claim lacks its id, requirement, quote or gap")
+        rid, sid, quote = claim["requirement"], claim["id"], normalize(claim["quote"])
+        if rid not in allowed or not re.fullmatch(re.escape(rid) + r"#audit-[1-9]\d*", sid):
+            raise ValueError("audit id is not in the file's requirements")
+        ids.append(sid)
+        if len(quote) < 24 or quote not in normalize(requirements[rid].get("description") or ""):
+            rejected.append({"id": sid, "reason": "quote is not a verbatim requirement description excerpt"})
+        else:
+            grounded.append(claim)
+    titles = [m.group(2) for m in TITLE.finditer(body)]
+    test_ids = [_test_id(title)[0] for title in titles]
+    if len(set(ids)) != len(ids) or sorted(ids) != sorted(test_ids):
+        raise ValueError("audit claims and unique test ids do not match")
+    if not claims:
+        if body:
+            raise ValueError("an empty audit must not append code")
+        return "", [], []
+    if SKIPPING.search(body) or re.search(r"\btest\.(?:before|after|describe|use|setTimeout)|\brequire\s*\(", body):
+        raise ValueError("audit additions must not change suite setup or skip tests")
+    if body.count("expect(") < len(claims):
+        raise ValueError("every audit check needs an observable assertion")
+    blocks = _audit_test_blocks(body)
+    if not grounded:
+        raise ValueError("no audit check has a verbatim requirement description excerpt")
+    body = "\n\n".join(blocks[claim["id"]] for claim in grounded)
+    if any("expect(" not in blocks[claim["id"]] for claim in grounded):
+        raise ValueError("every grounded audit check needs an observable assertion")
+    if node and not _parses(node, path, original + "\n" + body):
+        raise ValueError("audit additions do not parse with the existing file")
+    return body, grounded, rejected
+
+
+def audit_suite(text, suite, complete, workers=GROUP_WORKERS):
+    """Append checks for uncovered requirement behaviours. The reviewer sees requirements and tests, never the app.
+    Audit failure preserves the original file and is recorded; no existing assertion is rewritten or removed."""
+    suite = Path(suite)
+    manifest = json.loads((suite / "suite.json").read_text(encoding="utf-8"))
+    groups = {g["file"]: g for g in plan(text)}
+    requirements = {r["id"]: r for r in scenarios.load_requirements(text)}
+    node = _node()
+
+    def one(record):
+        name = record["file"]
+        if record.get("syntax") or not record.get("tests") or name not in groups or record.get("audit"):
+            return
+        path = suite / name
+        original = path.read_text(encoding="utf-8")
+        messages = request(text, groups[name], manifest.get("prerequisites") or "")
+        messages += [{"role": "assistant", "content": f"=== FILE: {name} ===\n{original.rstrip()}\n=== END ==="},
+                     {"role": "user", "content": AUDIT_REQUEST.replace("{limit}", str(AUDIT_LIMIT))}]
+        info = {"claims": [], "calls": 1}
+        record["audit"] = info
+        try:
+            content, _, finish = complete(messages)
+            if finish != "stop":
+                raise ValueError(f"audit response is incomplete ({finish})")
+            addition, claims, rejected = _audit_additions(content, groups[name], requirements, original, node, path)
+            if addition:
+                path.write_text(original + "\n" + addition + "\n", encoding="utf-8")
+                record["tests"] += [m.group(2) for m in TITLE.finditer(addition)]
+            info["claims"] = claims
+            if rejected:
+                info["rejected"] = rejected
+        except Exception as exc:
+            info["error"] = f"{type(exc).__name__}: {str(exc)[:300]}"
+
+    started = time.monotonic()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        list(pool.map(one, manifest["files"]))
+    manifest["audit_checks"] = sum(len(r.get("audit", {}).get("claims", [])) for r in manifest["files"])
+    manifest["audit_seconds"] = round(time.monotonic() - started, 1)
+    manifest["tests"] = sum(len(r.get("tests") or []) for r in manifest["files"])
     (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     return manifest
 
@@ -827,7 +979,8 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
         if timed_out:
             report["timed_out"] = seconds
         counts = collections.Counter(e["status"] for e in report["scenarios"])
-        report["coverage"] = {"total": manifest.get("scenarios"), "parsed": counts.get("pass", 0) + counts.get("fail", 0)}
+        report["coverage"] = {"total": (manifest.get("scenarios") or 0) + manifest.get("audit_checks", 0),
+                              "parsed": counts.get("pass", 0) + counts.get("fail", 0)}
         report["seconds"] = round(time.monotonic() - started, 1)
         return report
     finally:
