@@ -579,6 +579,12 @@ class OfflineCase(unittest.TestCase):
         self.assertIn('"Save Shelf"', gaps[0])
         self.assertNotIn("Shelf Created 1", gaps[0])
 
+    def test_application_entry_point_does_not_turn_nearby_data_into_control_names(self):
+        requirement = ("After returning to the application entry point, the saved range `D2:F9` "
+                       "and headers `Cost/Revenue` remain persisted.")
+        self.assertEqual(adapter.quoted_control_phrases(requirement), [])
+        self.assertEqual(adapter.quoted_control_phrases("Open the `Workspace` entry."), ["Workspace"])
+
     def test_a_phrase_folded_across_lines_is_vocabulary_and_a_quoted_single_character_shifts_no_pairing(self):
         # YAML folds long descriptions: a quoted message broken across two lines was missed and its closing quote
         # paired with the next opening one (`, rows `, `, and` in the Sheet vocabulary, 09-27).

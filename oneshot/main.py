@@ -1700,7 +1700,7 @@ def seed_checklist(requirements):
 
 NAME_MAX_WORDS = 5
 CONTROL_CONTEXT = re.compile(r"\b(click|press|tap|button|link|field|input|textbox|tab|menu|dialog|editor|label|option|"
-                             r"checkbox|radio|toggle|named|called|titled|heading|section|sidebar|nav|navigation|entry|"
+                             r"checkbox|radio|toggle|named|called|titled|heading|section|sidebar|nav|navigation|entry(?!\s+points?\b)|"
                              r"item|action|icon|control|select|dropdown|form|snackbar|toast|notification|message)\b", re.I)
 TOKEN_EDGE = set('<>"\'`')
 

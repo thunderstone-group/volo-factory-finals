@@ -162,6 +162,27 @@ class AuditCase(unittest.TestCase):
         self.assertEqual(manifest["audit_checks"], 0)
         self.assertIn("verbatim", manifest["files"][0]["audit"]["error"])
 
+    def test_accepts_assertions_in_existing_helpers_without_changing_them(self):
+        # Live Sheet audit replies used expectCellText/expectCellFormula rather than inline expect calls.
+        self.original = ("async function expectEditor(page) {\n"
+                         "  await expect(page.getByRole('textbox')).toBeVisible();\n}\n"
+                         "const verifyEditor = async (page) => { await expectEditor(page); };\n" + self.original)
+        self.path.write_text(self.original)
+        self.addition = "test('REQ-1-2#audit-1: Editor', async ({ page }) => { await verifyEditor(page); });"
+        result = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+        self.assertEqual(result["audit_checks"], 1)
+        self.assertTrue(self.path.read_text().startswith(self.original))
+
+    def test_helper_name_alone_does_not_count_as_an_assertion(self):
+        self.original = ("async function expectEditor(page) { await page.getByRole('textbox').click(); }\n"
+                         + self.original)
+        self.path.write_text(self.original)
+        self.addition = "test('REQ-1-2#audit-1: Editor', async ({ page }) => { await expectEditor(page); });"
+        result = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+        self.assertEqual(result["audit_checks"], 0)
+        self.assertIn("observable assertion", result["files"][0]["audit"]["error"])
+        self.assertEqual(self.path.read_text(), self.original)
+
     def test_one_unfounded_check_does_not_discard_a_separate_grounded_check(self):
         def complete(messages):
             content, usage, finish = self.complete(messages)

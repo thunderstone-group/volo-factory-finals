@@ -452,6 +452,35 @@ def _audit_test_blocks(body):
     return blocks
 
 
+def _audit_assertion_helpers(original):
+    """Recognize assertions delegated to existing named functions or block-arrow helpers.
+
+    This is a guard against empty checks, not a proof that an assertion follows the requirement.
+    The original file stays immutable; only its already-defined helpers are eligible.
+    """
+    name = r"[A-Za-z_$][\w$]*"
+    heads = re.compile(r"\b(?:async\s+)?function\s+(" + name + r")\s*\([^)]*\)\s*(\{)"
+                       r"|\b(?:const|let)\s+(" + name + r")\s*=\s*(?:async\s+)?\([^)]*\)\s*=>\s*(\{)")
+    bodies = {}
+    for match in heads.finditer(original):
+        start = match.start(2) if match.group(1) else match.start(4)
+        end = _block_end(original, start)
+        if end >= 0:
+            bodies[match.group(1) or match.group(3)] = original[start + 1:end]
+    helpers = set()
+    while True:
+        found = {name for name, body in bodies.items() if _audit_has_assertion(body, helpers)}
+        if found <= helpers:
+            return helpers
+        helpers.update(found)
+
+
+def _audit_has_assertion(body, helpers):
+    if re.search(r"\bexpect\s*(?:\.\s*(?:soft|poll)\s*)?\(", body):
+        return True
+    return any(re.search(r"(?<![\w$.])" + re.escape(name) + r"\s*\(", body) for name in helpers)
+
+
 def _audit_additions(content, group, requirements, original, node, path):
     """Validate provenance and identifiers before appending checks; this does not certify their semantics."""
     blocks = {m.group(1).strip(): m.group(2) for m in FILE_BLOCK.finditer(content or "")}
@@ -485,13 +514,12 @@ def _audit_additions(content, group, requirements, original, node, path):
         return "", [], []
     if SKIPPING.search(body) or re.search(r"\btest\.(?:before|after|describe|use|setTimeout)|\brequire\s*\(", body):
         raise ValueError("audit additions must not change suite setup or skip tests")
-    if body.count("expect(") < len(claims):
-        raise ValueError("every audit check needs an observable assertion")
     blocks = _audit_test_blocks(body)
     if not grounded:
         raise ValueError("no audit check has a verbatim requirement description excerpt")
     body = "\n\n".join(blocks[claim["id"]] for claim in grounded)
-    if any("expect(" not in blocks[claim["id"]] for claim in grounded):
+    helpers = _audit_assertion_helpers(original)
+    if any(not _audit_has_assertion(blocks[claim["id"]], helpers) for claim in grounded):
         raise ValueError("every grounded audit check needs an observable assertion")
     if node and not _parses(node, path, original + "\n" + body):
         raise ValueError("audit additions do not parse with the existing file")
