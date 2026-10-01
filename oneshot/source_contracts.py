@@ -41,8 +41,10 @@ Each probe has this schema:
  "precondition":"<JS assert checks establishing a valid starting state>",
  "check":"<JS invokes the real transition/observer and asserts the required result>"}
 
-The runner extracts exact current function declarations, arrow/function variables, object methods, or value
-initializers. It automatically links missing declarations from the same file and lexical scope. It runs seed
+The runner extracts exact current function declarations, arrow/function variables, object methods, simple namespace
+assignments (select e.g. Rules.adjust by its qualified name), or value initializers. Namespace members bind to their
+actual source object with its actual assigned helpers/constants. It automatically links missing declarations from
+the same file and lexical scope. It runs seed
 initializers, binds selected functions readonly, runs setup, binds values, then precondition and check in separate
 blocks in a fresh JS context. window is globalThis; Node strict assert and timer cancellation are available.
 Precondition-local variables do not carry into check; put shared fixture state in setup. A pass requires invoking
@@ -174,16 +176,46 @@ def execute(app, probes, requirements):
         index = json.loads(indexed.stdout)
 
         def bind(f):
-            matches = [b for b in index if b["file"] == f["file"] and b["name"] == f["name"] and b["kind"] == f["kind"]]
+            matches = [b for b in index if b["file"] == f["file"]
+                       and f["name"] in (b["name"], b.get("leaf_name"))
+                       and (b["kind"] == f["kind"] or b.get("member") and b["callable"]
+                            and f["kind"] in ("function", "method"))]
             if len(matches) != 1:
                 raise ValueError("Expected one exact source binding: " + f["name"] + ", found " + str(len(matches)))
             return dict(matches[0], alias=f["alias"], source_sha256=hashlib.sha256(sources[f["file"]].encode()).hexdigest())
+
+        def namespace_members(functions):
+            # Reconstruct a selected namespace from its actual declaration and assignments, not fixture mocks.
+            # This preserves helper calls through the object and constant/property reads that do not raise a
+            # ReferenceError when absent. Ambiguous/reassigned definitions remain unjudged.
+            roots = {(f["file"], f["scope"], f["member"][0]) for f in functions if f.get("member")}
+            for f in functions:
+                if f["kind"] == "value" and not f.get("member") and any(
+                        m["file"] == f["file"] and m["scope"] == f["scope"]
+                        and m.get("member", [None])[0] == f["name"] for m in index):
+                    if f["alias"] != f["name"]:
+                        raise ValueError("Use the actual namespace name as its alias: " + f["name"])
+                    roots.add((f["file"], f["scope"], f["name"]))
+            for file, scope, root in sorted(roots):
+                if root not in ("window", "globalThis") and root not in [f["alias"] for f in functions]:
+                    declarations = [f for f in index if f["file"] == file and f["scope"] == scope
+                                    and f["name"] == root and f["kind"] == "value"]
+                    if len(declarations) != 1:
+                        raise ValueError("Expected one actual namespace initializer: " + root)
+                    functions.append(bind(dict(declarations[0], alias=root)))
+                members = [f for f in index if f["file"] == file and f["scope"] == scope
+                           and f.get("member", [None])[0] == root]
+                for member in members:
+                    if any(f["file"] == file and f["name"] == member["name"] for f in functions):
+                        continue
+                    functions.append(bind(dict(member, alias="__source_member_" + str(len(functions)))))
+            return functions
 
         for p in probes:
             if any(r["id"] == p["id"] for r in rejected):
                 continue
             try:
-                functions = [bind(f) for f in p["functions"]]
+                functions = namespace_members([bind(f) for f in p["functions"]])
                 if not next(f for f in functions if f["alias"] == p["subject"])["callable"]:
                     raise ValueError("The principal subject is not a function")
                 initializers = [{"file": name, "code": _source(app, name)} for name in p.get("initializers", [])]
@@ -200,16 +232,19 @@ def execute(app, probes, requirements):
             added = False
             by_id = {p["id"]: p for p in bound}
             for r in results:
-                missing = re.search(r"([A-Za-z_$][\w$]*) is not defined", r.get("message", ""))
+                missing = (re.search(r"([A-Za-z_$][\w$]*) is not defined", r.get("message", "")) or
+                           re.search(r"([A-Za-z_$][\w$]*\.[A-Za-z_$][\w$]*) is not a function", r.get("message", "")))
                 if r["status"] != "error" or not missing or iteration == 24:
                     continue
                 p, name = by_id[r["id"]], missing.group(1)
                 scopes = {(f["file"], f["scope"]) for f in p["functions"]}
-                matches = [f for f in index if f["name"] == name and f["kind"] in ("function", "value")
+                matches = [f for f in index if f["name"] == name and (f["kind"] in ("function", "value") or f.get("member"))
                            and (f["file"], f["scope"]) in scopes]
                 if len(matches) == 1 and name not in [f["alias"] for f in p["functions"]]:
                     f = matches[0]
-                    p["functions"].append(bind(dict(f, alias=name)))
+                    alias = name if "." not in name else "__source_member_" + str(len(p["functions"]))
+                    p["functions"].append(bind(dict(f, alias=alias)))
+                    namespace_members(p["functions"])
                     p.setdefault("linked_dependencies", []).append(name)
                     added = True
             if not added:

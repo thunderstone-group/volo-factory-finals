@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-02T06:42:53.713175+08:00",
+  "added_preservation_control": {
+    "before": [
+      {
+        "id": "REQ-2-2-1#contract-9",
+        "status": "pass",
+        "message": null
+      }
+    ],
+    "after": [
+      {
+        "id": "REQ-2-2-1#contract-9",
+        "status": "fail",
+        "message": "Expected values to be strictly equal:\n\n'=$A$1' !== '=$A$2'\n"
+      }
+    ]
+  },
+  "implication": "The controlled Sheet repair regressed structural handling of absolute references despite four targeted fixes and improved independent aggregate scores. Local gains do not establish broad correctness.",
+  "fresh_generation_discovery": "The new Sheet implementation uses namespace assignments. The first extractor could not bind these ordinary JavaScript functions. Generic namespace support now reconstructs actual methods, values and receivers.",
+  "namespace_validation": {
+    "synthetic_tests_passed": 12,
+    "actual_fresh_app_round_trip": "pass",
+    "original_eight_probes": {
+      "github": {
+        "before": [
+          {
+            "id": "REQ-6-1#contract-1",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-6-3-4#contract-1",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-3-2-1#contract-1",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-5-2-2#contract-1",
+            "status": "fail"
+          }
+        ],
+        "after": [
+          {
+            "id": "REQ-6-1#contract-1",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-6-3-4#contract-1",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-3-2-1#contract-1",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-5-2-2#contract-1",
+            "status": "pass"
+          }
+        ]
+      },
+      "sheet": {
+        "before": [
+          {
+            "id": "REQ-2-2-2#contract-1",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-2-2-1#contract-2",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-4-1-2#contract-3",
+            "status": "fail"
+          },
+          {
+            "id": "REQ-4-2-2#contract-4",
+            "status": "fail"
+          }
+        ],
+        "after": [
+          {
+            "id": "REQ-2-2-2#contract-1",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-2-2-1#contract-2",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-4-1-2#contract-3",
+            "status": "pass"
+          },
+          {
+            "id": "REQ-4-2-2#contract-4",
+            "status": "pass"
+          }
+        ]
+      }
+    }
+  },
+  "candidate_v2_sha256": "7f3a549d2db87722fa6b35b6cf88b4720ba3831a4e664843aac65e0ab5ff89be",
+  "formal_result": null,
+  "full_fresh_pair": "running separately; v1 run untouched"
+}

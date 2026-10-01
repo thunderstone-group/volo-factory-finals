@@ -69,6 +69,36 @@ class SourceContractCase(unittest.TestCase):
         result = self.run_probe(p)["results"][0]
         self.assertEqual((result["status"], result["phase"]), ("error", "precondition"))
 
+    def test_namespace_assignments_use_actual_helpers_values_and_receiver(self):
+        self.file.write_text('''const unit=2; var Rules={};
+Rules.scale=unit; Rules.calls=0;
+Rules.delta=function(n){return n*this.scale;};
+Rules.adjust=function(state,amount){this.calls++; state.balance+=this.delta(amount);};
+''')
+        p = copy.deepcopy(PROBE)
+        p["functions"][0].update(name="Rules.adjust", kind="function")
+        p["check"] = "Rules.adjust(state,-3); assert.equal(Rules.calls,1); assert.equal(state.balance,10);"
+        before = self.run_probe(p)
+        self.assertEqual(before["results"][0]["status"], "fail")
+        self.assertEqual(before["results"][0]["assertions"], 2)
+        self.file.write_text(self.file.read_text().replace("this.calls++;", "this.calls++; if(amount<0)return;"))
+        self.assertEqual(self.run_probe(p)["results"][0]["status"], "pass")
+
+    def test_unqualified_duplicate_namespace_members_are_not_guessed(self):
+        self.file.write_text("var A={},B={}; A.adjust=s=>s.balance++; B.adjust=s=>s.balance--;")
+        p = copy.deepcopy(PROBE)
+        p["functions"][0]["kind"] = "method"
+        self.assertIn("found 2", self.run_probe(p)["results"][0]["message"])
+
+    def test_cross_namespace_constants_are_not_mistaken_for_application_bugs(self):
+        self.file.write_text('''var Rules={},Rates={}; Rates.unit=2;
+Rules.adjust=function(state,amount){state.balance+=amount*Rates.unit;};
+''')
+        p = copy.deepcopy(PROBE)
+        p["functions"][0].update(name="Rules.adjust", kind="method")
+        p["check"] = "Rules.adjust(state,3); assert.equal(state.balance,16);"
+        self.assertEqual(self.run_probe(p)["results"][0]["status"], "pass")
+
     def test_precondition_calls_and_assertions_cannot_certify_the_check(self):
         p = copy.deepcopy(PROBE)
         p["precondition"] += "adjust(state,0);"

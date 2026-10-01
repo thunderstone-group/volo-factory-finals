@@ -29,11 +29,22 @@ for (const p of probes) {
     }
     phase = 'setup';
     vm.runInContext('"use strict";\n' + p.setup, context, { timeout: 1000 });
-    const values = p.functions.filter(f => f.callable === false);
-    for (const f of values) {
+    function installMember(f) {
+      if (!f.member) return;
+      const owner = vm.runInContext(f.member[0], context, {timeout: 1000});
+      if (!owner || (typeof owner !== 'object' && typeof owner !== 'function'))
+        throw new Error('Source namespace is not an object: ' + f.member[0]);
+      Object.defineProperty(owner, f.member[1], {value: context[f.alias],
+        writable: f.callable === false && Boolean(f.mutable), configurable: false});
+    }
+    function bindValue(f) {
       const value = vm.runInContext('"use strict"; (' + f.code + ')', context, { timeout: 1000 });
       Object.defineProperty(context, f.alias, {value, writable: Boolean(f.mutable), configurable: false});
+      installMember(f);
     }
+    for (const f of p.functions.filter(f => f.callable === false && !f.member)) bindValue(f);
+    for (const f of p.functions.filter(f => f.callable !== false && f.member)) installMember(f);
+    for (const f of p.functions.filter(f => f.callable === false && f.member)) bindValue(f);
     phase = 'precondition';
     vm.runInContext('"use strict";\n{\n' + (p.precondition || '') + '\n}', context, { timeout: 1000 });
     phase = 'check';
