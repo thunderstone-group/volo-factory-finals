@@ -48,3 +48,5 @@
 - `handoffs/2026-09-23-0955.md`: pre-opening handoff written with the review and roadmap v1, before consolidation and the first workstreams.
 
 - `handoffs/2026-10-01-before-extension-push.md` — Frozen handoff before the October 1 extension and behaviour-coverage experiment.
+
+- `handoffs/2026-10-02-before-paired-result.md` — In-flight coverage experiment before the complete 27/73 official result.
