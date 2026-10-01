@@ -446,6 +446,8 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None,
                                 record["finish_reason"] = choice["finish_reason"]
                         budget.progress("receiving", record, force=observed["sse_events"] == 1)
                     except (ValueError, TypeError, AttributeError) as exc:
+                        record["event_error"] = f"{type(exc).__name__}: {exc}"
+                        record["invalid_sse_event"] = chunk.decode("utf-8", errors="replace").replace(key, "[REDACTED]")[:2000]
                         raise StreamError("malformed SSE event") from exc
             if not ended or record["finish_reason"] is None:
                 raise StreamError("stream ended without completion markers")

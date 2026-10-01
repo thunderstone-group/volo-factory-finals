@@ -1,0 +1,17 @@
+{
+  "source": "Real gateway response captured during an authorized practice call on 2026-10-02",
+  "source_trace_sha256": "92fbb2fd61ff79bf6df9cd98db97e9c72c6fe7484fcd19fdfa3133451aa759cd",
+  "request_sha256": "94e31e7843c3895e94398a8eeb99a701cdd1d9eb0b8078ee5959973eaf43b224",
+  "model": "deepseek-v4-flash-vision-exp",
+  "elapsed_seconds": 376.122,
+  "stream_observation": {
+    "received_bytes": 1271931,
+    "sse_events": 3877,
+    "content_chars": 0,
+    "reasoning_chars": 15377
+  },
+  "data_fragment": "{\"created\":1790870706,\"usage\":null,\"mo",
+  "error_detail": "malformed SSE event",
+  "event_error": "JSONDecodeError: Unterminated string starting at: line 1 column 36 (char 35)",
+  "limitation": "Only the final truncated data frame is retained here, not a full stream replay or a model-quality result."
+}

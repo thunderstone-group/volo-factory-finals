@@ -238,6 +238,21 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.attempts[0]["gateway_error"]["code"], "upstream_timeout")
         self.assertEqual(budget.attempts[0]["error_detail"], "malformed SSE event")
 
+    def test_real_truncated_sse_frame_is_recorded_and_never_accepted_as_a_completion(self):
+        # The final data frame of a real 10-02 gateway response; provenance is in the evidence file.
+        captured = json.loads((Path(__file__).resolve().parents[1] /
+                               "docs/evidence/2026-10-02-truncated-sse.json").read_text())
+        fragment = captured["data_fragment"]
+        budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
+        self.replies([("data: " + fragment).encode()])
+        with self.assertRaisesRegex(RuntimeError, "StreamError"):
+            self.generate(budget)
+        record = budget.attempts[0]
+        self.assertEqual(record["invalid_sse_event"], fragment)
+        self.assertIn("Unterminated string", record["event_error"])
+        self.assertIsNone(record["finish_reason"])
+        self.assertFalse(self.out.exists())
+
     def test_vision_model_uses_its_published_price_instead_of_the_expensive_unknown_model_price(self):
         record = {"model": "deepseek-v4-flash-vision-exp", "usage": {"prompt_tokens": 1000000,
                   "completion_tokens": 1000000}, "usage_events": [{"prompt_tokens_details": {"cached_tokens": 500000}}]}
