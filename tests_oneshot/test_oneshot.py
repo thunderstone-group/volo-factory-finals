@@ -253,6 +253,18 @@ class OfflineCase(unittest.TestCase):
         self.assertIsNone(record["finish_reason"])
         self.assertFalse(self.out.exists())
 
+    def test_a_failed_draft_does_not_start_paid_test_generation(self):
+        # Synthetic draft failure reproduces the real wasted-work pattern from the interrupted full trials.
+        job = {"thread": unittest.mock.Mock(), "dir": self.root / "unused-suite"}
+        job["thread"].is_alive.return_value = False
+        with patch.object(adapter, "SMOKE", True), patch.object(adapter, "TESTGEN", True), \
+                patch.object(adapter, "draft_application", side_effect=RuntimeError("synthetic incomplete draft")), \
+                patch.object(adapter, "start_suite", return_value=job) as start, \
+                patch.object(adapter, "finish_suite", return_value=None):
+            with self.assertRaisesRegex(RuntimeError, "synthetic incomplete draft"):
+                self.generate(adapter.CallBudget())
+        start.assert_not_called()
+
     def test_vision_model_uses_its_published_price_instead_of_the_expensive_unknown_model_price(self):
         record = {"model": "deepseek-v4-flash-vision-exp", "usage": {"prompt_tokens": 1000000,
                   "completion_tokens": 1000000}, "usage_events": [{"prompt_tokens_details": {"cached_tokens": 500000}}]}

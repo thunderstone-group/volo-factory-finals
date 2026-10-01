@@ -36,7 +36,7 @@ GROUP_SCENARIOS = 30  # scenarios per spec file (one model call); requirements a
 # 8 per file (16 files) on 09-28, and ranked ten apps with known hidden scores better (Spearman 0.94 vs 0.86, errors
 # per app 5.8 vs 21.3; one suite each). 92 % of the output is reasoning,
 # and each call re-reads the whole requirements document before it writes.
-GROUP_WORKERS = 4  # parallel spec calls; a gateway burst cuts several streams at once
+GROUP_WORKERS = 1  # serialize long streams; preserve the completed file before starting the next one
 AUDIT = os.environ.get("ONESHOT_TEST_AUDIT", "1") == "1"  # enabled in the isolated coverage candidate (roadmap 4.34)
 AUDIT_LIMIT = 6  # Additional requirement-grounded checks per file, after reviewing the existing tests.
 RUN_SECONDS = 900  # one suite run; a hung runner is stopped here
@@ -698,7 +698,8 @@ class Progress {
     const errors = (result.errors || []).map((e) => ({ message: e.message, stack: e.stack, location: e.location,
                                                        snippet: e.snippet }));
     fs.appendFileSync(this.file, JSON.stringify({ spec: { title: test.title, line: test.location && test.location.line },
-                                                  result: { status: result.status, duration: result.duration, errors } }) + '\\n');
+                                                  result: { status: result.status, duration: result.duration, errors,
+                                                    attachments: result.attachments || [] } }) + '\\n');
   }
   printsToStdio() { return false; }
 }
@@ -809,6 +810,27 @@ def _test_id(title):
     return sid, name
 
 
+def page_snapshot(result, report_path):
+    """Bounded Playwright failure context, read only from the current runner's output tree."""
+    root = Path(report_path).resolve().parent
+    for attachment in result.get("attachments") or []:
+        if attachment.get("name") != "error-context" or not attachment.get("path"):
+            continue
+        path = Path(attachment["path"])
+        if not path.is_absolute():
+            path = root / path
+        try:
+            path = path.resolve()
+            path.relative_to(root)
+            if path.name != "error-context.md" or not path.is_file() or path.stat().st_size > 256000:
+                continue
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except (OSError, ValueError):
+            continue
+        return text if len(text) <= 2400 else text[:1500] + "\n... page content omitted ...\n" + text[-900:]
+    return ""
+
+
 def parse(report_path, suite, manifest, text, progress_path=None, missing="the runner did not report it"):
     """The Playwright JSON report as scenario-check entries, one per test the manifest lists. Without a report, the
     tests the progress file recorded; a test in neither is an error reading `Not run: <missing>`."""
@@ -856,6 +878,10 @@ def parse(report_path, suite, manifest, text, progress_path=None, missing="the r
                 status, observation, location = _classify(result, source_text, text or "", quoted)
                 entry.update(status=status, observation=observation,
                              source=_source(path, spec.get("line")) if status == "fail" else "")
+                if status == "fail":
+                    snapshot = page_snapshot(result, report_path)
+                    if snapshot:
+                        entry["page_snapshot"] = snapshot
                 if location:
                     entry["at"] = f"{Path(location.get('file') or '').name}:{location.get('line')}"
                 entry["seconds"] = round((result.get("duration") or 0) / 1000, 1)
@@ -882,7 +908,7 @@ def _collapse(entries):
             member.update(status="error", observation=f"Blocked by helper:{at} (shared with {len(members) - 1} other test(s)).")
         out.append({"id": f"helper:{at}", "name": f"{len(members)} tests stop at the same helper line ({', '.join(ids[:6])})",
                     "status": "fail", "observation": observation, "steps": [], "source": source, "blocks": ids,
-                    "file": members[0]["file"]})
+                    "file": members[0]["file"], "page_snapshot": members[0].get("page_snapshot", "")})
     return out
 
 

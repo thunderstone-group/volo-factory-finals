@@ -197,6 +197,23 @@ def result(status, message="", line=None, file="t01-REQ-1.spec.cjs", snippet="")
 
 
 class ParseCase(unittest.TestCase):
+    def test_page_snapshot_is_bounded_and_cannot_read_an_external_attachment(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            work = root / 'runner'; work.mkdir()
+            snapshot = work / 'results' / 'case' / 'error-context.md'
+            snapshot.parent.mkdir(parents=True)
+            snapshot.write_text('Creation page\n' + 'grid rows\n' * 1000 + '\nalert: a required field is missing')
+            report = work / 'report.json'
+            result = {'attachments': [{'name': 'error-context', 'path': str(snapshot)}]}
+            text = testgen.page_snapshot(result, report)
+            self.assertIn('Creation page', text)
+            self.assertIn('required field is missing', text)
+            self.assertLess(len(text), 2500)
+            external = root / 'error-context.md'; external.write_text('must not be read')
+            result['attachments'][0]['path'] = str(external)
+            self.assertEqual(testgen.page_snapshot(result, report), '')
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -330,6 +347,8 @@ class RunCase(unittest.TestCase):
             self.assertEqual(report.get("kind"), "testgen", report)
             statuses = {e["id"]: e["status"] for e in report["scenarios"]}
             self.assertEqual(statuses, {"REQ-1-1": "pass", "REQ-1-2": "fail", "REQ-2-1": "error"})
+            failed = next(e for e in report["scenarios"] if e['id'] == 'REQ-1-2')
+            self.assertIn('Add note', failed.get('page_snapshot', ''), failed)
             again = testgen.run_suite(app, suite, REQUIREMENTS, only={"REQ-1-2"})
             self.assertEqual([(e["id"], e["status"]) for e in again["scenarios"]], [("REQ-1-2", "fail")])
             # A file that parses but that Playwright cannot load (a duplicate title) also stops every test; the run
