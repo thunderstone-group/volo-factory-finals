@@ -65,7 +65,8 @@ TESTGEN_SHOWN = 20  # failing tests shown with their code in one repair request
 # Chromium scenario run decides whether the application is really broken as a whole.
 DOM_ONLY = ("loading / in a DOM", "frontend script error on load", "after scripts run, / renders no visible text")
 # CNY per million tokens (input, cache-hit input, output), from the gateway catalogue (`arcbench models`, 09-23).
-PRICES = {"deepseek-v4-flash": (3.0, 0.1, 9.0), "kimi-k2.7-code-highspeed": (13.0, 2.6, 54.0)}
+PRICES = {"deepseek-v4-flash": (3.0, 0.1, 9.0), "deepseek-v4-flash-vision-exp": (1.0, 0.02, 4.0),
+          "kimi-k2.7-code-highspeed": (13.0, 2.6, 54.0)}  # vision pricing rechecked in the catalogue on 10-01
 # Seconds before the second and the third attempt of a call. A local network blip (09-23 13:58, every running
 # generation cut in the same second) spent three one-second retries and moved whole runs to the six times dearer
 # fallback model.
@@ -414,6 +415,11 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None,
                     try:
                         obj = json.loads(chunk)
                         observed["sse_events"] += 1
+                        if isinstance(obj, dict) and "error" in obj:
+                            detail = obj["error"]
+                            record["gateway_error"] = ({name: str(detail[name]).replace(key, "[REDACTED]")[:500]
+                                                        for name in ("type", "code", "message") if name in detail}
+                                                       if isinstance(detail, dict) else str(detail).replace(key, "[REDACTED]")[:500])
                         if not isinstance(obj, dict) or "error" in obj:
                             raise ValueError("invalid stream object")
                         usage = obj.get("usage")
@@ -449,6 +455,7 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None,
             return record["content"], record["usage"], record["finish_reason"]
         except error.HTTPError as exc:
             record["error_type"] = type(exc).__name__
+            record["error_detail"] = str(exc).replace(key, "[REDACTED]")[:500]
             record["http_status"] = exc.code
             retryable = exc.code in (408, 429) or 500 <= exc.code < 600
             if exc.fp is not None:
@@ -456,6 +463,7 @@ def stream_completion(messages, model, base, key, budget, tries=3, salvage=None,
             failure = RuntimeError(f"model HTTP {exc.code}")
         except (error.URLError, OSError, http.client.IncompleteRead, StreamError) as exc:
             record["error_type"] = type(exc).__name__
+            record["error_detail"] = str(exc).replace(key, "[REDACTED]")[:500]
             retryable = True
             failure = RuntimeError(f"model stream failed ({type(exc).__name__})")
         finally:

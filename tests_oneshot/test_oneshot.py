@@ -227,6 +227,21 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.summary()["unknown_usage_calls"], [1])
         self.assertFalse(self.out.exists())
         self.assertEqual(list(self.root.glob(".oneshot-*")), [])
+        self.assertEqual(budget.attempts[0]["error_detail"], "stream ended without completion markers")
+
+    def test_synthetic_gateway_error_is_distinguished_from_an_unmarked_stream_end(self):
+        budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
+        self.replies([event({"error": {"type": "server_error", "code": "upstream_timeout",
+                                      "message": "synthetic upstream timeout"}})])
+        with self.assertRaisesRegex(RuntimeError, "StreamError"):
+            self.generate(budget)
+        self.assertEqual(budget.attempts[0]["gateway_error"]["code"], "upstream_timeout")
+        self.assertEqual(budget.attempts[0]["error_detail"], "malformed SSE event")
+
+    def test_vision_model_uses_its_published_price_instead_of_the_expensive_unknown_model_price(self):
+        record = {"model": "deepseek-v4-flash-vision-exp", "usage": {"prompt_tokens": 1000000,
+                  "completion_tokens": 1000000}, "usage_events": [{"prompt_tokens_details": {"cached_tokens": 500000}}]}
+        self.assertAlmostEqual(adapter.call_cost(record), 4.51)
 
     def test_permanent_http_4xx_including_402_are_not_retried(self):
         # 401 and 403 left this list on 09-27: the gateway refuses with them for minutes at a time, so they are waited
