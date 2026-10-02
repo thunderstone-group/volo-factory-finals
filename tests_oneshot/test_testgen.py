@@ -98,6 +98,14 @@ class PlanCase(unittest.TestCase):
                                          capture_output=True, text=True)
                 self.assertEqual(checked.returncode, 0, checked.stderr)
 
+    def test_initial_checks_do_not_replace_a_failed_written_suite(self):
+        with tempfile.TemporaryDirectory() as directory, \
+                patch.object(testgen, "add_initial_entry_checks") as add_entries:
+            manifest = testgen.write_suite(REQUIREMENTS, directory,
+                lambda messages: ("No file block", None, "stop"), workers=1, audit=False)
+            self.assertFalse(testgen.runnable(manifest))
+            add_entries.assert_not_called()
+
     def test_groups_follow_top_folders_and_never_split_a_requirement(self):
         groups = testgen.plan(REQUIREMENTS)
         self.assertEqual([g["file"] for g in groups], ["t01-REQ-1.spec.cjs", "t02-REQ-2.spec.cjs"])

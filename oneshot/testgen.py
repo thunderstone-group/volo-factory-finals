@@ -489,7 +489,9 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS, 
         manifest = audit_suite(text, suite, complete, workers=workers)
         manifest["seconds"] = round(time.monotonic() - started, 1)
         (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-    return add_initial_entry_checks(text, suite, manifest)
+    # Supplemental entry checks must not make an otherwise failed writer look
+    # runnable, suppressing the existing scenario-check fallback.
+    return add_initial_entry_checks(text, suite, manifest) if runnable(manifest) else manifest
 
 
 AUDIT_REQUEST = """Review the test file you just wrote against the requirements, without seeing any application.
