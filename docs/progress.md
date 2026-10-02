@@ -1662,3 +1662,10 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - The complete overall board explicitly names those two source_run_ids and reports **S62.33320859322366**, rank6. Previous best was S59.751714998087095 at105/200 andCNY11.516979. The score gain is cost-driven; GitHub quality remains below the preceding 27-point experiment. Do not claim generalization improvement or mark the goal complete.
 - Formal funds remaining220.786673. The generic controls candidate8ef69d0c is undergoing fresh paired local generation. Continue toward S>=70 using complete official outcomes.
 - Authoritative record: `docs/evidence/2026-10-02-s70-official-result-r1.json`.
+
+## 2026-10-02 11:03 — Second complete official pair starts from fresh-validated controls candidate
+
+- Submission f56d97c2fdb1, exact ZIP 8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a, source e53024c, Vision and official-evaluation credits. Upload/download hashes match. GitHub 583ef28ff0bc and Sheet 9d673d2969ed both started; no new score yet.
+- Fresh paired local validation: original fixed GitHub judges 72/65; versioned clickable-control calibration 74/67. Sheet 92/96. These are diagnostic scores. GitHub own suite falsely classified two unavailable assertion APIs, and all four source probes were unjudged due a missed window-qualified namespace extension. Those fixes belong to the next candidate, not this immutable submission.
+- Live requirements archive added GitHub Stage 1 (30 tests); original GitHub/Sheet YAML hashes remain unchanged. Explicitly selected the original task pair; the live overall board still accepts that original route as complete. No extra stage run was started.
+- Evidence: `docs/evidence/2026-10-02-s70-official-experiment-r2.json`. Formal balance before run220.786673; practice420.511753. Target S70 remains active.
