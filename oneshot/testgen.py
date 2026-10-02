@@ -174,6 +174,81 @@ def request(text, group, prerequisites=""):
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
 
+def initial_entries(text):
+    """Only literal first activations from an explicitly fresh, unauthenticated home.
+
+    Unknown sentence shapes stay with the written suite. Names must occur in the
+    first WHEN clause itself, never be inferred from a parent resource in GIVEN.
+    """
+    activation = re.compile(
+        r'^(?:the\s+)?(?:visitor|user|customer|operator|member|contributor|administrator)\s+'
+        r'(?:opens?|follows?)\s+(?:(?:the|a|an)\s+)?(?:visible\s+)?'
+        r'(?:(?:link|button|entry|page)\s+(?:named\s+)?)?'
+        r'(?:`([^`\n]{1,80})`|[“"]([^”"\n]{1,80})[”"])', re.I)
+    found = []
+    for req in scenarios.load_requirements(text):
+        if req.get("type") != "ATOMIC":
+            continue
+        for index, scenario in enumerate(req.get("scenarios") or [], 1):
+            steps = scenario.get("steps") or []
+            given = " ".join(s.get("content", "") for s in steps if s.get("keyword") == "GIVEN")
+            given = re.sub(r"\s+", " ", given)
+            if not (re.search(r"\bhome\s*page\b", given, re.I)
+                    and re.search(r"\bfresh unauthenticated\b", given, re.I)):
+                continue
+            if re.search(r"\bsigned[ -]in\b|\blogged[ -]in\b|\bhas entered\b", given, re.I):
+                continue
+            when = next((s.get("content", "") for s in steps if s.get("keyword") == "WHEN"), "")
+            when = re.sub(r"\s+", " ", when).strip()
+            match = activation.match(when)
+            if not match:
+                continue
+            name = next(value for value in match.groups() if value is not None)
+            found.append({"id": f"{req['id']}#entry-{index}", "name": name,
+                          "scenario_id": req["id"] + (f"#{index}" if index > 1 else ""),
+                          "given": given, "when": when})
+    return found
+
+
+def add_initial_entry_checks(text, suite, manifest):
+    """Fixed cold-start checks cannot acquire an invented navigation prelude."""
+    entries = initial_entries(text)
+    if not entries:
+        return manifest
+    filename = "t00-initial-entries.spec.cjs"
+    body = ["const {test, expect} = require('@playwright/test');\n"]
+    titles = []
+    for entry in entries:
+        title = entry["id"] + ": Initial visible entry " + entry["name"]
+        titles.append(title)
+        body.append("test(" + json.dumps(title, ensure_ascii=False) + ", async ({page}) => {\n"
+            "  await page.goto('/');\n"
+            "  const name = " + json.dumps(entry["name"], ensure_ascii=False) + ";\n"
+            "  await expect.poll(async () => {\n"
+            "    for (const role of ['button','link','tab','menuitem','option']) {\n"
+            "      for (const item of await page.getByRole(role, {name, exact: true}).all()) {\n"
+            "        if (await item.isVisible()) return true;\n"
+            "      }\n"
+            "    }\n"
+            "    for (const item of await page.getByText(name, {exact: true}).all()) {\n"
+            "      if (await item.isVisible() && await item.evaluate(el => !!el.closest(\n"
+            "        'a[href],button,[role=button],[role=link],[role=tab],[role=menuitem],[data-action]:not(form),[onclick]'\n"
+            "      ))) return true;\n"
+            "    }\n"
+            "    return false;\n"
+            "  }, {message: 'The first WHEN target must be interactive at the stated initial home: ' + name}).toBe(true);\n"
+            "});\n")
+    (Path(suite) / filename).write_text("\n".join(body), encoding="utf-8")
+    manifest["files"] = [r for r in manifest["files"] if r["file"] != filename]
+    manifest["files"].insert(0, {"file": filename, "tests": titles, "calls": 0,
+                                  "deterministic": "initial_entries"})
+    manifest["initial_entry_checks"] = entries
+    manifest["tests"] = sum(len(r.get("tests") or []) for r in manifest["files"])
+    (Path(suite) / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n",
+                                            encoding="utf-8")
+    return manifest
+
+
 def _node():
     return shutil.which("node")
 
@@ -414,7 +489,7 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS, 
         manifest = audit_suite(text, suite, complete, workers=workers)
         manifest["seconds"] = round(time.monotonic() - started, 1)
         (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-    return manifest
+    return add_initial_entry_checks(text, suite, manifest)
 
 
 AUDIT_REQUEST = """Review the test file you just wrote against the requirements, without seeing any application.

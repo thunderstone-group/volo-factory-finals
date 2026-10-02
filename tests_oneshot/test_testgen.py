@@ -8,6 +8,7 @@ import tempfile
 import textwrap
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from oneshot import testgen
 
@@ -59,6 +60,44 @@ REQUIREMENTS = textwrap.dedent("""\
 
 
 class PlanCase(unittest.TestCase):
+    def test_initial_entries_do_not_invent_parent_navigation_or_authentication(self):
+        def document(given, when):
+            return ('id: REQ-1\ntype: ATOMIC\nscenarios:\n- name: Open a saved note\n  steps:\n'
+                    '  - keyword: GIVEN\n    content: ' + json.dumps(given) + '\n'
+                    '  - keyword: WHEN\n    content: ' + json.dumps(when) + '\n')
+        given = 'The visitor starts at the application home page in a fresh unauthenticated browser session.'
+        when = 'The visitor opens the visible `Travel plans` note entry.'
+        text = document(given, when)
+        entries = testgen.initial_entries(text)
+        self.assertEqual([(x["id"], x["name"]) for x in entries], [("REQ-1#entry-1", "Travel plans")])
+        for given_case, when_case in [
+            (given + ' A signed-in user has entered the editor.', when),
+            ('The user is in an editor.', when),
+            (given, 'The user signs in, then opens `Travel plans`.'),
+            (given, 'The visitor searches for a notebook and opens `Travel plans`.'),
+            (given, 'The visitor clicks “Export” in the editor.'),
+        ]:
+            text = document(given_case, when_case)
+            self.assertEqual(testgen.initial_entries(text), [])
+
+    def test_initial_entry_checks_are_fixed_and_do_not_call_the_writer(self):
+        entry = {"id": "REQ-1#entry-1", "name": 'A "quoted" note', "scenario_id": "REQ-1",
+                 "given": "fresh unauthenticated home page", "when": 'opens `A "quoted" note`'}
+        with tempfile.TemporaryDirectory() as directory, \
+                patch.object(testgen, "initial_entries", return_value=[entry]):
+            manifest = testgen.add_initial_entry_checks("", directory,
+                {"files": [], "scenarios": 1, "tests": 0})
+            source = (Path(directory) / manifest["files"][0]["file"]).read_text()
+            self.assertIn("await page.goto('/')", source)
+            self.assertIn(".closest(", source)
+            self.assertNotIn(".click()", source)
+            self.assertEqual(manifest["files"][0]["calls"], 0)
+            self.assertEqual(manifest["initial_entry_checks"], [entry])
+            if shutil.which('node'):
+                checked = subprocess.run(['node', '--check', str(Path(directory) / manifest['files'][0]['file'])],
+                                         capture_output=True, text=True)
+                self.assertEqual(checked.returncode, 0, checked.stderr)
+
     def test_groups_follow_top_folders_and_never_split_a_requirement(self):
         groups = testgen.plan(REQUIREMENTS)
         self.assertEqual([g["file"] for g in groups], ["t01-REQ-1.spec.cjs", "t02-REQ-2.spec.cjs"])
