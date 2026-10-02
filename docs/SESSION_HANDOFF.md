@@ -1,36 +1,25 @@
-# 2026-10-02 CLI main delivery and ARC continuation
+# 2026-10-02 20:03 ARC continuation after mainline delivery
 
-先读本页，再按需要读 `docs/reference/roadmap.md`、`docs/reference/oneshot.md`。本页记录本次观察；继续时从 git、运行产物和官方 API 核对变化。
+先读本页，再按需要读 `docs/reference/roadmap.md` 与 `docs/reference/oneshot.md`。下列运行号和状态是本次观察；继续时检查原句柄和实际产物，不因观察超时重启。
 
-- 当前目标仍是同一最新有效提交下完整 GitHub100 + Sheet100 的正式总榜第一，并超过 Orchestro 的有效成绩。原 S70 目标已完成。已有练习/正式余额可用，不充值，不反复询问小额。无子 agent 授权。用户投诉额度消耗，必须减少推演、重复读取和无新证据的重试。
-- 用户重申：worktree 分支只供开发；完成后经 PR 合入 main、更新本地 main、验证主分支安装、清理分支/worktree。不要再把 push 分支当交付。
-- v5 与受控修复均结束；当前 v6 从空模板两题生成在运行（exec40870，G PID26805、Sheet PID26804）。另有 v5 Sheet 两套固定独立回放 exec95470。没有在途正式评测或远端自测；不得重启未终态运行。
-
-## CLI 已交付
-
-`~/projects/arcbench-cli` main = `4d3eefcac692e5d14ecc6a1393cb8d6b130b00f5`，0.5.0。正式额度 PR #9 早已合并；本次已审查并合并群友 doctor PR #11、自测 API PR #12。群友已按原评审修改 env 查找、测试环境隔离、可选 ZIP、退出码与格式；另补默认 home 配置隔离。132 测试通过，真实 doctor/正式额度/selftest tasks/status 验证。CLI 从远端 main 安装，已摆脱 editable worktree。该项目只剩 main worktree；本次本地/远端 feature 与集成分支均清理，open PR=[]，fleet-scan 0。不要再使用已删除的 `arcbench-cli-worktrees/selftest-api-20261002`。
-
-安装：`uv tool install --force --python 3.12 git+https://github.com/thunderstone-group/arcbench-cli.git@main`。Cookie 迁移和 OAuth 用户已经授权；保留 `~/.config/arcbench/volo.env`，不输出真值、不重问授权。证据 E2/cli-050-main-delivery.json、cli-050-final-tests.log 及 cli-050-main-*.json。正式剩余额度现场 213.300534，练习余额 doctor 400.429013。
-
-## 官方分数和自测证据
+- 当前目标是同一最新有效提交下完整 GitHub100 + Sheet100 正式总榜第一，并超过 Orchestro 的有效分数。原S70已完成。已有练习与正式余额可用于必要实验，不充值、不反复询问小额；无子agent授权。用户要求减少反复推演及浪费。
+- 用户重申的开发范式：worktree/分支只承载开发，验证后合main、更新主工作区、清理已结束分支。main代表最新可交付代码，平台采用的ZIP由正式提交记录决定，两者分开。
+- Volo最新源码已通过PR111合main `c2cd10c`；PR110随祖先合并结束。原goal/s70与source-owners工作树及本地/远端分支已清理，未跟踪dist各1件保存在E2/retained-*-dist。后续读 `~/projects/volo-factory`，改代码需从最新main新建worktree。276 one-shot检查完成（3 optional skip），最终提示126 focused通过，226 legacy检查完成（12 optional skip），46提交secret扫描0。打包主分支与在测v6 SHA逐字一致，见E2/mainline-v6-delivery.json。
+- CLI `~/projects/arcbench-cli` main `4d3eefc`、0.5.0，PR9正式额度、PR11群友doctor、PR12自测接口均已合并；132检查及实际API/主分支安装验证通过，CLI工作树和本次分支已清理。安装来自远端main，不能再引用已删除的CLI worktree。OAuth/Cookie迁移已获用户明确授权，不重问；`~/.config/arcbench/volo.env`不输出真值。
 
 E2 = `~/projects/arcbench-campaign/evidence/2026-10-02-s70`。
 
-- 当前有效 submission `f56d97c2fdb1`，agent ZIP SHA `8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a` 未变。G `4666c04f629e` 46/100、1.963038；Sheet `9d673d2969ed` 80/100、2.973834；正式 S79.47644199762266，126/200，完整 original route。同提交来源核对见 s70-completion-audit.json。没上传更新正式包。
-- 最新 `leaderboard-v6-forecast.json` 中我们 rank3，榜首 jackyjiang S88.7540；Orchestro 此次前5列表未出现，原因未查，不得臆断。此前 Orchestro S103.61657、G76+Sheet87、CNY5.909238 只作历史参考，冲榜前重查实时完整榜。
-- 自测今日10次全部用尽，下一次 UTC0/本地08:00 重置；不得切账号绕过。全部终态。正式 G46 应用阶段基线23/30+21/29+1/41=45；首页真实入口与通用 native select 受控改动后24+21+28=73，28增0退。`home-native-repair-github/combined-comparison.json`；最后Stage3 ID `2c6f10f5-6b47-4d1a-bb2e-635286017ce6`。这是受控应用成绩，不是新 agent 正式分。
-- Public input `requirements-after-stage-announcement/hackathon--github/requirements.yaml` SHA9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8；Sheet 在 `hackathon--sheet`，不要错用不存在的 online-spreadsheet 路径。阶段/full 唯一公开差异为组织名/slug那一项；不要把阶段累计当成同套正式题。
+- 当前有效正式submission仍 `f56d97c2fdb1`，agent ZIP SHA `8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a`。G `4666c04f629e` 46/100、CNY1.963038；Sheet `9d673d2969ed` 80/100、CNY2.973834；S79.47644199762266，126/200，完整original route。无新正式提交，也无在途正式评测。核验见s70-completion-audit.json。
+- 历史Orchestro为G76+Sheet87、S103.61657。19:05的leaderboard-1905.json中它未列在前10，原因未查，不作合规推断；当时榜首jackyjiang S88.7540，我们rank2。冲榜前重新读取完整榜，不能降低目标到一个局部临时分数。
+- 新公开完整G输入 `requirements-after-stage-announcement/hackathon--github/requirements.yaml` SHA9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8；Sheet目录是 `hackathon--sheet`，不是online-spreadsheet。阶段/full有一项组织名/slug文本差异。
+- 今日10次远端selftest已全部终态且额度用完，下次UTC0/本地08:00重置，不换账号绕过。G46正式应用三组基线23+21+1=45；仅首页入口及native控件受控修复为24+21+28=73、28增0退，见home-native-repair-github/combined-comparison.json；不能当新agent正式分。最后Stage3 ID `2c6f10f5-6b47-4d1a-bb2e-635286017ce6`。Sheet旧input[name]读取器随native变更改成[name]后，两套固定检查恢复87/93；这是保护性诊断，未嵌入agent包。
 
-## 当前 agent 开发与验证
+- 冻结v6包 `candidate-semantic-entry-v6.zip` SHA `2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb`。只含通用agent/scaffold；不含生成应用、隐藏测试或任务答案。新增固定初始入口检查仅从公开GIVEN/first WHEN提取，补充可运行written suite；按语义区分初始数据、输入和消息，去掉词汇覆盖诱导。保留实际源码反例与native控件。
+- v5两题均结束。Sheet自检92pass/3fail/7error，独立g99/cov99n-arm仅82/87（正式80应用同套87/93），所以未晋升。v5-final-sheet-frozen-report.json还暴露自写测试矛盾：插入空B列后要求=B1+C1且结果5，虽然B1空/C1=3；后序测试也假定共享后端初始值未被前序改动。不要盲修应用以满足不一致检查。
+- v6两题从空模板的原运行exec40870已结束，初稿分别49pass/32fail/33error与68pass/9fail/24error；均在首轮修复到达5次传输失败上限，没有成功修复，不能当完整质量试验。多数TLS EOF是0 byte/0 SSE；Sheet另有截断JSON和缺终止标记。默认曾尝试Kimi，不得称全程Vision或把未知用量当0。实际GET探测在Python3.9、3.12和curl都返回401，无法据此定罪Python或服务端。详细记录见 docs/evidence/2026-10-02-v6-transport-limited.json 与E2原日志。
+- v6-frozen-suite-{github,sheet}是公开需求生成的模型检查，不是主办方测试。校准：G46应用普通96pass+入口3/11，受控73应用普通96pass+入口11/11；Sheet80应用88pass/5fail/8error。普通G检查仍看不出首页修复收益，必须同时看固定入口和独立回放。
+- 首次恢复 `v6-transport-recovery-github` / exec50309已结束：Python3.12、Vision、fallback关闭，配置repair_calls=1但实际2次请求（一次SSE截断后重试成功），880.9秒；保留改动后85pass/26fail、11入口全过，修改app.js/styles.css。已知估算CNY0.505617，含未知用量，不能当完整实扣额。运行时限额允许内部重试超出配置次数，记录实际attempts。
 
-开发树 `~/projects/volo-factory-worktrees/source-owners-20261002`，branch exp/source-owners-20261002，已推 eadfbad，v6 代码、测试和参考文档已提交。冻结包 candidate-semantic-entry-v6.zip SHA2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb 正在生成两题。主仓不改；经验证后仍须 PR main 收尾。
+唯一在途是 `resume_v6_pair.py` / exec58454：串行继续GitHub，然后修复Sheet，均复用已生成应用与固定suite；每题配置repair_calls=2、估算repair_cny=1.5、Vision、fallback关闭、Python3.12。若一个任务全部请求失败会停止排下一题。当前子进程与阶段读E2/v6-resume-active.json，完整终态读v6-resumed-{github,sheet}-finished.json和对应repair.json，日志resume-v6-pair.log。不要重复启动；父程序stdout已重定向，wait无输出不代表停了。
 
-- 冻结 v5 包 `candidate-entry-native-v5.zip` SHA e4a76b801595686de7c93d25cb2a8b45f4c9b39b8ae312dcb0df59379bf204a4。从空模板两题都结束：G3490.3秒、Sheet5692.5秒。产物 `generate-entry-native-v5-{github,sheet}/application`，过程/账目原文各在对应目录。G自己100 UI +4源码检查全绿，但固定初始入口仍2/5；不能因自绿推广。Sheet修复末轮92pass/3fail/7error，4连续无增益停止，后续源码检查也已结束；正式最终摘要仍待汇总。
-- `v5-frozen-suite-{github,sheet}` 为模型仅从公开需求独立写出的100题，非主办方隐藏测试。校准：同G suite给官方46应用85pass、受控73应用92pass，因此偏乐观；它偷偷加了父仓库导航，掩盖首页问题。Sheet suite给正式80应用76pass/10fail/17error。新Sheet最终固定回放已结束92pass/3fail/7error（v5-final-sheet-frozen-report.json）。额外发现写测自身矛盾：插入空B列后同时要求公式=B1+C1与结果5，虽B1空/C1=3；另有后序用例在共享后端上假设初始seed未被前序改变。不要据此盲修app；正在跑已有独立 g99/cov99n-arm 两套裁判。
-- v6 testgen 已补从公开 GIVEN/first WHEN 提取的固定入口检查，只有原模型 suite 可用才附加，不替代写测失败。扩展11项在官方46应用3pass/8fail、受控73应用11pass，Sheet0项。测试不修改认证、不猜标签、不导入业务答案。
-- v6 去掉把所有引号字面量都当源码覆盖目标的草拟/修复诱导，并按角色区分初始数据、运行输入、消息、明确不存在记录；修复验收不再把 written-test 模式的词汇缺失计为惩罚。保留真实失败、控件重命名与静态门禁。修复 parser 对实际捕获的单 hunk 冗余分隔符增加窄恢复。
-- 完整 tests-semantic-entry-v6-final.log：276 run / 273 pass / 3 optional skip。最终文档提示修订后 focused tests-v6-final-prompt-focused.log：126全过。当前已按精确包启动从空模板生成两题。记录 semantic-entry-v6-started.json；沿用包默认预算与模型、无需重复启动。
-- bounded replays v6-full-entry-repair 与 v6-semantic-entry-repair 均单次把 final v5 G 入口3/11修到11/11，已结束；后一成本0.151485，only app.js。**仍不接受为最终应用**：两份生成改动都为了标签唯一而省略同标题记录或仅给第一个容器入口，违背保留身份/上下文的要求。不要再无证据反复加提示付费重放，先明确剩余通用验收缺口。先前 v6-entry-repair-checkpoint 还引入无用示例seed表，已明确不采用。
-- native select 在旧Sheet app的保护性回归：直接换lib会因旧 input[name] 读取器损失透视表；仅改为[name]恢复两套87/93逐项等同基线。只作机制诊断，未嵌应用到agent包。
-
-下一步：收 v5 Sheet 独立回放与已经启动的 v6 两题完整生成；落实已验证代码经 PR 合 main 的收尾。当前已验证正式分保留。不要把调试修复应用、固定入口检查或局部自绿当作 agent 泛化完成。用户询问预期时已给 S95–100 中心预期、105+冲刺，明确尚未正式验证。
+下一步先收这条串行恢复，核对真实改动和权限/数据保留，再用固定独立检查验证最终产物。候选经验证后才替换当前正式submission；正式提交按同包完整两题终态、source_run_ids与总榜验收。main代码已交付不等于新分数产生。当前正式余额213.300534、练习398.110297是11:34UTC附近观察，下一批先刷新；已有授权内不反复询问。用户问预期时已报S95–100中心预期、105+冲刺，明确尚未正式验证。

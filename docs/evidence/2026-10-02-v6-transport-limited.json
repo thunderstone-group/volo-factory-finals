@@ -1,0 +1,344 @@
+{
+  "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb",
+  "main_sha": "c2cd10c8ea4d9f8b851a36af4996b1ebfc898ddb",
+  "classification": "transport-limited generation, not a completed repair trajectory",
+  "official_submission_unchanged": "f56d97c2fdb1",
+  "model_api_repair_recovery_pending": false,
+  "calibration": {
+    "github-official46": {
+      "case": "github-official46",
+      "counts": {
+        "pass": 99,
+        "fail": 12
+      },
+      "entry_checks": {
+        "pass": 3,
+        "fail": 8
+      },
+      "ordinary_checks": {
+        "pass": 96,
+        "fail": 4
+      },
+      "seconds": 100.6,
+      "unavailable": null,
+      "model_api_calls": 0
+    },
+    "github-controlled73": {
+      "case": "github-controlled73",
+      "counts": {
+        "pass": 107,
+        "fail": 4
+      },
+      "entry_checks": {
+        "pass": 11
+      },
+      "ordinary_checks": {
+        "pass": 96,
+        "fail": 4
+      },
+      "seconds": 58.1,
+      "unavailable": null,
+      "model_api_calls": 0
+    },
+    "sheet-official80": {
+      "case": "sheet-official80",
+      "counts": {
+        "pass": 88,
+        "fail": 5,
+        "error": 8
+      },
+      "entry_checks": {},
+      "ordinary_checks": {
+        "pass": 88,
+        "fail": 5,
+        "error": 8
+      },
+      "seconds": 96.2,
+      "unavailable": null,
+      "model_api_calls": 0
+    }
+  },
+  "results": {
+    "github": {
+      "finished": {
+        "task": "github",
+        "exit": 0,
+        "seconds": 1486.8,
+        "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb"
+      },
+      "usage": {
+        "billing_status": "unknown",
+        "calls": 6,
+        "calls_by_model": {
+          "deepseek-v4-flash-vision-exp": 4,
+          "kimi-k2.7-code-highspeed": 2
+        },
+        "completed_calls": 1,
+        "completion_tokens": null,
+        "draft_call_limit": 4,
+        "estimated_cost_cny": 1.136304,
+        "estimated_repair_cost_cny": 0.0,
+        "failed_calls": 5,
+        "failure_limit": 5,
+        "fallback_model": null,
+        "known_completion_tokens": 109392,
+        "known_prompt_tokens": 56998,
+        "prompt_tokens": null,
+        "refused_calls": 0,
+        "repair_call_limit": 24,
+        "repair_cny_limit": 10.0,
+        "side_calls": 6,
+        "unknown_usage_calls": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "counts": {
+        "pass": 49,
+        "fail": 32,
+        "error": 33
+      },
+      "transport_errors": [
+        {
+          "call": 2,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.013,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 3,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.015,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 4,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.028,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 5,
+          "model": "kimi-k2.7-code-highspeed",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.013,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 6,
+          "model": "kimi-k2.7-code-highspeed",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.021,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        }
+      ]
+    },
+    "sheet": {
+      "finished": {
+        "task": "sheet",
+        "exit": 0,
+        "seconds": 1516.8,
+        "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb"
+      },
+      "usage": {
+        "billing_status": "unknown",
+        "calls": 6,
+        "calls_by_model": {
+          "deepseek-v4-flash-vision-exp": 4,
+          "kimi-k2.7-code-highspeed": 2
+        },
+        "completed_calls": 1,
+        "completion_tokens": null,
+        "draft_call_limit": 4,
+        "estimated_cost_cny": 4.099032,
+        "estimated_repair_cost_cny": 2.91662,
+        "failed_calls": 5,
+        "failure_limit": 5,
+        "fallback_model": null,
+        "known_completion_tokens": 86323,
+        "known_prompt_tokens": 63688,
+        "prompt_tokens": null,
+        "refused_calls": 0,
+        "repair_call_limit": 24,
+        "repair_cny_limit": 10.0,
+        "side_calls": 5,
+        "unknown_usage_calls": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "counts": {
+        "pass": 68,
+        "fail": 9,
+        "error": 24
+      },
+      "transport_errors": [
+        {
+          "call": 2,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 10.011,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 3,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "StreamError",
+          "error_detail": "malformed SSE event",
+          "elapsed_seconds": 7.37,
+          "stream_observation": {
+            "received_bytes": 153950,
+            "sse_events": 470,
+            "content_chars": 0,
+            "reasoning_chars": 1562
+          },
+          "event_error": "JSONDecodeError: Unterminated string starting at: line 1 column 23 (char 22)",
+          "invalid_sse_event": "{\"choices\":[{\"delta\":{\"c"
+        },
+        {
+          "call": 4,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.193,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 5,
+          "model": "kimi-k2.7-code-highspeed",
+          "error_type": "StreamError",
+          "error_detail": "stream ended without completion markers",
+          "elapsed_seconds": 127.849,
+          "stream_observation": {
+            "received_bytes": 3815613,
+            "sse_events": 14784,
+            "content_chars": 0,
+            "reasoning_chars": 59486
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 6,
+          "model": "kimi-k2.7-code-highspeed",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.02,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Both default runs stopped at the global five-failure limit before a successful repair.",
+    "Local fixed written suites remain optimistic; GitHub ordinary checks score 96 on both official46 and controlled73 applications.",
+    "Runtime or gateway cause is unproven: unauthenticated model-list GET returned HTTP401 successfully in Python3.9, Python3.12 and curl."
+  ],
+  "github_recovery": {
+    "runtime": "Python3.12",
+    "seconds": 880.9,
+    "usage": {
+      "calls": 2,
+      "draft_call_limit": 4,
+      "repair_call_limit": 1,
+      "completed_calls": 1,
+      "failed_calls": 1,
+      "failure_limit": 5,
+      "refused_calls": 0,
+      "known_prompt_tokens": 117203,
+      "prompt_tokens": null,
+      "known_completion_tokens": 32608,
+      "completion_tokens": null,
+      "unknown_usage_calls": [
+        1
+      ],
+      "estimated_cost_cny": 0.505617,
+      "estimated_repair_cost_cny": 0.505617,
+      "repair_cny_limit": 1.0,
+      "side_calls": 0,
+      "fallback_model": null,
+      "calls_by_model": {
+        "deepseek-v4-flash-vision-exp": 2
+      },
+      "billing_status": "unknown"
+    },
+    "counts": {
+      "pass": 85,
+      "fail": 26
+    },
+    "initial_entry_failures": [],
+    "accepted": true,
+    "interpretation": "one configured repair opportunity used two HTTP attempts; first failed, retry completed; further bounded continuation is separate"
+  }
+}
