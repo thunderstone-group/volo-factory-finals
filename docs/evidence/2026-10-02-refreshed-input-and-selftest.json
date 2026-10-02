@@ -1,0 +1,29 @@
+{
+  "formal_submission": "f56d97c2fdb1",
+  "active_original_github_run": "4666c04f629e",
+  "run_input_verified_sha256": "9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8",
+  "retained_sheet_run": "9d673d2969ed",
+  "retained_sheet_passed": 80,
+  "last_observed_official_score": 59.60825224653157,
+  "selftest_before": {
+    "id": "d210ad11-cc2e-440e-8fb2-637e0163e830",
+    "passed": 10,
+    "total": 30
+  },
+  "selftest_after": {
+    "id": "ccbfc0ee-db33-470e-9565-41511f4ca476",
+    "passed": 19,
+    "total": 30,
+    "new_passes": 9,
+    "regressions": 0
+  },
+  "repair_model_calls": 1,
+  "estimated_repair_cny": 0.370638,
+  "skipped_repair_hunks": 1,
+  "scope": "Controlled application repair against refreshed complete public requirements plus organizer feedback; selftest result does not count on leaderboard or prove agent generalization.",
+  "cli_pr": "https://github.com/thunderstone-group/arcbench-cli/pull/12",
+  "cli_commit": "e1c7dae",
+  "cli_live_upload_wait_result_and_screenshot_verified": true,
+  "cli_installed_locally": true,
+  "cli_merged": false
+}
