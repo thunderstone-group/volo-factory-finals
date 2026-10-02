@@ -1,4 +1,4 @@
-# 当前交接 — 2026-10-02 08:25：S70 正式双题仍 RUNNING，本地两版已完整收尾
+# 当前交接 — 2026-10-02 08:48：正式 Sheet 83/100，GitHub 仍 RUNNING，目标未完成
 
 **继续执行，不要只回状态后结束。** 用户明确「定一个目标：把 s 提升到 70」「我去睡觉了，你这边持续优化吧」。目标工具已 active：同一次正式完整双题提交总榜 S ≥ 70，保留泛化能力；没有 token budget。现有练习与正式余额可用，不重复询问小额许可，不购买或充值。未达标不 complete。没有授权派子 agent，本轮未派发。
 
@@ -6,11 +6,17 @@
 
 **最新正式运行：** submission **e963e1a3e56c**，包 **c5832d5275a76144c3f5e60ad3482d2d442ae1bf468accd1557c91107ca68820**，Vision，official_evaluation，上传后下载 hash 已验证一致。G **07c92a18ffb4**、S **cee35cb1fb7f**，07:35 两题均 RUNNING，无测试结果。E2 `official-upload-r1.json`、`official-start-r1.json`、`official-r1-latest.json`。只读 watcher `watch_official_r1.py` session **70750**，使用现有 client 的 `TERMINAL_STATES`，每 30 秒读取；终态写 `official-r1-finished.json`。旧 watcher session 81508 / PID 8724 已精确终止并替换，未改远端运行。
 
+**最新结果优先：Sheet 已于 08:29 终态，83/100，12/24 features，1,777,767 tokens，CNY 2.477041，3196 秒；failed_tests 为空。** FAILED 表示有测试未过，是有效质量读数。原始记录 E2 `official-sheet-result-r1.json`。GitHub 08:44 直接 CLI 查询仍在 start_agent；整次 S 尚未形成。必须继续读 G 的正式终态和同一提交总榜，不得拿 agent 自测或单题分完成目标。
+
+正式 Sheet 产物已下载并核实需求 hash：E2 `official-sheet-workspace-r1.zip`，SHA **4419c4d38c5c7b24b8cbe0192990765a80062b040a417cfa801ac623e85c1e57**；源码 `official-sheet-r1/application`。固定独立裁判 **93/95**。官方日志证实原 UI 自测 100，四个源码反例经两轮修复后共 104 pass；完整使用 10 次主调用、6 次套件调用、无运输错误，估算 CNY 2.477042 与官方吻合。不要把这一证据说成方法的单独因果提升。还发现生成了未被引用、只含词汇注释的 vocabulary.js，表明静态词汇守卫会诱导无行为的满足方式，尚未改正式代码。
+
 正式实验的证据边界和偏离原本地门槛的理由已经写进 `docs/evidence/2026-10-02-s70-official-experiment-r1.json`：v1 Sheet 独立合计 181，比预定 182 少 1；v2 Sheet 为 90/95。最新 v2c 没有单独完整从零跑完的本地轨迹，但生成/UI 修复文件与 v1/v2 相同，检查器变化已用针对性测试及真实源代码重放验证。决定用已授权的少量正式预算获取真实目标反馈，**不是宣布通过旧门槛或晋升主线**。不能把不同本地产物拼成正式成绩。等两题终态后读对应总榜，S 未到 70 则继续优化。
 
 08:25 最新：两题仍 RUNNING。已读官方日志中，Sheet 浏览器自测从 83 经三轮到 100，随后进入源码反例阶段；GitHub 两轮从 45 到 59，继续修复。**这些都是 agent 自测，不是官方测试通过数。** 更新日志在 E2 `official-{github,sheet}-tail.json`，现有 watcher 自动保留状态。下一步优先读正式终态、官方成本和总榜；不要继续只推导本地分数。
 
 备用实验在另一个工作树 `~/projects/volo-factory-worktrees/source-owners-20261002`、分支 `exp/source-owners-20261002`，不影响正式包或本主实验分支。对象字面量方法的限定名/实际 owner 绑定原型已有 17 项针对性通过，旧八项控制前后结果保持；新 v2 GitHub 恢复两项可执行 fail，源码确认合并条件漏用了已计算的 Request changes 和 check 状态。另两项仍未判定：实际 `ARC.shareHelpers` 会把 APP.actions 的方法暴露到 APP，静态绑定尚未表示这个运行时桥；APP.screen 有后续重赋值，暂保留歧义。该原型不得直接晋升。证据在该分支 `docs/evidence/2026-10-02-object-owner-prototype.json` 和 E2 `object-owners-*.json`。
+
+备用实验新进展：错误信息加入实际声明路径提示，真实校验模型（CNY 0.135586）自行把夹具修正到正确入口，**四项均能执行并 fail**，没有操作员改断言。E2 `owner-proposals-verified/{response.txt,execution.json,trace.json}`；重点是 APP.actions.assigneePicker 与 APP.pullFiles 的真实入口。现有针对性共 **18 项通过**。受控修复 session **77703** 正在运行（实际 tool handle 已确认 live），日志 `owner-repair.log`，结果目录 `owner-repair-github/`，自己的测试副本 `owner-repair-suite-github/`；限制三次修复、估算 1.5 元。第一轮修好四项源码检查但丢一项原 UI 检查，第二轮没新增通过，第三轮未读；**不能宣称保持原行为，不能直接合并/提交原型。** 等结果后识别真实回归还是夹具冲突，再用固定独立裁判评估。原正式包保持不变。
 
 ## 代码与包
 
