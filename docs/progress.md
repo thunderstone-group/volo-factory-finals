@@ -1703,3 +1703,5 @@ The same46-point official GitHub application scored23/30,21/29,1/41 in the three
 A generic native-select adapter then produced24/30,21/29,28/41 across the same groups: combined45 to73 with zero regressed cases. These are application diagnostics, not formal agent scores. Swapping the same adapter into the existing Sheet app revealed an input-only pivot value reader; its one-selector migration restored both independent suites to87/93, with all case verdicts unchanged from baseline. This caller dependency is documented for future generated code.
 
 Source8a06f4a passed273 deterministic tests (270pass,3optional skip). Packagee4a76b80 has begun fresh complete GitHub/Sheet generation with the updated public inputs and practice credit; it has not replaced the effectiveS79.4764 official submission. See evidence/2026-10-02-home-native-controlled-validation.json.
+
+- 2026-10-02：按用户要求完成 CLI 主分支交付：#11 doctor、#12 selftest API 已合并，0.5.0/main 4d3eefc，132 tests + 主分支安装后的真实 API 验证，临时分支/worktree清理。ARC v5两题生成均结束；v6固定入口受控修复11/11但仍省略同名记录，不当成可推广成果。完整源码276检查通过（3 optional skip），后续126 focused通过；v6待完整生成验证。官方S79.4764原提交保留。详见本页 handoff 与 E2/cli-050-main-delivery.json。
