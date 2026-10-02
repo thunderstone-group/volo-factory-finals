@@ -1,0 +1,153 @@
+{
+  "objective": "S>=70 from a complete original GitHub100 + Sheet100 pair on the same current submission",
+  "achieved": true,
+  "score": 79.47644199762266,
+  "rank_observed": 2,
+  "submission_id": "f56d97c2fdb1",
+  "official_github": {
+    "run_id": "4666c04f629e",
+    "status": "FAILED",
+    "passed": 46,
+    "failed": 54,
+    "pass_rate": 46.0,
+    "tokens": 1223756,
+    "duration_seconds": 2144,
+    "failure_reason": "Runner exited with test failures or runtime errors",
+    "submission_id": "f56d97c2fdb1",
+    "requirement_id": "hackathon--github",
+    "finished_at": "2026-10-02T07:39:06.351876",
+    "display_name": "volo-s70-8ef69d0c-controls-r2",
+    "model_name": "deepseek-v4-flash-vision-exp",
+    "feature_implemented_count": 17,
+    "feature_total_count": 47,
+    "cost": {
+      "amount": 1.963038,
+      "currency": "CNY"
+    },
+    "steps": [
+      {
+        "key": "deploy_agent",
+        "status": "completed",
+        "description": "Done"
+      },
+      {
+        "key": "start_agent",
+        "status": "completed",
+        "description": "Done"
+      },
+      {
+        "key": "run_tests",
+        "status": "completed",
+        "description": "Evaluation completed"
+      }
+    ],
+    "failed_tests": []
+  },
+  "official_sheet": {
+    "run_id": "9d673d2969ed",
+    "status": "FAILED",
+    "passed": 80,
+    "failed": 20,
+    "pass_rate": 80.0,
+    "tokens": 1738156,
+    "duration_seconds": 3715,
+    "failure_reason": "Runner exited with test failures or runtime errors",
+    "submission_id": "f56d97c2fdb1",
+    "requirement_id": "hackathon--sheet",
+    "finished_at": "2026-10-02T04:09:57.643080",
+    "display_name": "volo-s70-8ef69d0c-controls-r2",
+    "model_name": "deepseek-v4-flash-vision-exp",
+    "feature_implemented_count": 11,
+    "feature_total_count": 24,
+    "cost": {
+      "amount": 2.973834,
+      "currency": "CNY"
+    },
+    "steps": [
+      {
+        "key": "deploy_agent",
+        "status": "completed",
+        "description": "Done"
+      },
+      {
+        "key": "start_agent",
+        "status": "completed",
+        "description": "Done"
+      },
+      {
+        "key": "run_tests",
+        "status": "completed",
+        "description": "Evaluation completed"
+      }
+    ],
+    "failed_tests": []
+  },
+  "leaderboard": {
+    "rank": 2,
+    "username": "VOLO-AI",
+    "model_name": "deepseek-v4-flash-vision-exp",
+    "track": "hackathon",
+    "avg_pass_rate": 63.0,
+    "avg_feature_implementation_rate": 0.0,
+    "total_token_millions": 2.961912,
+    "total_token_cost": 4.936872,
+    "token_cost_currency": "CNY",
+    "cost_efficiency": null,
+    "efficiency_threshold": 80.0,
+    "efficiency_eligible": false,
+    "seniority_label": "junior",
+    "avg_runtime_seconds": 2929,
+    "submission_count": 1,
+    "task_id": null,
+    "task_title": null,
+    "is_complete": true,
+    "score": 79.47644199762266,
+    "score_available": true,
+    "pass_rate": 63.0,
+    "passed_count": 126,
+    "test_total": 200,
+    "total_cost": 4.936872,
+    "expected_cost": 50.4,
+    "cost_ratio": 0.09795380952380953,
+    "score_regime": "reward",
+    "submitted_at": "2026-10-02T03:02:46.744478",
+    "is_low_cost": false,
+    "scoring_route": "original",
+    "source_run_ids": [
+      "4666c04f629e",
+      "9d673d2969ed"
+    ]
+  },
+  "verified_live_agent_archive_sha256": "8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a",
+  "agent_archive_entries": [
+    "main.py",
+    "dialect.md",
+    "requirements.txt",
+    "semantic_probe.cjs",
+    "scenarios.py",
+    "scenario_translate.py",
+    "scenario_check.py",
+    "scenario_check.cjs",
+    "testgen.py",
+    "source_contracts.py",
+    "contract_bindings.cjs",
+    "contract_runner.cjs",
+    "scaffold/README.md",
+    "scaffold/backend/package.json",
+    "scaffold/backend/server.js",
+    "scaffold/frontend/package.json",
+    "scaffold/frontend/public/app.js",
+    "scaffold/frontend/public/index.html",
+    "scaffold/frontend/public/lib/arc.js",
+    "scaffold/frontend/public/seed.js",
+    "scaffold/frontend/public/styles.css"
+  ],
+  "agent_package_unchanged": true,
+  "generated_selftest_app_not_in_agent_package": true,
+  "runtime_public_requirements_sha256": "9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8",
+  "quality_boundary": "This proves the stated score target on these tasks, not universal or statistically stable generalization.",
+  "goal_usage": {
+    "tokens_used": 4274082,
+    "elapsed_seconds": 41656
+  }
+}

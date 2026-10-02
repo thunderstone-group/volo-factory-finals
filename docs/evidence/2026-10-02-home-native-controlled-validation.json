@@ -1,0 +1,195 @@
+{
+  "github": [
+    {
+      "stage": 1,
+      "id": "d706df84-0b53-414b-baf4-d879a1420f3e",
+      "before": 23,
+      "after": 24,
+      "total": 30,
+      "new_passes": 1,
+      "regressions": 0,
+      "changes": [
+        {
+          "title": "REQ-2-3-grant-repository-access.spec.ts REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+          "before": false,
+          "after": true
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "id": "b173ec83-d708-4a5c-afeb-4ffa8826348b",
+      "before": 21,
+      "after": 21,
+      "total": 29,
+      "new_passes": 0,
+      "regressions": 0,
+      "changes": []
+    },
+    {
+      "stage": 3,
+      "id": "2c6f10f5-6b47-4d1a-bb2e-635286017ce6",
+      "before": 1,
+      "after": 28,
+      "total": 41,
+      "new_passes": 27,
+      "regressions": 0,
+      "changes": [
+        {
+          "title": "REQ-5-1-1-filter-issues.spec.ts REQ-5-1-1: List and Filter Repository Issues - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-1-1-filter-issues.spec.ts REQ-5-1-1: List and Filter Repository Issues - Scenario 2",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-1-2-view-issue.spec.ts REQ-5-1-2: View an Issue and Its Discussion - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-1-2-view-issue.spec.ts REQ-5-1-2: View an Issue and Its Discussion - Scenario 2",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-1-2-view-issue.spec.ts REQ-5-1-2: View an Issue and Its Discussion - Scenario 3",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-2-1-create-issue.spec.ts REQ-5-2-1: Create a Repository Issue - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-2-1-create-issue.spec.ts REQ-5-2-1: Create a Repository Issue - Scenario 2",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-2-2-edit-issue.spec.ts REQ-5-2-2: Edit an Issue Title and Description - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-2-2-edit-issue.spec.ts REQ-5-2-2: Edit an Issue Title and Description - Scenario 2",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-2-3-comment-on-issue.spec.ts REQ-5-2-3: Comment on an Issue Discussion - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-2-3-comment-on-issue.spec.ts REQ-5-2-3: Comment on an Issue Discussion - Scenario 2",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-3-1-assign-issue.spec.ts REQ-5-3-1: Assign or Unassign Issue Participants - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-3-2-label-issue.spec.ts REQ-5-3-2: Apply Labels to an Issue - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-3-3-set-milestone.spec.ts REQ-5-3-3: Assign Issues and Pull Requests to a Milestone - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-4-close-reopen-issue.spec.ts REQ-5-4: Close or Reopen an Issue - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-5-4-close-reopen-issue.spec.ts REQ-5-4: Close or Reopen an Issue - Scenario 2",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-2-1-filter-pull-requests.spec.ts REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-2-1-filter-pull-requests.spec.ts REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 2",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-2-1-filter-pull-requests.spec.ts REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 3",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-2-2-compare-branches.spec.ts REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-2-4-create-draft-pull-request.spec.ts REQ-6-2-4: Create a Draft Pull Request - Scenario 2",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-3-2-view-changed-files.spec.ts REQ-6-3-2: Inspect Changed Files and Aggregate Diff - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-3-3-add-review-comment.spec.ts REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-3-4-submit-review.spec.ts REQ-6-3-4: Submit a Pull Request Review - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-3-4-submit-review.spec.ts REQ-6-3-4: Submit a Pull Request Review - Scenario 2",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-6-close-reopen-pull-request.spec.ts REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 1",
+          "before": false,
+          "after": true
+        },
+        {
+          "title": "REQ-6-6-close-reopen-pull-request.spec.ts REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 2",
+          "before": false,
+          "after": true
+        }
+      ]
+    }
+  ],
+  "before_total": 45,
+  "after_total": 73,
+  "regressions": 0,
+  "sheet_after_caller_migration": [
+    {
+      "judge": "g99",
+      "changes": []
+    },
+    {
+      "judge": "cov99n-arm",
+      "changes": []
+    }
+  ],
+  "scope": "Controlled application changes and independent Sheet replay, not fresh agent or official leaderboard score",
+  "candidate_package_sha256": "e4a76b801595686de7c93d25cb2a8b45f4c9b39b8ae312dcb0df59379bf204a4",
+  "candidate_commit": "8a06f4a",
+  "fresh_pair_started": true,
+  "formal_submission_changed": false,
+  "current_official_score": 79.47644199762266
+}

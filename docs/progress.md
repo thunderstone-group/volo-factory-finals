@@ -1689,3 +1689,17 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 Reused current submission f56d97c2fdb1 for full GitHub run4666c04f629e; actual runtime input hash matches the updated public requirements. Existing Sheet80 remains in the same submission. S70 is unproven; last observed S59.6083.
 
 The organizer Stage1 self-test of the old R2 application was10/30. One Vision repair with updated complete requirements and returned failure diagnostics costCNY0.370638; valid hunks applied with the existing parser policy, one unmatched hunk retained. Real self-test improved to19/30, nine improvements and no regressions. This is a controlled application diagnostic, not a new agent score. The self-test API integration is installed locally and verified through actual upload, terminal polling, result retrieval, and screenshot download; CLI PR12 is ready and unmerged. Aggregates: evidence/2026-10-02-refreshed-input-and-selftest.json; full private traces remain in campaign evidence.
+
+## 2026-10-02 15:45 — S70 achieved at S79.4764; continue toward the leader
+
+Official run4666c04f629e finished46/100 atCNY1.963038. The current submission f56d97c2fdb1 pairs it with Sheet9d673d2969ed (80/100,CNY2.973834); the live leaderboard explicitly selects both runs, marks the original route complete at126/200 andS79.47644199762266, rank2. The retrieved submission archive matches unchanged agent SHA8ef69d0c. Goal70 is complete, audited in evidence/2026-10-02-s70-achieved.json.
+
+The user requested pursuing Orchestro. A new goal tracks the complete-pair real-time leaderboard lead. Fresh opponent data isGitHub76+Sheet87,S103.6166; prioritize the30-test GitHub gap over the7-test Sheet gap. One immutable copy of our46-point official application is now being tested across the three organizer stages in sequence to obtain concrete failure diagnostics, without new model generation or replacing the valid official submission.
+
+## 2026-10-02 — Controlled entry repair and native controls; fresh v5 pair started
+
+The same46-point official GitHub application scored23/30,21/29,1/41 in the three self-test groups. A read-only route overlay established that the failed Stage3 entry searches occurred at / with empty hash, no session and no earlier link clicks. A single public-requirement repair changed only homeScreen, preserving authentication, permissions, seed data and business handlers byte-for-byte; Stage3 improved1 to27,26 gains and zero regressions.
+
+A generic native-select adapter then produced24/30,21/29,28/41 across the same groups: combined45 to73 with zero regressed cases. These are application diagnostics, not formal agent scores. Swapping the same adapter into the existing Sheet app revealed an input-only pivot value reader; its one-selector migration restored both independent suites to87/93, with all case verdicts unchanged from baseline. This caller dependency is documented for future generated code.
+
+Source8a06f4a passed273 deterministic tests (270pass,3optional skip). Packagee4a76b80 has begun fresh complete GitHub/Sheet generation with the updated public inputs and practice credit; it has not replaced the effectiveS79.4764 official submission. See evidence/2026-10-02-home-native-controlled-validation.json.
