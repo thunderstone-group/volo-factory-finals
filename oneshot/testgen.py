@@ -591,7 +591,10 @@ application was judged:
 Fix only the test code that broke: a helper that uses a variable it was not given, a missing `await`, a method called
 on the wrong object, a Playwright API used the wrong way, a name the requirements never give (use the one they give).
 Keep every scenario, step, locator, value and assertion that follows the requirements. Reply with the whole corrected
-file and nothing else:
+file. Keep assertions at their original call sites: replace an invalid matcher inline with a supported assertion of
+the same property. Do not consolidate assertions into a new helper; the repair must retain the existing checks and
+their execution order. Change only the broken API usage, without restructuring unrelated test code.
+Return nothing outside the file block:
 === FILE: {file} ===
 <file content>
 === END ==="""
