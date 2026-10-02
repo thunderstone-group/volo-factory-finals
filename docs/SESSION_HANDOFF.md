@@ -1,4 +1,4 @@
-# 当前交接 — 2026-10-02 07:36：S70 首次正式双题已 RUNNING，继续跟到终态
+# 当前交接 — 2026-10-02 08:25：S70 正式双题仍 RUNNING，本地两版已完整收尾
 
 **继续执行，不要只回状态后结束。** 用户明确「定一个目标：把 s 提升到 70」「我去睡觉了，你这边持续优化吧」。目标工具已 active：同一次正式完整双题提交总榜 S ≥ 70，保留泛化能力；没有 token budget。现有练习与正式余额可用，不重复询问小额许可，不购买或充值。未达标不 complete。没有授权派子 agent，本轮未派发。
 
@@ -7,6 +7,10 @@
 **最新正式运行：** submission **e963e1a3e56c**，包 **c5832d5275a76144c3f5e60ad3482d2d442ae1bf468accd1557c91107ca68820**，Vision，official_evaluation，上传后下载 hash 已验证一致。G **07c92a18ffb4**、S **cee35cb1fb7f**，07:35 两题均 RUNNING，无测试结果。E2 `official-upload-r1.json`、`official-start-r1.json`、`official-r1-latest.json`。只读 watcher `watch_official_r1.py` session **70750**，使用现有 client 的 `TERMINAL_STATES`，每 30 秒读取；终态写 `official-r1-finished.json`。旧 watcher session 81508 / PID 8724 已精确终止并替换，未改远端运行。
 
 正式实验的证据边界和偏离原本地门槛的理由已经写进 `docs/evidence/2026-10-02-s70-official-experiment-r1.json`：v1 Sheet 独立合计 181，比预定 182 少 1；v2 Sheet 为 90/95。最新 v2c 没有单独完整从零跑完的本地轨迹，但生成/UI 修复文件与 v1/v2 相同，检查器变化已用针对性测试及真实源代码重放验证。决定用已授权的少量正式预算获取真实目标反馈，**不是宣布通过旧门槛或晋升主线**。不能把不同本地产物拼成正式成绩。等两题终态后读对应总榜，S 未到 70 则继续优化。
+
+08:25 最新：两题仍 RUNNING。已读官方日志中，Sheet 浏览器自测从 83 经三轮到 100，随后进入源码反例阶段；GitHub 两轮从 45 到 59，继续修复。**这些都是 agent 自测，不是官方测试通过数。** 更新日志在 E2 `official-{github,sheet}-tail.json`，现有 watcher 自动保留状态。下一步优先读正式终态、官方成本和总榜；不要继续只推导本地分数。
+
+备用实验在另一个工作树 `~/projects/volo-factory-worktrees/source-owners-20261002`、分支 `exp/source-owners-20261002`，不影响正式包或本主实验分支。对象字面量方法的限定名/实际 owner 绑定原型已有 17 项针对性通过，旧八项控制前后结果保持；新 v2 GitHub 恢复两项可执行 fail，源码确认合并条件漏用了已计算的 Request changes 和 check 状态。另两项仍未判定：实际 `ARC.shareHelpers` 会把 APP.actions 的方法暴露到 APP，静态绑定尚未表示这个运行时桥；APP.screen 有后续重赋值，暂保留歧义。该原型不得直接晋升。证据在该分支 `docs/evidence/2026-10-02-object-owner-prototype.json` 和 E2 `object-owners-*.json`。
 
 ## 代码与包
 
@@ -45,6 +49,7 @@
 - **v1 全部已完成**：G 独立 **67/71**、估算 2.283998 元；浏览器自测 93 pass/7 unjudged，源码反例修复 3 pass/1 precondition error（不得算作第四项已修复）。S 独立 **91/90**、估算 2.567570 元，自测 99 pass/1 unjudged，source phase 因上述空 setup 被过严拒收；这两项成本合计 4.851568。自动 watcher 已完成 `fresh-pair-validation.json`。
 - **v2 Sheet 已完成**：UI 自测从 93 到 100，代码反例 3 fail 到 3 pass，独立前后均 **90/95**，估算 **2.031946 元**。UI checkpoint 与自己的固定套件在 `ui-checkpoint-v2-sheet/`。v2b 对其原始/验证后反例在 before/after 的真实重放与 v2 一致；E2 `v2-sheet-probes-{before,after}.json`、`v2b-sheet-probes-{before,after}.json`。这不等于 v2b/v2c 独立整次生成。
 - **v2 GitHub 仍在修复**：真实 Chromium 初始错误 `self.repoHref is not a function`，CSS parse 提示同时出现但不是唯一原因。不要未经复现就只改 CSS 检查器。第二轮恢复应用，套件自身 3 个错误经一次实际 mend 归零，第三轮自测 45 到 71；后续进度读该 run 的 `stderr.log`。checkpoint/watchers 仍在等它完成。
+- **v2 GitHub 已完成（08:10）**：八轮浏览器修复、六轮接受，最终自测 99 pass/1 unjudged；四项源码反例因限定方法名不受支持而全部未判定，未据此判产品失败。独立结果 **64/67**，低于 v1 的 67/71。UI checkpoint 已保存，前后独立分相同。两版本地完整生成、独立裁判及 checkpoint watcher 均已结束；持续远端工作只有上述正式双题和只读官方 watcher。
 - 新版完整确定性检查：one-shot **259 运行、256 过、3 可选就绪跳过**；legacy **226 运行、214 过、12 可选集成跳过**。E2 `tests-contract-final.log`、`tests-legacy.log`。source/package gitleaks 都 0，精确 ZIP 对两个真实配置凭据字段扫描 0 匹配。
 - Node 缓存通常是 `/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/{oneshot-playwright-test-1.57.0,oneshot-jsdom}/node_modules`。Python 用 `~/projects/volo-factory/.venv/bin/python`。
 
