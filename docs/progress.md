@@ -1668,3 +1668,9 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - Binding failures now list actual callable declaration paths with the same member name. The prompt documents object-owner binding and default receivers.
 - A real Vision verifier call (estimated CNY 0.135586) corrected the original proposals without operator assertion edits. All four execute as failures on the untouched fresh GitHub application. Eighteen focused tests pass. Evidence: `docs/evidence/2026-10-02-owner-binding-feedback.json`.
 - A controlled repair against the original own UI suite plus these fixed probes is running, limited to three repair calls / CNY 1.5 estimated. Its first accepted change fixed all four source checks but lost one original UI check; preservation remains unproved and the prototype is not promoted.
+
+## 2026-10-02 08:55 — Controlled repair exposes invalid merge-test preconditions
+
+- Controlled owner-aware repair completed three calls, estimated CNY 0.475417. Four source checks pass afterward; one original UI check fails, so the old UI total changes from 99 to 98. Fixed independent judges remain 64/67, with no measured aggregate gain.
+- The failing positive-merge test reuses the seeded Open PR after an earlier test has left a valid Request changes decision on it. It does not restore that decision or verify eligibility. Public REQ-6-5 explicitly requires separate eligible/blocked PRs and independent restoration before reuse. The actual fresh seed also has only one named Open PR, with a pending check, so the required eligible fixture is missing.
+- This is a coupled fixture/seed problem, not proof that blocking the merge is wrong. Neither application rules nor assertions were weakened. Further work should establish complete GIVEN states and fixture isolation rather than force an invalid merge. Evidence: `docs/evidence/2026-10-02-merge-fixture-conflict.json`.
