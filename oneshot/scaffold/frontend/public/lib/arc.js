@@ -180,6 +180,7 @@
     if (ARC.dialogOpen) ARC.setInert(true);
     if (app.afterRender) app.afterRender(route);
     ARC.collapseDuplicates();
+    ARC._selectContent(document.getElementById('app'));
   };
   // --- One copy of an identical control per screen. Suites click a quoted name in strict mode
   // (`getByRole('link', {name: 'Sign in', exact: true})`); the same link in the header and in the page body
@@ -189,7 +190,7 @@
   ARC.collapseDuplicates = function () {
     const seen = new Set();
     for (const el of document.querySelectorAll('#app a[href], #app button')) {
-      if (el.hidden || !el.getClientRects().length) continue;
+      if (el.hidden || el.closest('select') || !el.getClientRects().length) continue;
       const key = el.outerHTML.replace(/\s+/g, ' ').trim();
       if (seen.has(key)) { el.hidden = true; el.setAttribute('data-arc-duplicate', ''); } else seen.add(key);
     }
@@ -203,6 +204,7 @@
     const root = document.getElementById('dialog-root');
     root.innerHTML = `<div class="dialog" role="dialog" aria-label="${ARC.esc((opts && opts.title) || 'Dialog')}">${html}</div>`;
     root.hidden = false;
+    ARC._selectContent(root);
     ARC.dialogOpen = true;
     ARC.setInert(true);
     const first = root.querySelector('input, textarea, select, button');
@@ -248,6 +250,7 @@
     if (kind === 'menu') { wrap.setAttribute('role', 'menu'); if (opts && opts.label) wrap.setAttribute('aria-label', opts.label); }
     wrap.innerHTML = body;
     host.appendChild(wrap);
+    ARC._selectContent(wrap);
     ARC._popover = wrap;
   };
   ARC.closePopover = function () {
@@ -266,6 +269,7 @@
       'select:not([multiple]):not([size]):not(:open) option{display:none;}' +
       'select:not([multiple]):not([size])::picker(select){background:white;color:#171717;border:1px solid #ddd;border-radius:6px;padding:4px;}' +
       'select:not([multiple]):not([size]) option{padding:4px 10px;}' +
+      'select > button.arc-selected-display{all:unset;}' +
       '}';
     document.head.appendChild(style);
     document.addEventListener('input', (event) => {
@@ -277,6 +281,24 @@
       ARC.shareHelpers(app);
       fn.call(app.actions, { value: el.value, name: el.name, el, event });
     });
+  };
+  // Let the browser expose the current value in author DOM while retaining the
+  // select's own value, option nodes, keyboard behavior and change events.
+  // https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/selectedcontent
+  ARC._selectContent = function (root) {
+    if (!window.CSS || !CSS.supports('appearance', 'base-select') || !window.HTMLSelectedContentElement) return;
+    ARC._ensureSelectStyles();
+    for (const select of root.querySelectorAll('select:not([multiple]):not([size])')) {
+      if (select.querySelector(':scope > button')) continue;
+      const button = document.createElement('button');
+      button.type = 'button';
+      // The select already exposes its value to assistive technology. This
+      // browser-managed display must not become a second, identically named action.
+      button.setAttribute('aria-hidden', 'true');
+      button.className = 'arc-selected-display';
+      button.appendChild(document.createElement('selectedcontent'));
+      select.prepend(button);
+    }
   };
   // ARC.combobox({ label, name, options: ['A', 'B'] | [{value, label}], value, change })
   // `change` keeps the existing {value, name, el} callback contract.

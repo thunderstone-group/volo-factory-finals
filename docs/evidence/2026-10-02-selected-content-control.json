@@ -1,0 +1,115 @@
+{
+  "change": "Expose native selected values using browser-managed selectedcontent while preserving select semantics",
+  "business_source_changes_in_controlled_apps": false,
+  "only_replaced_file": "frontend/public/lib/arc.js",
+  "one_shot_checks": {
+    "run": 276,
+    "skipped": 3
+  },
+  "legacy_checks": {
+    "run": 226,
+    "skipped": 12
+  },
+  "browser_contracts": [
+    "visible initial and changed selected value",
+    "unchanged accessible combobox value via Chromium AX tree",
+    "keyboard Tab sequence",
+    "named-option clicks",
+    "native selectOption",
+    "FormData and change callback",
+    "dialog and popover controls"
+  ],
+  "github_fixed_suite": {
+    "app": "github",
+    "judge": "v6",
+    "counts": {
+      "pass": 109,
+      "fail": 2
+    },
+    "seconds": 46.8,
+    "model_api_calls": 0,
+    "unavailable": null
+  },
+  "old_sheet_regression": {
+    "g99": {
+      "app": "old-sheet",
+      "judge": "g99",
+      "counts": {
+        "pass": 87,
+        "fail": 13
+      },
+      "seconds": 93.7,
+      "model_api_calls": 0,
+      "unavailable": null
+    },
+    "cov99n-arm": {
+      "app": "old-sheet",
+      "judge": "cov99n-arm",
+      "counts": {
+        "pass": 93,
+        "fail": 7
+      },
+      "seconds": 77.8,
+      "model_api_calls": 0,
+      "unavailable": null
+    }
+  },
+  "fresh_sheet_independent": {
+    "g99": {
+      "app": "new-sheet",
+      "judge": "g99",
+      "counts": {
+        "pass": 90,
+        "fail": 10
+      },
+      "seconds": 81.2,
+      "model_api_calls": 0,
+      "unavailable": null
+    },
+    "cov99n-arm": {
+      "app": "new-sheet",
+      "judge": "cov99n-arm",
+      "counts": {
+        "pass": 95,
+        "fail": 5
+      },
+      "seconds": 70.3,
+      "model_api_calls": 0,
+      "unavailable": null
+    }
+  },
+  "transport_control": {
+    "same_request_sha256_calls": [],
+    "default_transport_failed_calls": 5,
+    "physical_interface_transport": {
+      "interface": "en0",
+      "resolved_ip": "189.1.235.72",
+      "request_sha256": "cbfc1c8abca93f22717fed256d9893f939fe71247e0742f662f752affff983e4",
+      "request_bytes": 466192,
+      "http_status": 200,
+      "curl_exit": 0,
+      "seconds": 420.699,
+      "received_bytes": 19164108
+    },
+    "physical_interface_outcome": {
+      "completed_calls": 1,
+      "failed_calls": 0,
+      "github_fixed_checks": {
+        "pass": 108,
+        "fail": 3
+      }
+    },
+    "second_physical_interface_control": {
+      "interface": "en0",
+      "resolved_ip": "189.1.235.72",
+      "request_sha256": "b9a4a77048bfb5d01737febf852539175d3aed4d35acd453f9b49dca206ecc38",
+      "request_bytes": 405354,
+      "http_status": 200,
+      "curl_exit": 0,
+      "seconds": 248.552,
+      "received_bytes": 17702491
+    },
+    "scope": "Per-process physical-interface control, no global network settings or agent-package changes; route and HTTP stack both differ."
+  },
+  "official_score_claim": null
+}

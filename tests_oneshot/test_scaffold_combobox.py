@@ -47,16 +47,31 @@ const server = http.createServer((req, res) => {
     await page.goto('http://127.0.0.1:' + server.address().port + '/');
     page.setDefaultTimeout(3000);
     const rows = page.getByRole('combobox', {name: 'Rows', exact: true});
+    await rows.getByText('Select', {exact: true}).first().waitFor({state: 'visible'});
+    await page.getByLabel('Columns', {exact: true}).getByText('Select', {exact: true}).first().waitFor({state: 'visible'});
+    assert.equal(await page.getByRole('button', {name: 'Select', exact: true}).count(), 0);
+    await rows.focus();
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.name), 'cols',
+      'Tab moves between fields without adding a stop inside the select');
     assert.equal(await page.getByRole('option').count(), 0, 'no option exists while every box is closed');
     await rows.click();
     assert.equal(await page.getByRole('option').count(), 2, 'only the open picker exposes options');
     // Both boxes offer Alpha, but only the open box's options exist: the exact option locator is strict-safe.
     await page.getByRole('option', {name: 'Alpha', exact: true}).click();
     assert.equal(await rows.inputValue(), 'Alpha');
+    await rows.getByText('Alpha', {exact: true}).first().waitFor({state: 'visible'});
+    const cdp = await page.context().newCDPSession(page);
+    const ax = await cdp.send('Accessibility.getFullAXTree');
+    const rowAX = ax.nodes.find(n => n.role?.value === 'combobox' && n.name?.value === 'Rows');
+    assert.equal(rowAX?.value?.value, 'Alpha', 'the real select retains its accessible value');
+    await cdp.detach();
+    // The browser-managed display is inert; interactions target its owning select.
     assert.equal(await page.getByRole('option').count(), 0);
     assert.equal(await page.getByRole('listbox').count(), 0);
     await rows.selectOption({label: 'Beta'});
     assert.equal(await rows.inputValue(), 'Beta', 'standard selectOption works on the same real control');
+    await rows.getByText('Beta', {exact: true}).first().waitFor({state: 'visible'});
     await page.getByLabel('Columns', {exact: true}).click();
     await page.getByRole('option', {name: 'Beta', exact: true}).click();
     assert.equal(await page.evaluate(() => window.__picked), 'b');
@@ -73,9 +88,28 @@ const server = http.createServer((req, res) => {
     await category.click();
     await page.getByRole('option', {name: 'Beta', exact: true}).click();
     assert.equal(await category.inputValue(), 'b');
+    await category.getByText('Beta', {exact: true}).first().waitFor({state: 'visible'});
     await category.selectOption('a');
     await page.getByRole('button', {name: 'Apply', exact: true}).click();
     assert.deepEqual(await page.evaluate(() => window.__submitted), {category: 'a'});
+    await page.evaluate(() => ARC.openDialog('<form data-action="submit"><label>Mode<select name="mode">' +
+      '<option value="one">One</option><option value="two">Two</option></select></label>' +
+      '<button type="submit">Confirm</button></form>', {title: 'Configure'}));
+    const mode = page.getByRole('dialog', {name: 'Configure'}).getByRole('combobox', {name: 'Mode'});
+    await mode.getByText('One', {exact: true}).first().waitFor({state: 'visible'});
+    await mode.selectOption('two');
+    await mode.getByText('Two', {exact: true}).first().waitFor({state: 'visible'});
+    await page.getByRole('button', {name: 'Confirm', exact: true}).click();
+    assert.deepEqual(await page.evaluate(() => window.__submitted), {mode: 'two'});
+    await page.evaluate(() => {
+      ARC.closeDialog();
+      ARC.openPopover(document.getElementById('app'), '<label>Visibility<select name="visibility">' +
+        '<option value="public">Public</option><option value="private">Private</option></select></label>');
+    });
+    const visibility = page.getByRole('combobox', {name: 'Visibility', exact: true});
+    await visibility.getByText('Public', {exact: true}).first().waitFor({state: 'visible'});
+    await visibility.selectOption('private');
+    await visibility.getByText('Private', {exact: true}).first().waitFor({state: 'visible'});
     assert.deepEqual(errors, []);
     console.log('Combo boxes open by name, options are clicked by name, values submit with the form.');
   } finally {
