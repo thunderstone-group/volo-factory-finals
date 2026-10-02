@@ -79,6 +79,15 @@ How the tests run:
   record's credentials, never delete or rename a seeded record: when a scenario does that (change a password, delete
   a repository, rename a workbook), the test first creates its own record through the UI and acts on that one, so the
   seeded state stays as the requirements give it for every later test.
+- Preserve every shared prerequisite, including permissions, effective decisions, flags, constraints and related
+  records. Merely opening an existing record does not establish that it is eligible, writable, current or otherwise
+  in the stated GIVEN condition. Establish those conditions through the documented flows and check their stated
+  visible facts before the WHEN action; a comment or an enabled button alone is not evidence of them.
+  Prefer records created by this test when the scenario does not require a particular seeded identity. If it must
+  mutate a reusable seed, complete every THEN assertion first, including persistence, then restore the effective
+  prerequisites through documented UI actions before later tests reuse it. Preserve history where required; do not
+  delete historical records just to reset an effective decision. Never replace these steps with an API, storage edit
+  or an assumption that the next browser context resets server data.
 - A scenario whose name or steps are generic ("the requested workflow") is specified by its requirement's
   description. Across the tests of one requirement, cover every behaviour the description states: each case it lists
   (every kind of error, option, direction or input form), how the feature works together with the others it names (a
