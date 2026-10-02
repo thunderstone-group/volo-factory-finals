@@ -1,4 +1,4 @@
-# 2026-10-02 20:03 ARC continuation after mainline delivery
+# 2026-10-02 21:28 ARC v7 ready for a complete official pair
 
 先读本页，再按需要读 `docs/reference/roadmap.md` 与 `docs/reference/oneshot.md`。下列运行号和状态是本次观察；继续时检查原句柄和实际产物，不因观察超时重启。
 
@@ -20,6 +20,10 @@ E2 = `~/projects/arcbench-campaign/evidence/2026-10-02-s70`。
 - v6-frozen-suite-{github,sheet}是公开需求生成的模型检查，不是主办方测试。校准：G46应用普通96pass+入口3/11，受控73应用普通96pass+入口11/11；Sheet80应用88pass/5fail/8error。普通G检查仍看不出首页修复收益，必须同时看固定入口和独立回放。
 - 首次恢复 `v6-transport-recovery-github` / exec50309已结束：Python3.12、Vision、fallback关闭，配置repair_calls=1但实际2次请求（一次SSE截断后重试成功），880.9秒；保留改动后85pass/26fail、11入口全过，修改app.js/styles.css。已知估算CNY0.505617，含未知用量，不能当完整实扣额。运行时限额允许内部重试超出配置次数，记录实际attempts。
 
-唯一在途是 `resume_v6_pair.py` / exec58454：串行继续GitHub，然后修复Sheet，均复用已生成应用与固定suite；每题配置repair_calls=2、估算repair_cny=1.5、Vision、fallback关闭、Python3.12。若一个任务全部请求失败会停止排下一题。当前子进程与阶段读E2/v6-resume-active.json，完整终态读v6-resumed-{github,sheet}-finished.json和对应repair.json，日志resume-v6-pair.log。不要重复启动；父程序stdout已重定向，wait无输出不代表停了。
+当前没有在途本地生成/修复。exec58454已终态：G连续5次传输失败、0完整回复，仍85/111，程序按设计没有排Sheet。不要恢复旧50309/58454/28072/89976句柄。
 
-下一步先收这条串行恢复，核对真实改动和权限/数据保留，再用固定独立检查验证最终产物。候选经验证后才替换当前正式submission；正式提交按同包完整两题终态、source_run_ids与总榜验收。main代码已交付不等于新分数产生。当前正式余额213.300534、练习398.110297是11:34UTC附近观察，下一批先刷新；已有授权内不反复询问。用户问预期时已报S95–100中心预期、105+冲刺，明确尚未正式验证。
+随后每进程绑定物理网卡en0并使用公开DNS地址、保持原HTTPS域名和请求数据的curl对照连续完成两题：G一次请求HTTP200/0 curl错误，85提升108/111；Sheet一次请求完成，固定自写检查75pass/6fail/23error（其中多数因前序改了共享表格后，写测代码仍假定初始Region表头）。这条诊断改动只在E2，不进入agent包，不改系统代理。两个控制的请求哈希与旧失败调用不完全相同，且线路和HTTP栈均改变，所以不作严格单变量归因。
+
+本次v7修复在 `fix/native-selected-value-20261002` 工作树：原生select用浏览器selectedcontent呈现选中值，保留真实原生控件和FormData/事件/AX值；屏幕、弹窗、popover均覆盖，原生显示子按钮不参与重复动作折叠。276 one-shot（3 optional skip）与226 legacy（12 optional skip）通过。只换lib的G对照109/111（两个选中值阻塞均解除，其中一项继续走到提交hash格式断言失败；另一个仍是milestone刷新显示）。旧Sheet两套保持87/93，新Sheet独立为90/95，满足本次正式试跑的对照依据。
+
+下一步完成本分支PR/main/清理、冻结candidate-selected-value-v7.zip，再保存同包完整GitHub+Sheet正式提交。既有额度授权有效，提交前已现场确认无活动run、余额213.300534。新提交不继承旧成绩；保存之后应以新提交为当前，不再称S79.4764仍是有效榜面。读取E2/v7-official-upload.jsonl和v7-official-start.jsonl中的实际submission/run ids（若还没有文件则尚未执行），并从CLI复核终态和总榜。保留原f56完整证据供比较。不要把本地109/111或90/95当正式成绩。
