@@ -1763,3 +1763,5 @@ A generic native-select adapter then produced24/30,21/29,28/41 across the same g
 Source8a06f4a passed273 deterministic tests (270pass,3optional skip). Packagee4a76b80 has begun fresh complete GitHub/Sheet generation with the updated public inputs and practice credit; it has not replaced the effectiveS79.4764 official submission. See evidence/2026-10-02-home-native-controlled-validation.json.
 
 - 2026-10-02：按用户要求完成 CLI 主分支交付：#11 doctor、#12 selftest API 已合并，0.5.0/main 4d3eefc，132 tests + 主分支安装后的真实 API 验证，临时分支/worktree清理。ARC v5两题生成均结束；v6固定入口受控修复11/11但仍省略同名记录，不当成可推广成果。完整源码276检查通过（3 optional skip），后续126 focused通过；v6待完整生成验证。官方S79.4764原提交保留。详见本页 handoff 与 E2/cli-050-main-delivery.json。
+
+- 2026-10-02 20:03：PR111/110已合main c2cd10c并清理本次代码工作树；主分支打包与v6一致。v6原双题运行因TLS/SSE失败未完成修复，保留S79.4764正式提交。G受控恢复一次成功响应将固定检查49提升85、11入口全过；正在串行继续G与恢复Sheet，每题2修复配置/估算CNY1.5、无跨模型兜底。校准确认普通G生成检查仍无法区分正式46与受控73应用，新增入口检查可以；详见本次transport-limited证据。
