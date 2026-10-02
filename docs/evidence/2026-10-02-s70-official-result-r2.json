@@ -1,0 +1,137 @@
+{
+  "recorded_at": "2026-10-02T04:30:14.890741+00:00",
+  "submission_id": "f56d97c2fdb1",
+  "package_sha256": "8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a",
+  "runs": {
+    "github": {
+      "run_id": "583ef28ff0bc",
+      "status": "FAILED",
+      "passed": 18,
+      "failed": 82,
+      "pass_rate": 18.0,
+      "tokens": 2144022,
+      "duration_seconds": 3267,
+      "failure_reason": "Runner exited with test failures or runtime errors",
+      "submission_id": "f56d97c2fdb1",
+      "requirement_id": "hackathon--github",
+      "finished_at": "2026-10-02T04:11:58.100780",
+      "display_name": "volo-s70-8ef69d0c-controls-r2",
+      "model_name": "deepseek-v4-flash-vision-exp",
+      "feature_implemented_count": 5,
+      "feature_total_count": 47,
+      "cost": {
+        "amount": 2.549267,
+        "currency": "CNY"
+      },
+      "steps": [
+        {
+          "key": "deploy_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "start_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "run_tests",
+          "status": "completed",
+          "description": "Evaluation completed"
+        }
+      ],
+      "failed_tests": []
+    },
+    "sheet": {
+      "run_id": "9d673d2969ed",
+      "status": "FAILED",
+      "passed": 80,
+      "failed": 20,
+      "pass_rate": 80.0,
+      "tokens": 1738156,
+      "duration_seconds": 3715,
+      "failure_reason": "Runner exited with test failures or runtime errors",
+      "submission_id": "f56d97c2fdb1",
+      "requirement_id": "hackathon--sheet",
+      "finished_at": "2026-10-02T04:09:57.643080",
+      "display_name": "volo-s70-8ef69d0c-controls-r2",
+      "model_name": "deepseek-v4-flash-vision-exp",
+      "feature_implemented_count": 11,
+      "feature_total_count": 24,
+      "cost": {
+        "amount": 2.973834,
+        "currency": "CNY"
+      },
+      "steps": [
+        {
+          "key": "deploy_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "start_agent",
+          "status": "completed",
+          "description": "Done"
+        },
+        {
+          "key": "run_tests",
+          "status": "completed",
+          "description": "Evaluation completed"
+        }
+      ],
+      "failed_tests": []
+    }
+  },
+  "overall_leaderboard": {
+    "rank": 5,
+    "username": "VOLO-AI",
+    "model_name": "deepseek-v4-flash-vision-exp",
+    "track": "hackathon",
+    "avg_pass_rate": 49.0,
+    "avg_feature_implementation_rate": 0.0,
+    "total_token_millions": 3.882178,
+    "total_token_cost": 5.5231010000000005,
+    "token_cost_currency": "CNY",
+    "cost_efficiency": null,
+    "efficiency_threshold": 80.0,
+    "efficiency_eligible": false,
+    "seniority_label": "junior",
+    "avg_runtime_seconds": 3491,
+    "submission_count": 1,
+    "task_id": null,
+    "task_title": null,
+    "is_complete": true,
+    "score": 59.60825224653157,
+    "score_available": true,
+    "pass_rate": 49.0,
+    "passed_count": 98,
+    "test_total": 200,
+    "total_cost": 5.5231010000000005,
+    "expected_cost": 39.2,
+    "cost_ratio": 0.14089543367346938,
+    "score_regime": "reward",
+    "submitted_at": "2026-10-02T03:02:46.744478",
+    "is_low_cost": false,
+    "scoring_route": "original",
+    "source_run_ids": [
+      "583ef28ff0bc",
+      "9d673d2969ed"
+    ]
+  },
+  "budget_after": {
+    "competition_id": "hackathon",
+    "competition_type": "official",
+    "registered": true,
+    "can_confirm": false,
+    "team_id": "e24813ae8c4b47e889558a87a1aeb09b",
+    "team_name": "VOLO-AI",
+    "is_team_leader": true,
+    "initial_budget_cny": 700.0,
+    "remaining_budget_cny": 215.263572,
+    "currency": "CNY",
+    "message": "Your team is confirmed for this competition."
+  },
+  "previous_recorded_score": 62.33320859322366,
+  "conclusion": "The latest complete original route is S59.60825224653157, lower than the prior S62.33320859322366. The live board now displays this latest pair, not the historical high. Goal S>=70 remains unachieved.",
+  "validation_boundary": "Official failure details are empty. Self-check and independent scores cannot identify specific hidden failures."
+}

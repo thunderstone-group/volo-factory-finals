@@ -227,6 +227,48 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.summary()["unknown_usage_calls"], [1])
         self.assertFalse(self.out.exists())
         self.assertEqual(list(self.root.glob(".oneshot-*")), [])
+        self.assertEqual(budget.attempts[0]["error_detail"], "stream ended without completion markers")
+
+    def test_synthetic_gateway_error_is_distinguished_from_an_unmarked_stream_end(self):
+        budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
+        self.replies([event({"error": {"type": "server_error", "code": "upstream_timeout",
+                                      "message": "synthetic upstream timeout"}})])
+        with self.assertRaisesRegex(RuntimeError, "StreamError"):
+            self.generate(budget)
+        self.assertEqual(budget.attempts[0]["gateway_error"]["code"], "upstream_timeout")
+        self.assertEqual(budget.attempts[0]["error_detail"], "malformed SSE event")
+
+    def test_real_truncated_sse_frame_is_recorded_and_never_accepted_as_a_completion(self):
+        # The final data frame of a real 10-02 gateway response; provenance is in the evidence file.
+        captured = json.loads((Path(__file__).resolve().parents[1] /
+                               "docs/evidence/2026-10-02-truncated-sse.json").read_text())
+        fragment = captured["data_fragment"]
+        budget = adapter.CallBudget(draft_limit=1, fail_limit=1)
+        self.replies([("data: " + fragment).encode()])
+        with self.assertRaisesRegex(RuntimeError, "StreamError"):
+            self.generate(budget)
+        record = budget.attempts[0]
+        self.assertEqual(record["invalid_sse_event"], fragment)
+        self.assertIn("Unterminated string", record["event_error"])
+        self.assertIsNone(record["finish_reason"])
+        self.assertFalse(self.out.exists())
+
+    def test_a_failed_draft_does_not_start_paid_test_generation(self):
+        # Synthetic draft failure reproduces the real wasted-work pattern from the interrupted full trials.
+        job = {"thread": unittest.mock.Mock(), "dir": self.root / "unused-suite"}
+        job["thread"].is_alive.return_value = False
+        with patch.object(adapter, "SMOKE", True), patch.object(adapter, "TESTGEN", True), \
+                patch.object(adapter, "draft_application", side_effect=RuntimeError("synthetic incomplete draft")), \
+                patch.object(adapter, "start_suite", return_value=job) as start, \
+                patch.object(adapter, "finish_suite", return_value=None):
+            with self.assertRaisesRegex(RuntimeError, "synthetic incomplete draft"):
+                self.generate(adapter.CallBudget())
+        start.assert_not_called()
+
+    def test_vision_model_uses_its_published_price_instead_of_the_expensive_unknown_model_price(self):
+        record = {"model": "deepseek-v4-flash-vision-exp", "usage": {"prompt_tokens": 1000000,
+                  "completion_tokens": 1000000}, "usage_events": [{"prompt_tokens_details": {"cached_tokens": 500000}}]}
+        self.assertAlmostEqual(adapter.call_cost(record), 4.51)
 
     def test_permanent_http_4xx_including_402_are_not_retried(self):
         # 401 and 403 left this list on 09-27: the gateway refuses with them for minutes at a time, so they are waited
@@ -435,7 +477,7 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.attempts[0]["stream_observation"]["reasoning_chars"], len("synthetic reasoning"))
         self.assertEqual(budget.attempts[2]["messages"], budget.attempts[0]["messages"])
 
-    def test_quoted_vocabulary_table_precedes_the_requirements(self):
+    def test_draft_uses_requirements_without_a_literal_presence_checklist(self):
         req = ("- id: REQ-1\n  name: Login\n  description: Show \u201cEmail cannot be empty\u201d and a \"Sign In\" button.\n"
                "- id: REQ-2\n  name: Notes\n  description: The system contains a note titled \"Groceries\". Show \u201cEmail cannot be empty\u201d again.\n")
         table = adapter.vocabulary_table(req)
@@ -447,7 +489,9 @@ class OfflineCase(unittest.TestCase):
         self.replies(events(application()))
         adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
         prompt = budget.attempts[0]["messages"][1]["content"]
-        self.assertLess(prompt.index("## Quoted vocabulary checklist"), prompt.index("## Requirements (the application to build)"))
+        self.assertNotIn("## Quoted vocabulary checklist", prompt)
+        self.assertIn("## Requirements (the application to build)", prompt)
+        self.assertIn(req, prompt)
 
     def test_repair_edits_apply_search_replace_hunks_to_the_current_file(self):
         stage = Path(self.out)
@@ -484,6 +528,25 @@ class OfflineCase(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "no such file"):
             adapter.parse_repair("=== EDIT: frontend/public/none.js ===\n<<<<<<< SEARCH\nx\n=======\ny\n"
                                  ">>>>>>> REPLACE\n=== END ===\n", stage)
+
+    def test_single_hunk_separator_closure_is_recovered_without_guessing_content(self):
+        # Framing minimized from a captured 10-02 gateway repair, not a new transport fixture.
+        stage = Path(self.out)
+        (stage / "frontend/public").mkdir(parents=True, exist_ok=True)
+        (stage / "frontend/public/app.js").write_text("const a = 1;\n")
+        reply = ("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nconst a = 1;\n=======\n"
+                 "const a = 2;\n=======\n=== END ===\n")
+        files, missing, skipped = adapter.parse_repair(reply, stage)
+        self.assertEqual(files, [{"path": "frontend/public/app.js", "content": "const a = 2;\n"}])
+        self.assertEqual((missing, skipped), ([], []))
+        redundant_close = reply.replace("=======\n=== END", "=======\n>>>>>>> REPLACE\n=== END")
+        files, missing, skipped = adapter.parse_repair(redundant_close, stage)
+        self.assertEqual(files, [{"path": "frontend/public/app.js", "content": "const a = 2;\n"}])
+        self.assertEqual((missing, skipped), ([], []))
+        with self.assertRaisesRegex(ValueError, "no .*hunk"):
+            adapter.parse_repair(reply.replace("const a = 2;\n", "const a = 2;\n=======\nextra();\n"), stage)
+        with self.assertRaisesRegex(ValueError, "no .*hunk"):
+            adapter.parse_repair(reply.replace("=======\n=== END", "=======\nextra();\n=== END"), stage)
 
     def test_seed_checklist_collects_each_given_seed_once_with_its_requirements(self):
         req = ("id: ROOT\nname: App\ntype: FOLDER\nchildren:\n"
@@ -536,6 +599,12 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(missing, 5)
         self.assertIn('"Save Shelf"', gaps[0])
         self.assertNotIn("Shelf Created 1", gaps[0])
+
+    def test_application_entry_point_does_not_turn_nearby_data_into_control_names(self):
+        requirement = ("After returning to the application entry point, the saved range `D2:F9` "
+                       "and headers `Cost/Revenue` remain persisted.")
+        self.assertEqual(adapter.quoted_control_phrases(requirement), [])
+        self.assertEqual(adapter.quoted_control_phrases("Open the `Workspace` entry."), ["Workspace"])
 
     def test_a_phrase_folded_across_lines_is_vocabulary_and_a_quoted_single_character_shifts_no_pairing(self):
         # YAML folds long descriptions: a quoted message broken across two lines was missed and its closing quote

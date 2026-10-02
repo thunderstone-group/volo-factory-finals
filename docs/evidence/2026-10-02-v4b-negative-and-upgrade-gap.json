@@ -1,0 +1,184 @@
+{
+  "recorded_at": "2026-10-02T04:45:29.901444+00:00",
+  "candidate_sha256": "4ec287a63ac4278f22a0bb90843bda745eb08c785aa5b162287cceeed8bb8dbe",
+  "fresh_complete_pair": [
+    {
+      "task": "github",
+      "judge_exit": 0,
+      "scores": [
+        {
+          "app": "generate-diagnostics-v4b-github",
+          "judge": "gh99",
+          "counts": {
+            "error": 29,
+            "pass": 54,
+            "fail": 21
+          },
+          "seconds": 246.3,
+          "coverage": {
+            "total": 100,
+            "parsed": 75
+          }
+        },
+        {
+          "app": "generate-diagnostics-v4b-github",
+          "judge": "gh8",
+          "counts": {
+            "pass": 64,
+            "error": 16,
+            "fail": 23
+          },
+          "seconds": 180.4,
+          "coverage": {
+            "total": 100,
+            "parsed": 87
+          }
+        }
+      ]
+    },
+    {
+      "task": "sheet",
+      "judge_exit": 0,
+      "scores": [
+        {
+          "app": "generate-diagnostics-v4b-sheet",
+          "judge": "g99",
+          "counts": {
+            "pass": 88,
+            "fail": 12
+          },
+          "seconds": 85.1,
+          "coverage": {
+            "total": 100,
+            "parsed": 100
+          }
+        },
+        {
+          "app": "generate-diagnostics-v4b-sheet",
+          "judge": "cov99n-arm",
+          "counts": {
+            "pass": 92,
+            "error": 2,
+            "fail": 7
+          },
+          "seconds": 70.4,
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          }
+        }
+      ]
+    }
+  ],
+  "calibrated_github": [
+    {
+      "application": "generate-diagnostics-v4b-github",
+      "judge": "gh99",
+      "counts": {
+        "error": 29,
+        "pass": 54,
+        "fail": 21
+      },
+      "seconds": 246.1
+    },
+    {
+      "application": "generate-diagnostics-v4b-github",
+      "judge": "gh8",
+      "counts": {
+        "pass": 64,
+        "error": 16,
+        "fail": 23
+      },
+      "seconds": 180.5
+    }
+  ],
+  "estimated_cost_cny": 4.54878,
+  "decision": "Not promoted. Independent quality is worse than v3 in this fresh draw; a single stochastic comparison does not prove the mechanical fixes caused the decline.",
+  "sheet_source_isolation": {
+    "provenance": {
+      "source": "Actual assistant source snapshot in original call 6 before source-contract repair",
+      "source_snapshot_sha256": "b35e39c3c6a4de192680d659a085bea19cfcdb119a9fc588828d24304e794050",
+      "changes": [
+        {
+          "path": "frontend/public/app.js",
+          "before_sha256": "73048d9905fe18a531b1ca1a19dafac1239c86fcb07bd08efea90989420c48d0",
+          "after_sha256": "d8b36918f2fd11415e7d1d49bbe676f2d6091e5566565fd03dffd493ea041a26"
+        }
+      ],
+      "boundary": "Reconstructed pre-source code on a copy of the delivered app; all other files, including any runtime data, are held identical. This isolates the final code repair, not a separately generated baseline.",
+      "original_calls": [
+        6,
+        7
+      ]
+    },
+    "before": [
+      88,
+      92
+    ],
+    "after": [
+      88,
+      92
+    ],
+    "all_individual_verdicts_identical": true
+  },
+  "staged_pilot": {
+    "prior_cost_cny": 2.364831,
+    "original_judges": [
+      54,
+      61
+    ],
+    "calibrated_judges": [
+      56,
+      62
+    ],
+    "full_phase_internal_counts": {
+      "unparsed": 100
+    },
+    "cause": "TESTGEN was guarded by template is None. The existing template entrypoint never wrote the full requirements suite; cached scenario translation could not parse any of the 100 masked cases.",
+    "fix": "Run requirement-written browser checks and source review after any complete draft, including upgrades.",
+    "validation": {
+      "new_regression_failed_before_fix": true,
+      "oneshot_tests_run": 272,
+      "passed": 269,
+      "optional_skipped": 3
+    },
+    "real_followup": "dependency-build-checked-github: fresh full requirements suite, bounded standard repair and source review; all preceding phase costs retained."
+  },
+  "startup_controls": {
+    "scope": "Operator diagnostics only; not shipped in the agent or supplied to the autonomous audit.",
+    "results": [
+      {
+        "id": "REQ-6-5#contract-81",
+        "status": "fail",
+        "phase": "check",
+        "message": "The actual startup accounts have no Maintain permission on any repository",
+        "calls": {
+          "roleFor": 20,
+          "orgFor": 8,
+          "byId": 10,
+          "st": 39,
+          "orgMemberOf": 8,
+          "directRole": 15,
+          "teamIdsFor": 6
+        }
+      },
+      {
+        "id": "REQ-6-5#contract-82",
+        "status": "fail",
+        "phase": "check",
+        "message": "The required separate Open success/refusal fixtures are not present",
+        "calls": {
+          "mergeBlocked": 1,
+          "protectionFor": 1,
+          "st": 5,
+          "hasRequestChanges": 1,
+          "approvalCount": 1,
+          "branchHead": 1
+        }
+      }
+    ],
+    "public_requirement": "REQ-6-5 explicitly supplies a Maintain account and separate Open success/refusal PRs. Actual startup roleFor found no Maintain on any repository; actual mergeBlocked was exercised on the sole Open PR.",
+    "autonomous_followup": "startup-state-audit-r2: two bounded calls, generic initial-state coverage focus; only unchanged original public requirements and actual app source."
+  },
+  "stage_1_boundary": "Published Stage1 is not a pure subset:11 of12 atomic definitions/scenarios differ, including explicit actor names and simplified behavior. No Stage1 evaluation was launched and its fixture names were not supplied to the core audit."
+}

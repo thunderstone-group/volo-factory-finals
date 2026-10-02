@@ -36,7 +36,9 @@ GROUP_SCENARIOS = 30  # scenarios per spec file (one model call); requirements a
 # 8 per file (16 files) on 09-28, and ranked ten apps with known hidden scores better (Spearman 0.94 vs 0.86, errors
 # per app 5.8 vs 21.3; one suite each). 92 % of the output is reasoning,
 # and each call re-reads the whole requirements document before it writes.
-GROUP_WORKERS = 4  # parallel spec calls; a gateway burst cuts several streams at once
+GROUP_WORKERS = 1  # serialize long streams; preserve the completed file before starting the next one
+AUDIT = os.environ.get("ONESHOT_TEST_AUDIT", "0") == "1"  # opt-in; replaced by source counterexamples in the S70 candidate
+AUDIT_LIMIT = 6  # Additional requirement-grounded checks per file, after reviewing the existing tests.
 RUN_SECONDS = 900  # one suite run; a hung runner is stopped here
 TEST_SECONDS = 15
 ACTION_SECONDS = 5
@@ -66,17 +68,37 @@ How the tests run:
   `test.skip(title, async () => {{}})` with a one-line comment saying why, instead of guessing.
 - Names that must be unique (usernames, emails, titles, record names) get a unique suffix, for example
   `const u = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);`, within the format rules the
-  requirements state.
+  requirements state. This applies to records the scenario creates, never to an explicitly named existing
+  account or record in GIVEN. Use those real seed identities; do not manufacture substitutes for missing seeds.
+- Preserve the stated starting screen and authentication state. A fresh unauthenticated home-page scenario
+  starts with `page.goto('/')` and performs its first WHEN action there. Do not prepend login, parent-container
+  navigation or direct record URLs to make a missing first target reachable. An account or record existing in
+  GIVEN does not itself establish a signed-in session or an opened detail page. Establish those contexts only
+  when GIVEN explicitly requires them or WHEN describes the navigation. Assert the first named target is
+  visible in that starting context before activating it.
 - Locate elements the way a user perceives them, only with what the requirements state:
   `page.getByRole(role, {{ name, exact: true }})` with the exact quoted accessible name,
   `page.getByLabel(label, {{ exact: true }})` for fields, `page.getByText(text, {{ exact: true }})` for visible text.
   Never CSS selectors, XPath, test ids, element ids, class names or guessed URLs. When the requirements put a control
   inside a named dialog, menu, region, row or grid, scope the locator to it first.
+- Follow the specified selection interaction. For explicitly clickable options, click the combobox and then the
+  named option; do not use selectOption to bypass the required clickable-option path. Use selectOption for a control
+  explicitly described as a native select. Two controls with the same label may have different contracts in different
+  containers; respect each declaration rather than applying one interaction to every matching label.
 - Tests are independent: each builds its own state and never relies on another test having run.
-- Every file runs in order against ONE application that is never reset between tests. Never change a seeded
-  record's credentials, never delete or rename a seeded record: when a scenario does that (change a password, delete
-  a repository, rename a workbook), the test first creates its own record through the UI and acts on that one, so the
-  seeded state stays as the requirements give it for every later test.
+- Every file runs in order against ONE application that is never reset between tests. When a mutation scenario
+  does not require a particular seeded identity, create its own record through the documented UI. When it does
+  name a seeded identity, test that identity and the required mutation; preserve later scenarios using the
+  documented restoration rule below, rather than silently replacing the subject with a newly created record.
+- Preserve every shared prerequisite, including permissions, effective decisions, flags, constraints and related
+  records. Merely opening an existing record does not establish that it is eligible, writable, current or otherwise
+  in the stated GIVEN condition. Establish those conditions through the documented flows and check their stated
+  visible facts before the WHEN action; a comment or an enabled button alone is not evidence of them.
+  Prefer records created by this test when the scenario does not require a particular seeded identity. If it must
+  mutate a reusable seed, complete every THEN assertion first, including persistence, then restore the effective
+  prerequisites through documented UI actions before later tests reuse it. Preserve history where required; do not
+  delete historical records just to reset an effective decision. Never replace these steps with an API, storage edit
+  or an assumption that the next browser context resets server data.
 - A scenario whose name or steps are generic ("the requested workflow") is specified by its requirement's
   description. Across the tests of one requirement, cover every behaviour the description states: each case it lists
   (every kind of error, option, direction or input form), how the feature works together with the others it names (a
@@ -104,7 +126,8 @@ FILE_BLOCK = re.compile(r"=== FILE:[ \t]*(.*?)[ \t]*===[ \t]*\r?\n(.*?)\r?\n=== 
 TITLE = re.compile(r"""\btest(?:\.(?:skip|only|fixme))?\(\s*(['"`])((?:\\.|(?!\1).)*)\1""")
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
 OWN_ERROR = re.compile(r"^(?:ReferenceError|TypeError|SyntaxError|RangeError)\b"
-                       r"|can be only used with (?:Locator|Page|APIResponse) object")
+                       r"|can be only used with (?:Locator|Page|APIResponse) object"
+                       r"|^Error: expect: Property '[^'\n]+' not found\.$")
 CELL = re.compile(r"[A-Z]{1,3}[1-9][0-9]{0,5}")
 NAMED = re.compile(r"""getBy(?:Role\(\s*'[a-z]+'\s*,\s*\{\s*name:\s*|Label\(\s*|Text\(\s*|Placeholder\(\s*)'((?:\\.|[^'\\])*)'""")
 
@@ -149,6 +172,89 @@ def request(text, group, prerequisites=""):
              f"\n\nReply with exactly one file block:\n=== FILE: {group['file']} ===\n<file content>\n=== END ===")
     system = SYSTEM.format(test_seconds=TEST_SECONDS, action_seconds=ACTION_SECONDS)
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
+
+
+def initial_entries(text):
+    """Literal first navigation from unauthenticated home/default application entry.
+
+    Unknown sentence shapes stay with the written suite. Names must occur in the
+    first WHEN clause itself, never be inferred from a parent resource in GIVEN.
+    """
+    prefix = (r'^(?:the\s+)?(?:visitor|user|customer|operator|member|contributor|administrator)\s+'
+              r'(?:opens?|follows?)\s+(?:(?:the|a|an)\s+)?(?:visible\s+)?')
+    activation = re.compile(prefix +
+        r'(?:(?:link|button|entry|page)\s+(?:named\s+)?)?'
+        r'(?:`([^`\n]{1,80})`|[“"]([^”"\n]{1,80})[”"])', re.I)
+    plain_navigation = re.compile(prefix + r'([^,.;`“"]+?)(?:\s*,|\.|;|\s+and\b|$)', re.I)
+    quoted_names, _ = _phrases(text)
+    found = []
+    for req in scenarios.load_requirements(text):
+        if req.get("type") != "ATOMIC":
+            continue
+        for index, scenario in enumerate(req.get("scenarios") or [], 1):
+            steps = scenario.get("steps") or []
+            given = " ".join(s.get("content", "") for s in steps if s.get("keyword") == "GIVEN")
+            given = re.sub(r"\s+", " ", given)
+            if not re.search(r"\bunauthenticated\b", given, re.I):
+                continue
+            if re.search(r"\bsigned[ -]in\b|\blogged[ -]in\b|\bhas (?:entered|opened)\b|\bis viewing\b", given, re.I):
+                continue
+            location = re.search(r"\b(?:starts?|is|remains?)\s+(?:at|on|in)\s+([^.!]*?\b(?:page|screen|editor)\b)", given, re.I)
+            if location and not re.search(r"\bhome\s*page\b", location.group(1), re.I):
+                continue
+            when = next((s.get("content", "") for s in steps if s.get("keyword") == "WHEN"), "")
+            when = re.sub(r"\s+", " ", when).strip()
+            match = activation.match(when)
+            if match:
+                name = next(value for value in match.groups() if value is not None)
+            else:
+                plain = plain_navigation.match(when)
+                name = re.sub(r"\s+(?:page|screen|entry|link)$", "", plain.group(1), flags=re.I).strip() if plain else ""
+                if name not in quoted_names:
+                    continue  # A prose noun is not enough to invent a UI label.
+            found.append({"id": f"{req['id']}#entry-{index}", "name": name,
+                          "scenario_id": req["id"] + (f"#{index}" if index > 1 else ""),
+                          "given": given, "when": when})
+    return found
+
+
+def add_initial_entry_checks(text, suite, manifest):
+    """Fixed cold-start checks cannot acquire an invented navigation prelude."""
+    entries = initial_entries(text)
+    if not entries:
+        return manifest
+    filename = "t00-initial-entries.spec.cjs"
+    body = ["const {test, expect} = require('@playwright/test');\n"]
+    titles = []
+    for entry in entries:
+        title = entry["id"] + ": Initial visible entry " + entry["name"]
+        titles.append(title)
+        body.append("test(" + json.dumps(title, ensure_ascii=False) + ", async ({page}) => {\n"
+            "  await page.goto('/');\n"
+            "  const name = " + json.dumps(entry["name"], ensure_ascii=False) + ";\n"
+            "  await expect.poll(async () => {\n"
+            "    for (const role of ['button','link','tab','menuitem','option']) {\n"
+            "      for (const item of await page.getByRole(role, {name, exact: true}).all()) {\n"
+            "        if (await item.isVisible()) return true;\n"
+            "      }\n"
+            "    }\n"
+            "    for (const item of await page.getByText(name, {exact: true}).all()) {\n"
+            "      if (await item.isVisible() && await item.evaluate(el => !!el.closest(\n"
+            "        'a[href],button,[role=button],[role=link],[role=tab],[role=menuitem],[data-action]:not(form),[onclick]'\n"
+            "      ))) return true;\n"
+            "    }\n"
+            "    return false;\n"
+            "  }, {message: 'The first WHEN target must be interactive at the stated initial home: ' + name}).toBe(true);\n"
+            "});\n")
+    (Path(suite) / filename).write_text("\n".join(body), encoding="utf-8")
+    manifest["files"] = [r for r in manifest["files"] if r["file"] != filename]
+    manifest["files"].insert(0, {"file": filename, "tests": titles, "calls": 0,
+                                  "deterministic": "initial_entries"})
+    manifest["initial_entry_checks"] = entries
+    manifest["tests"] = sum(len(r.get("tests") or []) for r in manifest["files"])
+    (Path(suite) / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n",
+                                            encoding="utf-8")
+    return manifest
 
 
 def _node():
@@ -342,7 +448,7 @@ def name_tests(body, group):
     return "".join(out) + body[last:]
 
 
-def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
+def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS, audit=None):
     """Write one spec file per group into `suite` with `complete(messages) -> (content, usage, finish)`; a reply
     without a file block is asked once more. Returns the manifest (also saved as suite.json)."""
     suite = Path(suite)
@@ -387,6 +493,186 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS):
                 "tests": sum(len(r.get("tests") or []) for r in records),
                 "seconds": round(time.monotonic() - started, 1), "prerequisites": prerequisites}
     (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    if (AUDIT if audit is None else audit):
+        manifest = audit_suite(text, suite, complete, workers=workers)
+        manifest["seconds"] = round(time.monotonic() - started, 1)
+        (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    # Supplemental entry checks must not make an otherwise failed writer look
+    # runnable, suppressing the existing scenario-check fallback.
+    return add_initial_entry_checks(text, suite, manifest) if runnable(manifest) else manifest
+
+
+AUDIT_REQUEST = """Review the test file you just wrote against the requirements, without seeing any application.
+The existing tests are immutable. Find explicit behaviours that they do NOT establish, especially a state change
+used by a later feature, a rejected operation leaving all affected records unchanged, independent records or users,
+invalidation after an earlier result changes, a described boundary/input variant, and equivalent interaction paths.
+An assertion of a heading or success message alone does not establish the changed data or its persistence.
+
+Add at most {limit} focused tests for the most consequential uncovered behaviours of this file's requirements.
+Each test must be justified by a verbatim quote from its ATOMIC requirement description; use only the stated public
+behaviour, never infer an evaluator implementation. Exercise real UI state transitions on fresh records the UI
+creates. Reuse the existing helpers, following their exact signatures. Assert the effect and what must not change.
+Use varied valid inputs where names/values are implementation-independent. Do not mutate shared seed credentials.
+Do not duplicate existing coverage, add performance expectations, or require an unspecified control or message.
+Each test still has the original timeout: prefer a short discriminating sequence over a long kitchen-sink journey.
+For a property that must hold across multiple stated modes or directions, contrast those modes with the same
+discriminating data; testing the property in only the easiest mode leaves the other modes unverified.
+A named control is not guaranteed on every screen. Follow the navigation the requirement actually describes;
+when returning to an entity, reopen it through the documented entry path rather than assuming sibling navigation
+on its detail/settings screens. Do not require an absent/disabled control unless the requirement says so: otherwise
+perform the attempted operation and check its permitted or rejected effect.
+
+Reply with exactly two file blocks. The first is a JSON array (empty if no defensible gap is found):
+=== FILE: coverage.json ===
+[{"id":"<requirement id>#audit-1","requirement":"<requirement id>","quote":"<verbatim description excerpt>","gap":"<what the old tests fail to establish>"}]
+=== END ===
+The second contains ONLY additional test(...) declarations, no imports, helpers, hooks, configuration changes,
+test.skip/only/fixme, or edits to existing code. Titles are exactly '<id>: <short description of the behaviour>'.
+Number ids uniquely within each requirement. Every added test must have an entry in coverage.json and vice versa.
+=== FILE: additions.cjs ===
+<additional tests, or empty when the array is empty>
+=== END ==="""
+
+
+def _audit_test_blocks(body):
+    """Only standalone test(title, async (...) => {...}) declarations; preserve their bodies exactly."""
+    blocks, end = {}, 0
+    clean = lambda value: re.sub(r"/\*.*?\*/|//[^\n]*", "", value, flags=re.S).strip()
+    for match in TITLE.finditer(body):
+        if clean(body[end:match.start()]):
+            raise ValueError("audit additions contain code outside test declarations")
+        head = re.match(r"\s*,\s*(?:async\s+)?\([^)]*\)\s*=>\s*(\{)", body[match.end():])
+        if not head:
+            raise ValueError("audit test must have an inline callback")
+        close = _block_end(body, match.end() + head.end() - 1)
+        tail = re.match(r"\s*\)\s*;?", body[close + 1:]) if close >= 0 else None
+        if not tail:
+            raise ValueError("audit test declaration is incomplete")
+        end = close + 1 + tail.end()
+        sid = _test_id(match.group(2))[0]
+        if sid in blocks:
+            raise ValueError("audit test ids must be unique")
+        blocks[sid] = body[match.start():end]
+    if clean(body[end:]):
+        raise ValueError("audit additions contain trailing non-test code")
+    return blocks
+
+
+def _audit_assertion_helpers(original):
+    """Recognize assertions delegated to existing named functions or block-arrow helpers.
+
+    This is a guard against empty checks, not a proof that an assertion follows the requirement.
+    The original file stays immutable; only its already-defined helpers are eligible.
+    """
+    name = r"[A-Za-z_$][\w$]*"
+    heads = re.compile(r"\b(?:async\s+)?function\s+(" + name + r")\s*\([^)]*\)\s*(\{)"
+                       r"|\b(?:const|let)\s+(" + name + r")\s*=\s*(?:async\s+)?\([^)]*\)\s*=>\s*(\{)")
+    bodies = {}
+    for match in heads.finditer(original):
+        start = match.start(2) if match.group(1) else match.start(4)
+        end = _block_end(original, start)
+        if end >= 0:
+            bodies[match.group(1) or match.group(3)] = original[start + 1:end]
+    helpers = set()
+    while True:
+        found = {name for name, body in bodies.items() if _audit_has_assertion(body, helpers)}
+        if found <= helpers:
+            return helpers
+        helpers.update(found)
+
+
+def _audit_has_assertion(body, helpers):
+    if re.search(r"\bexpect\s*(?:\.\s*(?:soft|poll)\s*)?\(", body):
+        return True
+    return any(re.search(r"(?<![\w$.])" + re.escape(name) + r"\s*\(", body) for name in helpers)
+
+
+def _audit_additions(content, group, requirements, original, node, path):
+    """Validate provenance and identifiers before appending checks; this does not certify their semantics."""
+    blocks = {m.group(1).strip(): m.group(2) for m in FILE_BLOCK.finditer(content or "")}
+    if set(blocks) != {"coverage.json", "additions.cjs"}:
+        raise ValueError("audit must return coverage.json and additions.cjs")
+    claims = json.loads(blocks["coverage.json"])
+    if not isinstance(claims, list) or len(claims) > AUDIT_LIMIT:
+        raise ValueError("audit coverage must be a bounded list")
+    body = unfence(blocks["additions.cjs"]).strip()
+    allowed = {item["requirement"] for item in group["items"]}
+    normalize = lambda value: re.sub(r"\s+", " ", value).strip()
+    ids, grounded, rejected = [], [], []
+    for claim in claims:
+        if not isinstance(claim, dict) or not all(isinstance(claim.get(k), str) for k in ("id", "requirement", "quote", "gap")):
+            raise ValueError("audit claim lacks its id, requirement, quote or gap")
+        rid, sid, quote = claim["requirement"], claim["id"], normalize(claim["quote"])
+        if rid not in allowed or not re.fullmatch(re.escape(rid) + r"#audit-[1-9]\d*", sid):
+            raise ValueError("audit id is not in the file's requirements")
+        ids.append(sid)
+        if len(quote) < 24 or quote not in normalize(requirements[rid].get("description") or ""):
+            rejected.append({"id": sid, "reason": "quote is not a verbatim requirement description excerpt"})
+        else:
+            grounded.append(claim)
+    titles = [m.group(2) for m in TITLE.finditer(body)]
+    test_ids = [_test_id(title)[0] for title in titles]
+    if len(set(ids)) != len(ids) or sorted(ids) != sorted(test_ids):
+        raise ValueError("audit claims and unique test ids do not match")
+    if not claims:
+        if body:
+            raise ValueError("an empty audit must not append code")
+        return "", [], []
+    if SKIPPING.search(body) or re.search(r"\btest\.(?:before|after|describe|use|setTimeout)|\brequire\s*\(", body):
+        raise ValueError("audit additions must not change suite setup or skip tests")
+    blocks = _audit_test_blocks(body)
+    if not grounded:
+        raise ValueError("no audit check has a verbatim requirement description excerpt")
+    body = "\n\n".join(blocks[claim["id"]] for claim in grounded)
+    helpers = _audit_assertion_helpers(original)
+    if any(not _audit_has_assertion(blocks[claim["id"]], helpers) for claim in grounded):
+        raise ValueError("every grounded audit check needs an observable assertion")
+    if node and not _parses(node, path, original + "\n" + body):
+        raise ValueError("audit additions do not parse with the existing file")
+    return body, grounded, rejected
+
+
+def audit_suite(text, suite, complete, workers=GROUP_WORKERS):
+    """Append checks for uncovered requirement behaviours. The reviewer sees requirements and tests, never the app.
+    Audit failure preserves the original file and is recorded; no existing assertion is rewritten or removed."""
+    suite = Path(suite)
+    manifest = json.loads((suite / "suite.json").read_text(encoding="utf-8"))
+    groups = {g["file"]: g for g in plan(text)}
+    requirements = {r["id"]: r for r in scenarios.load_requirements(text)}
+    node = _node()
+
+    def one(record):
+        name = record["file"]
+        if record.get("syntax") or not record.get("tests") or name not in groups or record.get("audit"):
+            return
+        path = suite / name
+        original = path.read_text(encoding="utf-8")
+        messages = request(text, groups[name], manifest.get("prerequisites") or "")
+        messages += [{"role": "assistant", "content": f"=== FILE: {name} ===\n{original.rstrip()}\n=== END ==="},
+                     {"role": "user", "content": AUDIT_REQUEST.replace("{limit}", str(AUDIT_LIMIT))}]
+        info = {"claims": [], "calls": 1}
+        record["audit"] = info
+        try:
+            content, _, finish = complete(messages)
+            if finish != "stop":
+                raise ValueError(f"audit response is incomplete ({finish})")
+            addition, claims, rejected = _audit_additions(content, groups[name], requirements, original, node, path)
+            if addition:
+                path.write_text(original + "\n" + addition + "\n", encoding="utf-8")
+                record["tests"] += [m.group(2) for m in TITLE.finditer(addition)]
+            info["claims"] = claims
+            if rejected:
+                info["rejected"] = rejected
+        except Exception as exc:
+            info["error"] = f"{type(exc).__name__}: {str(exc)[:300]}"
+
+    started = time.monotonic()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        list(pool.map(one, manifest["files"]))
+    manifest["audit_checks"] = sum(len(r.get("audit", {}).get("claims", [])) for r in manifest["files"])
+    manifest["audit_seconds"] = round(time.monotonic() - started, 1)
+    manifest["tests"] = sum(len(r.get("tests") or []) for r in manifest["files"])
+    (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     return manifest
 
 
@@ -397,7 +683,10 @@ application was judged:
 Fix only the test code that broke: a helper that uses a variable it was not given, a missing `await`, a method called
 on the wrong object, a Playwright API used the wrong way, a name the requirements never give (use the one they give).
 Keep every scenario, step, locator, value and assertion that follows the requirements. Reply with the whole corrected
-file and nothing else:
+file. Keep assertions at their original call sites: replace an invalid matcher inline with a supported assertion of
+the same property. Do not consolidate assertions into a new helper; the repair must retain the existing checks and
+their execution order. Change only the broken API usage, without restructuring unrelated test code.
+Return nothing outside the file block:
 === FILE: {file} ===
 <file content>
 === END ==="""
@@ -546,7 +835,8 @@ class Progress {
     const errors = (result.errors || []).map((e) => ({ message: e.message, stack: e.stack, location: e.location,
                                                        snippet: e.snippet }));
     fs.appendFileSync(this.file, JSON.stringify({ spec: { title: test.title, line: test.location && test.location.line },
-                                                  result: { status: result.status, duration: result.duration, errors } }) + '\\n');
+                                                  result: { status: result.status, duration: result.duration, errors,
+                                                    attachments: result.attachments || [] } }) + '\\n');
   }
   printsToStdio() { return false; }
 }
@@ -657,6 +947,27 @@ def _test_id(title):
     return sid, name
 
 
+def page_snapshot(result, report_path):
+    """Bounded Playwright failure context, read only from the current runner's output tree."""
+    root = Path(report_path).resolve().parent
+    for attachment in result.get("attachments") or []:
+        if attachment.get("name") != "error-context" or not attachment.get("path"):
+            continue
+        path = Path(attachment["path"])
+        if not path.is_absolute():
+            path = root / path
+        try:
+            path = path.resolve()
+            path.relative_to(root)
+            if path.name != "error-context.md" or not path.is_file() or path.stat().st_size > 256000:
+                continue
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except (OSError, ValueError):
+            continue
+        return text if len(text) <= 2400 else text[:1500] + "\n... page content omitted ...\n" + text[-900:]
+    return ""
+
+
 def parse(report_path, suite, manifest, text, progress_path=None, missing="the runner did not report it"):
     """The Playwright JSON report as scenario-check entries, one per test the manifest lists. Without a report, the
     tests the progress file recorded; a test in neither is an error reading `Not run: <missing>`."""
@@ -704,6 +1015,10 @@ def parse(report_path, suite, manifest, text, progress_path=None, missing="the r
                 status, observation, location = _classify(result, source_text, text or "", quoted)
                 entry.update(status=status, observation=observation,
                              source=_source(path, spec.get("line")) if status == "fail" else "")
+                if status == "fail":
+                    snapshot = page_snapshot(result, report_path)
+                    if snapshot:
+                        entry["page_snapshot"] = snapshot
                 if location:
                     entry["at"] = f"{Path(location.get('file') or '').name}:{location.get('line')}"
                 entry["seconds"] = round((result.get("duration") or 0) / 1000, 1)
@@ -730,7 +1045,7 @@ def _collapse(entries):
             member.update(status="error", observation=f"Blocked by helper:{at} (shared with {len(members) - 1} other test(s)).")
         out.append({"id": f"helper:{at}", "name": f"{len(members)} tests stop at the same helper line ({', '.join(ids[:6])})",
                     "status": "fail", "observation": observation, "steps": [], "source": source, "blocks": ids,
-                    "file": members[0]["file"]})
+                    "file": members[0]["file"], "page_snapshot": members[0].get("page_snapshot", "")})
     return out
 
 
@@ -827,7 +1142,8 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
         if timed_out:
             report["timed_out"] = seconds
         counts = collections.Counter(e["status"] for e in report["scenarios"])
-        report["coverage"] = {"total": manifest.get("scenarios"), "parsed": counts.get("pass", 0) + counts.get("fail", 0)}
+        report["coverage"] = {"total": (manifest.get("scenarios") or 0) + manifest.get("audit_checks", 0),
+                              "parsed": counts.get("pass", 0) + counts.get("fail", 0)}
         report["seconds"] = round(time.monotonic() - started, 1)
         return report
     finally:

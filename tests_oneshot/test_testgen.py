@@ -8,6 +8,7 @@ import tempfile
 import textwrap
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from oneshot import testgen
 
@@ -59,6 +60,57 @@ REQUIREMENTS = textwrap.dedent("""\
 
 
 class PlanCase(unittest.TestCase):
+    def test_initial_entries_do_not_invent_parent_navigation_or_authentication(self):
+        def document(given, when):
+            return ('id: REQ-1\ntype: ATOMIC\nscenarios:\n- name: Open a saved note\n  steps:\n'
+                    '  - keyword: GIVEN\n    content: ' + json.dumps(given) + '\n'
+                    '  - keyword: WHEN\n    content: ' + json.dumps(when) + '\n')
+        given = 'The visitor starts at the application home page in a fresh unauthenticated browser session.'
+        when = 'The visitor opens the visible `Travel plans` note entry.'
+        text = document(given, when)
+        entries = testgen.initial_entries(text)
+        self.assertEqual([(x["id"], x["name"]) for x in entries], [("REQ-1#entry-1", "Travel plans")])
+        default_start = document('The visitor is unauthenticated.', 'The visitor opens Archive, then reads a note.')
+        default_start = default_start.replace('type: ATOMIC', 'type: ATOMIC\ndescription: A link named “Archive” opens the archive.')
+        self.assertEqual(testgen.initial_entries(default_start)[0]['name'], 'Archive')
+        for given_case, when_case in [
+            (given + ' A signed-in user has entered the editor.', when),
+            ('The user is in an editor.', when),
+            ('The unauthenticated visitor is on the settings page.', when),
+            (given, 'The user signs in, then opens `Travel plans`.'),
+            (given, 'The visitor searches for a notebook and opens `Travel plans`.'),
+            (given, 'The visitor clicks “Export” in the editor.'),
+            (given, 'The visitor opens an appropriate place.'),
+        ]:
+            text = document(given_case, when_case)
+            self.assertEqual(testgen.initial_entries(text), [])
+
+    def test_initial_entry_checks_are_fixed_and_do_not_call_the_writer(self):
+        entry = {"id": "REQ-1#entry-1", "name": 'A "quoted" note', "scenario_id": "REQ-1",
+                 "given": "fresh unauthenticated home page", "when": 'opens `A "quoted" note`'}
+        with tempfile.TemporaryDirectory() as directory, \
+                patch.object(testgen, "initial_entries", return_value=[entry]):
+            manifest = testgen.add_initial_entry_checks("", directory,
+                {"files": [], "scenarios": 1, "tests": 0})
+            source = (Path(directory) / manifest["files"][0]["file"]).read_text()
+            self.assertIn("await page.goto('/')", source)
+            self.assertIn(".closest(", source)
+            self.assertNotIn(".click()", source)
+            self.assertEqual(manifest["files"][0]["calls"], 0)
+            self.assertEqual(manifest["initial_entry_checks"], [entry])
+            if shutil.which('node'):
+                checked = subprocess.run(['node', '--check', str(Path(directory) / manifest['files'][0]['file'])],
+                                         capture_output=True, text=True)
+                self.assertEqual(checked.returncode, 0, checked.stderr)
+
+    def test_initial_checks_do_not_replace_a_failed_written_suite(self):
+        with tempfile.TemporaryDirectory() as directory, \
+                patch.object(testgen, "add_initial_entry_checks") as add_entries:
+            manifest = testgen.write_suite(REQUIREMENTS, directory,
+                lambda messages: ("No file block", None, "stop"), workers=1, audit=False)
+            self.assertFalse(testgen.runnable(manifest))
+            add_entries.assert_not_called()
+
     def test_groups_follow_top_folders_and_never_split_a_requirement(self):
         groups = testgen.plan(REQUIREMENTS)
         self.assertEqual([g["file"] for g in groups], ["t01-REQ-1.spec.cjs", "t02-REQ-2.spec.cjs"])
@@ -112,7 +164,7 @@ class WriteCase(unittest.TestCase):
             return f"=== FILE: {name} ===\n{body}=== END ===", {}, "stop"
 
         with tempfile.TemporaryDirectory() as temp:
-            manifest = testgen.write_suite(REQUIREMENTS, temp, complete, workers=1)
+            manifest = testgen.write_suite(REQUIREMENTS, temp, complete, workers=1, audit=False)
             saved = json.loads((Path(temp) / "suite.json").read_text())
         self.assertEqual(saved, manifest)
         first, second = manifest["files"]
@@ -123,6 +175,93 @@ class WriteCase(unittest.TestCase):
         self.assertFalse(testgen.runnable({"files": [second]}))
 
 
+class AuditCase(unittest.TestCase):
+    """Synthetic model replies exercise preservation and grounding, not generation quality."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.suite = Path(self.temp.name)
+        self.group = testgen.plan(REQUIREMENTS)[0]
+        self.path = self.suite / self.group["file"]
+        self.original = "const { test, expect } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => { expect(1).toBe(1); });\n"
+        self.path.write_text(self.original)
+        self.manifest = {"scenarios": 3, "files": [{"file": self.path.name, "tests": ["REQ-1-1: Add one"]}]}
+        (self.suite / "suite.json").write_text(json.dumps(self.manifest))
+        self.claim = {"id": "REQ-1-2#audit-1", "requirement": "REQ-1-2",
+                      "quote": 'Double-clicking a note opens a text box named “Edit <note title>”.',
+                      "gap": "The existing test never checks the editor."}
+        self.addition = "test('REQ-1-2#audit-1: Editor', async ({ page }) => { await expect(page.getByRole('textbox')).toBeVisible(); });"
+
+    def complete(self, messages):
+        self.assertIn(self.original.rstrip(), messages[-2]["content"])
+        return ("=== FILE: coverage.json ===\n" + json.dumps([self.claim]) + "\n=== END ===\n"
+                "=== FILE: additions.cjs ===\n" + self.addition + "\n=== END ==="), {}, "stop"
+
+    def test_appends_grounded_checks_without_rewriting_old_tests_and_is_idempotent(self):
+        manifest = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+        self.assertTrue(self.path.read_text().startswith(self.original))
+        self.assertEqual(manifest["audit_checks"], 1)
+        self.assertEqual(manifest["tests"], 2)
+        self.assertEqual(manifest["files"][0]["tests"][0], "REQ-1-1: Add one")
+        again = testgen.audit_suite(REQUIREMENTS, self.suite, lambda _: self.fail("audit repeated"), workers=1)
+        self.assertEqual(again["tests"], 2)
+
+    def test_unfounded_quote_preserves_the_original_suite(self):
+        self.claim["quote"] = "An invented requirement which was never in the document."
+        manifest = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+        self.assertEqual(self.path.read_text(), self.original)
+        self.assertEqual(manifest["audit_checks"], 0)
+        self.assertIn("verbatim", manifest["files"][0]["audit"]["error"])
+
+    def test_accepts_assertions_in_existing_helpers_without_changing_them(self):
+        # Live Sheet audit replies used expectCellText/expectCellFormula rather than inline expect calls.
+        self.original = ("async function expectEditor(page) {\n"
+                         "  await expect(page.getByRole('textbox')).toBeVisible();\n}\n"
+                         "const verifyEditor = async (page) => { await expectEditor(page); };\n" + self.original)
+        self.path.write_text(self.original)
+        self.addition = "test('REQ-1-2#audit-1: Editor', async ({ page }) => { await verifyEditor(page); });"
+        result = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+        self.assertEqual(result["audit_checks"], 1)
+        self.assertTrue(self.path.read_text().startswith(self.original))
+
+    def test_helper_name_alone_does_not_count_as_an_assertion(self):
+        self.original = ("async function expectEditor(page) { await page.getByRole('textbox').click(); }\n"
+                         + self.original)
+        self.path.write_text(self.original)
+        self.addition = "test('REQ-1-2#audit-1: Editor', async ({ page }) => { await expectEditor(page); });"
+        result = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+        self.assertEqual(result["audit_checks"], 0)
+        self.assertIn("observable assertion", result["files"][0]["audit"]["error"])
+        self.assertEqual(self.path.read_text(), self.original)
+
+    def test_one_unfounded_check_does_not_discard_a_separate_grounded_check(self):
+        def complete(messages):
+            content, usage, finish = self.complete(messages)
+            bad = dict(self.claim, id="REQ-1-2#audit-2", quote="A made up obligation which is not in the requirement.")
+            content = content.replace(json.dumps([self.claim]), json.dumps([self.claim, bad]))
+            content = content.replace(self.addition, self.addition + "\n" +
+                                      self.addition.replace("#audit-1", "#audit-2"))
+            return content, usage, finish
+        result = testgen.audit_suite(REQUIREMENTS, self.suite, complete, workers=1)
+        self.assertEqual(result["audit_checks"], 1)
+        self.assertIn("#audit-1", self.path.read_text())
+        self.assertNotIn("#audit-2", self.path.read_text())
+        self.assertEqual(result["files"][0]["audit"]["rejected"][0]["id"], "REQ-1-2#audit-2")
+
+    def test_unmatched_ids_or_suite_configuration_cannot_be_appended(self):
+        original_addition = self.addition
+        for addition in [original_addition.replace("REQ-1-2#audit-1", "REQ-2-1#audit-1"),
+                         "test.beforeEach(() => {});\n" + original_addition,
+                         original_addition.replace("test(", "test.only(")]:
+            with self.subTest(addition=addition):
+                (self.suite / "suite.json").write_text(json.dumps(self.manifest))
+                self.addition = addition
+                result = testgen.audit_suite(REQUIREMENTS, self.suite, self.complete, workers=1)
+                self.assertIn("error", result["files"][0]["audit"])
+                self.assertEqual(self.path.read_text(), self.original)
+
+
 def result(status, message="", line=None, file="t01-REQ-1.spec.cjs", snippet=""):
     error = {"message": message, "stack": message, "snippet": snippet}
     if line:
@@ -131,6 +270,23 @@ def result(status, message="", line=None, file="t01-REQ-1.spec.cjs", snippet="")
 
 
 class ParseCase(unittest.TestCase):
+    def test_page_snapshot_is_bounded_and_cannot_read_an_external_attachment(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            work = root / 'runner'; work.mkdir()
+            snapshot = work / 'results' / 'case' / 'error-context.md'
+            snapshot.parent.mkdir(parents=True)
+            snapshot.write_text('Creation page\n' + 'grid rows\n' * 1000 + '\nalert: a required field is missing')
+            report = work / 'report.json'
+            result = {'attachments': [{'name': 'error-context', 'path': str(snapshot)}]}
+            text = testgen.page_snapshot(result, report)
+            self.assertIn('Creation page', text)
+            self.assertIn('required field is missing', text)
+            self.assertLess(len(text), 2500)
+            external = root / 'error-context.md'; external.write_text('must not be read')
+            result['attachments'][0]['path'] = str(external)
+            self.assertEqual(testgen.page_snapshot(result, report), '')
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -264,6 +420,8 @@ class RunCase(unittest.TestCase):
             self.assertEqual(report.get("kind"), "testgen", report)
             statuses = {e["id"]: e["status"] for e in report["scenarios"]}
             self.assertEqual(statuses, {"REQ-1-1": "pass", "REQ-1-2": "fail", "REQ-2-1": "error"})
+            failed = next(e for e in report["scenarios"] if e['id'] == 'REQ-1-2')
+            self.assertIn('Add note', failed.get('page_snapshot', ''), failed)
             again = testgen.run_suite(app, suite, REQUIREMENTS, only={"REQ-1-2"})
             self.assertEqual([(e["id"], e["status"]) for e in again["scenarios"]], [("REQ-1-2", "fail")])
             # A file that parses but that Playwright cannot load (a duplicate title) also stops every test; the run
@@ -392,7 +550,7 @@ class RepairLoopCase(unittest.TestCase):
         self.assertTrue(budget.smoke["rounds"][0]["accepted"], budget.smoke["rounds"][0])
         self.assertEqual(budget.smoke["rounds"][0]["gained"], ["REQ-1", "REQ-2", "REQ-3"])
 
-    def test_a_lost_quoted_phrase_weighs_as_one_lost_test_under_written_tests(self):
+    def test_literal_inventory_does_not_add_a_penalty_to_written_verdicts(self):
         from tests_oneshot.test_oneshot import block
         many = {f"REQ-{i}": "fail" for i in range(1, 7)}
         before = self.report({**many, "REQ-9": "pass"})
@@ -402,9 +560,10 @@ class RepairLoopCase(unittest.TestCase):
             _, budget, _ = self.run_loop([before, after], [block("frontend/public/app.js", "// repaired")])
         record = budget.smoke["rounds"][0]
         self.assertTrue(record["accepted"], record)
-        self.assertIn("removed quoted vocabulary", record["waived"][0])
+        self.assertNotIn("removed quoted vocabulary", record["reason"])
+        self.assertNotIn("waived", record)
 
-    def test_a_lost_quoted_phrase_still_outweighs_a_small_gain(self):
+    def test_literal_inventory_does_not_reject_an_executed_small_gain(self):
         from tests_oneshot.test_oneshot import block
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
         after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-9": "pass"})
@@ -413,8 +572,8 @@ class RepairLoopCase(unittest.TestCase):
         with self.patch.object(self.adapter, "vocabulary_gaps", side_effect=lambda *a, **k: next(vocab, ([], 1))):
             _, budget, _ = self.run_loop([before, after, recheck], [block("frontend/public/app.js", "// repaired")])
         record = budget.smoke["rounds"][0]
-        self.assertFalse(record["accepted"], record)
-        self.assertIn("removed quoted vocabulary", record["reason"])
+        self.assertTrue(record["accepted"], record)
+        self.assertNotIn("removed quoted vocabulary", record["reason"])
 
     def test_a_round_the_model_never_answered_does_not_count_toward_the_discard_limit(self):
         adapter, sent = self.adapter, []
@@ -833,6 +992,18 @@ class FixSuiteCase(unittest.TestCase):
         status, observation, _ = testgen._classify(result, "", "", (set(), []))
         self.assertEqual(status, "error")
         self.assertTrue(observation.startswith("The test's own code threw"))
+
+    def test_an_unavailable_expect_matcher_is_not_a_product_failure(self):
+        # Actual Playwright 1.57 error from a requirements-only generated suite.
+        for matcher in ("toBeSelected", "toHaveInventedState"):
+            failure = {"status": "failed", "errors": [{
+                "message": "Error: expect: Property '%s' not found." % matcher}]}
+            status, observation, _ = testgen._classify(failure, "", "", (set(), []))
+            self.assertEqual(status, "error")
+            self.assertTrue(observation.startswith("The test's own code threw"))
+        mismatch = {"status": "failed", "errors": [{
+            "message": 'Error: expect(locator).toHaveValue(expected)\nExpected: "Write"\nReceived: "Read"'}]}
+        self.assertEqual(testgen._classify(mismatch, "", "", (set(), []))[0], "fail")
 
     @unittest.skipUnless(shutil.which("node"), "node is required")
     def test_a_reply_that_does_not_parse_leaves_the_file_as_it_was(self):

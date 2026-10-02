@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-02T08:48:45.434243+08:00",
+  "purpose": "binding feedback calibration, not an official score",
+  "model": "deepseek-v4-flash-vision-exp",
+  "estimated_cost_cny": 0.13558624,
+  "focused_tests_passed": 18,
+  "results": [
+    {
+      "id": "REQ-6-1#contract-1",
+      "status": "fail",
+      "message": "a valid Request changes review on the current compare commit blocks merging, so no actionable Merge pull request control may be offered"
+    },
+    {
+      "id": "REQ-6-5#contract-1",
+      "status": "fail",
+      "message": "with Require status check test enabled and test not success, the merge control must be non-actionable (disabled) rather than enabled"
+    },
+    {
+      "id": "REQ-6-3-3#contract-1",
+      "status": "fail",
+      "message": "an unsubmitted pending review draft must not be public to another account before review submission"
+    },
+    {
+      "id": "REQ-5-3-1#contract-1",
+      "status": "fail",
+      "message": "carol-reader holds only Read permission on the repository and must not appear in assignee results"
+    }
+  ],
+  "method": "One real verifier call corrected original proposals using actual source binding errors and declaration-path hints. No operator assertion changes. The verifier used the four relevant public requirements and full current generated JavaScript.",
+  "controlled_repair": {
+    "directory": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/owner-repair-github",
+    "status": "running",
+    "repair_call_limit": 3,
+    "repair_cny_estimate_limit": 1.5,
+    "observed_first_round": "four source gains and one original UI loss; a following attempt did not fix the remaining failure. Preservation not yet established."
+  },
+  "official_submission_unchanged": "e963e1a3e56c / c5832d52"
+}

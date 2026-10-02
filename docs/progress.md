@@ -1555,3 +1555,211 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - Package **bfddd36c** (main 709945a) queued: relay `chain-2026-09-28-keyfix.jsonl`, 2 rounds, reserve CNY 80, starts
   when submission `d69840667dbd` (package 3484d5f7, both runs cut by the bug) ends.
 
+
+## 2026-10-01 — Extended deadline and requirement-coverage candidate
+
+- Owner supplied the organizer notice extending the deadline to October 3 at 23:59 and adding CNY 300 practice / 200 evaluation credit, and authorized continuing the leaderboard campaign. Live balances at the start: practice 474.072673, evaluation 234.623313. No run was active.
+- Current main f643e2f matches all 18 files of submitted package bfddd36c. New task-board results include GitHub 58 and 57; the earlier claimed evaluator ceiling is unconfirmed. The supplied official lab repository has no new commits (origin/main 1d1f0bb).
+- Created exp/behavior-coverage-20261001 from current main. Optional test audit appends at most six checks per file, each with a verified verbatim atomic-requirement quote; it preserves the old tests. Defaults off pending live validation.
+- Criteria and practice evidence: campaign evidence/2026-10-01-leaderboard-push/. Pilot covers two groups per task, using only public requirements and prior requirement-written tests. Baseline replay: selected Sheet groups 41 pass / 7 fail; selected GitHub groups 28 pass / 7 fail / 6 error. These are local subset results.
+- Initial deterministic checks passed; full-suite execution exposed a missing local jsdom installation and unset browser module path. Environment repaired and checks rerun; pending final result. No official upload or run yet.
+
+- Pilot: four complete flash calls, estimated CNY 1.2032. A whole-file grounding rejection initially discarded valid checks; changed to retain separately grounded declarations, with a preservation regression. Replaying the same captured replies costs zero and retains 18 additions. Frozen-app replay: Sheet additions 8 pass / 1 fail; GitHub 6 pass / 3 fail. Two defect classes confirmed against public requirements and source; two failures came from unsupported navigation assumptions. Prompt now requires documented navigation and avoids imposing unstated disabled-control UI.
+- Repaired local jsdom cache; full one-shot run: 239 tests, 236 passed and 3 optional browser readiness checks skipped. The added partial-grounding regression passes separately.
+- Frozen baseline officially uploaded as 91bc50f2f30d with credential_mode official_evaluation; uploaded and downloaded archive hashes match bfddd36c. Runs 49930bdb20c3 (GitHub) and 06836d4c5363 (Sheet) started at 23:21 local. Local practice model traffic is paused until this pair finishes. Read-only watcher and snapshots live in the evidence directory; no automatic resubmission.
+
+- Accounting clarification at 23:28: the authenticated official competition page explicitly says each formal run gets a temporary key billed to the team budget; upload 91bc50f2f30d was verified official_evaluation. Practice balance 472.869426 matches the four pilot charges only. The generic run-detail billing_mode reads self_funded even on historical ranked runs, so it is not the deciding field. Replaced the old blanket pause with credential isolation and settlement checks.
+- Candidate 1b9708a1 (audit on in the isolated branch) launched independent full generation for both tasks on the separate practice key, with the ZIP's defaults and no reused application code. Results pending in generate-{github,sheet}/.
+
+- Local candidate GitHub draft suffered two incomplete streams (181.883 s / 257.663 s, 1,034 / 1,208 SSE events, reasoning only, zero code). Operator interrupted its third attempt before fallback escalation to reduce concurrent traffic. Exit -2 is an operator-aborted transport sample, not a quality score. The main-call trace is retained; side-writer accounting must be reconciled from metering because those daemon calls were interrupted. Local Sheet and the official baseline pair remain active.
+
+- Both local full-generation drafts failed repeatedly with incomplete streams and no code; stopped the batch (SIGINT flushed main traces, then SIGTERM was needed because test-writer executor threads continued). Both official baseline runs also retried repeatedly; cancelled 23:48 and platform confirmed CANCELLED, with no evaluation score and cost still null.
+- Model catalogue refresh: vision-exp CNY 1 / 0.02 / 4 per million input/cache/output tokens. Added its true price so an unknown-model Kimi estimate cannot prematurely stop cheap-model repairs; recorded detailed stream errors. Commit e08e83d, 71 transport/parser/package tests passed.
+- Same-prompt Vision audit call also ended with StreamError at 232.6 s, no code/usage/final marker. Small productive sorting-test requests with compact public context are testing service recovery and vendor differences; no automatic retry or fallback. No candidate quality/score gain claimed.
+
+- Transport control: replaying the exact Vision request hash 94e31e78 through curl completed in 64.7 s with HTTP 200 / 1.1, DONE and a stop marker. The immediate original-Python replay also completed normally in 69.1 s, but used its 16k output allowance on reasoning (length, no code). This does not justify a transport-stack replacement; no curl dependency was added to the agent.
+- Kimi Sheet full trial (package 66809c07) completed in 3132.7 s. Written checks ended at 42 pass / 50 fail / 35 error (123 tests plus collapsed helper findings); two repairs kept. The third reply failed syntax and exhausted the repair budget, estimated total CNY 36.937 with incomplete-stream usage still unknown. Fixed independent judges are running; no promotion or official upload.
+- Corrected an operator misdiagnosis: the requirements explicitly call for a creation page and Create; every generated helper does click Create. The actual initial defect was an unstated mandatory name. No test was changed on the mistaken diagnosis. Source and correction are in operator-correction.json.
+- Candidate c2a2b32a (0df8483) serializes draft then test generation, one test-writing stream at a time, and carries bounded actual Playwright failure-page snapshots into repair requests. Failed-draft/no-test-spend regression, 81 focused tests, and five report/browser tests pass. Started a new independent Sheet run using Vision and this exact ZIP; results pending.
+
+- Fixed independent judge results: Kimi app g99 29 passes / cov99n-arm 25; frozen official-81 app 90 / 88. Same public requirements hashes match both archived applications and live input. Reject this Kimi candidate; no official budget spent on it.
+- Vision c2a2b32a Sheet draft completed once without retry (415 s); its first two sequential test files completed cleanly. Started GitHub with the same package/model, keeping at most two model streams total (one per task); initial practice CNY 80 cap retained.
+- Latest full deterministic suite: 245 tests, 242 passed and 3 optional browser-readiness tests skipped. No new failure.
+
+- 10-02 01:51 local: uploaded frozen candidate c2a2b32a as submission `1b6b453f30dc` on `deepseek-v4-flash-vision-exp`, with `credential_mode=official_evaluation`. Stored archive hash matches. Runs `47d482ac1890` (GitHub) and `6f78f5bdce60` (Sheet) both reached RUNNING; deployment completed and agent execution started. No official score yet.
+- The user asked when evaluation would be submitted. Started one paired official experiment before the full local repair loops finish, superseding the wait-for-final-local-score gate for this experiment only. Package integrity, deterministic checks and freshly downloaded requirement hashes are verified; local independent validation remains pending. Separate per-run official credentials allow this alongside the two practice trials. No automatic repeat submission or promotion to main.
+- Frozen GitHub-24 application scored 61 passes on gh99 and 69 on gh8; both are independent public-requirement judges with 100 scenario slots, with helper errors reported separately. Sheet-81 remains 90 / 88 on g99 / cov99n-arm. A read-only generation watcher will score the final Vision apps with exactly these fixed suites.
+- Vision Sheet first accepted repair: written tests 94 -> 113 passes, 4 failures remain among 117 checks; CNY 0.369005 estimated for that repair. This is self-test progress, not evidence of official uplift. The candidate changes both the agent and model, so any eventual improvement cannot by itself isolate the audit's contribution.
+
+## 2026-10-02 02:33 — Independent local results and two reproduced validation defects
+
+- Both local Vision generations of c2a2b32a exited normally. Sheet: 3406.5 s, written 117/117; GitHub: 3114.8 s, written 122 pass and seven explicit skipped tests classified as unjudged errors. The skips concern non-author reviewers and permissions, based on the writer's belief that their seed credentials were unavailable; this remains a coverage gap.
+- Fixed independent Sheet judges: new 94 / 94 versus frozen official-81 app 90 / 88. Fixed GitHub judges: new gh99 65 / gh8 64 versus frozen official-24 app 61 / 69. GitHub has no consistent local advantage. These tests were never supplied to generation or repair. The judge harness is pinned to the exact submitted ZIP before subsequent code changes.
+- Captured Sheet audit replies used existing assertion helpers. The new audit guard's literal `expect(` count wrongly rejected all 11 checks in two files. Recognize assertions in existing named helpers, including delegation, while rejecting a helper whose name merely looks like an assertion. Zero-model-call replay recovers all 11; browser replay is new app 11/11, old app 10/11. Original tests remain unchanged.
+- The legacy static name guard treated `entry` in `application entry point` as a control clue and flagged adjacent seed-range/header data. Exclude that non-control phrase while preserving real entry names. A generic counterexample with different data reproduces the issue; the local Sheet trace shows a successful final check rejected once because of this guard.
+- These fixes are a later candidate, not part of the two currently submitted runs. Validation: one-shot 248 run, 245 passed and three optional readiness skips; legacy 226 run, 214 passed and 12 optional integration skips; diff secret scan clean. Source evidence and all four fixed judge comparisons: `docs/evidence/2026-10-02-validation-guards.json`. No new paid model calls or second formal submission for these fixes.
+
+## 2026-10-02 02:46 — One bounded GLM GitHub practice comparison
+
+- Fresh task boards now show GitHub 70% for gaoyu06, model metadata glm-5.3-flash, CNY 11.905867; Sheet's maximum remains 99%. Model metadata does not identify that agent's architecture or establish a model-only advantage. Our historical listed task bests remain GitHub 24 and Sheet 86 while the new official pair is running.
+- Added the freshly verified glm-5.3-flash price (input 0.8, cache-hit input 0.23, output 2.8 CNY / million tokens). Every registered model price matches the refreshed catalogue. The cost/cache calculation regression passes. The first targeted invocation needed the repository's tests_oneshot import path; the corrected invocation passed.
+- Started one exact-package GitHub generation on the practice key: `glm-github-1`, archive `2a88e7983e364f41ae8d3e6a7523c42404c3e063912afb65608bdd8595c4fb65`. It includes the two guard fixes; no task-specific assets or generated application code. The real gateway accepted the request and is streaming, with no quality result yet. Fixed gh99/gh8 judges will run on completion using the submitted c2a2b32a checker snapshot.
+- Practice balance before this trial: CNY 439.759598, CNY 34.313075 settled since the campaign started, pending billing events zero. The first CNY 80 practice tranche still applies. No additional official run started; submission 1b6b453f30dc continues unchanged.
+
+## 2026-10-02 03:01 — GLM full-task calls stopped at a reasoning-only output limit
+
+- GLM's first full GitHub request completed normally after 299.4 s with finish_reason length, 81,411 input tokens and exactly 16,384 output tokens, all reasoning and zero content. The client requested 131,072 output tokens. Meter records CNY 0.111004 for that completed request. Interrupted the identical second attempt to retain the trace before spending further retries; operator-abort.json distinguishes it from a gateway failure or a quality score.
+- Official Z.AI model/API documentation lists a 128K output maximum and forced thinking, with reasoning_effort low/high/max. A single exact-request comparison changed only reasoning_effort to low, verified by request hashes. It again ended at 16,384 output tokens with no code, after 260.6 s. This does not establish whether the competition route clamps output or ignores parameters, but repeating the full task is not justified.
+- No GLM application or independent quality score exists; no further GLM calls are active. The comparison did not change the formal Vision submission. Evidence: campaign `glm-token-window-diagnosis.json`, captured traces and metering records. Provider references: https://docs.z.ai/guides/vlm/glm-5.3-flash and https://docs.z.ai/api-reference/llm/chat-completion.
+
+## 2026-10-02 03:19 — GitHub official 27/100; same-app independent judges remain optimistic
+
+- Run `47d482ac1890`, submission `1b6b453f30dc`, finished with 27 passed / 73 failed, 10/47 features, 2,353,248 metered tokens and CNY 3.019351. The official task board lists 27%, score 30.670070863981124, rank 9 at observation. Team credit decreased from 234.623313 to 231.603962 by exactly the reported charge. Sheet remains running; no combined score yet.
+- Downloaded the exact evaluated application (archive d3e8ba9de2f2124fdc1779a260460ca8f8386ccc5330ed05bc421672e2e8ae4f); its requirement hash is unchanged. The same app scores gh99 69 and gh8 66 under the fixed independent requirement-written judges, versus official 27. This is not explained by evaluating different generated apps.
+- Its own suite ended with 112 passed and 13 unjudged errors. Seven were classified as an ungrounded composed repository name; six were explicit skipped scenarios. Those recorded classifications need calibration rather than being treated automatically as either product defects or harmless tests.
+- Exact delivered business functions reproduce a public-requirement defect: after the same reviewer replaces Request changes with Approve (or Comment on an unprotected target), eligibility still sees the historical Request changes and blocks merging. The requirement explicitly preserves history while replacing the effective decision. Single approval and stale-commit controls pass. This is an isolated source-function reproduction, not a claim about any particular hidden test.
+- Evidence: `docs/evidence/2026-10-02-github-official-r1.json`. The platform returns no failed_tests details for this run; no evaluator-ceiling claim is justified. The result is a small improvement over our preceding task-board 24, with the generalization gap still unresolved.
+
+## 2026-10-02 03:30 — Paired official result complete: 27 / 73, no promotion
+
+- Sheet run `6f78f5bdce60` finished at 03:23 local with 73 passed / 27 failed, 11/24 features, 2,746,564 tokens and CNY 4.026317. The exact submission's pair totals 100/200 and CNY 7.045668. The preceding best same-submission pair was 24 / 81, 105/200; the overall board still retains S 59.751714998087095, rank 7 at observation. Do not promote the candidate on this result.
+- Downloaded the exact formal Sheet application (archive 2c2e05ab8b44992e464c234e5a8868ed3d15d225ba7db1d4d003644721b4e7e0). Its requirement hash is unchanged. Fixed independent judges score it 89 / 93 despite official 73, so the oracle gap is also visible on the same Sheet artifact.
+- Recovered helper-assertion checks against that formal app: 10/11. A mixed column with blank and nonblank values loses the blank row after applying Is empty. The preceding assertion establishes the row exists; the failure snapshot shows the filter is active. Source builds checkbox choices from nonblank values only, then persists that default allow-list together with Is empty, excluding blank cells before evaluating the condition. This is a concrete cross-condition hole, not an official failed-test attribution.
+- Latest balances: practice 439.583993 (34.488680 settled decrease from campaign start, no pending events at observation), official 227.577645 (7.045668 decrease, matching this pair). All local trials, independent judges, parameter comparisons, and the read-only official watcher have ended. No further formal pair was started.
+- Paired evidence is `docs/evidence/2026-10-02-paired-official-r1.json`. Roadmap 4.35 now prioritizes reliable test classification, reusable UI construction of prerequisite state, and transition invariants. The later two guard fixes remain in draft PR #110, verified mechanically and through real captured tests, with no official improvement claim.
+
+## 2026-10-02 04:10 — Explicit S70 goal, continuous optimization authorized
+
+- User set an explicit target of overall S >= 70 and asked the agent to continue while they sleep. Goal tool is active with no token budget. A same-submission complete official pair and its board entry determine completion; no task-answer specialization or hidden-test use.
+- Created goal/s70-20261002 from current main in its own worktree, then fast-forwarded the existing coverage branch to preserve ancestry and its validated mechanical fixes. Main remains untouched.
+- Goal-start balances match the last checkpoint: practice 439.583993, official 227.577645. First new review tranche: practice CNY 60 and official CNY 40; do not spend on blind same-package retries. Existing balance is authorized; no purchase or recharge.
+- Implemented a prototype that asks once for requirement-grounded reconstruction of skipped GIVEN states. Only skipped declarations can change; live tests, helpers, and suite configuration are preserved. Setup plans require source quotes; direct state/storage injection is rejected. Focused checks pass. Full one-shot suite: 250 run, 247 passed, three optional readiness checks skipped.
+- First true Vision recovery call returned HTTP 502 after 306 s with no stream events; it is a transport failure, not a zero-quality result. An equivalent Flash recovery call is running. Raw traces, plans, fixtures and costs live in campaign `evidence/2026-10-02-s70/`.
+
+## 2026-10-02 06:20 — S70 source-contract candidate under full generation
+
+- Removed the skipped-scenario recovery prototype after three frozen apps exposed invalid prerequisite/locator assumptions. Its exact patch and model traces remain in the external 10-02 evidence directory.
+- Added bounded actual-source counterexamples with a second model validation pass, canonical requirement provenance, fixed definitions across repairs and separate fixture-error handling. The extra requirement-only UI audit is now opt-in in this candidate.
+- Autonomous corrected probes replayed unchanged: GitHub 4 fail to 4 pass; Sheet 4 fail to 4 pass. Independent public-requirement browser judges: GitHub 69/66 unchanged; Sheet 89/93 to 90/96. Initial controlled repairs used operator-calibrated diagnostics; fresh integrated generation is required before claiming autonomous efficacy.
+- Recovered a captured unambiguous EDIT framing variant, preserving exact SEARCH/replacement bytes. Artifact `1d509a809cc5f5e7bb52523a76b3627c331cfd76d77e496d9fa18646e037314d` is now generating both public tasks with Vision using practice credit. No new official score yet. Evidence: `docs/evidence/2026-10-02-source-contract-pilot.json`.
+
+## 2026-10-02 06:42 — Preservation regression and namespace binding limit
+
+- An additional public-rule control passes before the controlled Sheet repair and fails afterward: row insertion no longer moves an absolute reference with its original cell. The four targeted fixes and improved aggregate browser scores did not establish absence of other regressions. Evidence is retained separately; no model-generated application fix is hardcoded into the agent.
+- The fresh Sheet draft uses ordinary namespace assignments, which v1's source extractor cannot bind. Added generic actual-namespace reconstruction, helper/value binding and receiver preservation. Twelve focused tests passed; an actual fresh-app coordinate round trip and the original eight before/after probes also replayed successfully.
+- v2 ZIP `7f3a549d2db87722fa6b35b6cf88b4720ba3831a4e664843aac65e0ab5ff89be` is running a separate complete fresh pair. v1 remains untouched and is in automatic repair. No new official score. Gates remain fixed before final results.
+
+## 2026-10-02 07:36 — Official S70 experiment e963e1a3e56c started
+
+- The latest ZIP `c5832d5275a76144c3f5e60ad3482d2d442ae1bf468accd1557c91107ca68820` (source a86222a) was uploaded in official-evaluation mode, downloaded and hash-verified, then started as one complete pair: GitHub 07c92a18ffb4 and Sheet cee35cb1fb7f. Both were RUNNING at 07:35; no new score yet.
+- v1 completed locally: GitHub independent 67/71, estimated CNY 2.283998; Sheet 91/90, CNY 2.567570. Sheet's source phase aborted because a legal empty setup was rejected. The untouched real response now executes four failing public-rule counterexamples with the corrected checker. Fourteen focused checks and two package-name checks pass; exact ZIP secret scan has zero findings.
+- v2 Sheet completed with independent 90/95 unchanged after three source fixes; its original 100 UI scenarios remain passing. v2 GitHub is still repairing a real initial missing-method error and subsequent UI failures.
+- This formal run is a bounded experiment within the authorized funds, not mainline promotion or a claim that every original local gate passed. The exact v2c ZIP has targeted/replay evidence but no separately completed fresh local trajectory. Rationale and boundaries are recorded in `docs/evidence/2026-10-02-s70-official-experiment-r1.json`. Continue until official terminal results and the corresponding overall S are known.
+
+## 2026-10-02 08:25 — Isolated object-owner binding prototype
+
+- Branch `exp/source-owners-20261002` preserves the S70 branch ancestry. The official c5832d52 package is unchanged.
+- Added AST-confirmed qualified names for object-literal methods, actual owner construction, original receiver/helper preservation and exact method-source checks. Seventeen focused checks pass; the original eight before/after source controls retain their outcomes.
+- On the fresh v2 GitHub application, two previously unjudged probes now execute and fail. Source inspection confirms the merge predicate ignores both a current Request changes decision and required check status. Two probes remain unjudged: the actual scaffold's dynamic helper bridge is not represented, and an overridden screen method is ambiguous. These limitations are explicit; no promotion or new formal upload was made from this branch.
+- Evidence: `docs/evidence/2026-10-02-object-owner-prototype.json`; complete local traces remain in the external S70 evidence directory.
+
+## 2026-10-02 08:48 — Actual declaration hints recover four executable probes
+
+- Binding failures now list actual callable declaration paths with the same member name. The prompt documents object-owner binding and default receivers.
+- A real Vision verifier call (estimated CNY 0.135586) corrected the original proposals without operator assertion edits. All four execute as failures on the untouched fresh GitHub application. Eighteen focused tests pass. Evidence: `docs/evidence/2026-10-02-owner-binding-feedback.json`.
+- A controlled repair against the original own UI suite plus these fixed probes is running, limited to three repair calls / CNY 1.5 estimated. Its first accepted change fixed all four source checks but lost one original UI check; preservation remains unproved and the prototype is not promoted.
+
+## 2026-10-02 08:55 — Controlled repair exposes invalid merge-test preconditions
+
+- Controlled owner-aware repair completed three calls, estimated CNY 0.475417. Four source checks pass afterward; one original UI check fails, so the old UI total changes from 99 to 98. Fixed independent judges remain 64/67, with no measured aggregate gain.
+- The failing positive-merge test reuses the seeded Open PR after an earlier test has left a valid Request changes decision on it. It does not restore that decision or verify eligibility. Public REQ-6-5 explicitly requires separate eligible/blocked PRs and independent restoration before reuse. The actual fresh seed also has only one named Open PR, with a pending check, so the required eligible fixture is missing.
+- This is a coupled fixture/seed problem, not proof that blocking the merge is wrong. Neither application rules nor assertions were weakened. Further work should establish complete GIVEN states and fixture isolation rather than force an invalid merge. Evidence: `docs/evidence/2026-10-02-merge-fixture-conflict.json`.
+
+## 2026-10-02 09:10 — UI cleanup confirms state pollution without weakening assertions
+
+- On the same repaired application, the unchanged own suite reproduces 102 pass / 1 fail / 1 unjudged. A diagnostic copy that only appends the documented Comment review cleanup after all original Request changes assertions gives 103 pass / 1 unjudged. All original test bytes are preserved, and all four source checks remain passing.
+- This establishes prior-test state as the cause of the apparent merge regression. Initial seed completeness is still separate; the fixed independent judges remain 64/67. Official requirements/tests and the independent suites were not changed.
+- The generic writer prompt now explicitly covers every shared mutable prerequisite, validates stated GIVEN facts and restores effective conditions through public UI after THEN assertions. One real public REQ-6 group-generation pilot is running with no application or independent-judge source in its prompt. No new formal submission or prototype promotion yet.
+
+## 2026-10-02 09:49 — Selection-interaction contract calibrated before the next candidate
+
+- Public requirements distinguish clickable options from explicitly native selects, including different Role controls in different scopes. The writer now states that distinction. A real 15-scenario group-generation call (CNY 0.225269) preserves both kinds correctly.
+- The new 25-scenario review/merge group initially passed 17; native Role and test-status controls blocked its required clicks. Two model repair calls, CNY 0.162586, make that group pass 25/25. The complete mixed own suite passes 99 UI scenarios with one pre-existing unjudged case. Four source checks remain passing after a separately versioned, identical before/after rendering-plumbing fixture correction.
+- Original independent totals move 64/67 to 63/66, but every newly failed test wrongly calls selectOption on the explicitly clickable test-status control. Versioned calibration copies change only those four selection actions, retaining all assertions/fixtures and original judges. Same-judge before/after: 62 to 65 and 66 to 67. No official gain is inferred.
+- Evidence: `docs/evidence/2026-10-02-control-contract-calibration.json`. Broad one-shot checks and source secret scan are running before freezing the next generic candidate. The current official pair is untouched; Sheet is 83 and GitHub is still running.
+
+## 2026-10-02 09:55 — Generic controls candidate frozen for a fresh pair
+
+- ZIP `8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a`, source e53024c, includes object-owner binding, actionable declaration hints, complete shared-prerequisite guidance and scoped native/clickable selection guidance. No generated application, task fixture or concrete probe is packaged.
+- One-shot suite: 267 run, 264 passed, 3 optional readiness skips. Source and exact ZIP secret scans have no findings. Practice balance immediately before this pair was CNY 425.235319.
+- Both tasks are now generating from the exact extracted ZIP with Vision and practice credit. No new official submission was created. Preserve raw independent scores and the versioned calibrated comparisons; they do not establish official improvement.
+
+## 2026-10-02 11:23 — Recover executable diagnostics and measure both gains and regressions
+
+- Fixed unavailable Playwright matcher classification, actual window-qualified namespace extensions, and explicit EADDRINUSE smoke retries. Full oneshot suite271run/268pass/3optional skip; real occupied-port checks pass. The subsequent inline assertion-repair prompt passed5focused checks and recovered the two real invalid-matcher scenarios without weakening the existing guard (same app91 to93UI pass).
+- Four unchanged captured source probes went from fixture errors to real failing assertions. One controlled repair call, CNY0.183563, made all4pass while preserving91original UI passes. Original independent judges72/65 to70/65; calibrated74/67 to72/67. Preserve the two regressions; do not call this a broad quality gain.
+- Exact next ZIP4ec287a63ac4278f22a0bb90843bda745eb08c785aa5b162287cceeed8bb8dbe, implementation987f93c, has zero secret findings and is generating a fresh full paired trajectory using practice credits. FormalR2 still runs the earlier frozenv3 package, submissionf56d97c2fdb1; no new official result.
+- Evidence: `docs/evidence/2026-10-02-diagnostic-recovery.json`. Fresh experiment decision explicitly retains the negative independent result and measures checker recovery plus repair cost. No extra official submission or mainline promotion.
+
+## 2026-10-02 11:35 — Start a dependency-based generation architecture comparison
+
+- An external local pilot uses the exact4ec287a6 candidate and its existing template entrypoint. The first stage contains the first40percent of atomic requirements in stable dependency order:19/47requirements,45/100scenarios. Ancestor dependencies are included; every selected atomic description/scenario is byte-value equivalent after parsing, and the projected YAML round-trips through the actual agent parser.
+- The second stage receives the complete unchanged100-scenario GitHub requirements and extends the foundation app. Both phases, all test writing and repairs count toward cost. Each phase has a stated CNY2.5 repair/8call cap; any binding cap is a comparison limitation. Fixed original/calibrated judges run only on the final complete app. No partial score can satisfy S70.
+- This investigates whether constructing shared entities and prerequisite behavior first improves cross-feature consistency. No task logic, generated source or projected requirement is added to the submission package. Active formalR2 and fresh fullv4b remain unmodified.
+- Evidence: `docs/evidence/2026-10-02-dependency-build-pilot.json`. At11:35 the foundation PID64668 was live and receiving model events; the two fresh fullv4b jobs had completed their first draft and were waiting for their test writers.
+
+## 2026-10-02 12:40 — Reject weak v4b evidence, close upgrade check bypass, audit startup facts
+
+- Freshv4b: GitHub54/64 (calibrated54/64), Sheet88/92, estimated totalCNY4.548780. No promotion. Exact pre-source-code reconstruction on the delivered Sheet state produces identical per-case verdicts, so the final source patch did not cause that decline. Initial generation and earlier repair remain the relevant parts of this trajectory.
+- The staged pilot costCNY2.364831 before external full checks, scored54/61 (calibrated56/62), and internally left all100full-task scenariosunparsed because template inputs bypassed the test writer. The generic gating defect is fixed;272tests ran,269passed,3optional skipped. A fresh full-suite repair/source-review phase is running on the staged complete app; include every phase when comparing cost.
+- Actual unchanged R2 startup state lacks the explicitly supplied Maintain account and separate Open success/refusal PRs. Two operator controls exercised the actual roleFor and mergeBlocked functions and failed in CHECK. A separate autonomous startup audit is running with generic instructions only; it does not receive operator probes, hidden tests or newly published Stage1 actor names.
+- Evidence: `docs/evidence/2026-10-02-v4b-negative-and-upgrade-gap.json`. FormalR2 also regressed toS59.6083; these diagnostics are mechanisms to investigate, not a substitute for the original full-pair S70 goal.
+## 2026-10-02 10:20 — Complete official pair reaches S62.3332, target remains 70
+
+- Official submission e963e1a3e56c, package c5832d52: GitHub 07c92a18ffb4 = 21/100, CNY4.313931; Sheet cee35cb1fb7f = 83/100, CNY2.477041. Total104/200, CNY6.790972. Both failed_tests arrays are empty.
+- The complete overall board explicitly names those two source_run_ids and reports **S62.33320859322366**, rank6. Previous best was S59.751714998087095 at105/200 andCNY11.516979. The score gain is cost-driven; GitHub quality remains below the preceding 27-point experiment. Do not claim generalization improvement or mark the goal complete.
+- Formal funds remaining220.786673. The generic controls candidate8ef69d0c is undergoing fresh paired local generation. Continue toward S>=70 using complete official outcomes.
+- Authoritative record: `docs/evidence/2026-10-02-s70-official-result-r1.json`.
+
+## 2026-10-02 11:03 — Second complete official pair starts from fresh-validated controls candidate
+
+- Submission f56d97c2fdb1, exact ZIP 8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a, source e53024c, Vision and official-evaluation credits. Upload/download hashes match. GitHub 583ef28ff0bc and Sheet 9d673d2969ed both started; no new score yet.
+- Fresh paired local validation: original fixed GitHub judges 72/65; versioned clickable-control calibration 74/67. Sheet 92/96. These are diagnostic scores. GitHub own suite falsely classified two unavailable assertion APIs, and all four source probes were unjudged due a missed window-qualified namespace extension. Those fixes belong to the next candidate, not this immutable submission.
+- Live requirements archive added GitHub Stage 1 (30 tests); original GitHub/Sheet YAML hashes remain unchanged. Explicitly selected the original task pair; the live overall board still accepts that original route as complete. No extra stage run was started.
+- Evidence: `docs/evidence/2026-10-02-s70-official-experiment-r2.json`. Formal balance before run220.786673; practice420.511753. Target S70 remains active.
+
+## 2026-10-02 12:17 — Complete R2 regresses to S59.6083; target remains unmet
+
+- Official f56d97c2fdb1: GitHub583ef28ff0bc=18/100, CNY2.549267; Sheet9d673d2969ed=80/100, CNY2.973834. Total98/200, CNY5.523101. The live complete original-route board explicitly names both IDs and reportsS59.60825224653157, rank5. It now shows this newer lower pair;62.3332 is the prior historical result, not the current displayed score.
+- Formal balance215.263572. R2 is fully terminal and must not be restarted. Keep S70 active; no candidate is promoted. Raw terminal/budget/board evidence is `docs/evidence/2026-10-02-s70-official-result-r2.json`.
+- Freshv4b also failed to improve local evidence: GitHub original54/64, calibrated54/64; Sheet88/92. Its original task pair costs an estimated4.548780. Exact pre-source-code replay on the same delivered Sheet state gives identical per-case independent verdicts; the last source patch did not cause the observed decline versusv3.
+- A staged-generation pilot revealed that the template path skipped requirement-written tests and fell back to100unparsed scenarios. The code gating defect is reproduced and corrected in the isolated development worktree; the complete staged app is receiving a fresh full suite and standard repair/source review before any architecture conclusion.
+
+## 2026-10-02 13:23 — Complete follow-up controls without claiming a new official gain
+
+- Fully checked staged GitHub reached69/69 on both original and previously calibrated judges; total generation/checking estimateCNY4.257494 includes all phases. This is a local result, not an official candidate promotion.
+- Autonomous startup audit found one valid missing initial fixture, two business-rule counterexamples, and one unresolved binding. A seed-only repair added one PR/check and preserved every existing record; original independent verdicts remain exactly65/64. The Maintain startup requirement remains unmet. An incidental count==3 precondition made the original probe reject legitimate additional seed records; the separately versioned correction replays identically before/after and preserves all requirement assertions.
+- A native customizable-combobox prototype passed real Chromium click/native-selection/duplicate-option/Escape/callback/FormData checks. On the same officialR2 app its independent counts became66/64 from65/64, but gh8 contains two gained and two lost/unjudged cases. It stays outside candidate code pending scope/interaction analysis. No test-environment branching or parallel hidden control was added.
+- All R2, v4b and these follow-up processes are terminal. The original full-pairS70 objective remains active; current recorded boardS59.6083 has not improved. Exact paths and remaining decisions are in SESSION_HANDOFF.md.
+
+## 2026-10-02 15:30 — Refreshed input, organizer self-tests, and direct CLI
+
+Reused current submission f56d97c2fdb1 for full GitHub run4666c04f629e; actual runtime input hash matches the updated public requirements. Existing Sheet80 remains in the same submission. S70 is unproven; last observed S59.6083.
+
+The organizer Stage1 self-test of the old R2 application was10/30. One Vision repair with updated complete requirements and returned failure diagnostics costCNY0.370638; valid hunks applied with the existing parser policy, one unmatched hunk retained. Real self-test improved to19/30, nine improvements and no regressions. This is a controlled application diagnostic, not a new agent score. The self-test API integration is installed locally and verified through actual upload, terminal polling, result retrieval, and screenshot download; CLI PR12 is ready and unmerged. Aggregates: evidence/2026-10-02-refreshed-input-and-selftest.json; full private traces remain in campaign evidence.
+
+## 2026-10-02 15:45 — S70 achieved at S79.4764; continue toward the leader
+
+Official run4666c04f629e finished46/100 atCNY1.963038. The current submission f56d97c2fdb1 pairs it with Sheet9d673d2969ed (80/100,CNY2.973834); the live leaderboard explicitly selects both runs, marks the original route complete at126/200 andS79.47644199762266, rank2. The retrieved submission archive matches unchanged agent SHA8ef69d0c. Goal70 is complete, audited in evidence/2026-10-02-s70-achieved.json.
+
+The user requested pursuing Orchestro. A new goal tracks the complete-pair real-time leaderboard lead. Fresh opponent data isGitHub76+Sheet87,S103.6166; prioritize the30-test GitHub gap over the7-test Sheet gap. One immutable copy of our46-point official application is now being tested across the three organizer stages in sequence to obtain concrete failure diagnostics, without new model generation or replacing the valid official submission.
+
+## 2026-10-02 — Controlled entry repair and native controls; fresh v5 pair started
+
+The same46-point official GitHub application scored23/30,21/29,1/41 in the three self-test groups. A read-only route overlay established that the failed Stage3 entry searches occurred at / with empty hash, no session and no earlier link clicks. A single public-requirement repair changed only homeScreen, preserving authentication, permissions, seed data and business handlers byte-for-byte; Stage3 improved1 to27,26 gains and zero regressions.
+
+A generic native-select adapter then produced24/30,21/29,28/41 across the same groups: combined45 to73 with zero regressed cases. These are application diagnostics, not formal agent scores. Swapping the same adapter into the existing Sheet app revealed an input-only pivot value reader; its one-selector migration restored both independent suites to87/93, with all case verdicts unchanged from baseline. This caller dependency is documented for future generated code.
+
+Source8a06f4a passed273 deterministic tests (270pass,3optional skip). Packagee4a76b80 has begun fresh complete GitHub/Sheet generation with the updated public inputs and practice credit; it has not replaced the effectiveS79.4764 official submission. See evidence/2026-10-02-home-native-controlled-validation.json.
+
+- 2026-10-02：按用户要求完成 CLI 主分支交付：#11 doctor、#12 selftest API 已合并，0.5.0/main 4d3eefc，132 tests + 主分支安装后的真实 API 验证，临时分支/worktree清理。ARC v5两题生成均结束；v6固定入口受控修复11/11但仍省略同名记录，不当成可推广成果。完整源码276检查通过（3 optional skip），后续126 focused通过；v6待完整生成验证。官方S79.4764原提交保留。详见本页 handoff 与 E2/cli-050-main-delivery.json。

@@ -1,6 +1,6 @@
 # One-shot candidate inside VOLO
 
-Last reviewed: 2026-09-23.
+Last reviewed: 2026-10-02.
 
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
@@ -14,9 +14,9 @@ The original three source hashes and Git head are in `oneshot/source_manifest.js
 ```
 
 The default artifact is `oneshot/dist/oneshot.zip`, with a sibling `.zip.manifest.json`.
-The root allowlist is `main.py`, `dialect.md`, `requirements.txt`, `semantic_probe.cjs`, and the scenario
-self-check files `scenarios.py`, `scenario_check.py` and `scenario_check.cjs`;
-regular scaffold files are packaged under `scaffold/`.
+The root allowlist is maintained in `scripts/package_oneshot.py:FILES`. It contains the entrypoint,
+dialect, scenario/browser checkers and source-contract diagnostic executor; regular scaffold files
+are packaged under `scaffold/`.
 Timestamps, order, permissions and uncompressed ZIP encoding are fixed. The external
 manifest binds every current source file to the ZIP hash and retains import provenance.
 Neither forum tools nor platform sessions, test fixtures, or run evidence are packaged.
@@ -30,6 +30,11 @@ The CLI recognizes a source template containing frontend/backend package manifes
 its bounded source snapshot to the same one-shot call. For a separate immutable input, use
 `--template-dir EXISTING_APP --output-dir EMPTY_DIR`. The Python `generate()` API retains its
 empty-output default unless `template=` is supplied explicitly.
+
+Completed upgrades now receive the same requirement-written browser checks and source review as
+new applications. Keeping an existing application does not establish its newly requested behavior.
+The earlier template path skipped test generation and could finish with every masked scenario
+unparsed; that outcome is not validation. Test-writing and repair costs remain on the run ledger.
 
 ## Boundaries
 
@@ -50,8 +55,8 @@ outside temporary cleanup. Gateway redirects are refused.
 ## Model calls
 
 The default model is `deepseek-v4-flash` (`MODEL`). Completed calls are capped per phase: four
-for the draft (first draft, continuations, redrafts; `ONESHOT_DRAFT_CALLS`) and six for the
-repairs (`ONESHOT_REPAIR_CALLS`). The repairs also stop at a spend limit, CNY 3 per task by default
+for the draft (first draft, continuations, redrafts; `ONESHOT_DRAFT_CALLS`) and 24 for the
+repairs (`ONESHOT_REPAIR_CALLS`). The repairs also stop at a spend limit, CNY 10 per task by default
 (`ONESHOT_REPAIR_CNY`), which counts the repair calls and the scenario translation; costs are
 estimated from the reported usage with the gateway's price list, and a cut stream from its
 characters. A malformed value stops the CLI before any request.
@@ -99,11 +104,17 @@ the zero-dependency application contract. With Node/npm available, it builds the
 starts the backend, checks health and assets, and executes a jsdom crash probe. Requirements
 with explicit UI declarations also receive a deterministic Chromium diagnostic: declared home
 controls, accessible roles, dialog action ambiguity, editor scope and native checkbox behavior.
-Quoted requirement phrases (backticks, straight or curly double quotes) drive the prompt's
-vocabulary checklist, the vocabulary and exact-name gates and the repair's rename guard; a phrase
-quoted only in backticks that the user types (`fills X with ...`, `enters ...`) is a runtime value
-and is not demanded. These checks feed the repair loop below as findings and hints; only the
-unchanged acceptance suite establishes test scores.
+Quoted requirement phrases (backticks, straight or curly double quotes) drive legacy vocabulary
+diagnostics and the repair's control-rename guard. The draft prompt distinguishes initial records,
+UI labels/messages, runtime inputs and explicitly absent data rather than demanding source coverage
+of every literal. With requirement-written browser tests, vocabulary gaps do not become repair
+goals or acceptance penalties. Only an unchanged acceptance suite establishes test scores.
+
+A usable written suite also receives deterministic initial-entry checks derived from explicit
+unauthenticated GIVEN states and literal first navigation actions. These open the home page without
+inventing parent navigation or authentication. Unknown actions or other explicit starting screens
+are skipped. The guards supplement the written scenarios, cannot rescue an unusable test manifest,
+and do not change the number of public acceptance scenarios.
 
 ## Repair loop
 
@@ -116,17 +127,19 @@ vocabulary, and, when the application is not broken as a whole, the scenario sel
   or a requirement scenario fails. A load failure that only the jsdom probe reports (jsdom lacks
   `ResizeObserver`, canvas and other browser APIs) stands only when Chromium passes no scenario
   either; otherwise it becomes a hint (`smoke.jsdom_only`). Family-level smoke problems (a throwing
-  click handler, a missing landmark), the static gates and the vocabulary gap ride along as hints
-  and never trigger a call on their own.
+  click handler, a missing landmark) ride along as hints and never trigger a call on their own.
+  Static hints are retained for the fallback scenario checker; written browser failures are not
+  supplemented with unrelated static or vocabulary hints.
 - **Request.** The whole-application failures, else each failing scenario with the steps the
   browser performed and what it observed (up to 40), the ids of the passing scenarios to keep, and
-  the hints. The files are re-emitted whole.
+  the hints. Existing files use exact SEARCH/REPLACE edits; new or short files may be emitted whole.
 - **Acceptance.** A repair that makes a broken application work again is kept whatever else it did
   (the waived guards are listed in `rounds[].waived`). Otherwise it is kept only when at least one
   scenario that failed now passes, it gains three such scenarios for every passing one it loses, no
   clean static gate starts flagging, no quoted phrase disappears and no control name the requirement
   quotes is renamed (compared without leading or trailing symbols; a name the browser activated
-  counts as present). Only verdicts both checks reached compare: a scenario that was unparsed or
+  counts as present). With written browser tests, newly flagged static gates and renamed controls
+  count as penalties against gains; literal source-coverage changes do not. Only verdicts both checks reached compare: a scenario that was unparsed or
   errored before is never a gain, one unparsed or not started after is never a loss. Lost
   scenarios, and gains of at most two, are rechecked once. A check that cannot run at all (no
   browser, every scenario errored) is retried once and then marked `checker`: the repair is
@@ -139,7 +152,7 @@ vocabulary, and, when the application is not broken as a whole, the scenario sel
 - **Stop.** When nothing fails; when the next call would exceed the spend limit (spend so far plus an
   estimate: the whole prompt uncached and as much output as the largest completed repair, at least
   8000 tokens; the retries of one failing stream and an unusually long reply can still overrun it);
-  at the repair call or transport failure limit; after three discarded repairs in a row; or after
+  at the repair call or transport failure limit; after four discarded repairs in a row; or after
   three hours of repairs. One scenario check starts no scenario after 30 minutes (those left are
   `Not run`).
 - **Record.** `smoke.rounds` holds every round: `fatal` and `failing` (what triggered it), `reason`,
@@ -155,6 +168,33 @@ The browser helper uses Playwright 1.57.0. It reuses a reachable Node package an
 or installs the pinned package and headless Chromium into runtime caches with bounded waits.
 `NODE_PATH` and `PLAYWRIGHT_BROWSERS_PATH` may supply existing installations. Generated apps still
 receive no gateway credentials. The root `main.py` / `volo/` remain frozen legacy components.
+
+## Source counterexamples (S70 candidate)
+
+`source_contracts.py` runs once after the first written browser suite's repairs, when that suite
+has passing scenarios. One model call proposes up to four business-rule counterexamples from public
+requirements and the current generated JavaScript. Exact current functions, object methods and
+constants are extracted with Acorn 8.15.0 and executed in a fresh synchronous JS context. A second
+model call reviews fixture validity and requirement semantics using the execution feedback.
+
+The definitions then stay fixed while repairs run against both browser tests and the source checks.
+Each check rebinds the current source, so cached old function bodies cannot produce a gain. A
+failed precondition, missing dependency or other fixture/runtime error is unjudged. A gain requires
+a failing assertion to become passing; error-to-pass source checks never count as gains. Only calls
+and assertions during the check phase count, independently from its precondition.
+
+These checks are diagnostics, not acceptance certification. They do not populate
+`verified_requirements`. The trace retains both review prompts and responses, actual usage, the
+first phase's summary and the source-review outcome. The VM is not a security boundary; execution
+receives the existing minimal child environment without model credentials. The pinned parser is
+reused from a runtime cache or installed through npm with a bounded wait, and is not an application
+dependency. No task-specific probe or generated application source is shipped in the agent ZIP.
+
+The isolated candidate enables `ONESHOT_SOURCE_CONTRACTS=1` and makes the earlier extra UI audit
+opt-in (`ONESHOT_TEST_AUDIT=0`). This is an experimental default until fresh generation and a complete
+official pair establish its effect. The controlled pilot found four reproducible defects per task;
+the unchanged independent browser judges held at 69/66 for GitHub and improved 89/93 to 90/96 for
+Sheet. These are local diagnostics, not official scores.
 
 ## Scenario self-check
 
@@ -256,3 +296,15 @@ No official run, real model generation, new Keep/Bookstack score, or quality imp
 is claimed. Next validation must use a fixed candidate, independent Lite generations,
 and the actual official worker/time-limit environment. Static delivery checks do not
 replace that measurement. The completed-call allowances are not a monetary budget.
+
+## October 2 coverage candidate (not yet promoted)
+
+The isolated candidate reviewed in roadmap 4.34 writes the draft before it starts paid test generation, then writes
+and audits one test file at a time. ONESHOT_TEST_AUDIT defaults to 1 in that candidate; 0 disables the extra audit.
+Each added check cites a verbatim atomic-requirement description. Unsupported claims are discarded individually,
+while all original test declarations remain intact. The audit is still a diagnostic oracle, not official acceptance.
+Playwright failure-page context is bounded and read only from the current test runner's output tree; it accompanies
+repair requests as observations. Current completed-call limits are 4 draft / 24 repair and the repair spend limit is
+CNY 10. Fallback handles the failing call only. Vision pricing was refreshed from the official October 1 catalogue.
+See the current handoff for candidate status and real generation evidence; packaging and deterministic tests alone
+do not establish quality or a score gain.

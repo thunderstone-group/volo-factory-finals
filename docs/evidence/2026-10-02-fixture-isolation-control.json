@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-02T09:11:13.623350+08:00",
+  "kind": "operator-controlled fixture-isolation proof, not official scoring",
+  "application": "owner-repair-github/application",
+  "application_changed": false,
+  "original_test_assertions_changed": false,
+  "only_change": "After all persistence assertions in the Request changes scenario, use the existing public Files changed / Review changes / Comment / Submit review flow to remove this reviewer's effective blocking decision before reusing the PR.",
+  "before": {
+    "pass": 102,
+    "error": 1,
+    "fail": 1
+  },
+  "after": {
+    "pass": 103,
+    "error": 1
+  },
+  "source_contracts_before": {
+    "pass": 4
+  },
+  "source_contracts_after": {
+    "pass": 4
+  },
+  "conclusion": "The apparent merge regression is caused by prior-test state. Public UI cleanup restores the original 99 passing UI scenarios while retaining four newly passing source checks. The independent judges stay 64/67, and initial seed completeness remains a separate issue.",
+  "artifacts": [
+    "fixture-cleanup-diagnostic-result.json",
+    "fixture-cleanup-diagnostic-v2-result.json",
+    "fixture-cleanup-diagnostic-v2.patch"
+  ],
+  "scope": "Only our generated self-check copy was amended; official requirements, official tests and fixed independent judges were unchanged."
+}

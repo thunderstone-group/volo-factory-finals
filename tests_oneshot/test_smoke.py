@@ -7,6 +7,7 @@ import io
 import json
 import os
 import shutil
+import socket
 import tempfile
 import unittest
 from pathlib import Path
@@ -191,6 +192,37 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("HTTP 404", messages[-1]["content"])
         self.assertIn("broken as a whole", messages[-1]["content"])
         self.assertEqual(messages[-2]["role"], "assistant")
+
+    def test_a_real_port_collision_is_retried_without_a_model_repair(self):
+        for item in adapter.parse_blocks(app(server()))[0]:
+            adapter.write_one(self.out, item)
+        with contextlib.closing(socket.socket(socket.AF_INET6)) as occupied:
+            occupied.bind(("::", 0))
+            occupied.listen()
+            busy = occupied.getsockname()[1]
+            free = adapter._free_port()
+            with patch.object(adapter, "_free_port", side_effect=[busy, free]) as ports:
+                problems, executed = adapter.smoke_check(self.out)
+            self.assertTrue(executed)
+            self.assertEqual(problems, [])
+            self.assertEqual(ports.call_count, 2)
+        self.transport.assert_not_called()
+
+    def test_port_collision_retries_are_bounded_and_other_startup_errors_are_not_retried(self):
+        for item in adapter.parse_blocks(app(server()))[0]:
+            adapter.write_one(self.out, item)
+        with contextlib.closing(socket.socket(socket.AF_INET6)) as occupied:
+            occupied.bind(("::", 0))
+            occupied.listen()
+            with patch.object(adapter, "_free_port", return_value=occupied.getsockname()[1]) as ports:
+                problems, _ = adapter.smoke_check(self.out)
+            self.assertEqual(ports.call_count, 3)
+            self.assertIn("EADDRINUSE", "\n".join(problems))
+        (self.out / "backend/server.js").write_text("throw new Error('actual startup defect');")
+        with patch.object(adapter, "_free_port", wraps=adapter._free_port) as ports:
+            problems, _ = adapter.smoke_check(self.out)
+        self.assertEqual(ports.call_count, 1)
+        self.assertIn("actual startup defect", "\n".join(problems))
 
     def test_wrong_content_type_and_bad_health_are_reported(self):
         self.replies(events(app(server(ctype="'application/octet-stream'"))))
@@ -427,7 +459,7 @@ class SmokeCase(unittest.TestCase):
         self.assertTrue(any("lib/arc.js" in p and "no longer loads" in p for p in gaps), budget.smoke)
         self.assertTrue(any("app.js no longer defines" in p for p in gaps), budget.smoke)
 
-    def test_quoted_vocabulary_gaps_ride_along_as_hints_of_a_scenario_repair(self):
+    def test_literal_presence_diagnostics_do_not_become_repair_goals(self):
         req = 'After login replace the link with \u201cSign Out\u201d. Show \u201cEmail cannot be empty\u201d. Seed \u201cBook 5.1\u201d.'
         self.draft_js("document.body.dataset.book = 'Book 5.1';",
                       "document.body.dataset.book = 'Book 5.1'; document.body.dataset.exit = 'Sign Out';")
@@ -438,8 +470,7 @@ class SmokeCase(unittest.TestCase):
         self.assertTrue(any("Sign Out" in p and "Email cannot be empty" in p for p in budget.smoke["problems"]), budget.smoke)
         ask = budget.attempts[1]["messages"][-1]["content"]
         self.assertIn("REQ-1", ask)
-        self.assertIn("Other findings of the same check", ask)
-        self.assertIn("Email cannot be empty", ask)
+        self.assertNotIn("Email cannot be empty", ask)
         self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
         self.assertIn("Sign Out", (self.out / "frontend/public/app.js").read_text())
 
@@ -507,7 +538,7 @@ class SmokeCase(unittest.TestCase):
             "html += '<label>Date <input></label><label>End date <input></label>';\n")
         req = 'input placeholders "From", "To", and "Date". Later a filter labeled "End date".'
         [problem] = adapter.aria_collision_gaps(stage, req)
-        self.assertIn('keep "From" exactly (quoted in the requirement) and rename "From Station"', problem)
+        self.assertIn('keep "From" exactly (specified in the requirement) and rename "From Station"', problem)
         self.assertNotIn('"Date" is contained in "End date"', problem)  # both quoted: not a rename problem
         [generic] = adapter.aria_collision_gaps(stage)
         self.assertIn('"Date" is contained in "End date"', generic)
@@ -531,6 +562,19 @@ class SmokeCase(unittest.TestCase):
             '<label>Tags<input></label><button aria-label="Book Tags">Tags</button>')
         self.assertTrue(adapter.aria_collision_gaps(stage))
         self.assertEqual(adapter.aria_collision_gaps(stage, 'A button named `Book Tags`.'), [])
+
+    def test_explicit_unquoted_accessible_names_are_not_renamed(self):
+        stage = self.root / 'plain-control-name'
+        public = stage / 'frontend/public'
+        public.mkdir(parents=True)
+        (public / 'app.js').write_text(
+            '<label>Details<textarea></textarea></label>'
+            '<button aria-label="Expand details">+</button>')
+        self.assertTrue(adapter.aria_collision_gaps(stage))
+        for requirement in ('A button accessibly named Expand details, opens the editor.',
+                            'The button is named Expand details. The field is labeled Details.'):
+            with self.subTest(requirement=requirement):
+                self.assertEqual(adapter.aria_collision_gaps(stage, requirement), [])
 
     def test_quoted_button_names_are_not_collision_problems_and_only_control_phrases_are_pinned(self):
         stage = self.root / "stage3"

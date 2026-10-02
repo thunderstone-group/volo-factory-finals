@@ -1,0 +1,215 @@
+{
+  "observed_at": "2026-10-02T02:33:00+08:00",
+  "submitted_package_sha256": "c2a2b32a5ed1ff709859cfe3989143cc44bc1343d8937d8ed20e110eb6f518b0",
+  "scope": "Two guard fixes prepared after the paired submission; these fixes are not in that submitted archive.",
+  "captured_sheet_trace_sha256": "ef1086da87e5df42e8ec2622a1f6dd6953bdc24dfe2f54d5b9968be5d3fa5299",
+  "audit_before": [
+    {
+      "file": "t01-REQ-1.spec.cjs",
+      "call": "tests-8",
+      "accepted": 6,
+      "rejected": []
+    },
+    {
+      "file": "t02-REQ-2.spec.cjs",
+      "call": "tests-9",
+      "accepted": 6,
+      "rejected": []
+    },
+    {
+      "file": "t03-REQ-3.spec.cjs",
+      "call": "tests-10",
+      "accepted": 5,
+      "rejected": [
+        {
+          "id": "REQ-3-1-3#audit-2",
+          "reason": "quote is not a verbatim requirement description excerpt"
+        }
+      ]
+    },
+    {
+      "file": "t04-REQ-4.spec.cjs",
+      "call": "tests-11",
+      "error": "every audit check needs an observable assertion"
+    },
+    {
+      "file": "t05-REQ-5.spec.cjs",
+      "call": "tests-12",
+      "error": "every grounded audit check needs an observable assertion"
+    }
+  ],
+  "audit_after_recovered_checks": 11,
+  "recovered_checks_replay": [
+    {
+      "app": "vision-sheet-1",
+      "selected_checks": 11,
+      "counts": {
+        "pass": 11
+      },
+      "seconds": 6.2
+    },
+    {
+      "app": "baseline-sheet-81",
+      "selected_checks": 11,
+      "counts": {
+        "pass": 10,
+        "fail": 1
+      },
+      "seconds": 11.6
+    }
+  ],
+  "static_control_context_probes": [
+    {
+      "text": "After returning to the application entry point, the saved range `D2:F9` and headers `Cost/Revenue` remain persisted.",
+      "expected": [],
+      "actual": [
+        "D2:F9",
+        "Cost/Revenue"
+      ],
+      "after": []
+    },
+    {
+      "text": "The page contains one button named `Save` and one link named `Cancel`.",
+      "expected": [
+        "Save",
+        "Cancel"
+      ],
+      "actual": [
+        "Save",
+        "Cancel"
+      ],
+      "after": [
+        "Save",
+        "Cancel"
+      ]
+    }
+  ],
+  "independent_judges": [
+    {
+      "app": "baseline-sheet-81",
+      "judge": "g99",
+      "counts": {
+        "pass": 90,
+        "fail": 10
+      },
+      "seconds": 72.5,
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      }
+    },
+    {
+      "app": "baseline-sheet-81",
+      "judge": "cov99n-arm",
+      "counts": {
+        "pass": 88,
+        "fail": 12
+      },
+      "seconds": 90.4,
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      }
+    },
+    {
+      "app": "vision-sheet-1",
+      "judge": "g99",
+      "counts": {
+        "pass": 94,
+        "fail": 6
+      },
+      "seconds": 55.6,
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      }
+    },
+    {
+      "app": "vision-sheet-1",
+      "judge": "cov99n-arm",
+      "counts": {
+        "pass": 94,
+        "fail": 6
+      },
+      "seconds": 72.7,
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      }
+    },
+    {
+      "app": "baseline-github-24",
+      "judge": "gh99",
+      "counts": {
+        "error": 26,
+        "pass": 61,
+        "fail": 16
+      },
+      "seconds": 218.1,
+      "coverage": {
+        "total": 100,
+        "parsed": 77
+      }
+    },
+    {
+      "app": "baseline-github-24",
+      "judge": "gh8",
+      "counts": {
+        "pass": 69,
+        "error": 15,
+        "fail": 19
+      },
+      "seconds": 164.4,
+      "coverage": {
+        "total": 100,
+        "parsed": 88
+      }
+    },
+    {
+      "app": "vision-github-1",
+      "judge": "gh99",
+      "counts": {
+        "error": 21,
+        "pass": 65,
+        "fail": 16
+      },
+      "seconds": 187.2,
+      "coverage": {
+        "total": 100,
+        "parsed": 81
+      }
+    },
+    {
+      "app": "vision-github-1",
+      "judge": "gh8",
+      "counts": {
+        "pass": 64,
+        "error": 15,
+        "fail": 23
+      },
+      "seconds": 154.1,
+      "coverage": {
+        "total": 100,
+        "parsed": 87
+      }
+    }
+  ],
+  "validation": {
+    "oneshot": {
+      "run": 248,
+      "passed": 245,
+      "skipped": 3
+    },
+    "legacy": {
+      "run": 226,
+      "passed": 214,
+      "skipped": 12
+    },
+    "diff_secret_scan": "no findings"
+  },
+  "limits": [
+    "The helper recognizer checks existing named function declarations and block-arrow helpers; it does not certify assertion semantics.",
+    "The GitHub local generation still skipped seven reviewer and permission scenarios.",
+    "No official uplift can be inferred from these local scores or the two guard fixes."
+  ]
+}

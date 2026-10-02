@@ -46,3 +46,13 @@
 - `handoffs/2026-09-22-2221.md`: v24 controlled BookStack 34/34 and the prepared official trial, before the official 9/34 result and the harness review.
 
 - `handoffs/2026-09-23-0955.md`: pre-opening handoff written with the review and roadmap v1, before consolidation and the first workstreams.
+
+- `handoffs/2026-10-01-before-extension-push.md` — Frozen handoff before the October 1 extension and behaviour-coverage experiment.
+
+- `handoffs/2026-10-02-before-paired-result.md` — In-flight coverage experiment before the complete 27/73 official result.
+
+- `handoffs/2026-10-02-0338.md` — Complete 27/73 result and priorities before the explicit S70 goal.
+
+- `handoffs/2026-10-02-0855.md` — S70 first official pair, completed source-binding controls and fixture-conflict findings before the controls candidate.
+
+- `handoffs/2026-10-02-1509.md` — S70两轮正式结果、旧需求实验、公告与快速自测/CLI迁移过程的历史交接。

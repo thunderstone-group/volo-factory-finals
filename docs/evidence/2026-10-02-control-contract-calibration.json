@@ -1,0 +1,85 @@
+{
+  "at": "2026-10-02T09:50:51.286824+08:00",
+  "official_package_unchanged": "c5832d52 / e963e1a3e56c",
+  "public_contracts": {
+    "REQ-2-3": "Creation picker Role has clickable options; existing grant rows have a native select labelled Role.",
+    "REQ-6-1": "test status has a clickable option named success.",
+    "REQ-6-2-2": "base and compare are explicitly native select controls."
+  },
+  "new_writer_evidence": {
+    "requirement_only_group_2": {
+      "tests": 15,
+      "cost_cny": 0.22526868,
+      "verified": "clickable Role creation plus scoped native Role replacement are both represented"
+    },
+    "requirement_only_group_6": {
+      "tests": 25,
+      "cost_cny": 0.25344524,
+      "before_execution": "17 passed; eight original scenarios could not complete, primarily due native controls lacking clickable options",
+      "after_execution": "25/25 pass after model UI repair"
+    }
+  },
+  "controlled_repair": {
+    "rounds": 2,
+    "cost_cny": 0.162586,
+    "own_ui_after": "99/100 with one pre-existing unjudged scenario",
+    "source_checks_after": "4/4 pass after identical before/after fixture-plumbing calibration; only a no-op HTML combobox renderer was added, no business predicate/assertion changed"
+  },
+  "original_judges": {
+    "before": [
+      64,
+      67
+    ],
+    "after": [
+      63,
+      66
+    ],
+    "losses": "Every newly failed original test uses selectOption against test status, contradicting its explicitly clickable-option declaration."
+  },
+  "versioned_calibrated_judges": {
+    "sole_change": "Replace the two test-status selection actions per judge by combobox click plus success option click. Assertions, values, fixtures and other actions unchanged; originals retained.",
+    "results": [
+      {
+        "application": "owner-repair-github",
+        "judge": "gh99",
+        "counts": {
+          "error": 20,
+          "pass": 62,
+          "fail": 20
+        },
+        "seconds": 186.6
+      },
+      {
+        "application": "owner-repair-github",
+        "judge": "gh8",
+        "counts": {
+          "pass": 66,
+          "error": 13,
+          "fail": 23
+        },
+        "seconds": 159.0
+      },
+      {
+        "application": "control-repair-github",
+        "judge": "gh99",
+        "counts": {
+          "error": 19,
+          "pass": 65,
+          "fail": 18
+        },
+        "seconds": 175.2
+      },
+      {
+        "application": "control-repair-github",
+        "judge": "gh8",
+        "counts": {
+          "pass": 67,
+          "error": 13,
+          "fail": 22
+        },
+        "seconds": 153.5
+      }
+    ]
+  },
+  "boundary": "Controlled same-application comparison only. No official score gain or exact full fresh candidate run is claimed."
+}

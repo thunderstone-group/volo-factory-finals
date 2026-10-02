@@ -30,6 +30,7 @@ last-reviewed: 2026-09-23。本文只维护 docs/ 的结构与规则，不复述
 
 ## reports/ 索引（新在上）
 
+- `2026-10-02-generalization-bottlenecks.md` — 两题共同业务矛盾、同产物验收落差、代码反例机制与 S70 的证据边界。
 - `2026-09-23-harness-review.md` — 当前候选 v24 的瓶颈评审：自检盲区、大题零证据与归零出口、修复验收、模型成本、开发口径；含完整参赛须知要点。
   - `2026-09-23-harness-review-appendix-0-method.md` — 评审方法、主会话核对、子评审分歧与更正、复现方式、Lite 榜换算。
   - `2026-09-23-harness-review-appendix-1-code-pipeline.md` … `-appendix-4-large-task-readiness.md` — 四份只读子评审原文：代码主链路、实验史、官方 run 与计分、大题就绪度。

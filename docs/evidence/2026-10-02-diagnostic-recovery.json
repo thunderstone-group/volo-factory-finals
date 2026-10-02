@@ -1,0 +1,73 @@
+{
+  "at": "2026-10-02T03:22:21.597023+00:00",
+  "source_commit": "987f93c",
+  "sha256": "4ec287a63ac4278f22a0bb90843bda745eb08c785aa5b162287cceeed8bb8dbe",
+  "model": "deepseek-v4-flash-vision-exp",
+  "scope": "Fresh full original task pair using practice credits; not an official run or main promotion.",
+  "evidence": {
+    "oneshot_tests_run": 271,
+    "passed": 268,
+    "optional_skipped": 3,
+    "subsequent_prompt_only_fix_tests_passed": 5,
+    "source_probes_before": "four original fixture errors",
+    "source_probes_recovered": "four actual assertion failures with identical definitions and app",
+    "controlled_repair": {
+      "calls": 1,
+      "cost_cny": 0.183563,
+      "source_fail_to_pass": 4,
+      "original_ui_passes_kept": 91,
+      "independent_original_before": [
+        72,
+        65
+      ],
+      "independent_original_after": [
+        70,
+        65
+      ],
+      "independent_calibrated_before": [
+        74,
+        67
+      ],
+      "independent_calibrated_after": [
+        72,
+        67
+      ]
+    },
+    "matcher_recovery": {
+      "changed": [
+        "t02-REQ-2.spec.cjs"
+      ],
+      "before": {
+        "pass": 91,
+        "error": 9
+      },
+      "after": {
+        "pass": 93,
+        "error": 7
+      },
+      "seconds": 80.1,
+      "estimated_cost_cny": 0.03365668,
+      "scope": "Same frozen app, public requirements and actual invalid-API feedback only; no independent judges in prompt."
+    },
+    "secret_findings": 0
+  },
+  "decision": "Test general checker fixes and their cost impact in a full fresh trajectory. The controlled source repair did not improve aggregate independent passes; retain both regressions and do not call the candidate a quality improvement. Do not automatically submit based on local outcome; first recover the active official R2 pair.",
+  "source_replay_evidence": {
+    "original_probes": "controls-v3-source-proposals-unchanged.json",
+    "rebound_results": "controls-v3-source-owner-recovery.json",
+    "application_patch": "diagnostic-recovery-application.patch",
+    "repair_trace": "diagnostic-recovery-repair-github/trace.jsonl",
+    "assertion_repair_trace": "matcher-recovery-inline-pilot/trace.json"
+  },
+  "independent_regressions": {
+    "gh99": [
+      "REQ-6-2-4",
+      "REQ-6-5#2"
+    ],
+    "observations": [
+      "Draft creation now rejects a branch pair already covered by a Draft/Open PR. The independent helper reuses that pair.",
+      "After effective review decisions start being honored, a later independent test expects missing-approval text on a reused PR without restoring its decisions."
+    ],
+    "boundary": "These are public-contract/setup hypotheses, not a claim that both regressions are disproved. No independent test was modified for this recovery experiment."
+  }
+}
