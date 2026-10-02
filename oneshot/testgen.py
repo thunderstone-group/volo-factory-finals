@@ -74,6 +74,10 @@ How the tests run:
   `page.getByLabel(label, {{ exact: true }})` for fields, `page.getByText(text, {{ exact: true }})` for visible text.
   Never CSS selectors, XPath, test ids, element ids, class names or guessed URLs. When the requirements put a control
   inside a named dialog, menu, region, row or grid, scope the locator to it first.
+- Follow the specified selection interaction. For explicitly clickable options, click the combobox and then the
+  named option; do not use selectOption to bypass the required clickable-option path. Use selectOption for a control
+  explicitly described as a native select. Two controls with the same label may have different contracts in different
+  containers; respect each declaration rather than applying one interaction to every matching label.
 - Tests are independent: each builds its own state and never relies on another test having run.
 - Every file runs in order against ONE application that is never reset between tests. Never change a seeded
   record's credentials, never delete or rename a seeded record: when a scenario does that (change a password, delete
