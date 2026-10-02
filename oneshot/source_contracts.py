@@ -176,14 +176,39 @@ def execute(app, probes, requirements):
             raise ValueError("Source parser failed: " + indexed.stderr[-600:])
         index = json.loads(indexed.stdout)
 
+        def materialize(binding, alias):
+            return dict(binding, alias=alias,
+                        source_sha256=hashlib.sha256(sources[binding["file"]].encode()).hexdigest())
+
         def bind(f):
             matches = [b for b in index if b["file"] == f["file"]
-                       and f["name"] in (b["name"], b.get("leaf_name"))
-                       and (b["kind"] == f["kind"] or b.get("member") and b["callable"]
+                       and f["name"] in (b["name"], b.get("leaf_name"), b.get("qualified_name"))
+                       and (b["kind"] == f["kind"] or (b.get("member") or b.get("owner")) and b["callable"]
                             and f["kind"] in ("function", "method"))]
             if len(matches) != 1:
                 raise ValueError("Expected one exact source binding: " + f["name"] + ", found " + str(len(matches)))
-            return dict(matches[0], alias=f["alias"], source_sha256=hashlib.sha256(sources[f["file"]].encode()).hexdigest())
+            return materialize(matches[0], f["alias"])
+
+        def object_owners(functions):
+            roots = {(f["file"], f["scope"], f["owner"][0]) for f in functions if f.get("owner")}
+            for file, scope, root in sorted(roots):
+                existing = next((f for f in functions if f["alias"] == root), None)
+                if existing is not None:
+                    if existing["callable"]:
+                        raise ValueError("Object owner collides with a function alias: " + root)
+                    if existing.get("member") in (["window", root], ["globalThis", root]):
+                        existing.pop("member")
+                    continue
+                values = [b for b in index if b["file"] == file and b["scope"] == scope and b["kind"] == "value"]
+                declared = [b for b in values if b["name"] == root and not b.get("member")]
+                candidates = declared or [b for b in values if b.get("member") in
+                                           (["window", root], ["globalThis", root])]
+                if len(candidates) != 1:
+                    raise ValueError("Expected one actual object-owner initializer: " + root)
+                value = materialize(candidates[0], root)
+                value.pop("member", None)  # window.X is the same global binding as X in this context.
+                functions.append(value)
+            return functions
 
         def namespace_members(functions):
             # Reconstruct a selected namespace from its actual declaration and assignments, not fixture mocks.
@@ -203,20 +228,20 @@ def execute(app, probes, requirements):
                                     and f["name"] == root and f["kind"] == "value"]
                     if len(declarations) != 1:
                         raise ValueError("Expected one actual namespace initializer: " + root)
-                    functions.append(bind(dict(declarations[0], alias=root)))
+                    functions.append(materialize(declarations[0], root))
                 members = [f for f in index if f["file"] == file and f["scope"] == scope
                            and f.get("member", [None])[0] == root]
                 for member in members:
                     if any(f["file"] == file and f["name"] == member["name"] for f in functions):
                         continue
-                    functions.append(bind(dict(member, alias="__source_member_" + str(len(functions)))))
+                    functions.append(materialize(member, "__source_member_" + str(len(functions))))
             return functions
 
         for p in probes:
             if any(r["id"] == p["id"] for r in rejected):
                 continue
             try:
-                functions = namespace_members([bind(f) for f in p["functions"]])
+                functions = object_owners(namespace_members([bind(f) for f in p["functions"]]))
                 if not next(f for f in functions if f["alias"] == p["subject"])["callable"]:
                     raise ValueError("The principal subject is not a function")
                 initializers = [{"file": name, "code": _source(app, name)} for name in p.get("initializers", [])]
@@ -246,6 +271,7 @@ def execute(app, probes, requirements):
                     alias = name if "." not in name else "__source_member_" + str(len(p["functions"]))
                     p["functions"].append(bind(dict(f, alias=alias)))
                     namespace_members(p["functions"])
+                    object_owners(p["functions"])
                     p.setdefault("linked_dependencies", []).append(name)
                     added = True
             if not added:

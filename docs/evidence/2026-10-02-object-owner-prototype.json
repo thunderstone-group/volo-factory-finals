@@ -1,0 +1,128 @@
+{
+  "at": "2026-10-02T08:26:33.775323+08:00",
+  "branch": "exp/source-owners-20261002",
+  "not_in_official_package": true,
+  "focused_tests_passed": 17,
+  "fresh_application_results": [
+    {
+      "id": "REQ-6-1#contract-1",
+      "status": "fail",
+      "message": "a valid Request changes review on the current compare commit blocks merging, so no actionable Merge pull request control may be rendered"
+    },
+    {
+      "id": "REQ-6-5#contract-1",
+      "status": "fail",
+      "message": "with Require status check test enabled and test not success for the current compare commit, the merge control must be non-actionable"
+    },
+    {
+      "id": "REQ-5-3-1#contract-1",
+      "status": "error",
+      "message": "Expected one exact source binding: APP.assigneePicker, found 0"
+    },
+    {
+      "id": "REQ-6-3-3#contract-1",
+      "status": "error",
+      "message": "Expected one exact source binding: APP.screen, found 2"
+    }
+  ],
+  "original_eight_before_after_controls": {
+    "github": {
+      "before": [
+        {
+          "id": "REQ-6-1#contract-1",
+          "status": "fail",
+          "message": "Expected values to be strictly equal:\n\ntrue !== false\n"
+        },
+        {
+          "id": "REQ-6-3-4#contract-1",
+          "status": "fail",
+          "message": "Expected values to be strictly equal:\n\ntrue !== false\n"
+        },
+        {
+          "id": "REQ-3-2-1#contract-1",
+          "status": "fail",
+          "message": "The expression evaluated to a falsy value:\n\n  Reflect.apply(value, target, args)\n"
+        },
+        {
+          "id": "REQ-5-2-2#contract-1",
+          "status": "fail",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+      ],
+      "after": [
+        {
+          "id": "REQ-6-1#contract-1",
+          "status": "pass",
+          "message": ""
+        },
+        {
+          "id": "REQ-6-3-4#contract-1",
+          "status": "pass",
+          "message": ""
+        },
+        {
+          "id": "REQ-3-2-1#contract-1",
+          "status": "pass",
+          "message": ""
+        },
+        {
+          "id": "REQ-5-2-2#contract-1",
+          "status": "pass",
+          "message": ""
+        }
+      ]
+    },
+    "sheet": {
+      "before": [
+        {
+          "id": "REQ-2-2-2#contract-1",
+          "status": "fail",
+          "message": "Expected values to be strictly equal:\n\n'' !== 'z'\n"
+        },
+        {
+          "id": "REQ-2-2-1#contract-2",
+          "status": "fail",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Pivot field is no longer available. Select a new field.'\n- undefined\n"
+        },
+        {
+          "id": "REQ-4-1-2#contract-3",
+          "status": "fail",
+          "message": "Expected values to be strictly equal:\n\n'=A21' !== '=#REF!'\n"
+        },
+        {
+          "id": "REQ-4-2-2#contract-4",
+          "status": "fail",
+          "message": "Expected values to be strictly equal:\n\n'null' !== '#REF!'\n"
+        }
+      ],
+      "after": [
+        {
+          "id": "REQ-2-2-2#contract-1",
+          "status": "pass",
+          "message": ""
+        },
+        {
+          "id": "REQ-2-2-1#contract-2",
+          "status": "pass",
+          "message": ""
+        },
+        {
+          "id": "REQ-4-1-2#contract-3",
+          "status": "pass",
+          "message": ""
+        },
+        {
+          "id": "REQ-4-2-2#contract-4",
+          "status": "pass",
+          "message": ""
+        }
+      ]
+    }
+  },
+  "confirmed_implementation_evidence": "pullSidebar computes current Request changes and check status but its ok predicate only uses status and approval count. The rendered active merge button therefore violates the two public restrictions in the tested fixtures.",
+  "remaining_limits": [
+    "APP.assigneePicker is an alias supplied by the actual ARC.shareHelpers scaffold at runtime; the static binder has not modeled that bridge.",
+    "APP.screen has an object-literal definition and a later reassignment. It remains ambiguous rather than guessing the effective function."
+  ],
+  "promotion": "Do not merge or submit this prototype yet. The official c5832d52 package remains immutable and running."
+}

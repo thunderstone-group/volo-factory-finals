@@ -1655,3 +1655,10 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - v1 completed locally: GitHub independent 67/71, estimated CNY 2.283998; Sheet 91/90, CNY 2.567570. Sheet's source phase aborted because a legal empty setup was rejected. The untouched real response now executes four failing public-rule counterexamples with the corrected checker. Fourteen focused checks and two package-name checks pass; exact ZIP secret scan has zero findings.
 - v2 Sheet completed with independent 90/95 unchanged after three source fixes; its original 100 UI scenarios remain passing. v2 GitHub is still repairing a real initial missing-method error and subsequent UI failures.
 - This formal run is a bounded experiment within the authorized funds, not mainline promotion or a claim that every original local gate passed. The exact v2c ZIP has targeted/replay evidence but no separately completed fresh local trajectory. Rationale and boundaries are recorded in `docs/evidence/2026-10-02-s70-official-experiment-r1.json`. Continue until official terminal results and the corresponding overall S are known.
+
+## 2026-10-02 08:25 — Isolated object-owner binding prototype
+
+- Branch `exp/source-owners-20261002` preserves the S70 branch ancestry. The official c5832d52 package is unchanged.
+- Added AST-confirmed qualified names for object-literal methods, actual owner construction, original receiver/helper preservation and exact method-source checks. Seventeen focused checks pass; the original eight before/after source controls retain their outcomes.
+- On the fresh v2 GitHub application, two previously unjudged probes now execute and fail. Source inspection confirms the merge predicate ignores both a current Request changes decision and required check status. Two probes remain unjudged: the actual scaffold's dynamic helper bridge is not represented, and an overridden screen method is ambiguous. These limitations are explicit; no promotion or new formal upload was made from this branch.
+- Evidence: `docs/evidence/2026-10-02-object-owner-prototype.json`; complete local traces remain in the external S70 evidence directory.
