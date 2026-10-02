@@ -1,0 +1,83 @@
+{
+  "at": "2026-10-02T10:22:25.949549+08:00",
+  "submission": "e963e1a3e56c",
+  "package_sha256": "c5832d5275a76144c3f5e60ad3482d2d442ae1bf468accd1557c91107ca68820",
+  "model": "deepseek-v4-flash-vision-exp",
+  "github": {
+    "run_id": "07c92a18ffb4",
+    "status": "FAILED",
+    "passed": 21,
+    "failed": 79,
+    "tokens": 6844911,
+    "duration_seconds": 8585,
+    "cost": {
+      "amount": 4.313931,
+      "currency": "CNY"
+    },
+    "feature_implemented_count": 6,
+    "feature_total_count": 47,
+    "finished_at": "2026-10-02T02:08:53.687190"
+  },
+  "sheet": {
+    "run_id": "cee35cb1fb7f",
+    "status": "FAILED",
+    "passed": 83,
+    "failed": 17,
+    "tokens": 1777767,
+    "duration_seconds": 3196,
+    "cost": {
+      "amount": 2.477041,
+      "currency": "CNY"
+    },
+    "feature_implemented_count": 12,
+    "feature_total_count": 24,
+    "finished_at": "2026-10-02T00:29:53.968660"
+  },
+  "leaderboard": {
+    "rank": 6,
+    "username": "VOLO-AI",
+    "model_name": "deepseek-v4-flash-vision-exp",
+    "track": "hackathon",
+    "avg_pass_rate": 52.0,
+    "avg_feature_implementation_rate": 0.0,
+    "total_token_millions": 8.622678,
+    "total_token_cost": 6.790972,
+    "token_cost_currency": "CNY",
+    "cost_efficiency": null,
+    "efficiency_threshold": 80.0,
+    "efficiency_eligible": false,
+    "seniority_label": "junior",
+    "avg_runtime_seconds": 5890,
+    "submission_count": 1,
+    "task_id": null,
+    "task_title": null,
+    "is_complete": true,
+    "score": 62.33320859322366,
+    "score_available": true,
+    "pass_rate": 52.0,
+    "passed_count": 104,
+    "test_total": 200,
+    "total_cost": 6.790972,
+    "expected_cost": 41.6,
+    "cost_ratio": 0.16324451923076921,
+    "score_regime": "reward",
+    "submitted_at": "2026-10-01T23:31:20.460288",
+    "is_low_cost": false,
+    "scoring_route": "original",
+    "source_run_ids": [
+      "07c92a18ffb4",
+      "cee35cb1fb7f"
+    ]
+  },
+  "previous_best": {
+    "score": 59.751714998087095,
+    "passed": 105,
+    "total": 200,
+    "cost_cny": 11.516979
+  },
+  "target_s": 70,
+  "achieved": false,
+  "interpretation": "Overall S increased to 62.33320859322366 through lower cost despite one fewer passed scenario than the prior best. GitHub fell from the previous experiment 27 to 21; this does not establish a cross-task quality improvement. Goal remains active.",
+  "formal_balance_after": 220.786673,
+  "next_candidate": "8ef69d0c controls/fixture correctness candidate undergoing a complete fresh local pair"
+}

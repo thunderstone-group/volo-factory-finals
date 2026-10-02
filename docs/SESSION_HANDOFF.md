@@ -1,12 +1,17 @@
-# 当前交接 — 2026-10-02 09:57：目标 S70 仍 active，正式 Sheet83，G 未结束；v3 全新双题在跑
+# 当前交接 — 2026-10-02 10:20：正式 S62.3332，目标未达；v3 全新双题在跑
 
 **继续到同一次完整正式双题 S ≥ 70，不要只回状态后放弃。** 用户明确「定一个目标：把 s 提升到 70」「我去睡觉了，你这边持续优化吧」。goal 工具 active、无 token budget，现有 practice/formal 余额已授权，小额调用不重问，不购买或充值。没有子 agent 授权，本轮未派发。不要用本地、自测、单题结果或拼接成绩完成目标。
 
 ## 当前最优先：正式双题
 
+**最新终态已经确认，优先于下面旧的进行中快照：G 21/100 + S 83/100，104/200，费用6.790972，总榜 S62.33320859322366，rank6。** 总榜 is_complete=true、source_run_ids 精确为07c92a18ffb4/cee35cb1fb7f，submitted_at匹配e963。目标70未达，不complete。证据 `docs/evidence/2026-10-02-s70-official-result-r1.json` 和 E2 `leaderboard-after-r1.json`。G终态10:08，6/47features、6,844,911tokens、8585秒、CNY4.313931，failed_tests为空。正式余额220.786673。
+
+总体S比历史59.7517提升，但通过数比历史最佳105少1，且G低于前一实验27；提升来自费用下降，不能称质量/泛化已提高。保持实验分支，继续验证v3再决定下一轮完整正式提交。官方只读watcher应已到终态；不要再次启动此pair。G原始裁判65/64；自己UI84pass+12fail+4unjudged，经source4修复后88pass+12fail+4unjudged，repair调用24用尽。Issue组12fail集中于Open/Closed/New issue入口，下一轮可用真实应用/公开测试诊断，但尚无隐藏逐条信息。
+
 - submission **e963e1a3e56c**，Vision，official_evaluation，精确包 **c5832d5275a76144c3f5e60ad3482d2d442ae1bf468accd1557c91107ca68820**。上传后下载 hash 已验证一致。
 - **Sheet cee35cb1fb7f 已完成：83/100，12/24 features，1,777,767 tokens，CNY 2.477041，3196 秒，08:29 终态。** FAILED 表示部分测试未过，是有效质量结果，failed_tests 为空。
 - **GitHub 07c92a18ffb4 09:54 直接 CLI 查询仍在 start_agent。** 最后已读日志：20 轮浏览器修复、6 次接受，自测 84 pass / 12 fail / 4 unjudged；01:38 UTC 结束这一阶段，repair CNY 2.3197。12 个 fail 集中于 REQ-5 issue 列表/详情/编辑/关闭；4 个未判定为 REQ-4-3-3#2、REQ-5-3-1/2/3。随后应进入源代码诊断阶段；完整正式分数未出，不能报 G=0 或已有总榜 S。
+- 上一条为运行中的历史快照；现在两题均终态，按本节开头的实分处理。G应用已下载至 E2 `official-github-r1/application`，ZIP SHA **f39584a35dc36cb13562bec1559897cef4b291715d37d8df0d6bf6492c6f7a2d**，需求hash一致。自测摘要 `official-github-agent-smoke.json`，原始日志 `official-github-end-log.json`。
 - 只读 watcher：E2 `watch_official_r1.py`，exec session **70750**，每 30 秒用现有 OfficialClient 读取，终态用该客户端 `TERMINAL_STATES`。当前状态 `official-r1-latest.json`，终态 `official-r1-finished.json`，变化 `official-r1-watch.jsonl`。只看文件不够，继续时须用 CLI 直接核实远端 job 存活。
 - CLI 唯一入口 `arcbench --env-file ~/.config/arcbench/volo.env`；不打印 env 真值。`status RUN --json` 是 JSONL，运行中/失败退出 1 不等于读取失败；`logs RUN --tail N --json`、`download RUN --output ZIP --json`。别取消/重启正在运行的正式任务。原始 upload/start/decision 在 E2 `official-*-r1.json` / `official-experiment-decision.json`。
 - 终态后读同提交两题费用、通过数和总榜。历史最佳仍是 G24+S81、105/200、CNY 11.516979、S59.751714998087095。若本次不到70，继续使用已有额度迭代。
@@ -61,6 +66,7 @@
 - 用户主办方公告截止 **10-03 23:59**；不要沿用平台通用元数据日期。
 - 目标起点 practice439.583993、formal227.577645。09:50 实读 practice **425.235319**，pending billing0，v3当时未开始；已花约14.35。首批内部 practice60/formal40，余额不足才问，不充值。
 - 官方计分 reward：S=p*(0.8*p/b)^0.1，p=同提交双题平均通过百分数，b=双题实际费用；以官方总榜为验收，不能用估算完成目标。
+- S70本轮第一份正式已消耗6.790972元；内部formal40元初批还余约33.21元，并非账户总余额。v3仍使用practice；余额足够，不需要再次问小额许可。
 - 最新已知官方前一轮是1b6b453f30dc G27+S73、7.045668元；新e963只确认S83，G和总S待定。
 - 下一步：①直接读G状态与日志、等完整终态及总榜；②跟新v3完整生成和同口径裁判；③若当前正式未达70，凭新机制证据选择下一次完整正式提交。不要重复起已经存在的输出目录，也不要取消仍在进展的远端运行。
 - 已有 caffeinate PID72440属于别人的持续工作，不要杀。所有本次已结束的过程只留证据；现在活跃的是远端G、官方watcher、新v3两个生成及其watcher。

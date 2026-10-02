@@ -1655,3 +1655,10 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - v1 completed locally: GitHub independent 67/71, estimated CNY 2.283998; Sheet 91/90, CNY 2.567570. Sheet's source phase aborted because a legal empty setup was rejected. The untouched real response now executes four failing public-rule counterexamples with the corrected checker. Fourteen focused checks and two package-name checks pass; exact ZIP secret scan has zero findings.
 - v2 Sheet completed with independent 90/95 unchanged after three source fixes; its original 100 UI scenarios remain passing. v2 GitHub is still repairing a real initial missing-method error and subsequent UI failures.
 - This formal run is a bounded experiment within the authorized funds, not mainline promotion or a claim that every original local gate passed. The exact v2c ZIP has targeted/replay evidence but no separately completed fresh local trajectory. Rationale and boundaries are recorded in `docs/evidence/2026-10-02-s70-official-experiment-r1.json`. Continue until official terminal results and the corresponding overall S are known.
+
+## 2026-10-02 10:20 — Complete official pair reaches S62.3332, target remains 70
+
+- Official submission e963e1a3e56c, package c5832d52: GitHub 07c92a18ffb4 = 21/100, CNY4.313931; Sheet cee35cb1fb7f = 83/100, CNY2.477041. Total104/200, CNY6.790972. Both failed_tests arrays are empty.
+- The complete overall board explicitly names those two source_run_ids and reports **S62.33320859322366**, rank6. Previous best was S59.751714998087095 at105/200 andCNY11.516979. The score gain is cost-driven; GitHub quality remains below the preceding 27-point experiment. Do not claim generalization improvement or mark the goal complete.
+- Formal funds remaining220.786673. The generic controls candidate8ef69d0c is undergoing fresh paired local generation. Continue toward S>=70 using complete official outcomes.
+- Authoritative record: `docs/evidence/2026-10-02-s70-official-result-r1.json`.
