@@ -69,8 +69,17 @@ Validity rules:
 
 VERIFY = '''Independently check the proposed probes against the requirements and actual source, using these execution
 results. Correct invalid fixtures and unsupported internal-representation assumptions; preserve the public behavior
-being asserted. Drop claims you cannot justify. Return the complete corrected array in the same schema. Do not
+being asserted. Preconditions must remain valid after a compliant repair. In particular, a startup-coverage probe
+must allow missing required records to be added: do not pin an incidental current record count or assert the very
+missing startup condition as a precondition. Keep legitimate fixture controls and requirement assertions intact.
+Drop claims you cannot justify. Return the complete corrected array in the same schema. Do not
 alter the application. Explain meaningful corrections in each explanation. Results:\n'''
+
+SYSTEM += '''\nObject-literal methods can be selected by their full declaration path, such as
+Rules.actions.adjust. Their actual owner and helper methods are reconstructed from source. A standalone alias call
+uses that actual owner as its default receiver. Binding errors list actual declared paths; use them rather than
+guessing another entrypoint or weakening an assertion. Supply external plumbing, including escaping, only where
+the actual function needs it. Do not replace or mock business decisions. Return corrected probes, not app changes.'''
 
 
 def _source(app, name):
@@ -176,14 +185,44 @@ def execute(app, probes, requirements):
             raise ValueError("Source parser failed: " + indexed.stderr[-600:])
         index = json.loads(indexed.stdout)
 
+        def materialize(binding, alias):
+            return dict(binding, alias=alias,
+                        source_sha256=hashlib.sha256(sources[binding["file"]].encode()).hexdigest())
+
         def bind(f):
             matches = [b for b in index if b["file"] == f["file"]
-                       and f["name"] in (b["name"], b.get("leaf_name"))
-                       and (b["kind"] == f["kind"] or b.get("member") and b["callable"]
+                       and f["name"] in (b["name"], b.get("leaf_name"), b.get("qualified_name"))
+                       and (b["kind"] == f["kind"] or (b.get("member") or b.get("owner")) and b["callable"]
                             and f["kind"] in ("function", "method"))]
             if len(matches) != 1:
-                raise ValueError("Expected one exact source binding: " + f["name"] + ", found " + str(len(matches)))
-            return dict(matches[0], alias=f["alias"], source_sha256=hashlib.sha256(sources[f["file"]].encode()).hexdigest())
+                leaf = f["name"].split(".")[-1]
+                candidates = [b for b in index if b["file"] == f["file"] and b["callable"]
+                              and leaf in (b["name"], b.get("leaf_name"), b.get("property"))]
+                hints = sorted({b.get("qualified_name") or b["name"] for b in candidates})[:6]
+                raise ValueError("Expected one exact source binding: " + f["name"] + ", found " + str(len(matches))
+                                 + ("; declared callable paths with this member name: " + ", ".join(hints) if hints else ""))
+            return materialize(matches[0], f["alias"])
+
+        def object_owners(functions):
+            roots = {(f["file"], f["scope"], f["owner"][0]) for f in functions if f.get("owner")}
+            for file, scope, root in sorted(roots):
+                existing = next((f for f in functions if f["alias"] == root), None)
+                if existing is not None:
+                    if existing["callable"]:
+                        raise ValueError("Object owner collides with a function alias: " + root)
+                    if existing.get("member") in (["window", root], ["globalThis", root]):
+                        existing.pop("member")
+                    continue
+                values = [b for b in index if b["file"] == file and b["scope"] == scope and b["kind"] == "value"]
+                declared = [b for b in values if b["name"] == root and not b.get("member")]
+                candidates = declared or [b for b in values if b.get("member") in
+                                           (["window", root], ["globalThis", root])]
+                if len(candidates) != 1:
+                    raise ValueError("Expected one actual object-owner initializer: " + root)
+                value = materialize(candidates[0], root)
+                value.pop("member", None)  # window.X is the same global binding as X in this context.
+                functions.append(value)
+            return functions
 
         def namespace_members(functions):
             # Reconstruct a selected namespace from its actual declaration and assignments, not fixture mocks.
@@ -191,32 +230,33 @@ def execute(app, probes, requirements):
             # ReferenceError when absent. Ambiguous/reassigned definitions remain unjudged.
             roots = {(f["file"], f["scope"], f["member"][0]) for f in functions if f.get("member")}
             for f in functions:
+                name = f["alias"] if f["name"] in ("window." + f["alias"], "globalThis." + f["alias"]) else f["name"]
                 if f["kind"] == "value" and not f.get("member") and any(
                         m["file"] == f["file"] and m["scope"] == f["scope"]
-                        and m.get("member", [None])[0] == f["name"] for m in index):
-                    if f["alias"] != f["name"]:
-                        raise ValueError("Use the actual namespace name as its alias: " + f["name"])
-                    roots.add((f["file"], f["scope"], f["name"]))
+                        and m.get("member", [None])[0] == name for m in index):
+                    if f["alias"] != name:
+                        raise ValueError("Use the actual namespace name as its alias: " + name)
+                    roots.add((f["file"], f["scope"], name))
             for file, scope, root in sorted(roots):
                 if root not in ("window", "globalThis") and root not in [f["alias"] for f in functions]:
                     declarations = [f for f in index if f["file"] == file and f["scope"] == scope
                                     and f["name"] == root and f["kind"] == "value"]
                     if len(declarations) != 1:
                         raise ValueError("Expected one actual namespace initializer: " + root)
-                    functions.append(bind(dict(declarations[0], alias=root)))
+                    functions.append(materialize(declarations[0], root))
                 members = [f for f in index if f["file"] == file and f["scope"] == scope
                            and f.get("member", [None])[0] == root]
                 for member in members:
                     if any(f["file"] == file and f["name"] == member["name"] for f in functions):
                         continue
-                    functions.append(bind(dict(member, alias="__source_member_" + str(len(functions)))))
+                    functions.append(materialize(member, "__source_member_" + str(len(functions))))
             return functions
 
         for p in probes:
             if any(r["id"] == p["id"] for r in rejected):
                 continue
             try:
-                functions = namespace_members([bind(f) for f in p["functions"]])
+                functions = namespace_members(object_owners(namespace_members([bind(f) for f in p["functions"]])))
                 if not next(f for f in functions if f["alias"] == p["subject"])["callable"]:
                     raise ValueError("The principal subject is not a function")
                 initializers = [{"file": name, "code": _source(app, name)} for name in p.get("initializers", [])]
@@ -245,6 +285,8 @@ def execute(app, probes, requirements):
                     f = matches[0]
                     alias = name if "." not in name else "__source_member_" + str(len(p["functions"]))
                     p["functions"].append(bind(dict(f, alias=alias)))
+                    namespace_members(p["functions"])
+                    object_owners(p["functions"])
                     namespace_members(p["functions"])
                     p.setdefault("linked_dependencies", []).append(name)
                     added = True

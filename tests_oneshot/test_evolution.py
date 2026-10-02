@@ -4,7 +4,7 @@ import io
 import json
 import os
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import test_oneshot as fixtures
 from test_oneshot import SYNTHETIC_KEY, application, block, events
@@ -49,6 +49,26 @@ class EvolutionTests(unittest.TestCase):
         self.upgrade(out=target)
         self.assertEqual(adapter.read_template(self.out), before)
         self.assertIn('Updated', (target / 'frontend/public/index.html').read_text())
+
+    def test_upgrade_runs_requirement_written_checks_and_source_review(self):
+        self.seed()
+        self.replies(events(block('frontend/public/index.html', '<h1>Updated</h1>')))
+        suite = self.root / 'upgrade-tests'
+        suite.mkdir()
+        job = {'dir': suite, 'thread': Mock(is_alive=Mock(return_value=False))}
+        with patch.object(adapter, 'SMOKE', True), patch.object(adapter, 'TESTGEN', True), \
+                patch.object(adapter, 'SOURCE_CONTRACTS', True), patch.object(adapter, 'SECOND_SUITE', False), \
+                patch.object(adapter, 'start_suite', return_value=job) as start, \
+                patch.object(adapter, 'finish_suite', return_value=suite), \
+                patch.object(adapter, 'repair_delivery') as repair, \
+                patch.object(adapter, 'source_review') as review:
+            self.upgrade()
+        start.assert_called_once()
+        self.assertEqual(start.call_args.args[0], 'Extend the synthetic app')
+        self.assertEqual(repair.call_args.kwargs['tests'], suite)
+        review.assert_called_once()
+        self.assertEqual(review.call_args.args[-1], suite)
+        self.assertFalse(suite.exists())
 
     def upgrade_reporting(self):
         """Run an upgrade that ends in an error but still delivers; returns what it printed to stderr."""

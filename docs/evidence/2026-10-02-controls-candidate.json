@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-02T09:59:48.158071+08:00",
+  "source_commit": "e53024c",
+  "package_sha256": "8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a",
+  "tests": {
+    "run": 267,
+    "passed": 264,
+    "optional_skips": 3
+  },
+  "secret_scan_findings": 0,
+  "practice_balance_before_fresh_pair": 425.235319,
+  "fresh_validation": "Both tasks running from the exact extracted ZIP, Vision, practice credit. generate-controls-v3-{github,sheet}; no official v3 upload.",
+  "acceptance_boundary": "Old independent judges contain known native-select assumptions. Retain their scores, also run the versioned click-contract judges. No local score is an official result.",
+  "current_official": "e963e1a3e56c remains running as its original c5832d52 package; Sheet83, GitHub unfinished."
+}

@@ -2,8 +2,20 @@
 The current requirements are authoritative. Their exact roles, names (including backticks), scope,
 initial seed states and attributes override historical conventions and scaffold examples below.
 Do not change explicit semantics merely to satisfy a guessed locator fallback.
+Interpret quoted text by its role: required labels/messages belong in their specified UI,
+pre-provisioned records belong in startup data, and user-entered examples are handled at runtime.
+Do not add unused example datasets, filler UI text or duplicate value displays merely to place words
+in the source. Explicitly absent records must stay absent until the documented creation action.
 Use semantic HTML and accessible names. The requirements can also specify HTML elements and
 attributes such as mark, title, aria-pressed and aria-expanded; implement those literally.
+## 0. The stated starting screen is part of the workflow
+A scenario's first action must be possible from its GIVEN screen and authentication state.
+If it starts at the home page and opens a visible capability or saved record, provide a real,
+permission-aware overview/navigation entry there. Do not assume the user first selects a parent
+container or signs in unless the scenario establishes that context. Use runtime records and their
+canonical URLs, preserving anonymous/read-only access rules; never auto-login or hardcode record titles.
+Records with the same display title remain distinct. Preserve their identities and context rather than
+suppressing one record merely to make a text label globally unique.
 ## 1. The locator ladder (fixed and public)
 - Click: role `button`, then `link`, `tab`, `menuitem`, `option`, then `getByText` — FIRST VISIBLE WINS.
 - Assert visible: `getByText`, then roles `heading, button, link, tab, cell, columnheader, textbox, combobox`, then `getByLabel`, then `getByPlaceholder`.
@@ -18,21 +30,23 @@ waits for that button. Defaults:
 - Anything that changes state or triggers an action — sign in/out, submit, save, delete, sort, filter
   toggle, apply, confirm — is a real `<button type="button">` with the exact name.
 - Only navigation to another screen is an `<a href>` link, and it still carries the exact name.
-## 2. Quoted names are matched EXACTLY and must be UNIQUE on the screen
-The formal suite locates a quoted name with `getByRole(role, {name: 'Export report', exact: true})`
-in strict mode: the name must equal the element's whole accessible name, and exactly one element may
-match. One formal run lost three tests because a page showed the same named link both in the header
-and in its form ("strict mode violation ... resolved to 2 elements").
-- Show each quoted control once per screen. Do not repeat a page's own action in the header, sidebar or
-  footer.
+## 2. Exact control names and their scope
+A required control name is its whole accessible name. Avoid repeating the same action for the same
+object in a header, sidebar and form. Distinct objects may legitimately share a name: keep each real
+record and its canonical link, grouped by its repository/container when needed. Do not deduplicate
+records by display title or arbitrarily expose only the first container to simplify a locator.
 - Never nest a named control inside an element whose name comes from its content (a tab, button, link,
   option or menu item). A tab holding its options button is named "Draft Options for Draft", so
   `getByRole('tab', {name: 'Draft', exact: true})` finds nothing. Put such controls BESIDE it:
   `<span class="tab-wrap"><button role="tab" aria-selected="true">Draft</button><button
   aria-label="Options for Draft">⋯</button></span>`.
-- A combo box whose options the requirements name (or call clickable, or give the option role) is driven
-  by clicking the box and then the option: use the scaffold's `ARC.combobox`, never a native `<select>`,
-  whose options a click cannot reach.
+- Use `ARC.combobox` for a labeled finite choice. It is a native select with the browser's customizable
+  picker where supported, preserving both named-option clicks and native selection. Ordinary single
+  selects receive the same picker styling. Honor any explicitly required control type and interaction;
+  do not replace native form semantics with a button plus a hidden parallel value.
+  Read values through `FormData`, the change callback, or a control selected by its `name`; do not assume
+  a widget stores its value in `input[name=...]`. When updating an existing widget, migrate dependent
+  readers together so changing its internal markup cannot silently reset business configuration.
 ## 3. Preserve exact names within their declared scope
 A row action belongs inside its record; a form action belongs in its form; a sidebar action belongs
 inside the sidebar. Preserve required names even when the same verb appears in another scope.
@@ -57,26 +71,21 @@ one uses the seed password they do state, never an invented one.
 Keep the content, actions and dashboard lists needed by a public browsing journey available without
 an extra login step. A seeded verified account does not itself make every list private. Authentication
 changes account controls; apply additional access restrictions only when the requirements state them.
-## 6b. Seeded records are reachable from `/` by name
-Each test opens `/` in a fresh, signed-out browser and never types a URL: it reaches a seeded record by
-clicking a visible link named with that record's seeded name. So the home screen lists, as links named
-exactly by their seeded names, every seeded top-level record a signed-out visitor may see (public groups,
-public projects, shared documents), and after sign-in also the ones that user may see (their groups and
-private projects). Every record screen links onward to its child records the same way. Headings, links
-and `owner/name` paths show the seeded name verbatim (`Team Alpha/site-docs`, never a slug such as
-`team-alpha/site-docs` in its place); an id or slug may live only in the URL.
-## 7. Verbatim vocabulary — the largest family of lost points on big apps
-The assert-visible ladder ends in `getByRole('button', {name})`; when it fails it means NOTHING on the page
-carried the phrase. Every quoted string and every noun phrase in a THEN step must appear literally as
-visible text or as an accessible name; synonyms and paraphrases score zero. Concretely:
-- Layout nouns are text, not just tags: a header, sidebar, footer or logo that a THEN step names is a
-  visible word on the page (a small caption or heading `Sidebar`, a footer line starting with `Footer`,
-  the logo image's alt text `Logo`). `<header>` alone is invisible.
+## 6b. Named records are reachable from the stated starting screen
+Expose the records and capabilities each scenario opens directly from its stated starting screen.
+For an anonymous home journey, use readable records from the current state and real navigation links;
+after sign-in include that user's permitted records. Where the scenario names a child record as the
+first action, the home overview must offer that child entry without extra parent navigation.
+Display the specified record name; preserve separately specified identifiers/slugs in canonical URLs.
+## 7. Preserve specified text and semantics
+Render required labels and validation messages verbatim in their stated context. A structural noun
+such as header or sidebar describes layout unless the requirement explicitly asks for that visible
+text. Negative assertions and user-entered examples are not instructions to add labels or seed data.
 - Every validation / error / success message quoted in a requirement is rendered VERBATIM in a
   `role="status"` or `role="alert"` element with the exact sentence, punctuation included.
 - Every navigation target, account section, tab, filter and widget named in a requirement is a visible
   control with exactly that name.
-- Every seed name, record title, tag or username quoted in a requirement exists verbatim.
+- Each explicitly provisioned record uses its exact specified name, title, tags and username.
 Section titles are visible headings (`<h2>Comments</h2>`), never an `aria-label` on the container.
 ## 7b. A quoted control name is the WHOLE accessible name, byte-exact
 The formal suite anchors the names the requirement quotes: `getByRole('button', {name: /^Add item$/i})`,

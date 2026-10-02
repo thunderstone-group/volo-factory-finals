@@ -68,17 +68,37 @@ How the tests run:
   `test.skip(title, async () => {{}})` with a one-line comment saying why, instead of guessing.
 - Names that must be unique (usernames, emails, titles, record names) get a unique suffix, for example
   `const u = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);`, within the format rules the
-  requirements state.
+  requirements state. This applies to records the scenario creates, never to an explicitly named existing
+  account or record in GIVEN. Use those real seed identities; do not manufacture substitutes for missing seeds.
+- Preserve the stated starting screen and authentication state. A fresh unauthenticated home-page scenario
+  starts with `page.goto('/')` and performs its first WHEN action there. Do not prepend login, parent-container
+  navigation or direct record URLs to make a missing first target reachable. An account or record existing in
+  GIVEN does not itself establish a signed-in session or an opened detail page. Establish those contexts only
+  when GIVEN explicitly requires them or WHEN describes the navigation. Assert the first named target is
+  visible in that starting context before activating it.
 - Locate elements the way a user perceives them, only with what the requirements state:
   `page.getByRole(role, {{ name, exact: true }})` with the exact quoted accessible name,
   `page.getByLabel(label, {{ exact: true }})` for fields, `page.getByText(text, {{ exact: true }})` for visible text.
   Never CSS selectors, XPath, test ids, element ids, class names or guessed URLs. When the requirements put a control
   inside a named dialog, menu, region, row or grid, scope the locator to it first.
+- Follow the specified selection interaction. For explicitly clickable options, click the combobox and then the
+  named option; do not use selectOption to bypass the required clickable-option path. Use selectOption for a control
+  explicitly described as a native select. Two controls with the same label may have different contracts in different
+  containers; respect each declaration rather than applying one interaction to every matching label.
 - Tests are independent: each builds its own state and never relies on another test having run.
-- Every file runs in order against ONE application that is never reset between tests. Never change a seeded
-  record's credentials, never delete or rename a seeded record: when a scenario does that (change a password, delete
-  a repository, rename a workbook), the test first creates its own record through the UI and acts on that one, so the
-  seeded state stays as the requirements give it for every later test.
+- Every file runs in order against ONE application that is never reset between tests. When a mutation scenario
+  does not require a particular seeded identity, create its own record through the documented UI. When it does
+  name a seeded identity, test that identity and the required mutation; preserve later scenarios using the
+  documented restoration rule below, rather than silently replacing the subject with a newly created record.
+- Preserve every shared prerequisite, including permissions, effective decisions, flags, constraints and related
+  records. Merely opening an existing record does not establish that it is eligible, writable, current or otherwise
+  in the stated GIVEN condition. Establish those conditions through the documented flows and check their stated
+  visible facts before the WHEN action; a comment or an enabled button alone is not evidence of them.
+  Prefer records created by this test when the scenario does not require a particular seeded identity. If it must
+  mutate a reusable seed, complete every THEN assertion first, including persistence, then restore the effective
+  prerequisites through documented UI actions before later tests reuse it. Preserve history where required; do not
+  delete historical records just to reset an effective decision. Never replace these steps with an API, storage edit
+  or an assumption that the next browser context resets server data.
 - A scenario whose name or steps are generic ("the requested workflow") is specified by its requirement's
   description. Across the tests of one requirement, cover every behaviour the description states: each case it lists
   (every kind of error, option, direction or input form), how the feature works together with the others it names (a
@@ -106,7 +126,8 @@ FILE_BLOCK = re.compile(r"=== FILE:[ \t]*(.*?)[ \t]*===[ \t]*\r?\n(.*?)\r?\n=== 
 TITLE = re.compile(r"""\btest(?:\.(?:skip|only|fixme))?\(\s*(['"`])((?:\\.|(?!\1).)*)\1""")
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
 OWN_ERROR = re.compile(r"^(?:ReferenceError|TypeError|SyntaxError|RangeError)\b"
-                       r"|can be only used with (?:Locator|Page|APIResponse) object")
+                       r"|can be only used with (?:Locator|Page|APIResponse) object"
+                       r"|^Error: expect: Property '[^'\n]+' not found\.$")
 CELL = re.compile(r"[A-Z]{1,3}[1-9][0-9]{0,5}")
 NAMED = re.compile(r"""getBy(?:Role\(\s*'[a-z]+'\s*,\s*\{\s*name:\s*|Label\(\s*|Text\(\s*|Placeholder\(\s*)'((?:\\.|[^'\\])*)'""")
 
@@ -151,6 +172,89 @@ def request(text, group, prerequisites=""):
              f"\n\nReply with exactly one file block:\n=== FILE: {group['file']} ===\n<file content>\n=== END ===")
     system = SYSTEM.format(test_seconds=TEST_SECONDS, action_seconds=ACTION_SECONDS)
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
+
+
+def initial_entries(text):
+    """Literal first navigation from unauthenticated home/default application entry.
+
+    Unknown sentence shapes stay with the written suite. Names must occur in the
+    first WHEN clause itself, never be inferred from a parent resource in GIVEN.
+    """
+    prefix = (r'^(?:the\s+)?(?:visitor|user|customer|operator|member|contributor|administrator)\s+'
+              r'(?:opens?|follows?)\s+(?:(?:the|a|an)\s+)?(?:visible\s+)?')
+    activation = re.compile(prefix +
+        r'(?:(?:link|button|entry|page)\s+(?:named\s+)?)?'
+        r'(?:`([^`\n]{1,80})`|[“"]([^”"\n]{1,80})[”"])', re.I)
+    plain_navigation = re.compile(prefix + r'([^,.;`“"]+?)(?:\s*,|\.|;|\s+and\b|$)', re.I)
+    quoted_names, _ = _phrases(text)
+    found = []
+    for req in scenarios.load_requirements(text):
+        if req.get("type") != "ATOMIC":
+            continue
+        for index, scenario in enumerate(req.get("scenarios") or [], 1):
+            steps = scenario.get("steps") or []
+            given = " ".join(s.get("content", "") for s in steps if s.get("keyword") == "GIVEN")
+            given = re.sub(r"\s+", " ", given)
+            if not re.search(r"\bunauthenticated\b", given, re.I):
+                continue
+            if re.search(r"\bsigned[ -]in\b|\blogged[ -]in\b|\bhas (?:entered|opened)\b|\bis viewing\b", given, re.I):
+                continue
+            location = re.search(r"\b(?:starts?|is|remains?)\s+(?:at|on|in)\s+([^.!]*?\b(?:page|screen|editor)\b)", given, re.I)
+            if location and not re.search(r"\bhome\s*page\b", location.group(1), re.I):
+                continue
+            when = next((s.get("content", "") for s in steps if s.get("keyword") == "WHEN"), "")
+            when = re.sub(r"\s+", " ", when).strip()
+            match = activation.match(when)
+            if match:
+                name = next(value for value in match.groups() if value is not None)
+            else:
+                plain = plain_navigation.match(when)
+                name = re.sub(r"\s+(?:page|screen|entry|link)$", "", plain.group(1), flags=re.I).strip() if plain else ""
+                if name not in quoted_names:
+                    continue  # A prose noun is not enough to invent a UI label.
+            found.append({"id": f"{req['id']}#entry-{index}", "name": name,
+                          "scenario_id": req["id"] + (f"#{index}" if index > 1 else ""),
+                          "given": given, "when": when})
+    return found
+
+
+def add_initial_entry_checks(text, suite, manifest):
+    """Fixed cold-start checks cannot acquire an invented navigation prelude."""
+    entries = initial_entries(text)
+    if not entries:
+        return manifest
+    filename = "t00-initial-entries.spec.cjs"
+    body = ["const {test, expect} = require('@playwright/test');\n"]
+    titles = []
+    for entry in entries:
+        title = entry["id"] + ": Initial visible entry " + entry["name"]
+        titles.append(title)
+        body.append("test(" + json.dumps(title, ensure_ascii=False) + ", async ({page}) => {\n"
+            "  await page.goto('/');\n"
+            "  const name = " + json.dumps(entry["name"], ensure_ascii=False) + ";\n"
+            "  await expect.poll(async () => {\n"
+            "    for (const role of ['button','link','tab','menuitem','option']) {\n"
+            "      for (const item of await page.getByRole(role, {name, exact: true}).all()) {\n"
+            "        if (await item.isVisible()) return true;\n"
+            "      }\n"
+            "    }\n"
+            "    for (const item of await page.getByText(name, {exact: true}).all()) {\n"
+            "      if (await item.isVisible() && await item.evaluate(el => !!el.closest(\n"
+            "        'a[href],button,[role=button],[role=link],[role=tab],[role=menuitem],[data-action]:not(form),[onclick]'\n"
+            "      ))) return true;\n"
+            "    }\n"
+            "    return false;\n"
+            "  }, {message: 'The first WHEN target must be interactive at the stated initial home: ' + name}).toBe(true);\n"
+            "});\n")
+    (Path(suite) / filename).write_text("\n".join(body), encoding="utf-8")
+    manifest["files"] = [r for r in manifest["files"] if r["file"] != filename]
+    manifest["files"].insert(0, {"file": filename, "tests": titles, "calls": 0,
+                                  "deterministic": "initial_entries"})
+    manifest["initial_entry_checks"] = entries
+    manifest["tests"] = sum(len(r.get("tests") or []) for r in manifest["files"])
+    (Path(suite) / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n",
+                                            encoding="utf-8")
+    return manifest
 
 
 def _node():
@@ -393,7 +497,9 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS, 
         manifest = audit_suite(text, suite, complete, workers=workers)
         manifest["seconds"] = round(time.monotonic() - started, 1)
         (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-    return manifest
+    # Supplemental entry checks must not make an otherwise failed writer look
+    # runnable, suppressing the existing scenario-check fallback.
+    return add_initial_entry_checks(text, suite, manifest) if runnable(manifest) else manifest
 
 
 AUDIT_REQUEST = """Review the test file you just wrote against the requirements, without seeing any application.
@@ -577,7 +683,10 @@ application was judged:
 Fix only the test code that broke: a helper that uses a variable it was not given, a missing `await`, a method called
 on the wrong object, a Playwright API used the wrong way, a name the requirements never give (use the one they give).
 Keep every scenario, step, locator, value and assertion that follows the requirements. Reply with the whole corrected
-file and nothing else:
+file. Keep assertions at their original call sites: replace an invalid matcher inline with a supported assertion of
+the same property. Do not consolidate assertions into a new helper; the repair must retain the existing checks and
+their execution order. Change only the broken API usage, without restructuring unrelated test code.
+Return nothing outside the file block:
 === FILE: {file} ===
 <file content>
 === END ==="""

@@ -477,7 +477,7 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(budget.attempts[0]["stream_observation"]["reasoning_chars"], len("synthetic reasoning"))
         self.assertEqual(budget.attempts[2]["messages"], budget.attempts[0]["messages"])
 
-    def test_quoted_vocabulary_table_precedes_the_requirements(self):
+    def test_draft_uses_requirements_without_a_literal_presence_checklist(self):
         req = ("- id: REQ-1\n  name: Login\n  description: Show \u201cEmail cannot be empty\u201d and a \"Sign In\" button.\n"
                "- id: REQ-2\n  name: Notes\n  description: The system contains a note titled \"Groceries\". Show \u201cEmail cannot be empty\u201d again.\n")
         table = adapter.vocabulary_table(req)
@@ -489,7 +489,9 @@ class OfflineCase(unittest.TestCase):
         self.replies(events(application()))
         adapter.generate(req, "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
         prompt = budget.attempts[0]["messages"][1]["content"]
-        self.assertLess(prompt.index("## Quoted vocabulary checklist"), prompt.index("## Requirements (the application to build)"))
+        self.assertNotIn("## Quoted vocabulary checklist", prompt)
+        self.assertIn("## Requirements (the application to build)", prompt)
+        self.assertIn(req, prompt)
 
     def test_repair_edits_apply_search_replace_hunks_to_the_current_file(self):
         stage = Path(self.out)
@@ -535,6 +537,10 @@ class OfflineCase(unittest.TestCase):
         reply = ("=== EDIT: frontend/public/app.js ===\n<<<<<<< SEARCH\nconst a = 1;\n=======\n"
                  "const a = 2;\n=======\n=== END ===\n")
         files, missing, skipped = adapter.parse_repair(reply, stage)
+        self.assertEqual(files, [{"path": "frontend/public/app.js", "content": "const a = 2;\n"}])
+        self.assertEqual((missing, skipped), ([], []))
+        redundant_close = reply.replace("=======\n=== END", "=======\n>>>>>>> REPLACE\n=== END")
+        files, missing, skipped = adapter.parse_repair(redundant_close, stage)
         self.assertEqual(files, [{"path": "frontend/public/app.js", "content": "const a = 2;\n"}])
         self.assertEqual((missing, skipped), ([], []))
         with self.assertRaisesRegex(ValueError, "no .*hunk"):

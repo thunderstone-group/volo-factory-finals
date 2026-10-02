@@ -17,15 +17,29 @@ for (const p of probes) {
   });
   const context = vm.createContext({ assert, clearTimeout, clearInterval });
   context.window = context;
+  const globalObject = vm.runInContext('globalThis', context);
+  const originals = Object.create(null);
+  function lookup(path) {
+    let value = vm.runInContext(path[0], context, {timeout: 1000});
+    for (const part of path.slice(1)) value = value[part];
+    return value;
+  }
+  function ownerOf(f) { return lookup(f.owner || f.member.slice(0,-1)); }
   let phase = 'initializer';
   try {
     for (const source of p.initializers || []) vm.runInContext(source.code, context, {timeout: 1000});
     for (const f of p.functions.filter(f => f.callable !== false)) {
       const fn = vm.runInContext('"use strict"; (' + f.code + ')', context, { timeout: 1000 });
       if (typeof fn !== 'function') throw new Error('Source binding is not callable: ' + f.alias);
+      originals[f.alias] = fn;
       calls[f.alias] = 0;
       Object.defineProperty(context, f.alias, { configurable: false, writable: false,
-        value: function (...args) { calls[f.alias]++; return Reflect.apply(fn, this, args); } });
+        value: function (...args) {
+          calls[f.alias]++;
+          const self = (f.owner || f.member) && (this == null || this === globalObject || this === context)
+            ? ownerOf(f) : this;
+          return Reflect.apply(originals[f.alias], self, args);
+        } });
     }
     phase = 'setup';
     vm.runInContext('"use strict";\n' + p.setup, context, { timeout: 1000 });
@@ -42,9 +56,21 @@ for (const p of probes) {
       Object.defineProperty(context, f.alias, {value, writable: Boolean(f.mutable), configurable: false});
       installMember(f);
     }
-    for (const f of p.functions.filter(f => f.callable === false && !f.member)) bindValue(f);
+    const values = p.functions.filter(f => f.callable === false && !f.member)
+      .sort((a,b) => a.file.localeCompare(b.file) || a.line-b.line);
+    for (const f of values) bindValue(f);
     for (const f of p.functions.filter(f => f.callable !== false && f.member)) installMember(f);
     for (const f of p.functions.filter(f => f.callable === false && f.member)) bindValue(f);
+    for (const f of p.functions.filter(f => f.callable !== false && f.owner)) {
+      const owner = ownerOf(f), actual = owner[f.property];
+      if (typeof actual !== 'function') throw new Error('Source owner method is not callable: ' + f.qualified_name);
+      let code = Function.prototype.toString.call(actual);
+      if (f.method) code = (code.startsWith('async ') ? 'async ' : '') +
+        'function' + (f.code.includes('function*') ? '*' : '') + code.slice(code.indexOf('('));
+      if (code !== f.code) throw new Error('Object method no longer matches its exact source: ' + f.qualified_name);
+      originals[f.alias] = actual;
+      Object.defineProperty(owner, f.property, {value: context[f.alias], writable: false, configurable: false});
+    }
     phase = 'precondition';
     vm.runInContext('"use strict";\n{\n' + (p.precondition || '') + '\n}', context, { timeout: 1000 });
     phase = 'check';

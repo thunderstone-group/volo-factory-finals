@@ -1,0 +1,36 @@
+{
+  "at": "2026-10-02T08:54:01.688157+08:00",
+  "source": "public requirements and own generated tests only",
+  "requirement": "REQ-6-5",
+  "public_contract": "Separate eligible and blocked Open PRs; eligible has current non-author approval, successful test check, no conflicts; each seed state is restored independently before reuse; any valid Request changes blocks merging.",
+  "own_suite": {
+    "file": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/owner-repair-suite-github/t06-REQ-6.spec.cjs",
+    "helper_lines": [
+      66,
+      74
+    ],
+    "request_changes_lines": [
+      622,
+      638
+    ],
+    "merge_positive_lines": [
+      670,
+      680
+    ],
+    "problem": "Both use the same seeded Open PR. The Request changes test preserves its decision; the later merge test neither restores it nor establishes eligibility before expecting the button enabled."
+  },
+  "actual_startup_state": {
+    "only_open_named_pr": "p-1 / Improve onboarding",
+    "check": "pending",
+    "approval": "Approved by u-bob",
+    "other_named_pr": "p-2 / Fix search is closed",
+    "problem": "The fresh seed also lacks the stated eligible Open PR; it should not be called eligible merely because it is Open."
+  },
+  "controlled_repair": {
+    "cost_cny": 0.475417,
+    "source_checks": "4 fail to 4 pass",
+    "original_ui": "99 pass to 98 pass; REQ-6-5 positive now sees disabled merge",
+    "remaining_unjudged": 1,
+    "limits": "The lost pass is not evidence that the original behavior was correct. Both seed completeness and test preconditions need calibration; no assertion was weakened and no promotion is claimed."
+  }
+}

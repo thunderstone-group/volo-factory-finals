@@ -1656,6 +1656,64 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - v2 Sheet completed with independent 90/95 unchanged after three source fixes; its original 100 UI scenarios remain passing. v2 GitHub is still repairing a real initial missing-method error and subsequent UI failures.
 - This formal run is a bounded experiment within the authorized funds, not mainline promotion or a claim that every original local gate passed. The exact v2c ZIP has targeted/replay evidence but no separately completed fresh local trajectory. Rationale and boundaries are recorded in `docs/evidence/2026-10-02-s70-official-experiment-r1.json`. Continue until official terminal results and the corresponding overall S are known.
 
+## 2026-10-02 08:25 — Isolated object-owner binding prototype
+
+- Branch `exp/source-owners-20261002` preserves the S70 branch ancestry. The official c5832d52 package is unchanged.
+- Added AST-confirmed qualified names for object-literal methods, actual owner construction, original receiver/helper preservation and exact method-source checks. Seventeen focused checks pass; the original eight before/after source controls retain their outcomes.
+- On the fresh v2 GitHub application, two previously unjudged probes now execute and fail. Source inspection confirms the merge predicate ignores both a current Request changes decision and required check status. Two probes remain unjudged: the actual scaffold's dynamic helper bridge is not represented, and an overridden screen method is ambiguous. These limitations are explicit; no promotion or new formal upload was made from this branch.
+- Evidence: `docs/evidence/2026-10-02-object-owner-prototype.json`; complete local traces remain in the external S70 evidence directory.
+
+## 2026-10-02 08:48 — Actual declaration hints recover four executable probes
+
+- Binding failures now list actual callable declaration paths with the same member name. The prompt documents object-owner binding and default receivers.
+- A real Vision verifier call (estimated CNY 0.135586) corrected the original proposals without operator assertion edits. All four execute as failures on the untouched fresh GitHub application. Eighteen focused tests pass. Evidence: `docs/evidence/2026-10-02-owner-binding-feedback.json`.
+- A controlled repair against the original own UI suite plus these fixed probes is running, limited to three repair calls / CNY 1.5 estimated. Its first accepted change fixed all four source checks but lost one original UI check; preservation remains unproved and the prototype is not promoted.
+
+## 2026-10-02 08:55 — Controlled repair exposes invalid merge-test preconditions
+
+- Controlled owner-aware repair completed three calls, estimated CNY 0.475417. Four source checks pass afterward; one original UI check fails, so the old UI total changes from 99 to 98. Fixed independent judges remain 64/67, with no measured aggregate gain.
+- The failing positive-merge test reuses the seeded Open PR after an earlier test has left a valid Request changes decision on it. It does not restore that decision or verify eligibility. Public REQ-6-5 explicitly requires separate eligible/blocked PRs and independent restoration before reuse. The actual fresh seed also has only one named Open PR, with a pending check, so the required eligible fixture is missing.
+- This is a coupled fixture/seed problem, not proof that blocking the merge is wrong. Neither application rules nor assertions were weakened. Further work should establish complete GIVEN states and fixture isolation rather than force an invalid merge. Evidence: `docs/evidence/2026-10-02-merge-fixture-conflict.json`.
+
+## 2026-10-02 09:10 — UI cleanup confirms state pollution without weakening assertions
+
+- On the same repaired application, the unchanged own suite reproduces 102 pass / 1 fail / 1 unjudged. A diagnostic copy that only appends the documented Comment review cleanup after all original Request changes assertions gives 103 pass / 1 unjudged. All original test bytes are preserved, and all four source checks remain passing.
+- This establishes prior-test state as the cause of the apparent merge regression. Initial seed completeness is still separate; the fixed independent judges remain 64/67. Official requirements/tests and the independent suites were not changed.
+- The generic writer prompt now explicitly covers every shared mutable prerequisite, validates stated GIVEN facts and restores effective conditions through public UI after THEN assertions. One real public REQ-6 group-generation pilot is running with no application or independent-judge source in its prompt. No new formal submission or prototype promotion yet.
+
+## 2026-10-02 09:49 — Selection-interaction contract calibrated before the next candidate
+
+- Public requirements distinguish clickable options from explicitly native selects, including different Role controls in different scopes. The writer now states that distinction. A real 15-scenario group-generation call (CNY 0.225269) preserves both kinds correctly.
+- The new 25-scenario review/merge group initially passed 17; native Role and test-status controls blocked its required clicks. Two model repair calls, CNY 0.162586, make that group pass 25/25. The complete mixed own suite passes 99 UI scenarios with one pre-existing unjudged case. Four source checks remain passing after a separately versioned, identical before/after rendering-plumbing fixture correction.
+- Original independent totals move 64/67 to 63/66, but every newly failed test wrongly calls selectOption on the explicitly clickable test-status control. Versioned calibration copies change only those four selection actions, retaining all assertions/fixtures and original judges. Same-judge before/after: 62 to 65 and 66 to 67. No official gain is inferred.
+- Evidence: `docs/evidence/2026-10-02-control-contract-calibration.json`. Broad one-shot checks and source secret scan are running before freezing the next generic candidate. The current official pair is untouched; Sheet is 83 and GitHub is still running.
+
+## 2026-10-02 09:55 — Generic controls candidate frozen for a fresh pair
+
+- ZIP `8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a`, source e53024c, includes object-owner binding, actionable declaration hints, complete shared-prerequisite guidance and scoped native/clickable selection guidance. No generated application, task fixture or concrete probe is packaged.
+- One-shot suite: 267 run, 264 passed, 3 optional readiness skips. Source and exact ZIP secret scans have no findings. Practice balance immediately before this pair was CNY 425.235319.
+- Both tasks are now generating from the exact extracted ZIP with Vision and practice credit. No new official submission was created. Preserve raw independent scores and the versioned calibrated comparisons; they do not establish official improvement.
+
+## 2026-10-02 11:23 — Recover executable diagnostics and measure both gains and regressions
+
+- Fixed unavailable Playwright matcher classification, actual window-qualified namespace extensions, and explicit EADDRINUSE smoke retries. Full oneshot suite271run/268pass/3optional skip; real occupied-port checks pass. The subsequent inline assertion-repair prompt passed5focused checks and recovered the two real invalid-matcher scenarios without weakening the existing guard (same app91 to93UI pass).
+- Four unchanged captured source probes went from fixture errors to real failing assertions. One controlled repair call, CNY0.183563, made all4pass while preserving91original UI passes. Original independent judges72/65 to70/65; calibrated74/67 to72/67. Preserve the two regressions; do not call this a broad quality gain.
+- Exact next ZIP4ec287a63ac4278f22a0bb90843bda745eb08c785aa5b162287cceeed8bb8dbe, implementation987f93c, has zero secret findings and is generating a fresh full paired trajectory using practice credits. FormalR2 still runs the earlier frozenv3 package, submissionf56d97c2fdb1; no new official result.
+- Evidence: `docs/evidence/2026-10-02-diagnostic-recovery.json`. Fresh experiment decision explicitly retains the negative independent result and measures checker recovery plus repair cost. No extra official submission or mainline promotion.
+
+## 2026-10-02 11:35 — Start a dependency-based generation architecture comparison
+
+- An external local pilot uses the exact4ec287a6 candidate and its existing template entrypoint. The first stage contains the first40percent of atomic requirements in stable dependency order:19/47requirements,45/100scenarios. Ancestor dependencies are included; every selected atomic description/scenario is byte-value equivalent after parsing, and the projected YAML round-trips through the actual agent parser.
+- The second stage receives the complete unchanged100-scenario GitHub requirements and extends the foundation app. Both phases, all test writing and repairs count toward cost. Each phase has a stated CNY2.5 repair/8call cap; any binding cap is a comparison limitation. Fixed original/calibrated judges run only on the final complete app. No partial score can satisfy S70.
+- This investigates whether constructing shared entities and prerequisite behavior first improves cross-feature consistency. No task logic, generated source or projected requirement is added to the submission package. Active formalR2 and fresh fullv4b remain unmodified.
+- Evidence: `docs/evidence/2026-10-02-dependency-build-pilot.json`. At11:35 the foundation PID64668 was live and receiving model events; the two fresh fullv4b jobs had completed their first draft and were waiting for their test writers.
+
+## 2026-10-02 12:40 — Reject weak v4b evidence, close upgrade check bypass, audit startup facts
+
+- Freshv4b: GitHub54/64 (calibrated54/64), Sheet88/92, estimated totalCNY4.548780. No promotion. Exact pre-source-code reconstruction on the delivered Sheet state produces identical per-case verdicts, so the final source patch did not cause that decline. Initial generation and earlier repair remain the relevant parts of this trajectory.
+- The staged pilot costCNY2.364831 before external full checks, scored54/61 (calibrated56/62), and internally left all100full-task scenariosunparsed because template inputs bypassed the test writer. The generic gating defect is fixed;272tests ran,269passed,3optional skipped. A fresh full-suite repair/source-review phase is running on the staged complete app; include every phase when comparing cost.
+- Actual unchanged R2 startup state lacks the explicitly supplied Maintain account and separate Open success/refusal PRs. Two operator controls exercised the actual roleFor and mergeBlocked functions and failed in CHECK. A separate autonomous startup audit is running with generic instructions only; it does not receive operator probes, hidden tests or newly published Stage1 actor names.
+- Evidence: `docs/evidence/2026-10-02-v4b-negative-and-upgrade-gap.json`. FormalR2 also regressed toS59.6083; these diagnostics are mechanisms to investigate, not a substitute for the original full-pair S70 goal.
 ## 2026-10-02 10:20 — Complete official pair reaches S62.3332, target remains 70
 
 - Official submission e963e1a3e56c, package c5832d52: GitHub 07c92a18ffb4 = 21/100, CNY4.313931; Sheet cee35cb1fb7f = 83/100, CNY2.477041. Total104/200, CNY6.790972. Both failed_tests arrays are empty.

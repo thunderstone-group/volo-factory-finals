@@ -640,6 +640,13 @@ def parse_repair(text, stage):
                 and len(re.findall(r"^=======[ \t]*$", body, re.M)) == 2
                 and re.search(r"^=======[ \t]*\s*\Z", body, re.M)):
             body = re.sub(r"^=======[ \t]*\s*\Z", ">>>>>>> REPLACE\n", body, flags=re.M)
+        # A captured reply redundantly repeated the separator immediately before
+        # its valid closing marker. Remove only that unambiguous framing line.
+        if (len(re.findall(r"^<<<<<<< SEARCH[ \t]*$", body, re.M)) == 1
+                and len(re.findall(r"^=======[ \t]*$", body, re.M)) == 2
+                and len(re.findall(r"^>>>>>>> REPLACE[ \t]*$", body, re.M)) == 1
+                and re.search(r"^=======[ \t]*\r?\n>>>>>>> REPLACE[ \t]*\s*\Z", body, re.M)):
+            body = re.sub(r"^=======[ \t]*\r?\n(?=>>>>>>> REPLACE[ \t]*\s*\Z)", "", body, flags=re.M)
         hunks = HUNK.findall(body)
         if not hunks:
             raise ValueError(f"EDIT {path}: no `<<<<<<< SEARCH` / `=======` / `>>>>>>> REPLACE` hunk")
@@ -1162,53 +1169,68 @@ def smoke_check(stage, requirements=None, diagnostics=None):
         return problems, True
     manifest = json.loads((stage / "backend" / "package.json").read_text(encoding="utf-8"))
     entry = shlex.split(manifest["scripts"]["start"])[1]
-    port = _free_port()
-    proc = subprocess.Popen([node, entry], cwd=stage / "backend", env={**env, "PORT": str(port)},
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    output = []
-
-    def pump():
-        for chunk in iter(lambda: proc.stdout.read(4096), b""):
-            if sum(len(c) for c in output) < 200_000:
-                output.append(chunk)
     import threading
-    threading.Thread(target=pump, daemon=True).start()
-    try:
-        ready, last, deadline = False, "", time.monotonic() + SMOKE_READY_SECONDS
-        while time.monotonic() < deadline:
-            if proc.poll() is not None:
-                problems.append(f"backend `node {entry}` exited with code {proc.returncode} before answering "
-                                f"GET /api/health: {_tail(b''.join(output))}")
-                break
-            try:
-                status, _, body = _fetch_local(f"http://127.0.0.1:{port}/api/health", timeout=3)
-                if status == 200 and json.loads(body.decode("utf-8", "replace")) == HEALTH_BODY:
-                    ready = True
+    for attempt in range(3):
+        port = _free_port()
+        proc = subprocess.Popen([node, entry], cwd=stage / "backend", env={**env, "PORT": str(port)},
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = []
+
+        def pump(pipe=proc.stdout, chunks=output):
+            for chunk in iter(lambda: pipe.read1(4096), b""):
+                if sum(len(c) for c in chunks) < 200_000:
+                    chunks.append(chunk)
+
+        reader = threading.Thread(target=pump, daemon=True)
+        reader.start()
+        try:
+            ready, last, deadline = False, "", time.monotonic() + SMOKE_READY_SECONDS
+            while time.monotonic() < deadline:
+                if proc.poll() is not None:
+                    reader.join(timeout=1)
+                    problems.append(f"backend `node {entry}` exited with code {proc.returncode} before answering "
+                                    f"GET /api/health: {_tail(b''.join(output))}")
                     break
-                last = f"HTTP {status} {_tail(body, 200)}"
-            except Exception as exc:  # connection refused while starting, bad JSON, timeouts
-                last = str(exc)[:200]
-            time.sleep(0.4)
-        if not ready and not problems:
-            problems.append(f"GET /api/health did not return 200 {json.dumps(HEALTH_BODY)} within "
-                            f"{SMOKE_READY_SECONDS}s (last: {last}); backend output: {_tail(b''.join(output))}")
-        if ready:
-            try:
-                _check_page(port, problems)
-                if not problems:
-                    _check_dom(stage, port, problems, requirements)
-                    _check_semantic_browser(port, problems, requirements,
-                                            diagnostics if diagnostics is not None else [])
-            except Exception as exc:
-                problems.append(f"GET / failed: {str(exc)[:200]}")
-    finally:
-        if proc.poll() is None:
-            proc.terminate()
-            try:
-                proc.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-                proc.wait()
+                if b"EADDRINUSE" in b"".join(output):
+                    problems.append(f"backend could not bind the smoke-check port: {_tail(b''.join(output))}")
+                    break
+                try:
+                    status, _, body = _fetch_local(f"http://127.0.0.1:{port}/api/health", timeout=3)
+                    if status == 200 and json.loads(body.decode("utf-8", "replace")) == HEALTH_BODY:
+                        ready = True
+                        break
+                    last = f"HTTP {status} {_tail(body, 200)}"
+                except Exception as exc:  # connection refused while starting, bad JSON, timeouts
+                    last = str(exc)[:200]
+                time.sleep(0.4)
+            if not ready and not problems:
+                problems.append(f"GET /api/health did not return 200 {json.dumps(HEALTH_BODY)} within "
+                                f"{SMOKE_READY_SECONDS}s (last: {last}); backend output: {_tail(b''.join(output))}")
+            if ready:
+                try:
+                    _check_page(port, problems)
+                    if not problems:
+                        _check_dom(stage, port, problems, requirements)
+                        _check_semantic_browser(port, problems, requirements,
+                                                diagnostics if diagnostics is not None else [])
+                except Exception as exc:
+                    problems.append(f"GET / failed: {str(exc)[:200]}")
+        finally:
+            if proc.poll() is None:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    proc.wait()
+            reader.join(timeout=1)
+            if not reader.is_alive():
+                proc.stdout.close()
+        if ready or attempt == 2 or b"EADDRINUSE" not in b"".join(output):
+            break
+        # The OS may allocate our probed port to another process before Node binds it.
+        # Only an explicit bind collision warrants another local attempt, without a model call.
+        problems.clear()
     return problems, True
 
 
@@ -1465,10 +1487,10 @@ def draft_application(stage, files, messages, model, base, key, budget, template
 
 
 def draft_messages(requirements, scaffold=None, snapshot=None, prerequisites=""):
-    """The draft conversation: the card, the delivery contract, the quoted vocabulary and the requirements (with the
+    """The draft conversation: the card, the delivery contract and the requirements (with the
     task's prerequisites.md when it has content), then the scaffold placed in the stage or the existing application
     being extended."""
-    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
+    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT +
             seed_checklist(requirements) +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
     if prerequisites.strip():
@@ -1520,9 +1542,10 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             if template is not None and all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files):
                 raise ValueError("upgrade did not change any files")
             if SMOKE:
-                if TESTGEN and template is None:
+                if TESTGEN:
                     # A failed draft has nothing to assess. Start paid test writing only after a complete draft,
                     # avoiding simultaneous long streams and test costs for an application that never arrives.
+                    # Upgrades need the same requirement checks; a preserved app is not evidence for new behavior.
                     suite = start_suite(requirements, Path(tempfile.mkdtemp(prefix="oneshot-tests-")), model, base, key,
                                         prerequisites)
                     suites.append(suite)
@@ -1697,9 +1720,10 @@ def seed_checklist(requirements):
     if not order:
         return ""
     lines = ["\n\n## Seed data checklist (the GIVEN seed of every scenario, deduplicated)",
-             "Each hidden test starts at `/` in a fresh, signed-out browser session, against the state below, and "
-             "reaches these records only by clicking what the screens show (§6b). Create every record at startup "
-             "with exactly these names and values; the ids say which requirements' tests expect each line."]
+             "These statements come from explicit GIVEN seed clauses. Preserve the stated identities, relationships, "
+             "permissions, presence and absence. Create only records required to exist initially; values supplied "
+             "later by a user and explicitly absent records are not startup data. Follow each scenario's stated "
+             "screen and authentication context rather than assuming one universal starting state."]
     for clause in order[:SEED_SHOWN]:
         ids = clauses[clause]
         head = ", ".join(ids[:6]) + (f" (+{len(ids) - 6} more)" if len(ids) > 6 else "")
@@ -1905,6 +1929,16 @@ def aria_collision_gaps(stage, requirements=None):
     'Decrease quantity' before the quantity input, 'Upvote comment' before the comment box."""
     source = _frontend_sources(stage)
     quoted = _quoted_lower(requirements)
+
+    def named(label):
+        label = label.strip()
+        if label.lower() in quoted:
+            return True
+        # Explicit accessible names need not use quotation marks. A literal
+        # naming clause ending at punctuation is stronger than a stem-overlap hint.
+        pattern = (r"\b(?:named|label(?:l)?ed)\s+" + re.escape(label).replace(r"\ ", r"\s+")
+                   + r"\s*(?=[,.;:]|$)")
+        return bool(label and requirements and re.search(pattern, requirements, re.I))
     # Template expressions are source code, not rendered accessible names. This
     # literal-only check cannot infer their values; naming their JS identifiers
     # as colliding words causes unnecessary, potentially destructive repairs.
@@ -1928,8 +1962,8 @@ def aria_collision_gaps(stage, requirements=None):
         if not re.match(r"<button\b", before, re.I) or ">" in before:
             continue
         shared = _shared_words(match.group(1), field_words)
-        if shared and match.group(1).strip().lower() not in quoted:
-            collisions.append((match.group(1), shared))  # a quoted button name is mandated; renaming it loses tests
+        if shared and not named(match.group(1)):
+            collisions.append((match.group(1), shared))
     labels = sorted({label for label in field_labels
                      if len(label) <= 32 and len(label.split()) <= 4}, key=len)
     nested = []
@@ -1939,7 +1973,7 @@ def aria_collision_gaps(stage, requirements=None):
                 nested.append((short, long))
     for match in re.finditer(r"""type=["']radio["'][^>]*>\s*([^<{\n]{1,30})""", source):
         shared = _shared_words(match.group(1), field_words)
-        if shared and match.group(1).strip().lower() not in quoted:
+        if shared and not named(match.group(1)):
             collisions.append(("radio " + match.group(1).strip(), shared))
     seen, lines = set(), []
     for label, shared in collisions:
@@ -1952,19 +1986,19 @@ def aria_collision_gaps(stage, requirements=None):
     # "rename", the repair renamed the quoted "From"/"To" to "Origin city"/"Destination city" and lost 45 tests.
     advised = []
     for short, long in nested:
-        s_q, l_q = short.lower() in quoted, long.lower() in quoted
+        s_q, l_q = named(short), named(long)
         if s_q and l_q:
             continue  # both names are mandated; renaming either loses tests, so this pair is not a problem to fix
         if s_q:
-            advised.append(f'"{short}" is contained in "{long}" — keep "{short}" exactly (quoted in the requirement) and rename "{long}"')
+            advised.append(f'"{short}" is contained in "{long}" — keep "{short}" exactly (specified in the requirement) and rename "{long}"')
         elif l_q:
-            advised.append(f'"{short}" is contained in "{long}" — keep "{long}" exactly (quoted in the requirement) and rename "{short}"')
+            advised.append(f'"{short}" is contained in "{long}" — keep "{long}" exactly (specified in the requirement) and rename "{short}"')
         else:
             advised.append(f'"{short}" is contained in "{long}"')
     if advised:
         out.append(f"{len(advised)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
                    f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and "
-                   f"NEVER rename a label the requirement quotes — rename the other one "
+                   f"NEVER rename a label the requirement explicitly names — rename the other one "
                    f"(e.g. keep \"Name\", rename \"Name filter\" to \"Filter by title\"): " + "; ".join(advised[:12]))
     if not lines:
         return out
@@ -2377,7 +2411,8 @@ def repair_request(state, discarded=None, unapplied=(), depths=None, focus=None)
     if failing:
         hints = [i.get("observation") or "" for i in (state["report"] or {}).get("invariants", []) if i.get("status") == "fail"]
         hints += [p for p in state["smoke"] if not _fatal(p)]
-        hints += [p for problems in state["static"].values() for p in problems] + state["vocab"]
+        if not written:
+            hints += [p for problems in state["static"].values() for p in problems]
         if hints:
             sections.append("Other findings of the same check (hints; they may share a cause with the failures):\n"
                             + "\n".join("- " + h[:600] for h in hints[:20]))
@@ -2403,8 +2438,8 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     """(accepted, reason, detail) for a repaired stage against the version before it (roadmap 4.3). A repair is kept
     when it brings a broken application back (whatever else it did), or when at least one scenario that failed now
     passes, it gains LOSS_RATIO of those for every passing scenario it loses, no clean static gate starts flagging, no
-    quoted phrase disappears and no control name the requirement quotes is renamed (under written tests those three
-    guards weigh as lost tests instead: one per newly flagging gate, missing phrase or renamed control). Only verdicts both checks reached
+    quoted phrase disappears and no control name the requirement quotes is renamed (under written tests only new
+    static gates and renamed controls weigh as lost tests; literal source coverage is diagnostic). Only verdicts both checks reached
     compare: a scenario that was unparsed or errored before never counts as gained, and one that is unparsed after as
     lost. Lost scenarios, and gains of at most two, are rechecked once for flakiness. A check that could not run at all
     is the checker's failure, marked `checker` in the detail, not the repair's."""
@@ -2416,7 +2451,8 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     if newly:
         guards.append("a static gate that was clean now flags: " + "; ".join(p for g in newly for p in after["static"][g])[:500])
         penalty += len(newly)
-    if after["missing"] > before["missing"]:
+    written = (before["report"] or {}).get("kind") == "testgen"
+    if not written and after["missing"] > before["missing"]:
         guards.append(f"the change removed quoted vocabulary ({before['missing']} -> {after['missing']} missing)")
         penalty += after["missing"] - before["missing"]
     # A literal button can become a data-driven menu entry: a successful browser activation proves the name exists.

@@ -108,6 +108,55 @@ Rules.adjust=function(state,amount){state.balance+=amount*Rates.unit;};
         p["check"] = "Rules.adjust(state,3); assert.equal(state.balance,16);"
         self.assertEqual(self.run_probe(p)["results"][0]["status"], "pass")
 
+    def test_qualified_object_method_keeps_its_real_receiver_and_helpers(self):
+        self.file.write_text('''const scale=2;
+window.Rules={calls:0, delta(n){return n*scale;},
+  adjust(state,n){this.calls++; state.balance+=this.delta(n);}};
+''')
+        p = copy.deepcopy(PROBE)
+        p["functions"][0].update(name="Rules.adjust", kind="function")
+        p["check"] = "adjust(state,3); assert.equal(Rules.calls,1); assert.equal(state.balance,16);"
+        self.assertEqual(self.run_probe(p)["results"][0]["status"], "pass")
+        self.file.write_text(self.file.read_text().replace("n*scale", "n*scale+1"))
+        self.assertEqual(self.run_probe(p)["results"][0]["status"], "fail")
+
+    def test_nested_object_methods_and_direct_namespace_calls_are_instrumented(self):
+        self.file.write_text('''const Rules={actions:{factor:2, 'adjust-value'(state,n){state.balance+=this.factor*n;}}};
+window.Rules=Rules;
+''')
+        p = copy.deepcopy(PROBE)
+        p["functions"][0].update(name="Rules.actions.adjust-value", kind="method")
+        p["check"] = "Rules.actions['adjust-value'](state,3); assert.equal(state.balance,16);"
+        self.assertEqual(self.run_probe(p)["results"][0]["status"], "pass")
+
+    def test_qualified_owner_does_not_select_another_objects_same_named_method(self):
+        self.file.write_text("const A={adjust(s){s.balance++;}},B={adjust(s){s.balance--;}};")
+        p = copy.deepcopy(PROBE)
+        p["functions"][0].update(name="B.adjust", kind="function")
+        p["check"] = "adjust(state); assert.equal(state.balance,9);"
+        self.assertEqual(self.run_probe(p)["results"][0]["status"], "pass")
+
+    def test_window_qualified_owner_extensions_use_the_actual_assignment(self):
+        self.file.write_text('''const scale=2;
+window.Rules={calls:0};
+window.Rules.actions={factor:scale, 'adjust-value'(state,n){Rules.calls++; state.balance+=this.factor*n;}};
+''')
+        p = copy.deepcopy(PROBE)
+        p["functions"][0].update(name="Rules.actions.adjust-value", kind="method")
+        p["check"] = "adjust(state,3); assert.equal(Rules.calls,1); assert.equal(state.balance,16);"
+        result = self.run_probe(p)
+        self.assertEqual(result["results"][0]["status"], "pass", result["results"])
+        self.file.write_text(self.file.read_text().replace("factor:scale", "factor:scale+1"))
+        self.assertEqual(self.run_probe(p)["results"][0]["status"], "fail")
+
+    def test_missing_runtime_alias_reports_the_actual_declared_path(self):
+        self.file.write_text("const Rules={actions:{adjust(s){s.balance++;}}};")
+        p = copy.deepcopy(PROBE)
+        p["functions"][0].update(name="Rules.adjust", kind="function")
+        result = self.run_probe(p)["results"][0]
+        self.assertEqual(result["status"], "error")
+        self.assertIn("declared callable paths with this member name: Rules.actions.adjust", result["message"])
+
     def test_precondition_calls_and_assertions_cannot_certify_the_check(self):
         p = copy.deepcopy(PROBE)
         p["precondition"] += "adjust(state,0);"
