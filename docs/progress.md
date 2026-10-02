@@ -1687,3 +1687,9 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - The new 25-scenario review/merge group initially passed 17; native Role and test-status controls blocked its required clicks. Two model repair calls, CNY 0.162586, make that group pass 25/25. The complete mixed own suite passes 99 UI scenarios with one pre-existing unjudged case. Four source checks remain passing after a separately versioned, identical before/after rendering-plumbing fixture correction.
 - Original independent totals move 64/67 to 63/66, but every newly failed test wrongly calls selectOption on the explicitly clickable test-status control. Versioned calibration copies change only those four selection actions, retaining all assertions/fixtures and original judges. Same-judge before/after: 62 to 65 and 66 to 67. No official gain is inferred.
 - Evidence: `docs/evidence/2026-10-02-control-contract-calibration.json`. Broad one-shot checks and source secret scan are running before freezing the next generic candidate. The current official pair is untouched; Sheet is 83 and GitHub is still running.
+
+## 2026-10-02 09:55 — Generic controls candidate frozen for a fresh pair
+
+- ZIP `8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a`, source e53024c, includes object-owner binding, actionable declaration hints, complete shared-prerequisite guidance and scoped native/clickable selection guidance. No generated application, task fixture or concrete probe is packaged.
+- One-shot suite: 267 run, 264 passed, 3 optional readiness skips. Source and exact ZIP secret scans have no findings. Practice balance immediately before this pair was CNY 425.235319.
+- Both tasks are now generating from the exact extracted ZIP with Vision and practice credit. No new official submission was created. Preserve raw independent scores and the versioned calibrated comparisons; they do not establish official improvement.
