@@ -31,6 +31,11 @@ its bounded source snapshot to the same one-shot call. For a separate immutable 
 `--template-dir EXISTING_APP --output-dir EMPTY_DIR`. The Python `generate()` API retains its
 empty-output default unless `template=` is supplied explicitly.
 
+Completed upgrades now receive the same requirement-written browser checks and source review as
+new applications. Keeping an existing application does not establish its newly requested behavior.
+The earlier template path skipped test generation and could finish with every masked scenario
+unparsed; that outcome is not validation. Test-writing and repair costs remain on the run ledger.
+
 ## Boundaries
 
 Paths must be relative and resolve within the output tree. Generation is staged and the

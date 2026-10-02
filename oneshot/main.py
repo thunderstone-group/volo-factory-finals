@@ -1535,9 +1535,10 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             if template is not None and all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files):
                 raise ValueError("upgrade did not change any files")
             if SMOKE:
-                if TESTGEN and template is None:
+                if TESTGEN:
                     # A failed draft has nothing to assess. Start paid test writing only after a complete draft,
                     # avoiding simultaneous long streams and test costs for an application that never arrives.
+                    # Upgrades need the same requirement checks; a preserved app is not evidence for new behavior.
                     suite = start_suite(requirements, Path(tempfile.mkdtemp(prefix="oneshot-tests-")), model, base, key,
                                         prerequisites)
                     suites.append(suite)
