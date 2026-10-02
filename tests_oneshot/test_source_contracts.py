@@ -136,6 +136,19 @@ window.Rules=Rules;
         p["check"] = "adjust(state); assert.equal(state.balance,9);"
         self.assertEqual(self.run_probe(p)["results"][0]["status"], "pass")
 
+    def test_window_qualified_owner_extensions_use_the_actual_assignment(self):
+        self.file.write_text('''const scale=2;
+window.Rules={calls:0};
+window.Rules.actions={factor:scale, 'adjust-value'(state,n){Rules.calls++; state.balance+=this.factor*n;}};
+''')
+        p = copy.deepcopy(PROBE)
+        p["functions"][0].update(name="Rules.actions.adjust-value", kind="method")
+        p["check"] = "adjust(state,3); assert.equal(Rules.calls,1); assert.equal(state.balance,16);"
+        result = self.run_probe(p)
+        self.assertEqual(result["results"][0]["status"], "pass", result["results"])
+        self.file.write_text(self.file.read_text().replace("factor:scale", "factor:scale+1"))
+        self.assertEqual(self.run_probe(p)["results"][0]["status"], "fail")
+
     def test_missing_runtime_alias_reports_the_actual_declared_path(self):
         self.file.write_text("const Rules={actions:{adjust(s){s.balance++;}}};")
         p = copy.deepcopy(PROBE)

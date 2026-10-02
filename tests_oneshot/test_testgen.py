@@ -940,6 +940,18 @@ class FixSuiteCase(unittest.TestCase):
         self.assertEqual(status, "error")
         self.assertTrue(observation.startswith("The test's own code threw"))
 
+    def test_an_unavailable_expect_matcher_is_not_a_product_failure(self):
+        # Actual Playwright 1.57 error from a requirements-only generated suite.
+        for matcher in ("toBeSelected", "toHaveInventedState"):
+            failure = {"status": "failed", "errors": [{
+                "message": "Error: expect: Property '%s' not found." % matcher}]}
+            status, observation, _ = testgen._classify(failure, "", "", (set(), []))
+            self.assertEqual(status, "error")
+            self.assertTrue(observation.startswith("The test's own code threw"))
+        mismatch = {"status": "failed", "errors": [{
+            "message": 'Error: expect(locator).toHaveValue(expected)\nExpected: "Write"\nReceived: "Read"'}]}
+        self.assertEqual(testgen._classify(mismatch, "", "", (set(), []))[0], "fail")
+
     @unittest.skipUnless(shutil.which("node"), "node is required")
     def test_a_reply_that_does_not_parse_leaves_the_file_as_it_was(self):
         body = "const { test } = require('@playwright/test');\ntest('REQ-1-1: Add one', async () => { grid; });\n"

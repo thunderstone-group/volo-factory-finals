@@ -119,7 +119,8 @@ FILE_BLOCK = re.compile(r"=== FILE:[ \t]*(.*?)[ \t]*===[ \t]*\r?\n(.*?)\r?\n=== 
 TITLE = re.compile(r"""\btest(?:\.(?:skip|only|fixme))?\(\s*(['"`])((?:\\.|(?!\1).)*)\1""")
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
 OWN_ERROR = re.compile(r"^(?:ReferenceError|TypeError|SyntaxError|RangeError)\b"
-                       r"|can be only used with (?:Locator|Page|APIResponse) object")
+                       r"|can be only used with (?:Locator|Page|APIResponse) object"
+                       r"|^Error: expect: Property '[^'\n]+' not found\.$")
 CELL = re.compile(r"[A-Z]{1,3}[1-9][0-9]{0,5}")
 NAMED = re.compile(r"""getBy(?:Role\(\s*'[a-z]+'\s*,\s*\{\s*name:\s*|Label\(\s*|Text\(\s*|Placeholder\(\s*)'((?:\\.|[^'\\])*)'""")
 

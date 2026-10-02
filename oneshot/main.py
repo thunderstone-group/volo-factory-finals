@@ -1162,53 +1162,68 @@ def smoke_check(stage, requirements=None, diagnostics=None):
         return problems, True
     manifest = json.loads((stage / "backend" / "package.json").read_text(encoding="utf-8"))
     entry = shlex.split(manifest["scripts"]["start"])[1]
-    port = _free_port()
-    proc = subprocess.Popen([node, entry], cwd=stage / "backend", env={**env, "PORT": str(port)},
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    output = []
-
-    def pump():
-        for chunk in iter(lambda: proc.stdout.read(4096), b""):
-            if sum(len(c) for c in output) < 200_000:
-                output.append(chunk)
     import threading
-    threading.Thread(target=pump, daemon=True).start()
-    try:
-        ready, last, deadline = False, "", time.monotonic() + SMOKE_READY_SECONDS
-        while time.monotonic() < deadline:
-            if proc.poll() is not None:
-                problems.append(f"backend `node {entry}` exited with code {proc.returncode} before answering "
-                                f"GET /api/health: {_tail(b''.join(output))}")
-                break
-            try:
-                status, _, body = _fetch_local(f"http://127.0.0.1:{port}/api/health", timeout=3)
-                if status == 200 and json.loads(body.decode("utf-8", "replace")) == HEALTH_BODY:
-                    ready = True
+    for attempt in range(3):
+        port = _free_port()
+        proc = subprocess.Popen([node, entry], cwd=stage / "backend", env={**env, "PORT": str(port)},
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = []
+
+        def pump(pipe=proc.stdout, chunks=output):
+            for chunk in iter(lambda: pipe.read1(4096), b""):
+                if sum(len(c) for c in chunks) < 200_000:
+                    chunks.append(chunk)
+
+        reader = threading.Thread(target=pump, daemon=True)
+        reader.start()
+        try:
+            ready, last, deadline = False, "", time.monotonic() + SMOKE_READY_SECONDS
+            while time.monotonic() < deadline:
+                if proc.poll() is not None:
+                    reader.join(timeout=1)
+                    problems.append(f"backend `node {entry}` exited with code {proc.returncode} before answering "
+                                    f"GET /api/health: {_tail(b''.join(output))}")
                     break
-                last = f"HTTP {status} {_tail(body, 200)}"
-            except Exception as exc:  # connection refused while starting, bad JSON, timeouts
-                last = str(exc)[:200]
-            time.sleep(0.4)
-        if not ready and not problems:
-            problems.append(f"GET /api/health did not return 200 {json.dumps(HEALTH_BODY)} within "
-                            f"{SMOKE_READY_SECONDS}s (last: {last}); backend output: {_tail(b''.join(output))}")
-        if ready:
-            try:
-                _check_page(port, problems)
-                if not problems:
-                    _check_dom(stage, port, problems, requirements)
-                    _check_semantic_browser(port, problems, requirements,
-                                            diagnostics if diagnostics is not None else [])
-            except Exception as exc:
-                problems.append(f"GET / failed: {str(exc)[:200]}")
-    finally:
-        if proc.poll() is None:
-            proc.terminate()
-            try:
-                proc.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-                proc.wait()
+                if b"EADDRINUSE" in b"".join(output):
+                    problems.append(f"backend could not bind the smoke-check port: {_tail(b''.join(output))}")
+                    break
+                try:
+                    status, _, body = _fetch_local(f"http://127.0.0.1:{port}/api/health", timeout=3)
+                    if status == 200 and json.loads(body.decode("utf-8", "replace")) == HEALTH_BODY:
+                        ready = True
+                        break
+                    last = f"HTTP {status} {_tail(body, 200)}"
+                except Exception as exc:  # connection refused while starting, bad JSON, timeouts
+                    last = str(exc)[:200]
+                time.sleep(0.4)
+            if not ready and not problems:
+                problems.append(f"GET /api/health did not return 200 {json.dumps(HEALTH_BODY)} within "
+                                f"{SMOKE_READY_SECONDS}s (last: {last}); backend output: {_tail(b''.join(output))}")
+            if ready:
+                try:
+                    _check_page(port, problems)
+                    if not problems:
+                        _check_dom(stage, port, problems, requirements)
+                        _check_semantic_browser(port, problems, requirements,
+                                                diagnostics if diagnostics is not None else [])
+                except Exception as exc:
+                    problems.append(f"GET / failed: {str(exc)[:200]}")
+        finally:
+            if proc.poll() is None:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    proc.wait()
+            reader.join(timeout=1)
+            if not reader.is_alive():
+                proc.stdout.close()
+        if ready or attempt == 2 or b"EADDRINUSE" not in b"".join(output):
+            break
+        # The OS may allocate our probed port to another process before Node binds it.
+        # Only an explicit bind collision warrants another local attempt, without a model call.
+        problems.clear()
     return problems, True
 
 

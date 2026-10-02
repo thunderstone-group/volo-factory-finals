@@ -36,12 +36,12 @@ for (const [file, source] of Object.entries(sources)) {
       const callable = ['FunctionExpression', 'ArrowFunctionExpression'].includes(node.init.type);
       add(node.id.name, callable ? 'function' : 'value', node.init, scope, parent && parent.kind !== 'const');
     }
-    if (node.type === 'AssignmentExpression' && node.operator === '=' &&
-        node.left.type === 'MemberExpression' && node.left.object.type === 'Identifier' &&
-        (!node.left.computed || node.left.property.type === 'Literal')) {
-      const root = node.left.object.name;
-      const property = node.left.computed ? node.left.property.value : node.left.property.name;
-      if (typeof property === 'string' && /^[A-Za-z_$][\w$]*$/.test(property)) {
+    if (node.type === 'AssignmentExpression' && node.operator === '=') {
+      const declared = memberPath(node.left);
+      // window.X is the root initializer; window.X.y and X.y extend that same root.
+      const path = declared.length > 2 ? normalized(declared) : declared;
+      const [root, property] = path;
+      if (path.length === 2 && typeof property === 'string' && /^[A-Za-z_$][\w$]*$/.test(property)) {
         const callable = ['FunctionExpression', 'ArrowFunctionExpression'].includes(node.right.type);
         add(root + '.' + property, callable ? 'method' : 'value', node.right, scope, true);
         Object.assign(index[index.length - 1], {member: [root, property], leaf_name: property});

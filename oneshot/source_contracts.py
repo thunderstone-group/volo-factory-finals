@@ -227,12 +227,13 @@ def execute(app, probes, requirements):
             # ReferenceError when absent. Ambiguous/reassigned definitions remain unjudged.
             roots = {(f["file"], f["scope"], f["member"][0]) for f in functions if f.get("member")}
             for f in functions:
+                name = f["alias"] if f["name"] in ("window." + f["alias"], "globalThis." + f["alias"]) else f["name"]
                 if f["kind"] == "value" and not f.get("member") and any(
                         m["file"] == f["file"] and m["scope"] == f["scope"]
-                        and m.get("member", [None])[0] == f["name"] for m in index):
-                    if f["alias"] != f["name"]:
-                        raise ValueError("Use the actual namespace name as its alias: " + f["name"])
-                    roots.add((f["file"], f["scope"], f["name"]))
+                        and m.get("member", [None])[0] == name for m in index):
+                    if f["alias"] != name:
+                        raise ValueError("Use the actual namespace name as its alias: " + name)
+                    roots.add((f["file"], f["scope"], name))
             for file, scope, root in sorted(roots):
                 if root not in ("window", "globalThis") and root not in [f["alias"] for f in functions]:
                     declarations = [f for f in index if f["file"] == file and f["scope"] == scope
@@ -252,7 +253,7 @@ def execute(app, probes, requirements):
             if any(r["id"] == p["id"] for r in rejected):
                 continue
             try:
-                functions = object_owners(namespace_members([bind(f) for f in p["functions"]]))
+                functions = namespace_members(object_owners(namespace_members([bind(f) for f in p["functions"]])))
                 if not next(f for f in functions if f["alias"] == p["subject"])["callable"]:
                     raise ValueError("The principal subject is not a function")
                 initializers = [{"file": name, "code": _source(app, name)} for name in p.get("initializers", [])]
@@ -283,6 +284,7 @@ def execute(app, probes, requirements):
                     p["functions"].append(bind(dict(f, alias=alias)))
                     namespace_members(p["functions"])
                     object_owners(p["functions"])
+                    namespace_members(p["functions"])
                     p.setdefault("linked_dependencies", []).append(name)
                     added = True
             if not added:

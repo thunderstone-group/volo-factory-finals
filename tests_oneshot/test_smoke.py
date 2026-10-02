@@ -7,6 +7,7 @@ import io
 import json
 import os
 import shutil
+import socket
 import tempfile
 import unittest
 from pathlib import Path
@@ -191,6 +192,37 @@ class SmokeCase(unittest.TestCase):
         self.assertIn("HTTP 404", messages[-1]["content"])
         self.assertIn("broken as a whole", messages[-1]["content"])
         self.assertEqual(messages[-2]["role"], "assistant")
+
+    def test_a_real_port_collision_is_retried_without_a_model_repair(self):
+        for item in adapter.parse_blocks(app(server()))[0]:
+            adapter.write_one(self.out, item)
+        with contextlib.closing(socket.socket(socket.AF_INET6)) as occupied:
+            occupied.bind(("::", 0))
+            occupied.listen()
+            busy = occupied.getsockname()[1]
+            free = adapter._free_port()
+            with patch.object(adapter, "_free_port", side_effect=[busy, free]) as ports:
+                problems, executed = adapter.smoke_check(self.out)
+            self.assertTrue(executed)
+            self.assertEqual(problems, [])
+            self.assertEqual(ports.call_count, 2)
+        self.transport.assert_not_called()
+
+    def test_port_collision_retries_are_bounded_and_other_startup_errors_are_not_retried(self):
+        for item in adapter.parse_blocks(app(server()))[0]:
+            adapter.write_one(self.out, item)
+        with contextlib.closing(socket.socket(socket.AF_INET6)) as occupied:
+            occupied.bind(("::", 0))
+            occupied.listen()
+            with patch.object(adapter, "_free_port", return_value=occupied.getsockname()[1]) as ports:
+                problems, _ = adapter.smoke_check(self.out)
+            self.assertEqual(ports.call_count, 3)
+            self.assertIn("EADDRINUSE", "\n".join(problems))
+        (self.out / "backend/server.js").write_text("throw new Error('actual startup defect');")
+        with patch.object(adapter, "_free_port", wraps=adapter._free_port) as ports:
+            problems, _ = adapter.smoke_check(self.out)
+        self.assertEqual(ports.call_count, 1)
+        self.assertIn("actual startup defect", "\n".join(problems))
 
     def test_wrong_content_type_and_bad_health_are_reported(self):
         self.replies(events(app(server(ctype="'application/octet-stream'"))))
