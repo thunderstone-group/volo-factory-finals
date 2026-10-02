@@ -41,6 +41,15 @@
 - **v4b全新原始双题已于11:22启动**：`generate_diagnostics_v4b.py` exec **41797**；目录 `generate-diagnostics-v4b-{github,sheet}`。11:24两个PID47205/47204均活跃、模型SSE在增长，勿重启。原始judge watcher **25894**，校准G watcher **81270**；对应 `watch_diagnostics_v4b.py`、`watch_calibrated_diagnostics_v4b.py`。最终 `fresh-diagnostics-v4b-validation.json`。两watcher只验证，不自动正式提交。
 - source分支证据 `docs/evidence/2026-10-02-diagnostic-recovery.json`，外部预声明 `diagnostics-v4b-experiment-decision.json` 明确保留独立负结果，验证完整生成和修复成本；R2仍为冻结v3。
 
+## 新增架构对照：按依赖生成，再扩展完整任务
+
+- 外部pilot **dependency-build-pilot-github** 已于11:33启动。精确v4b包不改，先用自动依赖闭包生成前40%atomic（19/47，45/100场景），再用已有 --template-dir 入口实现**完整原始100场景需求**。选中节点文本、scenario与原文解析值完全一致，投影经真实parser往返一致。
+- 两阶段全部费用都计入对照；每阶段 repair CNY2.5/8calls，上限是否触发要报告。它是架构试验，不是新的提交，也不是用部分任务替换完整目标。
+- generator E2 `dependency_build_pilot.py` exec **85568**，11:35 foundation PID **64668** live并持续SSE；`process.json`会更新当前阶段PID，完成看 `finished.json`（需exit0且completed_phases2）。stage1源在foundation/application，最终全任务app在根application。完整模型trace在各phase/stderr.log。
+- watcher E2 `watch_dependency_build_pilot.py` exec **60228**，等两阶段完成后用原始及同版校准G裁判，输出根calibrated-validation.json。原始/投影SHA和选择算法已预声明在decision.json；新stage1官方题没被调用。
+- 当前已有正式R2、完整v4b双题、此架构对照同时推进。**先等这些具体进程/远端run的真实结果，不再为了填等待时间增加实验或改提示。** 实际失败/终态才触发下一项改动。Verified wait是有效推进，不要忙轮询，更不要凭观察超时重启。
+- 11:35 practice余额418.759280、pending0；正式余额仍以R2结算后实读为准。source分支证据 `docs/evidence/2026-10-02-dependency-build-pilot.json`。
+
 ## 正式基线与关键结论
 
 - 第一轮S70正式 e963e1a3e56c：G07c92a18ffb4 **21/100** CNY4.313931；Scee35cb1fb7f **83/100** CNY2.477041；同次104/200，费用6.790972；总榜明确source_run_ids、S62.33320859322366/rank6/is_complete。证据 `docs/evidence/2026-10-02-s70-official-result-r1.json`。
@@ -54,5 +63,5 @@
 
 - 用户公告截止10-03 23:59。目标起点practice439.583993/formal227.577645；11:00实读practice420.511753 pending0，formal220.786673（R2扣费前）。首批内部practice60/formal40，未用完；余额不足才问，不充值。
 - 继续：等受控回放与完整回归，形成下一可复现候选；检查R2正式终态、费用和同提交总榜。S>=70才complete，否则用真实失分证据继续迭代。不要混合不同submission单题最佳，不把局部校准提升直接当正式效果。
-- 不要杀其他人的caffeinate PID72440。当前本任务活跃：R2远端两个run+只读watcher、v4b两个本地生成+原始/校准watchers。受控repair、其judges、两次matcherpilot、完整回归以及旧v1/v2/v3fresh均结束。
+- 不要杀其他人的caffeinate PID72440。当前本任务活跃：R2远端两个run+只读watcher、v4b两个本地生成+原始/校准watchers、两阶段架构pilot及其judge watcher。受控repair、其judges、两次matcherpilot、完整回归以及旧v1/v2/v3fresh均结束。
 - 未请求memory更新，不写memory。最终回复须带此前MEMORY.md1211和arcbench-run-triage skill18-31的单一memory citation块。
