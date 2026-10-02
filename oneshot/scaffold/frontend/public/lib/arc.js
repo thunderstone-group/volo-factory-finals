@@ -168,6 +168,7 @@
   // only after they change state, and forms keep their values via ARC.preserveInputs.
   ARC.render = function () {
     if (pressing) { postponed = true; return; }
+    ARC._ensureSelectStyles();
     const route = ARC.route();
     ARC._renderedHash = route.hash;
     ARC._popover = null;  // the screen is rebuilt; an open popover goes with it
@@ -254,24 +255,43 @@
     ARC._popover = null;
   };
 
-  // --- Combobox: a named combo box whose options are CLICKED. Suites open the box by its name
-  // (`getByRole('combobox', {name: 'Priority', exact: true})`) and then click the option by its visible name
-  // (`getByRole('option', {name: 'High', exact: true})`). A native <select> fails that: its <option>s are
-  // never visible to a click, and several selects offering the same option name make the option ambiguous.
-  // Here the listbox exists only while its box is open, so an option name shared by several boxes resolves
-  // to one element. The value rides in a hidden input named `name`, so forms submit it like any field.
-  // ARC.combobox({ label, name, options: ['A', 'B'] | [{ value, label }], value, change: 'actionName' })
-  // renders a <label>, the box (role=combobox, named by the label) and the hidden input; `change` names an
-  // APP.actions entry called with { value, name } after a pick.
+  // Native selects retain form values, keyboard support and standard selection APIs.
+  // In supporting browsers, the customizable picker also exposes clickable DOM options.
+  ARC._ensureSelectStyles = function () {
+    if (!document.head || document.getElementById('arc-native-select-style')) return;
+    const style = document.createElement('style');
+    style.id = 'arc-native-select-style';
+    style.textContent = '@supports (appearance: base-select) {' +
+      'select:not([multiple]):not([size]),select:not([multiple]):not([size])::picker(select){appearance:base-select;}' +
+      'select:not([multiple]):not([size]):not(:open) option{display:none;}' +
+      'select:not([multiple]):not([size])::picker(select){background:white;color:#171717;border:1px solid #ddd;border-radius:6px;padding:4px;}' +
+      'select:not([multiple]):not([size]) option{padding:4px 10px;}' +
+      '}';
+    document.head.appendChild(style);
+    document.addEventListener('input', (event) => {
+      const el = event.target.closest('select.arc-native-combobox[data-cb-change]');
+      if (!el) return;
+      const app = window.APP || {};
+      const fn = app.actions && app.actions[el.dataset.cbChange];
+      if (typeof fn !== 'function') return;
+      ARC.shareHelpers(app);
+      fn.call(app.actions, { value: el.value, name: el.name, el, event });
+    });
+  };
+  // ARC.combobox({ label, name, options: ['A', 'B'] | [{value, label}], value, change })
+  // `change` keeps the existing {value, name, el} callback contract.
   ARC.combobox = function (o) {
+    ARC._ensureSelectStyles();
     const id = 'cb-' + String(o.name || o.label).replace(/[^A-Za-z0-9_-]/g, '_') + '-' + (ARC._cbSeq = (ARC._cbSeq || 0) + 1);
     const options = (o.options || []).map((x) => (typeof x === 'object' ? { value: String(x.value), label: String(x.label != null ? x.label : x.value) } : { value: String(x), label: String(x) }));
     const current = options.find((x) => x.value === String(o.value == null ? '' : o.value));
-    return `<span class="combobox" data-combobox="${id}"${o.change ? ` data-cb-change="${ARC.esc(o.change)}"` : ''}>` +
+    return `<span class="combobox" data-combobox="${id}">` +
       `<label id="${id}-label" for="${id}">${ARC.esc(o.label)}</label> ` +
-      `<button type="button" id="${id}" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="${id}-list" aria-labelledby="${id}-label"` +
-      ` data-action="arc:combobox" data-options="${ARC.esc(JSON.stringify(options))}">${ARC.esc(current ? current.label : (o.placeholder || 'Select'))}</button>` +
-      `<input type="hidden" name="${ARC.esc(o.name || '')}" value="${ARC.esc(current ? current.value : '')}"></span>`;
+      `<select class="arc-native-combobox" id="${id}" role="combobox" name="${ARC.esc(o.name || '')}"` +
+      ` aria-labelledby="${id}-label"${o.change ? ` data-cb-change="${ARC.esc(o.change)}"` : ''}>` +
+      (current ? '' : `<option value="" hidden selected>${ARC.esc(o.placeholder || 'Select')}</option>`) +
+      options.map((x) => `<option value="${ARC.esc(x.value)}"${x === current ? ' selected' : ''}>${ARC.esc(x.label)}</option>`).join('') +
+      '</select></span>';
   };
   ARC._openCombobox = function (box) {
     const wrap = box.closest('[data-combobox]');

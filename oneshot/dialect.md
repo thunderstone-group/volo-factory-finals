@@ -4,6 +4,12 @@ initial seed states and attributes override historical conventions and scaffold 
 Do not change explicit semantics merely to satisfy a guessed locator fallback.
 Use semantic HTML and accessible names. The requirements can also specify HTML elements and
 attributes such as mark, title, aria-pressed and aria-expanded; implement those literally.
+## 0. The stated starting screen is part of the workflow
+A scenario's first action must be possible from its GIVEN screen and authentication state.
+If it starts at the home page and opens a visible capability or saved record, provide a real,
+permission-aware overview/navigation entry there. Do not assume the user first selects a parent
+container or signs in unless the scenario establishes that context. Use runtime records and their
+canonical URLs, preserving anonymous/read-only access rules; never auto-login or hardcode record titles.
 ## 1. The locator ladder (fixed and public)
 - Click: role `button`, then `link`, `tab`, `menuitem`, `option`, then `getByText` — FIRST VISIBLE WINS.
 - Assert visible: `getByText`, then roles `heading, button, link, tab, cell, columnheader, textbox, combobox`, then `getByLabel`, then `getByPlaceholder`.
@@ -30,9 +36,13 @@ and in its form ("strict mode violation ... resolved to 2 elements").
   `getByRole('tab', {name: 'Draft', exact: true})` finds nothing. Put such controls BESIDE it:
   `<span class="tab-wrap"><button role="tab" aria-selected="true">Draft</button><button
   aria-label="Options for Draft">⋯</button></span>`.
-- A combo box whose options the requirements name (or call clickable, or give the option role) is driven
-  by clicking the box and then the option: use the scaffold's `ARC.combobox`, never a native `<select>`,
-  whose options a click cannot reach.
+- Use `ARC.combobox` for a labeled finite choice. It is a native select with the browser's customizable
+  picker where supported, preserving both named-option clicks and native selection. Ordinary single
+  selects receive the same picker styling. Honor any explicitly required control type and interaction;
+  do not replace native form semantics with a button plus a hidden parallel value.
+  Read values through `FormData`, the change callback, or a control selected by its `name`; do not assume
+  a widget stores its value in `input[name=...]`. When updating an existing widget, migrate dependent
+  readers together so changing its internal markup cannot silently reset business configuration.
 ## 3. Preserve exact names within their declared scope
 A row action belongs inside its record; a form action belongs in its form; a sidebar action belongs
 inside the sidebar. Preserve required names even when the same verb appears in another scope.
