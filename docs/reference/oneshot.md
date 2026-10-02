@@ -104,11 +104,17 @@ the zero-dependency application contract. With Node/npm available, it builds the
 starts the backend, checks health and assets, and executes a jsdom crash probe. Requirements
 with explicit UI declarations also receive a deterministic Chromium diagnostic: declared home
 controls, accessible roles, dialog action ambiguity, editor scope and native checkbox behavior.
-Quoted requirement phrases (backticks, straight or curly double quotes) drive the prompt's
-vocabulary checklist, the vocabulary and exact-name gates and the repair's rename guard; a phrase
-quoted only in backticks that the user types (`fills X with ...`, `enters ...`) is a runtime value
-and is not demanded. These checks feed the repair loop below as findings and hints; only the
-unchanged acceptance suite establishes test scores.
+Quoted requirement phrases (backticks, straight or curly double quotes) drive legacy vocabulary
+diagnostics and the repair's control-rename guard. The draft prompt distinguishes initial records,
+UI labels/messages, runtime inputs and explicitly absent data rather than demanding source coverage
+of every literal. With requirement-written browser tests, vocabulary gaps do not become repair
+goals or acceptance penalties. Only an unchanged acceptance suite establishes test scores.
+
+A usable written suite also receives deterministic initial-entry checks derived from explicit
+unauthenticated GIVEN states and literal first navigation actions. These open the home page without
+inventing parent navigation or authentication. Unknown actions or other explicit starting screens
+are skipped. The guards supplement the written scenarios, cannot rescue an unusable test manifest,
+and do not change the number of public acceptance scenarios.
 
 ## Repair loop
 
@@ -121,8 +127,9 @@ vocabulary, and, when the application is not broken as a whole, the scenario sel
   or a requirement scenario fails. A load failure that only the jsdom probe reports (jsdom lacks
   `ResizeObserver`, canvas and other browser APIs) stands only when Chromium passes no scenario
   either; otherwise it becomes a hint (`smoke.jsdom_only`). Family-level smoke problems (a throwing
-  click handler, a missing landmark), the static gates and the vocabulary gap ride along as hints
-  and never trigger a call on their own.
+  click handler, a missing landmark) ride along as hints and never trigger a call on their own.
+  Static hints are retained for the fallback scenario checker; written browser failures are not
+  supplemented with unrelated static or vocabulary hints.
 - **Request.** The whole-application failures, else each failing scenario with the steps the
   browser performed and what it observed (up to 40), the ids of the passing scenarios to keep, and
   the hints. Existing files use exact SEARCH/REPLACE edits; new or short files may be emitted whole.
@@ -131,7 +138,8 @@ vocabulary, and, when the application is not broken as a whole, the scenario sel
   scenario that failed now passes, it gains three such scenarios for every passing one it loses, no
   clean static gate starts flagging, no quoted phrase disappears and no control name the requirement
   quotes is renamed (compared without leading or trailing symbols; a name the browser activated
-  counts as present). Only verdicts both checks reached compare: a scenario that was unparsed or
+  counts as present). With written browser tests, newly flagged static gates and renamed controls
+  count as penalties against gains; literal source-coverage changes do not. Only verdicts both checks reached compare: a scenario that was unparsed or
   errored before is never a gain, one unparsed or not started after is never a loss. Lost
   scenarios, and gains of at most two, are rechecked once. A check that cannot run at all (no
   browser, every scenario errored) is retried once and then marked `checker`: the repair is

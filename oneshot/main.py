@@ -640,6 +640,13 @@ def parse_repair(text, stage):
                 and len(re.findall(r"^=======[ \t]*$", body, re.M)) == 2
                 and re.search(r"^=======[ \t]*\s*\Z", body, re.M)):
             body = re.sub(r"^=======[ \t]*\s*\Z", ">>>>>>> REPLACE\n", body, flags=re.M)
+        # A captured reply redundantly repeated the separator immediately before
+        # its valid closing marker. Remove only that unambiguous framing line.
+        if (len(re.findall(r"^<<<<<<< SEARCH[ \t]*$", body, re.M)) == 1
+                and len(re.findall(r"^=======[ \t]*$", body, re.M)) == 2
+                and len(re.findall(r"^>>>>>>> REPLACE[ \t]*$", body, re.M)) == 1
+                and re.search(r"^=======[ \t]*\r?\n>>>>>>> REPLACE[ \t]*\s*\Z", body, re.M)):
+            body = re.sub(r"^=======[ \t]*\r?\n(?=>>>>>>> REPLACE[ \t]*\s*\Z)", "", body, flags=re.M)
         hunks = HUNK.findall(body)
         if not hunks:
             raise ValueError(f"EDIT {path}: no `<<<<<<< SEARCH` / `=======` / `>>>>>>> REPLACE` hunk")
@@ -1480,10 +1487,10 @@ def draft_application(stage, files, messages, model, base, key, budget, template
 
 
 def draft_messages(requirements, scaffold=None, snapshot=None, prerequisites=""):
-    """The draft conversation: the card, the delivery contract, the quoted vocabulary and the requirements (with the
+    """The draft conversation: the card, the delivery contract and the requirements (with the
     task's prerequisites.md when it has content), then the scaffold placed in the stage or the existing application
     being extended."""
-    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT + vocabulary_table(requirements) +
+    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT +
             seed_checklist(requirements) +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
     if prerequisites.strip():
@@ -1713,9 +1720,10 @@ def seed_checklist(requirements):
     if not order:
         return ""
     lines = ["\n\n## Seed data checklist (the GIVEN seed of every scenario, deduplicated)",
-             "Each hidden test starts at `/` in a fresh, signed-out browser session, against the state below, and "
-             "reaches these records only by clicking what the screens show (§6b). Create every record at startup "
-             "with exactly these names and values; the ids say which requirements' tests expect each line."]
+             "These statements come from explicit GIVEN seed clauses. Preserve the stated identities, relationships, "
+             "permissions, presence and absence. Create only records required to exist initially; values supplied "
+             "later by a user and explicitly absent records are not startup data. Follow each scenario's stated "
+             "screen and authentication context rather than assuming one universal starting state."]
     for clause in order[:SEED_SHOWN]:
         ids = clauses[clause]
         head = ", ".join(ids[:6]) + (f" (+{len(ids) - 6} more)" if len(ids) > 6 else "")
@@ -2403,7 +2411,8 @@ def repair_request(state, discarded=None, unapplied=(), depths=None, focus=None)
     if failing:
         hints = [i.get("observation") or "" for i in (state["report"] or {}).get("invariants", []) if i.get("status") == "fail"]
         hints += [p for p in state["smoke"] if not _fatal(p)]
-        hints += [p for problems in state["static"].values() for p in problems] + state["vocab"]
+        if not written:
+            hints += [p for problems in state["static"].values() for p in problems]
         if hints:
             sections.append("Other findings of the same check (hints; they may share a cause with the failures):\n"
                             + "\n".join("- " + h[:600] for h in hints[:20]))
@@ -2429,8 +2438,8 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     """(accepted, reason, detail) for a repaired stage against the version before it (roadmap 4.3). A repair is kept
     when it brings a broken application back (whatever else it did), or when at least one scenario that failed now
     passes, it gains LOSS_RATIO of those for every passing scenario it loses, no clean static gate starts flagging, no
-    quoted phrase disappears and no control name the requirement quotes is renamed (under written tests those three
-    guards weigh as lost tests instead: one per newly flagging gate, missing phrase or renamed control). Only verdicts both checks reached
+    quoted phrase disappears and no control name the requirement quotes is renamed (under written tests only new
+    static gates and renamed controls weigh as lost tests; literal source coverage is diagnostic). Only verdicts both checks reached
     compare: a scenario that was unparsed or errored before never counts as gained, and one that is unparsed after as
     lost. Lost scenarios, and gains of at most two, are rechecked once for flakiness. A check that could not run at all
     is the checker's failure, marked `checker` in the detail, not the repair's."""
@@ -2442,7 +2451,8 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     if newly:
         guards.append("a static gate that was clean now flags: " + "; ".join(p for g in newly for p in after["static"][g])[:500])
         penalty += len(newly)
-    if after["missing"] > before["missing"]:
+    written = (before["report"] or {}).get("kind") == "testgen"
+    if not written and after["missing"] > before["missing"]:
         guards.append(f"the change removed quoted vocabulary ({before['missing']} -> {after['missing']} missing)")
         penalty += after["missing"] - before["missing"]
     # A literal button can become a data-driven menu entry: a successful browser activation proves the name exists.

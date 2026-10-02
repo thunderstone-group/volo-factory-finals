@@ -70,12 +70,17 @@ class PlanCase(unittest.TestCase):
         text = document(given, when)
         entries = testgen.initial_entries(text)
         self.assertEqual([(x["id"], x["name"]) for x in entries], [("REQ-1#entry-1", "Travel plans")])
+        default_start = document('The visitor is unauthenticated.', 'The visitor opens Archive, then reads a note.')
+        default_start = default_start.replace('type: ATOMIC', 'type: ATOMIC\ndescription: A link named “Archive” opens the archive.')
+        self.assertEqual(testgen.initial_entries(default_start)[0]['name'], 'Archive')
         for given_case, when_case in [
             (given + ' A signed-in user has entered the editor.', when),
             ('The user is in an editor.', when),
+            ('The unauthenticated visitor is on the settings page.', when),
             (given, 'The user signs in, then opens `Travel plans`.'),
             (given, 'The visitor searches for a notebook and opens `Travel plans`.'),
             (given, 'The visitor clicks “Export” in the editor.'),
+            (given, 'The visitor opens an appropriate place.'),
         ]:
             text = document(given_case, when_case)
             self.assertEqual(testgen.initial_entries(text), [])
@@ -545,7 +550,7 @@ class RepairLoopCase(unittest.TestCase):
         self.assertTrue(budget.smoke["rounds"][0]["accepted"], budget.smoke["rounds"][0])
         self.assertEqual(budget.smoke["rounds"][0]["gained"], ["REQ-1", "REQ-2", "REQ-3"])
 
-    def test_a_lost_quoted_phrase_weighs_as_one_lost_test_under_written_tests(self):
+    def test_literal_inventory_does_not_add_a_penalty_to_written_verdicts(self):
         from tests_oneshot.test_oneshot import block
         many = {f"REQ-{i}": "fail" for i in range(1, 7)}
         before = self.report({**many, "REQ-9": "pass"})
@@ -555,9 +560,10 @@ class RepairLoopCase(unittest.TestCase):
             _, budget, _ = self.run_loop([before, after], [block("frontend/public/app.js", "// repaired")])
         record = budget.smoke["rounds"][0]
         self.assertTrue(record["accepted"], record)
-        self.assertIn("removed quoted vocabulary", record["waived"][0])
+        self.assertNotIn("removed quoted vocabulary", record["reason"])
+        self.assertNotIn("waived", record)
 
-    def test_a_lost_quoted_phrase_still_outweighs_a_small_gain(self):
+    def test_literal_inventory_does_not_reject_an_executed_small_gain(self):
         from tests_oneshot.test_oneshot import block
         before = self.report({"REQ-1": "fail", "REQ-2": "fail", "REQ-9": "pass"})
         after = self.report({"REQ-1": "pass", "REQ-2": "pass", "REQ-9": "pass"})
@@ -566,8 +572,8 @@ class RepairLoopCase(unittest.TestCase):
         with self.patch.object(self.adapter, "vocabulary_gaps", side_effect=lambda *a, **k: next(vocab, ([], 1))):
             _, budget, _ = self.run_loop([before, after, recheck], [block("frontend/public/app.js", "// repaired")])
         record = budget.smoke["rounds"][0]
-        self.assertFalse(record["accepted"], record)
-        self.assertIn("removed quoted vocabulary", record["reason"])
+        self.assertTrue(record["accepted"], record)
+        self.assertNotIn("removed quoted vocabulary", record["reason"])
 
     def test_a_round_the_model_never_answered_does_not_count_toward_the_discard_limit(self):
         adapter, sent = self.adapter, []

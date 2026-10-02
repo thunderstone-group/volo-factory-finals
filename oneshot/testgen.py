@@ -175,16 +175,18 @@ def request(text, group, prerequisites=""):
 
 
 def initial_entries(text):
-    """Only literal first activations from an explicitly fresh, unauthenticated home.
+    """Literal first navigation from unauthenticated home/default application entry.
 
     Unknown sentence shapes stay with the written suite. Names must occur in the
     first WHEN clause itself, never be inferred from a parent resource in GIVEN.
     """
-    activation = re.compile(
-        r'^(?:the\s+)?(?:visitor|user|customer|operator|member|contributor|administrator)\s+'
-        r'(?:opens?|follows?)\s+(?:(?:the|a|an)\s+)?(?:visible\s+)?'
+    prefix = (r'^(?:the\s+)?(?:visitor|user|customer|operator|member|contributor|administrator)\s+'
+              r'(?:opens?|follows?)\s+(?:(?:the|a|an)\s+)?(?:visible\s+)?')
+    activation = re.compile(prefix +
         r'(?:(?:link|button|entry|page)\s+(?:named\s+)?)?'
         r'(?:`([^`\n]{1,80})`|[“"]([^”"\n]{1,80})[”"])', re.I)
+    plain_navigation = re.compile(prefix + r'([^,.;`“"]+?)(?:\s*,|\.|;|\s+and\b|$)', re.I)
+    quoted_names, _ = _phrases(text)
     found = []
     for req in scenarios.load_requirements(text):
         if req.get("type") != "ATOMIC":
@@ -193,17 +195,23 @@ def initial_entries(text):
             steps = scenario.get("steps") or []
             given = " ".join(s.get("content", "") for s in steps if s.get("keyword") == "GIVEN")
             given = re.sub(r"\s+", " ", given)
-            if not (re.search(r"\bhome\s*page\b", given, re.I)
-                    and re.search(r"\bfresh unauthenticated\b", given, re.I)):
+            if not re.search(r"\bunauthenticated\b", given, re.I):
                 continue
-            if re.search(r"\bsigned[ -]in\b|\blogged[ -]in\b|\bhas entered\b", given, re.I):
+            if re.search(r"\bsigned[ -]in\b|\blogged[ -]in\b|\bhas (?:entered|opened)\b|\bis viewing\b", given, re.I):
+                continue
+            location = re.search(r"\b(?:starts?|is|remains?)\s+(?:at|on|in)\s+([^.!]*?\b(?:page|screen|editor)\b)", given, re.I)
+            if location and not re.search(r"\bhome\s*page\b", location.group(1), re.I):
                 continue
             when = next((s.get("content", "") for s in steps if s.get("keyword") == "WHEN"), "")
             when = re.sub(r"\s+", " ", when).strip()
             match = activation.match(when)
-            if not match:
-                continue
-            name = next(value for value in match.groups() if value is not None)
+            if match:
+                name = next(value for value in match.groups() if value is not None)
+            else:
+                plain = plain_navigation.match(when)
+                name = re.sub(r"\s+(?:page|screen|entry|link)$", "", plain.group(1), flags=re.I).strip() if plain else ""
+                if name not in quoted_names:
+                    continue  # A prose noun is not enough to invent a UI label.
             found.append({"id": f"{req['id']}#entry-{index}", "name": name,
                           "scenario_id": req["id"] + (f"#{index}" if index > 1 else ""),
                           "given": given, "when": when})

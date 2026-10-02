@@ -459,7 +459,7 @@ class SmokeCase(unittest.TestCase):
         self.assertTrue(any("lib/arc.js" in p and "no longer loads" in p for p in gaps), budget.smoke)
         self.assertTrue(any("app.js no longer defines" in p for p in gaps), budget.smoke)
 
-    def test_quoted_vocabulary_gaps_ride_along_as_hints_of_a_scenario_repair(self):
+    def test_literal_presence_diagnostics_do_not_become_repair_goals(self):
         req = 'After login replace the link with \u201cSign Out\u201d. Show \u201cEmail cannot be empty\u201d. Seed \u201cBook 5.1\u201d.'
         self.draft_js("document.body.dataset.book = 'Book 5.1';",
                       "document.body.dataset.book = 'Book 5.1'; document.body.dataset.exit = 'Sign Out';")
@@ -470,8 +470,7 @@ class SmokeCase(unittest.TestCase):
         self.assertTrue(any("Sign Out" in p and "Email cannot be empty" in p for p in budget.smoke["problems"]), budget.smoke)
         ask = budget.attempts[1]["messages"][-1]["content"]
         self.assertIn("REQ-1", ask)
-        self.assertIn("Other findings of the same check", ask)
-        self.assertIn("Email cannot be empty", ask)
+        self.assertNotIn("Email cannot be empty", ask)
         self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
         self.assertIn("Sign Out", (self.out / "frontend/public/app.js").read_text())
 
