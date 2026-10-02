@@ -1,4 +1,4 @@
-# 当前交接 — 2026-10-02 08:48：正式 Sheet 83/100，GitHub 仍 RUNNING，目标未完成
+# 当前交接 — 2026-10-02 08:55：正式 Sheet 83/100，GitHub 仍 RUNNING，目标未完成
 
 **继续执行，不要只回状态后结束。** 用户明确「定一个目标：把 s 提升到 70」「我去睡觉了，你这边持续优化吧」。目标工具已 active：同一次正式完整双题提交总榜 S ≥ 70，保留泛化能力；没有 token budget。现有练习与正式余额可用，不重复询问小额许可，不购买或充值。未达标不 complete。没有授权派子 agent，本轮未派发。
 
@@ -17,6 +17,8 @@
 备用实验在另一个工作树 `~/projects/volo-factory-worktrees/source-owners-20261002`、分支 `exp/source-owners-20261002`，不影响正式包或本主实验分支。对象字面量方法的限定名/实际 owner 绑定原型已有 17 项针对性通过，旧八项控制前后结果保持；新 v2 GitHub 恢复两项可执行 fail，源码确认合并条件漏用了已计算的 Request changes 和 check 状态。另两项仍未判定：实际 `ARC.shareHelpers` 会把 APP.actions 的方法暴露到 APP，静态绑定尚未表示这个运行时桥；APP.screen 有后续重赋值，暂保留歧义。该原型不得直接晋升。证据在该分支 `docs/evidence/2026-10-02-object-owner-prototype.json` 和 E2 `object-owners-*.json`。
 
 备用实验新进展：错误信息加入实际声明路径提示，真实校验模型（CNY 0.135586）自行把夹具修正到正确入口，**四项均能执行并 fail**，没有操作员改断言。E2 `owner-proposals-verified/{response.txt,execution.json,trace.json}`；重点是 APP.actions.assigneePicker 与 APP.pullFiles 的真实入口。现有针对性共 **18 项通过**。受控修复 session **77703** 正在运行（实际 tool handle 已确认 live），日志 `owner-repair.log`，结果目录 `owner-repair-github/`，自己的测试副本 `owner-repair-suite-github/`；限制三次修复、估算 1.5 元。第一轮修好四项源码检查但丢一项原 UI 检查，第二轮没新增通过，第三轮未读；**不能宣称保持原行为，不能直接合并/提交原型。** 等结果后识别真实回归还是夹具冲突，再用固定独立裁判评估。原正式包保持不变。
+
+08:55 受控修复已结束：三次共 **0.475417 元**，四项源码检查全过，原 UI 99 到 98，独立裁判仍 **64/67**。失去的通过项是 `REQ-6-5` 正向合并：自己的 t06 测试先对同一个 Open PR 提交 Request changes，随后没有恢复状态就声称它 eligible 并期待 Merge enabled。公开需求明确「Separate Open PRs for success/refusal」「Each seed state is restored independently before reuse」；而应用初始也只有一个指定 Open PR，其 check pending，缺少合格正向种子。因此这是**测试前置状态和应用种子同时不充分**，不能为消掉红灯撤回正确的合并限制。证据在备用分支 `docs/evidence/2026-10-02-merge-fixture-conflict.json`，当前备用提交现场查 git。所有本地控制生成/修复/裁判均已结束，只有远端 G 和官方 watcher 还活跃。下一步最有价值的是获取正式 G / 总榜结果；若继续修机制，优先 GIVEN 完整性与独立恢复，而非再堆同类检查。
 
 ## 代码与包
 
