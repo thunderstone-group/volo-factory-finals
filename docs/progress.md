@@ -1662,3 +1662,9 @@ Controlled replays (evidence about the repair loop, never progress of a candidat
 - Added AST-confirmed qualified names for object-literal methods, actual owner construction, original receiver/helper preservation and exact method-source checks. Seventeen focused checks pass; the original eight before/after source controls retain their outcomes.
 - On the fresh v2 GitHub application, two previously unjudged probes now execute and fail. Source inspection confirms the merge predicate ignores both a current Request changes decision and required check status. Two probes remain unjudged: the actual scaffold's dynamic helper bridge is not represented, and an overridden screen method is ambiguous. These limitations are explicit; no promotion or new formal upload was made from this branch.
 - Evidence: `docs/evidence/2026-10-02-object-owner-prototype.json`; complete local traces remain in the external S70 evidence directory.
+
+## 2026-10-02 08:48 — Actual declaration hints recover four executable probes
+
+- Binding failures now list actual callable declaration paths with the same member name. The prompt documents object-owner binding and default receivers.
+- A real Vision verifier call (estimated CNY 0.135586) corrected the original proposals without operator assertion edits. All four execute as failures on the untouched fresh GitHub application. Eighteen focused tests pass. Evidence: `docs/evidence/2026-10-02-owner-binding-feedback.json`.
+- A controlled repair against the original own UI suite plus these fixed probes is running, limited to three repair calls / CNY 1.5 estimated. Its first accepted change fixed all four source checks but lost one original UI check; preservation remains unproved and the prototype is not promoted.

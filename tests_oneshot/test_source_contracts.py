@@ -136,6 +136,14 @@ window.Rules=Rules;
         p["check"] = "adjust(state); assert.equal(state.balance,9);"
         self.assertEqual(self.run_probe(p)["results"][0]["status"], "pass")
 
+    def test_missing_runtime_alias_reports_the_actual_declared_path(self):
+        self.file.write_text("const Rules={actions:{adjust(s){s.balance++;}}};")
+        p = copy.deepcopy(PROBE)
+        p["functions"][0].update(name="Rules.adjust", kind="function")
+        result = self.run_probe(p)["results"][0]
+        self.assertEqual(result["status"], "error")
+        self.assertIn("declared callable paths with this member name: Rules.actions.adjust", result["message"])
+
     def test_precondition_calls_and_assertions_cannot_certify_the_check(self):
         p = copy.deepcopy(PROBE)
         p["precondition"] += "adjust(state,0);"

@@ -72,6 +72,12 @@ results. Correct invalid fixtures and unsupported internal-representation assump
 being asserted. Drop claims you cannot justify. Return the complete corrected array in the same schema. Do not
 alter the application. Explain meaningful corrections in each explanation. Results:\n'''
 
+SYSTEM += '''\nObject-literal methods can be selected by their full declaration path, such as
+Rules.actions.adjust. Their actual owner and helper methods are reconstructed from source. A standalone alias call
+uses that actual owner as its default receiver. Binding errors list actual declared paths; use them rather than
+guessing another entrypoint or weakening an assertion. Supply external plumbing, including escaping, only where
+the actual function needs it. Do not replace or mock business decisions. Return corrected probes, not app changes.'''
+
 
 def _source(app, name):
     app = Path(app).resolve()
@@ -186,7 +192,12 @@ def execute(app, probes, requirements):
                        and (b["kind"] == f["kind"] or (b.get("member") or b.get("owner")) and b["callable"]
                             and f["kind"] in ("function", "method"))]
             if len(matches) != 1:
-                raise ValueError("Expected one exact source binding: " + f["name"] + ", found " + str(len(matches)))
+                leaf = f["name"].split(".")[-1]
+                candidates = [b for b in index if b["file"] == f["file"] and b["callable"]
+                              and leaf in (b["name"], b.get("leaf_name"), b.get("property"))]
+                hints = sorted({b.get("qualified_name") or b["name"] for b in candidates})[:6]
+                raise ValueError("Expected one exact source binding: " + f["name"] + ", found " + str(len(matches))
+                                 + ("; declared callable paths with this member name: " + ", ".join(hints) if hints else ""))
             return materialize(matches[0], f["alias"])
 
         def object_owners(functions):
