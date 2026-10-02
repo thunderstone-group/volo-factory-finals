@@ -1,67 +1,88 @@
-# 当前交接 — 2026-10-02：S70 持续优化，第二轮正式双题运行中
+# 当前交接 — 2026-10-02：当前总榜 S59.6083，S70 未达；全量扩展检查与初始状态审查进行中
 
-用户明确「把 s 提升到 70」「我去睡觉了，你这边持续优化吧」。目标 active，无 token budget；现有练习和正式额度已授权，不重问小额调用、不充值。必须用同次完整正式提交的总榜 S>=70 验收。目前最高 **S62.33320859322366**，目标未完成。没有子 agent 授权，不派发。
+用户明确「把 s 提升到70」「我去睡觉了，你这边持续优化吧」。goal active，无 token budget。现有练习与正式额度已授权，不重问小额调用、不充值。目标保持**同一次原始GitHub100题+Sheet100题正式完整提交，总榜S>=70**，不得改为Stage1或拼接最好单题。无子agent授权，不派发。历史最高62.3332，**当前总榜实际展示59.6083**，不要把历史高分报成当前分数。
 
-## 当前执行
+## 正式事实：两轮均已结束
 
-- 第二轮正式 submission **f56d97c2fdb1**，Vision，official_evaluation。原始 GitHub **583ef28ff0bc**、Sheet **9d673d2969ed** 均已启动，11:24 CLI直接读取两个均 RUNNING。不要重复提交或取消。
-- 精确 ZIP E2 `candidate-controls-v3.zip`，SHA **8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a**，实现 e53024c；上传/回读 hash 一致。证据 `docs/evidence/2026-10-02-s70-official-experiment-r2.json`。
-- E2 `watch_official_r2.py` 只读 watcher，exec session **55525**。每30秒使用现有 OfficialClient 和实际 TERMINAL_STATES；`official-r2-latest.json`、`official-r2-finished.json`、`official-r2-watch.jsonl`。继续时直接CLI核实一次状态，勿密集轮询。
-- 11:01 下载的公共需求新增 `hackathon--github-stage-1`（30tests/12features），原始 G/S YAML hash 未变。当前总榜原始双题仍 is_complete=true / scoring_route=original，因此明确指定原始两题，未用 --all-tasks，也没多起 Stage1。
-- 原始 G YAML SHA bdc17d23265a6b1948aec150e69d0b2accfa37db4c569305c97be7ff7f3b0b8f；S 9cddf67be50748106289ed158648629a6c50c30a490d0eda5bd570c557440b96。最新完整ZIP `requirements-before-official-r2.zip`，SHA46f648a3902744241c685be1781a7faf085e1c885ae228196c0397a9b4842e6e。
+- R2 submission **f56d97c2fdb1**，Vision，official_evaluation，包 **8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a**（实现e53024c）。上传/下载hash一致。
+- GitHub **583ef28ff0bc：18/100**，5/47features，2,144,022tokens，CNY2.549267，12:11:58终态。Sheet **9d673d2969ed：80/100**，11/24features，1,738,156tokens，CNY2.973834，12:09:57终态。两者FAILED表示测试未全过，failed_tests为空。
+- 总榜明确 source_run_ids 对应上述两run，is_complete=true，scoring_route=original，**S59.60825224653157**，rank5，98/200、CNY5.523101。它展示了较新的低分结果，不能假设自动保留最高分。证据 `docs/evidence/2026-10-02-s70-official-result-r2.json`。
+- R1 e963e1a3e56c（c5832d52）：G21+S83，104/200，CNY6.790972，历史S62.33320859322366。此前105/200、11.516979、S59.7517。R1提高主要来自费用；R2质量又下降，不可称泛化已提高。
+- **没有正在运行的正式任务。** 旧官方watcher55525已到终态，E2 official-r2-finished.json。勿重复启动R1/R2。后续完整正式提交仍需具体候选证据、余额/任务/需求hash检查，不自动提交弱候选。
+- 当前正式余额 **215.263572**。本轮S70已正式花费12.314073元，最初内部formal40元余27.685927；账户总额与内部观察批次分开。用户公告截止10-03 23:59。
 
-## 现场路径和边界
+## 路径和工作树
 
-- 主仓库 `~/projects/volo-factory` 保持 main f643e2f；冻结 root main.py、volo/、harness_lab/。开发仅 oneshot/、tests_oneshot/，allowlist scripts/package_oneshot.py。
-- 主目标工作树 `~/projects/volo-factory-worktrees/s70-20261002`，goal/s70-20261002，草稿 PR https://github.com/thunderstone-group/volo-factory/pull/111 未合并。查 git，不用此文猜 HEAD。
-- 当前代码工作树 `~/projects/volo-factory-worktrees/source-owners-20261002`，exp/source-owners-20261002，从main开始并保留goal ancestry。v3实现 e53024c。后续诊断修复655918f、inline matcher提示987f93c；最新文档079b43b，已推送origin同名实验分支。查现场HEAD。
-- E2 `~/projects/arcbench-campaign/evidence/2026-10-02-s70`，E1同父2026-10-01-leaderboard-push。Python `~/projects/volo-factory/.venv/bin/python`。
-- 唯一平台客户端 `arcbench --env-file ~/.config/arcbench/volo.env`。不要打印密钥/env。status运行中或FAILED退出1可为正常返回。官方failed_tests为空，不读或猜隐藏测试；独立裁判均来自公开需求。
-- 模型使用主办方 gateway。真实prompt/response/usage保留，凭证遮蔽。执行器不带模型凭证。只读和操作分开；不把上传、日志或自测当成绩。
+- 主仓库 `~/projects/volo-factory` 留main f643e2f，root main.py/volo/harness_lab为冻结legacy。活动代码oneshot/，测试tests_oneshot/，allowlist scripts/package_oneshot.py。
+- 主目标树 `~/projects/volo-factory-worktrees/s70-20261002`，goal/s70-20261002，草稿PR https://github.com/thunderstone-group/volo-factory/pull/111 未合并。当前阶段主要保存正式证据和此交接。
+- 开发树 `~/projects/volo-factory-worktrees/source-owners-20261002`，exp/source-owners-20261002；从main开始，保留goal ancestry。最新实现/证据 **97dc3e2**（已推送，仍须查现场git），之前7cb7f40/987f93c。没有晋升main。
+- **E2** `~/projects/arcbench-campaign/evidence/2026-10-02-s70`；E1同父2026-10-01-leaderboard-push。Python `~/projects/volo-factory/.venv/bin/python`。
+- NODE_PATH：`/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-playwright-test-1.57.0/node_modules:/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-jsdom/node_modules`。
+- 平台唯一客户端 `arcbench --env-file ~/.config/arcbench/volo.env`。不打印env/凭证。status运行中/FAILED退出1可为正常返回。用户所有生成/自检/正式/transport证据分开。
 
-## 已完成 v3 本地生成
+## 现在两个实质工作，继续读取实际结果
 
-- 原始固定 G 裁判 **72/65**；事先版本化的 clickable-option 校准副本 **74/67**。Sheet **92/96**。E2 `fresh-controls-v3-validation.json`、`generate-controls-v3-github/calibrated-validation.json`。
-- Sheet exit0，1995.9s，自测100UI+4source，估算2.051541。
-- G exit0，3409.4s，自测91pass/2fail/7unjudged；4source全部fixture error。估算3.001811，含1次usage未知的失败attempt，不能声称费用精确。生成及两个judge watchers都已完成，不要重启。
-- v3发布前267run/264pass/3optional skip，source/ZIP secret scan0；legacy上一轮226run/214pass/12skip且未改。它是正式R2的冻结版本，不包含下面后续修复。
+**A. 分批生成后的完整检查和修复：**
 
-## 下一版诊断修复：正在真实受控回放
+- 外部 `dependency_build_pilot.py` 用冻结v4b包，按公开需求稳定依赖序选前40%atomic（19/47，45/100场景），保留所选节点原文并验证依赖闭包和真实parser往返。再通过 --template-dir 接收完整原始100场景需求扩展。不是新Stage1题，也不是替换完整目标。
+- 两阶段原始pilot已结束，E2 `dependency-build-pilot-github/`。foundation CNY1.927508，44UI pass+4source pass+1unjudged；complete CNY0.437323，合计2.364831，生成完整app后其内部 **100unparsed**。
+- 原因已实测：`if TESTGEN and template is None` 使升级入口跳过测试写作，旧解析器无法理解100个被泛化描述的场景。其独立原始54/61、校准56/62不能证明分批路线有完整自检。模板入口现在也执行测试写作和source review；回归先失败后通过，完整 **272run/269pass/3optional skip**，source secret0。此改动只影响template路径，不要仅凭这个改动再提交原始new-build任务期待提高。
+- 正在补全真实完整流程：E2 **check_dependency_build.py**，exec **22918**，输出 **dependency-build-checked-github/**，PID **24070**（现场查存活）。它在原完整app副本上写新的全量公开需求测试，标准repair_delivery+source_review；repair8calls/CNY2.5，测试写作另计。前面两阶段费用也累加，不能只报追加阶段便宜。
+- 最后12:46观察：完整新套件驱动首轮63pass到85pass，尚有5fail/11unjudged，第二轮正在检查。详细progress.json、日志dependency-build-checked-github.log；最终repair.json、finished.json、trace.jsonl保留。
+- 自动独立judge watcher **watch_dependency_checked.py** exec **56753** 等finished后跑原始及同版校准两套G裁判；结果在该根calibrated-validation.json。没有独立裁判内容进入模型输入。
 
-1. 原始测试错误 `Error: expect: Property 'toBeSelected' not found.` 被当产品fail，导致无效修复。OWN_ERROR现按通用缺失matcher错误分成checker error，交给已有mend_suite。没有自动改断言；新回归先失败后通过。
-2. AST遗漏 `window.X.y` 扩展，使 APP.actions 的四项反例全部unjudged。现在按真实静态路径归一化、重建真实owner和命名空间赋值。原始v3反例不改，实际源码不改，重放恢复 **4个check阶段assertion fail**，涉及有效评审、最后Owner保护、重复PR。E2 `controls-v3-source-owner-recovery.json`、`controls-v3-source-proposals-unchanged.json`。这仍是诊断，不是四项官方失分证明。
-3. v3一轮补丁因真实 EADDRINUSE 被错误丢弃。smoke_check现在仅对此明确错误换端口最多3次，及时读/排空owned stdout，其他启动错误不重试。两个真实占用端口/真实Node服务器测试通过。最初IPv4占用不足以冲突Node的IPv6监听，测试已改同监听族，保留实际失败日志判断。
+**B. 初始状态覆盖审查：**
 
-- 67项 source+testgen回归、2项真实port测试通过；完整oneshot **271run/268pass/3optional skip**，E2 `tests-diagnostic-recovery-full.log`。后续仅inline修测试提示变更，5项相关回归通过。
-- 原始6组writer回复重新按同样hardening重建，共100场景+原始4source，E2 `controls-v3-recovered-own-suite`。没有新增模型生成测试或人为弱化断言。
-- 标准 repair_replay 已完成：Vision **1call/CNY0.183563**，四项source fail到pass，原UI91保持，9项未判定。E2 `diagnostic-recovery-repair-github/`。source阶段固定UI套件不再mend，因此另做下面的真实API修复验证。模型未见独立裁判。
-- 受控修复独立结果已完成：原始 **72/65到70/65**，校准 **74/67到72/67**。两处损失REQ-6-2-4（同branch pair重复Draft）和REQ-6-5#2（共享PR留下review而仍期待missing-approval）。公共需求/状态建立有矛盾迹象，但尚未反证两个回归，不修改独立裁判、不宣称全面提高。
-- 第一次matcher修复把三个assertion重构成一个helper，原防弱化guard拒绝，E2 `matcher-recovery-pilot/`。FIX提示新增保留原assertion调用位置，只改坏API；第二次真实调用0.03365668，文件被正常接受，同应用 **UI91到93**，7个原skip保留，E2 `matcher-recovery-inline-pilot/`。防弱化guard没有放松。
-- 新精确ZIP E2 **candidate-diagnostics-v4b.zip**，SHA **4ec287a63ac4278f22a0bb90843bda745eb08c785aa5b162287cceeed8bb8dbe**，实现987f93c，secret0。v4.zip/b9a16f83是未做完整生成的中间包，不使用它冒充v4b。
-- **v4b全新原始双题已于11:22启动**：`generate_diagnostics_v4b.py` exec **41797**；目录 `generate-diagnostics-v4b-{github,sheet}`。11:24两个PID47205/47204均活跃、模型SSE在增长，勿重启。原始judge watcher **25894**，校准G watcher **81270**；对应 `watch_diagnostics_v4b.py`、`watch_calibrated_diagnostics_v4b.py`。最终 `fresh-diagnostics-v4b-validation.json`。两watcher只验证，不自动正式提交。
-- source分支证据 `docs/evidence/2026-10-02-diagnostic-recovery.json`，外部预声明 `diagnostics-v4b-experiment-decision.json` 明确保留独立负结果，验证完整生成和修复成本；R2仍为冻结v3。
+- 已用实际R2源码确认两项公开GIVEN缺口：没有任何账号在任意仓库上具有Maintain有效角色；启动数据只有一个Open PR，无法提供要求的分别成功/拒绝Open PR。没有通过修改夹具造出这些条件。
+- E2 `startup-state-control-r2-probes.json` / `startup-state-control-r2-results.json` 是**operator控制**，不进包、不喂给后续自主模型。真实roleFor调用20次、mergeBlocked调用1次，两项均CHECK AssertionError。检查依据REQ-6-5明确初始要求，不是隐藏测试归因证明。
+- 自主审查 E2 **startup_state_audit.py** exec **60184**，输出 **startup-state-audit-r2/**。最多2个真实Vision调用，当前仅诊断、不改app。通用提示要求用未改业务数据的真实初始化和观察函数核对明确预置状态，不能在setup里制造缺失角色/记录后说GIVEN成立，也不能把缺失GIVEN放precondition从而跳过；用户稍后创建的值不算必须预置。
+- 模型只收到原始完整公开需求和R2实际源码；**没有operator probes、Stage1具体账号名或独立judge**。最后12:46首调用SSE在增长。读summary.json、source-contracts.json、trace.json，不根据意图声称有效。若有有效自主发现，下一步可做受控修复并保留不变UI/独立裁判；不要未经验证直接改正式候选。
 
-## 新增架构对照：按依赖生成，再扩展完整任务
+## 完整v4b结果：已经结束，不重启
 
-- 外部pilot **dependency-build-pilot-github** 已于11:33启动。精确v4b包不改，先用自动依赖闭包生成前40%atomic（19/47，45/100场景），再用已有 --template-dir 入口实现**完整原始100场景需求**。选中节点文本、scenario与原文解析值完全一致，投影经真实parser往返一致。
-- 两阶段全部费用都计入对照；每阶段 repair CNY2.5/8calls，上限是否触发要报告。它是架构试验，不是新的提交，也不是用部分任务替换完整目标。
-- generator E2 `dependency_build_pilot.py` exec **85568**，11:35 foundation PID **64668** live并持续SSE；`process.json`会更新当前阶段PID，完成看 `finished.json`（需exit0且completed_phases2）。stage1源在foundation/application，最终全任务app在根application。完整模型trace在各phase/stderr.log。
-- watcher E2 `watch_dependency_build_pilot.py` exec **60228**，等两阶段完成后用原始及同版校准G裁判，输出根calibrated-validation.json。原始/投影SHA和选择算法已预声明在decision.json；新stage1官方题没被调用。
-- 当前已有正式R2、完整v4b双题、此架构对照同时推进。**先等这些具体进程/远端run的真实结果，不再为了填等待时间增加实验或改提示。** 实际失败/终态才触发下一项改动。Verified wait是有效推进，不要忙轮询，更不要凭观察超时重启。
-- 11:35 practice余额418.759280、pending0；正式余额仍以R2结算后实读为准。source分支证据 `docs/evidence/2026-10-02-dependency-build-pilot.json`。
+- 包 **4ec287a63ac4278f22a0bb90843bda745eb08c785aa5b162287cceeed8bb8dbe**，实现987f93c。v4/b9a16f83是未完整生成的中间包，不混淆。
+- GitHub原始 **54/64**，校准 **54/64**；自测89UI+3source=92pass，12unjudged；CNY2.272263。Sheet **88/92**；自测100UI+1source=101pass，3source夹具错误；CNY2.276517。全新双题估算合计4.548780，无transport失败。比v3原始72/65、Sheet92/96差，未晋升。
+- 单次随机生成对照不能证明机械checker修复导致质量下降。v4b的主要通用修复是无效expect matcher分类、window.X.y真实命名空间重建、明确EADDRINUSE最多3次本地换端口、保持原断言位置的API修复提示。没有任务答案或生成app进ZIP。
+- 对Sheet已进一步固定其他文件/状态，仅恢复末尾source修复前的真实代码快照：E2 `source-checkpoint-v4b-sheet/`。两套独立裁判前后均88/92，**每个case状态也完全相同**。下降发生于末尾source修复之前，不能把它归咎于这一补丁。最后补丁只增加满表插行/列时的完整记录保留检查。
+- 旧v3同app受控source修复0.183563、4项source fail到pass，原UI91保持；独立72/65到70/65（校准74/67到72/67），两处回归保留，未修改独立裁判。matcher真实修复曾因合并assertion helper被原guard拒绝；保持原调用位置后UI91到93，guard未放松。
+- 最新完整证据在source分支 `docs/evidence/2026-10-02-v4b-negative-and-upgrade-gap.json`。v4b生成和watchers41797/25894/81270均结束。
 
-## 正式基线与关键结论
+## 正式产物和输入核对
 
-- 第一轮S70正式 e963e1a3e56c：G07c92a18ffb4 **21/100** CNY4.313931；Scee35cb1fb7f **83/100** CNY2.477041；同次104/200，费用6.790972；总榜明确source_run_ids、S62.33320859322366/rank6/is_complete。证据 `docs/evidence/2026-10-02-s70-official-result-r1.json`。
-- 相对历史最佳105/200、CNY11.516979、S59.7517，R1的S提高来自费用下降，不能说泛化已提高。G还低于前一实验27。R1已全终态，无需继续watch它。
-- 本轮静态词汇检查有代理失真：Sheet产物vocabulary.js只是未引用注释；尚未据此改主线。G自己的Issue组12失败可能是helper建态/导航问题，helper完整代码未恢复，不断言已经定位。
-- 前轮明确复现共享GIVEN污染：negative Review给同PR留Request changes，positive Merge直接假设eligible；只在所有原始断言后按公开UI提交Comment恢复有效状态，UI98变99，source4仍通过。没有改断言、没有改原始独立裁判。
-- 公开需求对clickable options/native select逐控件区分；原始独立裁判有test-status.selectOption错配。版本化副本仅改两处交互动作，断言/值不变；保留原始分数。校准副本 E2 `click-contract-calibration/{gh99,gh8}`，所有模型修复不接收独立测试。
-- 原source定向Sheet修复曾使absolute reference插行保留行为回退；记录仍在，不能把局部source检查都过当无回归。
+- E2 `official-github-r2/application`，ZIP SHA **0942aba7a931e0a82f36f52e79543ce9323b6e076b3f01e1c88d66a5bcc726b4**，39entries，只提取自己frontend/backend/public requirements。固定独立 **65/64**，正式18；自测最终95UI+4source，5unjudged。大幅代理落差仍在，不能自测全绿就升版。
+- E2 `official-sheet-r2/application`，ZIP SHA **d2f4eb758a2e3fa0aa214b61dbb6104430f71479ad1381b93ebc19255cb37586**，21entries；独立 **87/93**，正式80；自测100UI+2source，1source未判定。R1同产物独立93/95、正式83。
+- R2的两个prerequisites.md均空，原始G指定alice.dev@example.test也确实存在于生成seed；这两条输入缺失猜测已经被否定，不要重复调查。旧seed注释偏向“每个quoted name都有”，但角色、关系、初始状态需要另查。
+- 原始G YAML SHA **bdc17d23265a6b1948aec150e69d0b2accfa37db4c569305c97be7ff7f3b0b8f**，S **9cddf67be50748106289ed158648629a6c50c30a490d0eda5bd570c557440b96**，下载产物均验证相同。
+- 最新已下载公共zip requirements-before-official-r2.zip，SHA46f648a3902744241c685be1781a7faf085e1c885ae228196c0397a9b4842e6e，新增github-stage-1/30scenarios。它**不是纯裁剪**：12atomic中11项description/scenarios有变化，补充具体账号/操作并简化部分行为。不能拿它的结果当同规格的规模消融；没有启动Stage1正式运行，没有把其新增具体fixture名字喂给原始任务模型。
+- 原始固定独立裁判不改；click-contract-calibration/{gh99,gh8}是此前按公开clickable/native声明仅改两处test-status动作的版本化副本，断言未改。不要混用前后版本，不把代码喂给修复模型。
 
-## 预算和后续判据
+## 13:23 后的最新终态：上面进行中描述已结束
 
-- 用户公告截止10-03 23:59。目标起点practice439.583993/formal227.577645；11:00实读practice420.511753 pending0，formal220.786673（R2扣费前）。首批内部practice60/formal40，未用完；余额不足才问，不充值。
-- 继续：等受控回放与完整回归，形成下一可复现候选；检查R2正式终态、费用和同提交总榜。S>=70才complete，否则用真实失分证据继续迭代。不要混合不同submission单题最佳，不把局部校准提升直接当正式效果。
-- 不要杀其他人的caffeinate PID72440。当前本任务活跃：R2远端两个run+只读watcher、v4b两个本地生成+原始/校准watchers、两阶段架构pilot及其judge watcher。受控repair、其judges、两次matcherpilot、完整回归以及旧v1/v2/v3fresh均结束。
-- 未请求memory更新，不写memory。最终回复须带此前MEMORY.md1211和arcbench-run-triage skill18-31的单一memory citation块。
+- **所有本轮模型、正式run及独立judge都已结束；没有未收的付费任务。** 当前需要依据这些结果决定下一版，不重启旧输出目录。
+- 完整检查后的分批应用 `dependency-build-checked-github`：原始 **69/69**，校准 **69/69**；包括foundation、完整扩展、追加测试/修复的总估算 **CNY4.257494**。相对未完整检查版本54/61有提高，但仍不证明正式S改善，也比单阶段v4b G的2.272263贵。其真实repair.json/trace.jsonl已完整落盘。
+- 自主startup审查花费 **0.338377**，结果是**1项有效初始状态缺口、2项业务规则反例、1项绑定错误**，未完全遵循“仅初始状态”的范围。有效startup为REQ-6-5#contract-2：缺单独的Open拒绝场景。另两项是旧commit的Request changes仍阻止merge、无diff分支仍显示创建入口；不要把它们都算seed审查命中。
+- `repair_startup_seed.py` / `startup-seed-repair-r2`：单次真实Vision调用 **0.203985**，只追加1个PR和1个check，既有每个集合的全部原记录/其他值都保持不变，业务代码不改。原独立两套仍 **65/64**，每个case状态也完全相同；不宣称已有独立提分。未提示的Maintain控制仍fail，分离Open控制pass。
+- 原startup probe却把当前PR总数==3写进precondition，合法新增第四个记录后变成error。E2 `startup-seed-cardinality-calibration.json` 版本化诊断**仅移除不属于公开契约的原总数==3前置断言**，所有需求检查不动，同版重新跑before/after为fail到pass。原probe保留，不用error到pass冒充产品收益。下一版验证器应防止把当前缺陷数量固化成前置条件，但尚未改进主线提示。
+
+## 原生组合框探索（仅外部原型，未进候选代码）
+
+- Chrome官方说明 https://developer.chrome.com/blog/a-customizable-select ，本地真实Chromium143验证customizable select支持点击option和selectOption两个标准交互。
+- 原始最小例子有两个字段都含Alpha/Beta：所有闭合option仍被getByRole枚举，出现严格匹配歧义；对**支持base-select的浏览器**用 `select:not(:open) option{display:none}` 后闭合0、打开2，可点击Beta/原生选择Beta/Escape/正常FormData均通过，截图已人工看见正确Beta显示。E2 `probe_native_picker*.cjs`、`native-picker-contract*.json`、`native-picker-v2.png`。
+- `native_combobox_prototype.js` 在正式R2 app副本仅替换ARC.combobox，样式装到head，真正原生select，无隐藏平行控件、无测试环境检测。保留旧helper以控制变量；给native input单独转发旧组合框的 {value,name,el} 回调契约（现有通用dispatch没有value/name，不能直接用data-change就假定兼容）。原型还未删旧代码或改仓库scaffold。
+- E2 `native-combobox-r2-github`：真实组件检查通过点击同名选项、避免两控件歧义、Escape、回调、FormData和native selection。早期fixture错误先是缺闭合括号，后是把node -e单测写成文件却仍用argv[1]读库，浏览器因此加载了fixture自身并报require未定义；已修正为argv[2]，不算产品故障。provenance.json记录最终hash。
+- 原始独立分数 **65/64到66/64**。逐项：gh99只有REQ-6-1#3 fail到pass；gh8两项fail到pass（REQ-2-2-3#2、REQ-6-1#3），但两个原pass分别变error/fail（REQ-2-1-1、#2）。**有回归，不可只报净分或直接晋升。** #2测试直接getByText('Public').first().click，未打开过滤组合框；新native隐藏option抢到了这个文本。旧测试点到公开仓库的Public标记也能通过，所以其过滤验证不充分；仍需核对另一项，不能据此把所有回归抹掉或修改独立裁判。
+- 新型native的键盘、ARIA可访问值与真实完整输入路径还应核对后再考虑核心集成。不要做绕测试的双控件或环境检测。保持声明角色/范围和真实用户行为为依据。
+
+## 新发现的通用提示风险（尚未改代码）
+
+- `aria_collision_gaps` 只保护带引号的名字。公开REQ-6-3-3用未加引号的 **accessibly named Add comment** 明确按钮名，旧词根碰撞提示却建议改名；已有旧受控修复曾改成Add note，违反该公开声明。
+- **当前正式R2确实保留Add comment**，所以不能把它说成R2的已证实失分原因。它是可复现的通用checker缺陷/提示风险。未来可增加未加引号的明确命名保护，或删除无法从角色与范围证实的猜测性改名提示；应先写有针对性的复现，再验证，别无证据把整个系统重写。
+- 目前“初始状态覆盖”“控件交互协议”“自测与真实验收落差”都有具体证据；模型/架构的大幅改动仍应先读规则、实际模型目录和既有实验。没有新的Kimi或其他模型实验，也没有新正式R3。保持原始双题S70目标，不借Stage1缩小目标。
+
+## 下一步与等待规则
+
+A/B及后续两个受控原型已经全部收齐，见上面的最新终态。下一步应把有证据的通用修复形成可复现候选，完成必要回归和真实生成验证，再发下一次完整正式双题。不要为填时间重复已经结束的实验。Verified wait有效，需用具体session/OS进程确认活着；观察超时不等于失败，不重启已有目录。目标不是某个自检分数或Stage1的30题。
+
+当前没有正式任务在跑；下次正式提交仍需精确包hash/secret检查、当前active jobs、注册余额、公开输入核对；明确指定原始G/S，别用新增任务后的--all-tasks。总榜可能采用较新低分pair，达70后尤其不要自动提交未经验证的新候选覆盖。
+
+不杀其他人的caffeinate72440。未请求memory更新，不写memory。最终回复须有此前MEMORY.md1211与arcbench-run-triage skill18-31的单一memory citation；不在PR写memory citation。
