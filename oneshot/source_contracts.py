@@ -69,7 +69,10 @@ Validity rules:
 
 VERIFY = '''Independently check the proposed probes against the requirements and actual source, using these execution
 results. Correct invalid fixtures and unsupported internal-representation assumptions; preserve the public behavior
-being asserted. Drop claims you cannot justify. Return the complete corrected array in the same schema. Do not
+being asserted. Preconditions must remain valid after a compliant repair. In particular, a startup-coverage probe
+must allow missing required records to be added: do not pin an incidental current record count or assert the very
+missing startup condition as a precondition. Keep legitimate fixture controls and requirement assertions intact.
+Drop claims you cannot justify. Return the complete corrected array in the same schema. Do not
 alter the application. Explain meaningful corrections in each explanation. Results:\n'''
 
 SYSTEM += '''\nObject-literal methods can be selected by their full declaration path, such as

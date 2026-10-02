@@ -1921,6 +1921,16 @@ def aria_collision_gaps(stage, requirements=None):
     'Decrease quantity' before the quantity input, 'Upvote comment' before the comment box."""
     source = _frontend_sources(stage)
     quoted = _quoted_lower(requirements)
+
+    def named(label):
+        label = label.strip()
+        if label.lower() in quoted:
+            return True
+        # Explicit accessible names need not use quotation marks. A literal
+        # naming clause ending at punctuation is stronger than a stem-overlap hint.
+        pattern = (r"\b(?:named|label(?:l)?ed)\s+" + re.escape(label).replace(r"\ ", r"\s+")
+                   + r"\s*(?=[,.;:]|$)")
+        return bool(label and requirements and re.search(pattern, requirements, re.I))
     # Template expressions are source code, not rendered accessible names. This
     # literal-only check cannot infer their values; naming their JS identifiers
     # as colliding words causes unnecessary, potentially destructive repairs.
@@ -1944,8 +1954,8 @@ def aria_collision_gaps(stage, requirements=None):
         if not re.match(r"<button\b", before, re.I) or ">" in before:
             continue
         shared = _shared_words(match.group(1), field_words)
-        if shared and match.group(1).strip().lower() not in quoted:
-            collisions.append((match.group(1), shared))  # a quoted button name is mandated; renaming it loses tests
+        if shared and not named(match.group(1)):
+            collisions.append((match.group(1), shared))
     labels = sorted({label for label in field_labels
                      if len(label) <= 32 and len(label.split()) <= 4}, key=len)
     nested = []
@@ -1955,7 +1965,7 @@ def aria_collision_gaps(stage, requirements=None):
                 nested.append((short, long))
     for match in re.finditer(r"""type=["']radio["'][^>]*>\s*([^<{\n]{1,30})""", source):
         shared = _shared_words(match.group(1), field_words)
-        if shared and match.group(1).strip().lower() not in quoted:
+        if shared and not named(match.group(1)):
             collisions.append(("radio " + match.group(1).strip(), shared))
     seen, lines = set(), []
     for label, shared in collisions:
@@ -1968,19 +1978,19 @@ def aria_collision_gaps(stage, requirements=None):
     # "rename", the repair renamed the quoted "From"/"To" to "Origin city"/"Destination city" and lost 45 tests.
     advised = []
     for short, long in nested:
-        s_q, l_q = short.lower() in quoted, long.lower() in quoted
+        s_q, l_q = named(short), named(long)
         if s_q and l_q:
             continue  # both names are mandated; renaming either loses tests, so this pair is not a problem to fix
         if s_q:
-            advised.append(f'"{short}" is contained in "{long}" — keep "{short}" exactly (quoted in the requirement) and rename "{long}"')
+            advised.append(f'"{short}" is contained in "{long}" — keep "{short}" exactly (specified in the requirement) and rename "{long}"')
         elif l_q:
-            advised.append(f'"{short}" is contained in "{long}" — keep "{long}" exactly (quoted in the requirement) and rename "{short}"')
+            advised.append(f'"{short}" is contained in "{long}" — keep "{long}" exactly (specified in the requirement) and rename "{short}"')
         else:
             advised.append(f'"{short}" is contained in "{long}"')
     if advised:
         out.append(f"{len(advised)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
                    f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and "
-                   f"NEVER rename a label the requirement quotes — rename the other one "
+                   f"NEVER rename a label the requirement explicitly names — rename the other one "
                    f"(e.g. keep \"Name\", rename \"Name filter\" to \"Filter by title\"): " + "; ".join(advised[:12]))
     if not lines:
         return out

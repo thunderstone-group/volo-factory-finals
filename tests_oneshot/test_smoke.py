@@ -539,7 +539,7 @@ class SmokeCase(unittest.TestCase):
             "html += '<label>Date <input></label><label>End date <input></label>';\n")
         req = 'input placeholders "From", "To", and "Date". Later a filter labeled "End date".'
         [problem] = adapter.aria_collision_gaps(stage, req)
-        self.assertIn('keep "From" exactly (quoted in the requirement) and rename "From Station"', problem)
+        self.assertIn('keep "From" exactly (specified in the requirement) and rename "From Station"', problem)
         self.assertNotIn('"Date" is contained in "End date"', problem)  # both quoted: not a rename problem
         [generic] = adapter.aria_collision_gaps(stage)
         self.assertIn('"Date" is contained in "End date"', generic)
@@ -563,6 +563,19 @@ class SmokeCase(unittest.TestCase):
             '<label>Tags<input></label><button aria-label="Book Tags">Tags</button>')
         self.assertTrue(adapter.aria_collision_gaps(stage))
         self.assertEqual(adapter.aria_collision_gaps(stage, 'A button named `Book Tags`.'), [])
+
+    def test_explicit_unquoted_accessible_names_are_not_renamed(self):
+        stage = self.root / 'plain-control-name'
+        public = stage / 'frontend/public'
+        public.mkdir(parents=True)
+        (public / 'app.js').write_text(
+            '<label>Details<textarea></textarea></label>'
+            '<button aria-label="Expand details">+</button>')
+        self.assertTrue(adapter.aria_collision_gaps(stage))
+        for requirement in ('A button accessibly named Expand details, opens the editor.',
+                            'The button is named Expand details. The field is labeled Details.'):
+            with self.subTest(requirement=requirement):
+                self.assertEqual(adapter.aria_collision_gaps(stage, requirement), [])
 
     def test_quoted_button_names_are_not_collision_problems_and_only_control_phrases_are_pinned(self):
         stage = self.root / "stage3"
