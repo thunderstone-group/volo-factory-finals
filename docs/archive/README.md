@@ -52,3 +52,5 @@
 - `handoffs/2026-10-02-before-paired-result.md` — In-flight coverage experiment before the complete 27/73 official result.
 
 - `handoffs/2026-10-02-0338.md` — Complete 27/73 result and priorities before the explicit S70 goal.
+
+- `handoffs/2026-10-02-0855.md` — S70 first official pair, completed source-binding controls and fixture-conflict findings before the controls candidate.
