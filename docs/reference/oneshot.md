@@ -127,6 +127,11 @@ declaration index, rather than a fixed 25-pass cutoff. This does not certify pro
 remain unjudged. Playwright per-test page/context fixtures used in suite-wide hooks are test-writer errors;
 they are sent to suite mending rather than application repair.
 
+The repair after source review targets its newly validated failing probes. Once those probes pass, it ends
+instead of restarting the earlier exhausted browser search. Every assessment and retention decision still
+uses the full fixed suite and the existing regression guards. Other failures remain in the final report;
+missing or errored target checks are reported as unjudged, never as repaired.
+
 `repair_delivery` (roadmap 4.3) assesses the staged draft: the delivery check, the static gates
 (process guards, label collisions, exact names, readonly inputs, scaffold primitives), the quoted
 vocabulary, and, when the application is not broken as a whole, the scenario self-check below.

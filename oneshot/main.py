@@ -2098,7 +2098,8 @@ def source_review(stage, files, messages, model, base, key, budget, template, re
         if any(r["status"] == "fail" for r in result.get("validation", [])):
             current = "".join(f"=== FILE: {f['path']} ===\n{f['content'].rstrip(chr(10))}\n=== END ===\n" for f in files)
             repair_delivery(stage, files, list(messages) + [{"role": "assistant", "content": current}],
-                            model, base, key, budget, template, requirements, scaffold=scaffold, tests=tests)
+                            model, base, key, budget, template, requirements, scaffold=scaffold, tests=tests,
+                            repair_targets={r["id"] for r in result["validation"] if r["status"] == "fail"})
             budget.smoke["before_source_review"] = {k: first.get(k) for k in ("stopped", "scenarios_after", "tests")}
             budget.smoke["before_source_review"]["rounds"] = len(first.get("rounds", []))
     except Exception as exc:
@@ -2621,7 +2622,7 @@ def _write_repair(stage, batch, template):
 
 
 def repair_delivery(stage, files, messages, model, base, key, budget, template=None, requirements=None, scaffold=False,
-                    tests=None):
+                    tests=None, repair_targets=None):
     """Scenario-driven repair (roadmap 4.3). A repair is requested while the application is broken as a whole or one of
     the requirements' scenarios fails, and it carries those findings; the static gates and the smoke check's
     family-level problems ride along as hints and never trigger a call on their own. judge() decides whether a repair
@@ -2669,18 +2670,33 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     # order, until one is kept (09-27: of 118 discarded rounds in 15 official runs, 51 broke passing tests and 47
     # fixed none; every loop stopped at four discards in a row with most of its call and spend limits unused).
     narrow, tried = False, set()
-    while state["fatal"] or _scenarios(state, "fail"):
+    targets = None if repair_targets is None else frozenset(repair_targets)
+    while True:
+        pending = None
+        if not state["fatal"]:
+            if targets is not None:
+                statuses = _status_map(state)
+                pending = {sid for sid in targets if statuses.get(sid) == "fail"}
+                if not pending:
+                    budget.smoke["stopped"] = ("requested source checks pass" if all(
+                        statuses.get(sid) == "pass" for sid in targets) else "requested source checks are unjudged")
+                    break
+            elif not _scenarios(state, "fail"):
+                break
         focus = None
         untried = []
         if tests is not None and not state["fatal"]:
             untried = [(group, ids) for group, ids in failure_groups(state, depths) if group not in tried]
+            if pending is not None:
+                untried = [(group, set(ids) & pending) for group, ids in untried if set(ids) & pending]
             if narrow and untried:
                 # `group`, never `key`: from 09-27 06:00 to 09-28 this line rebound the API key to a requirement id, so
                 # every call after the first discarded round went out as "Bearer REQ-..." and got HTTP 401 for the rest
                 # of the run (all ten runs of packages 63201b76, 8ce58c4e and 3484d5f7 that had a discard).
                 group, ids = untried[0]
                 focus = set(ids)
-        ask = repair_request(state, discarded, unapplied, depths, focus)
+        requested = focus if focus is not None else pending
+        ask = repair_request(state, discarded, unapplied, depths, requested)
         stop = budget.repair_stop(conversation + [{"role": "user", "content": ask}], model)
         # Only rounds the model answered count: a transport failure (run 95ec6880ee7f lost a round to "model HTTP 400")
         # says nothing about the repairs, and the global failure limit already bounds those.
@@ -2705,8 +2721,8 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         record = {"round": len(rounds) + 1, "fatal": len(state["fatal"]),
                   "failing": [s["id"] for s in _scenarios(state, "fail")], "passing_before": len(passing(state)),
                   "accepted": False}
-        if focus:
-            record["focus"] = sorted(focus)
+        if requested:
+            record["focus"] = sorted(requested)
         calls, started, replied, after = len(budget.attempts), time.monotonic(), False, None
         exchange = [{"role": "user", "content": ask}]
         try:
