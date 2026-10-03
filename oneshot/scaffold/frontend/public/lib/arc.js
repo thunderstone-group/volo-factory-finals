@@ -1,18 +1,12 @@
 'use strict';
-// ARC primitives. Each section names the evaluator mechanic it satisfies. Keep every function; extend
-// through window.LAYOUT and window.APP in app.js, not by rewriting this file.
+// Application primitives. Configure them through LAYOUT and APP, and adapt them to the requirements.
 (function () {
   const ARC = {};
 
-  // --- Store: records are shared through the server; the sign-in and view state stay in this browser.
-  // Every browser session (another user's isolated session, a later visit, a second tab) reads the same
-  // records from the server, so what one session creates the next one sees, and a record's URL opens the
-  // same record in any session. Reads and writes are synchronous XHRs: the click ladder probes each rung
-  // right after the click (rendering stays in the click's task), and a write must land before another
-  // session reads. Shared: every top-level key declared in seed.js and every array. Per browser:
-  // `session` (the signed-in user's id; localStorage, so one sign-in per browser session that survives
-  // reloads and new tabs) and every other key, such as `ui` view state, form drafts and messages
-  // (sessionStorage, this tab). Declare every record collection in seed.js, even when it starts empty.
+  // --- Store: shared records use the server; identity and view state stay in this browser.
+  // This implementation uses synchronous reads/writes. Seeded collections and arrays are shared;
+  // session identity uses localStorage, and transient view state uses sessionStorage.
+  // Choose ownership and lifetime according to the application requirements.
   const SEEDED = new Set(Object.keys(window.SEED || {}));
   const isShared = (k, v) => k !== 'session' && k !== 'ui' && (SEEDED.has(k) || Array.isArray(v));
   function split(state) {
@@ -60,16 +54,12 @@
   ARC.uid = function (prefix) { return (prefix || 'id') + '_' + Math.random().toString(36).slice(2, 9); };
   ARC.esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); };
 
-  // --- Router: hash routes, `#/name/param1/param2`. Every screen is reachable by clicking from `/`.
+  // --- Router: hash routes, `#/name/param1/param2`.
   ARC.route = function () {
     const parts = (location.hash || '#/').replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
     return { name: parts[0] || 'home', params: parts.slice(1), hash: location.hash || '#/' };
   };
-  // Navigation renders in the SAME task as the click. The click ladder probes each rung with
-  // `isVisible()` (no wait) right after the click resolves; a render deferred to the `hashchange`
-  // task loses that race under load, and the step then waits for the wrong rung until the test
-  // times out (every "click an entry after navigation" step of one medium practice task, and a
-  // stochastic seed-click failure family on the large ones).
+  // Navigation updates the route, shared state and current view together.
   ARC.navigate = function (hash) {
     if ((location.hash || '#/') !== hash) location.hash = hash;
     if (ARC.dialogOpen) ARC.closeDialog();
@@ -77,36 +67,22 @@
     ARC.render();
   };
 
-  // --- Layout: EVERY screen, the home screen included, renders through this one function so the same
-  // header (landmark + navigation + account controls), sidebar, main and footer exist on every route.
-  // The footer ends with the layout nouns as visible words ("Header · Sidebar · Main content · Footer"):
-  // layout tests assert /header/i, /sidebar/i as visible text, and a landmark tag alone is invisible
-  // (one practice task lost its two layout requirements in both samples once the model stopped writing them).
-  // The home button uses the brand as its accessible name. Preserve an explicitly
-  // required name rather than decorating it with an extra "logo" suffix.
-  // Header entries are links (navigation). Sidebar entries are BUTTONS inside <aside> (role
-  // complementary): one suite generation resolves them as `complementary >> button /^Name$/`. The aside
-  // comes AFTER <main> in DOM order (CSS puts it back on the left) so a page-wide `.first()` for a verb
-  // like /archive/i reaches a card's hover-revealed action before the sidebar's "Archived" entry.
+  // --- Shared layout primitives. The application selects the regions its requirements need.
   ARC.layout = function (mainHtml, route) {
     const L = window.LAYOUT || {};
     const user = ARC.currentUser();
     const link = (n) => `<a href="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</a>`;
-    const entry = (n) => `<button type="button" data-action="arc:nav" data-hash="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</button>`;
+    const entry = (n) => n.role === 'button'
+      ? `<button type="button" data-action="arc:nav" data-hash="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</button>`
+      : link(n);
     const nav = (L.nav || []).map(link).join('');
-    // Built-in and data-derived destinations may overlap; render each identical entry once.
     const side = [...new Set((L.sidebar || []).map(entry))].join('');
-    return `<header class="app-header">
-  <button type="button" class="brand-logo" aria-label="${ARC.esc(L.brand || 'App')}" data-action="arc:nav" data-hash="#/"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="2"/></svg></button>
-  <a class="brand" href="#/">${ARC.esc(L.brand || 'App')}</a>
-  <nav aria-label="Main navigation">${nav}</nav>
-  <div class="account">${L.account ? L.account(user) : ''}</div>
-</header>
-<div class="layout">
-  <main id="main-content" class="main">${mainHtml}</main>
-  ${side ? `<aside class="sidebar">${side}</aside>` : ''}
-</div>
-<footer class="app-footer">${ARC.esc(L.footer || 'Footer')} <span class="landmarks">Header · Sidebar · Main content · Footer</span></footer>`;
+    const account = L.account ? L.account(user) : '';
+    const brand = !L.brand ? '' : L.brandRole === 'button'
+      ? `<button type="button" class="brand" data-action="arc:nav" data-hash="#/">${ARC.esc(L.brand)}</button>`
+      : `<a class="brand" href="#/">${ARC.esc(L.brand)}</a>`;
+    const header = brand || nav || account ? `<header class="app-header">${brand}${nav ? `<nav aria-label="Main navigation">${nav}</nav>` : ''}${account ? `<div class="account">${account}</div>` : ''}</header>` : '';
+    return `${header}<div class="layout">${side ? `<aside class="sidebar">${side}</aside>` : ''}<main id="main-content" class="main">${mainHtml}</main></div>${L.footer ? `<footer class="app-footer">${ARC.esc(L.footer)}</footer>` : ''}`;
   };
   ARC.currentUser = function () {
     const s = ARC.state;
@@ -179,23 +155,8 @@
     document.getElementById('app').innerHTML = ARC.layout(main, route);
     if (ARC.dialogOpen) ARC.setInert(true);
     if (app.afterRender) app.afterRender(route);
-    ARC.collapseDuplicates();
     ARC._selectContent(document.getElementById('app'));
   };
-  // --- One copy of an identical control per screen. Suites click a quoted name in strict mode
-  // (`getByRole('link', {name: 'Sign in', exact: true})`); the same link in the header and in the page body
-  // resolved to two elements and failed three tests on 09-24 and six on the next draft. A visible link or
-  // button whose markup is byte-identical to an earlier visible one (same name, target, action and data) does
-  // the same thing, so the later copy is hidden. Controls that differ in anything (a record id, a role) stay.
-  ARC.collapseDuplicates = function () {
-    const seen = new Set();
-    for (const el of document.querySelectorAll('#app a[href], #app button')) {
-      if (el.hidden || el.closest('select') || !el.getClientRects().length) continue;
-      const key = el.outerHTML.replace(/\s+/g, ' ').trim();
-      if (seen.has(key)) { el.hidden = true; el.setAttribute('data-arc-duplicate', ''); } else seen.add(key);
-    }
-  };
-
   // --- Dialog: while a chooser is open every sibling is inert + aria-hidden (Playwright ignores
   // aria-modal), so no text input outside the dialog is visible to the fill ladder. The root is hidden
   // when idle so it never intercepts hovers or clicks.
@@ -355,7 +316,7 @@
     if (change && app.actions && app.actions[change]) { ARC.shareHelpers(app); app.actions[change]({ value: option.dataset.value, name: input && input.name, el: box }); }
   };
 
-  // --- Clipboard: copy, cut and paste go through the browser's clipboard, so text another program (or a test)
+  // --- Clipboard: copy, cut and paste interoperate with the browser and other programs. Text another program
   // put there pastes into the app, and what the app copies pastes elsewhere. Outside text fields:
   //   ARC.onCopy((cut) => text | { text, data } | null)  Ctrl/Cmd+C or X: the text to put on the clipboard
   //     (tab-separated columns, newline-separated rows for a range); `data` is kept for a paste of that same text.
@@ -445,17 +406,14 @@
   ARC.notify = function (message, opts) {
     const root = document.getElementById('status-root');
     ARC._undo = opts && opts.undo;
-    // The message sits in its own <span>: an anchored `getByText(/^Item deleted$/)` must find an element whose
-    // whole text is the message, and the status container's text also holds the Undo button's label.
+    // Keep the message and any optional action separate.
     root.innerHTML = `<div class="status" role="status"><span class="status-text">${ARC.esc(message)}</span>${ARC._undo ? ' <button type="button" data-action="arc:undo">Undo</button>' : ''}</div>`;
     root.hidden = false;
     clearTimeout(ARC._statusTimer);
     ARC._statusTimer = setTimeout(() => { root.hidden = true; root.innerHTML = ''; ARC._undo = null; }, (opts && opts.ms) || 6000);
   };
 
-  // --- Row actions: hidden at rest, revealed by :hover/:focus-within (styles.css), so at any instant
-  // at most one row's actions match a bare verb. Names are the bare verb the requirement quotes
-  // ("Edit", "Delete", "Archive") unless a navigation entry shares the stem; never the row's title.
+  // --- Record actions retain the labels supplied by the application. Styles control their visibility.
   ARC.rowActions = function (actions, id) {
     return `<div class="row-actions">${actions.map((a) => `<button type="button" data-action="${ARC.esc(a.action)}" data-id="${ARC.esc(id == null ? '' : id)}"${a.extra ? ' ' + a.extra : ''}>${ARC.esc(a.label)}</button>`).join('')}</div>`;
   };

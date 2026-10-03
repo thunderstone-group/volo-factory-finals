@@ -10,8 +10,8 @@ button { font: inherit; cursor: pointer; }
 .account { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 .layout { display: flex; gap: 24px; padding: 16px; align-items: flex-start; }
 .sidebar { width: 200px; flex: none; order: -1; }
-.sidebar button { display: block; width: 100%; text-align: left; margin: 0 0 8px; background: none; border: 0; padding: 6px 8px; border-radius: 6px; }
-.sidebar button[aria-current="page"] { background: #ddf4ff; }
+.sidebar button, .sidebar a { display: block; width: 100%; text-align: left; margin: 0 0 8px; background: none; border: 0; padding: 6px 8px; border-radius: 6px; }
+.sidebar [aria-current="page"] { background: #ddf4ff; }
 .main { flex: 1; min-width: 0; }
 .app-footer { padding: 12px 16px; border-top: 1px solid #d0d7de; color: #57606a; font-size: 13px; }
 .row { padding: 10px; border: 1px solid #d0d7de; border-radius: 6px; margin-bottom: 8px; }
@@ -25,7 +25,6 @@ button { font: inherit; cursor: pointer; }
 form label { display: block; margin: 8px 0 4px; }
 input, textarea, select { font: inherit; padding: 6px 8px; width: 100%; max-width: 480px; }
 .app-header .brand-logo { display: inline-flex; align-items: center; background: none; border: 0; padding: 0 6px 0 0; color: inherit; cursor: pointer; }
-.app-footer .landmarks { opacity: 0.6; font-size: 0.85em; margin-left: 8px; }
 .popover { position: relative; z-index: 5; display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; margin-top: 4px; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
 .popover button { display: inline-block; }
 .combobox { position: relative; display: inline-block; }

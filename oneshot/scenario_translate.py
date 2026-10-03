@@ -27,7 +27,7 @@ except ImportError:  # run as a script, or from the flat package next to main.py
 
 MODEL = "deepseek-v4-flash"
 DEFAULT_BASE = "https://api.arc-bench.com/v1"
-VERSION = "3"  # prompt and reply format; part of the cache key
+VERSION = "4"  # prompt and reply format; part of the cache key
 MAX_TOKENS = 65536
 TIMEOUT_SECONDS = 600
 # CNY per million tokens (input, cache-hit input, output), read with `arcbench models` on 2026-09-23.
@@ -111,8 +111,8 @@ Rules:
   -> "in": {"role": "complementary"}, "inside the `X` article" -> "in": {"role": "article", "name": "X"}.
 - "known_steps" lists, for requirements a rule-based reader did read, the steps of their WHEN part. When a scenario
   needs a prerequisite from that list, copy its steps, replacing only the seed item names by this scenario's own.
-- When a requirement's seed data names a user account, or its text says the user is authenticated or the page is the
-  authenticated one, first log in with the steps of the requirement that logs in.
+- Establish a signed-in session only when GIVEN explicitly requires one or WHEN asks for sign-in.
+  A named seed account alone does not authorize prepending login or changing an anonymous starting context.
 - Put an ARIA state (aria-pressed, aria-expanded, aria-checked, aria-selected) on the control the text says carries
   it, such as the toggle button, never on the region it opens or closes.
 - Use every quoted name of the scenario's own GIVEN, WHEN and THEN text in your steps; a scenario you cannot

@@ -1,4 +1,4 @@
-"""Real browser regression: a byte-identical visible link or button rendered twice on one screen shows once."""
+"""Real browser regression: controls remain available in their own scopes, and layout regions are conditional."""
 import os
 import shutil
 import subprocess
@@ -46,16 +46,32 @@ const server = http.createServer((req, res) => {
     page.setDefaultTimeout(3000);
     await page.getByRole('heading', {name: 'Welcome'}).waitFor();
     const signIn = page.getByRole('link', {name: 'Sign in', exact: true});
-    // The header copy and the body copy share name and target: one remains, the header's (first in the page).
-    assert.equal(await signIn.count(), 2, 'the same name with another target stays');
-    assert.equal(await page.locator('a[href="#/signin"]:visible').count(), 1);
+    // Equal names in different regions remain independently available.
+    assert.equal(await signIn.count(), 3, 'controls in separate scopes are retained');
+    assert.equal(await page.locator('a[href="#/signin"]:visible').count(), 2);
+    await page.getByRole('banner').getByRole('link', {name:'Sign in',exact:true}).click();
+    await page.getByRole('main').locator('a[href="#/signin"]').click();
+    assert.equal(await page.locator('footer').count(), 0);
+    assert.equal(await page.getByRole('button',{name:'Synthetic',exact:true}).count(), 0);
+    assert.equal(await page.getByRole('link',{name:'Synthetic',exact:true}).count(), 1);
+    await page.evaluate(()=>{LAYOUT.brandRole='button';ARC.render();});
+    assert.equal(await page.getByRole('button',{name:'Synthetic',exact:true}).count(), 1);
+    assert.equal(await page.getByRole('link',{name:'Synthetic',exact:true}).count(), 0);
+    await page.evaluate(()=>{delete LAYOUT.brandRole;ARC.render();});
+    assert.equal(await page.getByText('Header · Sidebar · Main content · Footer', {exact:true}).count(), 0);
+    await page.evaluate(()=>{LAYOUT.footer='Product support';ARC.render();});
+    assert.equal(await page.getByRole('contentinfo').textContent(), 'Product support');
+    await page.evaluate(()=>{window.LAYOUT={};ARC.render();});
+    assert.equal(await page.getByRole('banner').count(), 0);
+    assert.equal(await page.locator('footer').count(), 0);
+    await page.evaluate(()=>{window.LAYOUT={brand:'Synthetic',nav:[],account:()=>'<a href="#/signin">Sign in</a>'};ARC.render();});
     assert.equal(await page.getByRole('banner').getByRole('link', {name: 'Sign in', exact: true}).count(), 1);
     assert.equal(await page.getByRole('button', {name: 'Remove', exact: true}).count(), 2, 'different records stay');
     // An invisible copy does not hide the visible one.
     assert.equal(await page.getByRole('link', {name: 'Docs', exact: true}).count(), 1);
     await page.getByRole('link', {name: 'Docs', exact: true}).click();
     assert.deepEqual(errors, []);
-    console.log('Identical controls show once; controls that differ stay.');
+    console.log('Controls retain their scope; optional layout regions follow configuration.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
@@ -66,7 +82,7 @@ const server = http.createServer((req, res) => {
 
 @unittest.skipUnless(shutil.which('node'), 'Node is required')
 class ScaffoldDuplicatesCase(unittest.TestCase):
-    def test_identical_controls_show_once(self):
+    def test_controls_retain_their_scopes_and_optional_layout_is_not_injected(self):
         env = _child_env()
         if 'PLAYWRIGHT_BROWSERS_PATH' in os.environ:
             env['PLAYWRIGHT_BROWSERS_PATH'] = os.environ['PLAYWRIGHT_BROWSERS_PATH']

@@ -133,14 +133,12 @@ commentary, no blank line between blocks. The two markers stand alone on their o
 === END ===
 The path is relative to the application root. Emit every file the application needs, in full."""
 
-SYSTEM = ("You are a senior full-stack engineer. You are given a requirements document and a precise "
-          "description of the automated accessibility-driven acceptance suite that will grade your work. "
-          "Write a complete, coherent first implementation. It will be built and exercised by tests derived "
-          "from the requirements, with bounded repair rounds afterward. Preserve shared domain rules across "
-          "the different workflows. A stated action must produce its stated result without an extra prerequisite, "
-          "form, confirmation, or navigation step that the requirement does not call for. "
-          "Correctness against the described locator dialect matters far "
-          "more than visual polish. Emit the file blocks and nothing else.")
+SYSTEM = ("You are a senior full-stack engineer implementing the supplied requirements. "
+          "Write a complete, coherent application. It will be exercised by requirement-derived checks "
+          "and bounded repair rounds. Preserve the shared domain rules across workflows. "
+          "Respect the stated starting context, permissions, names and accessibility semantics. "
+          "Do not add a prerequisite, layout region, record, label or interaction merely to satisfy "
+          "an assumed evaluator convention. Emit the file blocks and nothing else.")
 
 CONTINUE = ("Your output was cut off inside the file `{path}`. Re-emit that file from its beginning as "
             "one complete block, then continue with every remaining file. Do not repeat files you already "
@@ -1054,13 +1052,6 @@ def _check_dom(stage, port, problems, requirements=None):
                         f"every lookup (a missing record must not dereference undefined) and never throw from a handler")
     for problem in route_gaps(stage, report.get("routes")):
         problems.append(problem)
-    present = report.get("landmarks") or {}
-    for name, (pattern, element) in LANDMARKS.items():
-        if requirements and re.search(pattern, requirements, re.I) and name in present and not present[name]:
-            problems.append(f"the first screen (/) renders no {element} although the requirement describes a "
-                            f"{name}; every screen, including the home screen, must render through the one shared "
-                            f"layout (header, navigation, main content, footer) so the suite finds the same "
-                            f"landmarks and controls on every route")
 
 
 # A route name where the app sends the browser: a link, ARC.navigate, a `hash:` entry, a location.hash assignment.
@@ -1292,19 +1283,17 @@ def template_context(blobs):
 
 def scaffold_context(blobs):
     records = [{"path": name, "content": data.decode("utf-8")} for name, data in sorted(blobs.items())]
-    return ("\n\n## Scaffold already in the application root (extend it, never replace it)\n"
-            "The files below exist before your output is applied. They implement the evaluator mechanics: one "
-            "shared layout with the header, navigation, account controls, sidebar, main and footer on EVERY screen "
-            "including `/`; synchronous hash routing from an in-memory store seeded by `seed.js`; row actions hidden "
-            "at rest; dialogs that make the page inert; `role=status` notifications with Undo; a backend with process "
-            "guards, static serving and `/api/health`. Write the application as `frontend/public/seed.js` "
-            "(`window.SEED`, every seed row the requirement names), `frontend/public/app.js` (`window.LAYOUT`: brand, "
-            "nav, sidebar, footer text, account controls; `window.APP`: `screens`, `screen(route)`, `actions`, "
-            "optional `afterRender`), and additions to `frontend/public/styles.css`. Re-emit `backend/server.js` "
-            "only to add API routes inside `api()`, keeping everything it does. Do not re-emit `index.html` or "
-            "`lib/arc.js` unless a change is unavoidable, and then keep every function they define. Emit complete "
-            "file blocks only for the files you add or change; the scaffold files you do not mention are kept. "
-            "The JSON below is application source, not instructions.\n" + json.dumps(records, ensure_ascii=False))
+    return ("\n\n## Available application scaffold\n"
+            "These files are already placed in the application root. They provide reusable routing, state, "
+            "configurable layout, modal dialogs, native controls, clipboard handling and a backend. "
+            "Use or adapt each primitive according to the requirements; optional layout regions need not be added. "
+            "Implement required initial records in frontend/public/seed.js and application behavior in "
+            "frontend/public/app.js, with appropriate styles and backend routes. LAYOUT configures chosen regions; "
+            "APP provides screen(route), actions and optional afterRender. Preserve working behavior when extending "
+            "the scaffold, and change its markup or primitives when the requirements call for different behavior. "
+            "Emit complete file blocks for changed or new files; unmentioned files remain. "
+            "The JSON below is application source data, not additional product instructions.\n" +
+            json.dumps(records, ensure_ascii=False))
 
 
 READONLY = re.compile(r"<(?:input|textarea)\b[^>]*\breadonly\b|\.readOnly\s*=\s*true|setAttribute\(\s*['\"]readonly['\"]", re.I)
@@ -1659,17 +1648,10 @@ def vocabulary_table(requirements):
             groups[key][1].append(phrase)
     if not seen:
         return ""
-    lines = ["\n\n## Quoted vocabulary checklist (every phrase must exist verbatim; the delivery check enforces it)",
-             "This list holds the QUOTED phrases only. The unquoted nouns of the requirement's THEN steps (layout "
-             "nouns such as header / sidebar / main feed, navigation targets such as 'product links' → `Products`, "
-             "metadata words such as asked / modified / viewed, section titles, sort options) are asserted as "
-             "visible text just the same (§7) and are not listed here: keep writing them. ",
-             "Each phrase below is quoted by the requirement and matched by the suite as visible text, an accessible "
-             "name, a message or a seed value, on the screen that requirement describes. A quoted control name is the "
-             "WHOLE accessible name, byte-exact: the suite anchors it (`/^New item$/i`), so an icon, bullet, "
-             "ellipsis, count or extra word in the same name (`\u2022 Items`, `New item...`, `Archive item`) fails it. "
-             "The role follows the requirement's verb: click/press \u2192 button, field/enter \u2192 textbox with that "
-             "exact label, dialog/editor \u2192 role=dialog with that exact name, menu \u2192 menu/menuitem."]
+    lines = ["\n\n## Quoted requirement text (reference only)",
+             "Classify each phrase using its requirement context. It may be a required label or message, "
+             "an initial record, a runtime input, an example, or an explicit absence. This index does not "
+             "require every phrase to appear in source or visible UI."]
     for key in order:
         label, phrases = groups[key]
         head = key if key == "ROOT" else key + (" " + label if label else "")
@@ -1752,12 +1734,18 @@ def quoted_control_phrases(requirements):
     seen, phrases = set(), []
     text_req = joined(requirements)
     runtime = runtime_values(text_req)
+    declared = set(semantic_contracts(requirements)["roles"])
+    role = r"(?:button|link|field|input|textbox|searchbox|tab|menuitem|dialog|form|checkbox|radio|combobox|placeholder|entry)"
+    quoted = r'[`"\u201c]([^`"\u201d\n]{1,80})[`"\u201d]'
+    direct = role + r"s?\s+(?:(?:is\s+)?(?:named|labelled|labeled|called|with accessible name)\s+)?" + quoted
+    reverse = quoted + r"\s+" + role + r"\b"
+    declared.update(n.lower() for n in re.findall(direct, text_req, re.I))
+    declared.update(n.lower() for n in re.findall(reverse, text_req, re.I))
     for match in QUOTED.finditer(text_req):
         phrase = _phrase(match)
-        context = text_req[max(0, match.start() - 80):match.end() + 40]
         if (len(phrase) < 3 or len(phrase.split()) > NAME_MAX_WORDS or re.search(r"[.!?:;,]$", phrase)
                 or re.fullmatch(r"[\W_]+", phrase) or re.match(r"^(https?:|//|/|\.|#)", phrase)
-                or phrase.lower() in seen or phrase.lower() in runtime or not CONTROL_CONTEXT.search(context)):
+                or phrase.lower() in seen or phrase.lower() in runtime or phrase.lower() not in declared):
             continue
         seen.add(phrase.lower())
         phrases.append(phrase)
@@ -1846,11 +1834,10 @@ def vocabulary_gaps(stage, requirements):
         return [], 0
     shown = ", ".join('"' + p + '"' for p in missing[:VOCAB_SHOWN])
     more = f" (and {len(missing) - VOCAB_SHOWN} more)" if len(missing) > VOCAB_SHOWN else ""
-    return [f"{len(missing)} phrase(s) quoted in the requirements never appear in the delivered source, and the "
-            f"suite matches every quoted string verbatim as visible text, a control's accessible name, a message "
-            f"or a seed value. Add each one exactly as written where the requirement implies it (a control name, "
-            f"a heading, a status message, a seed row, or a placeholder for a value the user types): "
-            f"{shown}{more}"], len(missing)
+    return [f"{len(missing)} quoted phrase(s) are not literal source text. This is only a diagnostic: "
+            f"the phrase may be constructed at runtime, supplied by user input, or describe an absence. "
+            f"Check its requirement context and rendered behavior before changing the application: {shown}{more}"], len(missing)
+
 
 
 ARIA_LABEL = re.compile(r"""aria-label["']?\s*[=:]\s*["'`]([^"'`\n]{1,60})["'`]""")
@@ -1931,87 +1918,8 @@ def label_overrides(source):
 
 
 def aria_collision_gaps(stage, requirements=None):
-    """A button whose aria-label shares a word with a field label steals getByLabel(/word/i):
-    'Decrease quantity' before the quantity input, 'Upvote comment' before the comment box."""
-    source = _frontend_sources(stage)
-    quoted = _quoted_lower(requirements)
-
-    def named(label):
-        label = label.strip()
-        if label.lower() in quoted:
-            return True
-        # Explicit accessible names need not use quotation marks. A literal
-        # naming clause ending at punctuation is stronger than a stem-overlap hint.
-        pattern = (r"\b(?:named|label(?:l)?ed)\s+" + re.escape(label).replace(r"\ ", r"\s+")
-                   + r"\s*(?=[,.;:]|$)")
-        return bool(label and requirements and re.search(pattern, requirements, re.I))
-    # Template expressions are source code, not rendered accessible names. This
-    # literal-only check cannot infer their values; naming their JS identifiers
-    # as colliding words causes unnecessary, potentially destructive repairs.
-    field_labels = {(label or placeholder or aria).strip()
-                    for label, placeholder, aria in FIELD_LABEL.findall(source)
-                    if (label or placeholder or aria).strip()
-                    and "${" not in (label or placeholder or aria)}
-    field_words = set()
-    for label in field_labels:
-        field_words |= _label_words(label)
-    if not field_words:
-        return []
-    collisions = []
-    for match in ARIA_LABEL.finditer(source):
-        if "${" in match.group(1):
-            continue
-        tag_start = source.rfind("<", 0, match.start())
-        before = source[tag_start:match.start()] if tag_start >= 0 else ""
-        # An earlier button does not make a following form's aria-label a button
-        # label. Unknown JS-created attributes are outside this literal scan.
-        if not re.match(r"<button\b", before, re.I) or ">" in before:
-            continue
-        shared = _shared_words(match.group(1), field_words)
-        if shared and not named(match.group(1)):
-            collisions.append((match.group(1), shared))
-    labels = sorted({label for label in field_labels
-                     if len(label) <= 32 and len(label.split()) <= 4}, key=len)
-    nested = []
-    for i, short in enumerate(labels):
-        for long in labels[i + 1:]:
-            if short.lower() != long.lower() and re.search(r"(?<![a-z0-9])" + re.escape(short.lower()) + r"(?![a-z0-9])", long.lower()):
-                nested.append((short, long))
-    for match in re.finditer(r"""type=["']radio["'][^>]*>\s*([^<{\n]{1,30})""", source):
-        shared = _shared_words(match.group(1), field_words)
-        if shared and not named(match.group(1)):
-            collisions.append(("radio " + match.group(1).strip(), shared))
-    seen, lines = set(), []
-    for label, shared in collisions:
-        if label in seen:
-            continue
-        seen.add(label)
-        lines.append(f'{"radio option" if label.startswith("radio ") else "button aria-label"} "{label.removeprefix("radio ")}" shares {"/".join(shared)} with a field label')
-    out = []
-    # The requirement pins a quoted name; the rename must land on the OTHER label. One practice run: told only
-    # "rename", the repair renamed the quoted "From"/"To" to "Origin city"/"Destination city" and lost 45 tests.
-    advised = []
-    for short, long in nested:
-        s_q, l_q = named(short), named(long)
-        if s_q and l_q:
-            continue  # both names are mandated; renaming either loses tests, so this pair is not a problem to fix
-        if s_q:
-            advised.append(f'"{short}" is contained in "{long}" — keep "{short}" exactly (specified in the requirement) and rename "{long}"')
-        elif l_q:
-            advised.append(f'"{short}" is contained in "{long}" — keep "{long}" exactly (specified in the requirement) and rename "{short}"')
-        else:
-            advised.append(f'"{short}" is contained in "{long}"')
-    if advised:
-        out.append(f"{len(advised)} field label(s) are substrings of another field label, so getByLabel('{nested[0][0]}') "
-                   f"matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and "
-                   f"NEVER rename a label the requirement explicitly names — rename the other one "
-                   f"(e.g. keep \"Name\", rename \"Name filter\" to \"Filter by title\"): " + "; ".join(advised[:12]))
-    if not lines:
-        return out
-    return out + [f"{len(lines)} button label(s) collide with field labels; the fill helper's first rung is "
-            f"getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it "
-            f"shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; "
-            f"submit: \"Send\"): " + "; ".join(lines[:20])]
+    """Word overlap alone cannot establish a collision across unknown rendered scopes."""
+    return []
 
 
 def process_guard_gaps(stage):
@@ -2254,8 +2162,7 @@ def check_scenarios(stage, requirements, only=None, translate=True, tests=None):
 def static_gaps(stage, requirements, scaffold):
     """The static gates that flag the staged source, by gate. They are repair hints; a repair may not make a clean
     gate flag."""
-    gates = {"process guards": process_guard_gaps(stage), "label collisions": aria_collision_gaps(stage, requirements),
-             "exact names": exact_name_gaps(stage, requirements), "readonly inputs": readonly_gaps(stage)}
+    gates = {"process guards": process_guard_gaps(stage)}
     if scaffold:
         gates["scaffold"] = scaffold_gaps(stage)
     return {gate: problems for gate, problems in gates.items() if problems}
@@ -2461,9 +2368,6 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         guards.append("a static gate that was clean now flags: " + "; ".join(p for g in newly for p in after["static"][g])[:500])
         penalty += len(newly)
     written = (before["report"] or {}).get("kind") == "testgen"
-    if not written and after["missing"] > before["missing"]:
-        guards.append(f"the change removed quoted vocabulary ({before['missing']} -> {after['missing']} missing)")
-        penalty += after["missing"] - before["missing"]
     # A literal button can become a data-driven menu entry: a successful browser activation proves the name exists.
     observed = {re.sub(r"\s+", " ", action["name"]).strip().lower()
                 for report in after["browser"] if report.get("executed")
@@ -2472,9 +2376,9 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     present = {_bare_name(name) for name in control_names(stage) | observed}
     renamed = sorted(name for name in pinned if _bare_name(name) not in present)
     if renamed:
-        detail["renamed_controls"] = renamed
-        guards.append("the change renamed quoted control(s): " + ", ".join(renamed[:8]))
-        penalty += len(renamed)
+        # Source text cannot establish that a runtime accessible name was removed. The full
+        # browser/scenario checks decide regressions; retain the suspicion for diagnostics.
+        detail["possible_renames"] = renamed
     if before["fatal"]:
         # A blank or dead application that works again is kept: a rename guard once shipped the blank page instead
         # (09-19, a large task at 0/125). The waived guards stay on the record.

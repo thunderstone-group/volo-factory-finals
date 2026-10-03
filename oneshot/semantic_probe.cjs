@@ -15,14 +15,6 @@ function scanSemantics(data) {
       Object.values(value).forEach(walk);
     };
     walk(win.SEED);
-    if (contracts.emptyFavorites) {
-      const collections = [...visited].flatMap(value => ['favorites', 'favourites']
-        .flatMap(key => Array.isArray(value[key]) ? value[key] : []));
-      const marked = records.filter(record => Object.entries(record).some(([key, value]) =>
-        value === true && /^(?:is)?favou?rit(?:e|ed)$/.test(key.toLowerCase().replace(/_/g, ''))));
-      if (collections.length || marked.length)
-        issue('The requirements define initially unselected Favorite controls and declare no favorite seed memberships, but generated seeds already contain favorites. Start unmarked and let the prerequisite actions populate favorites instead of pre-applying a later GIVEN state.');
-    }
     const aliases = {archived:'archived', isarchived:'archived', pinned:'pinned', ispinned:'pinned',
       deleted:'deleted', isdeleted:'deleted', trashed:'deleted', istrashed:'deleted', intrash:'deleted'};
     for (const contract of contracts.seedStates) {
@@ -73,16 +65,6 @@ function scanSemantics(data) {
     return true;
   };
   const scanSemantics = () => {
-    for (const record of win.document.querySelectorAll('article[title], [role="article"][title]')) {
-      const marker = record.getAttribute('title');
-      if (!active(record) || !(contracts.recordTitles || []).includes(marker)) continue;
-      const visible = Array.from(record.querySelectorAll('[title]')).some(el => {
-        const box = el.getBoundingClientRect();
-        return el.getAttribute('title') === marker && box.width > 0 && box.height > 0 &&
-          win.getComputedStyle(el).visibility !== 'hidden';
-      });
-      if (!visible) issue(`Record root has title "${marker}", but no visible descendant exposes it. Preserve the requested root attribute and also expose a visible state marker inside the record for scoped lookup.`);
-    }
     for (const el of win.document.querySelectorAll('button[role]')) {
       if (!active(el)) continue;
       const name = nameOf(el); const expected = contracts.roles[name.toLowerCase()] || [];
@@ -95,27 +77,6 @@ function scanSemantics(data) {
         const controls = Array.from(form.querySelectorAll('button, a, [role="button"]'));
         if (!controls.some(el => active(el) && nameOf(el) === contract.control))
           issue(`Form "${contract.form}" requires a separate "${contract.control}" control to reveal its "${contract.placeholder}" textbox. A label attached to an always-visible input does not implement that activation flow.`);
-      }
-    }
-    for (const dialog of win.document.querySelectorAll('[role="dialog"]')) {
-      if (!active(dialog)) continue;
-      const seen = new Map();
-      for (const button of dialog.querySelectorAll('button')) {
-        if (!active(button) || button.closest('[role="dialog"]') !== dialog) continue;
-        const name = nameOf(button);
-        if (!/^(close|save|cancel|done)$/i.test(name)) continue;
-        const key = name.toLowerCase(); seen.set(key, (seen.get(key) || 0) + 1);
-      }
-      for (const [name, count] of seen) if (count > 1)
-        issue(`Dialog "${nameOf(dialog)}" contains ${count} active "${name}" buttons. Keep one completion action in the editor; nested field choosers must not duplicate it.`);
-    }
-    if (contracts.recordEditors.length === 1) {
-      for (const record of win.document.querySelectorAll('article, [role="article"]')) {
-        if (!active(record) || record.closest('[role="dialog"]')) continue;
-        const fields = Array.from(record.querySelectorAll('input[type="checkbox"]')).filter(el =>
-          active(el) && (contracts.roles[nameOf(el).toLowerCase()] || []).includes('checkbox'));
-        if (fields.length)
-          issue(`Record field chooser (${fields.map(nameOf).slice(0, 5).join(', ')}) is outside the declared record editor "${contracts.recordEditors[0]}". Reuse that named entity editor for field editing and preserve the checkbox elements until explicit completion.`);
       }
     }
   };
@@ -324,14 +285,6 @@ async function observe(page, url, contracts) {
         if(before!==null && await c.el.evaluate(e=>e.isConnected)){
           const after=await c.el.isChecked();
           if(after===before)errors.add('Checkbox "'+c.name+'" did not change state on native activation. Do not preventDefault its click or undo the checked state.');
-        }
-        if (c.meta.inRecord && contracts.recordEditors.length === 1) {
-          const editor = page.getByRole('dialog').first();
-          if (await editor.isVisible() && await editor.getByRole('checkbox').count()) {
-            const actual = await label(await editor.elementHandle());
-            if (actual.toLowerCase() !== contracts.recordEditors[0].toLowerCase())
-              errors.add(`Record field editing opened dialog "${actual}" instead of the declared editor "${contracts.recordEditors[0]}". Reuse the named entity editor for these fields.`);
-          }
         }
         actions.push({scope:scopeName,name:c.name,action:c.meta.action});await scan(false);
       }catch(e){actions.push({scope:scopeName,name:c.name,observation:String(e.message).slice(0,160)});}
