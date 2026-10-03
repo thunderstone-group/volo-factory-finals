@@ -1,29 +1,15 @@
-# 2026-10-02 21:28 ARC v7 ready for a complete official pair
+# 2026-10-03 ARC 完整榜首与继续提分
 
-先读本页，再按需要读 `docs/reference/roadmap.md` 与 `docs/reference/oneshot.md`。下列运行号和状态是本次观察；继续时检查原句柄和实际产物，不因观察超时重启。
+先读本页；代码规则在 AGENTS.md，实验边界见 docs/reference/roadmap.md。状态从 CLI/git 现场读，以下是本次观察。E2 = `~/projects/arcbench-campaign/evidence/2026-10-02-s70`。
 
-- 当前目标是同一最新有效提交下完整 GitHub100 + Sheet100 正式总榜第一，并超过 Orchestro 的有效分数。原S70已完成。已有练习与正式余额可用于必要实验，不充值、不反复询问小额；无子agent授权。用户要求减少反复推演及浪费。
-- 用户重申的开发范式：worktree/分支只承载开发，验证后合main、更新主工作区、清理已结束分支。main代表最新可交付代码，平台采用的ZIP由正式提交记录决定，两者分开。
-- Volo最新源码已通过PR111合main `c2cd10c`；PR110随祖先合并结束。原goal/s70与source-owners工作树及本地/远端分支已清理，未跟踪dist各1件保存在E2/retained-*-dist。后续读 `~/projects/volo-factory`，改代码需从最新main新建worktree。276 one-shot检查完成（3 optional skip），最终提示126 focused通过，226 legacy检查完成（12 optional skip），46提交secret扫描0。打包主分支与在测v6 SHA逐字一致，见E2/mainline-v6-delivery.json。
-- CLI `~/projects/arcbench-cli` main `4d3eefc`、0.5.0，PR9正式额度、PR11群友doctor、PR12自测接口均已合并；132检查及实际API/主分支安装验证通过，CLI工作树和本次分支已清理。安装来自远端main，不能再引用已删除的CLI worktree。OAuth/Cookie迁移已获用户明确授权，不重问；`~/.config/arcbench/volo.env`不输出真值。
+- 用户要求继续提高两个任务，main 始终保留最新可交付版。现有练习/正式余额已授权，不充值，无子 agent 授权；不要反复推演或重复付费运行。开发在 worktree，验证后 PR 合 main 并清理。
+- 完整正式 v7 submission `12e3bab723fd`：G `c5e4493bad81` 76/100、CNY2.017375；Sheet `5d3438cb9865` 80/100、CNY9.135983；同一提交 156/200、S92.6557759483609、当时 rank1。来源和终态见 `docs/evidence/2026-10-03-v7-complete-and-repair-feedback.json`。此前 Sheet 消失只是新提交没有完成该任务，现已恢复。历史 Orchestro S103.61657 仍高于这次分数，榜上消失的原因未查，不作合规推断。
+- 正式包仍是 E2/candidate-selected-value-v7.zip，SHA4ae64326c7e942c97e37685641766881b20d7d81c061ccc309d167f395a88f48。不要把本次源码改进当作平台已采用。
+- 当前补跑 Sheet `defb678bf0a1`，同一有效提交保留最佳成绩。E2/watch_v7_stages.py / exec3182 等待它终态后依次启动 GitHub Stage1、2、3，每次校验最新 submission 和余额，串行继承上阶段最佳应用。看 E2/v7-stages-watch.log、v7-sheet-repeat-result.json、v7-official-stage-*-start.jsonl/result.json、v7-board-after-stages.json。恢复必须读现有 run id，不重复执行 start。旧 exec2772 观察已超时并退出，不能据此重启原任务。
+- 今日 selftest 基线已完成：同一 G76 应用 25/30、23/29、28/41，合计76，与正式分相同。E2/v7-official-github-76/stage-feedback-summary.json：13定位歧义、6超时、4导航缺失、1评测函数 uniqueAccount 未定义。重复 Code 链接是应用问题；部分宽泛定位同时匹配正常状态与历史，不能把全部失败算成业务缺陷。不要隐藏合法历史或删除其他记录来迎合歧义。
+- G 导航受控产物 E2/v7-github-navigation-control 只修首页 Settings、搜索后重复 Code 导航及返回文件列表。原生角色选项改动导致局部回退，已撤回。其 Stage2 自测仍23/29：歧义消失后暴露了搜索上下文被清空，未证明提分；手修应用只是诊断，不放入 agent 包。今日 selftest 已完成4次，额度最多10次；不要猜剩余额度，以终态/服务响应核对。
+- Sheet 的实际缺陷：创建/打开筛选写读 session filters，但弹窗读取 sheet.filters。E2/v7-sheet-filter-control 只改一处 reader；真实 Chromium 弹窗由关闭到打开，固定 g99/cov99n-arm 各88到91，原通过项均保留。
+- 通用 agent 改进：源码审查接收剩余浏览器失败线索并追踪实际 writer/reader/renderer；测试自身的 beforeAll/afterAll page fixture 错误回交测试作者；源码依赖链接不再25轮截断，以有限源码索引为界。两次实际调用 CNY估算0.623199，自动找到筛选反例，定义不改即原应用 fail/一行修复 pass。其他生成反例仍有夹具局限，不能把全部 fail 当作质量问题。E2/v8-source-observations-sheet 保留原始执行和固定对照。
+- 主分支 CLI0.5.0 已包含正式额度、群友 doctor PR11 和 selftest API，已安装远端 main。环境在 ~/.config/arcbench/volo.env，不输出密钥。当前 formal submission 的 credential_mode=official_evaluation；其平台专用 key 与本机练习 key 分开。自费共享 key 模式仍必须防止并发污染计量。
 
-E2 = `~/projects/arcbench-campaign/evidence/2026-10-02-s70`。
-
-- 当前有效正式submission仍 `f56d97c2fdb1`，agent ZIP SHA `8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a`。G `4666c04f629e` 46/100、CNY1.963038；Sheet `9d673d2969ed` 80/100、CNY2.973834；S79.47644199762266，126/200，完整original route。无新正式提交，也无在途正式评测。核验见s70-completion-audit.json。
-- 历史Orchestro为G76+Sheet87、S103.61657。19:05的leaderboard-1905.json中它未列在前10，原因未查，不作合规推断；当时榜首jackyjiang S88.7540，我们rank2。冲榜前重新读取完整榜，不能降低目标到一个局部临时分数。
-- 新公开完整G输入 `requirements-after-stage-announcement/hackathon--github/requirements.yaml` SHA9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8；Sheet目录是 `hackathon--sheet`，不是online-spreadsheet。阶段/full有一项组织名/slug文本差异。
-- 今日10次远端selftest已全部终态且额度用完，下次UTC0/本地08:00重置，不换账号绕过。G46正式应用三组基线23+21+1=45；仅首页入口及native控件受控修复为24+21+28=73、28增0退，见home-native-repair-github/combined-comparison.json；不能当新agent正式分。最后Stage3 ID `2c6f10f5-6b47-4d1a-bb2e-635286017ce6`。Sheet旧input[name]读取器随native变更改成[name]后，两套固定检查恢复87/93；这是保护性诊断，未嵌入agent包。
-
-- 冻结v6包 `candidate-semantic-entry-v6.zip` SHA `2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb`。只含通用agent/scaffold；不含生成应用、隐藏测试或任务答案。新增固定初始入口检查仅从公开GIVEN/first WHEN提取，补充可运行written suite；按语义区分初始数据、输入和消息，去掉词汇覆盖诱导。保留实际源码反例与native控件。
-- v5两题均结束。Sheet自检92pass/3fail/7error，独立g99/cov99n-arm仅82/87（正式80应用同套87/93），所以未晋升。v5-final-sheet-frozen-report.json还暴露自写测试矛盾：插入空B列后要求=B1+C1且结果5，虽然B1空/C1=3；后序测试也假定共享后端初始值未被前序改动。不要盲修应用以满足不一致检查。
-- v6两题从空模板的原运行exec40870已结束，初稿分别49pass/32fail/33error与68pass/9fail/24error；均在首轮修复到达5次传输失败上限，没有成功修复，不能当完整质量试验。多数TLS EOF是0 byte/0 SSE；Sheet另有截断JSON和缺终止标记。默认曾尝试Kimi，不得称全程Vision或把未知用量当0。实际GET探测在Python3.9、3.12和curl都返回401，无法据此定罪Python或服务端。详细记录见 docs/evidence/2026-10-02-v6-transport-limited.json 与E2原日志。
-- v6-frozen-suite-{github,sheet}是公开需求生成的模型检查，不是主办方测试。校准：G46应用普通96pass+入口3/11，受控73应用普通96pass+入口11/11；Sheet80应用88pass/5fail/8error。普通G检查仍看不出首页修复收益，必须同时看固定入口和独立回放。
-- 首次恢复 `v6-transport-recovery-github` / exec50309已结束：Python3.12、Vision、fallback关闭，配置repair_calls=1但实际2次请求（一次SSE截断后重试成功），880.9秒；保留改动后85pass/26fail、11入口全过，修改app.js/styles.css。已知估算CNY0.505617，含未知用量，不能当完整实扣额。运行时限额允许内部重试超出配置次数，记录实际attempts。
-
-当前没有在途本地生成/修复。exec58454已终态：G连续5次传输失败、0完整回复，仍85/111，程序按设计没有排Sheet。不要恢复旧50309/58454/28072/89976句柄。
-
-随后每进程绑定物理网卡en0并使用公开DNS地址、保持原HTTPS域名和请求数据的curl对照连续完成两题：G一次请求HTTP200/0 curl错误，85提升108/111；Sheet一次请求完成，固定自写检查75pass/6fail/23error（其中多数因前序改了共享表格后，写测代码仍假定初始Region表头）。这条诊断改动只在E2，不进入agent包，不改系统代理。两个控制的请求哈希与旧失败调用不完全相同，且线路和HTTP栈均改变，所以不作严格单变量归因。
-
-本次v7修复在 `fix/native-selected-value-20261002` 工作树：原生select用浏览器selectedcontent呈现选中值，保留真实原生控件和FormData/事件/AX值；屏幕、弹窗、popover均覆盖，原生显示子按钮不参与重复动作折叠。276 one-shot（3 optional skip）与226 legacy（12 optional skip）通过。只换lib的G对照109/111（两个选中值阻塞均解除，其中一项继续走到提交hash格式断言失败；另一个仍是milestone刷新显示）。旧Sheet两套保持87/93，新Sheet独立为90/95，满足本次正式试跑的对照依据。
-
-下一步完成本分支PR/main/清理、冻结candidate-selected-value-v7.zip，再保存同包完整GitHub+Sheet正式提交。既有额度授权有效，提交前已现场确认无活动run、余额213.300534。新提交不继承旧成绩；保存之后应以新提交为当前，不再称S79.4764仍是有效榜面。读取E2/v7-official-upload.jsonl和v7-official-start.jsonl中的实际submission/run ids（若还没有文件则尚未执行），并从CLI复核终态和总榜。保留原f56完整证据供比较。不要把本地109/111或90/95当正式成绩。
+继续顺序：读取上述运行现有句柄；核对 G 导航控制收益和 Sheet 补跑终态；保持当前正式提交到完整验证新候选后再替换。下一份包要验证全新双题和固定独立检查，不能把手修应用增分当作 agent 泛化成绩。阶段路线须完成三阶段、同提交最佳 Sheet 和完整来源 run ids 后再报总榜分。

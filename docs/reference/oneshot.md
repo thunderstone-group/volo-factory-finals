@@ -1,6 +1,6 @@
 # One-shot candidate inside VOLO
 
-Last reviewed: 2026-10-02.
+Last reviewed: 2026-10-03.
 
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
@@ -117,6 +117,12 @@ are skipped. The guards supplement the written scenarios, cannot rescue an unusa
 and do not change the number of public acceptance scenarios.
 
 ## Repair loop
+
+Source review uses remaining browser failures as clues, checking each against public requirements and actual
+state writers/readers before proposing counterexamples. Source dependency linking is bounded by the finite
+declaration index, rather than a fixed 25-pass cutoff. This does not certify probe validity: invalid fixtures
+remain unjudged. Playwright per-test page/context fixtures used in suite-wide hooks are test-writer errors;
+they are sent to suite mending rather than application repair.
 
 `repair_delivery` (roadmap 4.3) assesses the staged draft: the delivery check, the static gates
 (process guards, label collisions, exact names, readonly inputs, scaffold primitives), the quoted

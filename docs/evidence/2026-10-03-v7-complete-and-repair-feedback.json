@@ -1,0 +1,175 @@
+{
+  "observed_at": "2026-10-03",
+  "submission": "12e3bab723fd",
+  "github": {
+    "run_id": "c5e4493bad81",
+    "status": "FAILED",
+    "passed": 76,
+    "failed": 24,
+    "pass_rate": 76.0,
+    "tokens": 1378769,
+    "duration_seconds": 3909,
+    "failure_reason": "Runner exited with test failures or runtime errors",
+    "submission_id": "12e3bab723fd",
+    "requirement_id": "hackathon--github",
+    "finished_at": "2026-10-02T14:52:21.465938",
+    "display_name": "volo-v7-selected-content-20261002",
+    "model_name": "deepseek-v4-flash-vision-exp",
+    "feature_implemented_count": 33,
+    "feature_total_count": 47,
+    "cost": {
+      "amount": 2.017375,
+      "currency": "CNY"
+    },
+    "steps": [
+      {
+        "key": "deploy_agent",
+        "status": "completed",
+        "description": "Done"
+      },
+      {
+        "key": "start_agent",
+        "status": "completed",
+        "description": "Done"
+      },
+      {
+        "key": "run_tests",
+        "status": "completed",
+        "description": "Evaluation completed"
+      }
+    ],
+    "failed_tests": []
+  },
+  "sheet": {
+    "run_id": "5d3438cb9865",
+    "status": "FAILED",
+    "passed": 80,
+    "failed": 20,
+    "pass_rate": 80.0,
+    "tokens": 3768855,
+    "duration_seconds": 13128,
+    "failure_reason": "Runner exited with test failures or runtime errors",
+    "submission_id": "12e3bab723fd",
+    "requirement_id": "hackathon--sheet",
+    "finished_at": "2026-10-02T18:36:42.326293",
+    "display_name": "volo-v7-selected-content-20261002",
+    "model_name": "deepseek-v4-flash-vision-exp",
+    "feature_implemented_count": 12,
+    "feature_total_count": 24,
+    "cost": {
+      "amount": 9.135983,
+      "currency": "CNY"
+    },
+    "steps": [
+      {
+        "key": "deploy_agent",
+        "status": "completed",
+        "description": "Done"
+      },
+      {
+        "key": "start_agent",
+        "status": "completed",
+        "description": "Done"
+      },
+      {
+        "key": "run_tests",
+        "status": "completed",
+        "description": "Evaluation completed"
+      }
+    ],
+    "failed_tests": []
+  },
+  "leaderboard": {
+    "rank": 1,
+    "username": "VOLO-AI",
+    "model_name": "deepseek-v4-flash-vision-exp",
+    "track": "hackathon",
+    "avg_pass_rate": 78.0,
+    "avg_feature_implementation_rate": 0.0,
+    "total_token_millions": 5.147624,
+    "total_token_cost": 11.153357999999999,
+    "token_cost_currency": "CNY",
+    "cost_efficiency": null,
+    "efficiency_threshold": 80.0,
+    "efficiency_eligible": false,
+    "seniority_label": "junior",
+    "avg_runtime_seconds": 8518,
+    "submission_count": 1,
+    "task_id": null,
+    "task_title": null,
+    "is_complete": true,
+    "score": 92.6557759483609,
+    "score_available": true,
+    "pass_rate": 78.0,
+    "passed_count": 156,
+    "test_total": 200,
+    "total_cost": 11.153357999999999,
+    "expected_cost": 62.4,
+    "cost_ratio": 0.17873971153846152,
+    "score_regime": "reward",
+    "submitted_at": "2026-10-02T13:39:02.861636",
+    "is_low_cost": false,
+    "scoring_route": "original",
+    "source_run_ids": [
+      "c5e4493bad81",
+      "5d3438cb9865"
+    ]
+  },
+  "selftest_baseline": {
+    "stage_passed": [
+      25,
+      23,
+      28
+    ],
+    "stage_total": [
+      30,
+      29,
+      41
+    ],
+    "sum": 76,
+    "failed_classes": {
+      "ambiguous_locator": 13,
+      "timeout": 6,
+      "navigation": 4,
+      "evaluator_reference_error": 1
+    }
+  },
+  "source_review_control": {
+    "model_calls": 2,
+    "estimated_cny": 0.623199,
+    "same_immutable_probe": {
+      "original": "fail",
+      "one_line_filter_read_fix": "pass"
+    },
+    "fixed_browser_suites": {
+      "g99": {
+        "before": 88,
+        "after": 91,
+        "lost": []
+      },
+      "cov99n-arm": {
+        "before": 88,
+        "after": 91,
+        "lost": []
+      }
+    },
+    "limitation": "One diagnostic was independently confirmed. Other generated probes include an invalid precondition and a formula error that still needs fixture validation; their failure counts are not quality gains."
+  },
+  "scope": "Completed official v7 score plus bounded local diagnostics; no v8 formal submission.",
+  "validation": {
+    "oneshot": {
+      "run": 278,
+      "skipped": 3,
+      "failures": 0
+    },
+    "legacy": {
+      "run": 226,
+      "skipped": 12,
+      "failures": 0
+    },
+    "packaged_files": 21,
+    "candidate_sha256": "f1e29e95b6bea93ea2f4e4a643bcfc85153664265fbd21ad7da5f9a496972623",
+    "changed_diff_secret_findings": 0,
+    "package_secret_findings": 0
+  }
+}
