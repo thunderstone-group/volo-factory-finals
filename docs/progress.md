@@ -1775,3 +1775,9 @@ Source8a06f4a passed273 deterministic tests (270pass,3optional skip). Packagee4a
 修复自写测试把Playwright生命周期fixture错误当产品失败的问题；源码审查加入失败线索和跨调用读写检查，依赖补齐从固定25轮改为有限源码索引界。两次真实调用自动找到筛选状态错位，固定反例在原应用fail/一行修复pass；固定独立回放两套各88到91、零原通过项丢失。其他反例有夹具局限，不以数量宣称泛化提升。完整证据见evidence/2026-10-03-v7-complete-and-repair-feedback.json；本次没有替换正式提交。
 
 验证：278 one-shot（3 optional skip）、226 legacy（12 optional skip）均无失败；21文件精确包和本次diff secret扫描均0。G手修导航Stage2仍23/29，解除定位歧义后出现搜索语义失败，不能作为提分候选。
+
+## 2026-10-03 09:00 — v8已合主分支并启动空模板验证
+
+PR114合main15f5928，分支/worktree已清理，主分支打包与v8候选逐字一致。两题空模板生成exec64940及独立诊断观察exec77210已启动，只使用练习key；正式仍是12e3bab723fd。原阶段观察GET失败后恢复同一Sheet defb678bf0a1，exec83238继续串行阶段流程，未重复创建任务。
+
+手修G搜索控制的Stage2由23/29到27/29，四项搜索恢复；前一仅导航控制Stage1为24/30（原25），未作为候选。所有这些手修应用留在E2，不放入agent包。新版agent的正式提分仍待完整生成和正式评测。
