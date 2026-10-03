@@ -58,3 +58,5 @@
 - `handoffs/2026-10-02-1509.md` — S70两轮正式结果、旧需求实验、公告与快速自测/CLI迁移过程的历史交接。
 
 - `handoffs/2026-10-02-before-v7-completion.md` — Preserved v7 preparation handoff before the complete official pair and October 3 diagnosis.
+
+- `handoffs/2026-10-03-before-v8-fresh-validation.md` — Snapshot before starting the frozen v8 fresh pair and completing the search-control self-test.
