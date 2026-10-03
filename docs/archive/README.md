@@ -62,3 +62,5 @@
 - `handoffs/2026-10-03-before-v8-fresh-validation.md` — Snapshot before starting the frozen v8 fresh pair and completing the search-control self-test.
 
 - `handoffs/2026-10-03-before-stage-template-fix.md` — Preserved handoff before collecting Sheet87 and diagnosing the Stage2 input-size failure.
+
+- `handoffs/2026-10-03-before-source-repair-scope.md` — Snapshot before observing the 78+87 formal pair and bounding post-audit repairs.

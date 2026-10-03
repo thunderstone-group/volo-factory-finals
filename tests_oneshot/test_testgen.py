@@ -522,7 +522,7 @@ class RepairLoopCase(unittest.TestCase):
              "source": f"test('{sid}: x', async ({{ page }}) => {{ /* body of {sid} */ }});"}
             for sid, status in statuses.items()]}
 
-    def run_loop(self, reports, replies):
+    def run_loop(self, reports, replies, **options):
         adapter, sent = self.adapter, []
 
         self.keys = []
@@ -538,8 +538,46 @@ class RepairLoopCase(unittest.TestCase):
         with self.patch.object(adapter, "check_scenarios", side_effect=reports) as check, \
                 self.patch.object(adapter, "stream_completion", side_effect=complete):
             adapter.repair_delivery(self.stage, list(self.files), [{"role": "user", "content": "draft"}], "m", "b", "k",
-                                    budget, requirements="synthetic", tests=Path(self.temp.name) / "suite")
+                                    budget, requirements="synthetic", tests=Path(self.temp.name) / "suite", **options)
         return sent, budget, check
+
+    def test_source_repair_stops_after_its_targets_pass_and_keeps_other_failures_visible(self):
+        from tests_oneshot.test_oneshot import block
+        before = self.report({"old-failure": "fail", "new-contract": "fail", "protected": "pass"})
+        after = self.report({"old-failure": "fail", "new-contract": "pass", "protected": "pass"})
+        recheck = self.report({"new-contract": "pass"})
+        sent, budget, check = self.run_loop([before, after, recheck],
+            [block("frontend/public/app.js", "// repaired"), "unused"], repair_targets={"new-contract"})
+        self.assertEqual(len(sent), 1)
+        self.assertNotIn("/* body of old-failure */", sent[0])
+        self.assertIn("protected", sent[0])
+        self.assertEqual(budget.smoke['stopped'], 'requested source checks pass')
+        self.assertEqual(budget.smoke['scenarios_after']['counts'], {'fail': 1, 'pass': 2})
+        self.assertTrue(budget.smoke['rounds'][0]['accepted'])
+
+    def test_source_repair_still_rejects_regressions_outside_its_targets(self):
+        from tests_oneshot.test_oneshot import block
+        before = self.report({"old-failure": "fail", "new-contract": "fail", "protected": "pass"})
+        after = self.report({"old-failure": "fail", "new-contract": "pass", "protected": "fail"})
+        recheck = self.report({"new-contract": "pass", "protected": "fail"})
+        _, budget, _ = self.run_loop([before, after, recheck],
+            [block("frontend/public/app.js", "// rejected")], repair_targets={"new-contract"})
+        self.assertFalse(budget.smoke['rounds'][0]['accepted'])
+        self.assertFalse((self.stage/'frontend/public/app.js').exists())
+
+    def test_unjudged_source_target_is_not_reported_as_fixed(self):
+        report = self.report({"old-failure": "fail", "new-contract": "error", "protected": "pass"})
+        sent, budget, _ = self.run_loop([report], [], repair_targets={"new-contract"})
+        self.assertEqual(sent, [])
+        self.assertEqual(budget.smoke['stopped'], 'requested source checks are unjudged')
+
+    def test_source_target_scope_keeps_the_discard_limit(self):
+        from tests_oneshot.test_oneshot import block
+        report = self.report({"old-failure": "fail", "new-contract": "fail", "protected": "pass"})
+        sent, budget, _ = self.run_loop([report] * 5,
+            [block("frontend/public/app.js", "// ineffective")] * 6, repair_targets={"new-contract"})
+        self.assertEqual(len(sent), 4)
+        self.assertEqual(budget.smoke['stopped'], '4 repairs in a row were discarded')
 
     def test_a_repair_that_loses_a_test_is_discarded_below_three_gains_per_loss(self):
         from tests_oneshot.test_oneshot import block
