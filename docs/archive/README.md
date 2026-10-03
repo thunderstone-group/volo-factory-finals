@@ -60,3 +60,5 @@
 - `handoffs/2026-10-02-before-v7-completion.md` — Preserved v7 preparation handoff before the complete official pair and October 3 diagnosis.
 
 - `handoffs/2026-10-03-before-v8-fresh-validation.md` — Snapshot before starting the frozen v8 fresh pair and completing the search-control self-test.
+
+- `handoffs/2026-10-03-before-stage-template-fix.md` — Preserved handoff before collecting Sheet87 and diagnosing the Stage2 input-size failure.

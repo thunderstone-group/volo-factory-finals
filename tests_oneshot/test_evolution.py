@@ -131,10 +131,35 @@ class EvolutionTests(unittest.TestCase):
         self.assertIn('upgrade did not change any files', self.upgrade_reporting())
         self.assertEqual(adapter.read_template(self.out), before)
 
+    def test_large_task_inputs_are_preserved_without_consuming_application_snapshot(self):
+        self.seed()
+        inputs = self.out / 'requirements'
+        inputs.mkdir()
+        original = b'prior task input\n' + b'x' * adapter.MAX_TEMPLATE_BYTES
+        (inputs / 'requirements.yaml').write_bytes(original)
+        asset = self.out / 'frontend/public/requirements/help.txt'
+        asset.parent.mkdir()
+        asset.write_text('Application asset with the same directory name')
+        snapshot = adapter.read_template(self.out)
+        self.assertNotIn('requirements/requirements.yaml', snapshot)
+        self.assertIn('frontend/public/requirements/help.txt', snapshot)
+        self.assertNotIn('prior task input', adapter.template_context(snapshot))
+        self.replies(events(block('frontend/public/index.html', '<h1>Updated</h1>')))
+        self.upgrade()
+        self.assertEqual((inputs / 'requirements.yaml').read_bytes(), original)
+        self.assertEqual(asset.read_text(), 'Application asset with the same directory name')
+
+    def test_repair_cannot_modify_retained_task_inputs(self):
+        self.seed()
+        with self.assertRaisesRegex(ValueError, 'metadata or build artifacts'):
+            adapter._write_repair(self.out, [{'path': 'requirements/requirements.yaml', 'content': 'changed'}], self.out)
+        self.assertFalse((self.out / 'requirements').exists())
+
     def test_preserved_metadata_is_not_writable_by_generated_patch(self):
         self.seed()
         (self.out / '.env').write_text('preserved')
-        for name in ('.env', 'frontend/.env', 'frontend/dist/old.js', 'node_modules/x.js'):
+        for name in ('.env', 'frontend/.env', 'frontend/dist/old.js', 'node_modules/x.js',
+                     'requirements/requirements.yaml'):
             self.replies(events(block(name, 'bad')))
             self.assertIn('metadata or build artifacts: ' + name, self.upgrade_reporting())
         self.assertEqual((self.out / '.env').read_text(), 'preserved')

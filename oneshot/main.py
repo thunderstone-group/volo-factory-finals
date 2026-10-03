@@ -1234,6 +1234,13 @@ def smoke_check(stage, requirements=None, diagnostics=None):
     return problems, True
 
 
+def _template_opaque(relative):
+    """Task inputs are preserved with the workspace, but are not editable application source."""
+    parts = PurePosixPath(relative).parts
+    return (bool(parts) and parts[0] == "requirements" or
+            any(part.startswith(".") or part in TEMPLATE_ARTIFACTS for part in parts))
+
+
 def read_template(root):
     """Read a bounded source snapshot; never follow links or send local dotfiles."""
     root = Path(root)
@@ -1241,9 +1248,9 @@ def read_template(root):
         raise ValueError("template must be a directory, not a symlink")
     blobs, total = {}, 0
     for directory, dirs, names in os.walk(root, followlinks=False):
-        dirs[:] = sorted(d for d in dirs if not d.startswith(".") and d not in TEMPLATE_ARTIFACTS)
+        dirs[:] = sorted(d for d in dirs if not _template_opaque((Path(directory) / d).relative_to(root)))
         for name in dirs + sorted(names):
-            if name.startswith("."):
+            if _template_opaque((Path(directory) / name).relative_to(root)):
                 continue
             path = Path(directory) / name
             if path.is_symlink():
@@ -1448,8 +1455,7 @@ def draft_application(stage, files, messages, model, base, key, budget, template
             continue
         for name in [item["path"] for item in batch] + missing:
             resolve_path(stage, name)
-            if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
-                                            for part in PurePosixPath(name).parts):
+            if template is not None and _template_opaque(name):
                 raise ValueError("upgrade cannot edit local metadata or build artifacts: " + name)
         for item in batch:
             target = resolve_path(stage, item["path"])
@@ -2608,8 +2614,7 @@ def _follow_up(messages, ask, model, base, key, budget, record, kind):
 def _write_repair(stage, batch, template):
     for item in batch:
         target = resolve_path(stage, item["path"])
-        if template is not None and any(part.startswith(".") or part in TEMPLATE_ARTIFACTS
-                                        for part in PurePosixPath(item["path"]).parts):
+        if template is not None and _template_opaque(item["path"]):
             raise ValueError("repair cannot edit local metadata or build artifacts: " + item["path"])
         item["path"] = target.relative_to(stage.resolve()).as_posix()
         write_one(stage, item)
