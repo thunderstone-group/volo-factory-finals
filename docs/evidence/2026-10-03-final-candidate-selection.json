@@ -1,0 +1,503 @@
+{
+  "observed_at": "2026-10-03T23:33:00+08:00",
+  "candidate_sha256": "e02e7a6f33037a6251066b54282bd628edfadb501a7697b66c027f68756882b4",
+  "formal_submission_replaced": false,
+  "selected_formal_submission": "12e3bab723fd",
+  "retained_main_package_sha256": "cd0f596905b202bd5b79c040e7478ed65c204d51fb0c59c02c23beacc59baa5c",
+  "candidate_metrics": {
+    "github": {
+      "generation": {
+        "task": "github",
+        "exit": 0,
+        "seconds": 6174.0,
+        "package_sha256": "e02e7a6f33037a6251066b54282bd628edfadb501a7697b66c027f68756882b4"
+      },
+      "usage": {
+        "billing_status": "unknown",
+        "calls": 8,
+        "calls_by_model": {
+          "deepseek-v4-flash-vision-exp": 7,
+          "kimi-k2.7-code-highspeed": 1
+        },
+        "completed_calls": 3,
+        "completion_tokens": null,
+        "draft_call_limit": 4,
+        "estimated_cost_cny": 5.484165,
+        "estimated_repair_cost_cny": 0.788104,
+        "failed_calls": 5,
+        "failure_limit": 5,
+        "fallback_model": null,
+        "known_completion_tokens": 83502,
+        "known_prompt_tokens": 243017,
+        "prompt_tokens": null,
+        "refused_calls": 0,
+        "repair_call_limit": 24,
+        "repair_cny_limit": 10.0,
+        "side_calls": 11,
+        "unknown_usage_calls": [
+          1,
+          2,
+          3,
+          7,
+          8
+        ]
+      },
+      "fixed_diagnostics": {
+        "v6-fixed": {
+          "pass": 32,
+          "fail": 53,
+          "error": 31
+        }
+      },
+      "attempt_outcomes": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "a0612f72d2f9482f0f3707878334ea5df0276d110a7e9fd06d424092fc48cb34",
+          "elapsed_seconds": 212.237
+        },
+        {
+          "call": 2,
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "a0612f72d2f9482f0f3707878334ea5df0276d110a7e9fd06d424092fc48cb34",
+          "elapsed_seconds": 358.359
+        },
+        {
+          "call": 3,
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "a0612f72d2f9482f0f3707878334ea5df0276d110a7e9fd06d424092fc48cb34",
+          "elapsed_seconds": 219.66
+        },
+        {
+          "call": 4,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "451ad5acdb8dda65862418b0f036609800a64dd49cbad8237738650ea9acec7b",
+          "elapsed_seconds": 219.129
+        },
+        {
+          "call": 5,
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "4d3ed9b53b419aef23936a1748beb2f79a05bade4ec624c1ca4e745c3469f5f7",
+          "elapsed_seconds": 52.383
+        },
+        {
+          "call": 6,
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "33d3150a0fe87d3031d82c4d4f9956ace9bd98ce09b0bb2a3c044f2b2bb73c9c",
+          "elapsed_seconds": 331.712
+        },
+        {
+          "call": 7,
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "b7b4d4b7eb347832c8d32f6946418af2a619f7a546447143ce286a007b02d090",
+          "elapsed_seconds": 428.755
+        },
+        {
+          "call": 8,
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "b7b4d4b7eb347832c8d32f6946418af2a619f7a546447143ce286a007b02d090",
+          "elapsed_seconds": 273.634
+        },
+        {
+          "call": "tests-1",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "103a483ee281b3be5d79b4fb043a9e2bf9070df5533273fe55d92dabd01c5228",
+          "elapsed_seconds": 363.112
+        },
+        {
+          "call": "tests-2",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "f9a709d3e39671e4df843e2eee920ed5f493d3e10ce9c9256ade88bb3b7d8bee",
+          "elapsed_seconds": 167.351
+        },
+        {
+          "call": "tests-3",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "f9a709d3e39671e4df843e2eee920ed5f493d3e10ce9c9256ade88bb3b7d8bee",
+          "elapsed_seconds": 267.404
+        },
+        {
+          "call": "tests-4",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "f9a709d3e39671e4df843e2eee920ed5f493d3e10ce9c9256ade88bb3b7d8bee",
+          "elapsed_seconds": 183.959
+        },
+        {
+          "call": "tests-5",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "3838d12d5d1c741dc89ee8e752c723e85cb8fcc4016214ac7da4648b87dfe15e",
+          "elapsed_seconds": 195.37
+        },
+        {
+          "call": "tests-6",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "3838d12d5d1c741dc89ee8e752c723e85cb8fcc4016214ac7da4648b87dfe15e",
+          "elapsed_seconds": 175.608
+        },
+        {
+          "call": "tests-7",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "3838d12d5d1c741dc89ee8e752c723e85cb8fcc4016214ac7da4648b87dfe15e",
+          "elapsed_seconds": 312.156
+        },
+        {
+          "call": "tests-8",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "aa752d6cfedbb06f7accbc0b0611d82bcd0209daaaa872d5e7a4ac5acb96c611",
+          "elapsed_seconds": 129.589
+        },
+        {
+          "call": "tests-9",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "9eb5a8ae62200b8f59ca78564e44ed0bca1a0b9b676e891af351a7e61c51470d",
+          "elapsed_seconds": 193.362
+        },
+        {
+          "call": "tests-10",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "8cb3a708eb930fb72ccf4c7770653298361fc14691d9381318969ec40ca64d72",
+          "elapsed_seconds": 321.006
+        },
+        {
+          "call": "tests-11",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "8cb3a708eb930fb72ccf4c7770653298361fc14691d9381318969ec40ca64d72",
+          "elapsed_seconds": 176.744
+        }
+      ]
+    },
+    "sheet": {
+      "generation": {
+        "task": "sheet",
+        "exit": 0,
+        "seconds": 5433.2,
+        "package_sha256": "e02e7a6f33037a6251066b54282bd628edfadb501a7697b66c027f68756882b4"
+      },
+      "usage": {
+        "billing_status": "unknown",
+        "calls": 6,
+        "calls_by_model": {
+          "deepseek-v4-flash-vision-exp": 5,
+          "kimi-k2.7-code-highspeed": 1
+        },
+        "completed_calls": 1,
+        "completion_tokens": null,
+        "draft_call_limit": 4,
+        "estimated_cost_cny": 6.724274,
+        "estimated_repair_cost_cny": 0.281196,
+        "failed_calls": 5,
+        "failure_limit": 5,
+        "fallback_model": null,
+        "known_completion_tokens": 37667,
+        "known_prompt_tokens": 58183,
+        "prompt_tokens": null,
+        "refused_calls": 0,
+        "repair_call_limit": 24,
+        "repair_cny_limit": 10.0,
+        "side_calls": 11,
+        "unknown_usage_calls": [
+          1,
+          2,
+          3,
+          5,
+          6
+        ]
+      },
+      "fixed_diagnostics": {
+        "g99": {
+          "fail": 8,
+          "error": 97,
+          "pass": 1
+        },
+        "cov99n-arm": {
+          "fail": 13,
+          "error": 96,
+          "pass": 1
+        }
+      },
+      "attempt_outcomes": [
+        {
+          "call": 1,
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "be3890f4a2ec5d2686d453e2a91c5a8fa14e3cc5b5ccddd72668aad543aecd51",
+          "elapsed_seconds": 209.608
+        },
+        {
+          "call": 2,
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "be3890f4a2ec5d2686d453e2a91c5a8fa14e3cc5b5ccddd72668aad543aecd51",
+          "elapsed_seconds": 398.806
+        },
+        {
+          "call": 3,
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "be3890f4a2ec5d2686d453e2a91c5a8fa14e3cc5b5ccddd72668aad543aecd51",
+          "elapsed_seconds": 214.435
+        },
+        {
+          "call": 4,
+          "phase": "draft",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "7193d0d00047b4dcc603c8d1fee2a163fcf67d94c009323365fafd44a413fb37",
+          "elapsed_seconds": 199.05
+        },
+        {
+          "call": 5,
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "817c4eaf6725ba5e78bebc412b5f2a8c11767c37af63818aa4be77aa5a0e922d",
+          "elapsed_seconds": 305.425
+        },
+        {
+          "call": 6,
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "817c4eaf6725ba5e78bebc412b5f2a8c11767c37af63818aa4be77aa5a0e922d",
+          "elapsed_seconds": 249.827
+        },
+        {
+          "call": "tests-1",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "a09475e33118877d27854e7254dada9c7db616c43d84d4a7ac6cae2938a41fc7",
+          "elapsed_seconds": 112.38
+        },
+        {
+          "call": "tests-2",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "a09475e33118877d27854e7254dada9c7db616c43d84d4a7ac6cae2938a41fc7",
+          "elapsed_seconds": 282.807
+        },
+        {
+          "call": "tests-3",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "a09475e33118877d27854e7254dada9c7db616c43d84d4a7ac6cae2938a41fc7",
+          "elapsed_seconds": 453.168
+        },
+        {
+          "call": "tests-4",
+          "phase": "tests",
+          "model": "kimi-k2.7-code-highspeed",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "3cddab741366556294e943d839d538603461ccde82eabd9eae4d3e72e267ba9d",
+          "elapsed_seconds": 128.957
+        },
+        {
+          "call": "tests-5",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "48bbea8c24117f7ce1511dd0670f459bdfbd51121fa8f3066b384d01094ac645",
+          "elapsed_seconds": 219.07
+        },
+        {
+          "call": "tests-6",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "48bbea8c24117f7ce1511dd0670f459bdfbd51121fa8f3066b384d01094ac645",
+          "elapsed_seconds": 170.993
+        },
+        {
+          "call": "tests-7",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "48bbea8c24117f7ce1511dd0670f459bdfbd51121fa8f3066b384d01094ac645",
+          "elapsed_seconds": 436.392
+        },
+        {
+          "call": "tests-8",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "85e3aec3bd4da3b4f72a536b25a788921fe9bbbd268938b383090588b611773e",
+          "elapsed_seconds": 489.855
+        },
+        {
+          "call": "tests-9",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "failed",
+          "finish_reason": null,
+          "error": null,
+          "request_sha256": "eb17574eaa07d1806f69ed8361f06fcccd8ce3bb807009ab0d6e9628b6b7d0b0",
+          "elapsed_seconds": 509.205
+        },
+        {
+          "call": "tests-10",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "eb17574eaa07d1806f69ed8361f06fcccd8ce3bb807009ab0d6e9628b6b7d0b0",
+          "elapsed_seconds": 145.808
+        },
+        {
+          "call": "tests-11",
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "error": null,
+          "request_sha256": "c34b8cf94e866ad2ef5c6af473226b0ed66926c13abdfd9398a3a150c9353ea0",
+          "elapsed_seconds": 239.182
+        }
+      ]
+    }
+  },
+  "decision": "Do not promote v12. Revert its three prompt changes and retain only diagnostic evidence in the PR. Main retains v11; formal scoring retains v7.",
+  "interpretation": "Both runs exhausted the primary failure limit and used Kimi fallback drafts. These results fail non-inferiority but do not identify a causal effect of the cleanup instructions. Unknown-usage calls are not treated as free.",
+  "last_formal_repeat": {
+    "run_id": "b5163f1ef283",
+    "passed": 6,
+    "failed": 94,
+    "cost_cny": 3.995712
+  },
+  "best_formal_pair": {
+    "github": {
+      "run_id": "afc04ffe5b63",
+      "passed": 79,
+      "total": 100,
+      "cost_cny": 1.636034
+    },
+    "sheet": {
+      "run_id": "defb678bf0a1",
+      "passed": 87,
+      "total": 100,
+      "cost_cny": 4.713723
+    },
+    "score": 104.95888048198316,
+    "total_cost_cny": 6.349757
+  },
+  "last_started_runs": [
+    "9f40df0b587e",
+    "8c80a2b899ac"
+  ],
+  "snapshot_at_2323": {
+    "volo_rank": 1,
+    "volo_score": 104.95888048198316,
+    "orchestro_rank": 2,
+    "orchestro_score": 103.8994540296292,
+    "final_rank": false
+  }
+}
