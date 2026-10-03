@@ -42,8 +42,11 @@ Paths must be relative and resolve within the output tree. Generation is staged 
 validated new-build directory is published by one rename. New builds reject nonempty output
 unless the CLI recognizes an application template.
 Evolution starts from an isolated copy, emits complete replacements for changed/new files,
-and retains unmentioned files. The prompt excludes dotfiles, node_modules, dist and Python
-caches; these remain preserved in the delivered tree and cannot be edited by the response.
+and retains unmentioned files. The prompt excludes dotfiles, node_modules, dist, Python
+caches and the workspace-root `requirements/` task inputs; these remain preserved in the
+delivered tree and cannot be edited by either a draft or repair response. The current task
+is supplied separately. Application assets under a nested directory with the same name
+remain ordinary source assets.
 Source snapshots are bounded to 256 files / 2 MiB with explicit failure instead of truncation.
 Symlinks in source are rejected; ignored metadata is copied without following links.
 Source or local metadata changes during generation abort publication. A no-op upgrade (detected

@@ -1,0 +1,56 @@
+{
+  "formal_failure": {
+    "run_id": "c71b18944cdb",
+    "error": "template exceeds source snapshot limit; no files were truncated",
+    "model_calls": 0
+  },
+  "snapshot": {
+    "source_files": 10,
+    "source_bytes": 83293,
+    "paths": [
+      "backend/package-lock.json",
+      "backend/package.json",
+      "backend/server.js",
+      "frontend/package-lock.json",
+      "frontend/package.json",
+      "frontend/public/app.js",
+      "frontend/public/index.html",
+      "frontend/public/lib/arc.js",
+      "frontend/public/seed.js",
+      "frontend/public/styles.css"
+    ],
+    "ignored_input_bytes": 3721202
+  },
+  "replay": {
+    "exit": 0,
+    "seconds": 1312.2
+  },
+  "preserved_task_inputs": {
+    "files": 29,
+    "identical": true
+  },
+  "previous_stage": {
+    "before": 28,
+    "after": 28,
+    "lost": []
+  },
+  "new_stage_independent": {
+    "passed": 26,
+    "total": 31
+  },
+  "own_stage_checks": {
+    "passed": 31,
+    "total": 31
+  },
+  "source_review": "Nonfatal JSONDecodeError; no source counterexample claim from this replay",
+  "estimated_total_cny": 1.400173,
+  "tests": {
+    "oneshot": 280,
+    "oneshot_skipped": 3,
+    "legacy": 226,
+    "legacy_skipped": 12
+  },
+  "candidate_sha256": "d71cca378b9d5b0350c8bfa7c5d208547548f2ddf0bd0c82d3982eb75f5da770",
+  "is_formal_new_result": false,
+  "public_input_boundary": "Failed workspace requirements and cached stage input differ only in ROOT.description; all non-root requirement records are identical."
+}
