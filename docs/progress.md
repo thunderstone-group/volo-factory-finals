@@ -1797,3 +1797,9 @@ G重跑3bf0eb62b562为78/100、CNY2.396539，与Sheet87组成165/200、S103.0907
 ## 2026-10-03 — 用户要求的无条件规则审查与安全候选
 
 独立审查确认页脚结构词、全局控件隐藏、只读/词重叠惩罚、根title后代、猜测性布局/角色和登录前提等遗留。建立独立安全候选，将这些改为按需求判断或去除无依据强制；保留框架机制和真实行为检查，缓存版本同步更新。报告见reports/2026-10-03-unconditional-heuristics-audit.md。候选SHA cd0f5969，真实双题生成在E2/generate-requirement-safe-v11-*，尚无正式分数，未更换正式高分提交。
+
+## 2026-10-03 21:15 — 清理版完整双题对照
+
+v11真实空模板生成完成：GitHub固定107/111与v10相同，Sheet固定g99为91/100（v10为89）、cov99n-arm为97/100（v10为94），固定检查集hash一致。Sheet有1项真实Escape取消回退，另新增3项；cov99n新增3且零回退。GitHub丢失项为exact-text DOM包装假设，仍保留原分。两题合计估算6.561914元，对照7.318132元，各版本各题仅一次独立生成。证据evidence/2026-10-03-safe-candidate-validation.json。
+
+按用户条件将去无依据强制规则的agent作为main候选交付；正式submission尚未替换。20:43榜上Orchestro103.89945、VOLO103.04816，新增GitHub补跑afc04ffe5b63与Sheet31ff91b909a0继续运行，完成后再定正式包。
