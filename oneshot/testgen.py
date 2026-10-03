@@ -66,12 +66,6 @@ How the tests run:
   There is no test API and no database access. When a GIVEN state cannot be built through flows the requirements
   describe (it needs seed records whose names the requirements do not give, or another system), write that test as
   `test.skip(title, async () => {{}})` with a one-line comment saying why, instead of guessing.
-  Distinguish explicitly provisioned starting data from illustrative values in another workflow. Do not assert
-  an example value exists initially unless the requirements provision it. Where the scenario permits test-created
-  state, enter the desired value through the documented UI and verify it before the action being tested.
-  If explicit starting-state statements conflict, report that fixture conflict rather than silently rewriting
-  GIVEN or treating an explicit seed statement as an example. Leave the contradictory assertion unjudged; use
-  independently established state for other behavior only when that scenario permits it.
 - Names that must be unique (usernames, emails, titles, record names) get a unique suffix, for example
   `const u = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);`, within the format rules the
   requirements state. This applies to records the scenario creates, never to an explicitly named existing
@@ -83,11 +77,8 @@ How the tests run:
   when GIVEN explicitly requires them or WHEN describes the navigation. Assert the first named target is
   visible in that starting context before activating it.
 - Locate elements the way a user perceives them, only with what the requirements state:
-  `page.getByRole(role, {{ name, exact: true }})` for an explicitly declared accessible name,
-  `page.getByLabel(label, {{ exact: true }})` for an explicitly declared field label, and text locators for visible
-  content. Choose exact text matching only when the requirement specifies the complete text of that element.
-  A required path, value or sentence may share a container with other required content; do not require it to
-  occupy a separate DOM element. Scope the intended region and assert its required content instead.
+  `page.getByRole(role, {{ name, exact: true }})` with the exact quoted accessible name,
+  `page.getByLabel(label, {{ exact: true }})` for fields, `page.getByText(text, {{ exact: true }})` for visible text.
   Never CSS selectors, XPath, test ids, element ids, class names or guessed URLs. When the requirements put a control
   inside a named dialog, menu, region, row or grid, scope the locator to it first.
 - Follow the specified selection interaction. For explicitly clickable options, click the combobox and then the
@@ -117,10 +108,6 @@ How the tests run:
 - Where the requirements allow several ways to do the same thing (in a grid or a separate field, with a keyboard
   shortcut or a menu command, with a button or the Enter key), spread the tests of that requirement across those ways,
   as different users would.
-  If commit, cancel or rejection is promised for those entrypoints, exercise that behavior through each relevant
-  path. A successful commit through one control does not establish cancellation through another. After a required
-  cancellation, check the visible value and, where the workflow supports it, a subsequent focus/selection change
-  and reopen or refresh so an abandoned draft cannot be committed later. Do not invent additional gesture contracts.
 
 Write ONE self-contained file (named at the end): small helper functions at the top (creating the records the scenarios assume,
 entering values the way the requirements describe, opening menus), then one `test(...)` per scenario listed, titled

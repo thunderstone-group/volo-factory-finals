@@ -1,16 +1,16 @@
-# 2026-10-03 21:15 去强制规则候选已完成本地对照，正式选版仍待处理
+# 2026-10-03 23:33 保留正式v7，main保留v11，最后双题在运行
 
-先读本页与AGENTS.md；当前代码/运行从git和CLI核对。E2=`~/projects/arcbench-campaign/evidence/2026-10-02-s70`。用户要求持续推进至初赛收尾，不能安排后台任务就结束。截止10月3日23:59（+08）；已开始的任务可以继续。现有练习/正式余额已授权，不充值、不读取隐藏评测源码、不发送群消息。用户本轮明确授权一位子agent进行全量过拟合审查，审查和针对性复审均已完成。
+先读本页和AGENTS.md；git、CLI是当前状态真源。E2=`~/projects/arcbench-campaign/evidence/2026-10-02-s70`。用户明确分数优先于清理，未证明非劣不替换正式提交；持续收取结果，不能只安排后台脚本就结束。10月3日23:59（+08）截止保存提交，已经开始的任务继续。现有练习/正式余额已授权，不充值、不读隐藏评测源码、不发群消息。
 
-- 最新正式submission仍12e3bab723fd，v7包SHA4ae64326c7e942c97e37685641766881b20d7d81c061ccc309d167f395a88f48；没有提交v8-v11。20:43现场榜单VOLO-AI第二，S103.04816240930273、164/200、CNY6.677899；平台取GitHub4905b2dab19b（77/100，1.964176元）和Sheetdefb678bf0a1（87/100，4.713723元）。Orchestro第一S103.8994540296292。较早G3bf0eb62b562为78/100、2.396539元；平台换成较便宜的77分run后，总S略降，因此不要承诺同提交重跑保证总S单调增加。
-- 正式Sheet31ff91b909a0仍运行，最近自检95/100，不是正式结果；E2/watch_v7_original_final.py（exec59692）按原ID观察并写v7-sheet-repeat2-{latest,result}.json。GitHub再次补跑afc04ffe5b63已开始，观察exec20321写v7-github-repeat3-observer.jsonl；终局需要独立status保存单个JSON。任何观察中断只恢复原ID，不重复创建任务。21时前核对正式余额191.974806元。
-- 独立全量审查发现无条件页脚结构词、全局相同控件隐藏、只读/词重叠静态惩罚、猜测性布局/角色/登录前提等遗留。已按需求决定或移除；报告reports/2026-10-03-unconditional-heuristics-audit.md。没有发现包内应用答案、评测源码或凭据，但这不是官方合规裁决。确实使用过公开selftest的标题、失败信息和截图，不能声称从未见过case反馈。
-- 清理版v11包E2/candidate-requirement-safe-v11.zip，SHAcd0f596905b202bd5b79c040e7478ed65c204d51fb0c59c02c23beacc59baa5c，21文件，secret扫描0。PR118的代码候选cbd2c986；后续文档提交不应改变包。真实双题从空模板生成已完成，所有调用走官方网关和独立practice key，无未知用量或传输失败。
-- v11 GitHub固定107/111，与v10相同；一增一减。丢失REQ-4-2-2是检查要求路径独占DOM文本，实际路径和增删数字均可见，原始分数不改。开销估算2.721016元，2846.4秒；v10为2.125652元，2285.9秒。
-- v11 Sheet固定g99为91/100、cov99n-arm97/100；v10分别89/100、94/100，检查集哈希一致。g99新增3、丢失1；丢失REQ-3-1-1#2是真缺陷：Formula bar的Escape没有恢复旧值，源码推测离焦还可能提交被取消值（该延伸未浏览器复现）。cov99n新增3、零丢失。Sheet估算3.840898元、5619.3秒，v10为5.192480元、8779.4秒。两题总估算6.561914元对7.318132元。完整证据docs/evidence/2026-10-03-safe-candidate-validation.json；本轮各版本各题只有一次独立生成，不能归因单条规则或承诺正式涨分。
-- 本地对照支持清理版作为main的最新交付代码；正式是否换包必须结合正在运行的两题终局再判断。新提交不继承当前成绩。v11没有正式分数，今日10次官方快速自测已用完，不换账号绕过。固定独立观察exec90548和旧v10观察9041均应在完成后收尾，不重启已存在目录。
-- v8曾快速自测GitHub25/30+26/29+29/41=80/100；Sheet固定89/100、95/100。当前正式Sheet87应用在cov99n为96/100；g99为66pass/9fail/26blocked，共享Rename workbook辅助步骤阻塞整组，不能直接按66对91推测正式分差。
-- v9/v10已修复Stage2模板输入占源码限额：root requirements作为只读输入保留，实际29文件hash不变。真实继承生成固定旧阶段28/31零丢失、新阶段26/31，官方Stage2快速自测23/29。当前v7的Stage2旧run c71b18944cdb在调用模型前因snapshot限额失败0/0。清理版含机械修复，但目前阶段路线无已证明的分数优势。
-- 已验证：278项one-shot运行的唯一旧提示标题断言已改并由51项smoke覆盖，最终品牌/缓存/控件14项通过；legacy226项无失败、12可选skip，one-shot3可选skip。PR118合main后核对精确包hash，再清理对应开发worktree/分支。CLI0.5.0已main且安装自远端main；环境~/.config/arcbench/volo.env，不输出secret。正式模式平台按run分配evaluation key，本地practice流量不与其共享key。
+- 正式最新提交仍12e3bab723fd（v7），ZIP SHA4ae64326c7e942c97e37685641766881b20d7d81c061ccc309d167f395a88f48。当前最优G afc04ffe5b63为79/100、1.636034元；Sheet defb678bf0a1为87/100、4.713723元，合计166/200、6.349757元、S104.95888048198316。23:23榜单VOLO第一、Orchestro第二103.899454；22:44曾有bugtakue112.5274居首，之后该条目未出现在23:23快照，未核实原因，不据此推断裁决。名次仍会变。
+- 最后正式双题9f40df0b587e（G）、8c80a2b899ac（Sheet）已于22:55前后创建并确认RUNNING。E2/v7-final-pair-start.jsonl与v7-final-pair-observer.jsonl；CLI wait观察exec5878，超时21600秒。完成后分别status保存终局JSON并更新榜单，CLI wait可能返回状态JSONL和waiting_retry事件，要按含status的记录解析。观察故障只恢复原ID，不重复创建run。
+- 先前Sheet31ff91b909a0为78/100、6.605223元；G b5163f1ef283为6/100、3.995712元，均未替换最佳组合。G触发5次主模型失败上限，只有备用模型草稿和不完整修复，不把它解释为清理造成退步。
+- main代码为PR118的v11清理版，精确包E2/v11-main.zip，SHAcd0f596905b202bd5b79c040e7478ed65c204d51fb0c59c02c23beacc59baa5c。原main505044e；后续仅文档提交不应改变ZIP。全量审查和复审由一位获授权的子agent完成。报告reports/2026-10-03-unconditional-heuristics-audit.md、reports/2026-10-03-final-candidate-selection.md。
+- v11真实双题固定结果G107/111、Sheet91/100与97/100；较v10的107/111、89/100与94/100，整体提高但有一项真实Escape取消缺陷。G丢失的文件路径exact-text项是固定检查过强，仍保留原始107，不改测试。当前正式G79应用同检查107；正式Sheet87应用cov99n96。g99旧应用66pass/9fail/26blocked不能直接与91比较。
+- 后续实验v12（e02e7a6f）只改3处通用提示，已完成双题但不选用。G固定32pass/53fail/31error；Sheet g99为1pass/8fail/97error、cov99n为1pass/13fail/96error，均有共享前置步骤阻塞。两题均5次主调用失败，备用模型Kimi草稿质量不佳；估算5.484165+6.724274元且有未知用量。v12代码改动已撤回，PR119最终应只包含证据/交接，合main后核对包仍cd0并清理对应worktree/分支。实验原提交afbcea0、冻结ZIP和日志保留以供复现。
+- v12生成exec36727已结束，固定观察exec22164应收取完成并关闭；目录generate-requirement-transactions-v12-{github,sheet}。只比较最终application；v12-draft-transport-control是另行早期快照，标有final_delivery=false。Sheet最终与快照哈希一致，G经两次修复发生变化。
+- 运输证据：本地HTTP200/curl0，但SSE缺[DONE]、finish_reason和usage；元数据v12-{github,sheet}-stream-diagnostic.json。正式托管run也有主模型调用失败。practice余额22:27为360.006335元，网关DNS仍189.1.235.72，排除余额和固定地址过期，确切中断原因未确定。备用模型按每次调用启用，下次重试主模型是现有费用控制策略，不临时改为全局粘住昂贵模型。
+- 公开Sheet前置状态有真实冲突：根描述A1=Region，而REQ-3-1-1 GIVEN又写Item/Qty、Pen/4。不要把所有这类断言称为测试虚构；只能在场景允许时建立独立前置状态，不能擅自覆盖明确GIVEN。
+- 今日官方快速自测10次已用完，不换账号绕过。v11/v12从未正式上传。v8曾G快速自测80/100；v9已修Stage2根requirements占源码限额，实际继承23/29；这些都不证明现在换包会提高正式分。CLI0.5.0已main，环境~/.config/arcbench/volo.env，不输出secret；正式与本地使用独立evaluation/practice key。
 
-下一步收取正式31ff和afc终局、刷新榜单，基于真实成绩完成最终选版。若切换v11，先核对main/精确包/secret扫描及当前活动run，再上传一次并在截止前启动GitHub原题和Sheet。不要把本地分数当正式结果，也不要因暂时榜位停止跟进。清理已结束的本轮观察进程，保留其他工作区和无关caffeinate。
+下一步：结束PR119的文档交付和分支清理；截止前后确认最后保存提交仍12e3bab723fd、两题运行已开始；继续收取最后双题终局、更新真实榜单和交接。保持正式包，未经验证不换；不把当前第一描述成最终冠军。

@@ -43,12 +43,6 @@ Implement editing through the paths the requirements support. Use named, labelle
 current form values across re-rendering or disclosure changes. For inline editing, check which pointer,
 keyboard, commit and cancellation interactions are required or appropriate; do not assume every record
 must implement the same gesture set. Display-only content need not become editable.
-When the requirements promise commit, cancel or rejection behavior, identify the supported editing
-entrypoints within each rule's declared scope and implement that rule there. Keep draft values separate
-from committed values; distinct entrypoints may have different rules when the requirements say so.
-Cancellation must restore the visible value and discard the draft before a later focus change, selection
-change or save can commit it. Check those follow-up events when they exist; do not add cancellation gestures
-or editing paths that the requirements do not call for.
 Modal dialogs isolate their background. Ordinary menus and popovers remain in their intended scope.
 A field chooser belongs to the container the requirements identify; a named editor elsewhere does not
 imply that every checkbox must move into it. Keep idle overlays from intercepting input. Expose declared
