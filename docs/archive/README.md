@@ -64,3 +64,5 @@
 - `handoffs/2026-10-03-before-stage-template-fix.md` — Preserved handoff before collecting Sheet87 and diagnosing the Stage2 input-size failure.
 
 - `handoffs/2026-10-03-before-source-repair-scope.md` — Snapshot before observing the 78+87 formal pair and bounding post-audit repairs.
+
+- `handoffs/2026-10-03-before-requirement-grounded-safe.md` — Snapshot before the unconditional-rule audit, v11 comparison, and final submission selection.

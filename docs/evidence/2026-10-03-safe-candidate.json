@@ -1,0 +1,19 @@
+{
+  "baseline_main": "c756b07421e2ce57423aa2022334e4e68f2564a2",
+  "safe_zip_sha256": "cd0f596905b202bd5b79c040e7478ed65c204d51fb0c59c02c23beacc59baa5c",
+  "files": 21,
+  "secret_findings": 0,
+  "validation": {
+    "one_shot_run": 278,
+    "optional_skips": 3,
+    "obsolete_prompt_title_assertion_updated": true,
+    "smoke_confirmation_passed": 51,
+    "last_delta_passed": 14,
+    "legacy_run": 226,
+    "legacy_skips": 12
+  },
+  "new_formal_submission": false,
+  "fresh_generation": "in progress",
+  "selftest_quota_used_today": 10,
+  "review": "one delegated read-only audit and one implementation review"
+}

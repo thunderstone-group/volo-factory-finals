@@ -1,180 +1,77 @@
-# ARC-Bench evaluator dialect — how the official Playwright suite reads your app
-The current requirements are authoritative. Their exact roles, names (including backticks), scope,
-initial seed states and attributes override historical conventions and scaffold examples below.
-Do not change explicit semantics merely to satisfy a guessed locator fallback.
-Interpret quoted text by its role: required labels/messages belong in their specified UI,
-pre-provisioned records belong in startup data, and user-entered examples are handled at runtime.
-Do not add unused example datasets, filler UI text or duplicate value displays merely to place words
-in the source. Explicitly absent records must stay absent until the documented creation action.
-Use semantic HTML and accessible names. The requirements can also specify HTML elements and
-attributes such as mark, title, aria-pressed and aria-expanded; implement those literally.
-## 0. The stated starting screen is part of the workflow
-A scenario's first action must be possible from its GIVEN screen and authentication state.
-If it starts at the home page and opens a visible capability or saved record, provide a real,
-permission-aware overview/navigation entry there. Do not assume the user first selects a parent
-container or signs in unless the scenario establishes that context. Use runtime records and their
-canonical URLs, preserving anonymous/read-only access rules; never auto-login or hardcode record titles.
-Records with the same display title remain distinct. Preserve their identities and context rather than
-suppressing one record merely to make a text label globally unique.
-## 1. The locator ladder (fixed and public)
-- Click: role `button`, then `link`, `tab`, `menuitem`, `option`, then `getByText` — FIRST VISIBLE WINS.
-- Assert visible: `getByText`, then roles `heading, button, link, tab, cell, columnheader, textbox, combobox`, then `getByLabel`, then `getByPlaceholder`.
-- Fill a field: `getByLabel`, then `getByPlaceholder`, then roles `textbox, combobox, spinbutton`, then a LAST RESORT bare `getByRole('textbox').first()` with no name at all.
-- Hover: same ladder as click, `button` first, `getByText` last.
-- Roles in use: button, textbox, link, combobox, checkbox, tab, heading, radio, option, menuitem, searchbox, spinbutton, cell, status, row, alert, dialog, region.
-## 1a. When the requirement names no role: buttons for actions, links only for navigation
-A role the requirement names is the contract. Where it names none, helpers assert session and action
-controls by ROLE (`getByRole('button', {name: /sign out/i})` right after login). One large-task run
-rendered its sign-out control as `<a>` and lost 73 of 135 tests, because every logged-in scenario first
-waits for that button. Defaults:
-- Anything that changes state or triggers an action — sign in/out, submit, save, delete, sort, filter
-  toggle, apply, confirm — is a real `<button type="button">` with the exact name.
-- Only navigation to another screen is an `<a href>` link, and it still carries the exact name.
-## 2. Exact control names and their scope
-A required control name is its whole accessible name. Avoid repeating the same action for the same
-object in a header, sidebar and form. Distinct objects may legitimately share a name: keep each real
-record and its canonical link, grouped by its repository/container when needed. Do not deduplicate
-records by display title or arbitrarily expose only the first container to simplify a locator.
-- Never nest a named control inside an element whose name comes from its content (a tab, button, link,
-  option or menu item). A tab holding its options button is named "Draft Options for Draft", so
-  `getByRole('tab', {name: 'Draft', exact: true})` finds nothing. Put such controls BESIDE it:
-  `<span class="tab-wrap"><button role="tab" aria-selected="true">Draft</button><button
-  aria-label="Options for Draft">⋯</button></span>`.
-- Use `ARC.combobox` for a labeled finite choice. It is a native select with the browser's customizable
-  picker where supported, preserving both named-option clicks and native selection. Ordinary single
-  selects receive the same picker styling. Honor any explicitly required control type and interaction;
-  do not replace native form semantics with a button plus a hidden parallel value.
-  Read values through `FormData`, the change callback, or a control selected by its `name`; do not assume
-  a widget stores its value in `input[name=...]`. When updating an existing widget, migrate dependent
-  readers together so changing its internal markup cannot silently reset business configuration.
-## 3. Preserve exact names within their declared scope
-A row action belongs inside its record; a form action belongs in its form; a sidebar action belongs
-inside the sidebar. Preserve required names even when the same verb appears in another scope.
-Never append an extra noun to an explicit name to satisfy a global-name heuristic. Keep actions
-unique within the required scope, including exactly one completion button in an editor.
-Row actions can be revealed on hover/focus to reduce clutter, but must keep the record's layout
-stable. A record's title is plain text, not the accessible name of a secondary action button.
-## 4. Modal editors isolate their background
-Use the scaffold's dialog primitive for named modal editors. While it is open, keep background
-siblings inert and aria-hidden. Ordinary contextual menus and palettes are not automatically modal;
-keep them in the scope the requirement describes. Label fields uniquely inside their actual editor.
-Idle dialog and notification roots remain hidden and must not intercept clicks.
-## 6. Seed data describes the initial state
-Create every named seed record with its specified initial properties. Do not infer a final state from
-a scenario title, GIVEN state reached by dependencies, or THEN result. Operations such as archive,
-delete, pin and favorite must create their own results through the UI. Keep distinct named fixtures
-distinct. Use the supplied initial text exactly. Leave optional record bodies empty when no content is
-specified; do not turn scenario descriptions or action instructions into stored user content.
-Every seeded account signs in with the password the requirements give; an account they name without
-one uses the seed password they do state, never an invented one.
-## 6a. Do not invent an authentication prerequisite
-Keep the content, actions and dashboard lists needed by a public browsing journey available without
-an extra login step. A seeded verified account does not itself make every list private. Authentication
-changes account controls; apply additional access restrictions only when the requirements state them.
-## 6b. Named records are reachable from the stated starting screen
-Expose the records and capabilities each scenario opens directly from its stated starting screen.
-For an anonymous home journey, use readable records from the current state and real navigation links;
-after sign-in include that user's permitted records. Where the scenario names a child record as the
-first action, the home overview must offer that child entry without extra parent navigation.
-Display the specified record name; preserve separately specified identifiers/slugs in canonical URLs.
-## 7. Preserve specified text and semantics
-Render required labels and validation messages verbatim in their stated context. A structural noun
-such as header or sidebar describes layout unless the requirement explicitly asks for that visible
-text. Negative assertions and user-entered examples are not instructions to add labels or seed data.
-- Every validation / error / success message quoted in a requirement is rendered VERBATIM in a
-  `role="status"` or `role="alert"` element with the exact sentence, punctuation included.
-- Every navigation target, account section, tab, filter and widget named in a requirement is a visible
-  control with exactly that name.
-- Each explicitly provisioned record uses its exact specified name, title, tags and username.
-Section titles are visible headings (`<h2>Comments</h2>`), never an `aria-label` on the container.
-## 7b. A quoted control name is the WHOLE accessible name, byte-exact
-The formal suite anchors the names the requirement quotes: `getByRole('button', {name: /^Add item$/i})`,
-`getByRole('textbox', {name: /^Item name$/i})`, `getByText(/^Items$/i)`, `getByRole('dialog', {name:
-/^Item editor$/i})`. Any decoration in the same accessible name fails the match: a bullet or icon glyph
-before the word (`• Items`, `🔔 Alerts`), an ellipsis after it (`Add item...`), a count
-(`Items (3)`), or an added noun (`Archive item` when the requirement quotes "Archive"). Put icons in a
-separate `<span aria-hidden="true">` and give the control `aria-label` equal to the quoted name. The role
-follows the requirement's verb: click/press → `<button>`; field/enter → textbox labelled exactly;
-dialog/editor → `role="dialog"` named as the requirement calls it; menu → `role="menu"` with
-`menuitem`s.
-## 7a. Named containers and fields
-Expose the forms, dialogs, regions and records explicitly named by the requirements using semantic
-roles and aria-label/aria-labelledby. There is no global ban on container names. Label inputs exactly;
-avoid accidental collisions with unrelated controls inside the same scope. Where the requirement leaves
-labels open, no field label may be a whole-word substring of another field label on the same screen:
-`getByLabel` without `.first()` then hits two elements and fails in strict mode. Never rename an
-explicitly required field or container. Keep typed values and native input elements stable while
-editing. Native input semantics apply immediately; live filtering must not wait for a later blur event.
-## 8. Mechanics
-- Keep the scaffold's delegated events reachable. A capturing listener that stops propagation before
-  the delegated handler silently disables menu actions; implement actions through APP.actions.
-- Every screen must be reachable by clicking from `/`. Deep links are untestable and unnecessary.
-- Unless the requirement names another role, every repeated record is an `<article>`; suites scope a
-  row's actions as `getByRole('article').filter({has: getByText(title)}).getByRole('button', {name})`.
-- When the requirement says the record itself opens its editor, make the whole record the primary
-  target, including blank padding. A click on a record lands on its centre: keep secondary action
-  buttons away from the centre so it opens the editor, not a toolbar control.
-- Unless the requirement names a searchbox, a search field is `<input type="text">` (role textbox) with
-  the required name, never `type="search"`: one suite generation asks for
-  `getByRole('textbox', {name: /^Search$/i})`.
-- Unless the requirement names their role, sidebar entries are the scaffold's `<button>`s inside
-  `<aside>`, and header entries are links.
-- When the requirement quotes a field name and no separate placeholder, that name is both the `<label>`
-  and the `placeholder` of its input, byte-exact: one suite generation fills by `getByPlaceholder` only,
-  the other by label first.
-- The home button uses the brand as its accessible name. If a requirement specifies a name and role,
-  follow those exactly; do not append "logo" to an explicitly required brand name.
-- An explicit role is part of the contract. Do not override a required native button with role=option
-  merely because it appears in a listbox. Similarly, keep a required textbox as a textbox.
-- Keep any explicitly requested root attributes. Also expose each record state on a visible DESCENDANT
-  element inside the card whose `title` is the state word (`<span title="Starred">`): suites read
-  `article >> [title="Starred"]`.
-- Toggle buttons carry `aria-pressed` reflecting the state.
-- A filter or search hides only the records it does not match. The header row, toolbar or field that carries its
-  controls never counts as a record: it stays visible while any filter is applied, so every other filter control
-  can still be opened and the applied one can be changed or cleared.
-- Every screen, INCLUDING the home screen at `/`, renders through the one shared layout function (global
-  header with its navigation and account controls, sidebar, main content, footer). A home screen that renders
-  only its feed loses every header, navigation, login and sidebar test at once (one practice run: 1 of 66).
-- A view transition must UNMOUNT the old view, never cross-fade; a stale control visible for 100 ms loses
-  the race and loses the test.
-- Typing must survive a re-render: an in-form click (a toggle, a colour swatch) must not wipe the
-  inputs already typed. Do not rebuild `innerHTML` on every state change.
-- Mutations write to the store before the success message renders.
-- Navigation renders SYNCHRONOUSLY from an in-memory store. The click ladder probes each rung for only 500 ms
-  (`button`, `link`, `tab`, …), so a list that appears one second after the click is never found even though
-  it is on the page by the time the test times out (one medium-task run lost 10 of 34 this way: a list was
-  fetched after navigation). Load all data once at startup before enabling the UI (or embed seeds in the
-  initial HTML), keep it in memory, and render every screen from it in the same tick as the click;
-  write through to the API.
-- Records are shared by every browser session: an account registered or a record created in one session
-  is usable from another user's separately signed-in session and after its URL is reopened in a new
-  session. With the scaffold, keep the signed-in user's id in `ARC.state.session` and per-viewer view state
-  (open forms, drafts, messages) under `ARC.state.ui`, declare every record collection in `seed.js`, and
-  call `ARC.save()` after each change.
-- Budget: 10 s per test. No animations that gate visibility, no artificial delays, no redirect chains.
-- The backend must survive its own bugs: register `process.on('uncaughtException', …)` and
-  `process.on('unhandledRejection', …)` handlers that log and keep serving, and wrap every request handler in
-  try/catch that answers HTTP 500. One thrown handler otherwise ends the Node process and every later test
-  fails with ERR_CONNECTION_REFUSED (one large-task run died at test 6 of 135 on "Assignment to constant
-  variable").
+# Requirement-grounded implementation guidance
 
-## 8a. Every path the requirements allow: pointer, keyboard, clipboard
-A test reaches a feature through any path the requirements allow, so implement each one:
-- Edit in place: where users edit an item in place (a cell, a title, a row), double-click opens its named editor
-  with the current value, AND typing a printable character while the item is selected opens the same editor
-  starting with that character; Enter commits, Escape cancels, clicking elsewhere commits.
-- Clipboard: register `ARC.onCopy((cut) => text | {text, data})` and `ARC.onPaste((text, data) => ...)`; the
-  scaffold handles Ctrl/Cmd+C, X and V. A menu's "Copy", "Cut" or "Paste" command calls
-  `ARC.copyToClipboard(cut)` or `ARC.pasteFromClipboard()`. Tests put text on the browser clipboard themselves:
-  never keep a private clipboard instead of it, and never preventDefault those keys. Ranges travel as
-  tab-separated columns and newline-separated rows; `data` comes back only when the app pastes its own copy
-  (keep formulas or other detail text cannot carry there).
-- A context menu opens on the real `contextmenu` event of the element the requirements name (a row number, a
-  column header, a cell), as `role="menu"` with `menuitem`s, and acts on what it was opened on: a right-click
-  outside the current selection first selects that item, as a left click would; a right-click inside a multi-item
-  selection keeps the whole selection, so the menu's commands (Copy, Cut, Delete) act on all of it.
-- ARC.render() already waits for a press's click sequence; do not rebuild the pressed element yourself
-  (`innerHTML`) inside a mousedown or mouseup handler, which drops its click and double-click.
+The supplied requirements determine the application. Follow their stated roles, accessible names,
+attributes, data, permissions and workflows. The scaffold and examples are tools, not additional
+requirements. Do not add a region, label, record or interaction solely because an evaluator might look for it.
 
-Nested route-table callbacks must bind to the table that owns their sibling methods, or use explicit object references.
+## Starting context and navigation
+Preserve each scenario's GIVEN screen and authentication state. A named account existing in seed data does
+not imply a signed-in session. Establish login only when the stated workflow requires it, using provided
+credentials. Follow explicit global seed credential rules; do not borrow credentials from unrelated accounts.
+When a workflow opens a named record from its starting screen, ensure that it can do so there without
+invented parent navigation or extra confirmation. Keep identity, permission scope and canonical routes intact.
+Provide navigation and deep links where the requirements call for them or they help the described workflow.
+Do not suppress distinct records because their display names happen to match.
+
+## Content and initial state
+Distinguish required UI labels/messages, initial records, runtime inputs, examples and explicit absences.
+Provision the identities and relationships stated to exist initially. Do not pre-apply later scenario outcomes
+or create records explicitly described as absent. Required validation and success messages retain their stated
+wording and appear in the specified context. Do not add filler text or unused datasets to echo quoted phrases.
+Only the stated action should create, edit, archive, delete, favorite or otherwise change a record.
+
+## Accessible controls and layout
+Use semantic HTML suited to the operation. Honor explicitly stated roles and names. Otherwise, choose
+buttons for actions, links for navigation, appropriate input types, and useful labels within their context.
+A searchbox is appropriate for search unless another role is required. Repeated entities may be articles,
+list items, table rows or another appropriate grouping; do not impose one role on every application.
+Follow declared labels and placeholders separately. A label does not imply an identical placeholder; an
+unspecified placeholder may be omitted. Preserve meaningful readonly fields and use their intended controls.
+Similar words or identical actions in separate regions are not defects by themselves. Check the actual
+scope and interaction before changing a name or removing a control. Do not globally hide repeated controls.
+Keep an explicitly required accessible name intact. Decorative icons can use aria-hidden; counters and
+supplementary details must not change a name whose exact value is specified.
+
+Check which layout regions the application needs. Configure header, navigation, account controls, sidebar
+and footer only when required or useful for the described workflow. A shared renderer can keep appropriate
+regions consistent, but it must not force every region onto every screen. Do not render structural words
+such as "Header" or "Footer" merely to announce that a landmark exists. Use headings for actual section
+headings and accessible region names where they convey the intended structure.
+
+## Editors, dialogs and transient UI
+Implement editing through the paths the requirements support. Use named, labelled controls and preserve
+current form values across re-rendering or disclosure changes. For inline editing, check which pointer,
+keyboard, commit and cancellation interactions are required or appropriate; do not assume every record
+must implement the same gesture set. Display-only content need not become editable.
+Modal dialogs isolate their background. Ordinary menus and popovers remain in their intended scope.
+A field chooser belongs to the container the requirements identify; a named editor elsewhere does not
+imply that every checkbox must move into it. Keep idle overlays from intercepting input. Expose declared
+ARIA states on the controls that own them, and update those states with the real interaction.
+Preserve requested root attributes. Additional visible state markers are useful when required, but a root
+title attribute does not imply that an extra descendant with the same title must be added.
+
+## Runtime behavior
+Deliver real state transitions, including rejection paths and unchanged state after failure. Trace state
+writers, readers and rendered results through the same identity and storage scope. Keep shared records,
+session identity and transient view state distinct, with persistence matching the requirements.
+With the scaffold, shared record collections belong in seed.js and ARC.state; session identity is in
+ARC.state.session, while drafts, open forms and other view state belong under ARC.state.ui. Use ARC.save()
+for required persistence. Adapt this split if the requirements describe different ownership or lifetime.
+Handle navigation and data loading predictably, show appropriate loading/error state, and avoid unnecessary
+blocking delays. Async loading is acceptable; do not force all data into memory merely for a guessed timeout.
+Keep event delegation reachable. Do not destroy a pressed element before the browser can deliver its click.
+ARC.render() already defers rendering during the press sequence. Keep typed values stable while editing.
+Use normal browser clipboard APIs for required copy/cut/paste workflows. The scaffold's onCopy/onPaste and
+copyToClipboard/pasteFromClipboard helpers are available when their behavior fits the required interaction.
+Preserve selection for multi-item operations as the workflow specifies; do not impose grid selection rules
+on unrelated menus. Native controls retain their standard keyboard and form behavior.
+Keep request handlers and rendering errors contained, return useful errors, and preserve a working application
+when an optional diagnostic is unavailable. Do not alter visible content or reported state to satisfy a test
+that contradicts the supplied requirements.
+
+## Verification
+Check the stated starting point, each required transition, persistence, permissions and failure behavior.
+Scope observations to the record or container the requirements identify. A generated test can be wrong;
+verify its setup and assertions against the requirements before treating its failure as an application defect.
+Preserve all known passing behavior while repairing a failure. Treat static source guesses as clues, not
+proof that a control is missing, a label must change, or a field must become editable.

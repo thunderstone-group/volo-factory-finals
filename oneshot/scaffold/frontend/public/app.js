@@ -5,8 +5,8 @@
 window.LAYOUT = {
   brand: 'App',
   nav: [{ label: 'Home', hash: '#/' }, { label: 'Items', hash: '#/items' }],
-  sidebar: [{ label: 'Items', hash: '#/items' }],  // rendered as buttons inside <aside>
-  footer: 'Footer',
+  sidebar: [{ label: 'Items', hash: '#/items' }],  // optional navigation; specify role only when required
+  footer: '',
   account: (user) => user
     ? `<span>${ARC.esc(user.name)}</span><button type="button" data-action="logout">Sign Out</button>`
     : `<a href="#/login">Log in</a>`
@@ -19,13 +19,13 @@ window.APP = {
     },
     items() {
       const q = (ARC.state.query || '').toLowerCase();
-      // Every repeated record is an <article>: suites scope a row's actions with getByRole('article').
+      // This example uses standalone content cards; choose record semantics from the actual requirements.
       const rows = ARC.state.items.filter((it) => !q || it.title.toLowerCase().includes(q)).map((it) => `<article class="row">
   <h3>${ARC.esc(it.title)}</h3><p>${ARC.esc(it.body)}</p>
   ${ARC.rowActions([{ label: 'Edit', action: 'edit-item' }, { label: 'Delete', action: 'delete-item' }], it.id)}
 </article>`).join('');
-      // A search field is a plain text input labelled exactly (role textbox, never type="search").
-      return `<h1>Items</h1><input type="text" aria-label="Search" data-change="search-items"><button type="button" data-action="new-item">New Item</button>${rows}`;
+      // This example uses a labelled search input; follow any role the requirements specify.
+      return `<h1>Items</h1><input type="search" aria-label="Search" data-change="search-items"><button type="button" data-action="new-item">New Item</button>${rows}`;
     },
     login() {
       return `<h1>Log in</h1><form data-action="login">

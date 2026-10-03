@@ -1,0 +1,142 @@
+{
+  "observed_at": "2026-10-03T21:15:00+08:00",
+  "official_scores": false,
+  "fresh_generations_per_version_per_task": 1,
+  "model": "deepseek-v4-flash-vision-exp",
+  "same_public_inputs": true,
+  "metrics": {
+    "v10": {
+      "github": {
+        "exit": 0,
+        "seconds": 2285.9,
+        "package_sha256": "b44592c90510d3a9576e41fa9e2d5ceea39aac586e692b718fb23ed0cb6c341d",
+        "estimated_cost_cny": 2.125652,
+        "model_calls": 8,
+        "side_calls": 6,
+        "failed_calls": 0,
+        "unknown_usage_calls": [],
+        "fixed_checks": {
+          "v6-fixed": {
+            "counts": {
+              "pass": 107,
+              "fail": 4
+            },
+            "suite_sha256": "938bd3df00d59de4cafc028b889145f87f22d755530f88449db1f99419b01fc8"
+          }
+        }
+      },
+      "sheet": {
+        "exit": 0,
+        "seconds": 8779.4,
+        "package_sha256": "b44592c90510d3a9576e41fa9e2d5ceea39aac586e692b718fb23ed0cb6c341d",
+        "estimated_cost_cny": 5.19248,
+        "model_calls": 20,
+        "side_calls": 6,
+        "failed_calls": 0,
+        "unknown_usage_calls": [],
+        "fixed_checks": {
+          "g99": {
+            "counts": {
+              "pass": 89,
+              "fail": 11
+            },
+            "suite_sha256": "b47f4e12c39004f6a3089cf241ec77894e23ff6d0d6e1cd63aad5b217f9f4805"
+          },
+          "cov99n-arm": {
+            "counts": {
+              "pass": 94,
+              "fail": 6
+            },
+            "suite_sha256": "105e795f4fd3030ae0d12972093a8388868aa7d428e202637f576a8bf6ecae3b"
+          }
+        }
+      },
+      "combined_estimated_cost_cny": 7.318132
+    },
+    "v11": {
+      "github": {
+        "exit": 0,
+        "seconds": 2846.4,
+        "package_sha256": "cd0f596905b202bd5b79c040e7478ed65c204d51fb0c59c02c23beacc59baa5c",
+        "estimated_cost_cny": 2.721016,
+        "model_calls": 10,
+        "side_calls": 6,
+        "failed_calls": 0,
+        "unknown_usage_calls": [],
+        "fixed_checks": {
+          "v6-fixed": {
+            "counts": {
+              "pass": 107,
+              "fail": 4
+            },
+            "suite_sha256": "938bd3df00d59de4cafc028b889145f87f22d755530f88449db1f99419b01fc8"
+          }
+        }
+      },
+      "sheet": {
+        "exit": 0,
+        "seconds": 5619.3,
+        "package_sha256": "cd0f596905b202bd5b79c040e7478ed65c204d51fb0c59c02c23beacc59baa5c",
+        "estimated_cost_cny": 3.840898,
+        "model_calls": 13,
+        "side_calls": 5,
+        "failed_calls": 0,
+        "unknown_usage_calls": [],
+        "fixed_checks": {
+          "g99": {
+            "counts": {
+              "pass": 91,
+              "fail": 9
+            },
+            "suite_sha256": "b47f4e12c39004f6a3089cf241ec77894e23ff6d0d6e1cd63aad5b217f9f4805"
+          },
+          "cov99n-arm": {
+            "counts": {
+              "pass": 97,
+              "fail": 3
+            },
+            "suite_sha256": "105e795f4fd3030ae0d12972093a8388868aa7d428e202637f576a8bf6ecae3b"
+          }
+        }
+      },
+      "combined_estimated_cost_cny": 6.561914
+    }
+  },
+  "case_review": {
+    "github": {
+      "gained": [
+        "REQ-3-2-1"
+      ],
+      "lost": [
+        "REQ-4-2-2"
+      ],
+      "lost_case_assessment": "Exact-text DOM packaging assumption in the frozen checker; required path and numeric additions/deletions are visible. Raw result remains 107/111."
+    },
+    "sheet_g99": {
+      "gained": [
+        "REQ-3-1-1#4",
+        "REQ-5-2-1",
+        "REQ-5-2-1#4"
+      ],
+      "lost": [
+        "REQ-3-1-1#2"
+      ],
+      "lost_case_assessment": "Real requirement defect: Escape in Formula bar leaves an uncommitted value displayed. Blur may commit it according to source; that extension was not browser-reproduced."
+    },
+    "sheet_cov99n_arm": {
+      "gained": [
+        "REQ-3-1-1#3",
+        "REQ-5-1-1#4",
+        "REQ-5-2-1"
+      ],
+      "lost": []
+    }
+  },
+  "limitations": [
+    "Independent fresh generations do not isolate the causal effect of any individual cleanup.",
+    "These fixed local diagnostics are not official scores.",
+    "The same-day official self-test quota was exhausted before this candidate finished.",
+    "One true Sheet cancellation regression remains despite higher aggregate local counts."
+  ],
+  "selection": "Promote the requirement-grounded agent to main. Defer formal submission replacement until existing official runs finish and latest score is reviewed."
+}

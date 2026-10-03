@@ -365,7 +365,7 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(self.transport.call_count, 1)
         self.assertIsNone(budget.smoke["repair"])
         self.assertEqual(budget.smoke["vocabulary_missing"], 1)
-        self.assertTrue(any("readonly" in p for p in budget.smoke["problems"]), budget.smoke)
+        self.assertFalse(any("readonly" in p for p in budget.smoke["problems"]), budget.smoke)
 
     def test_a_scenario_that_fails_after_a_syntax_fix_gets_the_next_repair(self):
         broken = "function f( { }"
@@ -402,18 +402,17 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual((self.out / "frontend/public/app.js").read_text(), partial + "\n")
         self.assertEqual(next(f for f in files if f["path"] == "frontend/public/app.js")["content"], partial + "\n")
 
-    def test_readonly_input_is_a_static_problem(self):
+    def test_readonly_input_is_not_a_defect_without_a_requirement_to_edit_it(self):
         picker = app(server()).replace(
             block("frontend/public/app.js", "console.log('synthetic');"),
             block("frontend/public/app.js", "document.body.innerHTML += '<label>出发城市 <input id=\"o\" readonly data-action=\"open-city\"></label>';"))
         self.replies(events(picker))
         files, budget = self.generate(repairs=0)
         flagged = [p for p in budget.smoke["problems"] if "readonly" in p]
-        self.assertEqual(len(flagged), 1, budget.smoke)
-        self.assertIn("frontend/public/app.js:1", flagged[0])
+        self.assertEqual(flagged, [], budget.smoke)
 
-    def test_home_screen_must_render_the_landmarks_the_requirement_describes(self):
-        req = "The global header carries the navigation links and the login control. A footer closes every page."
+    def test_layout_words_do_not_force_a_full_homepage_layout(self):
+        req = "The table has a column header. The home page has no footer or global navigation."
         feed_only = app(server()).replace("<h1>Synthetic</h1>", "<h1>Top questions</h1>")
         self.replies(events(feed_only))
         budget = adapter.CallBudget()
@@ -421,15 +420,14 @@ class SmokeCase(unittest.TestCase):
         if not (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.skipTest("jsdom could not be installed (offline)")
         flagged = [p for p in budget.smoke["problems"] if "renders no <" in p]
-        self.assertEqual(len(flagged), 3, budget.smoke)
-        self.assertTrue(all("shared layout" in p for p in flagged))
+        self.assertEqual(flagged, [], budget.smoke)
         self.assertIsNone(budget.smoke["repair"])  # a hint: without a failing scenario it asks for nothing
         self.assertEqual(self.transport.call_count, 1)
 
     def test_scaffold_is_placed_shown_and_extended(self):
         # With the scaffold on, the model only writes seed.js and app.js; the delivered app keeps the
         # primitives, the prompt shows them, and the bare result passes every gate.
-        req = "The global header carries the navigation links and the login control. A footer closes every page."
+        req = "The table has a column header. The home page has no footer or global navigation."
         reply = (block("frontend/public/seed.js", "window.SEED = { session: null, users: [], items: [] };") +
                  block("frontend/public/app.js",
                        "window.LAYOUT = { brand: 'T', nav: [{ label: 'Home', hash: '#/' }], footer: 'Footer', account: () => '' };\n"
@@ -442,7 +440,7 @@ class SmokeCase(unittest.TestCase):
         self.assertTrue((self.out / "backend/server.js").is_file())
         self.assertIn("window.SEED = { session: null", (self.out / "frontend/public/seed.js").read_text())
         prompt = budget.attempts[0]["messages"][1]["content"]
-        self.assertIn("## Scaffold already in the application root", prompt)
+        self.assertIn("## Available application scaffold", prompt)
         self.assertIn("frontend/public/lib/arc.js", prompt)
         self.assertEqual(self.transport.call_count, 1)
         if (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
@@ -484,8 +482,8 @@ class SmokeCase(unittest.TestCase):
             "html += `<div role=\"status\">Note trashed</div><span>Asked ' + when + '</span>`;\n")
         gaps = adapter.exact_name_gaps(stage, req)
         self.assertEqual(len(gaps), 1, gaps)
-        self.assertIn("3 quoted control name(s)", gaps[0])
-        for word in ("Take a note", "Notes", "Reminders"):
+        self.assertIn("1 quoted control name(s)", gaps[0])
+        for word in ("Take a note",):
             self.assertIn(word, gaps[0])
         self.assertNotIn("Note trashed", gaps[0])
         self.assertNotIn("Asked", gaps[0])  # no control word near the quote: not a control name
@@ -494,102 +492,19 @@ class SmokeCase(unittest.TestCase):
             "html += `<button type=\"button\">Take a note</button><div role=\"status\">Note trashed</div>`;\n")
         self.assertEqual(adapter.exact_name_gaps(stage, req), [])
 
-    def test_static_gates_flag_missing_process_guards_and_aria_collisions(self):
-        stage = self.root / "stage"
+    def test_static_gates_do_not_turn_word_overlap_or_readonly_fields_into_defects(self):
+        stage = self.root / "static-scopes"
         (stage / "backend").mkdir(parents=True)
-        (stage / "frontend" / "public").mkdir(parents=True)
-        (stage / "backend" / "server.js").write_text("const http = require('http');\n")
-        (stage / "frontend" / "public" / "app.js").write_text(
-            "html += '<label for=\"qty\">Quantity</label><input id=\"qty\">';\n"
-            "html += '<button aria-label=\"Decrease quantity\">-</button>';\n"
-            "html += '<button aria-label=\"Close dialog\">x</button>';\n")
-        guard = adapter.process_guard_gaps(stage)
-        self.assertEqual(len(guard), 1)
-        self.assertIn("uncaughtException", guard[0])
-        aria = adapter.aria_collision_gaps(stage)
-        self.assertEqual(len(aria), 1)
-        self.assertIn("Decrease quantity", aria[0])
-        self.assertNotIn("Close dialog", aria[0])
-        (stage / "backend" / "server.js").write_text("process.on('uncaughtException', () => {}); process.on('unhandledRejection', () => {});\n")
-        self.assertEqual(adapter.process_guard_gaps(stage), [])
-
-    def test_template_expressions_are_not_accessible_label_collisions(self):
-        # Reduced from the real Lite Keep Qwen draft: the old scan treated
-        # ARC.esc in both interpolated attributes as a shared accessible name.
-        stage = self.root / "dynamic-labels"
-        public = stage / "frontend" / "public"
-        public.mkdir(parents=True)
-        source = public / "app.js"
-        template = ('const html = `<button aria-label="${ARC.esc(L.brand || \'App\')}">Home</button>'
-                    '<input placeholder="${ARC.esc(field.placeholder)}">`;\n')
-        source.write_text(template)
-        self.assertEqual(adapter.aria_collision_gaps(stage), [])
-        source.write_text(template + '<label>Quantity<input></label>'
-                          '<button aria-label="Decrease quantity">-</button>')
-        [problem] = adapter.aria_collision_gaps(stage)
-        self.assertIn("Decrease quantity", problem)
-        self.assertNotIn("ARC.esc", problem)
-
-    def test_nested_label_advice_keeps_the_quoted_name_and_renames_the_other(self):
-        stage = self.root / "stage2"
-        (stage / "frontend" / "public").mkdir(parents=True)
-        (stage / "frontend" / "public" / "app.js").write_text(
-            "html += '<input placeholder=\"From\"><label>From Station <select></select></label>';\n"
-            "html += '<label>Date <input></label><label>End date <input></label>';\n")
-        req = 'input placeholders "From", "To", and "Date". Later a filter labeled "End date".'
-        [problem] = adapter.aria_collision_gaps(stage, req)
-        self.assertIn('keep "From" exactly (specified in the requirement) and rename "From Station"', problem)
-        self.assertNotIn('"Date" is contained in "End date"', problem)  # both quoted: not a rename problem
-        [generic] = adapter.aria_collision_gaps(stage)
-        self.assertIn('"Date" is contained in "End date"', generic)
-
-    def test_a_form_after_a_button_is_not_a_button_label_collision(self):
-        # Reduced from the real v4 BookStack draft. The preceding button used
-        # to make the scanner misclassify this required named form.
-        stage = self.root / "form-label"
-        public = stage / "frontend" / "public"
-        public.mkdir(parents=True)
-        (public / "app.js").write_text(
-            '<button>New Book</button><form aria-label="Create book form">'
-            '<label>Book description<input></label></form>')
-        self.assertEqual(adapter.aria_collision_gaps(stage), [])
-
-    def test_backtick_control_names_are_not_renamed_by_collision_advice(self):
-        stage = self.root / "backtick-label"
-        public = stage / "frontend" / "public"
-        public.mkdir(parents=True)
-        (public / "app.js").write_text(
-            '<label>Tags<input></label><button aria-label="Book Tags">Tags</button>')
-        self.assertTrue(adapter.aria_collision_gaps(stage))
-        self.assertEqual(adapter.aria_collision_gaps(stage, 'A button named `Book Tags`.'), [])
-
-    def test_explicit_unquoted_accessible_names_are_not_renamed(self):
-        stage = self.root / 'plain-control-name'
-        public = stage / 'frontend/public'
-        public.mkdir(parents=True)
-        (public / 'app.js').write_text(
-            '<label>Details<textarea></textarea></label>'
-            '<button aria-label="Expand details">+</button>')
-        self.assertTrue(adapter.aria_collision_gaps(stage))
-        for requirement in ('A button accessibly named Expand details, opens the editor.',
-                            'The button is named Expand details. The field is labeled Details.'):
-            with self.subTest(requirement=requirement):
-                self.assertEqual(adapter.aria_collision_gaps(stage, requirement), [])
-
-    def test_quoted_button_names_are_not_collision_problems_and_only_control_phrases_are_pinned(self):
-        stage = self.root / "stage3"
-        (stage / "frontend" / "public").mkdir(parents=True)
-        (stage / "frontend" / "public" / "app.js").write_text(
-            "html += '<label>Email address <input></label>';\n"
-            "html += '<button aria-label=\"Contact information\">Edit</button><button aria-label=\"Address book\">Open</button>';\n"
-            "html += '<p>Please enter a new email address.</p>';\n")
-        req = ('Click the "Contact information" button. Fill the "Email address" field. '
-               'On error show "Please enter a new email address."')
-        [problem] = adapter.aria_collision_gaps(stage, req)
-        self.assertIn('"Address book"', problem)
-        self.assertNotIn('"Contact information"', problem)
-        pinned = adapter.control_names(stage) & {p.lower() for p in adapter.quoted_control_phrases(req)}
-        self.assertEqual(pinned, {"contact information", "email address"})
+        (stage / "frontend/public").mkdir(parents=True)
+        (stage / "backend/server.js").write_text("process.on('uncaughtException',()=>{});process.on('unhandledRejection',()=>{});")
+        (stage / "frontend/public/app.js").write_text(
+            '<section><label>Quantity<input></label><button aria-label="Decrease quantity">-</button></section>'
+            '<section><label>Name<input placeholder="Optional note"></label></section>'
+            '<section><label>Name<input readonly value="Display value"></label></section>')
+        req = 'The second Name field is read-only. A button named "Decrease quantity" changes Quantity.'
+        self.assertEqual(adapter.static_gaps(stage, req, False), {})
+        self.assertEqual(adapter.aria_collision_gaps(stage, req), [])
+        self.assertEqual(adapter.quoted_control_phrases('A button named "Save". Seed data: account "user@example.com".'), ['Save'])
 
     def test_repair_that_renames_a_quoted_control_is_rejected(self):
         # 12306 r25a: the collision repair renamed the quoted "From" to "Origin city"; 45 tests then waited for
@@ -598,12 +513,12 @@ class SmokeCase(unittest.TestCase):
         draft_js = "document.body.innerHTML += '<label>From <input id=\"f\"></label><label>From Station <select id=\"s\"></select></label>';"
         repaired_js = "document.body.innerHTML += '<label>Origin city <input id=\"f\"></label><label>From Station <select id=\"s2\"></select></label>';"
         self.draft_js(draft_js, repaired_js)
-        self.scenarios({"REQ-1": lambda t: "s2" in t})
+        self.scenarios({"REQ-1": lambda t: "s2" in t, "REQ-2": lambda t: "<label>From <input" in t})
         budget = adapter.CallBudget(repair_limit=1)
         files, _ = adapter.generate('Synthetic: the departure field labeled "From" and a From Station filter.',
                                     "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
         self.assertEqual(budget.smoke["repair"]["accepted"], False, budget.smoke)
-        self.assertIn("renamed quoted control(s): from", budget.smoke["repair"]["reason"])
+        self.assertIn("broke 1 passing scenario", budget.smoke["repair"]["reason"])
         self.assertEqual(budget.smoke["rounds"][0]["gained"], ["REQ-1"])
         self.assertIn("From <input", next(f for f in files if f["path"] == "frontend/public/app.js")["content"])
 
@@ -633,7 +548,7 @@ class SmokeCase(unittest.TestCase):
         before_js = "document.body.innerHTML='<button>Choose fields</button>';"
         after_js = "const item={label:'Choose fields'};document.body.innerHTML='<button>Other action</button>';"
         self.draft_js(before_js, after_js)
-        self.scenarios({"REQ-1": lambda t: "Other action" in t})
+        self.scenarios({"REQ-1": lambda t: "Other action" in t, "REQ-2": lambda t: "<button>Choose fields</button>" in t})
         checks = []
 
         def check(stage, requirements=None, diagnostics=None):
@@ -649,7 +564,7 @@ class SmokeCase(unittest.TestCase):
                              'synthetic-model', 'https://synthetic.invalid/v1', SYNTHETIC_KEY,
                              self.out, budget)
         self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
-        self.assertIn('the change renamed quoted control(s)', budget.smoke['repair']['reason'])
+        self.assertIn('broke 1 passing scenario', budget.smoke['repair']['reason'])
 
     def repair_with_smoke(self, requirements, draft_js, repaired_js, before, after, browser=(), out=None, rules=None):
         """One synthetic draft and repair; the smoke check reports `before` on the draft and `after` on the repair,
@@ -672,20 +587,15 @@ class SmokeCase(unittest.TestCase):
                              out or self.out, budget)
         return budget
 
-    def test_a_revived_application_is_kept_although_it_loses_quoted_vocabulary(self):
-        # The rename waiver extended: one lost quoted phrase costs a family of tests, a blank page all of them.
+    def test_runtime_text_is_not_required_to_be_one_literal_source_string(self):
         self.scenarios({"REQ-1": lambda t: "Welcome" in t})
-        args = ('Synthetic: the welcome text reads "Have a nice trip".',
+        args = ('Synthetic: the welcome text reads "Have a nice trip" and the action adds "Welcome".',
                 "document.body.innerHTML='<p>Have a nice trip</p>'; this.flights();",
-                "document.body.innerHTML='<p>Welcome</p>';")
-        budget = self.repair_with_smoke(*args, BLANK, [])
-        self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
-        self.assertEqual(budget.smoke['repair']['waived'], ['the change removed quoted vocabulary (0 -> 1 missing)'])
-        # Unchanged when nothing whole-app was fixed: the guard rejects a repair that makes a scenario pass.
-        budget = self.repair_with_smoke(*args, [], [], out=self.root / 'guarded')
-        self.assertFalse(budget.smoke['repair']['accepted'], budget.smoke)
-        self.assertEqual(budget.smoke['rounds'][0]['gained'], ['REQ-1'])
-        self.assertIn('the change removed quoted vocabulary (0 -> 1 missing)', budget.smoke['repair']['reason'])
+                "document.body.innerHTML='<p>'+['Have a','nice trip'].join(' ')+'</p><p>Welcome</p>';")
+        for suffix, before in [('revived', BLANK), ('working', [])]:
+            budget = self.repair_with_smoke(*args, before, [], out=self.root / suffix)
+            self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
+            self.assertNotIn('waived', budget.smoke['repair'])
 
     def test_a_revived_application_is_kept_although_the_scenario_recheck_could_not_run(self):
         reports = []
@@ -719,8 +629,8 @@ class SmokeCase(unittest.TestCase):
             "document.body.innerHTML='<p>Add return trip</p><button>Return trip</button>';",
             BLANK, ['clicking `Return trip` on screen `#/` throws: synthetic'])
         self.assertTrue(budget.smoke['repair']['accepted'], budget.smoke)
-        self.assertEqual(budget.smoke['repair']['renamed_controls'], ['add return trip'])
-        self.assertEqual(budget.smoke['repair']['waived'], ['the change renamed quoted control(s): add return trip'])
+        self.assertEqual(budget.smoke['rounds'][0]['possible_renames'], ['add return trip'])
+        self.assertNotIn('waived', budget.smoke['repair'])
         self.assertIn('<button>Return trip</button>', (self.out / 'frontend/public/app.js').read_text())
 
     def test_removing_a_decoration_from_a_quoted_name_is_not_a_rename(self):

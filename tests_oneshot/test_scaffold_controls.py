@@ -27,7 +27,7 @@ w.LAYOUT = {sidebar:[
   {label:'Other name', hash:'#/saved'}
 ]};
 w.document.body.innerHTML = w.ARC.layout('', {hash:'#/saved'});
-const entries = Array.from(w.document.querySelectorAll('aside button'), el => [el.textContent,el.dataset.hash,el.getAttribute('aria-current')]);
+const entries = Array.from(w.document.querySelectorAll('aside a'), el => [el.textContent,el.getAttribute('href'),el.getAttribute('aria-current')]);
 console.log(JSON.stringify({entries, originalCount:w.LAYOUT.sidebar.length}));
 w.close();
 '''

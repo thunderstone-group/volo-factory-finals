@@ -584,7 +584,7 @@ class OfflineCase(unittest.TestCase):
         self.assertEqual(adapter.runtime_values(req), {"shelf created 1", "body text."})
         self.assertIn("- REQ-1 Create shelf: “Create shelf form”; “Name”; “Save Shelf”; "
                       "“user@example.com”; “Write here...”\n", adapter.vocabulary_table(req) + "\n")
-        self.assertEqual(adapter.quoted_control_phrases(req), ["Create shelf form", "Name", "Save Shelf", "user@example.com"])
+        self.assertEqual(adapter.quoted_control_phrases(req), ["Create shelf form", "Name", "Save Shelf"])
         stage = self.root / "stage"
         (stage / "frontend" / "public").mkdir(parents=True)
         (stage / "frontend" / "public" / "app.js").write_text(
