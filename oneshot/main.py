@@ -2084,7 +2084,8 @@ def source_review(stage, files, messages, model, base, key, budget, template, re
 
     try:
         budget.progress("reviewing_source_contracts", force=True)
-        result = _contracts_module().prepare(stage, requirements or "", tests, complete)
+        result = _contracts_module().prepare(stage, requirements or "", tests, complete,
+                                             observations=(first.get("scenarios_after") or {}).get("failing"))
         record.update(proposed=len(result.get("proposed", [])), probes=len(result.get("probes", [])),
                       results=result.get("validation", []), skipped=result.get("skipped"))
         budget.suite = dict(budget.suite or {}, source_contracts=record["probes"])
@@ -2294,7 +2295,8 @@ def scenario_summary(report):
     translation = report.get("translation") or {}
     return {"counts": counts, "coverage": report.get("coverage"), "seconds": report.get("seconds"),
             "source_contracts": report.get("source_contracts", {}),
-            "failing": [{"id": s["id"], "observation": (s.get("observation") or "")[:400]}
+            "failing": [{"id": s["id"], "status": s.get("status"),
+                         "observation": (s.get("observation") or "")[:400]}
                         for s in report.get("scenarios", []) if s.get("status") in ("fail", "error")],
             "invariants": [{"id": i.get("id"), "observation": (i.get("observation") or "")[:400]}
                            for i in report.get("invariants", []) if i.get("status") == "fail"],

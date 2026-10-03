@@ -396,6 +396,31 @@ class GroundingCase(unittest.TestCase):
 
 
 class RunCase(unittest.TestCase):
+    def test_per_test_fixtures_in_suite_hooks_are_sent_to_the_test_writer(self):
+        # Reproduce the real Playwright error seen after a passing application assertion.
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            app, suite = root / "app", root / "suite"
+            (app / "backend").mkdir(parents=True)
+            (app / "frontend").mkdir()
+            (app / "backend/server.js").write_text(APP_SERVER)
+            (app / "backend/package.json").write_text('{"scripts":{"start":"node server.js"}}')
+            suite.mkdir()
+            filename = "t01-REQ-1.spec.cjs"
+            (suite / "suite.json").write_text(json.dumps({"files": [
+                {"file": filename, "tests": ["REQ-1-1: Add one"]}]}))
+            for hook in ("beforeAll", "afterAll"):
+                with self.subTest(hook=hook):
+                    (suite / filename).write_text(
+                        "const {test,expect}=require('@playwright/test');\n"
+                        "test('REQ-1-1: Add one',async({page})=>{await page.goto('/');"
+                        "await expect(page.getByRole('button',{name:'Add note'})).toBeVisible();});\n"
+                        "test.%s(async({page})=>{await page.goto('/');});\n" % hook)
+                    report = testgen.run_suite(app, suite, REQUIREMENTS)
+                    self.assertEqual(report['scenarios'][0]['status'], 'error', report)
+                    self.assertIn(filename, testgen.own_breaks(report))
+                    self.assertIn('fixtures are not supported', report['scenarios'][0]['observation'])
+
     def test_runs_a_suite_against_a_live_application(self):
         env = dict(os.environ)
         cli, why = testgen.ensure_runner(env)

@@ -63,6 +63,15 @@ class SourceContractCase(unittest.TestCase):
         self.assertNotEqual(before["bindings"][0]["functions"][0]["source_sha256"],
                             after["bindings"][0]["functions"][0]["source_sha256"])
 
+    def test_valid_long_dependency_chain_is_not_cut_off_after_25_links(self):
+        self.file.write_text('function adjust(s,n){s.balance=step0(s.balance,n);}\n' +
+                             '\n'.join('function step%d(v,n){return step%d(v,n);}' % (i,i+1)
+                                       for i in range(29)) +
+                             '\nfunction step29(v,n){return n<0?v:v+n;}')
+        result = self.run_probe()
+        self.assertEqual(result['results'][0]['status'], 'pass', result['results'])
+        self.assertEqual(len(result['bindings'][0]['linked_dependencies']), 30)
+
     def test_bad_precondition_is_unjudged_not_a_product_failure(self):
         p = copy.deepcopy(PROBE)
         p["precondition"] = "assert.equal(state.balance,20);"
@@ -186,8 +195,12 @@ window.Rules.actions={factor:scale, 'adjust-value'(state,n){Rules.calls++; state
         def complete(messages):
             prompts.append(messages)
             return reply, {}, "stop"
-        result = contracts.prepare(self.root, REQUIREMENTS, self.suite, complete)
+        result = contracts.prepare(self.root, REQUIREMENTS, self.suite, complete, observations=[
+            {"id": "REQ-1", "status": "fail", "observation": "Changed balance remains invisible"},
+            {"id": "broken-helper", "status": "error", "observation": "ReferenceError: missing fixture"}])
         self.assertEqual(len(prompts), 2)
+        self.assertIn('Changed balance remains invisible', prompts[0][-2]['content'])
+        self.assertNotIn('missing fixture', prompts[0][-2]['content'])
         self.assertIn('"status": "fail"', prompts[1][-1]["content"])
         self.assertEqual(result["validation"][0]["status"], "fail")
         self.assertEqual(self.file.read_text(), SOURCE)

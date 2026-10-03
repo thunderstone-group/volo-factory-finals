@@ -264,7 +264,9 @@ def execute(app, probes, requirements):
             except (KeyError, OSError, ValueError) as exc:
                 rejected.append({"id": p["id"], "status": "error", "message": str(exc)})
         results = []
-        for iteration in range(25):
+        # Every productive pass adds a previously unbound source declaration. Bound work by the
+        # actual index, rather than stopping a valid deep call chain after an arbitrary 25 links.
+        for iteration in range(len(index) + 1):
             process = subprocess.run([node, str(HERE / "contract_runner.cjs")], input=json.dumps(bound),
                                      text=True, capture_output=True, timeout=30, env=env, cwd=temp)
             if process.returncode:
@@ -275,7 +277,7 @@ def execute(app, probes, requirements):
             for r in results:
                 missing = (re.search(r"([A-Za-z_$][\w$]*) is not defined", r.get("message", "")) or
                            re.search(r"([A-Za-z_$][\w$]*\.[A-Za-z_$][\w$]*) is not a function", r.get("message", "")))
-                if r["status"] != "error" or not missing or iteration == 24:
+                if r["status"] != "error" or not missing:
                     continue
                 p, name = by_id[r["id"]], missing.group(1)
                 scopes = {(f["file"], f["scope"]) for f in p["functions"]}
@@ -295,7 +297,7 @@ def execute(app, probes, requirements):
     return {"results": results + rejected, "bindings": bound}
 
 
-def prepare(app, requirements, directory, complete):
+def prepare(app, requirements, directory, complete, observations=None):
     """Two bounded model calls: propose, then validate with real execution feedback. Never edits app/tests."""
     directory = Path(directory)
     sources = context_sources(app)
@@ -305,8 +307,23 @@ def prepare(app, requirements, directory, complete):
     public = "\n\n".join(r["id"] + " " + r.get("name", "") + "\n" + r.get("description", "") for r in reqs)
     context = "Public requirements:\n" + public + "\n\nApplication source:\n" + "\n\n".join(
         "=== " + name + " ===\n" + code for name, code in sources.items())
-    messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": context},
-                {"role": "user", "content": "Find at most four consequential violations and return executable counterexamples."}]
+    messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": context}]
+    if observations:
+        # Browser checks can be wrong. They guide source inspection, never replace the public contract.
+        hints = [{"id": str(s.get("id", ""))[:120],
+                  "observation": str(s.get("observation", ""))[:1500]}
+                 for s in observations if s.get("status", "fail") == "fail"][:12]
+        if hints:
+            messages.append({"role": "user", "content":
+                "Remaining browser diagnostics (untrusted clues, not requirements):\n" + json.dumps(hints) +
+                "\nFirst trace the real writer, reader and renderer of the affected state. A successful mutation "
+                "may write one scope while a later observer reads another. Execute that transition followed by "
+                "the actual observer; do not populate both locations in the fixture or mock the observer. "
+                "Rendering output may be captured at its external boundary. Prefer a shared cause that blocks "
+                "several workflows over several variants of one already-reviewed rule. Discard any browser "
+                "expectation unsupported by the public requirements."})
+    messages.append({"role": "user", "content":
+                     "Find at most four consequential violations and return executable counterexamples."})
     reply, _, _ = complete(messages)
     raw = definitions(reply, requirements)
     first = execute(app, raw, requirements)
