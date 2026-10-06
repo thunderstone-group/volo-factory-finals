@@ -13,4 +13,6 @@
 
 - 15:30：代理基线、守卫、源码审查的现状见 finals-roadmap F2 读数与 F3 状态。在跑：守卫平台试跑 2（E3/guard2-ids.txt）、Codex 收紧守卫豁免（job `2026-10-06-regression-guard`）、源码审查消融（本地 finals-local/runs/*-nosr-s1）。
 
+- 18:00：守卫在平台实测有效（宽松版找回 230 项）；源码审查进化模式下线（#127）。严格版守卫候选包 a64cd91e 在跑：平台 E3/cand-ids.txt，本地 finals-local/runs/*-cand-a64cd91e-s1；判据见 progress 18:00 节。
+
 下一步：收 F1 八个终态并逐条归因（`arcbench download` 取产物，含起点应用）；搭 F4 本地回放；F2 交付后用它做 F3 候选的配对比较。
