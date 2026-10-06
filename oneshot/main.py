@@ -1232,8 +1232,9 @@ def _template_opaque(relative):
             any(part.startswith(".") or part in TEMPLATE_ARTIFACTS for part in parts))
 
 
-def read_template(root):
-    """Read a bounded source snapshot; never follow links or send local dotfiles."""
+def read_template(root, bounded=True):
+    """Read a bounded source snapshot; never follow links or send local dotfiles. Unbounded, it reads every
+    application source file of a finished stage for publication."""
     root = Path(root)
     if root.is_symlink() or not root.is_dir():
         raise ValueError("template must be a directory, not a symlink")
@@ -1251,14 +1252,14 @@ def read_template(root):
             if not path.is_file():
                 raise ValueError("template contains a non-regular file")
             size = path.stat().st_size
-            if total + size > MAX_TEMPLATE_BYTES or len(blobs) >= MAX_TEMPLATE_FILES:
+            if bounded and (total + size > MAX_TEMPLATE_BYTES or len(blobs) >= MAX_TEMPLATE_FILES):
                 raise ValueError("template exceeds source snapshot limit; no files were truncated")
             data = path.read_bytes()
             total += len(data)
-            if total > MAX_TEMPLATE_BYTES:
+            if bounded and total > MAX_TEMPLATE_BYTES:
                 raise ValueError("template exceeds source snapshot limit")
             blobs[path.relative_to(root).as_posix()] = data
-    if not {"frontend/package.json", "backend/package.json"} <= blobs.keys():
+    if bounded and not {"frontend/package.json", "backend/package.json"} <= blobs.keys():
         raise ValueError("template must contain frontend and backend package.json; new output must be absent or empty")
     return blobs
 
@@ -1338,36 +1339,31 @@ def scaffold_gaps(stage):
     return gaps
 
 
-def template_stamp(root):
-    """Detect concurrent edits to opaque metadata without reading or logging it."""
-    stamp = {}
-    for directory, dirs, names in os.walk(root, followlinks=False):
-        for path in [Path(directory), *(Path(directory) / name for name in dirs + names)]:
-            info = path.lstat()
-            stamp[path.relative_to(root).as_posix()] = (
-                info.st_dev, info.st_ino, info.st_mode, info.st_size,
-                info.st_mtime_ns, info.st_ctime_ns)
-    return stamp
-
-
-def publish(stage, out, template, snapshot, stamp):
-    if template is not None and (template_stamp(template) != stamp or read_template(template) != snapshot):
-        raise ValueError("template changed during generation")
+def publish(stage, out, template, snapshot):
     if template is None or template != out:
         if out.is_symlink() or (out.exists() and (not out.is_dir() or any(out.iterdir()))):
             raise ValueError("output directory changed during generation")
         stage.replace(out)
         return
-    # Recovery lives outside TemporaryDirectory so a failed rollback never deletes
-    # the original during context-manager cleanup. Publication uses two renames.
-    backup = out.with_name(".oneshot-backup-" + uuid.uuid4().hex)
-    out.rename(backup)
+    # In place (Evolution): the runner keeps writing its own files into output-dir while the agent works
+    # (.arc/stdout.log, runner-events.jsonl), so swapping or freezing the directory loses every run (10-06, 7 of 8
+    # practice tasks). Write back only the application files that changed; task inputs, dotfiles and build
+    # artifacts stay as the runner left them. All new contents are written beside their targets first, so a
+    # failure before the renames leaves the original application untouched.
+    changed = {name: data for name, data in read_template(stage, bounded=False).items() if snapshot.get(name) != data}
+    staged = []
     try:
-        stage.replace(out)
-    except BaseException:
-        backup.rename(out)
-        raise
-    shutil.rmtree(backup)
+        for name, data in sorted(changed.items()):
+            target = resolve_path(out, name)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            temp = target.with_name(".oneshot-" + uuid.uuid4().hex + "-" + target.name)
+            temp.write_bytes(data)
+            staged.append((temp, target))
+        for temp, target in staged:
+            temp.replace(target)
+    finally:
+        for temp, _ in staged:
+            temp.unlink(missing_ok=True)
 
 
 def delivery_complete(stage):
@@ -1508,7 +1504,6 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
         raise ValueError("template and output directories must not overlap")
     if template is not None and (template.is_symlink() or not template.is_dir()):
         raise ValueError("template must be a directory, not a symlink")
-    stamp = template_stamp(template) if template is not None else None
     snapshot = read_template(template) if template is not None else {}
     out.parent.mkdir(parents=True, exist_ok=True)
     scaffold = read_template(SCAFFOLD_DIR) if template is None and SCAFFOLD and SCAFFOLD_DIR.is_dir() else {}
@@ -1568,7 +1563,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             reason = str(exc).replace(key, "[REDACTED]") if key else str(exc)
             print(f"[oneshot] delivering the last complete version after an error: {reason}", file=sys.stderr)
         budget.progress("publishing", force=True)
-        publish(stage, out, template, snapshot, stamp)
+        publish(stage, out, template, snapshot)
     for job in suites:
         if not job["thread"].is_alive():
             shutil.rmtree(job["dir"], ignore_errors=True)
