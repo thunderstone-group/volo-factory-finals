@@ -166,16 +166,16 @@ class EvolutionTests(unittest.TestCase):
         for name in ('frontend/.env', 'frontend/dist/old.js', 'node_modules/x.js'):
             self.assertFalse((self.out / name).exists())
 
-    def test_concurrent_source_change_aborts_publication(self):
+    def test_concurrent_source_change_keeps_untouched_files(self):
         self.seed()
         def response(*args, **kwargs):
             (self.out / 'backend/server.js').write_text('concurrent edit')
             return block('frontend/public/index.html', '<h1>Updated</h1>'), {}, 'stop'
         with patch.object(adapter, 'stream_completion', side_effect=response):
-            with self.assertRaisesRegex(ValueError, 'template changed'):
-                self.upgrade()
+            self.upgrade()
+        # Only the files the model changed are written back; a file it left alone keeps whatever is on disk.
         self.assertEqual((self.out / 'backend/server.js').read_text(), 'concurrent edit')
-        self.assertNotIn('Updated', (self.out / 'frontend/public/index.html').read_text())
+        self.assertIn('Updated', (self.out / 'frontend/public/index.html').read_text())
 
     def test_failed_publish_restores_original(self):
         before = self.seed()
@@ -186,7 +186,7 @@ class EvolutionTests(unittest.TestCase):
         self.assertEqual(adapter.read_template(self.out), before)
         self.assertEqual(list(self.root.glob('.oneshot-*')), [])
 
-    def test_concurrent_metadata_change_aborts_without_losing_it(self):
+    def test_concurrent_metadata_change_publishes_without_losing_it(self):
         self.seed()
         (self.out / '.env').write_text('before')
         def response(*args, **kwargs):
@@ -195,11 +195,29 @@ class EvolutionTests(unittest.TestCase):
             (self.out / '.git/new-object').write_text('retained')
             return block('frontend/public/index.html', '<h1>Updated</h1>'), {}, 'stop'
         with patch.object(adapter, 'stream_completion', side_effect=response):
-            with self.assertRaisesRegex(ValueError, 'template changed'):
-                self.upgrade()
+            self.upgrade()
         self.assertEqual((self.out / '.env').read_text(), 'concurrent change')
         self.assertEqual((self.out / '.git/new-object').read_text(), 'retained')
-        self.assertNotIn('Updated', (self.out / 'frontend/public/index.html').read_text())
+        self.assertIn('Updated', (self.out / 'frontend/public/index.html').read_text())
+
+    def test_runner_log_written_during_generation_is_kept_and_publication_succeeds(self):
+        # The platform runner appends the agent's output to <output-dir>/.arc/stdout.log while it runs (10-06).
+        self.seed()
+        (self.out / '.arc').mkdir()
+        (self.out / '.arc/stdout.log').write_text('start\n')
+        inode = (self.out / '.arc/stdout.log').stat().st_ino
+        def response(*args, **kwargs):
+            with open(self.out / '.arc/stdout.log', 'a') as log:
+                log.write('agent output\n')
+            return (block('frontend/public/index.html', '<h1>Updated</h1>') +
+                    block('frontend/public/new/added.js', 'export const added = 1;')), {}, 'stop'
+        with patch.object(adapter, 'stream_completion', side_effect=response):
+            self.upgrade()
+        self.assertEqual((self.out / '.arc/stdout.log').read_text(), 'start\nagent output\n')
+        self.assertEqual((self.out / '.arc/stdout.log').stat().st_ino, inode)
+        self.assertIn('Updated', (self.out / 'frontend/public/index.html').read_text())
+        self.assertEqual((self.out / 'frontend/public/new/added.js').read_text().strip(), 'export const added = 1;')
+        self.assertEqual([p for p in self.out.rglob('.oneshot-*')], [])
 
     def test_platform_cli_detects_prepopulated_application(self):
         self.seed()
