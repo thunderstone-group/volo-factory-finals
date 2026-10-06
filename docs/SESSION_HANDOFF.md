@@ -1,20 +1,35 @@
-# 2026-10-06 12:45 决赛开工：练习进化基线在跑，代理暗题派给 Codex
+# 2026-10-06 19:50 决赛备战：决赛包 v2 已定，定点编辑起草在验证
 
-先读本页、AGENTS.md 和 `docs/reference/finals-roadmap.md`；git 和 CLI 是当前状态真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`。
+先读本页、AGENTS.md、`docs/reference/finals-roadmap.md`（决赛真源，含 4.5 节当前决赛包与 F2/F3 状态）。git 和 CLI 是现状真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。
 
-- 初赛已结束：终榜第 2（G79 `afc04ffe5b63` + Sheet87 `defb678bf0a1`，S104.96，提交 `12e3bab723fd`）。最后一对 run `9f40df0b587e`/`8c80a2b899ac` 只有 62/7，没替换成绩。10-05 组委会邮件通知入围决赛，安排另行通知。
-- 决赛 = 平台竞赛 `hackathon-evolution`：从上面两份产物继续进化，2 题 60 条，尚未开放（403）。报名 registered=False、can_confirm=True，要甲方定。
-- F1 第二轮（包 0a0ab9d7）：Web 进化 38/38、Lite 10/12，结果 E3/r2-final.jsonl。Light 编译器 Codex job `~/.codex-jobs/volo-factory/2026-10-06-light-compiler/`（worktree light-compiler，分支 feat/light-scenario-compiler，默认关）。
-- F1 第一轮 8/8 死在发布（`template changed during generation`，平台运行期间写 `.arc/`），PR #121 修复，包 0a0ab9d7 第二轮在跑：提交 `e27ad83fd9c5`（arc-bench-evolution）、`30c220b9ce4d`（lite），run id 见 E3/r2-ids.txt，等待器写 E3/r2-wait.jsonl 与 r2-wait.exit。
-- （第一轮记录）F1 练习基线：主分支 v11 包（cd0f5969，副本 E3/v11-main-cd0f5969.zip），模型 deepseek-v4-flash-vision-exp，练习额度。提交 `da8189ed3dd5`（arc-bench-evolution，run 12306 `6908dfd75b2b`、bookstack `41019cb9e0e1`、ctrip `f1a38fbc4e47`、keep `70b53c1fe2bb`、prestashop `5dbadb474c70`、stackoverflow `5ae9b83511a9`）与 `cba6094af823`（lite-evolution，bookstack `108d9b96822e`、keep `a6e70f4061d2`）。等待器 nohup 写 E3/baseline-wait.jsonl，结束写 E3/baseline-wait.exit。练习余额起跑前 356.99 元。
-- F2 代理暗题：已交付（两题各 30 条，起点 0/30、参考实现 30/30×2、旧回归无丢失）。位置与跑法只记在主会话专用的 acceptance-hidden README，不写进本仓库。13:20 起用包 0a0ab9d7 在两题上本地各跑一次作代理基线。
+## 目标与约束（用户原话）
+- 10-06 12:20 用户：「arc 我们进决赛了，可以开始猛攻决赛了，你跟 gpt6astra max 一起」。Codex 本机默认就是 gpt-6-astra + max，派发走 codex-dispatch skill（`~/.agents/skills/codex-dispatch/bin/codex-job.sh`），重要判断先让 Codex 对抗评审。
+- 练习额度已授权直接跑；volo-factory 的 PR 验收后自己合；包里不写题名和答案；决赛代理暗题（主会话专用）的位置不写进任何派发单或本仓库，跑法见 `~/projects/arcbench-campaign/acceptance-hidden/README.md` 末节。
 
-- Light 场景编译器（F3 候选）已合 main，默认关（`ONESHOT_LIGHT_TESTS=1` 开）；报告 `reports/2026-10-06-light-compiler.md`。
+## 决赛事实
+- 平台竞赛 `hackathon-evolution`：从初赛最新提交选中的 G79（run afc04ffe5b63）、Sheet87（run defb678bf0a1）继续进化，2 题 60 条，10-06 19:50 仍 upcoming（403）。报名 can_confirm=True，等甲方确认。
+- 组委会 10-06 18:13 邮件「入围 Hackathon 决赛通知」：决赛安排只在决赛微信群公告发布，入群二维码是邮件内嵌图（尺素取不出），等甲方扫码入群并用 ChatDrop 转公告。
 
-- 15:30：代理基线、守卫、源码审查的现状见 finals-roadmap F2 读数与 F3 状态。在跑：守卫平台试跑 2（E3/guard2-ids.txt）、Codex 收紧守卫豁免（job `2026-10-06-regression-guard`）、源码审查消融（本地 finals-local/runs/*-nosr-s1）。
+## 当前决赛包（main 9e1051e 起，包 9293a251）
+发布修复（#121）+ Light 编译器默认关（#125）+ 进化模式跳过源码审查（#127）+ 宽松守卫默认开（#129）。证据：平台练习 6 题 38/38（提交 9b6dfbecf17a），代理 30/30、30/30，估算 0.75/0.69 元/题。否掉的：严格豁免守卫（平台 36/38，逼回需求合法删掉的容器）。
 
-- 18:00：守卫在平台实测有效（宽松版找回 230 项）；源码审查进化模式下线（#127）。严格版守卫候选包 a64cd91e 在跑：平台 E3/cand-ids.txt，本地 finals-local/runs/*-cand-a64cd91e-s1；判据见 progress 18:00 节。
+## 在跑（19:45 起，nohup，能活过 /clear）
+- 定点编辑起草（分支 feat/upgrade-patch-draft f7f40d5，Codex 交付，默认关 `ONESHOT_UPGRADE_PATCH=1`；报告 worktree upgrade-patch-draft 的 docs/reports/2026-10-06-upgrade-patch-draft.md）。验证：
+  - 平台 6 题，默认开变体包 1d31282d（分支 exp/upgrade-patch-default-on），提交 eb0354fab442，run id 在 E3/patch-ids.txt；
+  - 本地代理两题 × 2 样本，分支包 6293670a + 环境变量开，结果在 L/runs/{github,sheet}-patch-6293670a-{s1,s2}；
+  - 汇总脚本 L/summarize_patch.sh 写 L/patch-summary.txt，末行 DONE 表示全部完成（若脚本死了，直接重跑它，它会重新 wait 已有 run）。
+- 判据（写死）：平台 ≥ 38/38；代理新功能不低于 30/30、30/30；GitHub 旧功能回归（v6-fixed-independent）两样本都 ≥ 106（关闭时 6 次为 107/106/106/105/103/100，起点 107），Sheet g99 ≥ 66、cov99n ≥ 96；费用不高于 v2 的 1.5 倍。过了就把 feat/upgrade-patch-draft 改成默认开（参照 #129 的做法：代码默认 "1"，tests_oneshot/test_oneshot.py OfflineCase 夹具里 patch 成 False），PR 合 main，更新 finals-roadmap 4.5 与日志；没过就保持默认关，记录原因。
 
-- 19:05：决赛包 v2 已合 main（宽松守卫默认开 + 进化跳过源码审查），见 finals-roadmap 第 4.5 节。待甲方：扫码入决赛微信群（10-06 18:13 邮件）、平台报名确认。
+## 下一步（第一条命令）
+`cat ~/projects/arcbench-campaign/finals-local/patch-summary.txt`（没有 DONE 就等）。之后：按判据定去留 → 更新路线图/progress → 检查 `arcbench competitions | grep hackathon-evolution` 与 ChatDrop 是否有「决赛群」会话，决赛一开放就下载需求，用 Light 编译器覆盖率（`oneshot/light_tests.compile_requirements`）判断题面风格，再上传决赛包（`arcbench upload ... --competition hackathon-evolution --official-evaluation`，先确认报名与额度）。
 
-下一步：收 F1 八个终态并逐条归因（`arcbench download` 取产物，含起点应用）；搭 F4 本地回放；F2 交付后用它做 F3 候选的配对比较。
+## 坑
+- `arcbench source` 下载的文件会被 CLI 秘钥脱敏改坏（`password = ***`），E3/base-web-* 不可信，可信起点在 E3/base-recovered/。待修 arcbench-cli。
+- 平台费用列在并发 run 时虚高（共享计量表），真实花费看 `arcbench balance` 差值；19:45 余额约 300 元。
+- 守卫只看未登录界面；登录后的旧功能丢失只能靠起草别丢（定点编辑）。
+- 本地 run_local.py 判分输出必须写在暗题目录内（脚本已处理）；跑 testgen.run_suite 要传绝对路径的 suite 目录，并设 NODE_PATH=/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-playwright-test-1.57.0/node_modules。
+- 把守卫或其他浏览器机制改成默认开时，离线单测会去起浏览器而卡死，夹具里要显式关掉。
+- 平台日志会截断超长的 `[oneshot] smoke` 行，完整日志从 `arcbench download` 的 bundle 里 `template/.arc/stdout.log` 读。
+
+## 等甲方
+1. 扫码入决赛微信群，把群公告转给 ChatDrop。2. 平台确认决赛报名（推荐按初赛队员名单）。
