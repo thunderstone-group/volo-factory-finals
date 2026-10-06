@@ -1,6 +1,6 @@
 # One-shot candidate inside VOLO
 
-Last reviewed: 2026-10-03.
+Last reviewed: 2026-10-06.
 
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
@@ -35,6 +35,15 @@ Completed upgrades now receive the same requirement-written browser checks and s
 new applications. Keeping an existing application does not establish its newly requested behavior.
 The earlier template path skipped test generation and could finish with every masked scenario
 unparsed; that outcome is not validation. Test-writing and repair costs remain on the run ledger.
+
+`ONESHOT_LIGHT_TESTS=1` opts into deterministic compilation of the Light interaction grammar
+(default `0`). A scenario is compiled only when every step is supported; otherwise the original
+writer receives that entire scenario. Fully covered suites make no test-writing model call.
+Compiled CommonJS tests share `suite.json`, scenario titles and the repair runner with written
+tests, using fixed exact-name helpers and empty browser storage. Their failures remain individual
+scenario failures; fixed helper call sites do not collapse them into writer errors. Compilation
+reads only requirements, never official tests or application code. See the
+[coverage and equivalence report](../reports/2026-10-06-light-compiler.md) for the measured scope.
 
 ## Boundaries
 
