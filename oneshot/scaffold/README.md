@@ -13,7 +13,7 @@ changing behavior that the actual task requires; do not retain an unsuitable def
 | ARC.route / ARC.navigate | Read and change hash routes, preserving consistent application state. |
 | ARC.openDialog / ARC.closeDialog | Manage a named modal and isolate its background while open. Use a non-modal primitive for non-modal interactions. |
 | ARC.openPopover | Place a menu or contextual panel in its intended scope; use menu/menuitem roles when the UI is a menu. |
-| ARC.combobox | Provide a labelled native select, form value and change callback. Supported browsers display the selected value through selectedcontent; other browsers keep native behavior. |
+| ARC.combobox | Provide a labelled native select, form value and change callback. Keep native keyboard and selection behavior; custom picker markup is a product choice, not a default adaptation. |
 | ARC.render | Render the current view without destroying a pressed target before its click completes. |
 | Clipboard helpers | Integrate required copy/cut/paste operations with the browser clipboard and application-specific structured data. |
 | ARC.notify | Display an application message, optionally with a meaningful Undo action. |

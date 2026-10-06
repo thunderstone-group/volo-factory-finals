@@ -9,7 +9,7 @@ button { font: inherit; cursor: pointer; }
 .app-header nav a { margin-right: 12px; }
 .account { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 .layout { display: flex; gap: 24px; padding: 16px; align-items: flex-start; }
-.sidebar { width: 200px; flex: none; order: -1; }
+.sidebar { width: 200px; flex: none; }
 .sidebar button, .sidebar a { display: block; width: 100%; text-align: left; margin: 0 0 8px; background: none; border: 0; padding: 6px 8px; border-radius: 6px; }
 .sidebar [aria-current="page"] { background: #ddf4ff; }
 .main { flex: 1; min-width: 0; }
@@ -29,6 +29,3 @@ input, textarea, select { font: inherit; padding: 6px 8px; width: 100%; max-widt
 .popover button { display: inline-block; }
 .combobox { position: relative; display: inline-block; }
 .combobox [role="combobox"] { min-width: 120px; text-align: left; }
-.listbox { position: absolute; z-index: 6; left: 0; top: 100%; min-width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.12); padding: 4px 0; }
-.listbox [role="option"] { padding: 4px 10px; cursor: pointer; white-space: nowrap; }
-.listbox [role="option"]:hover, .listbox [role="option"][aria-selected="true"] { background: #eef; }

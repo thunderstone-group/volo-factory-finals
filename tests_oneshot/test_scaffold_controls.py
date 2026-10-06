@@ -14,7 +14,7 @@ MODULES = Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules"
 
 @unittest.skipUnless(shutil.which("node") and (MODULES / "jsdom").is_dir(), "Node and jsdom are required")
 class NativeControlTests(unittest.TestCase):
-    def test_sidebar_merges_identical_destinations_without_losing_distinct_entries(self):
+    def test_sidebar_preserves_the_application_configured_entries(self):
         script = r'''
 const fs = require('fs');
 const {JSDOM} = require('jsdom');
@@ -38,6 +38,7 @@ w.close();
         )
         self.assertEqual(json.loads(result.stdout.strip().splitlines()[-1]), {
             'entries': [['Home', '#/', None], ['Saved', '#/saved', 'page'],
+                        ['Saved', '#/saved', 'page'],
                         ['Saved', '#/other', None], ['Other name', '#/saved', 'page']],
             'originalCount': 5,
         })

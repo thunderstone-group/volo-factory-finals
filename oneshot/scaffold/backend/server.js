@@ -2,14 +2,11 @@
 // Backend scaffold. Mechanics it satisfies: `npm run start` listens on PORT, serves ../frontend/dist
 // with `/` -> index.html, answers GET /api/health with exactly {"code":200,"message":"Backend Ready"}
 // only once the seed is in place, keeps the shared records in memory, never lets a handler kill the process.
-// Add domain routes inside `api()`; keep everything else.
+// Extend or adapt the routes to the required behavior; the request boundary below handles expected failures.
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-
-process.on('uncaughtException', (e) => console.error('uncaught', e));
-process.on('unhandledRejection', (e) => console.error('unhandled', e));
 
 const DIST = path.resolve(__dirname, '..', 'frontend', 'dist');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
