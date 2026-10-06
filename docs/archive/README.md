@@ -4,6 +4,8 @@
 
 ## handoffs/ — 历史交接节（一节一份，文件名 = 日期[-时刻]）
 
+- `handoffs/2026-10-06-before-exemption-tightening.md` — 初版回归守卫交接，保留修订前的豁免与噪声分类结论。
+
 - `handoffs/2026-10-06-before-regression-guard.md` — 回归守卫任务前的决赛开工交接，保留 F1/F2 及平台状态原文。
 
 - `2026-09-18-1620.md` Lite 是正式赛方言；第 18 轮起跑。

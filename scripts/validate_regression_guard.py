@@ -20,6 +20,9 @@ MUTATOR = r'''(() => {
   const mutation = __CONFIG__;
   const norm = s => String(s || '').replace(/\s+/g, ' ').trim();
   function role(el) {
+    if (el.tagName === 'INPUT') return el.type === 'search' ? 'searchbox' :
+      ['text','email','password','url','tel'].includes(el.type) ? 'textbox' : el.type;
+    if (el.tagName === 'TEXTAREA') return 'textbox';
     return el.getAttribute('role') || ({A:'link',BUTTON:'button',NAV:'navigation',FORM:'form'}[el.tagName]) ||
       (/^H[1-6]$/.test(el.tagName) ? 'heading' : '');
   }
@@ -27,6 +30,7 @@ MUTATOR = r'''(() => {
     if (el.hasAttribute('aria-label')) return norm(el.getAttribute('aria-label'));
     if (el.hasAttribute('aria-labelledby')) return norm(el.getAttribute('aria-labelledby').split(/\s+/)
       .map(id => document.getElementById(id)?.textContent || '').join(' '));
+    if (el.labels?.length) return norm([...el.labels].map(l => l.textContent).join(' '));
     return norm(el.textContent);
   }
   const apply = () => {
@@ -45,11 +49,12 @@ MUTATOR = r'''(() => {
       }
       return;
     }
-    for (const el of document.querySelectorAll('a,button,nav,form,[role],h1,h2,h3,h4,h5,h6')) {
+    for (const el of document.querySelectorAll('a,button,input,textarea,nav,form,[role],h1,h2,h3,h4,h5,h6')) {
       if (role(el) !== mutation.role || name(el) !== mutation.name) continue;
       if (mutation.kind === 'remove-link') el.remove();
       if (mutation.kind === 'rename-navigation') {
-        el.setAttribute('aria-label','Synthetic renamed navigation'); el.textContent = 'Synthetic renamed navigation';
+        const replacement = mutation.replacement || 'Synthetic renamed navigation';
+        el.setAttribute('aria-label',replacement); el.textContent = replacement;
       }
       if (mutation.kind === 'hide-section' && el.style.display !== 'none') el.style.setProperty('display','none','important');
     }

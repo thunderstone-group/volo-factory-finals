@@ -83,11 +83,13 @@ async function snapshot(page, cdp) {
       navigation.push({...item, kind: 'tab', panel: attrs['aria-controls']});
     }
   }
-  // Multiple indistinguishable controls are inventoried, but never chosen by nth() for navigation.
-  const counts = new Map();
-  for (const n of navigation) counts.set(key(n), (counts.get(key(n)) || 0) + 1);
+  // Several links can expose the same destination (for example repeated tags). URL navigation is still
+  // deterministic then; conflicting destinations and ambiguous click handlers remain unobserved.
+  const groups = new Map();
+  for (const n of navigation) { const list = groups.get(key(n)) || []; list.push(n); groups.set(key(n), list); }
   return {items: [...items.values()].sort((a, b) => key(a).localeCompare(key(b), 'en')),
-    navigation: navigation.filter(n => counts.get(key(n)) === 1)};
+    navigation: [...groups.values()].filter(g => g.length === 1 ||
+      g.every(n => n.kind === 'url' && n.href === g[0].href)).map(g => g[0])};
 }
 
 async function revealNavigation(page, cdp, snap, step) {

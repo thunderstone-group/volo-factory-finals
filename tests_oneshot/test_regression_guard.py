@@ -84,54 +84,162 @@ class DiffTests(unittest.TestCase):
         self.assertIsNone(guard.replacement_exemption({'role': 'form', 'name': 'Open account'}, current,
                                                      text, guard.exemptions(text)))
 
-    def test_fixed_calendar_change_exempts_date_labels_only(self):
-        text = 'id: E\nchange_type: CHANGE\ndescription: The calendar uses today as the visible benchmark date.\n'
+    def test_fixed_calendar_change_requires_new_date_controls_and_static_basis(self):
+        text = 'id: E\nchange_type: CHANGE\ndescription: The calendar uses the fixed benchmark date 2030-10-01.\n'
         changes = guard.exemptions(text)
-        self.assertIsNotNone(guard.replacement_exemption({'role': 'button', 'name': 'Oct 6 Tue'}, [], text, changes))
-        self.assertIsNone(guard.replacement_exemption({'role': 'button', 'name': 'Item 6'}, [], text, changes))
+        current = [{'role': 'button', 'name': 'Oct 1 Tue'}, {'role': 'button', 'name': 'Oct 2 Wed'}]
+        self.assertEqual(guard.replacement_exemption({'role': 'button', 'name': 'Oct 6 Tue'}, current, text, changes)['rule'], 'date_basis')
+        self.assertIsNone(guard.replacement_exemption({'role': 'button', 'name': 'Oct 6 Tue'}, [], text, changes))
+        self.assertIsNone(guard.replacement_exemption({'role': 'button', 'name': 'Item 6'}, current, text, changes))
+        self.assertIsNone(guard.replacement_exemption({'role': 'button', 'name': 'Monthly report'}, current, text, changes))
+        self.assertIsNone(guard.replacement_exemption({'role': 'button', 'name': 'March 3 report'}, current, text, changes))
 
-    def test_changed_named_container_exempts_its_observed_descendants(self):
+    def test_change_mentions_do_not_exempt_items_or_descendants(self):
+        steps = [{'role': 'link', 'name': 'Catalog'}]
+        b = baseline(screen([('link', 'Manual'), ('button', 'Sort')], steps))
+        b['screens'][0]['items'][0]['scopes'] = ['Files']
+        text = '''id: ROOT
+children:
+- id: E
+  change_type: CHANGE
+  description: On Catalog, Sort opens a dialog; the Files region shows a new count.
+  scenarios:
+  - steps:
+    - keyword: WHEN
+      content: Open Catalog, activate Sort, and read Manual in Files.
+'''
+        r = guard.compare(b, {'screens': [screen([], steps)]}, text)
+        self.assertEqual(len(r['missing']), 2)
+        self.assertFalse(r['exempted'])
+        self.assertEqual(sum(r['exemptions_by_rule'].values()), 0)
+
+    def test_changed_named_container_does_not_exempt_its_descendants(self):
         changes = guard.exemptions('id: E\nchange_type: CHANGE\ndescription: Catalog filters now uses a form.\n')
-        self.assertIsNotNone(guard.exemption({'name': 'Choice A', 'scopes': ['Filters']}, [], changes))
-        self.assertIsNone(guard.exemption({'name': 'Choice A'}, [], changes))
+        self.assertIsNone(guard.exemption({'role': 'button', 'name': 'Choice A', 'scopes': ['Filters']}, [], changes))
 
-    def test_choice_relocation_requires_an_observed_option_and_named_selector(self):
+    def test_explicit_removed_container_exempts_its_descendants_only(self):
+        text = 'id: E\nchange_type: CHANGE\ndescription: Remove the region "Legacy panel".\n'
+        changes = guard.exemptions(text)
+        self.assertEqual(guard.exemption({'role': 'button', 'name': 'Choice A', 'scopes': ['Legacy panel']}, [], changes)['rule'], 'explicit_container')
+        self.assertIsNone(guard.exemption({'role': 'button', 'name': 'Choice A'}, [], changes))
+        # A navigation control being removed does not remove the screen behind it.
+        changes = guard.exemptions('id: E\ndescription: Remove the link "Legacy panel".\n')
+        self.assertIsNone(guard.exemption({'role': 'heading', 'name': 'Contents'},
+                                         [{'role': 'link', 'name': 'Legacy panel'}], changes))
+
+    def test_explicit_renamed_container_never_exempts_descendants(self):
+        text = 'id: E\ndescription: Rename the region "Catalog" to "Library".\n'
+        changes = guard.exemptions(text)
+        self.assertIsNone(guard.exemption({'role': 'button', 'name': 'Delete', 'scopes': ['Catalog']}, [], changes))
+
+    def test_panel_replacement_does_not_treat_a_navigation_path_as_dom_ownership(self):
+        changes = guard.exemptions('id: E\ndescription: Replace the region "Catalog" with "Library".\n')
+        self.assertIsNone(guard.exemption({'role': 'link', 'name': 'Manual'},
+                                         [{'role': 'link', 'name': 'Catalog'}], changes))
+
+    def test_replaced_entry_screen_does_not_exempt_a_later_screen(self):
+        changes = guard.exemptions('id: E\ndescription: Remove the screen "Catalog".\n')
+        steps = [{'role': 'link', 'name': 'Catalog'}]
+        item = {'role': 'link', 'name': 'Manual'}
+        self.assertIsNotNone(guard.exemption(item, steps, changes))
+        self.assertIsNone(guard.exemption(item, steps + [{'role': 'link', 'name': 'Details'}], changes))
+
+    def test_explicit_rename_requires_its_actual_replacement(self):
+        changes = guard.exemptions('id: E\ndescription: Rename the link "Catalog" to "Library".\n')
+        old = {'role': 'link', 'name': 'Catalog', 'href': '/catalog'}
+        right = [{'role': 'link', 'name': 'Library', 'href': '/catalog'}]
+        wrong = [{'role': 'link', 'name': 'Something else', 'href': '/catalog'}]
+        self.assertEqual(guard.exemption(old, [], changes, right)['rule'], 'explicit_item')
+        self.assertIsNone(guard.exemption(old, [], changes, wrong))
+        self.assertIsNone(guard.exemption(old, [], changes, []))
+        self.assertIsNone(guard.exemption(old, [], changes, [{'role': 'textbox', 'name': 'Library', 'href': '/catalog'}]))
+
+    def test_passive_rename_and_explicit_replacement_are_supported(self):
+        text = 'id: E\ndescription: The "Catalog" link is renamed to "Library".\n'
+        self.assertEqual(guard.exemption({'role': 'link', 'name': 'Catalog'}, [], guard.exemptions(text),
+                                        [{'role': 'link', 'name': 'Library'}])['rule'], 'explicit_item')
+        changes = guard.exemptions('id: E\ndescription: Replace the region "Legacy panel" with "Current panel".\n')
+        self.assertEqual(guard.exemption({'role': 'button', 'name': 'Entry', 'scopes': ['Legacy panel']}, [], changes)['rule'],
+                         'explicit_container')
+
+    def test_hiding_one_item_and_counts_do_not_waive_a_sibling(self):
+        b = baseline(screen([('button', 'Old'), ('button', 'Sibling')]))
+        r = guard.compare(b, {'screens': [screen([])]}, 'id: E\ndescription: Hide the button "Old".\n')
+        self.assertEqual([x['name'] for x in r['missing']], ['Sibling'])
+        self.assertEqual(r['exemptions_by_rule']['explicit_item'], 1)
+        self.assertEqual(sum(r['exemptions_by_rule'].values()), len(r['exempted']))
+
+    def test_explicit_change_object_and_location_are_bound(self):
+        changes = guard.exemptions('id: E\ndescription: Remove the button "Help" in the form "Settings".\n')
+        self.assertIsNotNone(guard.exemption({'role': 'button', 'name': 'Help', 'scopes': ['Settings']}, [], changes))
+        self.assertIsNone(guard.exemption({'role': 'button', 'name': 'Help', 'scopes': ['Profile']}, [], changes))
+        self.assertIsNone(guard.exemption({'role': 'heading', 'name': 'Help', 'scopes': ['Settings']}, [], changes))
+
+    def test_change_location_is_not_a_previous_navigation_step(self):
+        changes = guard.exemptions('id: E\ndescription: Remove the button "Help" on the screen "Catalog".\n')
+        item = {'role': 'button', 'name': 'Help'}
+        steps = [{'role': 'link', 'name': 'Catalog'}]
+        self.assertIsNotNone(guard.exemption(item, steps, changes))
+        self.assertIsNone(guard.exemption(item, steps + [{'role': 'link', 'name': 'Details'}], changes))
+        changes = guard.exemptions('id: E\ndescription: Remove the button "Help" in the form "Catalog".\n')
+        self.assertIsNone(guard.exemption(item, steps, changes))
+
+    def test_negation_action_names_and_user_actions_are_not_change_instructions(self):
+        item = {'role': 'button', 'name': 'Filter'}
+        for description in ['Do not remove "Filter".', 'The user removes "Filter".',
+                            'Activate "Remove Filter".', 'The "Remove Filter" button opens a dialog.',
+                            'Remove Filter button opens a dialog.', '"Filter" must not be removed.']:
+            with self.subTest(description=description):
+                changes = guard.exemptions('id: E\nchange_type: CHANGE\ndescription: ' + description + '\n')
+                self.assertIsNone(guard.exemption(item, [], changes))
+
+    def test_scenario_rename_action_and_bad_yaml_cannot_authorize_a_static_loss(self):
+        b = baseline(screen([('button', 'Sort')]))
+        for text in ['id: E\nchange_type: CHANGE\nscenarios:\n- steps:\n  - keyword: WHEN\n    content: Remove "Sort".\n',
+                     'id: [malformed\n  Sort:']:
+            self.assertEqual(len(guard.compare(b, {'screens': [screen([])]}, text)['missing']), 1)
+
+    def test_unchanged_item_is_kept_even_when_a_requirement_names_its_replacement(self):
+        b = baseline(screen([('link', 'Catalog')]))
+        r = guard.compare(b, {'screens': [screen([('link', 'Catalog')])]},
+                          'id: E\ndescription: Rename "Catalog" to "Library".\n')
+        self.assertEqual(len(r['kept']), 1)
+        self.assertFalse(r['exempted'])
+
+    def test_description_contract_ignores_scenario_only_and_add_only_labels(self):
+        old = {'role': 'form', 'name': 'Item search form'}
+        peer = [{'role': 'form', 'name': 'Item search'}]
+        for text in ['id: E\nchange_type: ADD\ndescription: Use the form named "Item search".\n',
+                     'id: E\nchange_type: CHANGE\nscenarios:\n- steps:\n  - content: Use the form named "Item search".\n']:
+            self.assertIsNone(guard.replacement_exemption(old, peer, text, guard.exemptions(text)))
+
+    def test_replacement_cannot_borrow_an_existing_control_or_another_location(self):
+        old = {'role': 'form', 'name': 'Item search form', 'scopes': ['Panel A']}
+        peer = {'role': 'form', 'name': 'Item search', 'scopes': ['Panel A']}
+        text = 'id: E\nchange_type: CHANGE\ndescription: Use the form named "Item search".\n'
+        changes = guard.exemptions(text)
+        self.assertIsNone(guard.replacement_exemption(old, [peer], text, changes, [peer]))
+        self.assertIsNone(guard.replacement_exemption(old, [dict(peer, scopes=['Panel B'])], text, changes))
+        for description in ['Use the form named "Item search" in the region "Panel B".',
+                            'The region named "Panel B" has a form named "Item search".']:
+            text = 'id: E\nchange_type: CHANGE\ndescription: ' + description + '\n'
+            self.assertIsNone(guard.replacement_exemption(old, [peer], text, guard.exemptions(text)))
+
+    def test_role_change_needs_a_description_contract_at_the_same_place(self):
+        old = {'role': 'button', 'name': 'Visibility', 'scopes': ['Settings']}
+        peer = [{'role': 'combobox', 'name': 'Visibility', 'scopes': ['Settings']}]
+        text = 'id: E\nchange_type: CHANGE\ndescription: The region named "Settings" contains a combobox labelled "Visibility".\n'
+        self.assertEqual(guard.replacement_exemption(old, peer, text, guard.exemptions(text))['rule'], 'description_contract')
+
+    def test_choice_relocation_requires_an_observed_option_and_described_selector(self):
         text = 'id: E\nchange_type: ADD\ndescription: Choose the "Selection" combobox.\n'
         item = {'role': 'button', 'name': 'Choice A'}
         options = [{'role': 'combobox', 'name': 'Selection', 'choices': ['Choice A']}]
-        self.assertIsNotNone(guard.replacement_exemption(item, options, text, []))
-        self.assertIsNone(guard.replacement_exemption(item, [], text, []))
+        self.assertEqual(guard.replacement_exemption(item, options, text, guard.exemptions(text))['rule'], 'selector_migration')
+        self.assertIsNone(guard.replacement_exemption(item, [], text, guard.exemptions(text)))
         self.assertIsNone(guard.replacement_exemption(item, options, '', []))
-
-    def test_change_description_and_steps_exempt_names_but_add_does_not(self):
-        b = baseline(screen([('button', 'Sort'), ('link', 'New folder')]))
-        text = '''id: ROOT
-children:
-- id: EV-1
-  change_type: CHANGE
-  description: Sort now opens a dialog.
-- id: EV-2
-  change_type: ADD
-  description: The New folder button creates folders.
-'''
-        r = guard.compare(b, {'screens': [screen([])]}, text)
-        self.assertEqual([i['name'] for i in r['exempted']], ['Sort'])
-        self.assertEqual([i['name'] for i in r['missing']], ['New folder'])
-        text = 'id: EV-1\nchange_type: CHANGE\nscenarios:\n- steps:\n  - content: Activate Sort.\n'
-        self.assertEqual(guard.exemption({'name': 'Sort'}, [], guard.exemptions(text))['requirement'], 'EV-1')
-
-    def test_explicit_rename_and_changed_navigation_exempt_descendants(self):
-        steps = [{'role': 'link', 'name': 'Catalog'}]
-        b = baseline(screen([('heading', 'Documents')], steps))
-        r = guard.compare(b, {'screens': [screen([], steps, 'missing-path')]},
-                          'id: EV-1\ndescription: Rename Catalog to Library.\n')
-        self.assertEqual(len(r['exempted']), 1)
-        self.assertFalse(r['missing'])
-
-    def test_name_matching_is_casefolded_whitespace_normalized_and_not_partial(self):
-        changes = guard.exemptions('id: E\nchange_type: CHANGE\ndescription: Open the SORT dialog, then restart.\n')
-        self.assertIsNotNone(guard.exemption({'name': 'sort'}, [], changes))
-        self.assertIsNone(guard.exemption({'name': 'start'}, [], changes))
+        self.assertIsNone(guard.replacement_exemption(dict(item, scopes=['Another panel']), options, text,
+                                                     guard.exemptions(text)))
 
     def test_wrapped_requirement_lists_are_supported(self):
         self.assertEqual(len(guard.exemptions('requirements:\n- id: E\n  change_type: CHANGE\n  description: Sort\n')), 1)
@@ -278,6 +386,22 @@ class EvolutionIntegrationTests(unittest.TestCase):
 
 
 class BrowserTests(unittest.TestCase):
+    def test_duplicate_links_are_navigable_only_when_their_targets_agree(self):
+        with tempfile.TemporaryDirectory() as temp:
+            app = Path(temp) / 'app'
+            (app / 'frontend').mkdir(parents=True)
+            (app / 'backend').mkdir()
+            for second, count in [('/detail', 2), ('/other', 1)]:
+                with self.subTest(second=second):
+                    html = '<a href="/detail">Record</a><a href="' + second + '">Record</a>'
+                    (app / 'backend/server.js').write_text(
+                        "require('http').createServer((q,s)=>{s.setHeader('Content-Type','text/html');"
+                        "s.end(q.url==='/'?" + json.dumps(html) + ":'<h1>Detail</h1>');"
+                        "}).listen(process.env.PORT,'127.0.0.1');")
+                    b = guard.observe(app, passes=2)
+                    self.assertFalse(b.get('unavailable'), b)
+                    self.assertEqual(len(b['screens']), count)
+
     def test_real_browser_navigation_named_lists_and_read_only_requests(self):
         env = dict(os.environ)
         result = subprocess.run(['node', '-e', "require('playwright')"], env=env, capture_output=True)

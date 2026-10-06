@@ -30,6 +30,8 @@ last-reviewed: 2026-09-23。本文只维护 docs/ 的结构与规则，不复述
 
 ## reports/ 索引（新在上）
 
+- `2026-10-06-regression-guard-exemptions.md` — 逐项证据豁免、CHANGE 密集 G79 召回、六应用重放与合法变化告警边界；保留平台 runtime 修复。
+
 - `2026-10-06-regression-guard.md` — 默认关闭的升级旧行为守卫：双 pass 确定性、8 个合成回归、六组真实对照逐项分类、接受规则与打包验证。
 
 - `2026-10-02-generalization-bottlenecks.md` — 两题共同业务矛盾、同产物验收落差、代码反例机制与 S70 的证据边界。

@@ -4,6 +4,7 @@ This observes accessibility, not functional correctness. No model calls or test 
 The two-pass baseline is immutable; missing items and unavailable observations are separate.
 """
 import argparse
+from functools import lru_cache
 import hashlib
 import json
 import os
@@ -53,53 +54,53 @@ def stable(first, second):
             'passes': [first, second], 'unavailable': first.get('unavailable') or second.get('unavailable')}
 
 
-def _texts(record):
-    if isinstance(record, dict):
-        return ' '.join(_texts(v) for k, v in record.items() if k not in ('children', 'dependencies', 'original_requirement_id'))
-    if isinstance(record, list):
-        return ' '.join(_texts(v) for v in record)
-    return str(record or '')
+# Descriptions define changes. Scenario navigation is context, never a change declaration.
+CONTAINERS = {'region', 'dialog', 'form', 'list', 'group', 'toolbar', 'tabpanel', 'navigation',
+              'screen', 'page', 'panel', 'section'}
+FIELDS = {'textbox', 'searchbox', 'spinbutton', 'slider', 'combobox', 'input', 'field'}
+ROLE_PATTERN = (r'link or button|navigation link|navigation control|multiline textbox|'
+                r'textbox|searchbox|spinbutton|combobox|checkbox|radio|slider|button|link|heading|'
+                r'region|dialog|form|list|group|toolbar|tabpanel|navigation|screen|page|panel|section|input|field')
+QUOTE = r'["`“]([^"`”\n]+)["`”]'
+RULES = ('explicit_item', 'explicit_container', 'description_contract', 'selector_migration',
+         'menu_migration', 'date_basis')
+
+
+def normal(text):
+    return re.sub(r'\s+', ' ', str(text or '')).strip().casefold()
+
+
+def _sentences(text):
+    return [s.strip() for s in re.split(r'(?<=[.!?;])\s+|\n\s*\n', text or '') if s.strip()]
 
 
 def exemptions(requirements):
-    """Only CHANGE records, or explicit rename/remove declarations. Never waive an entire app."""
+    """Keep description and static GIVEN evidence separate; a parse failure cannot authorize changes."""
     try:
         document = scenarios.load_yaml(requirements or '')
     except ValueError:
-        # A malformed requirement is uncertainty, not permission to fight a change described in it.
-        return [(None, re.sub(r'\s+', ' ', requirements or '').casefold())]
+        return []
     found = []
     def walk(record):
         if isinstance(record, list):
             for child in record:
                 walk(child)
-            return
-        if not isinstance(record, dict):
-            return
-        text = re.sub(r'\s+', ' ', _texts(record)).casefold()
-        if str(record.get('change_type', '')).upper() == 'CHANGE' or re.search(r'\b(renam\w*|remov\w*|replac\w*)\b', text):
-            found.append((record.get('id'), text))
-        for child in record.get('children') or []:
-            walk(child)
-        if 'requirements' in record:
-            walk(record['requirements'])
+        elif isinstance(record, dict):
+            description = str(record.get('description') or '')
+            given = [str(step.get('content') or '') for scenario in record.get('scenarios') or []
+                     if isinstance(scenario, dict) for step in scenario.get('steps') or []
+                     if isinstance(step, dict) and str(step.get('keyword', '')).upper() == 'GIVEN']
+            if description or given:
+                found.append({'id': record.get('id'), 'change': str(record.get('change_type', '')).upper() == 'CHANGE',
+                              'description': description, 'sentences': _sentences(description), 'given': given})
+            walk(record.get('children'))
+            walk(record.get('requirements'))
     walk(document)
     return found
 
 
-def exemption(item, steps, changes):
-    # A renamed navigation entry makes its old path inapplicable too; do not invent a screen-wide regression.
-    for name in [item['name']] + item.get('scopes', []) + [s['name'] for s in steps]:
-        name = re.sub(r'\s+', ' ', name).casefold()
-        for rid, text in changes:
-            if name and re.search(r'(?<!\w)' + re.escape(name) + r'(?!\w)', text):
-                return {'requirement': rid, 'mentioned_name': name}
-    return None
-
-
 def same_name(a, b):
-    # Casing and whitespace are presentation, never evidence that a feature vanished.
-    return re.sub(r'\s+', ' ', a).strip().casefold() == re.sub(r'\s+', ' ', b).strip().casefold()
+    return normal(a) == normal(b)
 
 
 def compatible_role(before, after):
@@ -107,35 +108,208 @@ def compatible_role(before, after):
             before in ('heading', 'listitem') and after in ('link', 'button'))
 
 
-def replacement_exemption(item, current, requirements, changes):
-    quoted = {re.sub(r'\s+', ' ', s).casefold() for s in re.findall(r'["`“]([^"`”\n]+)["`”]', requirements or '')}
-    words = lambda s: set(re.findall(r'\w+', s.casefold()))
-    for peer in current:
-        if (item['role'] in ('button', 'radio') and peer['role'] == 'combobox' and
-                peer['name'].casefold() in quoted and any(same_name(item['name'], c) for c in peer.get('choices', []))):
-            return {'reason': 'choice retained in requirement-named selector', 'selector': peer['name']}
-        numeric = item['role'] in ('slider', 'spinbutton', 'textbox') and peer['role'] in ('slider', 'spinbutton', 'textbox')
-        if not compatible_role(item['role'], peer['role']) and not numeric:
+def _role_matches(declared, actual):
+    declared = normal(declared)
+    if declared in ('navigation link',):
+        return actual == 'link'
+    if declared in ('link or button', 'navigation control'):
+        return actual in ('link', 'button')
+    if declared in ('input', 'field'):
+        return actual in FIELDS
+    if declared == 'multiline textbox':
+        return actual == 'textbox'
+    if declared in ('screen', 'page', 'panel', 'section'):
+        return actual in CONTAINERS | {'heading', 'link', 'button'}
+    return declared == actual
+
+
+def _proof(rule, record, evidence, **details):
+    return {'rule': rule, 'requirement': record['id'], 'evidence': evidence.strip(), **details}
+
+
+def _location(sentence):
+    match = re.search(r'\b(?:in|within|on)\s+(?:the\s+)?(' + ROLE_PATTERN +
+                      r')\s+(?:named\s+)?' + QUOTE, sentence, re.I)
+    return {'role': normal(match.group(1)), 'name': match.group(2)} if match else None
+
+
+def _at_location(item, steps, location):
+    if not location:
+        return True
+    return (any(same_name(location['name'], n) for n in item.get('scopes', [])) or
+            location['role'] in ('screen', 'page') and bool(steps) and same_name(location['name'], steps[-1]['name']))
+
+
+@lru_cache(maxsize=2048)
+def _explicit(sentence, name):
+    """Bind the operation to its object/subject. No verb inside a quoted control name, no 'user removes' action."""
+    target = r'(?:["`“]' + re.escape(name) + r'["`”]|(?<!\w)' + re.escape(name) + r'(?!\w))'
+    role = r'(?P<role>' + ROLE_PATTERN + r')'
+    noun = r'(?:the\s+|a\s+|an\s+)?(?:' + role + r'\s+(?:named\s+|called\s+)?)?' + target
+    # Imperative UI change, or a declarative change to the named subject. Navigation/actions mentioning the
+    # control ("activate Remove filter", "the user removes ...") cannot match either form.
+    match = re.match(r'^(?P<op>rename|remove|replace|hide)\s+' + noun + r'(?P<tail>.*)$', sentence, re.I)
+    if not match:
+        match = re.match(r'^' + noun + r'(?:\s+(?P<post_role>' + ROLE_PATTERN + r'))?\s+(?:is|will be|must be|should be)\s+'
+                         r'(?P<op>renamed|removed|replaced|hidden)\b(?P<tail>.*)$', sentence, re.I)
+    if not match:
+        return None
+    op = {'renamed': 'rename', 'removed': 'remove', 'replaced': 'replace', 'hidden': 'hide'}.get(
+        match['op'].lower(), match['op'].lower())
+    tail = match['tail'].strip()
+    declared = match['role'] or match.groupdict().get('post_role')
+    if declared is None:
+        trailing = re.match(r'^(?:' + ROLE_PATTERN + r')\b', tail, re.I)
+        if trailing:
+            declared, tail = trailing[0], tail[trailing.end():].strip()
+    replacement, replacement_role = None, None
+    if op in ('rename', 'replace'):
+        replacement = re.match(r'^(?:to|with|by)\s+(?:the\s+|a\s+|an\s+)?'
+                               r'(?:(?P<replacement_role>' + ROLE_PATTERN + r')\s+(?:named\s+)?)?' + QUOTE, tail, re.I)
+        if replacement:
+            replacement_role, replacement = replacement.group('replacement_role'), replacement.group(2)
+        else:
+            plain = re.match(r'^(?:to|with|by)\s+([^"`“”\n]{1,100})$', tail, re.I)
+            if not plain:
+                return None
+            replacement = re.split(r'\s+(?:in|within|on)\s+(?:the\s+)?(?:' + ROLE_PATTERN + r')\b',
+                                   plain.group(1), maxsplit=1, flags=re.I)[0].rstrip(' .;')
+    elif tail and not re.match(r'^(?:[.!;]|from\b|in\b|on\b|entirely\b|permanently\b)', tail, re.I):
+        return None  # "Remove filters button opens ..." is a control description, not a removal instruction.
+    return {'operation': op, 'role': normal(declared) if declared else None, 'replacement': replacement,
+            'replacement_role': normal(replacement_role) if replacement_role else None,
+            'location': _location(sentence)}
+
+
+def exemption(item, steps, changes, current=()):
+    """Explicit item changes only. Descendants require an explicitly removed/replaced *container*."""
+    for record in changes:
+        for sentence in record['sentences']:
+            change = _explicit(sentence, item['name'])
+            if change and (not change['role'] or _role_matches(change['role'], item.get('role'))) and \
+                    _at_location(item, steps, change['location']):
+                if change['operation'] in ('rename', 'replace') and not any(
+                        same_name(p['name'], change['replacement']) and _same_place(item, p) and
+                        (_role_matches(change['replacement_role'], p['role']) if change['replacement_role'] else
+                         change['operation'] == 'replace' or compatible_role(item.get('role'), p['role'])) for p in current):
+                    continue
+                return _proof('explicit_item', record, sentence, **change)
+            for container in item.get('scopes', []):
+                change = _explicit(sentence, container)
+                if (change and change['role'] in CONTAINERS and change['operation'] in ('remove', 'replace')
+                        and _at_location(item, steps, change['location'])):
+                    return _proof('explicit_container', record, sentence, container=container, **change)
+            # A navigation predecessor is not a DOM ancestor. Only an explicitly replaced/removed *current*
+            # screen can explain its whole inventory; changing a prior entry page cannot erase later screens.
+            if steps:
+                change = _explicit(sentence, steps[-1]['name'])
+                if (change and change['role'] in ('screen', 'page') and change['operation'] in ('remove', 'replace')
+                        and _at_location(item, steps, change['location'])):
+                    return _proof('explicit_container', record, sentence, container=steps[-1]['name'], **change)
+    return None
+
+
+def _related_names(a, b):
+    old, new = set(re.findall(r'\w+', normal(a))), set(re.findall(r'\w+', normal(b)))
+    if not old or not new:
+        return False
+    subset = old <= new or new <= old
+    # Expanding an abbreviated field word (min -> minimum) is plausible only with another full shared word.
+    prefixes = all(any(x == y or min(len(x), len(y)) >= 3 and (x.startswith(y) or y.startswith(x))
+                       for y in new) for x in old)
+    return (subset or prefixes) and any(len(w) >= 4 for w in old & new)
+
+
+def _same_place(item, peer):
+    if item.get('href') or peer.get('href'):
+        return bool(item.get('href') and item.get('href') == peer.get('href'))
+    return _same_scope(item, peer)
+
+
+def _same_scope(item, peer):
+    if [normal(s) for s in item.get('scopes', [])] == [normal(s) for s in peer.get('scopes', [])]:
+        return True
+    scopes = lambda x: [s for s in x.get('scopes', []) if not same_name(s, x['name'])]
+    old, new = scopes(item), scopes(peer)
+    return (not old and not new) or bool(old and new and
+                                         (same_name(old[-1], new[-1]) or _related_names(old[-1], new[-1])))
+
+
+def _declaration(record, item):
+    """A positive name/role declaration in the description, not an arbitrary mention or scenario step."""
+    return _declared_at(record['description'], item['role'], item['name'], tuple(item.get('scopes', [])))
+
+
+@lru_cache(maxsize=4096)
+def _declared_at(description, actual_role, actual_name, scopes):
+    name = r'["`“]' + re.escape(actual_name) + r'["`”]'
+    role = r'(?P<role>' + ROLE_PATTERN + r')'
+    patterns = [role + r'\s+(?:named|labelled|labeled|called)\s+' + name,
+                name + r'\s+as\s+(?:a|an)\s+' + role,
+                name + r'\s+' + role + r'\b',
+                r'(?<!\w)(?:' + name + '|' + re.escape(actual_name) + r')(?!\w)\s+is\s+(?:a|an)\s+' + role]
+    for sentence in _sentences(description):
+        if not _at_location({'scopes': scopes}, [], _location(sentence)):
             continue
-        same_target = item.get('href') and item.get('href') == peer.get('href')
-        # Only a current label explicitly demanded by the requirements can explain a rename. A shared
-        # destination, or overlapping full words in a CHANGE record, supplies the identity evidence.
-        old_words, new_words = words(item['name']), words(peer['name'])
-        related = (old_words <= new_words or new_words <= old_words) and any(len(w) >= 4 for w in old_words & new_words)
-        if numeric and old_words and new_words:
-            related = all(any(a == b or min(len(a), len(b)) >= 3 and (a.startswith(b) or b.startswith(a))
-                              for b in new_words) for a in old_words) and bool(old_words & new_words)
-        if peer['name'].casefold() in quoted and (same_target or related):
-            return {'reason': 'requirements name the replacement', 'replacement': peer['name'],
-                    'same_destination': bool(same_target)}
-    # Date labels are stable within one run but cease to be comparable when a CHANGE explicitly changes
-    # the calendar clock/date. This is intentionally narrow: ordinary numbered records remain protected.
-    date_label = re.fullmatch(r'(?:\d{4}[-/]\d{1,2}[-/]\d{1,2}|(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\w*[, ]+.*|'
-                             r'(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w* \d{1,2}(?:\D.*)?)', item['name'], re.I)
-    if date_label:
-        for rid, text in changes:
-            if re.search(r'\b(calendar|clock|today|timezone)\b', text) and re.search(r'\b(date|day|time)\b', text):
-                return {'requirement': rid, 'reason': 'explicit calendar/date change'}
+        for pattern in patterns:
+            for match in re.finditer(pattern, sentence, re.I):
+                if not _role_matches(match['role'], actual_role):
+                    continue
+                # A described field inside a named form/region must be observed in that form/region too.
+                prefix = sentence[:match.start()]
+                scope = re.search(r'(?:form|region|dialog|list|group)\s+named\s+' + QUOTE +
+                                  r'\s+(?:contains|exposes|has|includes)', prefix, re.I)
+                if scope and not any(same_name(scope.group(1), s) for s in scopes):
+                    continue
+                return sentence
+    return None
+
+
+_DAY = r'(?:Mon(?:day)?|Tue(?:sday)?|Wed(?:nesday)?|Thu(?:rsday)?|Fri(?:day)?|Sat(?:urday)?|Sun(?:day)?)'
+_MONTH = (r'(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|'
+          r'Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)')
+DATE_LABEL = re.compile(r'(?:\d{4}[-/]\d{1,2}[-/]\d{1,2}|(?:' + _DAY + r'[, ]+)?' + _MONTH +
+                        r'\.? \d{1,2}(?:[, ]+\d{4})?(?:[, ]+' + _DAY + r')?)', re.I)
+
+
+def replacement_exemption(item, current, requirements, changes, before=()):
+    for record in changes:
+        for peer in current:
+            declaration = _declaration(record, peer)
+            if not declaration:
+                continue
+            if (item['role'] in ('button', 'radio') and peer['role'] == 'combobox' and _same_scope(item, peer) and
+                    any(same_name(item['name'], c) for c in peer.get('choices', []))):
+                return _proof('selector_migration', record, declaration, selector=peer['name'], choice=item['name'])
+            role_change = item['role'] != peer['role'] and same_name(item['name'], peer['name']) and _same_scope(item, peer)
+            if not record['change'] or not (_same_place(item, peer) or role_change):
+                continue
+            # The old action cannot borrow a different, already-existing peer's contract as its replacement.
+            if any((compatible_role(p['role'], peer['role']) or p['role'] in FIELDS and peer['role'] in FIELDS)
+                   and same_name(p['name'], peer['name']) and _same_scope(p, peer)
+                   for p in before):
+                continue
+            navigation = item['role'] in ('link', 'button') and peer['role'] in ('link', 'button')
+            fields = item['role'] in FIELDS and peer['role'] in FIELDS
+            landmarks = item['role'] in CONTAINERS | {'heading'} and peer['role'] in CONTAINERS | {'heading'}
+            related = _related_names(item['name'], peer['name'])
+            identity = item.get('href') and item.get('href') == peer.get('href') and navigation
+            if identity or role_change or related and (item['role'] == peer['role'] or fields or landmarks):
+                return _proof('description_contract', record, declaration, original=item['name'],
+                              replacement=peer['name'], original_role=item['role'], replacement_role=peer['role'],
+                              identity='same exposed destination' if identity else 'same screen and scope, related label, new peer')
+        if item['role'] not in ('button', 'tab', 'heading') or not DATE_LABEL.fullmatch(item['name']):
+            continue
+        # An actual new date strip must still exist. A clock rule cannot excuse deleting the entire calendar.
+        dates = [p for p in current if p['role'] == item['role'] and DATE_LABEL.fullmatch(p['name']) and _same_place(item, p)]
+        if len(dates) < 2:
+            continue
+        for sentence in record['sentences'] + record['given']:
+            if (re.search(r'\b(calendar|clock)\b', sentence, re.I) and
+                    re.search(r'\b(fixed|benchmark|independent of (?:the )?machine clock)\b', sentence, re.I) and
+                    re.search(r'\b\d{4}-\d{2}-\d{2}\b', sentence)):
+                return _proof('date_basis', record, sentence, original=item['name'],
+                              replacements=[p['name'] for p in dates])
     return None
 
 
@@ -150,36 +324,31 @@ def compare(baseline, observed, requirements=''):
         for item in screen['items']:
             entry = {**item, 'steps': screen['steps'], 'url': screen.get('url')}
             present = any(compatible_role(item['role'], p['role']) and same_name(item['name'], p['name']) for p in items)
-            # A link to the page already open offers no additional destination when its title remains visible.
             if item['role'] == 'link' and item.get('href') == screen.get('url'):
                 present |= any(same_name(item['name'], p['name']) for p in items)
-            why = exemption(item, screen['steps'], changes)
-            if not why and not present:
-                why = replacement_exemption(item, items, requirements, changes)
-            if not why and not present:
-                for renamed in (peer or {}).get('renamed_steps', []):
-                    old, new = renamed['before'], renamed['after']
-                    if same_name(item['name'], old['name']) and any(same_name(p['name'], new['name']) and
-                            compatible_role(item['role'], p['role']) for p in items):
-                        why = replacement_exemption(dict(item, href=old.get('href')),
-                                                    [dict(new, role=item['role'])], requirements, changes)
-                        if why:
-                            break
-            if not why and not present and item.get('href'):
+            # A mentioned item that still exists is kept, not exempted. Only actual losses need a waiver.
+            if present:
+                kept.append(entry['id'])
+                continue
+            if observed.get('unavailable') or peer is None or peer['status'] == 'unobserved':
+                unknown.append(entry)
+                continue
+            why = exemption(item, screen['steps'], changes, items)
+            if not why:
+                why = replacement_exemption(item, items, requirements, changes, screen['items'])
+            if not why and item.get('href'):
                 for relocation in relocations:
                     old, via = relocation['before'], relocation['via']
-                    if (old.get('href') == item['href'] and same_name(old['name'], item['name']) and
-                            any(n['name'] == via['name'] for n in (peer or {}).get('navigation', [])) and
-                            exemption(via, [], changes)):
-                        why = {'reason': 'observed inside requirement-changed navigation', 'via': via['name'],
-                               **exemption(via, [], changes)}
+                    if (old.get('href') != item['href'] or not same_name(old['name'], item['name']) or
+                            not any(n['name'] == via['name'] for n in peer.get('navigation', []))):
+                        continue
+                    declaration = next(((r, _declaration(r, via)) for r in changes if _declaration(r, via)), None)
+                    if declaration:
+                        record, text = declaration
+                        why = _proof('menu_migration', record, text, original=item['name'], href=item['href'], via=via['name'])
                         break
             if why:
                 waived.append({**entry, 'exemption': why})
-            elif observed.get('unavailable') or peer is None or peer['status'] == 'unobserved':
-                unknown.append(entry)
-            elif present:
-                kept.append(entry['id'])
             else:
                 path = ' / '.join(f"{s['role']} {s['name']!r}" for s in screen['steps']) or 'open /'
                 entry['observation'] = (f"{item['role']} {item['name']!r} reached by {path} was present before the "
@@ -187,8 +356,9 @@ def compare(baseline, observed, requirements=''):
                 if peer.get('failed_step'):
                     entry['failed_step'] = peer['failed_step']
                 missing.append(entry)
+    counts = {rule: sum(w['exemption']['rule'] == rule for w in waived) for rule in RULES}
     return {'kept': kept, 'missing': missing, 'unknown': unknown, 'exempted': waived,
-            'observation': observed}
+            'exemptions_by_rule': counts, 'observation': observed}
 
 
 RUNTIME_LOCK = threading.Lock()
@@ -357,7 +527,8 @@ def main():
         result = observe(args.app, passes=2)
     args.out.write_text(json.dumps(result, indent=2, ensure_ascii=False) + '\n')
     print(json.dumps({k: (len(result[k]) if isinstance(result[k], list) else result[k])
-                      for k in ('items', 'screens', 'seconds', 'missing', 'unknown', 'exempted', 'unavailable') if k in result}))
+                      for k in ('items', 'screens', 'seconds', 'missing', 'unknown', 'exempted',
+                                'exemptions_by_rule', 'unavailable') if k in result}))
 
 
 if __name__ == '__main__':

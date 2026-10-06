@@ -2770,6 +2770,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             record.update(detail, reason=reason, scenarios=scenario_summary(after["report"]))
             if 'regression' in after:
                 record['existing_behavior'] = {k: len(after['regression'][k]) for k in ('kept', 'missing', 'unknown')}
+                record['existing_behavior']['exemptions_by_rule'] = after['regression'].get('exemptions_by_rule', {})
             if after["browser"]:
                 record["browser_after"] = after["browser"]
             if not accepted:
@@ -2817,6 +2818,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     budget.smoke["scenarios_after"] = scenario_summary(state["report"])
     if 'regression' in state:
         budget.smoke['existing_behavior_after'] = {k: state['regression'][k] for k in ('kept', 'missing', 'unknown', 'exempted')}
+        budget.smoke['existing_behavior_after']['exemptions_by_rule'] = state['regression'].get('exemptions_by_rule', {})
     print("[oneshot] repair end " + json.dumps(
         {"rounds": len(rounds), "accepted": sum(1 for r in rounds if r["accepted"]), "stopped": budget.smoke.get("stopped"),
          "counts_after": (budget.smoke["scenarios_after"] or {}).get("counts"),
