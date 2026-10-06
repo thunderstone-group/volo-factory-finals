@@ -16,8 +16,10 @@ Do not suppress distinct records because their display names happen to match.
 ## Content and initial state
 Distinguish required UI labels/messages, initial records, runtime inputs, examples and explicit absences.
 Provision the identities and relationships stated to exist initially. Do not pre-apply later scenario outcomes
-or create records explicitly described as absent. Required validation and success messages retain their stated
-wording and appear in the specified context. Do not add filler text or unused datasets to echo quoted phrases.
+or create records explicitly described as absent. When the requirements accept alternatives for one indication
+(a stated message or a marker), show exactly one of them. Required validation and success messages retain their stated
+wording and appear in the specified context: rejection and validation messages in an element with role="alert",
+confirmations in role="status". Do not add filler text or unused datasets to echo quoted phrases.
 Only the stated action should create, edit, archive, delete, favorite or otherwise change a record.
 
 ## Accessible controls and layout
@@ -31,6 +33,10 @@ Similar words or identical actions in separate regions are not defects by themse
 scope and interaction before changing a name or removing a control. Do not globally hide repeated controls.
 Keep an explicitly required accessible name intact. Decorative icons can use aria-hidden; counters and
 supplementary details must not change a name whose exact value is specified.
+When the requirements place a control in a region (the main content, the page header, a dialog, a row or a
+cell), render it inside that landmark or element. A control described as top, global or site-wide belongs in the
+page header (banner) on every page. Move a control to its stated place rather than copying it: one page offers a
+role and name once unless the requirements place it twice.
 
 Check which layout regions the application needs. Configure header, navigation, account controls, sidebar
 and footer only when required or useful for the described workflow. A shared renderer can keep appropriate
@@ -43,7 +49,8 @@ Implement editing through the paths the requirements support. Use named, labelle
 current form values across re-rendering or disclosure changes. For inline editing, check which pointer,
 keyboard, commit and cancellation interactions are required or appropriate; do not assume every record
 must implement the same gesture set. Display-only content need not become editable.
-Modal dialogs isolate their background. Ordinary menus and popovers remain in their intended scope.
+Modal dialogs isolate their background. A dialog that stays open after its actions also offers a visible
+button named "Close". Ordinary menus and popovers remain in their intended scope.
 A field chooser belongs to the container the requirements identify; a named editor elsewhere does not
 imply that every checkbox must move into it. Keep idle overlays from intercepting input. Expose declared
 ARIA states on the controls that own them, and update those states with the real interaction.

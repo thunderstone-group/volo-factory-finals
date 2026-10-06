@@ -55,6 +55,12 @@ async function snapshot(page, cdp) {
       }
     }
     if (scopes.length) item.scopes = [...new Set(scopes)];
+    // Landmarks hold requirement-stated placements ("in the main content", a top/global header control). The same
+    // name can appear in several landmarks; one inventory entry keeps all of them.
+    const landmarks = new Set(items.get(key(item))?.landmarks || []);
+    for (let p = ax.get(n.parentId); p; p = ax.get(p.parentId))
+      if (['main', 'banner', 'complementary', 'contentinfo', 'navigation'].includes(p.role?.value)) landmarks.add(p.role.value);
+    if (landmarks.size) item.landmarks = [...landmarks].sort();
     items.set(key(item), item);
     const d = dom.get(n.backendDOMNodeId), attrs = {};
     for (let i = 0; i < (d?.attributes || []).length; i += 2) attrs[d.attributes[i]] = d.attributes[i + 1];
@@ -83,11 +89,18 @@ async function snapshot(page, cdp) {
       navigation.push({...item, kind: 'tab', panel: attrs['aria-controls']});
     }
   }
-  // Multiple indistinguishable controls are inventoried, but never chosen by nth() for navigation.
-  const counts = new Map();
-  for (const n of navigation) counts.set(key(n), (counts.get(key(n)) || 0) + 1);
+  // Multiple indistinguishable controls are inventoried, but never chosen by nth() for navigation. Copies with
+  // one name and one declared destination are one entry: following any of them reaches the same screen.
+  const destinations = new Map();
+  for (const n of navigation) {
+    const where = n.kind === 'url' ? 'url:' + n.href : n.kind === 'nav' ? 'nav:' + n.destination : null;
+    if (!destinations.has(key(n))) destinations.set(key(n), []);
+    destinations.get(key(n)).push(where);
+  }
+  const unique = k => { const d = destinations.get(k); return d.length === 1 || (d[0] !== null && d.every(x => x === d[0])); };
+  const kept = new Set();
   return {items: [...items.values()].sort((a, b) => key(a).localeCompare(key(b), 'en')),
-    navigation: navigation.filter(n => counts.get(key(n)) === 1)};
+    navigation: navigation.filter(n => unique(key(n)) && !kept.has(key(n)) && kept.add(key(n)))};
 }
 
 async function revealNavigation(page, cdp, snap, step) {
