@@ -59,7 +59,7 @@ SOURCE_CONTRACTS = os.environ.get("ONESHOT_SOURCE_CONTRACTS", "1") == "1"  # S70
 # or two failing tests left while 11-18 of its tests could not judge the application, and hidden scores sat 1-10 under
 # it; a second suite found 10-12 new failures on two stopped Sheet apps, in the blocks the first could not judge.
 SECOND_SUITE = os.environ.get("ONESHOT_SECOND_SUITE", "0") == "1"  # off (roadmap 4.23): its ~CNY 16 costs ~3 S points
-REGRESSION_GUARD = os.environ.get("ONESHOT_REGRESSION_GUARD", "0") == "1"
+REGRESSION_GUARD = os.environ.get("ONESHOT_REGRESSION_GUARD", "1") == "1"
 TESTGEN_WAIT = 3600  # seconds the repair phase waits for the suite once the draft is in: platform suites took 1206-1970 s
 # against drafts of 10-17 min, and a local run on 09-25 22:15 (six cut streams, two HTTP 400) missed a 1200 s wait and
 # shipped the bare draft with no repair at all; waiting costs time only
