@@ -50,6 +50,22 @@ class EvolutionTests(unittest.TestCase):
         self.assertEqual(adapter.read_template(self.out), before)
         self.assertIn('Updated', (target / 'frontend/public/index.html').read_text())
 
+    def test_upgrade_runs_requirement_written_checks_without_source_review_by_default(self):
+        self.seed()
+        self.replies(events(block('frontend/public/index.html', '<h1>Updated</h1>')))
+        suite = self.root / 'upgrade-tests'
+        suite.mkdir()
+        job = {'dir': suite, 'thread': Mock(is_alive=Mock(return_value=False))}
+        with patch.object(adapter, 'SMOKE', True), patch.object(adapter, 'TESTGEN', True), \
+                patch.object(adapter, 'SOURCE_CONTRACTS', True), patch.object(adapter, 'SECOND_SUITE', False), \
+                patch.object(adapter, 'start_suite', return_value=job), \
+                patch.object(adapter, 'finish_suite', return_value=suite), \
+                patch.object(adapter, 'repair_delivery') as repair, \
+                patch.object(adapter, 'source_review') as review:
+            self.upgrade()
+        self.assertEqual(repair.call_args.kwargs['tests'], suite)
+        review.assert_not_called()
+
     def test_upgrade_runs_requirement_written_checks_and_source_review(self):
         self.seed()
         self.replies(events(block('frontend/public/index.html', '<h1>Updated</h1>')))
@@ -58,6 +74,7 @@ class EvolutionTests(unittest.TestCase):
         job = {'dir': suite, 'thread': Mock(is_alive=Mock(return_value=False))}
         with patch.object(adapter, 'SMOKE', True), patch.object(adapter, 'TESTGEN', True), \
                 patch.object(adapter, 'SOURCE_CONTRACTS', True), patch.object(adapter, 'SECOND_SUITE', False), \
+                patch.object(adapter, 'UPGRADE_SOURCE_CONTRACTS', True), \
                 patch.object(adapter, 'start_suite', return_value=job) as start, \
                 patch.object(adapter, 'finish_suite', return_value=suite), \
                 patch.object(adapter, 'repair_delivery') as repair, \
