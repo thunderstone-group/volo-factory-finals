@@ -14,11 +14,11 @@ last-reviewed: 2026-09-23。本文只维护 docs/ 的结构与规则，不复述
 | `evidence/YYYY-MM-DD-*.json` | 报告引用的原始数据：榜单快照、run 记录、计量表 | 只增不改；报告用相对链接指向它 |
 | `archive/` | 不再被当前工作读取的东西：旧交接节、旧路线账本、冻结的多轮 harness 时代（09-11～09-14）的设计与调查稿 | 原样搬入，不改名不改内容；`archive/README.md` 一行一份说明它是什么 |
 
-入口顺序：新会话先读 `SESSION_HANDOFF.md`，再读 `reference/roadmap.md`（全局目标、工作流、关口与决策），再读 `progress.md` 交接指定的位置，再按需读 `reports/` 与其余 `reference/`。仓库根的 `AGENTS.md` 是项目地图，只指向本目录，不复述。
+入口顺序：新会话先读 `SESSION_HANDOFF.md`，再读 `reference/finals-roadmap.md`（决赛目标、赛制事实、工作流与决策；初赛的 `reference/roadmap.md` 已成历史），再读 `progress.md` 交接指定的位置，再按需读 `reports/` 与其余 `reference/`。仓库根的 `AGENTS.md` 是项目地图，只指向本目录，不复述。
 
 ## 规则
 
-1. **一个事实一个真源。** 平台 CLI 规则在 `reference/platform-cli.md`，初赛赛制在 `reference/preliminary-rules.md`，目标、工作流、关口与决策在 `reference/roadmap.md`，当前状态只在 `SESSION_HANDOFF.md`。别处需要时用链接，不复制段落。
+1. **一个事实一个真源。** 平台 CLI 规则在 `reference/platform-cli.md`，初赛赛制在 `reference/preliminary-rules.md`，决赛的目标、工作流与决策在 `reference/finals-roadmap.md`（初赛的在 `reference/roadmap.md`），当前状态只在 `SESSION_HANDOFF.md`。别处需要时用链接，不复制段落。
 2. **三个月判据决定去处。** 三个月后还会有人读、且内容会随现状变的 → `reference/`；三个月后还会有人读、但内容不再变的 → `reports/`；三个月后没人读的 → 不写，或写进 `progress.md` 一条。
 3. **日期进文件名，只有报告有日期。** `reports/` 与 `evidence/` 用 `YYYY-MM-DD-` 前缀，按时间排序即是历史；`reference/` 不带日期（外部快照除外，如 `docs/reference/arc-bench-corpus-2026-09-14.md`，它是对某天上游仓库的目录）。
 4. **状态不落盘。** 分支、候选包、run 列表、余额都从 git 与 `arcbench` 现场读；文档里出现的 run id、提交号、榜位都是「当时」的证据，不是当前状态。
@@ -48,7 +48,8 @@ last-reviewed: 2026-09-23。本文只维护 docs/ 的结构与规则，不复述
 
 ## reference/ 索引
 
-- `docs/reference/roadmap.md` — 改进路线图（活文档）：初赛目标、策略、工作流与完成判据、阶段关口、证据口径、决策记录、迭代日志。
+- `docs/reference/finals-roadmap.md` — 决赛路线图（活文档）：已核实的决赛赛制、工作流与判据、决策、迭代日志。
+- `docs/reference/roadmap.md` — 初赛改进路线图（10-03 截止，历史）：初赛目标、策略、工作流与完成判据、阶段关口、证据口径、决策记录、迭代日志。
 - `docs/reference/preliminary-rules.md` — 初赛规则：完整参赛须知（PDF 存档在 evidence/）与官方模拟环境契约的要点。
 - `docs/reference/platform-cli.md` — `arcbench` 客户端的安装配置与绑定本 harness 的平台规则。
 - `docs/reference/oneshot.md` — one-shot 候选在仓库内的位置与边界、打包入口。
