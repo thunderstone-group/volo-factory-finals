@@ -6,6 +6,6 @@
 - 决赛 = 平台竞赛 `hackathon-evolution`：从上面两份产物继续进化，2 题 60 条，尚未开放（403）。报名 registered=False、can_confirm=True，要甲方定。
 - F1 第一轮 8/8 死在发布（`template changed during generation`，平台运行期间写 `.arc/`），PR #121 修复，包 0a0ab9d7 第二轮在跑：提交 `e27ad83fd9c5`（arc-bench-evolution）、`30c220b9ce4d`（lite），run id 见 E3/r2-ids.txt，等待器写 E3/r2-wait.jsonl 与 r2-wait.exit。
 - （第一轮记录）F1 练习基线：主分支 v11 包（cd0f5969，副本 E3/v11-main-cd0f5969.zip），模型 deepseek-v4-flash-vision-exp，练习额度。提交 `da8189ed3dd5`（arc-bench-evolution，run 12306 `6908dfd75b2b`、bookstack `41019cb9e0e1`、ctrip `f1a38fbc4e47`、keep `70b53c1fe2bb`、prestashop `5dbadb474c70`、stackoverflow `5ae9b83511a9`）与 `cba6094af823`（lite-evolution，bookstack `108d9b96822e`、keep `a6e70f4061d2`）。等待器 nohup 写 E3/baseline-wait.jsonl，结束写 E3/baseline-wait.exit。练习余额起跑前 356.99 元。
-- F2 代理暗题：Codex job `~/.codex-jobs/volo-factory/2026-10-06-finals-proxy/`（brief.md、last-message.md），产物在 campaign 下的 finals-proxy 目录。主会话专用，路径不写进改进派发单。
+- F2 代理暗题：已交付（两题各 30 条，起点 0/30、参考实现 30/30×2、旧回归无丢失）。位置与跑法只记在主会话专用的 acceptance-hidden README，不写进本仓库。13:20 起用包 0a0ab9d7 在两题上本地各跑一次作代理基线。
 
 下一步：收 F1 八个终态并逐条归因（`arcbench download` 取产物，含起点应用）；搭 F4 本地回放；F2 交付后用它做 F3 候选的配对比较。
