@@ -84,9 +84,10 @@ How the tests run:
   inside a named dialog, menu, region, row, cell or grid, scope the locator to it first. A control "in the main
   content" is located inside `page.getByRole('main')`; a top, global or header control inside
   `page.getByRole('banner')`; a sidebar control inside `page.getByRole('complementary')`.
-- A control the requirements name without stating its role (a menu to open, an entry to activate) is located as a
-  link or a button: `page.getByRole('link', {{ name, exact: true }}).or(page.getByRole('button', {{ name, exact: true }}))`.
-  Use `menuitem`, `tab`, `option` or another role only where the requirements state it.
+- Menus follow the menu-button pattern: the control that opens a named menu is a button, and the entries inside
+  the opened menu are `menuitem`s. Any other control the requirements name without stating its role is located as
+  a link or a button: `page.getByRole('link', {{ name, exact: true }}).or(page.getByRole('button', {{ name, exact: true }}))`.
+  Use `tab`, `option` or another role only where the requirements state it.
 - Assert a stated rejection, validation or error message with `page.getByRole('alert')` and `toContainText`.
 - Follow the specified selection interaction. For explicitly clickable options, click the combobox and then the
   named option; do not use selectOption to bypass the required clickable-option path. Use selectOption for a control

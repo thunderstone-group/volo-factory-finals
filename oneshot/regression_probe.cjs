@@ -89,11 +89,18 @@ async function snapshot(page, cdp) {
       navigation.push({...item, kind: 'tab', panel: attrs['aria-controls']});
     }
   }
-  // Multiple indistinguishable controls are inventoried, but never chosen by nth() for navigation.
-  const counts = new Map();
-  for (const n of navigation) counts.set(key(n), (counts.get(key(n)) || 0) + 1);
+  // Multiple indistinguishable controls are inventoried, but never chosen by nth() for navigation. Copies with
+  // one name and one declared destination are one entry: following any of them reaches the same screen.
+  const destinations = new Map();
+  for (const n of navigation) {
+    const where = n.kind === 'url' ? 'url:' + n.href : n.kind === 'nav' ? 'nav:' + n.destination : null;
+    if (!destinations.has(key(n))) destinations.set(key(n), []);
+    destinations.get(key(n)).push(where);
+  }
+  const unique = k => { const d = destinations.get(k); return d.length === 1 || (d[0] !== null && d.every(x => x === d[0])); };
+  const kept = new Set();
   return {items: [...items.values()].sort((a, b) => key(a).localeCompare(key(b), 'en')),
-    navigation: navigation.filter(n => counts.get(key(n)) === 1)};
+    navigation: navigation.filter(n => unique(key(n)) && !kept.has(key(n)) && kept.add(key(n)))};
 }
 
 async function revealNavigation(page, cdp, snap, step) {
