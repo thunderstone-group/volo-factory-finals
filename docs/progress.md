@@ -1863,3 +1863,10 @@ F1 第一轮（包 cd0f5969）8 题全部 agent 退出 1、零测试，日志末
 - `hackathon-evolution` 19:48 起 open，需求已下载（副本在 campaign evidence `2026-10-06-finals/finals-open/`）。平台 `initial-projects-download` 的基线与本地 G79、Sheet87 逐字节一致。报名仍未确认（初始额度 200 元）。
 - 甲方转来《决赛参赛须知》：截止 10-08 18:00，截止时停掉在跑容器；最新有效提交上榜；平台注入基线、智能体只做增量修改。全文要点在 finals-roadmap 第 2 节。
 - 需求格式与练习赛不同：无 `change_type`，改动需求写「Original/Modified Feature Description」，GitHub 给整棵 52 个需求的原始树（受测 10 个），Sheet 只给受测 10 个。Codex job `2026-10-06-finals-real-proxy` 按真实场景写代理测试与参考实现；当前包（9293a251）在真实需求上本地两题试跑中。
+
+### 10-06 21:20 决赛首个正式读数与第一个候选
+
+- 正式提交 `8aac3a380e0c`（包 9293a251）：GitHub 3/30（`16e2557bcbfb`）、Sheet 21/30（`e18667057830`），额度剩 197.71 元。官方报告在 run 下载包 `.arc/playwright-report.json`，带逐条报错与测试代码片段。GitHub 卡在登录入口（正文「Sign in」）和仓库搜索（页头「Search」），Sheet 失分在 alert 角色、单元格内便签按钮、对话框 Close。归因细节在 finals-roadmap F2-real。
+- 本地真实需求（包 9293a251）两题退出 0，旧回归不变；Codex 代理第 1 版给本地 GitHub 产物 24/30，比官方宽松，已按官方代码片段校准第 2 版。
+- 定点编辑起草：平台练习 33/38、本地 GitHub 两次退出 1，不采用。
+- 候选 feat/finals-region-contract（f6778ac，包 a7066b2e，one-shot 单测 324 条 OK）：方言卡与内部测试按需求写明的区域定位、拒绝消息用 alert、常驻对话框带 Close，升级时改掉与需求矛盾的现有界面。正式 `977c79cf0389`、练习 `df117776b66c`、本地两题各两样本在跑。
