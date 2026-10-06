@@ -26,16 +26,13 @@ import time
 from pathlib import Path
 
 try:
-    from . import scenario_check, scenarios
+    from . import regression_guard, scenario_check, scenarios
 except ImportError:  # run as a script, or from the flat package next to main.py
+    import regression_guard
     import scenario_check
     import scenarios
 
-GROUP_SCENARIOS = 30  # scenarios per spec file (one model call); requirements are never split across files. One
-# file per top-level requirement group (Sheet 5 files of 13-26, GitHub 6 of 14-25) cost CNY 2.29 against 5.16 for
-# 8 per file (16 files) on 09-28, and ranked ten apps with known hidden scores better (Spearman 0.94 vs 0.86, errors
-# per app 5.8 vs 21.3; one suite each). 92 % of the output is reasoning,
-# and each call re-reads the whole requirements document before it writes.
+GROUP_SCENARIOS = 30  # Bound each output file while keeping each requirement together.
 GROUP_WORKERS = 1  # serialize long streams; preserve the completed file before starting the next one
 AUDIT = os.environ.get("ONESHOT_TEST_AUDIT", "0") == "1"  # opt-in; replaced by source counterexamples in the S70 candidate
 AUDIT_LIMIT = 6  # Additional requirement-grounded checks per file, after reviewing the existing tests.
@@ -77,22 +74,29 @@ How the tests run:
   GIVEN does not itself establish a signed-in session or an opened detail page. Establish those contexts only
   when GIVEN explicitly requires them or WHEN describes the navigation. Assert the first named target is
   visible in that starting context before activating it.
-- Locate elements the way a user perceives them, only with what the requirements state:
-  `page.getByRole(role, {{ name, exact: true }})` with the exact quoted accessible name,
-  `page.getByLabel(label, {{ exact: true }})` for fields, `page.getByText(text, {{ exact: true }})` for visible text.
-  Never CSS selectors, XPath, test ids, element ids, class names or guessed URLs. When the requirements put a control
-  inside a named dialog, menu, region, row, cell or grid, scope the locator to it first. A control "in the main
-  content" is located inside `page.getByRole('main')`; a top, global or header control inside
-  `page.getByRole('banner')`; a sidebar control inside `page.getByRole('complementary')`.
-- Menus follow the menu-button pattern: the control that opens a named menu is a button, and the entries inside
-  the opened menu are `menuitem`s. Any other control the requirements name without stating its role is located as
-  a link or a button: `page.getByRole('link', {{ name, exact: true }}).or(page.getByRole('button', {{ name, exact: true }}))`.
-  Use `tab`, `option` or another role only where the requirements state it.
-- Assert a stated rejection, validation or error message with `page.getByRole('alert')` and `toContainText`.
-- Follow the specified selection interaction. For explicitly clickable options, click the combobox and then the
-  named option; do not use selectOption to bypass the required clickable-option path. Use selectOption for a control
-  explicitly described as a native select. Two controls with the same label may have different contracts in different
-  containers; respect each declaration rather than applying one interaction to every matching label.
+- Prefer roles, associated labels and visible text: these observe the interface available to users and are resilient
+  to implementation changes (Playwright locator guidance). Match an exact name or role when the requirements specify
+  it. Do not guess CSS selectors, XPath, ids, classes or URLs; use them only if the requirements explicitly define
+  that interface. When a control belongs inside a stated dialog, menu, region, row, cell or grid, scope to it first.
+  Use the semantic region the requirement identifies, such as main for main content or banner for a page header.
+  A control the requirements put at the top of the application is located in `page.getByRole('banner')`; "global"
+  alone does not prescribe a banner, nor does "sidebar" necessarily prescribe complementary.
+- A control the requirements add to a particular cell, row or record ("adds a button ... to that cell") is located
+  inside that element. Use cell or gridcell according to the stated table or grid semantics; do not invent a grid.
+- For an explicitly required ARIA command menu, follow the APG menu-button pattern, including menuitem entries.
+  A navigation disclosure may instead contain ordinary links. When a role is unstated, locate the named interaction
+  within its stated scope without asserting one guessed role; use appropriate semantic alternatives or visible text.
+  Do not make the application adopt a role just to satisfy the test's locator. Multiple matching controls require
+  the scenario's context, not an arbitrary first match or a demand to delete other entry points.
+- Check messages in their stated context. When the requirements give a message's role together with its text ("the
+  status named X", "exposes X as an alert"), that text is its stated accessible name: locate it with
+  `page.getByRole(role, {{ name: X, exact: true }})`. Otherwise, a stated message for an action the application refuses
+  (a rejected save, edit or entry) is announced as an alert: assert it with `page.getByRole('alert')` and
+  `toContainText`. Use a status role only when specified; otherwise assert other visible messages without requiring
+  one announcement strategy.
+- Follow explicitly required selection gestures. Otherwise use selectOption for a native select, or open the custom
+  picker and select its option. Native selection and custom pickers may both implement a requirement that only says
+  "choose"; do not force one DOM representation. Respect different contracts for controls in different containers.
 - Tests are independent: each builds its own state and never relies on another test having run.
 - Every file runs in order against ONE application that is never reset between tests. When a mutation scenario
   does not require a particular seeded identity, create its own record through the documented UI. When it does
@@ -110,7 +114,7 @@ How the tests run:
 - A scenario whose name or steps are generic ("the requested workflow") is specified by its requirement's
   description. Across the tests of one requirement, cover every behaviour the description states: each case it lists
   (every kind of error, option, direction or input form), how the feature works together with the others it names (a
-  formula after a sort, a rule after an insert, a filter with a header row), the boundary values it gives, and the
+  derived result after an edit, a permission after an ownership change), the boundary values it gives, and the
   rejected paths with their stated messages. When a requirement states more behaviours than it has scenarios, one test
   checks several of them in sequence. After a refresh or reopen, assert the changed content itself, not only a title.
 - Where the requirements allow several ways to do the same thing (in a grid or a separate field, with a keyboard
@@ -174,6 +178,16 @@ def request(text, group, prerequisites=""):
     user = "Requirements document (YAML):\n\n" + text
     if prerequisites.strip():
         user += "\n\nPrerequisites (the task's prerequisites.md, part of the requirements):\n" + prerequisites.strip()
+    # The placements the regression guard enforces; tests that locate these controls page-wide disagree with it and
+    # reject the repair that places them (10-07: a header "Search" beside the page's own made 31 page-wide lookups
+    # ambiguous, and four repairs were discarded).
+    stated = regression_guard.placements(text)
+    if stated:
+        user += ("\n\nControl placements the requirements state; wherever a test uses one of these controls, locate it "
+                 "inside its landmark:\n" + "\n".join(
+                     f"- {p['role']} \"{p['name']}\" ({regression_guard.LANDMARK_WORDS[p['landmark']]}): "
+                     f"`page.getByRole('{p['landmark']}').getByRole('{p['role']}', "
+                     f"{{ name: {json.dumps(p['name'])}, exact: true }})`" for p in stated))
     # Everything before this point is the same for every file of the suite, so the gateway's prefix cache serves it
     # after the first call (09-26: the file name sat in the system prompt, no call shared a prefix, and the
     # requirements were billed uncached sixteen times).
@@ -286,17 +300,12 @@ FENCE = re.compile(r"\A[ \t]*```[\w-]*[ \t]*\r?\n(.*?)(?:\r?\n[ \t]*```[ \t]*)?\
 
 
 def unfence(body):
-    """A file body without the Markdown code fence a reply may wrap it in: three of fifteen files of one GitHub suite
-    began with ```js, which turns the whole file into template literals that do not parse (21 of 100 tests never ran)."""
+    """Remove a surrounding Markdown fence from a generated file body."""
     match = FENCE.match(body)
     return match.group(1) if match else body
 
 
-# Two slips of the writer kill whole files whatever the application does. In eight Sheet suites (09-27) 13-19 tests
-# per application threw in their own code, nearly all in the REQ-5 files (sort, filter, validation, pivot), the area
-# the hidden suite fails most: a helper that uses `page` without taking it as a parameter (`ReferenceError: page is
-# not defined`), and an `async` helper that only returns a locator, whose caller forgets `await` and calls a method
-# on the Promise (`startCell.scrollIntoViewIfNeeded is not a function`). Those tests never drove a repair.
+# Repair mechanical writer errors without changing scenario assertions.
 PAGE_SHIM = ("\n// Added by the suite runner: a helper that uses `page` without taking it as a parameter sees the "
              "running test's page.\nrequire('@playwright/test').test.beforeEach(async ({ page }) => "
              "{ globalThis.page = page; });\n")
@@ -434,10 +443,7 @@ def depths(text):
 
 
 def name_tests(body, group):
-    """The file with every test titled by its bare scenario name given its `<scenario id>: ` prefix: the first scenario
-    of that name without a test yet, in listed order. Masked names repeat within a requirement ("REQ-1-3-2 -the
-    requested workflow" four times), Playwright refuses a file with two tests of one title, and on 09-28 one such file
-    took 13 tests of a Sheet suite with it. Titles that already carry a listed id are left alone."""
+    """Assign listed scenario ids to bare scenario titles in document order; retain existing ids."""
     ids = {item["id"] for item in group["items"]}
     used = {_test_id(m.group(2))[0] for m in TITLE.finditer(body)} & ids
     out, last = [], 0
@@ -742,10 +748,8 @@ def own_breaks(report):
 
 
 def fix_suite(text, suite, report, complete, workers=GROUP_WORKERS):
-    """One more writer call for each spec file whose tests broke in their own code on the first run (09-27: 13-19 such
-    tests per Sheet application, whole REQ-5 files, never a repair target). The call continues the file's own
-    request with the file as the writer's reply and the errors it raised; a reply that does not parse leaves the file
-    as it was. Returns the files rewritten."""
+    """Mend each file that failed in its own test code using the original requirements and recorded errors.
+    Keep the prior file when the replacement is invalid. Return the files rewritten."""
     suite = Path(suite)
     try:
         manifest = json.loads((suite / "suite.json").read_text(encoding="utf-8"))
@@ -823,7 +827,7 @@ def ensure_runner(env):
     node, npm = shutil.which("node", path=env.get("PATH")), shutil.which("npm", path=env.get("PATH"))
     if not node:
         return None, "node is not on PATH"
-    # The evaluator's runner image ships this exact package in /opt/arcbench/node_modules; use it before the network.
+    # Prefer the preinstalled runtime dependencies before downloading a pinned package.
     paths = ([p for p in env.get("NODE_PATH", "").split(os.pathsep) if p] + [str(RUNNER_PREFIX / "node_modules")]
              + [RUNNER_IMAGE_MODULES])
     for root in dict.fromkeys(paths):
@@ -853,10 +857,7 @@ CONFIG = """module.exports = {{
 """
 
 
-# The JSON report is written only when the run ends; a run stopped at RUN_SECONDS left none, and every test read "Not
-# run" (09-25 Sheet run dca5df727dcb: a draft that overflowed its stack made each test wait out its timeouts, the suite
-# was stopped at 900 s, the written tests fell back to unparsable requirement scenarios, and no repair was made).
-# This reporter appends each finished test at once, so a stopped run still reports the tests it finished.
+# Persist each completed result so a stopped local run does not erase its observations.
 PROGRESS_REPORTER = """const fs = require('fs');
 class Progress {
   constructor(options) { this.file = options.outputFile; }
@@ -916,13 +917,14 @@ def ungrounded(name, source, text, quoted):
     literal = ("'" + name + "'") in source or ('"' + name + '"') in source or ("`" + name + "`") in source
     if not literal or len(name) < 2 or name in text:
         return False
-    if CELL.fullmatch(name):
-        # A grid cell's address is how any spreadsheet names its cells, not something the test made up (09-25: nine
-        # Sheet tests addressing E1, F1, H2 or B5 were set aside as errors and never drove a repair).
+    if (CELL.fullmatch(name) and re.search(r"\bcells?\b|\bgridcells?\b", text, re.I) and
+            any(CELL.fullmatch(phrase) for phrase in quoted[0])):
+        # A1 notation is a coordinate convention only when the requirements establish that interface.
         return False
     numbered = re.fullmatch(r"(.*\D)\d+", name)
-    if numbered and re.search(re.escape(numbered.group(1)) + r"\d", text):
-        return False  # the next of a numbered series the requirements name (`Sheet3` after `Sheet1`, `Sheet2`)
+    if numbered and re.search(re.escape(numbered.group(1)) + r"\d", text) and re.search(
+            r"\b(?:names?|numbered|numbering)\b[^.;]*\b(?:in order|sequential(?:ly)?)\b", text, re.I):
+        return False  # Extend only a numbering convention stated in the requirements.
     phrases, patterns = quoted
     return name not in phrases and not any(p.match(name) for p in patterns)
 
@@ -1001,8 +1003,7 @@ def parse(report_path, suite, manifest, text, progress_path=None, missing="the r
     """The Playwright JSON report as scenario-check entries, one per test the manifest lists. Without a report, the
     tests the progress file recorded; a test in neither is an error reading `Not run: <missing>`."""
     suite = Path(suite)
-    # One line per phrase: YAML folds long descriptions, and five quoted Sheet messages ("Worksheet name already
-    # exists") were broken across lines, so tests asserting them were set aside as using names never given.
+    # Folded YAML phrases retain their meaning and must remain available for grounding.
     text = re.sub(r"\s+", " ", text or "")
     quoted = _phrases(text)
     try:
@@ -1083,8 +1084,8 @@ def _collapse(entries):
 
 
 def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
-    """Run the suite in `suite` against the application directory `app` (built in a scratch copy, one backend for the
-    whole run, like the evaluator). With `only`, just those test ids run. Returns a scenario-check-shaped report."""
+    """Build an isolated app copy and run the locally written suite with one backend.
+    With only, run just those scenario ids. Return a diagnostic report."""
     started = time.monotonic()
     suite = Path(suite)
     try:
@@ -1150,9 +1151,8 @@ def run_suite(app, suite, text=None, only=None, seconds=RUN_SECONDS):
             timed_out = True
         entries = read(timed_out)
         if not timed_out and titles and all((e.get("observation") or "").startswith("Not run:") for e in entries):
-            # Nothing ran: a file Playwright cannot load (a duplicate title, a throw at module level) stops the whole
-            # run although it parses (09-25 23:07 Sheet run: all 100 tests "Not run" in 1.7 s, repairs stopped after
-            # one round). Find the files that do not load on their own, set them aside for this suite, run again.
+            # A module-load error may block the suite even when syntax is valid.
+            # Identify unloadable files, keep their errors, and run the remaining checks.
             unloadable = _unloadable(command[:3] + ["--config", str(work / "playwright.config.cjs")], manifest, suite,
                                      work, runner_env)
             if unloadable:

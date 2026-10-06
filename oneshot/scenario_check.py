@@ -5,7 +5,8 @@
 
 Result: {"scenarios": [{"id", "name", "status": pass|fail|unparsed|error, "observation", "steps"}],
 "invariants": [...], "coverage": {"total", "parsed"}, "seconds"}. Diagnostic only: it reads the
-requirements and the application, never evaluator tests, and calls no model.
+requirements and the application, never evaluator tests. Optional translation of unparsed scenarios
+uses the configured model gateway; browser execution itself makes no model calls.
 
 Isolation: the application (frontend/ and backend/) is copied to a scratch directory and built once.
 Every scenario gets a fresh browser context and a freshly started backend on its own port; when the
@@ -126,7 +127,7 @@ class Workspace:
         for entry in app.iterdir():
             if entry.name in ("frontend", "backend"):
                 self._copy(entry, self.root / entry.name)
-            elif entry.is_file() and not entry.is_symlink() and entry.stat().st_size < 5_000_000:
+            elif not entry.name.startswith('.') and entry.is_file() and not entry.is_symlink() and entry.stat().st_size < 5_000_000:
                 shutil.copy2(entry, self.root / entry.name)
         self._build()
         shutil.copytree(self.root, self.pristine, symlinks=True)
@@ -134,13 +135,14 @@ class Workspace:
 
     @staticmethod
     def _copy(source, target):
-        shutil.copytree(source, target, symlinks=True, ignore=lambda d, names: [n for n in names if n in ("node_modules", ".git")])
+        shutil.copytree(source, target, symlinks=True,
+                        ignore=lambda d, names: [n for n in names if n == "node_modules" or n.startswith('.')])
         for current, dirnames, _ in os.walk(source):  # dependencies are linked, never copied or written
             if "node_modules" in dirnames:
                 link = Path(target) / os.path.relpath(current, source) / "node_modules"
                 if not link.exists():
                     link.symlink_to(Path(current) / "node_modules", target_is_directory=True)
-            dirnames[:] = [d for d in dirnames if d not in ("node_modules", ".git")]
+            dirnames[:] = [d for d in dirnames if d != "node_modules" and not d.startswith('.')]
 
     def _build(self):
         manifest = self.root / "frontend" / "package.json"

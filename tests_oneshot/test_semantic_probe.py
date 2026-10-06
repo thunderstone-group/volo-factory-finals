@@ -1,4 +1,4 @@
-"""Requirement extraction regressions from observed Lite failures; no model calls."""
+"""Synthetic requirement extraction and counterexamples to inferred product contracts; no model calls."""
 import unittest
 
 from oneshot import main as adapter
@@ -30,7 +30,7 @@ class SemanticContractsCase(unittest.TestCase):
             {'form':'Edit collection','control':'Attributes','placeholder':'key, value'},
         ])
 
-    def test_draft_entry_checks_keep_parent_context_and_explicit_favorite_seeds(self):
+    def test_draft_and_toggle_words_do_not_invent_a_workflow_or_seed_absence(self):
         text = '''
 description: A reading page has a button named `Edit`.
 description: The button named `Favorite` with aria-pressed=false changes state.
@@ -38,10 +38,9 @@ description: Seed data: book "Collection" with existing draft page "Unfinished".
 content: GIVEN a favorite item is already shown.
 '''
         result = adapter.semantic_contracts(text)
-        self.assertEqual(result['readingEntries'], [{'parent': 'Collection', 'record': 'Unfinished'}])
-        self.assertTrue(result['emptyFavorites'])
-        explicit = adapter.semantic_contracts(text + '\ndescription: Seed data: favorite book "Saved".\n')
-        self.assertFalse(explicit['emptyFavorites'])
+        self.assertNotIn('readingEntries', result)
+        self.assertNotIn('emptyFavorites', result)
+        self.assertEqual(result['roles']['favorite'], ['button'])
 
     def test_record_state_title_is_distinct_from_an_input_title_field(self):
         result = adapter.semantic_contracts('''
@@ -51,18 +50,14 @@ description: The editor contains a textbox named `Title`.
 ''')
         self.assertEqual(result['recordTitles'], ['Flagged'])
 
-    def test_seed_states_come_from_declarations_not_scenario_setup(self):
+    def test_seed_adjectives_do_not_prescribe_internal_storage_fields(self):
         text = '''
 description: Seed data: active record "Archive candidate"; pinned record "Priority"; regular record "Ordinary".
 content: GIVEN the record "Archive candidate" has already been archived.
 description: Seed data: deletable item `Remove candidate`.
 content: THEN the item `Remove candidate` is deleted.
 '''
-        states = {row['name']: row['states'] for row in adapter.semantic_contracts(text)['seedStates']}
-        self.assertEqual(states['Archive candidate'], {'archived': False, 'deleted': False})
-        self.assertEqual(states['Priority'], {'pinned': True})
-        self.assertEqual(states['Ordinary'], {'archived': False, 'deleted': False, 'pinned': False})
-        self.assertEqual(states['Remove candidate'], {'archived': False, 'deleted': False})
+        self.assertNotIn('seedStates', adapter.semantic_contracts(text))
 
     def test_entry_roles_and_editor_scope_come_from_requirement_text(self):
         # Reduced requirement wording; names deliberately differ from the corpus.

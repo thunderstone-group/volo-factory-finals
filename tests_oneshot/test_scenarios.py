@@ -387,6 +387,9 @@ class PlanCase(unittest.TestCase):
         self.assertNotIn(("given", "REQ-3.3.1", "click", "Confirm Delete"), steps)
         self.assertEqual(steps[-1], ("then", "REQ-3.3.2", "expect", "Room 3.3.2"))
         self.assertEqual(ops_of(self.plan, "REQ-3.3.2")["substitutions"], {"Room 3.2": "Room 3.3.2"})
+        renamed = SYNTHETIC.replace('Room 3.2', 'Atrium').replace('Room 3.3.2', 'North studio')
+        generic = scenarios.plan(renamed)
+        self.assertEqual(ops_of(generic, "REQ-3.3.2")["substitutions"], {'Atrium': 'North studio'})
 
     def test_location_claim_uses_the_page_heading_the_requirements_define(self):
         steps = self.steps("REQ-3.3.1")

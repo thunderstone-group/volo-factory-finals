@@ -76,7 +76,7 @@
       ? `<button type="button" data-action="arc:nav" data-hash="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</button>`
       : link(n);
     const nav = (L.nav || []).map(link).join('');
-    const side = [...new Set((L.sidebar || []).map(entry))].join('');
+    const side = (L.sidebar || []).map(entry).join('');
     const account = L.account ? L.account(user) : '';
     const brand = !L.brand ? '' : L.brandRole === 'button'
       ? `<button type="button" class="brand" data-action="arc:nav" data-hash="#/">${ARC.esc(L.brand)}</button>`
@@ -90,12 +90,7 @@
     return (s.users || []).find((u) => u.id === s.session) || null;
   };
 
-  // --- Presses: the browser sends `click`, and `dblclick` on a second press, only to an element that is still
-  // in the document when the button is released. A render inside a mousedown/mouseup handler replaces that
-  // element and silently drops the click and the double-click (09-24: three of three spreadsheet drafts
-  // re-rendered their grid on a press, so no cell ever received a click and the double-click editor never
-  // opened). While a left-button press is in progress, ARC.render() waits for the end of its click sequence
-  // (after `click`, or after `dblclick` on a second press), in the same task.
+  // Defer a render through the current press sequence so replacing its target cannot lose the click.
   let pressing = false, postponed = false;
   const settle = () => { pressing = false; if (postponed) { postponed = false; ARC.render(); } };
   const press = (ev) => { if (ev.button === 0) pressing = true; };
@@ -110,20 +105,14 @@
     if (active && app && app.contains(active) && active.matches('input, textarea, [contenteditable="true"]')) postponed = false;
     settle();
   });
-  // A press on a popover belongs to the popover. Grid and list pointer handlers took the cell around a menu as the
-  // pressed cell and re-selected it, so a menu Copy on a dragged range copied one cell (two of four spreadsheet
-  // drafts, 09-25). The press still counts above; the click still reaches the popover's commands.
+  // A popover owns its pointer interaction; its host's selection handlers must not reinterpret the press.
   for (const type of ['pointerdown', 'mousedown', 'pointerup', 'mouseup']) {
     window.addEventListener(type, (ev) => {
       if (ev.target && ev.target.closest && ev.target.closest('[data-popover]')) ev.stopPropagation();
     }, true);
   }
 
-  // --- Helpers reachable through `this` from any part of APP. A helper written on APP.screens and called as
-  // `this.helper()` from a screen that runs with APP as `this` (or the other way round, or from an action)
-  // threw "this.helper is not a function" and blanked the screen: dozens of drafts on six tasks. Every
-  // function on APP, APP.screens, APP.actions and APP.helpers is also reachable from the others under the
-  // same name (non-enumerable, never replacing an own entry); actions run with APP.actions as `this`.
+  // Share helpers between APP's components without replacing an explicitly defined method.
   const RESERVED = new Set(['screen', 'screens', 'actions', 'helpers', 'afterRender']);
   ARC.shareHelpers = function (app) {
     const holders = [app, app && app.screens, app && app.actions, app && app.helpers]
@@ -141,31 +130,26 @@
 
   // --- Render: rebuild #app from the store in the same tick as the click. Views are unmounted, never
   // cross-faded. Text typed into a form survives in-form clicks because actions call ARC.render()
-  // only after they change state, and forms keep their values via ARC.preserveInputs.
+  // only after they change state. Application handlers own draft-value preservation.
   ARC.render = function () {
     if (pressing) { postponed = true; return; }
-    ARC._ensureSelectStyles();
     const route = ARC.route();
     ARC._renderedHash = route.hash;
     ARC._popover = null;  // the screen is rebuilt; an open popover goes with it
-    ARC._combobox = null;
     const app = window.APP || {};
     ARC.shareHelpers(app);
     const main = app.screen ? app.screen(route) : '<h1>Home</h1>';
     document.getElementById('app').innerHTML = ARC.layout(main, route);
     if (ARC.dialogOpen) ARC.setInert(true);
     if (app.afterRender) app.afterRender(route);
-    ARC._selectContent(document.getElementById('app'));
   };
-  // --- Dialog: while a chooser is open every sibling is inert + aria-hidden (Playwright ignores
-  // aria-modal), so no text input outside the dialog is visible to the fill ladder. The root is hidden
-  // when idle so it never intercepts hovers or clicks.
+  // A modal isolates the background so users cannot interact with obscured content (APG Dialog).
+  // Its idle root is hidden to keep it from intercepting input.
   ARC.dialogOpen = false;
   ARC.openDialog = function (html, opts) {
     const root = document.getElementById('dialog-root');
-    root.innerHTML = `<div class="dialog" role="dialog" aria-label="${ARC.esc((opts && opts.title) || 'Dialog')}">${html}</div>`;
+    root.innerHTML = `<div class="dialog" role="dialog" aria-modal="true" aria-label="${ARC.esc((opts && opts.title) || 'Dialog')}">${html}</div>`;
     root.hidden = false;
-    ARC._selectContent(root);
     ARC.dialogOpen = true;
     ARC.setInert(true);
     const first = root.querySelector('input, textarea, select, button');
@@ -191,8 +175,7 @@
   // Command menus are not a replacement for the entity's named field editor.
   // items are { label, action, extra? }; kind 'buttons' renders native buttons;
   // kind 'menu' explicitly renders role=menu and role=menuitem.
-  // The popover closes on render, Escape, a click outside it, and after one of its menu items ran: a menu left
-  // open inside a grid cell became part of the cell's text ("PenCopyCutPaste" after a menu Cut, 09-25).
+  // Dismiss completed commands and idle popovers so transient UI does not obscure the next interaction.
   // It stays inside the host: apps find the record or cell a command acts on through the menu's ancestors.
   ARC.openPopover = function (host, items, opts) {
     const record = host && host.closest('article[data-id], [role="article"][data-id]');
@@ -211,7 +194,6 @@
     if (kind === 'menu') { wrap.setAttribute('role', 'menu'); if (opts && opts.label) wrap.setAttribute('aria-label', opts.label); }
     wrap.innerHTML = body;
     host.appendChild(wrap);
-    ARC._selectContent(wrap);
     ARC._popover = wrap;
   };
   ARC.closePopover = function () {
@@ -219,52 +201,19 @@
     ARC._popover = null;
   };
 
-  // Native selects retain form values, keyboard support and standard selection APIs.
-  // In supporting browsers, the customizable picker also exposes clickable DOM options.
-  ARC._ensureSelectStyles = function () {
-    if (!document.head || document.getElementById('arc-native-select-style')) return;
-    const style = document.createElement('style');
-    style.id = 'arc-native-select-style';
-    style.textContent = '@supports (appearance: base-select) {' +
-      'select:not([multiple]):not([size]),select:not([multiple]):not([size])::picker(select){appearance:base-select;}' +
-      'select:not([multiple]):not([size]):not(:open) option{display:none;}' +
-      'select:not([multiple]):not([size])::picker(select){background:white;color:#171717;border:1px solid #ddd;border-radius:6px;padding:4px;}' +
-      'select:not([multiple]):not([size]) option{padding:4px 10px;}' +
-      'select > button.arc-selected-display{all:unset;}' +
-      '}';
-    document.head.appendChild(style);
-    document.addEventListener('input', (event) => {
-      const el = event.target.closest('select.arc-native-combobox[data-cb-change]');
-      if (!el) return;
-      const app = window.APP || {};
-      const fn = app.actions && app.actions[el.dataset.cbChange];
-      if (typeof fn !== 'function') return;
-      ARC.shareHelpers(app);
-      fn.call(app.actions, { value: el.value, name: el.name, el, event });
-    });
-  };
-  // Let the browser expose the current value in author DOM while retaining the
-  // select's own value, option nodes, keyboard behavior and change events.
-  // https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/selectedcontent
-  ARC._selectContent = function (root) {
-    if (!window.CSS || !CSS.supports('appearance', 'base-select') || !window.HTMLSelectedContentElement) return;
-    ARC._ensureSelectStyles();
-    for (const select of root.querySelectorAll('select:not([multiple]):not([size])')) {
-      if (select.querySelector(':scope > button')) continue;
-      const button = document.createElement('button');
-      button.type = 'button';
-      // The select already exposes its value to assistive technology. This
-      // browser-managed display must not become a second, identically named action.
-      button.setAttribute('aria-hidden', 'true');
-      button.className = 'arc-selected-display';
-      button.appendChild(document.createElement('selectedcontent'));
-      select.prepend(button);
-    }
-  };
+  // Native selects provide keyboard navigation, an accessible value and normal form submission.
+  document.addEventListener('input', (event) => {
+    const el = event.target.closest('select.arc-native-combobox[data-cb-change]');
+    if (!el) return;
+    const app = window.APP || {};
+    const fn = app.actions && app.actions[el.dataset.cbChange];
+    if (typeof fn !== 'function') return;
+    ARC.shareHelpers(app);
+    fn.call(app.actions, { value: el.value, name: el.name, el, event });
+  });
   // ARC.combobox({ label, name, options: ['A', 'B'] | [{value, label}], value, change })
   // `change` keeps the existing {value, name, el} callback contract.
   ARC.combobox = function (o) {
-    ARC._ensureSelectStyles();
     const id = 'cb-' + String(o.name || o.label).replace(/[^A-Za-z0-9_-]/g, '_') + '-' + (ARC._cbSeq = (ARC._cbSeq || 0) + 1);
     const options = (o.options || []).map((x) => (typeof x === 'object' ? { value: String(x.value), label: String(x.label != null ? x.label : x.value) } : { value: String(x), label: String(x) }));
     const current = options.find((x) => x.value === String(o.value == null ? '' : o.value));
@@ -276,46 +225,6 @@
       options.map((x) => `<option value="${ARC.esc(x.value)}"${x === current ? ' selected' : ''}>${ARC.esc(x.label)}</option>`).join('') +
       '</select></span>';
   };
-  ARC._openCombobox = function (box) {
-    const wrap = box.closest('[data-combobox]');
-    const open = wrap.querySelector('[role="listbox"]');
-    ARC.closeCombobox();
-    if (open) return;  // a second click on an open box closes it
-    let options = [];
-    try { options = JSON.parse(box.dataset.options || '[]'); } catch (e) {}
-    const value = (wrap.querySelector('input[type="hidden"]') || {}).value;
-    const list = document.createElement('div');
-    list.id = box.getAttribute('aria-controls');
-    list.className = 'listbox';
-    list.setAttribute('role', 'listbox');
-    list.setAttribute('aria-labelledby', box.getAttribute('aria-labelledby'));
-    list.innerHTML = options.map((x) => `<div role="option" tabindex="-1" aria-selected="${x.value === value}" data-action="arc:option" data-value="${ARC.esc(x.value)}">${ARC.esc(x.label)}</div>`).join('');
-    wrap.appendChild(list);
-    box.setAttribute('aria-expanded', 'true');
-    ARC._combobox = wrap;
-  };
-  ARC.closeCombobox = function () {
-    const wrap = ARC._combobox;
-    ARC._combobox = null;
-    if (!wrap) return;
-    const list = wrap.querySelector('[role="listbox"]');
-    if (list) list.remove();
-    const box = wrap.querySelector('[role="combobox"]');
-    if (box) box.setAttribute('aria-expanded', 'false');
-  };
-  ARC._pickOption = function (option) {
-    const wrap = option.closest('[data-combobox]');
-    const box = wrap.querySelector('[role="combobox"]');
-    const input = wrap.querySelector('input[type="hidden"]');
-    if (input) { input.value = option.dataset.value; input.dispatchEvent(new Event('input', { bubbles: true })); }
-    box.textContent = option.textContent;
-    ARC.closeCombobox();
-    box.focus();
-    const change = wrap.dataset.cbChange;
-    const app = window.APP || {};
-    if (change && app.actions && app.actions[change]) { ARC.shareHelpers(app); app.actions[change]({ value: option.dataset.value, name: input && input.name, el: box }); }
-  };
-
   // --- Clipboard: copy, cut and paste interoperate with the browser and other programs. Text another program
   // put there pastes into the app, and what the app copies pastes elsewhere. Outside text fields:
   //   ARC.onCopy((cut) => text | { text, data } | null)  Ctrl/Cmd+C or X: the text to put on the clipboard
@@ -426,8 +335,6 @@
     if (name === 'arc:undo') { const u = ARC._undo; ARC._undo = null; document.getElementById('status-root').hidden = true; if (u) u(); return; }
     if (name === 'arc:close') { ARC.closeDialog(); return; }
     if (name === 'arc:nav') { ARC.navigate(el.dataset.hash || '#/'); return; }
-    if (name === 'arc:combobox') { ARC._openCombobox(el); return; }
-    if (name === 'arc:option') { ARC._pickOption(el); return; }
     const fn = app.actions && app.actions[name];
     if (!fn) return;
     ARC.shareHelpers(app);
@@ -439,7 +346,6 @@
   }
   document.addEventListener('click', (ev) => {
     if (ARC._popover && !ARC._popover.contains(ev.target) && !ev.target.closest('[data-action]')) ARC.closePopover();
-    if (ARC._combobox && !ARC._combobox.contains(ev.target)) ARC.closeCombobox();
     const el = ev.target.closest('[data-action], button, input, textarea, select, a, label');
     if (!el || !el.hasAttribute('data-action') || el.tagName === 'FORM') {
       // In-app links render synchronously too (see ARC.navigate); the browser's own fragment
@@ -454,8 +360,7 @@
     // Native controls must keep their own activation behavior. In particular,
     // cancelling checkbox clicks reverts the checked state after our handler.
     if (!el.matches('input, textarea, select, label')) ev.preventDefault();
-    // An activated menu item is done with its menu (a Copy that renders nothing left it open over the grid),
-    // unless the action opened another popover in its place.
+    // A completed menu command dismisses its menu unless it opened a replacement.
     const menu = el.getAttribute('role') === 'menuitem' ? el.closest('[data-popover]') : null;
     dispatch(el.dataset.action, el, ev, null);
     if (menu && (ARC._popover === menu || ARC._popover === null)) {
@@ -479,7 +384,6 @@
   });
   document.addEventListener('keydown', (ev) => {
     if (ev.key === 'Escape' && ARC._popover) ARC.closePopover();
-    if (ev.key === 'Escape' && ARC._combobox) ARC.closeCombobox();
   });
   window.addEventListener('hashchange', () => {
     if ((location.hash || '#/') === ARC._renderedHash) return;  // already rendered in the click's task

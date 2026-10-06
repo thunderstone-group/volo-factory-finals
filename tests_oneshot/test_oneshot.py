@@ -593,8 +593,6 @@ class OfflineCase(unittest.TestCase):
             "<textarea placeholder=\"Write here...\"></textarea><button>+ Save Shelf</button></form>';\n"
             "const SEED = { account: 'user@example.com' };\n")
         self.assertEqual(adapter.vocabulary_gaps(stage, req), ([], 0))  # typed values are not demanded
-        [decorated] = adapter.exact_name_gaps(stage, req)
-        self.assertIn("“Save Shelf” appears only as `+ Save Shelf`", decorated)
         (stage / "frontend" / "public" / "app.js").write_text("html += '<button>Save</button>';\n")
         gaps, missing = adapter.vocabulary_gaps(stage, req)
         self.assertEqual(missing, 5)

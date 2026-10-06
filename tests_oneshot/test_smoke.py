@@ -446,7 +446,7 @@ class SmokeCase(unittest.TestCase):
         if (Path(tempfile.gettempdir()) / "oneshot-jsdom" / "node_modules" / "jsdom").is_dir():
             self.assertEqual(budget.smoke["problems"], [], budget.smoke)
 
-    def test_replacing_the_scaffold_shell_is_a_gate_problem(self):
+    def test_replacing_unused_scaffold_plumbing_is_not_a_product_defect(self):
         reply = (block("frontend/public/index.html", "<!doctype html><title>T</title><h1>T</h1><script src=\"app.js\"></script>") +
                  block("frontend/public/app.js", "document.body.append('x');"))
         self.replies(events(reply))
@@ -454,8 +454,7 @@ class SmokeCase(unittest.TestCase):
         with patch.object(adapter, "SCAFFOLD", True):
             adapter.generate("req", "synthetic-model", "https://synthetic.invalid/v1", SYNTHETIC_KEY, self.out, budget)
         gaps = [p for p in budget.smoke["problems"] if "scaffold" in p]
-        self.assertTrue(any("lib/arc.js" in p and "no longer loads" in p for p in gaps), budget.smoke)
-        self.assertTrue(any("app.js no longer defines" in p for p in gaps), budget.smoke)
+        self.assertEqual(gaps, [], budget.smoke)
 
     def test_literal_presence_diagnostics_do_not_become_repair_goals(self):
         req = 'After login replace the link with \u201cSign Out\u201d. Show \u201cEmail cannot be empty\u201d. Seed \u201cBook 5.1\u201d.'
@@ -472,7 +471,7 @@ class SmokeCase(unittest.TestCase):
         self.assertTrue(budget.smoke["repair"]["accepted"], budget.smoke)
         self.assertIn("Sign Out", (self.out / "frontend/public/app.js").read_text())
 
-    def test_exact_name_gate_flags_decorated_quoted_names(self):
+    def test_source_spelling_does_not_decide_rendered_accessible_names(self):
         stage = self.root / "stage"
         (stage / "frontend" / "public").mkdir(parents=True)
         req = 'Click the "Take a note" form. The sidebar shows "Notes" and "Reminders" entries. The snackbar shows exactly "Note trashed". Stats read "Asked" and "Viewed".'
@@ -480,17 +479,11 @@ class SmokeCase(unittest.TestCase):
             "html += `<a href=\"#/\">\u2022 Notes</a><a href=\"#/r\">\U0001f514 Reminders</a>`;\n"
             "html += `<input placeholder=\"Take a note...\">`;\n"
             "html += `<div role=\"status\">Note trashed</div><span>Asked ' + when + '</span>`;\n")
-        gaps = adapter.exact_name_gaps(stage, req)
-        self.assertEqual(len(gaps), 1, gaps)
-        self.assertIn("1 quoted control name(s)", gaps[0])
-        for word in ("Take a note",):
-            self.assertIn(word, gaps[0])
-        self.assertNotIn("Note trashed", gaps[0])
-        self.assertNotIn("Asked", gaps[0])  # no control word near the quote: not a control name
+        self.assertEqual(adapter.static_gaps(stage, req, False), {})
         (stage / "frontend" / "public" / "app.js").write_text(
             "html += `<a href=\"#/\"><span aria-hidden=\"true\">\u2022</span>Notes</a><button aria-label=\"Reminders\">R</button>`;\n"
             "html += `<button type=\"button\">Take a note</button><div role=\"status\">Note trashed</div>`;\n")
-        self.assertEqual(adapter.exact_name_gaps(stage, req), [])
+        self.assertEqual(adapter.static_gaps(stage, req, False), {})
 
     def test_static_gates_do_not_turn_word_overlap_or_readonly_fields_into_defects(self):
         stage = self.root / "static-scopes"
@@ -704,7 +697,7 @@ class SmokeCase(unittest.TestCase):
         self.assertEqual(only["gained"], ["REQ-2"])
         self.assertEqual(budget.smoke["scenarios_after"]["counts"], {"pass": 2})
 
-    def test_a_repair_that_makes_a_clean_static_gate_flag_is_discarded(self):
+    def test_a_working_repair_need_not_swallow_uncaught_exceptions(self):
         unguarded = server().replace("process.on('uncaughtException', (e) => console.error('uncaught', e)); "
                                      "process.on('unhandledRejection', (e) => console.error('unhandled', e));\n", "")
         self.assertNotIn("uncaughtException", unguarded)
@@ -712,10 +705,9 @@ class SmokeCase(unittest.TestCase):
         self.scenarios({"REQ-1": lambda t: "two" in t})
         files, budget = self.generate(repairs=1)
         [only] = budget.smoke["rounds"]
-        self.assertFalse(only["accepted"])
+        self.assertTrue(only["accepted"])
         self.assertEqual(only["gained"], ["REQ-1"])
-        self.assertIn("a static gate that was clean now flags: backend registers no process.on", only["reason"])
-        self.assertIn("uncaughtException", (self.out / "backend/server.js").read_text())
+        self.assertNotIn("uncaughtException", (self.out / "backend/server.js").read_text())
 
     def test_the_spend_limit_stops_the_repairs(self):
         draft = app(server()).replace(block("frontend/public/app.js", "console.log('synthetic');"),

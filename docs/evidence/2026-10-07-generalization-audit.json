@@ -1,0 +1,93 @@
+{
+  "audit_base": "98754d21366dfc5f83bca3e34d480cde94916604",
+  "code_revision": "ac4bcdc4e77ad4c2b0c2a233da5c17e32586e182",
+  "code_commits": [
+    "d89d194",
+    "5652e9c",
+    "b395343",
+    "ac4bcdc"
+  ],
+  "package": {
+    "source_sha256": "e77c690c63313c1eeaf9eaf6361b0ea4a4621c16258b890d56af615eb33fd38b",
+    "package_sha256": "240b6b8d8a3732964b141d6227522ca8199811b7c47df23e7d6af6a04e71c65a",
+    "package_bytes": 563518
+  },
+  "package_files": 24,
+  "one_shot": {
+    "tests": 327,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 3,
+    "seconds": 260.103
+  },
+  "scenario_e2e_supplement": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 55.694,
+    "method": "Unchanged assertions; existing Chromium headless shell; class full-browser-path skip flag disabled in memory; no permission change or install; scenario translation disabled."
+  },
+  "legacy": {
+    "tests": 226,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 12,
+    "seconds": 68.88
+  },
+  "initial_one_shot": {
+    "tests": 327,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 3,
+    "reasons": [
+      "three assertions for deliberately removed rules",
+      "one new native-arrow-key assumption; replaced by portable focus and submission verification"
+    ]
+  },
+  "metadata_regression": {
+    "before": "synthetic os.scandir sentinel fails at old main.py:1529 copytree",
+    "after": "18 evolution tests pass, including sentinel and existing metadata-preservation tests"
+  },
+  "live_model_calls": 0,
+  "platform_key_used": false,
+  "uploaded": false,
+  "pushed": false,
+  "official_score_observed": false,
+  "isolation_certified": false,
+  "limitations": [
+    "generated processes are not OS sandboxed",
+    "egress allowlist not enforced across all runners",
+    "browser download CDN is beyond npm registries",
+    "input and cache paths rely on trusted caller/environment"
+  ],
+  "local_logs": {
+    "runs/generalization-audit/oneshot-tests.log": {
+      "sha256": "c9ef8e99841b0bad6f5a8f796ff16ffd2cdbe2c89fa37dc210cdf40df6ae8f64",
+      "bytes": 34431
+    },
+    "runs/generalization-audit/oneshot-tests-initial.log": {
+      "sha256": "92b95c2ad3a35a56ce616e4ffa4a4d0fbb981ac7076fb035036b56796e75a690",
+      "bytes": 38054
+    },
+    "runs/generalization-audit/legacy-tests.log": {
+      "sha256": "932e55d9db4e3b3c517908f94f7955b629a5391b16a6b3b3315b925180624953",
+      "bytes": 39625
+    },
+    "runs/generalization-audit/scenario-headless-tests.log": {
+      "sha256": "24ba385703ce45453274782f6b4dfe8b841bb21152fe4972b11369b153b18a2f",
+      "bytes": 474
+    },
+    "runs/generalization-audit/scaffold-tests.log": {
+      "sha256": "360266688c7acf313df4707b913ae7313226f2ee33c0fab40fd9f4238ce387df",
+      "bytes": 110
+    }
+  },
+  "classification_rows": {
+    "total": 146,
+    "A": 37,
+    "B": 77,
+    "C": 26,
+    "D": 6
+  }
+}

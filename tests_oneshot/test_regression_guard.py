@@ -41,7 +41,7 @@ class DiffTests(unittest.TestCase):
         self.assertEqual(guard.stable(a, {'screens': []})['items'], 0)
 
     def test_stated_placements_are_checked_in_their_landmark(self):
-        req = ('id: R\ndescription: The top global search control has searchbox role and accessible name "Search".\n'
+        req = ('id: R\ndescription: The global control in the page header has searchbox role and accessible name "Search".\n'
                'scenarios:\n- name: s\n  steps:\n  - keyword: WHEN\n'
                '    content: The visitor locates the visible link named "Sign in" in the main content.\n')
         self.assertEqual(sorted((p['role'], p['name'], p['landmark'], p['every']) for p in guard.placements(req)),
@@ -59,10 +59,27 @@ class DiffTests(unittest.TestCase):
                                              ('searchbox', 'Search', ['banner'])), req)
         self.assertEqual(right['missing'], [])
         self.assertIn('placement:searchbox:Search:banner', right['kept'])
+        self.assertFalse(guard.placed({'role': 'link', 'name': 'Sign in', 'landmark': 'main'},
+                                     observed(('button', 'Sign in', ['main']))['screens'][0]))
+        # A stated placement relocates the same control; a copy leaves two identical controls on one page.
+        self.assertIn('instead of adding a copy', ' '.join(m['observation'] for m in wrong['missing']))
+        without_header = observed(('heading', 'Other page', ['main']))['screens'][0]
+        without_header['steps'] = [{'role': 'link', 'name': 'Other'}]
+        right['observation']['screens'].append(without_header)
+        checked = guard.compare(base, right['observation'], req)
+        self.assertIn('placement:searchbox:Search:banner', [m['id'] for m in checked['missing']])
 
-    def test_placements_need_an_explicit_region_or_global_statement(self):
+    def test_placements_need_an_explicit_region(self):
         self.assertEqual(guard.placements('description: A searchbox named "Search" filters the list. '
                                           'The link named "Home" opens the start page.'), [])
+        self.assertEqual(guard.placements('description: The global search control has searchbox role '
+                                          'and accessible name "Search".'), [])
+        top = guard.placements('description: The top global search control has searchbox role and accessible name '
+                               '"Search".')
+        self.assertEqual([(p['role'], p['name'], p['landmark'], p['every']) for p in top],
+                         [('searchbox', 'Search', 'banner', True)])
+        self.assertEqual(guard.placements('description: A button named "Browse" in the top navigation.')[0]['landmark'],
+                         'navigation')
 
     def test_missing_finding_has_precise_original_path(self):
         steps = [{'role': 'link', 'name': 'Library', 'kind': 'url', 'href': '/library'}]

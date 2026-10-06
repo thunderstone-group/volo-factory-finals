@@ -6,27 +6,6 @@ function scanSemantics(data) {
   const {contracts, home} = data; const win = window;
   const semanticErrors = [];
   const issue = (message) => { if (!semanticErrors.includes(message) && semanticErrors.length < 12) semanticErrors.push(message); };
-  if (home && contracts.seedStates && win.SEED) {
-    const records = []; const visited = new Set();
-    const walk = value => {
-      if (!value || typeof value !== 'object' || visited.has(value)) return;
-      visited.add(value);
-      if (!Array.isArray(value) && (typeof value.name === 'string' || typeof value.title === 'string')) records.push(value);
-      Object.values(value).forEach(walk);
-    };
-    walk(win.SEED);
-    const aliases = {archived:'archived', isarchived:'archived', pinned:'pinned', ispinned:'pinned',
-      deleted:'deleted', isdeleted:'deleted', trashed:'deleted', istrashed:'deleted', intrash:'deleted'};
-    for (const contract of contracts.seedStates) {
-      const matches = records.filter(record => record.name === contract.name || record.title === contract.name);
-      if (matches.length !== 1) continue;
-      for (const [key, value] of Object.entries(matches[0])) {
-        const state = aliases[key.toLowerCase().replace(/_/g, '')];
-        if (typeof value === 'boolean' && state && state in contract.states && value !== contract.states[state])
-          issue(`Seed data declares "${contract.name}" as ${contract.qualifier}, but its generated ${key}=${value}. Preserve the declared initial state; scenario setup and outcomes must be reached through actions.`);
-      }
-    }
-  }
   const norm = (value) => String(value || '').replace(/\s+/g, ' ').trim();
   const nameOf = (el) => {
     if (el.getAttribute('aria-label')) return norm(el.getAttribute('aria-label'));
@@ -159,9 +138,9 @@ async function observe(page, url, contracts) {
         errors.add(`Typing into "${contract.form}" and then activating "${contract.control}" discards the entered field value. Preserve the current form inputs and edit state when a disclosure or render updates the UI.`);
     }
   };
-  for (const contract of (contracts.formReveals || []).filter(c => c.record && /^Edit\b/i.test(c.form)).slice(0,3)) {
+  for (const contract of (contracts.formReveals || []).filter(c => c.record && c.entryAction).slice(0,3)) {
     if (!await visitRecord(contract.record)) continue;
-    const edit = namedEntry('Edit');
+    const edit = namedEntry(contract.entryAction);
     if (!await edit.isVisible()) continue;
     await edit.click({timeout:500});await page.waitForTimeout(50);await activateDisclosure(contract);
   }
@@ -174,15 +153,6 @@ async function observe(page, url, contracts) {
     if (!await action.isVisible())
       errors.add(`The requirement starts "${contract.action}" from record "${contract.record}", but that action is absent on its details page. Keep creation actions available in the declared entry context.`);
     else { await action.click({timeout:500});await page.waitForTimeout(50);await scan(false); }
-  }
-  for (const contract of (contracts.readingEntries || []).slice(0,3)) {
-    if (!await visitRecord(contract.parent)) continue;
-    const entry = page.getByRole('link', {name:contract.record}).or(page.getByRole('button', {name:contract.record})).first();
-    if (!await entry.isVisible()) continue;
-    await entry.click({timeout:500});await page.waitForTimeout(60);
-    const edit = namedEntry('Edit');const save = page.getByRole('button', {name:/^Save(?:\s|$)/i}).first();
-    if (!await edit.isVisible() && await save.isVisible())
-      errors.add(`Primary record entry "${contract.record}" in "${contract.parent}" opens an editor directly, bypassing the reading/details view and its Edit action. Preserve the normal primary-entry flow for drafts too.`);
   }
   for (const contract of (contracts.pressedTransitions || []).slice(0,3)) {
     if (!await visitRecord(contract.record)) continue;
@@ -198,31 +168,15 @@ async function observe(page, url, contracts) {
   }
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:10000});await page.waitForTimeout(50);
   const end=Date.now()+16000;const queue=['#/'];const seen=new Set();const done=new Set();
-  const routeNames = new Map(); const readingRoutes = new Map();
-  const readingEntries = contracts.readingEntries || [];
-  const priorityOfRoute = hash => readingEntries.some(entry => routeNames.get(hash) === entry.parent) ? 100 : readingRoutes.has(hash) ? 90 : 0;
   while(queue.length && seen.size<12 && Date.now()<end){
     const hash=queue.shift();if(seen.has(hash))continue;seen.add(hash);
     await page.evaluate(h=>{location.hash=h},hash);await page.waitForTimeout(30);
-    if (readingRoutes.has(hash)) {
-      await page.waitForTimeout(70);
-      const edit = page.getByRole('button', {name: 'Edit', exact: true}).or(page.getByRole('link', {name: 'Edit', exact: true})).first();
-      const save = page.getByRole('button', {name: /^Save(?:\s|$)/i}).first();
-      if (!await edit.isVisible() && await save.isVisible())
-        errors.add(`Primary record link "${readingRoutes.get(hash)}" opens an editor directly and bypasses the reading/details view with its Edit action. Preserve the normal primary-entry flow for draft records too; do not automatically redirect their reading route.`);
-    }
     for(let step=0;step<18 && Date.now()<end;step++){
       const links=await page.locator('a[href^="#/"], [data-hash^="#/"]').evaluateAll(es=>es.map(e=>({hash:e.getAttribute('href')||e.getAttribute('data-hash'),name:(e.getAttribute('aria-label')||e.textContent||'').replace(/\s+/g,' ').trim()})));
-      const hasDraftLink = links.some(link => readingEntries.some(entry => link.name.includes(entry.record)));
-      const heading = hasDraftLink ? (await page.getByRole('main').getByRole('heading').first().textContent({timeout:200}).catch(()=>'' ) || '').replace(/\s+/g,' ').trim() : '';
-      for(const link of links){
-        const h=link.hash;if(!h)continue;
-        if (!routeNames.has(h)) routeNames.set(h, link.name);
-        const expected=readingEntries.find(entry=>entry.parent===heading && link.name.includes(entry.record));
-        if (expected) readingRoutes.set(h, expected.record);
-        if(!seen.has(h) && !queue.includes(h) && queue.length<100)queue.push(h);
+      for (const link of links) {
+        const h = link.hash;
+        if (h && !seen.has(h) && !queue.includes(h) && queue.length < 100) queue.push(h);
       }
-      queue.sort((a,b)=>priorityOfRoute(b)-priorityOfRoute(a));
       let scope=page;let scopeName='page';
       const dialog=page.getByRole('dialog').first();
       if(await dialog.isVisible()){scope=dialog;scopeName='dialog';}

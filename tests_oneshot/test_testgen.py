@@ -145,6 +145,14 @@ class PlanCase(unittest.TestCase):
         self.assertIn("- REQ-1-1#2: Add two  (scenario 2 of REQ-1-1)", user["content"])
         self.assertIn("Seed: synthetic", user["content"])
         self.assertIn("const { test, expect } = require('@playwright/test');", system["content"])
+        self.assertNotIn("Control placements", user["content"])
+
+    def test_request_scopes_the_placements_the_guard_enforces(self):
+        text = REQUIREMENTS.replace("description:", "description: The top global search control has searchbox role "
+                                    "and accessible name \"Search\".", 1)
+        user = testgen.request(text, testgen.plan(text)[0])[1]["content"]
+        self.assertIn("`page.getByRole('banner').getByRole('searchbox', { name: \"Search\", exact: true })`", user)
+        self.assertLess(user.index("Control placements"), user.index("\n\nWrite `"))
 
 
 class WriteCase(unittest.TestCase):
@@ -393,6 +401,7 @@ class GroundingCase(unittest.TestCase):
         source = "getByRole('gridcell', { name: 'E1', exact: true }); getByRole('button', { name: 'Frobnicate' })"
         self.assertFalse(testgen.ungrounded("E1", source, "Cell `A1` holds `Region`.", quoted))
         self.assertTrue(testgen.ungrounded("Frobnicate", source, "Cell `A1` holds `Region`.", quoted))
+        self.assertTrue(testgen.ungrounded("E1", source, "A catalog has named records.", testgen._phrases("")))
 
 
 class RunCase(unittest.TestCase):
@@ -864,6 +873,7 @@ class GroundingFlatCase(unittest.TestCase):
         quoted = testgen._phrases(flat)
         for name, expected in (("Worksheet name already exists", False), ("Sheet3", False), ("Totally invented", True)):
             self.assertEqual(testgen.ungrounded(name, f"'{name}'", flat, quoted), expected, name)
+        self.assertTrue(testgen.ungrounded("Sheet3", "'Sheet3'", "A record named Sheet1 exists.", testgen._phrases("")))
 
 
 class LabelOverrideCase(unittest.TestCase):
