@@ -1,4 +1,4 @@
-# 2026-10-07 01:55 决赛：最终包候选五在循环重跑
+# 2026-10-07 03:40 决赛：榜上 50/60 第 1；干净版消融在跑
 
 先读本页、AGENTS.md、`docs/reference/finals-roadmap.md`（第 2 节须知、第 4.5 节最终包与策略、F2-real、F3）。git 和 CLI 是现状真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。
 
@@ -6,6 +6,13 @@
 - 10-06 12:20 用户：「arc 我们进决赛了，可以开始猛攻决赛了，你跟 gpt6astra max 一起」。Codex 走 codex-dispatch。
 - 练习额度与正式试跑已授权直接跑；volo-factory PR 验收后自己合；包里不写题名和答案；代理暗题位置不进派发单与仓库。
 - 用户要求中文回复（10-06 22:29 用户：「说中文，看不懂」）。
+
+## 03:40 现状（先看这里）
+- 榜：`977c79cf0389`（包 a7066b2e）50/60，S 98.82，第 1。候选三、四、五的提交已按授权删除；候选五的运行证据在 E3/c5-runs/。
+- 用户 10-07 02:21 授权：比当时最好成绩差的提交直接删（记忆 feedback-arcbench-autonomy 已记）。
+- 用户 10-07 02:26 要求去掉无意义过拟合，判据「没有隐藏测试，认真的工程师只读需求还会不会这么做」；冠军要能上台讲设计。泛化审查报告在分支 feat/finals-clean 的 docs/reports/2026-10-07-generalization-audit.md。
+- 消融在跑（L/runs/*-clean240b-* 与 *-plus0b95-*，包在 E3/clean-b608dfc.zip、E3/cleanplus-860349e.zip）。看完按 finals-roadmap 第 4.5 节判据定最终包，正式提交（`arcbench upload … --competition hackathon-evolution --official-evaluation --model deepseek-v4-flash-vision-exp`，再 `arcbench run <提交> --all-tasks`），然后 `E3/rerun_loop.sh <提交> github|sheet 12`（先删 E3/STOP-github、E3/STOP-sheet）。最好组合到 10-08 中午仍不超过 50，就删该提交。
+- 要上台讲：截止后写一份 agent 设计说明（链路、确定性检查、证据晋升、拒绝做的事），以审查报告为底。
 
 ## 决赛事实
 - 截止 10-08 18:00，截止时停在跑容器；榜只看每队最新提交，同一提交内每题取最好；成本只算选中的两次运行。
