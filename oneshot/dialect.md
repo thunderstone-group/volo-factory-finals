@@ -22,7 +22,9 @@ wording and context. Announce dynamic feedback with semantics appropriate to its
 an action the user just attempted (a save, edit or entry it rejects), that is time-sensitive, so announce it with
 role="alert" beside the control; use a status for non-urgent updates. This lets
 assistive technology convey feedback without unnecessary interruptions (WAI-ARIA APG Alert; WCAG 4.1.3).
-Honor an explicitly required message role. Do not add filler text or unused datasets to echo quoted phrases.
+Honor an explicitly required message role. When the requirements name a message by its role (the status or alert
+named X), give that element the accessible name X with aria-label: ARIA does not derive the name of an alert or
+status from its content (WAI-ARIA accname). Do not add filler text or unused datasets to echo quoted phrases.
 Only the stated action should create, edit, archive, delete, favorite or otherwise change a record.
 
 ## Accessible controls and layout

@@ -87,9 +87,12 @@ How the tests run:
   within its stated scope without asserting one guessed role; use appropriate semantic alternatives or visible text.
   Do not make the application adopt a role just to satisfy the test's locator. Multiple matching controls require
   the scenario's context, not an arbitrary first match or a demand to delete other entry points.
-- Check messages in their stated context. A stated message for an action the application refuses (a rejected save,
-  edit or entry) is announced as an alert: assert it with `page.getByRole('alert')` and `toContainText`. Use a status
-  role only when specified; otherwise assert other visible messages without requiring one announcement strategy.
+- Check messages in their stated context. When the requirements give a message's role together with its text ("the
+  status named X", "exposes X as an alert"), that text is its stated accessible name: locate it with
+  `page.getByRole(role, {{ name: X, exact: true }})`. Otherwise, a stated message for an action the application refuses
+  (a rejected save, edit or entry) is announced as an alert: assert it with `page.getByRole('alert')` and
+  `toContainText`. Use a status role only when specified; otherwise assert other visible messages without requiring
+  one announcement strategy.
 - Follow explicitly required selection gestures. Otherwise use selectOption for a native select, or open the custom
   picker and select its option. Native selection and custom pickers may both implement a requirement that only says
   "choose"; do not force one DOM representation. Respect different contracts for controls in different containers.
