@@ -18,8 +18,9 @@ Distinguish required UI labels/messages, initial records, runtime inputs, exampl
 Provision the identities and relationships stated to exist initially. Do not pre-apply later scenario outcomes
 or create records explicitly described as absent. When the requirements allow alternative indications, check whether
 they require an exclusive choice; do not infer exclusivity from "or" alone. Required messages retain their stated
-wording and context. Announce dynamic feedback with semantics appropriate to its urgency: an alert for important,
-time-sensitive feedback, a status for non-urgent updates, or field-associated error text for validation. This lets
+wording and context. Announce dynamic feedback with semantics appropriate to its urgency: when the application refuses
+an action the user just attempted (a save, edit or entry it rejects), that is time-sensitive, so announce it with
+role="alert" beside the control; use a status for non-urgent updates. This lets
 assistive technology convey feedback without unnecessary interruptions (WAI-ARIA APG Alert; WCAG 4.1.3).
 Honor an explicitly required message role. Do not add filler text or unused datasets to echo quoted phrases.
 Only the stated action should create, edit, archive, delete, favorite or otherwise change a record.
@@ -37,10 +38,12 @@ Keep an explicitly required accessible name intact. Decorative icons can use ari
 supplementary details must not change a name whose exact value is specified.
 When the requirements place a control in a region (the main content, the page header, a dialog, a row or a
 cell), render it inside that landmark or element. Which container and which pages does the requirement actually
-specify? "Global" describes availability, not necessarily a banner. Move controls when relocation is required;
+specify? "Global" describes availability, not necessarily a banner; a control the requirements put at the top of the
+application (a "top" search or navigation) belongs in the page header that every page shares. Move controls when relocation is required;
 retain useful repeated entry points in distinct contexts. Scope and purpose disambiguate them for users; a role and
 name need not be unique across an entire page. A control the requirements add to a cell, row or record
-goes inside that element, even where the existing application keeps other controls beside it.
+goes inside that element, even where the existing application keeps other controls beside it; when the requirements
+state that element's displayed text, the control carries an accessible name and no visible text of its own.
 
 Check which layout regions the application needs. Configure header, navigation, account controls, sidebar
 and footer only when required or useful for the described workflow. A shared renderer can keep appropriate
@@ -55,7 +58,7 @@ keyboard, commit and cancellation interactions are required or appropriate; do n
 must implement the same gesture set. Display-only content need not become editable.
 Modal dialogs isolate their background and manage focus. Provide a visible, accessibly named dismissal control and
 keyboard dismissal so users can leave the dialog (WAI-ARIA APG Dialog). Use the name the requirements specify;
-otherwise choose wording suited to the action, such as Cancel, Done or Close. Ordinary menus and popovers remain
+otherwise name it Close, the conventional label users and assistive technology expect. Ordinary menus and popovers remain
 in their intended scope. Use the APG menu-button roles, states and keyboard behavior for a command menu; a disclosure
 of ordinary navigation links can keep link semantics. This preserves the interaction assistive technology expects.
 A field chooser belongs to the container the requirements identify; a named editor elsewhere does not

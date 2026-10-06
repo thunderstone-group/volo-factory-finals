@@ -71,8 +71,12 @@ class DiffTests(unittest.TestCase):
     def test_placements_need_an_explicit_region(self):
         self.assertEqual(guard.placements('description: A searchbox named "Search" filters the list. '
                                           'The link named "Home" opens the start page.'), [])
-        self.assertEqual(guard.placements('description: The top global search control has searchbox role '
+        self.assertEqual(guard.placements('description: The global search control has searchbox role '
                                           'and accessible name "Search".'), [])
+        top = guard.placements('description: The top global search control has searchbox role and accessible name '
+                               '"Search".')
+        self.assertEqual([(p['role'], p['name'], p['landmark'], p['every']) for p in top],
+                         [('searchbox', 'Search', 'banner', True)])
         self.assertEqual(guard.placements('description: A button named "Browse" in the top navigation.')[0]['landmark'],
                          'navigation')
 

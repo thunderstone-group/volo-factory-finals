@@ -78,7 +78,8 @@ How the tests run:
   it. Do not guess CSS selectors, XPath, ids, classes or URLs; use them only if the requirements explicitly define
   that interface. When a control belongs inside a stated dialog, menu, region, row, cell or grid, scope to it first.
   Use the semantic region the requirement identifies, such as main for main content or banner for a page header.
-  "Global" or "top" alone does not prescribe a banner, nor does "sidebar" necessarily prescribe complementary.
+  A control the requirements put at the top of the application is located in `page.getByRole('banner')`; "global"
+  alone does not prescribe a banner, nor does "sidebar" necessarily prescribe complementary.
 - A control the requirements add to a particular cell, row or record ("adds a button ... to that cell") is located
   inside that element. Use cell or gridcell according to the stated table or grid semantics; do not invent a grid.
 - For an explicitly required ARIA command menu, follow the APG menu-button pattern, including menuitem entries.
@@ -86,8 +87,9 @@ How the tests run:
   within its stated scope without asserting one guessed role; use appropriate semantic alternatives or visible text.
   Do not make the application adopt a role just to satisfy the test's locator. Multiple matching controls require
   the scenario's context, not an arbitrary first match or a demand to delete other entry points.
-- Check messages in their stated context. Use an alert/status role only when specified; otherwise assert the visible
-  message without requiring one announcement strategy. A validation failure need not be an assertive live region.
+- Check messages in their stated context. A stated message for an action the application refuses (a rejected save,
+  edit or entry) is announced as an alert: assert it with `page.getByRole('alert')` and `toContainText`. Use a status
+  role only when specified; otherwise assert other visible messages without requiring one announcement strategy.
 - Follow explicitly required selection gestures. Otherwise use selectOption for a native select, or open the custom
   picker and select its option. Native selection and custom pickers may both implement a requirement that only says
   "choose"; do not force one DOM representation. Respect different contracts for controls in different containers.

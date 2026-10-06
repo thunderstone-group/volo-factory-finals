@@ -178,13 +178,15 @@ def place(text, roles, found):
                                                   'statement': m.group(0)})
     for sentence in re.split(r'(?<=[.;])\s+', text):
         region = re.search(r'\b(?:in|inside|within) the (' + '|'.join(REGIONS) + r')\b', sentence, re.I)
-        if not region:
+        top = re.search(r'\b(?:the|a|an) top\b', sentence, re.I)
+        if not region and not top:
             continue
         m = re.search(r'\b(' + roles + r') role and (?:the )?accessible name [“"]([^”"]{1,80})[”"]', sentence, re.I)
         if m:
             role, name = m.group(1).lower(), m.group(2).strip()
-            landmark = REGIONS[region.group(1).lower()]
-            every = bool(re.search(r'\b(?:global|site-wide|(?:every|all) pages?)\b', sentence, re.I))
+            # "The top <...> control": the top of the application is the page header every page shares.
+            landmark = REGIONS[region.group(1).lower()] if region else 'banner'
+            every = not region or bool(re.search(r'\b(?:global|site-wide|(?:every|all) pages?)\b', sentence, re.I))
             found[(role, name, landmark)] = {'role': role, 'name': name, 'landmark': landmark, 'every': every,
                                             'statement': sentence[:300]}
 
