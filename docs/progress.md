@@ -1821,3 +1821,7 @@ v12双题均耗尽5次主调用失败上限。固定结果G32pass/53fail/31error
 初赛终榜 VOLO-AI 第 2（G79 + Sheet87，S104.96）。10-05 组委会邮件通知入围决赛。决赛是平台竞赛 `hackathon-evolution`：从初赛最新提交选中的两份产物继续进化，2 题 60 条，10-06 中午仍未开放。已核实的赛制事实和工作流写进新的 `reference/finals-roadmap.md`，初赛路线图转为历史。
 
 练习进化赛（arc-bench-evolution 6 题、lite-evolution 2 题）的题包和需求已下载到 campaign evidence `2026-10-06-finals/`。主分支 v11 包（cd0f5969）在 8 题上各起跑一次作基线（F1，练习额度）。决赛代理暗题（F2）派给 Codex GPT-6 Astra max：在真实起点应用上各写 30 条官方风格进化需求和测试，附参考实现与回归套件。
+
+### 10-06 13:25 进化发布 bug
+
+F1 第一轮（包 cd0f5969）8 题全部 agent 退出 1、零测试，日志末尾都是 `[oneshot] failed: template changed during generation`。下载的 bundle（run 41019cb9e0e1）显示 output-dir 下有 `.arc/stdout.log`（272 KB，即 agent 的输出）和 `.arc/runner-events.jsonl`：平台在运行期间持续写它们，而原地升级在开始时给整个目录打了 stat 戳，发布前比对不一致就放弃。PR #121：原地发布只回写内容变化的应用文件（先写到同目录临时文件，全部写完再改名），删掉 `template_stamp`；新测试在生成期间追加 `.arc/stdout.log`，在旧代码上复现同一报错，新代码通过；`tests_oneshot` 279 条 OK（8 条因本 shell 无 NODE_PATH Playwright 跳过）。main 6ee6a63，包 0a0ab9d7。第二轮 8 题已起跑。第一轮实际花费约 8.9 元。
