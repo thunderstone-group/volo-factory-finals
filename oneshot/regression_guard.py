@@ -191,8 +191,53 @@ def compare(baseline, observed, requirements=''):
             'observation': observed}
 
 
+RUNTIME_LOCK = threading.Lock()
+RUNNER_IMAGE_MODULES = '/opt/arcbench/node_modules'  # the evaluator image's own @playwright/test install
+
+
+def _ensure_runtime(env):
+    """Make `playwright` and its Chromium available the way main.py's browser probe does (10-06: on the platform the
+    baseline ran beside the draft, before anything had installed Playwright, and every observation was unavailable).
+    Returns None when ready, else the reason."""
+    node, npm = shutil.which('node', path=env.get('PATH')), shutil.which('npm', path=env.get('PATH'))
+    if not node:
+        return 'node is not on PATH'
+
+    def check(script, timeout):
+        try:
+            return subprocess.run([node, '-e', script], env=env, capture_output=True, text=True,
+                                  timeout=timeout).returncode == 0
+        except (OSError, subprocess.TimeoutExpired):
+            return False
+
+    module = "require.resolve('playwright')"
+    browser = "require('playwright').chromium.launch({timeout: 20000}).then(b => b.close()).catch(() => process.exit(1))"
+    with RUNTIME_LOCK:
+        if not check(module, 30):
+            if not npm:
+                return 'Playwright runtime is not installed and npm is unavailable'
+            try:
+                subprocess.run([npm, 'install', '--prefix', str(scenario_check.PLAYWRIGHT_PREFIX), 'playwright@1.57.0',
+                                '--no-audit', '--no-fund', '--silent'], env=env, capture_output=True, timeout=180)
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+            if not check(module, 30):
+                return 'Playwright runtime could not be installed'
+        if not check(browser, 60):
+            try:
+                subprocess.run([node, '-e', "process.argv=['node','cli','install','chromium','--only-shell'];"
+                                "require(require('path').join(require('path').dirname("
+                                "require.resolve('playwright/package.json')),'cli.js'))"],
+                               env=env, capture_output=True, timeout=300)
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+            if not check(browser, 60):
+                return 'Chromium could not be started'
+    return None
+
+
 def observe(app, paths=None, *, passes=1, work_parent=None):
-    """Build an isolated copy once, reset the backend between passes, never install dependencies."""
+    """Build an isolated copy once, reset the backend between passes; install Playwright only when it is missing."""
     started = time.monotonic()
     if work_parent is not None:
         work_parent = Path(work_parent).resolve()
@@ -202,11 +247,17 @@ def observe(app, paths=None, *, passes=1, work_parent=None):
             work = Path(temp)
             (work / 'tmp').mkdir()
             env = scenario_check._child_env(work / 'tmp')
-            paths_env = [env.get('NODE_PATH', ''), str(scenario_check.PLAYWRIGHT_PREFIX / 'node_modules')]
+            paths_env = [env.get('NODE_PATH', ''), str(scenario_check.PLAYWRIGHT_PREFIX / 'node_modules'),
+                         RUNNER_IMAGE_MODULES]
             global_root = scenario_check._npm_global_root(env)
             if global_root:
                 paths_env.append(global_root)
             env['NODE_PATH'] = os.pathsep.join(filter(None, paths_env))
+            if 'PLAYWRIGHT_BROWSERS_PATH' in os.environ:
+                env['PLAYWRIGHT_BROWSERS_PATH'] = os.environ['PLAYWRIGHT_BROWSERS_PATH']
+            missing = _ensure_runtime(env)
+            if missing:
+                return {'unavailable': missing, 'screens': [], 'seconds': round(time.monotonic() - started, 3)}
             workspace = scenario_check.Workspace(app, work, env)
             for _ in range(passes):
                 remaining = SECONDS - (time.monotonic() - started)
