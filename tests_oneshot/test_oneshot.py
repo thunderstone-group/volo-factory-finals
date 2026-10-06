@@ -86,6 +86,7 @@ class OfflineCase(unittest.TestCase):
         self.enter(patch.object(adapter.time, "sleep"))
         self.enter(patch.object(adapter, "SMOKE", False))
         self.enter(patch.object(adapter, "TESTGEN", False))  # the written-test path has its own tests
+        self.enter(patch.object(adapter, "REGRESSION_GUARD", False))  # the browser guard has its own tests
         self.enter(patch.dict(os.environ))  # the code defaults, whatever the developer's shell exports
         for name in ("FALLBACK_MODEL", "ONESHOT_DRAFT_CALLS", "ONESHOT_REPAIR_CALLS", "ONESHOT_REPAIR_CNY"):
             os.environ.pop(name, None)
