@@ -54,6 +54,10 @@ REPAIR_SECONDS = 3 * 3600  # No repair round starts after this much time in the 
 CHECK_SECONDS = 1800  # One scenario check runs no further scenario after this long (a large task at 1 CPU).
 TESTGEN = os.environ.get("ONESHOT_TESTGEN", "1") == "1"  # requirement-written tests drive the repairs (testgen.py)
 SOURCE_CONTRACTS = os.environ.get("ONESHOT_SOURCE_CONTRACTS", "1") == "1"  # S70 candidate; official promotion remains gated
+# Upgrades skip the source review unless asked for: across 15 evolution runs (10-06, practice platform and local finals
+# proxy) it never produced an accepted change (empty answers, JSON errors, stream failures, binding errors or zero
+# proposals) while costing CNY 0.13-0.58 and 2-9 minutes each; without it the proxy kept 29/30 and 30/30 at half cost.
+UPGRADE_SOURCE_CONTRACTS = os.environ.get("ONESHOT_UPGRADE_SOURCE_CONTRACTS", "0") == "1"
 # When the repairs stop, a second suite written afresh drives more (roadmap 4.23): at the stop the first suite had one
 # or two failing tests left while 11-18 of its tests could not judge the application, and hidden scores sat 1-10 under
 # it; a second suite found 10-12 new failures on two stopped Sheet apps, in the blocks the first could not judge.
@@ -1546,7 +1550,7 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
                 budget.progress("checking_application", force=True)
                 repair_delivery(stage, files, conversation, model, base, key, budget, template, requirements,
                                 scaffold=bool(scaffold), tests=tests)
-                if tests is not None and SOURCE_CONTRACTS:
+                if tests is not None and SOURCE_CONTRACTS and (template is None or UPGRADE_SOURCE_CONTRACTS):
                     source_review(stage, files, messages, model, base, key, budget, template, requirements,
                                   bool(scaffold), tests)
                 if tests is not None and SECOND_SUITE:
