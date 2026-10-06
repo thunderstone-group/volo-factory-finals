@@ -1273,14 +1273,6 @@ def _then(content):
 
 # ------------------------------------------------------------------------------- planning
 
-_KIND = re.compile(r"^(?P<kind>[A-Za-z][A-Za-z ]*?)\s+(?P<num>\d+(?:[.\-_]\d+)*)$")
-
-
-def _kind(name):
-    match = _KIND.match(name.strip())
-    return match.group("kind").lower() if match else None
-
-
 def _seeds(requirement):
     match = re.search(r"seed(?:ed)? data\s*:\s*(.*)$", requirement["description"], re.I | re.S)
     if not match:
@@ -1325,10 +1317,33 @@ class _Planner:
             for index, scenario in enumerate(requirement["scenarios"]):
                 self.parsed[(requirement["id"], index)] = self._parse(requirement, scenario)
         self.seed_names = {n for r in self.atomic for n in _seeds(r)}
+        self.entity_types = self._entity_types()
         self.values = {op["value"] for p in self.parsed.values() for op in p["when"] if op.get("op") == "fill"}
         self.containers = self._containers()
         self.signatures = self._signatures()
         self.full_cache = {}
+
+    def _entity_types(self):
+        """Entity types come from seed declarations or an explicitly named list/detail scope, never a label suffix."""
+        found = {}
+        for requirement in self.atomic:
+            for name in _seeds(requirement):
+                match = re.search(r'\b([A-Za-z][A-Za-z-]*)\s+[`"“]' + re.escape(name) + r'[`"”]',
+                                  requirement['description'])
+                if match:
+                    found.setdefault(name, set()).add(_singular(match.group(1).lower()))
+        for parsed in self.parsed.values():
+            for op in parsed['when']:
+                target = op.get('target') or {}
+                scope = target.get('scope') or {}
+                if op['op'] not in ('click', 'hover') or scope.get('type') != 'phrase':
+                    continue
+                keys = _page_key(scope['text']) or []
+                if len(keys) == 1 and isinstance(keys[0], frozenset):
+                    nouns = keys[0] - _TYPES
+                    if len(nouns) == 1:
+                        found.setdefault(target['name'], set()).update(nouns)
+        return {name: next(iter(kinds)) for name, kinds in found.items() if len(kinds) == 1}
 
     # -- parsing
     def _parse(self, requirement, scenario):
@@ -1454,7 +1469,7 @@ class _Planner:
 
     def _choose_deps(self, requirement):
         deps = self.atomic_deps(requirement)
-        kinds = {_kind(s) for s in _seeds(requirement)} - {None}
+        kinds = {self.entity_types.get(s) for s in _seeds(requirement)} - {None}
         if len(deps) < 2 or not kinds:
             return deps
         scored = []
@@ -1465,7 +1480,7 @@ class _Planner:
                 scored.append((2, 0, order, dep))
                 continue
             clicks = [op for s in segments for op in s["ops"] if op["op"] in ("click", "hover")]
-            substitutable = any(_kind(op["target"]["name"]) in kinds for op in clicks)
+            substitutable = any(self.entity_types.get(op["target"]["name"]) in kinds for op in clicks)
             scored.append((0 if substitutable else 1, sum(len(s["ops"]) for s in segments), order, dep))
         return [dep for *_, dep in sorted(scored)]
 
@@ -1730,10 +1745,10 @@ class _Planner:
         return kept
 
     def _substitute(self, requirement, ops):
-        """Prerequisite activations of a sibling entity (`Item 4.2.1`) use this requirement's seed of that kind."""
+        """Instantiate a prerequisite workflow with this requirement's sole seed of the explicitly declared entity type."""
         seeds = {}
         for name in _seeds(requirement):
-            kind = _kind(name)
+            kind = self.entity_types.get(name)
             if kind:
                 seeds.setdefault(kind, []).append(name)
         own = {op["target"]["name"] for parsed in [self.parsed[(requirement["id"], 0)]] for op in parsed["when"]
@@ -1741,7 +1756,7 @@ class _Planner:
         done = {}
 
         def swap(name):
-            kind = _kind(name)
+            kind = self.entity_types.get(name)
             if not kind or len(seeds.get(kind, [])) != 1 or name in own or name in seeds[kind]:
                 return None
             return seeds[kind][0]
@@ -1783,7 +1798,7 @@ class _Planner:
                 target.pop("scope")
 
     def _entity(self, name):
-        if name in self.seed_names and _kind(name):
+        if name in self.seed_names and name in self.entity_types:
             return True
         for requirement in self.atomic:
             parsed = self.parsed[(requirement["id"], 0)]
