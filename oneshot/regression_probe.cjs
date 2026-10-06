@@ -55,6 +55,12 @@ async function snapshot(page, cdp) {
       }
     }
     if (scopes.length) item.scopes = [...new Set(scopes)];
+    // Landmarks hold requirement-stated placements ("in the main content", a top/global header control). The same
+    // name can appear in several landmarks; one inventory entry keeps all of them.
+    const landmarks = new Set(items.get(key(item))?.landmarks || []);
+    for (let p = ax.get(n.parentId); p; p = ax.get(p.parentId))
+      if (['main', 'banner', 'complementary', 'contentinfo', 'navigation'].includes(p.role?.value)) landmarks.add(p.role.value);
+    if (landmarks.size) item.landmarks = [...landmarks].sort();
     items.set(key(item), item);
     const d = dom.get(n.backendDOMNodeId), attrs = {};
     for (let i = 0; i < (d?.attributes || []).length; i += 2) attrs[d.attributes[i]] = d.attributes[i + 1];

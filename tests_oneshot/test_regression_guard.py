@@ -40,6 +40,30 @@ class DiffTests(unittest.TestCase):
         self.assertEqual(result['screens'][0]['items'][0]['name'], 'Stable')
         self.assertEqual(guard.stable(a, {'screens': []})['items'], 0)
 
+    def test_stated_placements_are_checked_in_their_landmark(self):
+        req = ('id: R\ndescription: The top global search control has searchbox role and accessible name "Search".\n'
+               'scenarios:\n- name: s\n  steps:\n  - keyword: WHEN\n'
+               '    content: The visitor locates the visible link named "Sign in" in the main content.\n')
+        self.assertEqual(sorted((p['role'], p['name'], p['landmark'], p['every']) for p in guard.placements(req)),
+                         [('link', 'Sign in', 'main', False), ('searchbox', 'Search', 'banner', True)])
+        base = baseline(screen([('heading', 'Home')]))
+        def observed(*items):
+            return {'screens': [{'steps': [], 'status': 'ok', 'url': '/', 'items': [
+                {'role': role, 'name': name, 'landmarks': marks} for role, name, marks in items]}]}
+        wrong = guard.compare(base, observed(('heading', 'Home', ['main']), ('link', 'Sign in', ['banner']),
+                                             ('searchbox', 'Search', ['main'])), req)
+        self.assertEqual(sorted(m['id'] for m in wrong['missing']),
+                         ['placement:link:Sign in:main', 'placement:searchbox:Search:banner'])
+        self.assertIn('inside the page header', ' '.join(m['observation'] for m in wrong['missing']))
+        right = guard.compare(base, observed(('heading', 'Home', ['main']), ('link', 'Sign in', ['banner', 'main']),
+                                             ('searchbox', 'Search', ['banner'])), req)
+        self.assertEqual(right['missing'], [])
+        self.assertIn('placement:searchbox:Search:banner', right['kept'])
+
+    def test_placements_need_an_explicit_region_or_global_statement(self):
+        self.assertEqual(guard.placements('description: A searchbox named "Search" filters the list. '
+                                          'The link named "Home" opens the start page.'), [])
+
     def test_missing_finding_has_precise_original_path(self):
         steps = [{'role': 'link', 'name': 'Library', 'kind': 'url', 'href': '/library'}]
         b = baseline(screen([('link', 'Manual')], steps))

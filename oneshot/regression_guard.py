@@ -139,6 +139,86 @@ def replacement_exemption(item, current, requirements, changes):
     return None
 
 
+REGIONS = {'main content': 'main', 'main area': 'main', 'page header': 'banner', 'header': 'banner',
+           'top navigation': 'banner', 'sidebar': 'complementary', 'footer': 'contentinfo'}
+LANDMARK_WORDS = {'main': 'main content', 'banner': 'page header', 'complementary': 'sidebar',
+                  'contentinfo': 'footer'}
+PLACED_ROLES = ('link', 'button', 'searchbox', 'textbox', 'combobox', 'checkbox', 'tab', 'menuitem')
+
+
+def placements(requirements):
+    """Placements the requirements state explicitly: a control named in a region ("the link named "X" in the main
+    content"), or a top/global control with a stated role and accessible name, which belongs in the page header."""
+    try:
+        document = scenarios.load_yaml(requirements or '')
+    except ValueError:
+        document = requirements or ''
+    texts = []
+    def leaves(value):
+        if isinstance(value, dict):
+            for v in value.values():
+                leaves(v)
+        elif isinstance(value, list):
+            for v in value:
+                leaves(v)
+        elif isinstance(value, str):
+            texts.append(re.sub(r'\s+', ' ', value))
+    leaves(document)
+    roles = '|'.join(PLACED_ROLES)
+    found = {}
+    for text in texts:
+        place(text, roles, found)
+    return list(found.values())
+
+
+def place(text, roles, found):
+    for m in re.finditer(r'\b(' + roles + r')\s+(?:named|labeled|labelled|called)\s+[“"]([^”"]{1,80})[”"]\s+in the ('
+                         + '|'.join(REGIONS) + r')\b', text, re.I):
+        role, name, landmark = m.group(1).lower(), m.group(2).strip(), REGIONS[m.group(3).lower()]
+        found.setdefault((role, name, landmark), {'role': role, 'name': name, 'landmark': landmark, 'every': False,
+                                                  'statement': m.group(0)})
+    for sentence in re.split(r'(?<=[.;])\s+', text):
+        if not re.search(r'\b(top|global|site-wide)\b', sentence, re.I):
+            continue
+        m = re.search(r'\b(' + roles + r') role and (?:the )?accessible name [“"]([^”"]{1,80})[”"]', sentence, re.I)
+        if m:
+            role, name = m.group(1).lower(), m.group(2).strip()
+            found[(role, name, 'banner')] = {'role': role, 'name': name, 'landmark': 'banner', 'every': True,
+                                             'statement': sentence[:300]}
+
+
+def placed(spec, screen):
+    return any((spec['role'] == i['role'] or compatible_role(spec['role'], i['role'])) and
+               same_name(spec['name'], i['name']) and spec['landmark'] in (i.get('landmarks') or [])
+               for i in screen['items'])
+
+
+def check_placements(observed, requirements, kept, missing, unknown):
+    """A stated placement is checked on the start screen, and a global one on every screen that shows that landmark.
+    Satisfied placements are kept items, so a later change that removes one is a loss like any other."""
+    screens = [s for s in observed.get('screens', []) if s.get('status') == 'ok']
+    start = next((s for s in screens if not s['steps']), None)
+    for spec in placements(requirements):
+        pid = f"placement:{spec['role']}:{spec['name']}:{spec['landmark']}"
+        targets = [s for s in screens if any(spec['landmark'] in (i.get('landmarks') or []) for i in s['items'])] \
+            if spec['every'] else []
+        targets = targets or ([start] if start else [])
+        entry = {'id': pid, 'role': spec['role'], 'name': spec['name'], 'placement': spec}
+        if observed.get('unavailable') or not targets:
+            unknown.append({**entry, 'steps': []})
+            continue
+        lacking = [s for s in targets if not placed(spec, s)]
+        if not lacking:
+            kept.append(pid)
+            continue
+        where = (f'{len(lacking)} of {len(targets)} observed pages have' if spec['every'] else 'the start page has')
+        missing.append({**entry, 'steps': lacking[0]['steps'], 'url': lacking[0].get('url'),
+                        'observation': (f'the requirements state "{spec["statement"]}"; {where} no {spec["role"]} '
+                                        f'{spec["name"]!r} inside the {LANDMARK_WORDS[spec["landmark"]]} '
+                                        f'({spec["landmark"]} landmark){" on every page" if spec["every"] else ""}. '
+                                        'Add it there and keep any other entry to the same action')})
+
+
 def compare(baseline, observed, requirements=''):
     current = {path_key(s['steps']): s for s in observed.get('screens', [])}
     changes = exemptions(requirements)
@@ -187,6 +267,7 @@ def compare(baseline, observed, requirements=''):
                 if peer.get('failed_step'):
                     entry['failed_step'] = peer['failed_step']
                 missing.append(entry)
+    check_placements(observed, requirements, kept, missing, unknown)
     return {'kept': kept, 'missing': missing, 'unknown': unknown, 'exempted': waived,
             'observation': observed}
 
