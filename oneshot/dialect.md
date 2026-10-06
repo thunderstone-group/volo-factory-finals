@@ -16,7 +16,8 @@ Do not suppress distinct records because their display names happen to match.
 ## Content and initial state
 Distinguish required UI labels/messages, initial records, runtime inputs, examples and explicit absences.
 Provision the identities and relationships stated to exist initially. Do not pre-apply later scenario outcomes
-or create records explicitly described as absent. Required validation and success messages retain their stated
+or create records explicitly described as absent. When the requirements accept alternatives for one indication
+(a stated message or a marker), show exactly one of them. Required validation and success messages retain their stated
 wording and appear in the specified context: rejection and validation messages in an element with role="alert",
 confirmations in role="status". Do not add filler text or unused datasets to echo quoted phrases.
 Only the stated action should create, edit, archive, delete, favorite or otherwise change a record.
@@ -33,8 +34,9 @@ scope and interaction before changing a name or removing a control. Do not globa
 Keep an explicitly required accessible name intact. Decorative icons can use aria-hidden; counters and
 supplementary details must not change a name whose exact value is specified.
 When the requirements place a control in a region (the main content, the page header, a dialog, a row or a
-cell), render it inside that landmark or element, even if the same action is also offered elsewhere. A control
-described as top, global or site-wide belongs in the page header (banner) on every page.
+cell), render it inside that landmark or element. A control described as top, global or site-wide belongs in the
+page header (banner) on every page. Move a control to its stated place rather than copying it: one page offers a
+role and name once unless the requirements place it twice.
 
 Check which layout regions the application needs. Configure header, navigation, account controls, sidebar
 and footer only when required or useful for the described workflow. A shared renderer can keep appropriate

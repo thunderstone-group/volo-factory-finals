@@ -216,7 +216,8 @@ def check_placements(observed, requirements, kept, missing, unknown):
                         'observation': (f'the requirements state "{spec["statement"]}"; {where} no {spec["role"]} '
                                         f'{spec["name"]!r} inside the {LANDMARK_WORDS[spec["landmark"]]} '
                                         f'({spec["landmark"]} landmark){" on every page" if spec["every"] else ""}. '
-                                        'Add it there and keep any other entry to the same action')})
+                                        'Place it there; if the page then offers that role and name twice, remove '
+                                        'the other one')})
 
 
 def compare(baseline, observed, requirements=''):
