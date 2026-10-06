@@ -236,6 +236,23 @@ class EvolutionTests(unittest.TestCase):
         self.assertEqual((self.out / 'frontend/public/new/added.js').read_text().strip(), 'export const added = 1;')
         self.assertEqual([p for p in self.out.rglob('.oneshot-*')], [])
 
+    def test_upgrade_never_traverses_runner_metadata(self):
+        self.seed()
+        metadata = self.out / '.arc'
+        metadata.mkdir()
+        (metadata / 'synthetic-report.json').write_text('synthetic forbidden metadata')
+        self.replies(events(block('frontend/public/index.html', '<h1>Updated</h1>')))
+        scandir = os.scandir
+
+        def application_only(path):
+            if not isinstance(path, int) and '.arc' in Path(path).parts:
+                raise AssertionError('runner metadata was traversed')
+            return scandir(path)
+
+        with patch('os.scandir', side_effect=application_only):
+            self.upgrade()
+        self.assertIn('Updated', (self.out / 'frontend/public/index.html').read_text())
+
     def test_platform_cli_detects_prepopulated_application(self):
         self.seed()
         req = self.root / 'input'

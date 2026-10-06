@@ -1523,10 +1523,8 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
         budget.progress("preparing", force=True)
         stage = Path(temp) / "app"
         stage.mkdir()
-        if template is not None:
-            # Keep opaque local metadata/artifacts intact, without putting their
-            # contents in the prompt. Generated edits cannot touch those paths.
-            shutil.copytree(template, stage, dirs_exist_ok=True, symlinks=True)
+        # Stage only the bounded application snapshot. Runner metadata must never
+        # be traversed or copied; in-place publication leaves it in the original tree.
         for name, data in {**scaffold, **snapshot}.items():
             target = resolve_path(stage, name)
             target.parent.mkdir(parents=True, exist_ok=True)
