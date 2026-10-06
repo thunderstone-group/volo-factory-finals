@@ -1,6 +1,6 @@
 # One-shot candidate inside VOLO
 
-Last reviewed: 2026-10-06.
+Last reviewed: 2026-10-07.
 
 `volo-factory` is the only main ARC project. `oneshot/` is its active one-shot candidate;
 `oneshot-lab/arc-package` is the preserved source experiment, not a second active project.
@@ -20,8 +20,9 @@ are packaged under `scaffold/`.
 Timestamps, order, permissions and uncompressed ZIP encoding are fixed. The external
 manifest binds every current source file to the ZIP hash and retains import provenance.
 Neither forum tools nor platform sessions, test fixtures, or run evidence are packaged.
-`tests_oneshot/test_package_names.py` fails when a packaged file names a practice task (the compliance
-rule in `preliminary-rules.md`); `main.py` is exempt only until its comments are cleaned.
+`tests_oneshot/test_package_names.py` scans every packaged file for practice-task names (the compliance
+rule in `preliminary-rules.md`). The [generalization audit](../reports/2026-10-07-generalization-audit.md)
+also reviews evaluator-coupled rules and runtime boundary limitations; a name scan alone proves neither.
 
 Run the extracted entrypoint as `python3 main.py REQUIREMENT_DIR --output-dir EMPTY_DIR --type web`.
 Real generation uses the authorized gateway environment, never credentials in arguments.
@@ -52,17 +53,19 @@ validated new-build directory is published by one rename. New builds reject none
 unless the CLI recognizes an application template.
 Evolution starts from an isolated copy, emits complete replacements for changed/new files,
 and retains unmentioned files. The prompt excludes dotfiles, node_modules, dist, Python
-caches and the workspace-root `requirements/` task inputs; these remain preserved in the
-delivered tree and cannot be edited by either a draft or repair response. The current task
+caches and the workspace-root `requirements/` task inputs. The stage is built from that filtered
+snapshot, so runner metadata is neither traversed nor copied. In-place publication leaves excluded
+paths at their original location; a separate `--template-dir` export contains application sources only.
+Neither draft nor repair may edit excluded paths. The current task
 is supplied separately. Application assets under a nested directory with the same name
 remain ordinary source assets.
 Source snapshots are bounded to 256 files / 2 MiB with explicit failure instead of truncation.
-Symlinks in source are rejected; ignored metadata is copied without following links.
-Source or local metadata changes during generation abort publication. A no-op upgrade (detected
-after path normalization) is reported and ships the unchanged original. In-place publication uses
-two renames with rollback, not an atomic directory exchange: a process kill between renames may
-leave the original at a sibling `.oneshot-backup-*` path. A failed rollback leaves that backup
-outside temporary cleanup. Gateway redirects are refused.
+Symlinks in source are rejected. A no-op upgrade (detected after path normalization) is reported
+and ships the unchanged original. In-place publication writes only changed application files through
+per-file temporary paths and renames; unchanged source and concurrent runner metadata remain in place.
+The multi-file publication is not an atomic transaction. Gateway redirects are refused. Generated
+builds, backends and tests are not OS-sandboxed by this package; see the audit before claiming strict
+filesystem or network isolation.
 
 ## Model calls
 
@@ -141,30 +144,31 @@ instead of restarting the earlier exhausted browser search. Every assessment and
 uses the full fixed suite and the existing regression guards. Other failures remain in the final report;
 missing or errored target checks are reported as unjudged, never as repaired.
 
-`repair_delivery` (roadmap 4.3) assesses the staged draft: the delivery check, the static gates
-(process guards, label collisions, exact names, readonly inputs, scaffold primitives), the quoted
-vocabulary, and, when the application is not broken as a whole, the scenario self-check below.
+`repair_delivery` assesses the staged draft through delivery checks and requirement-written browser
+tests (or the fallback scenario check). Source phrase/name observations remain diagnostic. Unconditional
+readonly, exact source spelling, scaffold-symbol and process-exception-handler gates are retired;
+the legacy `static` report field remains empty. The existing-behavior guard also checks explicit
+requirement-stated placements, without inferring a header from global availability alone.
 
 - **Trigger.** A repair is requested only while the application is broken as a whole (build or
   syntax failure, dead backend, `/` not served, load error, blank page, a page that never settles)
-  or a requirement scenario fails. A load failure that only the jsdom probe reports (jsdom lacks
+  or a requirement scenario or preserved-item/explicit-placement check fails. A load failure that only the jsdom probe reports (jsdom lacks
   `ResizeObserver`, canvas and other browser APIs) stands only when Chromium passes no scenario
   either; otherwise it becomes a hint (`smoke.jsdom_only`). Family-level smoke problems (a throwing
   click handler, a missing landmark) ride along as hints and never trigger a call on their own.
-  Static hints are retained for the fallback scenario checker; written browser failures are not
-  supplemented with unrelated static or vocabulary hints.
+  Written browser failures are not supplemented with unrelated vocabulary hints.
 - **Request.** The whole-application failures, else each failing scenario with the steps the
   browser performed and what it observed (up to 40), the ids of the passing scenarios to keep, and
   the hints. Existing files use exact SEARCH/REPLACE edits; new or short files may be emitted whole.
-- **Acceptance.** A repair that makes a broken application work again is kept whatever else it did
-  (the waived guards are listed in `rounds[].waived`). Otherwise it is kept only when at least one
-  scenario that failed now passes, it gains three such scenarios for every passing one it loses, no
-  clean static gate starts flagging, no quoted phrase disappears and no control name the requirement
-  quotes is renamed (compared without leading or trailing symbols; a name the browser activated
-  counts as present). With written browser tests, newly flagged static gates and renamed controls
-  count as penalties against gains; literal source-coverage changes do not. Only verdicts both checks reached compare: a scenario that was unparsed or
-  errored before is never a gain, one unparsed or not started after is never a loss. Lost
-  scenarios, and gains of at most two, are rechecked once. A check that cannot run at all (no
+- **Acceptance.** Loss of a previously kept starting item or explicit placement vetoes a repair,
+  including recovery of a broken application; an observation that becomes unavailable is not a pass.
+  Subject to that guard, delivery recovery may be kept. Otherwise a repair needs an observed gain
+  and at least three gained new-scenario checks per lost one. Restoring missing existing behavior
+  also counts as a gain. Source vocabulary/name changes are diagnostic, not acceptance penalties.
+  Written checks blocked by a shared helper may become observable gains after repair. A previously
+  passing check that now fails, errors or is not reached counts as a loss. Lost scenarios and gains
+  of at most two are rechecked, with full-sequence confirmation for apparently flaky written checks.
+  A check that cannot run at all (no
   browser, every scenario errored) is retried once and then marked `checker`: the repair is
   discarded, but the model is not told it failed.
 - **Fixed plan.** The first check fixes the scenario plan for the whole loop: a translation that

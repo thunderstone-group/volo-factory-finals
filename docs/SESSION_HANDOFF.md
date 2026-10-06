@@ -1,39 +1,10 @@
-# 2026-10-07 01:55 决赛：最终包候选五在循环重跑
+# 2026-10-07 独立通用性与合规清理完成
 
-先读本页、AGENTS.md、`docs/reference/finals-roadmap.md`（第 2 节须知、第 4.5 节最终包与策略、F2-real、F3）。git 和 CLI 是现状真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。
+先读 [审查报告](reports/2026-10-07-generalization-audit.md) 和 [one-shot 边界](reference/oneshot.md)。这是 finals-clean 独立 worktree 的本地审查交付，不是正式包晋升或官方成绩更新。git 是分支和提交现状真源；上一轮重跑交接已原样存入 `archive/handoffs/2026-10-07-before-generalization-audit.md`。
 
-## 目标与约束
-- 10-06 12:20 用户：「arc 我们进决赛了，可以开始猛攻决赛了，你跟 gpt6astra max 一起」。Codex 走 codex-dispatch。
-- 练习额度与正式试跑已授权直接跑；volo-factory PR 验收后自己合；包里不写题名和答案；代理暗题位置不进派发单与仓库。
-- 用户要求中文回复（10-06 22:29 用户：「说中文，看不懂」）。
-
-## 决赛事实
-- 截止 10-08 18:00，截止时停在跑容器；榜只看每队最新提交，同一提交内每题取最好；成本只算选中的两次运行。
-- 额度 200 元，10-07 01:33 剩 175.02。
-- 官方报告在 run 下载包 `template/.arc/playwright-report.json`。本地代理 v3（`L/run_local.py github-real|sheet-real <包> <标签>`）在 10 份官方产物上 292/300 一致。
-
-## 提交记录（决赛）
-| 提交 | 包 | GitHub | Sheet | 备注 |
-|---|---|---|---|---|
-| 8aac3a380e0c | 9293a251 | 3 | 21 | 入口位置不符 |
-| 977c79cf0389 | a7066b2e | 21 | 29 | **最好 50/60** |
-| 0a76ab46dad8 | 3c0294d9 | 3 | 24 | 网关退化 |
-| 2c7c25f47b5d | 52126573 | 15 | 11 | 菜单条目角色、守卫误否决 |
-| d99dcad49dc5 | 94ff9ecf（候选五，最终包） | 16, 21, … | 26, 23, … | 循环重跑中，现为最新 |
-
-## 在跑
-- `E3/rerun_loop.sh d99dcad49dc5 github|sheet 12`（nohup，能活过 /clear），日志 `E3/reruns-d99dcad49dc5-*.log`，`touch E3/STOP-github` 或 `STOP-sheet` 停。
-- 候选五练习 6 题（run id 在 `E3/c5-practice-ids.txt`），过了（≥ 37/38，Keep EV-1.1 为既有波动）就把 feat/finals-region-contract 合 main。
-
-## 等甲方
-- 删提交授权（已问未答）：若 d99dcad49dc5 的最好组合到截止前仍低于 50，需删 0a76ab46dad8、2c7c25f47b5d、d99dcad49dc5，让 977c79cf0389 回到最新。删除不可撤销，未获授权不删。
-
-## 下一步
-1. 盯重跑日志，最好组合超过 50 即为新最好；截止前 10-08 16:30 起不再起新的 GitHub 重跑（单次约 30–75 分钟）。
-2. 若要换包（候选六），须在代理 v3 上明显好于候选五，最晚 10-08 上午。剩余官方失分：REQ-1-4 两种状态都显示、REQ-2-1-2 账户菜单不是 role=menu、REQ-2-4/REQ-5-5 入口找不到、REQ-4-5 文字格式与种子值、REQ-8-1-1 便签按钮不在格内、REQ-5-1-2「Create filter」第二次点不到。
-
-## 坑
-- 网关会退化（10-06 22:00–23:45 短请求 29 s、流式 40 字符/秒），退化时不要起正式运行；探针脚本思路：一次短请求 + 一次 2000 token 流式。
-- zsh 里 `for x in "a b"; do set -- $x` 不拆词；起多个后台进程逐条写。
-- 本地 stdout.log 是块缓冲，进度看 `runs/<run>/.oneshot-*/progress.json`。
-- 旧回归判据剔除决赛改动的需求（Sheet REQ-2-1-3）。
+- 用户要求：逐条 A/B/C/D 审查，去掉评测定位器耦合，保留明确需求位置检查。仅当前 worktree 可写；不推送、不调用真实模型、不用 ARC-Bench key、不上传、不读本地隐藏测试。
+- 代码提交：`d89d194` metadata 边界，`5652e9c` 指导/诊断清理，`b395343` 原生控件，`ac4bcdc` 需求中的实体类型。报告列有完整原始行号表、标准来源、运行路径、掉分风险和消融建议。
+- 已验证：指定 one-shot 327 项 OK（3 skip）；这 3 项因完整浏览器路径检查跳过，使用已安装 headless shell 补跑原断言后全部通过。legacy 226 项 OK（12 skip）。没有做真实生成或官方评分。
+- 本地包：`runs/generalization-audit/oneshot-clean.zip`，SHA-256 `240b6b8d8a3732964b141d6227522ca8199811b7c47df23e7d6af6a04e71c65a`；24 文件，配套 manifest/测试日志仍在同目录，保留证据再清理 worktree。
+- 关键边界：修掉了原先 copytree 遍历 .arc 的路径；包没有 OS 文件/网络沙箱，浏览器 CDN/外部资源/重定向不受统一白名单约束。报告不认证“技术上不可能读隐藏测试”，也不宣称获胜或已经证明泛化。
+- 尚未进行：清理版模型生成、分数/费用消融、官方终局核验、合并/推送/上传。后续按报告的独立行为与多样本证据判断，不把单测或打包当成绩。
