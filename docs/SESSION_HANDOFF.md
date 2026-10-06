@@ -1,33 +1,39 @@
-# 2026-10-06 22:15 决赛进行中：最新有效提交 50/60，候选二在验证
+# 2026-10-07 01:55 决赛：最终包候选五在循环重跑
 
-先读本页、AGENTS.md、`docs/reference/finals-roadmap.md`（决赛真源：第 2 节赛制与须知、F2-real、F3 候选与读数）。git 和 CLI 是现状真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。
+先读本页、AGENTS.md、`docs/reference/finals-roadmap.md`（第 2 节须知、第 4.5 节最终包与策略、F2-real、F3）。git 和 CLI 是现状真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。
 
-## 目标与约束（用户原话与授权）
-- 10-06 12:20：「arc 我们进决赛了，可以开始猛攻决赛了，你跟 gpt6astra max 一起」。Codex 走 codex-dispatch skill。
-- 练习额度与正式试跑已授权直接跑；volo-factory PR 验收后自己合；包里不写题名和答案；代理暗题位置不写进派发单与本仓库（跑法见 `~/projects/arcbench-campaign/acceptance-hidden/README.md`）。
-- 10-06 20:03 用户：报名「你直接用 Open CLI 或者其他操作浏览器的去搞吧。我现在不在电脑旁」——核实时报名已是 registered=True，未动浏览器。
+## 目标与约束
+- 10-06 12:20 用户：「arc 我们进决赛了，可以开始猛攻决赛了，你跟 gpt6astra max 一起」。Codex 走 codex-dispatch。
+- 练习额度与正式试跑已授权直接跑；volo-factory PR 验收后自己合；包里不写题名和答案；代理暗题位置不进派发单与仓库。
+- 用户要求中文回复（10-06 22:29 用户：「说中文，看不懂」）。
 
 ## 决赛事实
-- 截止 10-08 18:00，截止时停在跑容器；最新有效提交上榜，同一提交内每题可重跑取最好；计分同初赛 S = p / (b/0.8p)^0.1。额度 200 元，22:03 剩 194.07。
-- 官方报告在 run 下载包 `template/.arc/playwright-report.json`（逐条报错 + 测试代码片段），是诊断主依据。
-- 本地代理 v2（`run_local.py github-real|sheet-real <包> <标签>`，判分在 finals-proxy 的 github-real/sheet-real）在官方两份产物上 60/60 逐条一致。
+- 截止 10-08 18:00，截止时停在跑容器；榜只看每队最新提交，同一提交内每题取最好；成本只算选中的两次运行。
+- 额度 200 元，10-07 01:33 剩 175.02。
+- 官方报告在 run 下载包 `template/.arc/playwright-report.json`。本地代理 v3（`L/run_local.py github-real|sheet-real <包> <标签>`）在 10 份官方产物上 292/300 一致。
 
-## 提交记录
+## 提交记录（决赛）
 | 提交 | 包 | GitHub | Sheet | 备注 |
 |---|---|---|---|---|
-| 8aac3a380e0c | 9293a251（main 决赛包 v2） | 3 | 21 | 入口位置不符 |
-| 977c79cf0389 | a7066b2e（区域候选 f6778ac） | 21 | 29 | 当前最新有效之前的最好 |
-| 0a76ab46dad8 | 3c0294d9（候选二 d548d71） | 在跑 b312805e05ee | 在跑 8608f0617139 | 22:03 起，现在是最新提交 |
+| 8aac3a380e0c | 9293a251 | 3 | 21 | 入口位置不符 |
+| 977c79cf0389 | a7066b2e | 21 | 29 | **最好 50/60** |
+| 0a76ab46dad8 | 3c0294d9 | 3 | 24 | 网关退化 |
+| 2c7c25f47b5d | 52126573 | 15 | 11 | 菜单条目角色、守卫误否决 |
+| d99dcad49dc5 | 94ff9ecf（候选五，最终包） | 16, 21, … | 26, 23, … | 循环重跑中，现为最新 |
+
+## 在跑
+- `E3/rerun_loop.sh d99dcad49dc5 github|sheet 12`（nohup，能活过 /clear），日志 `E3/reruns-d99dcad49dc5-*.log`，`touch E3/STOP-github` 或 `STOP-sheet` 停。
+- 候选五练习 6 题（run id 在 `E3/c5-practice-ids.txt`），过了（≥ 37/38，Keep EV-1.1 为既有波动）就把 feat/finals-region-contract 合 main。
+
+## 等甲方
+- 删提交授权（已问未答）：若 d99dcad49dc5 的最好组合到截止前仍低于 50，需删 0a76ab46dad8、2c7c25f47b5d、d99dcad49dc5，让 977c79cf0389 回到最新。删除不可撤销，未获授权不删。
 
 ## 下一步
-1. 等 E3/finals-r3-final.jsonl（后台等待）与本地 `L/runs/github-real-place3c0294d9-s{1,2}`。若 0a76ab46dad8 合计 ≥ 50：保留，在它上面重跑 GitHub/Sheet 取最好（`arcbench run <提交> --task hackathon-evolution--github`，同题同时只能一个正式 run）；若更差：删掉它（平台允许删提交），让 977c79cf0389 回到最新。
-2. 分支 feat/finals-region-contract（f6778ac + d548d71）过判据后 PR 合 main。
-3. 剩余失分清单与可做的通用项见 finals-roadmap F3（「或」的替代文字只显示一个、恢复后的状态词可见）。
-4. 截止前留足一次完整运行（GitHub 官方约 70 分钟）：最后一次新提交不晚于 10-08 14:00。
+1. 盯重跑日志，最好组合超过 50 即为新最好；截止前 10-08 16:30 起不再起新的 GitHub 重跑（单次约 30–75 分钟）。
+2. 若要换包（候选六），须在代理 v3 上明显好于候选五，最晚 10-08 上午。剩余官方失分：REQ-1-4 两种状态都显示、REQ-2-1-2 账户菜单不是 role=menu、REQ-2-4/REQ-5-5 入口找不到、REQ-4-5 文字格式与种子值、REQ-8-1-1 便签按钮不在格内、REQ-5-1-2「Create filter」第二次点不到。
 
 ## 坑
-- `arcbench source` 下载的文件会被秘钥脱敏改坏；可信起点用 E3/finals-open/initial-projects（官方基线下载，与 G79/Sheet87 逐字节一致）。
-- 平台费用列在并发 run 时虚高；决赛额度看 `arcbench registration hackathon-evolution` 的 remaining。
-- 旧回归判据剔除决赛改动的需求（Sheet REQ-2-1-3 的旧测试丢失属合法变化）。
-- 本地 run_local.py 的 stdout.log 是块缓冲，进度看 `runs/<run>/.oneshot-*/progress.json`。
-- 改浏览器机制默认开时，离线单测夹具要显式关掉；单测：`NODE_PATH=…/oneshot-playwright-test-1.57.0/node_modules .venv/bin/python -m unittest discover -s tests_oneshot`（326 条）。
+- 网关会退化（10-06 22:00–23:45 短请求 29 s、流式 40 字符/秒），退化时不要起正式运行；探针脚本思路：一次短请求 + 一次 2000 token 流式。
+- zsh 里 `for x in "a b"; do set -- $x` 不拆词；起多个后台进程逐条写。
+- 本地 stdout.log 是块缓冲，进度看 `runs/<run>/.oneshot-*/progress.json`。
+- 旧回归判据剔除决赛改动的需求（Sheet REQ-2-1-3）。
