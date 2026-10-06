@@ -19,7 +19,7 @@ ROLES = r'(region|form|dialog|heading|status|alert|button|img|combobox|navigatio
 HELPER_FILE = "light-helpers.cjs"
 SPEC_FILE = "t00-light.spec.cjs"
 
-# The public interaction helpers, with TypeScript annotations/exports removed.
+# Browser operations for the explicit semantic sentences accepted below.
 HELPERS = '''const { expect } = require('@playwright/test');
 const named = (scope, role, name) => scope.getByRole(role, { name, exact: true });
 const field = (scope, name) => scope.getByLabel(name, { exact: true });

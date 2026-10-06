@@ -393,6 +393,7 @@ class GroundingCase(unittest.TestCase):
         source = "getByRole('gridcell', { name: 'E1', exact: true }); getByRole('button', { name: 'Frobnicate' })"
         self.assertFalse(testgen.ungrounded("E1", source, "Cell `A1` holds `Region`.", quoted))
         self.assertTrue(testgen.ungrounded("Frobnicate", source, "Cell `A1` holds `Region`.", quoted))
+        self.assertTrue(testgen.ungrounded("E1", source, "A catalog has named records.", testgen._phrases("")))
 
 
 class RunCase(unittest.TestCase):
@@ -864,6 +865,7 @@ class GroundingFlatCase(unittest.TestCase):
         quoted = testgen._phrases(flat)
         for name, expected in (("Worksheet name already exists", False), ("Sheet3", False), ("Totally invented", True)):
             self.assertEqual(testgen.ungrounded(name, f"'{name}'", flat, quoted), expected, name)
+        self.assertTrue(testgen.ungrounded("Sheet3", "'Sheet3'", "A record named Sheet1 exists.", testgen._phrases("")))
 
 
 class LabelOverrideCase(unittest.TestCase):

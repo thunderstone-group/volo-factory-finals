@@ -5,7 +5,8 @@
 
 Result: {"scenarios": [{"id", "name", "status": pass|fail|unparsed|error, "observation", "steps"}],
 "invariants": [...], "coverage": {"total", "parsed"}, "seconds"}. Diagnostic only: it reads the
-requirements and the application, never evaluator tests, and calls no model.
+requirements and the application, never evaluator tests. Optional translation of unparsed scenarios
+uses the configured model gateway; browser execution itself makes no model calls.
 
 Isolation: the application (frontend/ and backend/) is copied to a scratch directory and built once.
 Every scenario gets a fresh browser context and a freshly started backend on its own port; when the

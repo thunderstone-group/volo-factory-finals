@@ -1,4 +1,4 @@
-"""Deterministic, opt-in preservation of the supplied application's visible named surface.
+"""Deterministic preservation of the supplied application's visible named surface.
 
 This observes accessibility, not functional correctness. No model calls or test generation.
 The two-pass baseline is immutable; missing items and unavailable observations are separate.
@@ -140,15 +140,14 @@ def replacement_exemption(item, current, requirements, changes):
 
 
 REGIONS = {'main content': 'main', 'main area': 'main', 'page header': 'banner', 'header': 'banner',
-           'top navigation': 'banner', 'sidebar': 'complementary', 'footer': 'contentinfo'}
+           'top navigation': 'navigation', 'sidebar': 'complementary', 'footer': 'contentinfo'}
 LANDMARK_WORDS = {'main': 'main content', 'banner': 'page header', 'complementary': 'sidebar',
-                  'contentinfo': 'footer'}
+                  'contentinfo': 'footer', 'navigation': 'navigation'}
 PLACED_ROLES = ('link', 'button', 'searchbox', 'textbox', 'combobox', 'checkbox', 'tab', 'menuitem')
 
 
 def placements(requirements):
-    """Placements the requirements state explicitly: a control named in a region ("the link named "X" in the main
-    content"), or a top/global control with a stated role and accessible name, which belongs in the page header."""
+    """Extract stated control names, roles and regions; global availability alone supplies no location."""
     try:
         document = scenarios.load_yaml(requirements or '')
     except ValueError:
@@ -178,30 +177,33 @@ def place(text, roles, found):
         found.setdefault((role, name, landmark), {'role': role, 'name': name, 'landmark': landmark, 'every': False,
                                                   'statement': m.group(0)})
     for sentence in re.split(r'(?<=[.;])\s+', text):
-        if not re.search(r'\b(top|global|site-wide)\b', sentence, re.I):
+        region = re.search(r'\b(?:in|inside|within) the (' + '|'.join(REGIONS) + r')\b', sentence, re.I)
+        if not region:
             continue
         m = re.search(r'\b(' + roles + r') role and (?:the )?accessible name [“"]([^”"]{1,80})[”"]', sentence, re.I)
         if m:
             role, name = m.group(1).lower(), m.group(2).strip()
-            found[(role, name, 'banner')] = {'role': role, 'name': name, 'landmark': 'banner', 'every': True,
-                                             'statement': sentence[:300]}
+            landmark = REGIONS[region.group(1).lower()]
+            every = bool(re.search(r'\b(?:global|site-wide|(?:every|all) pages?)\b', sentence, re.I))
+            found[(role, name, landmark)] = {'role': role, 'name': name, 'landmark': landmark, 'every': every,
+                                            'statement': sentence[:300]}
 
 
 def placed(spec, screen):
-    return any((spec['role'] == i['role'] or compatible_role(spec['role'], i['role'])) and
-               same_name(spec['name'], i['name']) and spec['landmark'] in (i.get('landmarks') or [])
+    return any(spec['role'] == i['role'] and
+               ' '.join(spec['name'].split()) == ' '.join(i['name'].split()) and
+               spec['landmark'] in (i.get('landmarks') or [])
                for i in screen['items'])
 
 
 def check_placements(observed, requirements, kept, missing, unknown):
-    """A stated placement is checked on the start screen, and a global one on every screen that shows that landmark.
+    """A stated placement is checked on the start screen, and a global one on every observed screen.
     Satisfied placements are kept items, so a later change that removes one is a loss like any other."""
     screens = [s for s in observed.get('screens', []) if s.get('status') == 'ok']
     start = next((s for s in screens if not s['steps']), None)
     for spec in placements(requirements):
         pid = f"placement:{spec['role']}:{spec['name']}:{spec['landmark']}"
-        targets = [s for s in screens if any(spec['landmark'] in (i.get('landmarks') or []) for i in s['items'])] \
-            if spec['every'] else []
+        targets = screens if spec['every'] else []
         targets = targets or ([start] if start else [])
         entry = {'id': pid, 'role': spec['role'], 'name': spec['name'], 'placement': spec}
         if observed.get('unavailable') or not targets:
@@ -216,8 +218,8 @@ def check_placements(observed, requirements, kept, missing, unknown):
                         'observation': (f'the requirements state "{spec["statement"]}"; {where} no {spec["role"]} '
                                         f'{spec["name"]!r} inside the {LANDMARK_WORDS[spec["landmark"]]} '
                                         f'({spec["landmark"]} landmark){" on every page" if spec["every"] else ""}. '
-                                        'Place it there; if the page then offers that role and name twice, remove '
-                                        'the other one')})
+                                        'Place it in the required region. Retain other useful entry points unless '
+                                        'the requirements call for relocation or removal')})
 
 
 def compare(baseline, observed, requirements=''):
@@ -274,7 +276,7 @@ def compare(baseline, observed, requirements=''):
 
 
 RUNTIME_LOCK = threading.Lock()
-RUNNER_IMAGE_MODULES = '/opt/arcbench/node_modules'  # the evaluator image's own @playwright/test install
+RUNNER_IMAGE_MODULES = '/opt/arcbench/node_modules'  # preinstalled runtime dependencies, not test inputs
 
 
 def _ensure_runtime(env):
@@ -397,7 +399,7 @@ class Guard:
         for part in ('frontend', 'backend'):
             scenario_check.Workspace._copy(Path(app) / part, self.source / part)
         for entry in Path(app).iterdir():
-            if entry.is_file() and not entry.is_symlink() and entry.stat().st_size < 5_000_000:
+            if not entry.name.startswith('.') and entry.is_file() and not entry.is_symlink() and entry.stat().st_size < 5_000_000:
                 shutil.copy2(entry, self.source / entry.name)
         self.thread = threading.Thread(target=self._baseline, name='oneshot-regression', daemon=True)
         self.thread.start()

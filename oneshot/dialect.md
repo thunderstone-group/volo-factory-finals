@@ -16,10 +16,12 @@ Do not suppress distinct records because their display names happen to match.
 ## Content and initial state
 Distinguish required UI labels/messages, initial records, runtime inputs, examples and explicit absences.
 Provision the identities and relationships stated to exist initially. Do not pre-apply later scenario outcomes
-or create records explicitly described as absent. When the requirements accept alternatives for one indication
-(a stated message or a marker), show exactly one of them. Required validation and success messages retain their stated
-wording and appear in the specified context: rejection and validation messages in an element with role="alert",
-confirmations in role="status". Do not add filler text or unused datasets to echo quoted phrases.
+or create records explicitly described as absent. When the requirements allow alternative indications, check whether
+they require an exclusive choice; do not infer exclusivity from "or" alone. Required messages retain their stated
+wording and context. Announce dynamic feedback with semantics appropriate to its urgency: an alert for important,
+time-sensitive feedback, a status for non-urgent updates, or field-associated error text for validation. This lets
+assistive technology convey feedback without unnecessary interruptions (WAI-ARIA APG Alert; WCAG 4.1.3).
+Honor an explicitly required message role. Do not add filler text or unused datasets to echo quoted phrases.
 Only the stated action should create, edit, archive, delete, favorite or otherwise change a record.
 
 ## Accessible controls and layout
@@ -34,9 +36,10 @@ scope and interaction before changing a name or removing a control. Do not globa
 Keep an explicitly required accessible name intact. Decorative icons can use aria-hidden; counters and
 supplementary details must not change a name whose exact value is specified.
 When the requirements place a control in a region (the main content, the page header, a dialog, a row or a
-cell), render it inside that landmark or element. A control described as top, global or site-wide belongs in the
-page header (banner) on every page. Move a control to its stated place rather than copying it: one page offers a
-role and name once unless the requirements place it twice. A control the requirements add to a cell, row or record
+cell), render it inside that landmark or element. Which container and which pages does the requirement actually
+specify? "Global" describes availability, not necessarily a banner. Move controls when relocation is required;
+retain useful repeated entry points in distinct contexts. Scope and purpose disambiguate them for users; a role and
+name need not be unique across an entire page. A control the requirements add to a cell, row or record
 goes inside that element, even where the existing application keeps other controls beside it.
 
 Check which layout regions the application needs. Configure header, navigation, account controls, sidebar
@@ -50,8 +53,11 @@ Implement editing through the paths the requirements support. Use named, labelle
 current form values across re-rendering or disclosure changes. For inline editing, check which pointer,
 keyboard, commit and cancellation interactions are required or appropriate; do not assume every record
 must implement the same gesture set. Display-only content need not become editable.
-Modal dialogs isolate their background. A dialog that stays open after its actions also offers a visible
-button named "Close". Ordinary menus and popovers remain in their intended scope.
+Modal dialogs isolate their background and manage focus. Provide a visible, accessibly named dismissal control and
+keyboard dismissal so users can leave the dialog (WAI-ARIA APG Dialog). Use the name the requirements specify;
+otherwise choose wording suited to the action, such as Cancel, Done or Close. Ordinary menus and popovers remain
+in their intended scope. Use the APG menu-button roles, states and keyboard behavior for a command menu; a disclosure
+of ordinary navigation links can keep link semantics. This preserves the interaction assistive technology expects.
 A field chooser belongs to the container the requirements identify; a named editor elsewhere does not
 imply that every checkbox must move into it. Keep idle overlays from intercepting input. Expose declared
 ARIA states on the controls that own them, and update those states with the real interaction.
