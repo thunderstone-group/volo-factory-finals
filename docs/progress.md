@@ -1825,3 +1825,7 @@ v12双题均耗尽5次主调用失败上限。固定结果G32pass/53fail/31error
 ### 10-06 13:25 进化发布 bug
 
 F1 第一轮（包 cd0f5969）8 题全部 agent 退出 1、零测试，日志末尾都是 `[oneshot] failed: template changed during generation`。下载的 bundle（run 41019cb9e0e1）显示 output-dir 下有 `.arc/stdout.log`（272 KB，即 agent 的输出）和 `.arc/runner-events.jsonl`：平台在运行期间持续写它们，而原地升级在开始时给整个目录打了 stat 戳，发布前比对不一致就放弃。PR #121：原地发布只回写内容变化的应用文件（先写到同目录临时文件，全部写完再改名），删掉 `template_stamp`；新测试在生成期间追加 `.arc/stdout.log`，在旧代码上复现同一报错，新代码通过；`tests_oneshot` 279 条 OK（8 条因本 shell 无 NODE_PATH Playwright 跳过）。main 6ee6a63，包 0a0ab9d7。第二轮 8 题已起跑。第一轮实际花费约 8.9 元。
+
+### 10-06 13:50 修复后的练习进化基线
+
+包 0a0ab9d7（PR #121 后的 main）：arc-bench-evolution 6 题 38/38（榜第 1），lite-evolution 10/12（BookStack 丢 REQ-10.2、Keep 丢 REQ-8.1，榜第 3）。run id 与费用在 campaign evidence `2026-10-06-finals/r2-final.jsonl`。平台费用列合计约 55 元，实际余额只降约 10.5 元（并发 run 共用计量表的虚高，旧事实）。决赛代理题上的本地回放两题 agent 均退出 0（GitHub 1084 s、Sheet 1318 s），判分进行中。
