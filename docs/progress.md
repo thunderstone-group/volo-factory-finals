@@ -1835,3 +1835,11 @@ F1 第一轮（包 cd0f5969）8 题全部 agent 退出 1、零测试，日志末
 按用户限定在 light-compiler 工作树实现确定性 Light 句式编译，`ONESHOT_LIGHT_TESTS=1` 启用，默认 0；只覆盖完整场景，其余保留模型路径。公开六题 35/38 场景、749/756 WHEN/THEN，已编译 35/35 的 749 个操作与官方一致；六套 list 数量一致，起点本地运行 0 pass/35 fail/0 error。旧 Lite 0/12；关闭开关与基线 8 题、25 个桩请求、33 文件字节一致。295 条 one-shot（19 skip）、226 条 legacy（12 skip）无失败；无模型网关和平台调用。报告 `reports/2026-10-06-light-compiler.md`，证据 `evidence/2026-10-06-light-compiler.json`。仅本地提交，不推送或合并；不据此声称生成提分。
 
 主会话独立验收：编译测试在第二轮官方全过的 6 份进化应用上 35/35 通过（无误报失败），在起点应用上 0/35（Codex 冒烟）；完整 one-shot 套件 295 条 OK（3 skip，带 NODE_PATH）。只认官方样题出现过的句式，别的写法整场景回退给模型测试。
+
+### 10-06 15:30 代理基线、守卫试跑与源码审查证据
+
+- 代理题本地回放（包 0a0ab9d7）：GitHub 29/30×2、Sheet 30/30×2，散文写法两题 30/30；旧功能回归 GitHub 每次丢 1（README.md 链接），散文 Sheet 丢 1–2。逐项表在 finals-roadmap F2 读数。
+- 守卫平台试跑 1（提交 `b4a2a55414f5`，包 1621c206，守卫默认开）：6 题 38/38，但所有观察都是「Playwright runtime is not installed」，守卫没生效。修复提交在 feat/evolution-regression-guard（缺运行时就装 playwright@1.57.0 与 Chromium shell，空 TMPDIR 实测 60 屏 1194 项 43 s）。试跑 2（提交 `b8043c3da0dd`，包 e256d162）在跑。
+- 源码审查在 13 次进化运行中无一产出修复，单次 0.13–0.58 元；消融在跑。
+- `arcbench source` 下载的文件内容会经过 CLI 秘钥脱敏，`base-web-*` 因此损坏（`password = ***` 之类），可信起点见 campaign evidence `base-recovered/`。待在 arcbench-cli 修：脱敏只该作用于日志，不该改写下载的源码。
+- PR #125 清理 worktree 时用了强制删除，Codex 未提交的 `runs/light-compiler/` 原始日志丢失；已提交的证据 JSON 含全部计数与逐场景操作。
