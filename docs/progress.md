@@ -1889,3 +1889,11 @@ F1 第一轮（包 cd0f5969）8 题全部 agent 退出 1、零测试，日志末
 ## 2026-10-07 — 独立通用性与合规审查及本地清理
 
 在 finals-clean worktree 从 98754d2 审查运行包，按 A/B/C/D 表清理无条件 alert/Close、全页唯一、global=header、select DOM 改造、静态形状及特定任务探针；明确区域/cell/row 的要求和保留行为守卫仍在。复现并修复模板 copytree 遍历 .arc；运行时仍无 OS 文件/网络隔离，报告明确不作绝对合规认证。代码 d89d194、5652e9c、b395343、ac4bcdc；报告 reports/2026-10-07-generalization-audit.md，摘要 evidence/2026-10-07-generalization-audit.json。指定 one-shot 327 项 OK（3 skip，随后以已有 headless shell 补跑 3 项通过），legacy 226 项 OK（12 skip）。本地包 240b6b8d8a37，无模型调用、平台 key、上传、推送或官方分数结果。
+
+### 10-07 07:15 练习回归、命名消息修正、页头搜索的根因
+
+- 干净版加（860349e，包 0b953076）练习 6 题 33/38（提交 `255c908e4672`）：Ctrip 5/9、PrestaShop 4/5，其余满分。5 条失败都是需求明写「名叫 X 的 status/alert」（例如「The form named "Hotel search" exposes "2 nights" as a status」），产物有角色但没有可访问名称：ARIA 不从内容给 alert/status 取名，官方按 `getByRole(role, { name })` 找不到。清理后的内部测试用 `getByRole + toContainText` 断言，查不出这个缺口；候选五同题产物带 `aria-label`，9/9。
+- 修正 09bb188（分支 feat/finals-named-messages，包 5f5b9a78）：需求同时给出消息的角色和文字时，测试生成按角色加精确名称定位，方言卡要求用 aria-label 带上该名称。练习 6 题 36/38（提交 `24658fb30bef`，Ctrip 7/9，其余满分）。Ctrip 剩下 2 条（点 Search 后找不到结果区域）在本地官方镜像跑 3 次都是 9/9，官方重跑 2 次也都是 9/9（`77ac453e863f`、`f6c099e53c0b`），按偶发处理。决赛需求没有这种写法，官方对 alert 只按角色定位，不影响决赛。
+- 决赛 `75e1e32ba125` 首轮：Sheet 29/30（`3a313baa7392`，1.789 元）、第二轮 28；GitHub 15/30（`c1cc732054e3`，3.034 元，3627 s）。GitHub 15 条失败里 12 条是页头没有「Search」搜索框：起草把全局搜索留在首页正文；守卫按需求「The top global search control」要求放进页头，但提示里写着「保留其他入口」，修复就在页头加了一份；内部测试整页定位「Search」，两份造成 31 条歧义报错，4 轮修复全被否决。
+- 修正 5c24eb4（同分支，包 7896620e）：守卫提示改为「同一动作的控件挪过去，不复制；用途不同的控件留在原处」；测试生成拿到守卫抽取的需求明写位置，按地标定位。决赛 GitHub 抽到两条（正文「Sign in」、页头「Search」），Sheet 和练习 6 题都抽不到，提示不变。单测 328 OK。本地代理 v3 GitHub 两样本、Sheet 一样本在跑。
+- 判分口径：决赛 S = p / (b / 0.24p)^0.1（reward 区），按此算 977c 为 98.82，与榜一致。新提交要超过的是 S 而不是 50 条：同样 4.8 元，51 条只有 98.25。工具 `E3/best_combo.py` 读一个提交的全部运行，每题取最好一次后算 S。
