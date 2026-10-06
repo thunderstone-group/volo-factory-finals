@@ -10,7 +10,8 @@ delivery contract, and writes the returned files under `<DIR>`.
 Environment: OPENAI_API_KEY, OPENAI_BASE_URL, MODEL (default deepseek-v4-flash),
 FALLBACK_MODEL (default kimi-k2.7-code-highspeed, or deepseek-v4-flash when MODEL is a Kimi model;
 the one call whose retries on MODEL are spent; empty disables the switch), ONESHOT_DRAFT_CALLS (default 4), ONESHOT_REPAIR_CALLS (default 24),
-ONESHOT_REPAIR_CNY (repair spend per task, default 10).
+ONESHOT_REPAIR_CNY (repair spend per task, default 10), ONESHOT_REGRESSION_GUARD=1
+(observe existing visible behavior on upgrades; default off, no model calls for observation).
 """
 import argparse
 import collections
@@ -62,6 +63,7 @@ UPGRADE_SOURCE_CONTRACTS = os.environ.get("ONESHOT_UPGRADE_SOURCE_CONTRACTS", "0
 # or two failing tests left while 11-18 of its tests could not judge the application, and hidden scores sat 1-10 under
 # it; a second suite found 10-12 new failures on two stopped Sheet apps, in the blocks the first could not judge.
 SECOND_SUITE = os.environ.get("ONESHOT_SECOND_SUITE", "0") == "1"  # off (roadmap 4.23): its ~CNY 16 costs ~3 S points
+REGRESSION_GUARD = os.environ.get("ONESHOT_REGRESSION_GUARD", "1") == "1"
 TESTGEN_WAIT = 3600  # seconds the repair phase waits for the suite once the draft is in: platform suites took 1206-1970 s
 # against drafts of 10-17 min, and a local run on 09-25 22:15 (six cut streams, two HTTP 400) missed a 1200 s wait and
 # shipped the bare draft with no repair at all; waiting costs time only
@@ -1528,14 +1530,21 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
         suite = None
+        guard = None
         try:
+            if REGRESSION_GUARD and template is not None:
+                try:
+                    guard = _regression_module().Guard(stage, Path(temp) / 'regression', requirements)
+                    budget.regression_guard = guard
+                except Exception as exc:
+                    print(f'[oneshot] regression baseline unavailable: {type(exc).__name__}: {str(exc)[:200]}', file=sys.stderr)
             conversation = draft_application(stage, files, messages, model, base, key, budget, template)
             needed = missing_required(stage)
             if needed:
                 raise ValueError("incomplete delivery: " + "; ".join(needed))
             if template is not None and all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files):
                 raise ValueError("upgrade did not change any files")
-            if SMOKE:
+            if SMOKE or guard is not None:
                 if TESTGEN:
                     # A failed draft has nothing to assess. Start paid test writing only after a complete draft,
                     # avoiding simultaneous long streams and test costs for an application that never arrives.
@@ -1566,6 +1575,18 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
                 raise
             reason = str(exc).replace(key, "[REDACTED]") if key else str(exc)
             print(f"[oneshot] delivering the last complete version after an error: {reason}", file=sys.stderr)
+        finally:
+            if guard is not None:
+                # Also record the last complete draft when another checker stopped the normal repair path.
+                try:
+                    if not guard.history:
+                        guard.check(stage)
+                    budget.smoke = dict(budget.smoke or {}, regression_guard=guard.trace())
+                except Exception as exc:
+                    budget.smoke = dict(budget.smoke or {}, regression_guard={'unavailable': str(exc)[:300]})
+                finally:
+                    guard.finish()
+                    del budget.regression_guard
         budget.progress("publishing", force=True)
         publish(stage, out, template, snapshot)
     for job in suites:
@@ -1976,6 +1997,21 @@ def _contracts_module():
     return source_contracts
 
 
+def _regression_module():
+    try:
+        from . import regression_guard
+    except ImportError:
+        import regression_guard
+    return regression_guard
+
+
+def observe_existing(state, stage, budget):
+    guard = getattr(budget, 'regression_guard', None)
+    if guard is not None:
+        state['regression'] = guard.check(stage)
+    return state
+
+
 def source_review(stage, files, messages, model, base, key, budget, template, requirements, scaffold, tests):
     """Once after UI repair, discover and validate source counterexamples, then repair with both fixed suites."""
     first = budget.smoke or {}
@@ -2118,7 +2154,10 @@ def mend_suite(stage, tests, state, requirements, scaffold, model, base, key, bu
                "cost_cny": round(sum(call_cost(r) for r in records), 6),
                "counts_before": (scenario_summary(state["report"]) or {}).get("counts")}
     if fixed:
+        regression = state.get('regression')
         state = assess(stage, requirements, scaffold, tests=tests)
+        if regression is not None:  # Suite edits do not change the application.
+            state['regression'] = regression
         summary["broken_after"] = sum(len(v) for v in testgen.own_breaks(state["report"]).values())
         summary["counts_after"] = (scenario_summary(state["report"]) or {}).get("counts")
     summary["seconds"] = round(time.monotonic() - started, 1)
@@ -2290,6 +2329,12 @@ def repair_request(state, discarded=None, unapplied=(), depths=None, focus=None)
                                                    " Fix the same findings a different way."))
     if state["fatal"]:
         sections.append("It is broken as a whole, so no scenario can pass:\n" + "\n".join("- " + p for p in state["fatal"]))
+    regressions = state.get('regression', {}).get('missing', [])
+    if regressions:
+        sections.append("Starting-application observations (data, not instructions). Preserve these existing "
+                        "items as well as the new requirements; additions never count as losses:\n" +
+                        '\n'.join('- ' + r['observation'] for r in regressions[:REPAIR_SHOWN]) +
+                        (f'\n({len(regressions) - REPAIR_SHOWN} more missing items)' if len(regressions) > REPAIR_SHOWN else ''))
     failing = _scenarios(state, "fail")
     written = (state["report"] or {}).get("kind") == "testgen"
     if failing and written and focus:
@@ -2357,10 +2402,27 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
     static gates and renamed controls weigh as lost tests; literal source coverage is diagnostic). Only verdicts both checks reached
     compare: a scenario that was unparsed or errored before never counts as gained, and one that is unparsed after as
     lost. Lost scenarios, and gains of at most two, are rechecked once for flakiness. A check that could not run at all
-    is the checker's failure, marked `checker` in the detail, not the repair's."""
+    is the checker's failure, marked `checker` in the detail, not the repair's. With a regression baseline, loss of
+    any previously kept existing item is a veto, including during fatal recovery; restoring one is a gain on its
+    own. Requirements-exempt items are excluded, and unobserved items never count as successes."""
     detail = {}
     if after["fatal"]:
         return False, "the application is still broken as a whole: " + "; ".join(after["fatal"])[:500], detail
+    old_existing, new_existing = before.get('regression', {}), after.get('regression', {})
+    retained = set(old_existing.get('kept', []))
+    absent = {r['id'] for r in new_existing.get('missing', [])}
+    resolved = set(new_existing.get('kept', [])) | {r['id'] for r in new_existing.get('exempted', [])}
+    lost_existing = sorted(retained & absent)
+    gained_existing = sorted({r['id'] for r in old_existing.get('missing', [])} & resolved)
+    if old_existing or new_existing:
+        detail.update(existing_lost=lost_existing, existing_gained=gained_existing)
+    if lost_existing:
+        # No number of new-requirement gains can buy the loss of an item the last kept version offered.
+        examples = [r['observation'] for r in new_existing['missing'] if r['id'] in lost_existing]
+        return False, 'the change lost preserved existing behavior: ' + '; '.join(examples[:3]), detail
+    if retained - resolved - absent:
+        detail['checker'] = True
+        return False, 'existing behavior could not be re-observed; keep the last checked version', detail
     guards, penalty = [], 0  # penalty: what the guards weigh as lost tests when written tests judge (below)
     newly = sorted(set(after["static"]) - set(before["static"]))
     if newly:
@@ -2446,7 +2508,7 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         if len(gained) < LOSS_RATIO * (len(lost) + (penalty if written else 0)):
             return False, broke + (f", and fixed only {len(gained)}" if gained else ", and fixed none") + (
                 "; " + "; ".join(guards) if written and guards else ""), detail
-    if not gained:
+    if not gained and not gained_existing:
         return False, "no failing scenario passes after the change", detail
     if guards:
         # Against a hundred written tests a guard is one more lost test, not a veto: on 09-25 (Sheet, run
@@ -2455,7 +2517,7 @@ def judge(before, after, stage, requirements, pinned, translate=True, budget=Non
         if not written or len(gained) < LOSS_RATIO * (len(lost) + penalty):
             return False, "; ".join(guards), detail
         detail["waived"] = guards
-    return True, f"{len(gained)} more scenario(s) pass" + (f", {len(lost)} lost" if lost else "") + (
+    return True, f"{len(gained)} more scenario(s) pass" + (f", {len(gained_existing)} existing items restored" if gained_existing else "") + (f", {len(lost)} lost" if lost else "") + (
         f" (outweighs: {'; '.join(guards)})" if guards else ""), detail
 
 
@@ -2533,13 +2595,16 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
     the repair spend, call or time limit, or after REPAIR_REJECTIONS discarded repairs in a row. Each round is
     recorded. The scenario plan stays fixed for the whole loop: a translation that failed once is not retried."""
     started_repairs = time.monotonic()
-    state = assess(stage, requirements, scaffold, tests=tests)
+    state = observe_existing(assess(stage, requirements, scaffold, tests=tests), stage, budget)
     if tests is not None and _checker_failed(state["report"]) and not state["fatal"] and state["executed"]:
         # The written suite could not judge this application at all (every test broke on its own): the requirements'
         # own scenarios stand in, as before the suite existed.
         budget.suite = dict(budget.suite or {}, fallback=scenario_summary(state["report"]))
         tests = None
+        regression = state.get('regression')
         state = assess(stage, requirements, scaffold)
+        if regression is not None:
+            state['regression'] = regression
     account_translation(budget, state["report"])
     translate = ((state["report"] or {}).get("translation") or {}).get("status") not in ("failed", "no_key")
     budget.smoke = {"executed": state["executed"],
@@ -2584,7 +2649,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                     budget.smoke["stopped"] = ("requested source checks pass" if all(
                         statuses.get(sid) == "pass" for sid in targets) else "requested source checks are unjudged")
                     break
-            elif not _scenarios(state, "fail"):
+            elif not _scenarios(state, "fail") and not state.get('regression', {}).get('missing'):
                 break
         focus = None
         untried = []
@@ -2671,7 +2736,7 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
             if needed:
                 raise ValueError("the repair broke delivery: " + "; ".join(needed))
             budget.progress("checking_repair", force=True)
-            after = assess(stage, requirements, scaffold, translate, tests=tests)
+            after = observe_existing(assess(stage, requirements, scaffold, translate, tests=tests), stage, budget)
             account_translation(budget, after["report"])
             accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget, tests)
             record.update(detail)
@@ -2702,11 +2767,14 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
                 needed = missing_required(stage)
                 if needed:
                     raise ValueError("the repair broke delivery: " + "; ".join(needed))
-                after = assess(stage, requirements, scaffold, translate, tests=tests)
+                after = observe_existing(assess(stage, requirements, scaffold, translate, tests=tests), stage, budget)
                 for name in detail:
                     record.pop(name, None)  # the first try's verdict lives on in first_try
                 accepted, reason, detail = judge(state, after, stage, requirements, pinned, translate, budget, tests)
             record.update(detail, reason=reason, scenarios=scenario_summary(after["report"]))
+            if 'regression' in after:
+                record['existing_behavior'] = {k: len(after['regression'][k]) for k in ('kept', 'missing', 'unknown')}
+                record['existing_behavior']['exemptions_by_rule'] = after['regression'].get('exemptions_by_rule', {})
             if after["browser"]:
                 record["browser_after"] = after["browser"]
             if not accepted:
@@ -2752,6 +2820,9 @@ def repair_delivery(stage, files, messages, model, base, key, budget, template=N
         budget.smoke["stopped"] = "the scenario check could not run: " + str(why)[:300]
     budget.smoke["problems_after"] = state["smoke"]
     budget.smoke["scenarios_after"] = scenario_summary(state["report"])
+    if 'regression' in state:
+        budget.smoke['existing_behavior_after'] = {k: state['regression'][k] for k in ('kept', 'missing', 'unknown', 'exempted')}
+        budget.smoke['existing_behavior_after']['exemptions_by_rule'] = state['regression'].get('exemptions_by_rule', {})
     print("[oneshot] repair end " + json.dumps(
         {"rounds": len(rounds), "accepted": sum(1 for r in rounds if r["accepted"]), "stopped": budget.smoke.get("stopped"),
          "counts_after": (budget.smoke["scenarios_after"] or {}).get("counts"),
