@@ -145,6 +145,14 @@ class PlanCase(unittest.TestCase):
         self.assertIn("- REQ-1-1#2: Add two  (scenario 2 of REQ-1-1)", user["content"])
         self.assertIn("Seed: synthetic", user["content"])
         self.assertIn("const { test, expect } = require('@playwright/test');", system["content"])
+        self.assertNotIn("Control placements", user["content"])
+
+    def test_request_scopes_the_placements_the_guard_enforces(self):
+        text = REQUIREMENTS.replace("description:", "description: The top global search control has searchbox role "
+                                    "and accessible name \"Search\".", 1)
+        user = testgen.request(text, testgen.plan(text)[0])[1]["content"]
+        self.assertIn("`page.getByRole('banner').getByRole('searchbox', { name: \"Search\", exact: true })`", user)
+        self.assertLess(user.index("Control placements"), user.index("\n\nWrite `"))
 
 
 class WriteCase(unittest.TestCase):

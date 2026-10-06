@@ -26,8 +26,9 @@ import time
 from pathlib import Path
 
 try:
-    from . import scenario_check, scenarios
+    from . import regression_guard, scenario_check, scenarios
 except ImportError:  # run as a script, or from the flat package next to main.py
+    import regression_guard
     import scenario_check
     import scenarios
 
@@ -177,6 +178,16 @@ def request(text, group, prerequisites=""):
     user = "Requirements document (YAML):\n\n" + text
     if prerequisites.strip():
         user += "\n\nPrerequisites (the task's prerequisites.md, part of the requirements):\n" + prerequisites.strip()
+    # The placements the regression guard enforces; tests that locate these controls page-wide disagree with it and
+    # reject the repair that places them (10-07: a header "Search" beside the page's own made 31 page-wide lookups
+    # ambiguous, and four repairs were discarded).
+    stated = regression_guard.placements(text)
+    if stated:
+        user += ("\n\nControl placements the requirements state; wherever a test uses one of these controls, locate it "
+                 "inside its landmark:\n" + "\n".join(
+                     f"- {p['role']} \"{p['name']}\" ({regression_guard.LANDMARK_WORDS[p['landmark']]}): "
+                     f"`page.getByRole('{p['landmark']}').getByRole('{p['role']}', "
+                     f"{{ name: {json.dumps(p['name'])}, exact: true }})`" for p in stated))
     # Everything before this point is the same for every file of the suite, so the gateway's prefix cache serves it
     # after the first call (09-26: the file name sat in the system prompt, no call shared a prefix, and the
     # requirements were billed uncached sixteen times).

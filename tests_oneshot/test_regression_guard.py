@@ -61,7 +61,8 @@ class DiffTests(unittest.TestCase):
         self.assertIn('placement:searchbox:Search:banner', right['kept'])
         self.assertFalse(guard.placed({'role': 'link', 'name': 'Sign in', 'landmark': 'main'},
                                      observed(('button', 'Sign in', ['main']))['screens'][0]))
-        self.assertFalse(any('remove the other one' in m['observation'] for m in wrong['missing']))
+        # A stated placement relocates the same control; a copy leaves two identical controls on one page.
+        self.assertIn('instead of adding a copy', ' '.join(m['observation'] for m in wrong['missing']))
         without_header = observed(('heading', 'Other page', ['main']))['screens'][0]
         without_header['steps'] = [{'role': 'link', 'name': 'Other'}]
         right['observation']['screens'].append(without_header)

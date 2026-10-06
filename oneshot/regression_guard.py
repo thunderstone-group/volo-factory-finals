@@ -220,8 +220,9 @@ def check_placements(observed, requirements, kept, missing, unknown):
                         'observation': (f'the requirements state "{spec["statement"]}"; {where} no {spec["role"]} '
                                         f'{spec["name"]!r} inside the {LANDMARK_WORDS[spec["landmark"]]} '
                                         f'({spec["landmark"]} landmark){" on every page" if spec["every"] else ""}. '
-                                        'Place it in the required region. Retain other useful entry points unless '
-                                        'the requirements call for relocation or removal')})
+                                        'Place it in the required region. When the page already offers that role and '
+                                        'name for the same action, move that control there instead of adding a copy; '
+                                        'controls with a different purpose stay where they are')})
 
 
 def compare(baseline, observed, requirements=''):
