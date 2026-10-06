@@ -84,6 +84,8 @@ How the tests run:
   inside a named dialog, menu, region, row, cell or grid, scope the locator to it first. A control "in the main
   content" is located inside `page.getByRole('main')`; a top, global or header control inside
   `page.getByRole('banner')`; a sidebar control inside `page.getByRole('complementary')`.
+- A control the requirements add to a particular cell, row or record ("adds a button ... to that cell") is located
+  inside that element: `page.getByRole('gridcell', {{ name }}).getByRole(...)`, the row, or the record's container.
 - Menus follow the menu-button pattern: the control that opens a named menu is a button, and the entries inside
   the opened menu are `menuitem`s. Any other control the requirements name without stating its role is located as
   a link or a button: `page.getByRole('link', {{ name, exact: true }}).or(page.getByRole('button', {{ name, exact: true }}))`.
