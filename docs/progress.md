@@ -1857,3 +1857,9 @@ F1 第一轮（包 cd0f5969）8 题全部 agent 退出 1、零测试，日志末
 - 严格守卫候选（包 a64cd91e，提交 `9fcea15aefde`）：平台 36/38（Keep EV-1.1：守卫把需求合法去掉的「Matching notes」逼回来；PrestaShop EV-1.2：守卫驱动修复 13 轮、1.2 元后联系表单场景挂）；代理 29/30、30/30，回归 GitHub 105。不采用。
 - 宽松守卫 + 跳过源码审查（包 9293a251，提交 `9b6dfbecf17a`）：平台 38/38；代理 30/30、30/30；估算 0.75/0.69 元；回归 GitHub 100/11（起点 107/4），丢失的「Edit issue title」「Assignees」在 app.js 里整段没了（105 KB 整份重写成 143 KB），其余样本保住了：起草整份重写的随机丢失，守卫看不到登录后界面。合入 main。
 - 组委会 10-06 18:13 邮件「入围 Hackathon 决赛通知」：决赛安排与注意事项只在决赛微信群公告发布，入群二维码在邮件内嵌图（尺素取不出），需甲方扫码。
+
+### 10-06 20:05 决赛开放
+
+- `hackathon-evolution` 19:48 起 open，需求已下载（副本在 campaign evidence `2026-10-06-finals/finals-open/`）。平台 `initial-projects-download` 的基线与本地 G79、Sheet87 逐字节一致。报名仍未确认（初始额度 200 元）。
+- 甲方转来《决赛参赛须知》：截止 10-08 18:00，截止时停掉在跑容器；最新有效提交上榜；平台注入基线、智能体只做增量修改。全文要点在 finals-roadmap 第 2 节。
+- 需求格式与练习赛不同：无 `change_type`，改动需求写「Original/Modified Feature Description」，GitHub 给整棵 52 个需求的原始树（受测 10 个），Sheet 只给受测 10 个。Codex job `2026-10-06-finals-real-proxy` 按真实场景写代理测试与参考实现；当前包（9293a251）在真实需求上本地两题试跑中。
