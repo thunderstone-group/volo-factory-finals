@@ -39,6 +39,7 @@ GROUP_SCENARIOS = 30  # scenarios per spec file (one model call); requirements a
 GROUP_WORKERS = 1  # serialize long streams; preserve the completed file before starting the next one
 AUDIT = os.environ.get("ONESHOT_TEST_AUDIT", "0") == "1"  # opt-in; replaced by source counterexamples in the S70 candidate
 AUDIT_LIMIT = 6  # Additional requirement-grounded checks per file, after reviewing the existing tests.
+LIGHT_TESTS = os.environ.get("ONESHOT_LIGHT_TESTS", "0") == "1"
 RUN_SECONDS = 900  # one suite run; a hung runner is stopped here
 TEST_SECONDS = 15
 ACTION_SECONDS = 5
@@ -456,6 +457,17 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS, 
     suite.mkdir(parents=True, exist_ok=True)
     groups = plan(text)
     started = time.monotonic()
+    compiled_records = []
+    if LIGHT_TESTS:
+        try:
+            from . import light_tests
+        except ImportError:  # flat competition package
+            import light_tests
+        compiled = [s for s in light_tests.compile_requirements(text) if s["source"] is not None]
+        compiled_ids = {s["id"] for s in compiled}
+        groups = [{**g, "items": [s for s in g["items"] if s["id"] not in compiled_ids]} for g in groups]
+        groups = [g for g in groups if g["items"]]
+        compiled_records = light_tests.write_compiled(suite, compiled)
 
     def one(group):
         record = {"file": group["file"], "scenarios": [item["id"] for item in group["items"]], "calls": 0}
@@ -490,7 +502,8 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS, 
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
         records = list(pool.map(one, groups))
-    manifest = {"files": records, "scenarios": sum(len(g["items"]) for g in groups),
+    records = compiled_records + records
+    manifest = {"files": records, "scenarios": sum(len(r["scenarios"]) for r in records),
                 "tests": sum(len(r.get("tests") or []) for r in records),
                 "seconds": round(time.monotonic() - started, 1), "prerequisites": prerequisites}
     (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -639,16 +652,20 @@ def audit_suite(text, suite, complete, workers=GROUP_WORKERS):
     suite = Path(suite)
     manifest = json.loads((suite / "suite.json").read_text(encoding="utf-8"))
     groups = {g["file"]: g for g in plan(text)}
+    mixed = any(r.get("compiler") == "light" for r in manifest.get("files", []))
     requirements = {r["id"]: r for r in scenarios.load_requirements(text)}
     node = _node()
 
     def one(record):
         name = record["file"]
-        if record.get("syntax") or not record.get("tests") or name not in groups or record.get("audit"):
+        if record.get("compiler") or record.get("syntax") or not record.get("tests") or name not in groups or record.get("audit"):
             return
+        group = groups[name]
+        if mixed and "scenarios" in record:
+            group = {**group, "items": [s for s in group["items"] if s["id"] in record["scenarios"]]}
         path = suite / name
         original = path.read_text(encoding="utf-8")
-        messages = request(text, groups[name], manifest.get("prerequisites") or "")
+        messages = request(text, group, manifest.get("prerequisites") or "")
         messages += [{"role": "assistant", "content": f"=== FILE: {name} ===\n{original.rstrip()}\n=== END ==="},
                      {"role": "user", "content": AUDIT_REQUEST.replace("{limit}", str(AUDIT_LIMIT))}]
         info = {"claims": [], "calls": 1}
@@ -657,7 +674,7 @@ def audit_suite(text, suite, complete, workers=GROUP_WORKERS):
             content, _, finish = complete(messages)
             if finish != "stop":
                 raise ValueError(f"audit response is incomplete ({finish})")
-            addition, claims, rejected = _audit_additions(content, groups[name], requirements, original, node, path)
+            addition, claims, rejected = _audit_additions(content, group, requirements, original, node, path)
             if addition:
                 path.write_text(original + "\n" + addition + "\n", encoding="utf-8")
                 record["tests"] += [m.group(2) for m in TITLE.finditer(addition)]
@@ -730,7 +747,11 @@ def fix_suite(text, suite, report, complete, workers=GROUP_WORKERS):
     broken = own_breaks(report)
     groups = {g["file"]: g for g in plan(text)}
     records = {r["file"]: r for r in manifest.get("files", [])}
-    todo = [name for name in broken if name in groups and name in records and (suite / name).is_file()]
+    todo = [name for name in broken if name in groups and name in records
+            and not records[name].get("compiler") and (suite / name).is_file()]
+    if any(r.get("compiler") == "light" for r in records.values()):
+        groups = {name: {**g, "items": [s for s in g["items"] if s["id"] in records[name]["scenarios"]]}
+                  if "scenarios" in records.get(name, {}) else g for name, g in groups.items()}
     node = _node()
 
     def one(name):
@@ -1006,6 +1027,8 @@ def parse(report_path, suite, manifest, text, progress_path=None, missing="the r
         for title in record.get("tests") or []:
             sid, name = _test_id(title)
             entry = {"id": sid, "name": name, "file": record["file"], "steps": []}
+            if record.get("compiler") == "light":
+                entry["compiler"] = "light"
             if record.get("syntax"):
                 entry.update(status="error", observation="The test file does not parse: " + record["syntax"][:300])
             elif title not in by_title:
@@ -1033,7 +1056,9 @@ def _collapse(entries):
     helper, so distinct tests failing alike in their own code stay separate."""
     groups = collections.defaultdict(list)
     for entry in entries:
-        if entry["status"] == "fail" and entry.get("at"):
+        # Compiled helpers implement the fixed interaction contract. Several missing
+        # controls at visible() are independent scenario failures, not writer errors.
+        if entry["status"] == "fail" and entry.get("at") and entry.get("compiler") != "light":
             first = entry["observation"].splitlines()[0] if entry["observation"] else ""
             groups[(entry["at"], re.sub(r"\d+ms", "", first))].append(entry)
     out = list(entries)

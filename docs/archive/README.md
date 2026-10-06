@@ -68,3 +68,5 @@
 - `handoffs/2026-10-03-before-requirement-grounded-safe.md` — Snapshot before the unconditional-rule audit, v11 comparison, and final submission selection.
 
 - `handoffs/2026-10-03-before-final-candidate-selection.md` — Snapshot before rejecting the outage-affected v12 experiment and keeping the scored submission.
+
+- `handoffs/2026-10-06-before-light-compiler.md` — Preserved finals handoff before the opt-in deterministic Light compiler delivery.
