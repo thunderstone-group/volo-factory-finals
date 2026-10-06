@@ -1,12 +1,11 @@
-# 2026-10-06 12:45 决赛开工：练习进化基线在跑，代理暗题派给 Codex
+# 2026-10-06：旧行为回归守卫已在独立分支实现并本地验证
 
-先读本页、AGENTS.md 和 `docs/reference/finals-roadmap.md`；git 和 CLI 是当前状态真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`。
+先读本页、[回归守卫报告](reports/2026-10-06-regression-guard.md) 和 `reference/finals-roadmap.md`。此前决赛工作的交接原文保存在 [归档](archive/handoffs/2026-10-06-before-regression-guard.md)，本任务不改变其平台状态。
 
-- 初赛已结束：终榜第 2（G79 `afc04ffe5b63` + Sheet87 `defb678bf0a1`，S104.96，提交 `12e3bab723fd`）。最后一对 run `9f40df0b587e`/`8c80a2b899ac` 只有 62/7，没替换成绩。10-05 组委会邮件通知入围决赛，安排另行通知。
-- 决赛 = 平台竞赛 `hackathon-evolution`：从上面两份产物继续进化，2 题 60 条，尚未开放（403）。报名 registered=False、can_confirm=True，要甲方定。
-- F1 第二轮（包 0a0ab9d7）：Web 进化 38/38、Lite 10/12，结果 E3/r2-final.jsonl。Light 编译器 Codex job `~/.codex-jobs/volo-factory/2026-10-06-light-compiler/`（worktree light-compiler，分支 feat/light-scenario-compiler，默认关）。
-- F1 第一轮 8/8 死在发布（`template changed during generation`，平台运行期间写 `.arc/`），PR #121 修复，包 0a0ab9d7 第二轮在跑：提交 `e27ad83fd9c5`（arc-bench-evolution）、`30c220b9ce4d`（lite），run id 见 E3/r2-ids.txt，等待器写 E3/r2-wait.jsonl 与 r2-wait.exit。
-- （第一轮记录）F1 练习基线：主分支 v11 包（cd0f5969，副本 E3/v11-main-cd0f5969.zip），模型 deepseek-v4-flash-vision-exp，练习额度。提交 `da8189ed3dd5`（arc-bench-evolution，run 12306 `6908dfd75b2b`、bookstack `41019cb9e0e1`、ctrip `f1a38fbc4e47`、keep `70b53c1fe2bb`、prestashop `5dbadb474c70`、stackoverflow `5ae9b83511a9`）与 `cba6094af823`（lite-evolution，bookstack `108d9b96822e`、keep `a6e70f4061d2`）。等待器 nohup 写 E3/baseline-wait.jsonl，结束写 E3/baseline-wait.exit。练习余额起跑前 356.99 元。
-- F2 代理暗题：已交付（两题各 30 条，起点 0/30、参考实现 30/30×2、旧回归无丢失）。位置与跑法只记在主会话专用的 acceptance-hidden README，不写进本仓库。13:20 起用包 0a0ab9d7 在两题上本地各跑一次作代理基线。
+- `ONESHOT_REGRESSION_GUARD=1` 对升级开启确定性可见界面基线，默认关闭；基线双 pass 与草稿调用并行，草稿／修复后同路径重放。丢失上一保留版本的旧项不能用新测试收益抵消，纯旧项恢复也可接受；回退与非空交付保留。
+- 两题独立双 pass 清单一致：GitHub 1194 项／60 页，39.650、39.459 秒；Sheet 29 项／2 页，2.055、1.985 秒。8/8 合成破坏检出，两个新增对照零回归。
+- 六份 `base-web-*` 中五份源码被 `arcbench source` 脱敏破坏；从已有运行包的首轮输入恢复真实起点，每个文件通过原 SHA-256 校验。六组真实对照 134 项发现：132 项可见界面回归、2 项分页噪声，0.33 噪声／应用。每条发现及保守豁免均有报告和 JSON 证据；不等同于独立功能故障数或官方旧功能分数。
+- 307 one-shot（3 skip）、226 legacy（12 skip）无失败；新增守卫 28/28。allowlist 共 23 文件，扁平导入／重复打包通过，包 SHA-256 `74b637ac17ff20dff1e8249d82d161d8ad3cd9296dcb26611cd82199edcc7fe8`。
+- 本轮零模型网关调用、零平台调用／上传。用户只授权本 worktree 提交，不推送、不合并、不切换默认开关。没有候选晋升或得分改善结论。
 
-下一步：收 F1 八个终态并逐条归因（`arcbench download` 取产物，含起点应用）；搭 F4 本地回放；F2 交付后用它做 F3 候选的配对比较。
+原始验证、恢复副本和日志位于此 worktree 的 `runs/regression-guard/`；长期证据在 `docs/evidence/2026-10-06-regression-guard.json`。后续如要用真实模型比较守卫，应另行明确运行范围；此版没有通用登录，未验证已登录状态。
