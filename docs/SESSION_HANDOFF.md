@@ -1,20 +1,11 @@
-# 2026-10-06 12:45 决赛开工：练习进化基线在跑，代理暗题派给 Codex
+# 2026-10-06 升级草稿定点编辑候选：仅本地提交，默认关闭
 
-先读本页、AGENTS.md 和 `docs/reference/finals-roadmap.md`；git 和 CLI 是当前状态真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`。
+先读本页、AGENTS.md、`reference/finals-roadmap.md` 第 4.5 节与 F3，再读 [本次报告](reports/2026-10-06-upgrade-patch-draft.md) 和 [证据 JSON](reports/2026-10-06-upgrade-patch-draft.json)。本轮仅在用户指定工作树实施，没有推送、合并或平台调用；main 的决赛包选择未改变。此前交接原样保存在 [归档](archive/handoffs/2026-10-06-before-upgrade-patch-draft.md)。
 
-- 初赛已结束：终榜第 2（G79 `afc04ffe5b63` + Sheet87 `defb678bf0a1`，S104.96，提交 `12e3bab723fd`）。最后一对 run `9f40df0b587e`/`8c80a2b899ac` 只有 62/7，没替换成绩。10-05 组委会邮件通知入围决赛，安排另行通知。
-- 决赛 = 平台竞赛 `hackathon-evolution`：从上面两份产物继续进化，2 题 60 条，尚未开放（403）。报名 registered=False、can_confirm=True，要甲方定。
-- F1 第二轮（包 0a0ab9d7）：Web 进化 38/38、Lite 10/12，结果 E3/r2-final.jsonl。Light 编译器 Codex job `~/.codex-jobs/volo-factory/2026-10-06-light-compiler/`（worktree light-compiler，分支 feat/light-scenario-compiler，默认关）。
-- F1 第一轮 8/8 死在发布（`template changed during generation`，平台运行期间写 `.arc/`），PR #121 修复，包 0a0ab9d7 第二轮在跑：提交 `e27ad83fd9c5`（arc-bench-evolution）、`30c220b9ce4d`（lite），run id 见 E3/r2-ids.txt，等待器写 E3/r2-wait.jsonl 与 r2-wait.exit。
-- （第一轮记录）F1 练习基线：主分支 v11 包（cd0f5969，副本 E3/v11-main-cd0f5969.zip），模型 deepseek-v4-flash-vision-exp，练习额度。提交 `da8189ed3dd5`（arc-bench-evolution，run 12306 `6908dfd75b2b`、bookstack `41019cb9e0e1`、ctrip `f1a38fbc4e47`、keep `70b53c1fe2bb`、prestashop `5dbadb474c70`、stackoverflow `5ae9b83511a9`）与 `cba6094af823`（lite-evolution，bookstack `108d9b96822e`、keep `a6e70f4061d2`）。等待器 nohup 写 E3/baseline-wait.jsonl，结束写 E3/baseline-wait.exit。练习余额起跑前 356.99 元。
-- F2 代理暗题：已交付（两题各 30 条，起点 0/30、参考实现 30/30×2、旧回归无丢失）。位置与跑法只记在主会话专用的 acceptance-hidden README，不写进本仓库。13:20 起用包 0a0ab9d7 在两题上本地各跑一次作代理基线。
+- `ONESHOT_UPGRADE_PATCH=1` 开启升级草稿 EDIT，默认 0，新建应用保持原路径。现有文件大于 4096 UTF-8 字节禁止 FILE；SEARCH 严格唯一命中，按回复内文件事务提交，失败集中纠正一次，截断不应用半个 hunk，残留失败继续原有检查和修复。
+- 四组真实本地对照：BookStack、Keep、12306 的对应练习需求，以及 GitHub 起点配原样 Keep 练习需求。开启版 64/64 hunk，0 纠正/未命中/整份重写；双方自带验收各 24/24。GitHub 草稿具名函数开/关 78/78 与 12/78；关闭版经过两轮普通修复最终也恢复到 78/78，勿把草稿损失当最终交付结果。
+- 八个运行、45 次网关调用、完整 usage，估算合计 CNY 4.279497（授权上限 15）。没有使用正式决赛需求、官方平台打分或独立旧行为验收，不能据此宣称决赛提升。所有 run 输出及 raw archive 留在 `runs/upgrade-patch/`，哈希见证据。
+- 最终完整 one-shot 回归 345 项：342 通过、3 项完整 Chromium 条件跳过；legacy 226 项：214 通过、12 跳过。21 项新定向测试全部通过。关闭开关的提示词和续写请求体与基线逐字节一致。最终解包 parser 重放四份真实回复，64 hunk、32 文件与实跑草稿逐字节一致。
+- 最终包 SHA-256 `6293670acb85669f24ff381e0700cada14229c467b2fa647a2b6b38ab9a28bd6`。实跑包与随后边界修正的区别在报告说明；不要把 mock 恢复测试说成真实模型纠正成功。
 
-- Light 场景编译器（F3 候选）已合 main，默认关（`ONESHOT_LIGHT_TESTS=1` 开）；报告 `reports/2026-10-06-light-compiler.md`。
-
-- 15:30：代理基线、守卫、源码审查的现状见 finals-roadmap F2 读数与 F3 状态。在跑：守卫平台试跑 2（E3/guard2-ids.txt）、Codex 收紧守卫豁免（job `2026-10-06-regression-guard`）、源码审查消融（本地 finals-local/runs/*-nosr-s1）。
-
-- 18:00：守卫在平台实测有效（宽松版找回 230 项）；源码审查进化模式下线（#127）。严格版守卫候选包 a64cd91e 在跑：平台 E3/cand-ids.txt，本地 finals-local/runs/*-cand-a64cd91e-s1；判据见 progress 18:00 节。
-
-- 19:05：决赛包 v2 已合 main（宽松守卫默认开 + 进化跳过源码审查），见 finals-roadmap 第 4.5 节。待甲方：扫码入决赛微信群（10-06 18:13 邮件）、平台报名确认。
-
-下一步：收 F1 八个终态并逐条归因（`arcbench download` 取产物，含起点应用）；搭 F4 本地回放；F2 交付后用它做 F3 候选的配对比较。
+后续若决定推广，沿用 finals-roadmap F3 的独立配对验收判据；本任务到本地提交为止，不自动开启开关或提交平台。

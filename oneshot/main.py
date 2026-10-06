@@ -64,6 +64,7 @@ UPGRADE_SOURCE_CONTRACTS = os.environ.get("ONESHOT_UPGRADE_SOURCE_CONTRACTS", "0
 # it; a second suite found 10-12 new failures on two stopped Sheet apps, in the blocks the first could not judge.
 SECOND_SUITE = os.environ.get("ONESHOT_SECOND_SUITE", "0") == "1"  # off (roadmap 4.23): its ~CNY 16 costs ~3 S points
 REGRESSION_GUARD = os.environ.get("ONESHOT_REGRESSION_GUARD", "1") == "1"
+UPGRADE_PATCH = os.environ.get("ONESHOT_UPGRADE_PATCH", "0") == "1"
 TESTGEN_WAIT = 3600  # seconds the repair phase waits for the suite once the draft is in: platform suites took 1206-1970 s
 # against drafts of 10-17 min, and a local run on 09-25 22:15 (six cut streams, two HTTP 400) missed a 1200 s wait and
 # shipped the bare draft with no repair at all; waiting costs time only
@@ -366,6 +367,8 @@ class CallBudget:
         result["calls_by_model"] = dict(collections.Counter(r["model"] for r in self.attempts))
         result["billing_status"] = ("not_called" if not self.attempts else
                                     "unknown" if unknown else "tokens_reported_cost_not_estimated")
+        if hasattr(self, "upgrade_patch"):
+            result["upgrade_patch"] = self.upgrade_patch
         return result
 
 
@@ -1271,6 +1274,8 @@ def read_template(root, bounded=True):
 
 
 def template_context(blobs):
+    if UPGRADE_PATCH:
+        return _upgrade_patch_module().template_context(blobs)
     records = []
     for name, data in sorted(blobs.items()):
         item = {"path": name, "sha256": hashlib.sha256(data).hexdigest()}
@@ -1402,6 +1407,9 @@ def draft_application(stage, files, messages, model, base, key, budget, template
     blocks and are continued the same way. A reply without file blocks (no content because the reasoning used
     the whole output, or a prose excuse) is sent again unchanged, except after a cut between files, where a
     normal stop means nothing was left."""
+    if UPGRADE_PATCH and template is not None:
+        return _upgrade_patch_module().draft(stage, files, messages, model, base, key, budget,
+                                            sys.modules[__name__])
     emitted, request, history, pending, reason = set(), list(messages), None, None, None
     while True:
         if budget.exhausted():
@@ -1487,7 +1495,8 @@ def draft_messages(requirements, scaffold=None, snapshot=None, prerequisites="")
     """The draft conversation: the card, the delivery contract and the requirements (with the
     task's prerequisites.md when it has content), then the scaffold placed in the stage or the existing application
     being extended."""
-    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + CONTRACT +
+    contract = _upgrade_patch_module().contract(CONTRACT) if UPGRADE_PATCH and snapshot is not None else CONTRACT
+    user = ((HERE / "dialect.md").read_text(encoding="utf-8") + "\n\n" + contract +
             seed_checklist(requirements) +
             "\n\n## Requirements (the application to build)\n```yaml\n" + requirements + "\n```")
     if prerequisites.strip():
@@ -1542,7 +1551,9 @@ def generate(requirements, model, base, key, out, budget=None, template=None, pr
             needed = missing_required(stage)
             if needed:
                 raise ValueError("incomplete delivery: " + "; ".join(needed))
-            if template is not None and all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files):
+            if (template is not None and
+                    all(snapshot.get(item["path"]) == item["content"].encode("utf-8") for item in files) and
+                    not (UPGRADE_PATCH and getattr(budget, "upgrade_patch", {}).get("unresolved"))):
                 raise ValueError("upgrade did not change any files")
             if SMOKE or guard is not None:
                 if TESTGEN:
@@ -1979,6 +1990,14 @@ def _scenario_module():
     except ImportError:  # the flat package: main.py runs as a script beside scenario_check.py
         import scenario_check
     return scenario_check
+
+
+def _upgrade_patch_module():
+    try:
+        from . import upgrade_patch
+    except ImportError:  # the flat package
+        import upgrade_patch
+    return upgrade_patch
 
 
 def _testgen_module():

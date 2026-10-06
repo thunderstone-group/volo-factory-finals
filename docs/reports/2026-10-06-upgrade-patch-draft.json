@@ -1,0 +1,2926 @@
+{
+  "schema_version": 1,
+  "report_date": "2026-10-06",
+  "baseline_commit": "9e1051e3fd207b90fc371e7b64e0e3e65ce7e711",
+  "final_package": {
+    "files": {
+      "contract_bindings.cjs": {
+        "bytes": 4426,
+        "sha256": "18fe42b15324f4ae0cdf1a252989c2304faee1a55928f478a60be591499e119a"
+      },
+      "contract_runner.cjs": {
+        "bytes": 4847,
+        "sha256": "5fce9ff14e5c8f2406352ba9bcb0c04737174878574352fdf4880888d29ad53f"
+      },
+      "dialect.md": {
+        "bytes": 6541,
+        "sha256": "77eb5683ffad4cad5df0964044923f0d86476a1d4caf17fae1f6160f9f8e13c7"
+      },
+      "light_tests.py": {
+        "bytes": 17285,
+        "sha256": "f64a761ccb1053ee9ea48de0aa55d2259082eb774bb3f68a1633d2f69263df49"
+      },
+      "main.py": {
+        "bytes": 174770,
+        "sha256": "1cfeff56716c1841d57379e2b9c2014fd1e238f0b399482c0f4d93b7397791c3"
+      },
+      "regression_guard.py": {
+        "bytes": 18658,
+        "sha256": "47f627461d08c7338baa4767f79f7e12a57674805d66fbfff9975dada4af913d"
+      },
+      "regression_probe.cjs": {
+        "bytes": 14047,
+        "sha256": "086a8eb08da8adcb2225d2dfb5ff304fe5c3f58bdf0e134dccb951470c825744"
+      },
+      "requirements.txt": {
+        "bytes": 69,
+        "sha256": "05952bef1c3e375aaada3c27ac8c08b54a11a5265b5aba98821780a6c4a2d61b"
+      },
+      "scaffold/README.md": {
+        "bytes": 2447,
+        "sha256": "5fcca6dd94234163dab780f82602320e486525cd8907c5e1069d946d5c7d67cc"
+      },
+      "scaffold/backend/package.json": {
+        "bytes": 113,
+        "sha256": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+      },
+      "scaffold/backend/server.js": {
+        "bytes": 4096,
+        "sha256": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9"
+      },
+      "scaffold/frontend/package.json": {
+        "bytes": 166,
+        "sha256": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978"
+      },
+      "scaffold/frontend/public/app.js": {
+        "bytes": 3821,
+        "sha256": "593bd96d86b78b2ba904d5a612b763007bb7048f4eac9cc0a4ecf25f95085c8f"
+      },
+      "scaffold/frontend/public/index.html": {
+        "bytes": 722,
+        "sha256": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d"
+      },
+      "scaffold/frontend/public/lib/arc.js": {
+        "bytes": 28366,
+        "sha256": "95c785497cb25dd4b15d7c3733c561867c7bcf9a259e961924113dce08b0b1c4"
+      },
+      "scaffold/frontend/public/seed.js": {
+        "bytes": 475,
+        "sha256": "eb060ad3b56edf7c18ca43b918fa1bb3c4ed809a081566011ef118a50c568754"
+      },
+      "scaffold/frontend/public/styles.css": {
+        "bytes": 3042,
+        "sha256": "d6851889066fb902a8017569c46c3823fc8a07d5da9b52e75bfdd77aae07aae9"
+      },
+      "scenario_check.cjs": {
+        "bytes": 29025,
+        "sha256": "be92a7ab5d6af7e948149f97a2c75ccfda9396067f43eef0764499e07c9a3ad9"
+      },
+      "scenario_check.py": {
+        "bytes": 27412,
+        "sha256": "937aeff76a8132378ae0c6be21ba8fdc1ea13588c320da261ebc04a3adc2738b"
+      },
+      "scenario_translate.py": {
+        "bytes": 35933,
+        "sha256": "dea950422a08bc87278a4bb0a64bd302545ceccbe03f8ae71b5b0288b8cff9b0"
+      },
+      "scenarios.py": {
+        "bytes": 91545,
+        "sha256": "22030622a68bb4449ed24cd8be943a595d5a958e547665237bd582fc39e1265a"
+      },
+      "semantic_probe.cjs": {
+        "bytes": 21071,
+        "sha256": "9dfe9b77f94274b0d08cb28788b63577191fbfa1406d3ac94a3e8c53e9d58dae"
+      },
+      "source_contracts.py": {
+        "bytes": 22939,
+        "sha256": "4bf4efdca65750d9feefd247db0de3d2a9dc06a5254c0b96689c61d3764156ef"
+      },
+      "testgen.py": {
+        "bytes": 70331,
+        "sha256": "6e0342227f5b881fbe59a109d457a64491593eebef9d6243fab74b2fa1d115ee"
+      },
+      "upgrade_patch.py": {
+        "bytes": 18346,
+        "sha256": "793eb2b0952a216f8a3f061dd6b11ab6d26f986e021dce776faf3d12012308b6"
+      }
+    },
+    "imported_from": {
+      "files": {
+        "dialect.md": {
+          "bytes": 5299,
+          "sha256": "03d76d74e739f4975fa98d9bf5cb2fd882d4789471a497885602c35df1285d55"
+        },
+        "main.py": {
+          "bytes": 13406,
+          "sha256": "46077d46b689f1d3914ed6bc70b8c62e9aaf562382113e2c04dc972958ba0a2c"
+        },
+        "requirements.txt": {
+          "bytes": 15,
+          "sha256": "af1d882a2cc1717c9da20d96d963d2bf7f83b28f2a191612a17599e0e44ff3a5"
+        }
+      },
+      "origin": "oneshot-lab/arc-package",
+      "origin_files_untracked": true,
+      "origin_git_head": "a15036778e1eee9314ecd5b6fb6e4cb79b0a1010"
+    },
+    "package_bytes": 603471,
+    "package_sha256": "6293670acb85669f24ff381e0700cada14229c467b2fa647a2b6b38ab9a28bd6",
+    "schema_version": 1,
+    "source_hash_scheme": "sha256 of UTF-8 JSON files object; sorted keys; compact separators",
+    "source_sha256": "6d24700fae607e8479a1fb36d4639cebe9b29caf0c4706ec3b52ed5ae850d82b"
+  },
+  "measured_packages": {
+    "agent.zip.manifest.json": {
+      "files": {
+        "contract_bindings.cjs": {
+          "bytes": 4426,
+          "sha256": "18fe42b15324f4ae0cdf1a252989c2304faee1a55928f478a60be591499e119a"
+        },
+        "contract_runner.cjs": {
+          "bytes": 4847,
+          "sha256": "5fce9ff14e5c8f2406352ba9bcb0c04737174878574352fdf4880888d29ad53f"
+        },
+        "dialect.md": {
+          "bytes": 6541,
+          "sha256": "77eb5683ffad4cad5df0964044923f0d86476a1d4caf17fae1f6160f9f8e13c7"
+        },
+        "light_tests.py": {
+          "bytes": 17285,
+          "sha256": "f64a761ccb1053ee9ea48de0aa55d2259082eb774bb3f68a1633d2f69263df49"
+        },
+        "main.py": {
+          "bytes": 174645,
+          "sha256": "5253895e2720c77de7c2176c2d3aa6254cbb06f2a446e185594666e7fd3e7173"
+        },
+        "regression_guard.py": {
+          "bytes": 18658,
+          "sha256": "47f627461d08c7338baa4767f79f7e12a57674805d66fbfff9975dada4af913d"
+        },
+        "regression_probe.cjs": {
+          "bytes": 14047,
+          "sha256": "086a8eb08da8adcb2225d2dfb5ff304fe5c3f58bdf0e134dccb951470c825744"
+        },
+        "requirements.txt": {
+          "bytes": 69,
+          "sha256": "05952bef1c3e375aaada3c27ac8c08b54a11a5265b5aba98821780a6c4a2d61b"
+        },
+        "scaffold/README.md": {
+          "bytes": 2447,
+          "sha256": "5fcca6dd94234163dab780f82602320e486525cd8907c5e1069d946d5c7d67cc"
+        },
+        "scaffold/backend/package.json": {
+          "bytes": 113,
+          "sha256": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+        },
+        "scaffold/backend/server.js": {
+          "bytes": 4096,
+          "sha256": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9"
+        },
+        "scaffold/frontend/package.json": {
+          "bytes": 166,
+          "sha256": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978"
+        },
+        "scaffold/frontend/public/app.js": {
+          "bytes": 3821,
+          "sha256": "593bd96d86b78b2ba904d5a612b763007bb7048f4eac9cc0a4ecf25f95085c8f"
+        },
+        "scaffold/frontend/public/index.html": {
+          "bytes": 722,
+          "sha256": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d"
+        },
+        "scaffold/frontend/public/lib/arc.js": {
+          "bytes": 28366,
+          "sha256": "95c785497cb25dd4b15d7c3733c561867c7bcf9a259e961924113dce08b0b1c4"
+        },
+        "scaffold/frontend/public/seed.js": {
+          "bytes": 475,
+          "sha256": "eb060ad3b56edf7c18ca43b918fa1bb3c4ed809a081566011ef118a50c568754"
+        },
+        "scaffold/frontend/public/styles.css": {
+          "bytes": 3042,
+          "sha256": "d6851889066fb902a8017569c46c3823fc8a07d5da9b52e75bfdd77aae07aae9"
+        },
+        "scenario_check.cjs": {
+          "bytes": 29025,
+          "sha256": "be92a7ab5d6af7e948149f97a2c75ccfda9396067f43eef0764499e07c9a3ad9"
+        },
+        "scenario_check.py": {
+          "bytes": 27412,
+          "sha256": "937aeff76a8132378ae0c6be21ba8fdc1ea13588c320da261ebc04a3adc2738b"
+        },
+        "scenario_translate.py": {
+          "bytes": 35933,
+          "sha256": "dea950422a08bc87278a4bb0a64bd302545ceccbe03f8ae71b5b0288b8cff9b0"
+        },
+        "scenarios.py": {
+          "bytes": 91545,
+          "sha256": "22030622a68bb4449ed24cd8be943a595d5a958e547665237bd582fc39e1265a"
+        },
+        "semantic_probe.cjs": {
+          "bytes": 21071,
+          "sha256": "9dfe9b77f94274b0d08cb28788b63577191fbfa1406d3ac94a3e8c53e9d58dae"
+        },
+        "source_contracts.py": {
+          "bytes": 22939,
+          "sha256": "4bf4efdca65750d9feefd247db0de3d2a9dc06a5254c0b96689c61d3764156ef"
+        },
+        "testgen.py": {
+          "bytes": 70331,
+          "sha256": "6e0342227f5b881fbe59a109d457a64491593eebef9d6243fab74b2fa1d115ee"
+        },
+        "upgrade_patch.py": {
+          "bytes": 17651,
+          "sha256": "a59a4f5eaf4f308246091de8509b72e817a6d22e7e2fbc5f57ba23558216a818"
+        }
+      },
+      "imported_from": {
+        "files": {
+          "dialect.md": {
+            "bytes": 5299,
+            "sha256": "03d76d74e739f4975fa98d9bf5cb2fd882d4789471a497885602c35df1285d55"
+          },
+          "main.py": {
+            "bytes": 13406,
+            "sha256": "46077d46b689f1d3914ed6bc70b8c62e9aaf562382113e2c04dc972958ba0a2c"
+          },
+          "requirements.txt": {
+            "bytes": 15,
+            "sha256": "af1d882a2cc1717c9da20d96d963d2bf7f83b28f2a191612a17599e0e44ff3a5"
+          }
+        },
+        "origin": "oneshot-lab/arc-package",
+        "origin_files_untracked": true,
+        "origin_git_head": "a15036778e1eee9314ecd5b6fb6e4cb79b0a1010"
+      },
+      "package_bytes": 602651,
+      "package_sha256": "a9aa3ac433192609bf1cae1e7a4aff60c87f62b8c4adf8760e138510ac4c6a3a",
+      "schema_version": 1,
+      "source_hash_scheme": "sha256 of UTF-8 JSON files object; sorted keys; compact separators",
+      "source_sha256": "ae0e4b302237e169d09554881d8cf10f642262ed6cd9e2b0b6b940cf2c70347f"
+    },
+    "agent-final.zip.manifest.json": {
+      "files": {
+        "contract_bindings.cjs": {
+          "bytes": 4426,
+          "sha256": "18fe42b15324f4ae0cdf1a252989c2304faee1a55928f478a60be591499e119a"
+        },
+        "contract_runner.cjs": {
+          "bytes": 4847,
+          "sha256": "5fce9ff14e5c8f2406352ba9bcb0c04737174878574352fdf4880888d29ad53f"
+        },
+        "dialect.md": {
+          "bytes": 6541,
+          "sha256": "77eb5683ffad4cad5df0964044923f0d86476a1d4caf17fae1f6160f9f8e13c7"
+        },
+        "light_tests.py": {
+          "bytes": 17285,
+          "sha256": "f64a761ccb1053ee9ea48de0aa55d2259082eb774bb3f68a1633d2f69263df49"
+        },
+        "main.py": {
+          "bytes": 174770,
+          "sha256": "1cfeff56716c1841d57379e2b9c2014fd1e238f0b399482c0f4d93b7397791c3"
+        },
+        "regression_guard.py": {
+          "bytes": 18658,
+          "sha256": "47f627461d08c7338baa4767f79f7e12a57674805d66fbfff9975dada4af913d"
+        },
+        "regression_probe.cjs": {
+          "bytes": 14047,
+          "sha256": "086a8eb08da8adcb2225d2dfb5ff304fe5c3f58bdf0e134dccb951470c825744"
+        },
+        "requirements.txt": {
+          "bytes": 69,
+          "sha256": "05952bef1c3e375aaada3c27ac8c08b54a11a5265b5aba98821780a6c4a2d61b"
+        },
+        "scaffold/README.md": {
+          "bytes": 2447,
+          "sha256": "5fcca6dd94234163dab780f82602320e486525cd8907c5e1069d946d5c7d67cc"
+        },
+        "scaffold/backend/package.json": {
+          "bytes": 113,
+          "sha256": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+        },
+        "scaffold/backend/server.js": {
+          "bytes": 4096,
+          "sha256": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9"
+        },
+        "scaffold/frontend/package.json": {
+          "bytes": 166,
+          "sha256": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978"
+        },
+        "scaffold/frontend/public/app.js": {
+          "bytes": 3821,
+          "sha256": "593bd96d86b78b2ba904d5a612b763007bb7048f4eac9cc0a4ecf25f95085c8f"
+        },
+        "scaffold/frontend/public/index.html": {
+          "bytes": 722,
+          "sha256": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d"
+        },
+        "scaffold/frontend/public/lib/arc.js": {
+          "bytes": 28366,
+          "sha256": "95c785497cb25dd4b15d7c3733c561867c7bcf9a259e961924113dce08b0b1c4"
+        },
+        "scaffold/frontend/public/seed.js": {
+          "bytes": 475,
+          "sha256": "eb060ad3b56edf7c18ca43b918fa1bb3c4ed809a081566011ef118a50c568754"
+        },
+        "scaffold/frontend/public/styles.css": {
+          "bytes": 3042,
+          "sha256": "d6851889066fb902a8017569c46c3823fc8a07d5da9b52e75bfdd77aae07aae9"
+        },
+        "scenario_check.cjs": {
+          "bytes": 29025,
+          "sha256": "be92a7ab5d6af7e948149f97a2c75ccfda9396067f43eef0764499e07c9a3ad9"
+        },
+        "scenario_check.py": {
+          "bytes": 27412,
+          "sha256": "937aeff76a8132378ae0c6be21ba8fdc1ea13588c320da261ebc04a3adc2738b"
+        },
+        "scenario_translate.py": {
+          "bytes": 35933,
+          "sha256": "dea950422a08bc87278a4bb0a64bd302545ceccbe03f8ae71b5b0288b8cff9b0"
+        },
+        "scenarios.py": {
+          "bytes": 91545,
+          "sha256": "22030622a68bb4449ed24cd8be943a595d5a958e547665237bd582fc39e1265a"
+        },
+        "semantic_probe.cjs": {
+          "bytes": 21071,
+          "sha256": "9dfe9b77f94274b0d08cb28788b63577191fbfa1406d3ac94a3e8c53e9d58dae"
+        },
+        "source_contracts.py": {
+          "bytes": 22939,
+          "sha256": "4bf4efdca65750d9feefd247db0de3d2a9dc06a5254c0b96689c61d3764156ef"
+        },
+        "testgen.py": {
+          "bytes": 70331,
+          "sha256": "6e0342227f5b881fbe59a109d457a64491593eebef9d6243fab74b2fa1d115ee"
+        },
+        "upgrade_patch.py": {
+          "bytes": 17726,
+          "sha256": "0c11265f41bf5d5af0632a45d4a0536b3d743f741843459e0888f4364fccbc60"
+        }
+      },
+      "imported_from": {
+        "files": {
+          "dialect.md": {
+            "bytes": 5299,
+            "sha256": "03d76d74e739f4975fa98d9bf5cb2fd882d4789471a497885602c35df1285d55"
+          },
+          "main.py": {
+            "bytes": 13406,
+            "sha256": "46077d46b689f1d3914ed6bc70b8c62e9aaf562382113e2c04dc972958ba0a2c"
+          },
+          "requirements.txt": {
+            "bytes": 15,
+            "sha256": "af1d882a2cc1717c9da20d96d963d2bf7f83b28f2a191612a17599e0e44ff3a5"
+          }
+        },
+        "origin": "oneshot-lab/arc-package",
+        "origin_files_untracked": true,
+        "origin_git_head": "a15036778e1eee9314ecd5b6fb6e4cb79b0a1010"
+      },
+      "package_bytes": 602851,
+      "package_sha256": "abbe7c1d6b1fb023e67c03ed696cdb02ecf4b56023284d311b79e63e08af598c",
+      "schema_version": 1,
+      "source_hash_scheme": "sha256 of UTF-8 JSON files object; sorted keys; compact separators",
+      "source_sha256": "577cdda7a24f846a9c4588a4b962d13807194120cbd489220c4bbd6e96df8e33"
+    }
+  },
+  "final_package_replay": {
+    "package_sha256": "6293670acb85669f24ff381e0700cada14229c467b2fa647a2b6b38ab9a28bd6",
+    "protocol_bytes_equal_to_measured_package": true,
+    "runs": [
+      {
+        "run": "bookstack-on",
+        "responses": 1,
+        "hunks_applied": 16,
+        "byte_identical": true,
+        "files": 6,
+        "request_sha256": [
+          "40eafa242aae856f5e864b7ab42991a170a707e462c2af0299e19b0e12d1a399"
+        ],
+        "response_sha256": [
+          "95b96278f6b9a61871bf9221d0e9f6516a60ebf1307c4556e06fbd5c64bd473e"
+        ],
+        "draft_file_sha256": {
+          "backend/package-lock.json": "ff3f313aad9f2c1c3e36fa7f20a7bf60e951802c64f54c9342867c88233f8f10",
+          "backend/package.json": "9323057d7c99d72e79ace2a1dd3fe7f2b5378b8d65709e474a0ba2adaa693181",
+          "backend/server.js": "173bfc28618d2ac2675041e673e2dc4456f3ab5c461a47445dee2560c54f2fdd",
+          "frontend/package-lock.json": "a6d7ab0755585526e2fe08c08b524bdb76fec81af7641ef9b09dd3d50ca70f16",
+          "frontend/package.json": "0f353f57d502b0e4e899b78bd6a7f92aa01c769a69fbd25bed442db66c3a67b0",
+          "frontend/public/index.html": "63a78831ed310bdf36f8e677ee7e9336446d7c6f497b1fa81ce3da8ea4b26b3a"
+        },
+        "full_initial_messages_identical": true
+      },
+      {
+        "run": "keep-on",
+        "responses": 1,
+        "hunks_applied": 20,
+        "byte_identical": true,
+        "files": 6,
+        "request_sha256": [
+          "2bbe983b0331bb34131a7c19644299bc4ba9ca621747c807195c96a563590d4e"
+        ],
+        "response_sha256": [
+          "71f469d377e29766c1131134c1eef18f87a59efd826fa40b0484c089835cbd6a"
+        ],
+        "draft_file_sha256": {
+          "backend/package-lock.json": "4135396219c97e7b34d0eec1a83b325d8ad2544f344b660a5fefd813855f30eb",
+          "backend/package.json": "1519fd04fa5cf7df96673b5b67b01445c35b0beab34e68d1832721750a210f5b",
+          "backend/server.js": "2bc99ae31777014a7e07c1db90c9af5c3448eee0a602281f29a84b07a3559e85",
+          "frontend/package-lock.json": "827b5aa0f05cd77e172848dced42fdbe7c0d9c5c693510ba0790de20a8d50c24",
+          "frontend/package.json": "d682f0bdbd94d128cfb9eeee712b881b01f9f753bbcd4554895b4476b758599c",
+          "frontend/public/index.html": "8dc927a9389eb426bd96e4da8db77d06010acbf0621e9eb6d01fbc558ecc12ab"
+        },
+        "full_initial_messages_identical": true
+      },
+      {
+        "run": "12306-on",
+        "responses": 1,
+        "hunks_applied": 22,
+        "byte_identical": true,
+        "files": 10,
+        "request_sha256": [
+          "a21073792271451b9518adbf58312fc7b940895231afc211c3b84a217174261f"
+        ],
+        "response_sha256": [
+          "8c7f6dfd2dad0aae0346b91d3c802cd3999f0108e300e58730ba8e76ffb6e5c9"
+        ],
+        "draft_file_sha256": {
+          "backend/package-lock.json": "b3b1c68b586d6861f4c733c138abcb52bb7e4c8536511039a42ddd1418fcbe8b",
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "135f6f00a01c6b163593b40df2ccee6753e6a80347f2b9925cecf8c03300882c",
+          "frontend/package-lock.json": "7ed934860c7525f337bbf857c2956639f750aa9770de278cdff314600ff78a92",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "9963306f8f1db1a1844b1e963fd4a748d9c424a8aba4b731a73408e411b3fc71",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/seed.js": "788a0052e2854a9e4cc61a9165a408cbc5e4ebd4a5fb70b01045ec12dfb9ef45",
+          "frontend/public/styles.css": "9f0679c730fefed1038827612bfe09bb4622ca8f82b8221310007d4df2da321b",
+          "frontend/public/lib/arc.js": "30ac3f8c9aee6b7cbb991b645d0ec6b78d4b4e9d558649a7444b112ab085198b"
+        },
+        "full_initial_messages_identical": true
+      },
+      {
+        "run": "github-keep-on",
+        "responses": 1,
+        "hunks_applied": 6,
+        "byte_identical": true,
+        "files": 10,
+        "request_sha256": [
+          "82e24a7ac7983854244c9cc19ad39bc8488a6927398a51928e9862f26d74956a"
+        ],
+        "response_sha256": [
+          "fe0c1625ae521f5c3066ddd1451bf789450a141d4e7b7f39cbe724fef0f8e320"
+        ],
+        "draft_file_sha256": {
+          "backend/package-lock.json": "b3b1c68b586d6861f4c733c138abcb52bb7e4c8536511039a42ddd1418fcbe8b",
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9",
+          "frontend/package-lock.json": "7ed934860c7525f337bbf857c2956639f750aa9770de278cdff314600ff78a92",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "b5bf3b2998aa79e3c901a436d00c75c6e28ce99880b952e90952e49b71df2505",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/seed.js": "14ea2e416d3869ed7abfec527fc207650f8609875a63cd8776a723082cc436be",
+          "frontend/public/styles.css": "0e4a765ad4491ee195b18c4b098089f2d2d7c3ce61350d197cb926f408344214",
+          "frontend/public/lib/arc.js": "fc56e0fd7a81c3e6d72bfe6df1cefc197e7004d0087a98193f9bea886ae44779"
+        },
+        "full_initial_messages_identical": true
+      }
+    ]
+  },
+  "configuration": {
+    "model": "deepseek-v4-flash-vision-exp",
+    "base_url": "https://api.arc-bench.com/v1",
+    "gateway_routes": [
+      "POST /v1/chat/completions"
+    ],
+    "platform_api_calls": 0,
+    "uploads": 0,
+    "maximum_budget_cny": 15,
+    "repair_budget_cny_per_run": 1,
+    "fallback_model": "",
+    "testgen": true,
+    "regression_guard": true,
+    "light_tests": false,
+    "source_review_on_upgrades": false,
+    "python": "3.9.6",
+    "node_path": "/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-playwright-test-1.57.0/node_modules",
+    "node": "v22.22.0"
+  },
+  "pricing": {
+    "unit": "CNY per million tokens",
+    "input": 1,
+    "cached_input": 0.02,
+    "output": 4,
+    "source": "oneshot/main.py PRICES (catalogue refreshed 2026-10-02); no platform billing query"
+  },
+  "budget": {
+    "gateway_calls": 45,
+    "failed_or_unknown_usage_calls": 0,
+    "cost_cny_from_reported_usage": 4.2794966,
+    "ledger_sha256": "a7fc92b8b15b63a2df41a758569f3c7e6aafb2f5a83d8c2acefabda39e06a4bf"
+  },
+  "metric_definitions": {
+    "line_retention": "Per original .js/.cjs/.mjs/.html/.css path: exact nonblank source line multiset intersection divided by original nonblank line count.",
+    "named_functions": "Per original source path: distinct names matching function NAME( still matching in that path. Lexical, excludes arrow functions/methods, does not prove execution or body correctness.",
+    "hunks": "Proposed counts include repeated proposals in correction/continuation complete blocks; applied counts only committed transactions. Corrected counts committed hunks in the single correction turn. Final runtime separately records unmatched SEARCH and all unapplied transaction hunks."
+  },
+  "limitations": [
+    "One fresh sample per task and flag, with concurrent local runs; no official scoring or finals requirements.",
+    "The large starting app received an unchanged practice requirements file from a different domain as a preservation stress test.",
+    "The four on runs used a9aa3ac4; post-launch changes concern pending-file continuation instructions, all-rejected delivery recovery and accounting, with no changed normal draft prompt or observed successful application path. The final packaged parser replays all four real replies byte-identically.",
+    "Tests are the agent written acceptance suite, not an independent old-behavior or official acceptance suite.",
+    "Static line/name retention does not establish behavioral preservation; the ordinary repair loop can still rewrite files.",
+    "CNY is calculated from reported gateway usage and the repository price table, not an account balance delta."
+  ],
+  "summary": {
+    "on": {
+      "runs": 4,
+      "draft_completion_tokens": 265922,
+      "draft_cost_cny": 1.2046728800000002,
+      "total_cost_cny": 1.7920216800000002,
+      "application_repair_rounds": 3,
+      "final_own_acceptance_pass": 24,
+      "proposed_hunks": 64,
+      "applied_hunks": 64
+    },
+    "off": {
+      "runs": 4,
+      "draft_completion_tokens": 283300,
+      "draft_cost_cny": 1.1885577600000001,
+      "total_cost_cny": 2.48747492,
+      "application_repair_rounds": 7,
+      "final_own_acceptance_pass": 24,
+      "proposed_hunks": 0,
+      "applied_hunks": 0
+    }
+  },
+  "runs": [
+    {
+      "run": "bookstack-on",
+      "flag": true,
+      "inputs": {
+        "package_sha256": "a9aa3ac433192609bf1cae1e7a4aff60c87f62b8c4adf8760e138510ac4c6a3a",
+        "flag": "1",
+        "model": "deepseek-v4-flash-vision-exp",
+        "base": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/base-recovered/bookstack",
+        "requirements": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/req/req-arc-bench-evolution/arc-bench-evolution--bookstack",
+        "requirements_sha256": "470595c579bca95016cd8c4a6dde52d11d291535fd3918a23ecbfff1e97e4a38",
+        "base_hashes": {
+          "backend/package-lock.json": "ff3f313aad9f2c1c3e36fa7f20a7bf60e951802c64f54c9342867c88233f8f10",
+          "backend/package.json": "9323057d7c99d72e79ace2a1dd3fe7f2b5378b8d65709e474a0ba2adaa693181",
+          "backend/server.js": "173bfc28618d2ac2675041e673e2dc4456f3ab5c461a47445dee2560c54f2fdd",
+          "frontend/package-lock.json": "a6d7ab0755585526e2fe08c08b524bdb76fec81af7641ef9b09dd3d50ca70f16",
+          "frontend/package.json": "0f353f57d502b0e4e899b78bd6a7f92aa01c769a69fbd25bed442db66c3a67b0",
+          "frontend/public/index.html": "b442dc420ff1cd059ee6bbf245ba890ec8efe128caa6e0592eb197b1b59aff99"
+        },
+        "repair_cny_limit": "1",
+        "draft_call_limit": "4"
+      },
+      "requirements_directory_sha256": "a3583d56461352278de2e0c4bd2f6f911170474bfa241c91c93e9ff175ba770f",
+      "input_base_unchanged": true,
+      "requirements_copy_unchanged": true,
+      "exit_code": 0,
+      "seconds": 360.596254042,
+      "draft": {
+        "preservation": {
+          "source_lines": 831,
+          "retained_lines": 807,
+          "named_functions": 50,
+          "retained_functions": 50,
+          "line_retention": 0.9711191335740073,
+          "files": [
+            {
+              "path": "backend/server.js",
+              "source_lines": 164,
+              "retained_lines": 164,
+              "named_functions": 3,
+              "retained_functions": 3,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/index.html",
+              "source_lines": 667,
+              "retained_lines": 643,
+              "named_functions": 47,
+              "retained_functions": 47,
+              "lost_functions": []
+            }
+          ]
+        },
+        "completion_tokens": 49154,
+        "cost_cny": 0.21720272,
+        "usage_complete": true,
+        "calls": 1,
+        "protocol": {
+          "proposed_hunks": 16,
+          "applied_hunks": 16,
+          "corrected_hunks": 0,
+          "correction_turns": 0,
+          "edited_files": [
+            "frontend/public/index.html"
+          ],
+          "rewritten_files": [],
+          "created_files": [],
+          "rounds": [
+            {
+              "rejected": [],
+              "pending": [],
+              "broken": null,
+              "proposed": 16,
+              "applied": 16,
+              "edited": [
+                "frontend/public/index.html"
+              ],
+              "rewritten": [],
+              "created": [],
+              "correction": false
+            }
+          ],
+          "unresolved": [],
+          "unmatched_hunks": 0
+        },
+        "changed_files": [
+          "frontend/public/index.html"
+        ]
+      },
+      "own_acceptance": {
+        "initial_counts": {
+          "pass": 5,
+          "fail": 1
+        },
+        "final_counts": {
+          "pass": 6
+        },
+        "suite_used": true,
+        "suite_tests": 6,
+        "suite_model_calls": 3,
+        "suite_cost_cny": 0.111288
+      },
+      "repair": {
+        "rounds": 1,
+        "accepted": 1,
+        "stopped": null,
+        "cost_cny": 0.039972
+      },
+      "guard_final_counts": {
+        "kept": 193,
+        "missing": 0,
+        "unknown": 0,
+        "exempted": 390
+      },
+      "total_cost_cny_from_gateway_usage": 0.36846344,
+      "final_preservation": {
+        "source_lines": 831,
+        "retained_lines": 807,
+        "named_functions": 50,
+        "retained_functions": 50,
+        "line_retention": 0.9711191335740073,
+        "files": [
+          {
+            "path": "backend/server.js",
+            "source_lines": 164,
+            "retained_lines": 164,
+            "named_functions": 3,
+            "retained_functions": 3,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/index.html",
+            "source_lines": 667,
+            "retained_lines": 643,
+            "named_functions": 47,
+            "retained_functions": 47,
+            "lost_functions": []
+          }
+        ]
+      },
+      "trace": [
+        {
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 22092,
+            "completion_tokens": 49154
+          },
+          "request_sha256": "40eafa242aae856f5e864b7ab42991a170a707e462c2af0299e19b0e12d1a399",
+          "response_sha256": "95b96278f6b9a61871bf9221d0e9f6516a60ebf1307c4556e06fbd5c64bd473e",
+          "seconds": null,
+          "cost_cny": 0.21720272
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 32480,
+            "completion_tokens": 7267
+          },
+          "request_sha256": "e7e3110fc366ee967c369711c6794ba211144b3fe38f9624c1d022fa641f3c2f",
+          "response_sha256": "dda03a9faaae3164144ea5a925a12fa17f60714543f93ce202a80a92095e9d98",
+          "seconds": null,
+          "cost_cny": 0.03997232
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 7229,
+            "completion_tokens": 12801
+          },
+          "request_sha256": "433bbffc4dc70c126e517115e6df7f7380cef289e9bbb0aa252be68482492870",
+          "response_sha256": "b2c1977c9f6d4f9ae486c79a138f26c86fbeeb21fcc5b5f3f11c1e6c90e0f9e1",
+          "seconds": null,
+          "cost_cny": 0.051533800000000005
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 7228,
+            "completion_tokens": 9162
+          },
+          "request_sha256": "71867eedb53b1912f3e0575116a819b3be2650f5ec79c18aed3fb590e6c2728c",
+          "response_sha256": "be665f33fc0bc4e66a403b3c98a1a65b885c41bca860c9c00a46064f149ab89a",
+          "seconds": null,
+          "cost_cny": 0.036976800000000004
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 7229,
+            "completion_tokens": 5612
+          },
+          "request_sha256": "d63b22c9fe56a5fd772f7b06c05ace5579da1a049887bc869f9079b26de29757",
+          "response_sha256": "c77bde1e2d70eae9bc1d8abce2c2d549f3c815a63d6bcb9fc1d7e6d6bb5a5c79",
+          "seconds": null,
+          "cost_cny": 0.0227778
+        }
+      ],
+      "raw_artifacts": {
+        "agent.log": {
+          "path": "runs/upgrade-patch/bookstack-on/agent.log",
+          "bytes": 1062133,
+          "sha256": "96cec3e14a34a5440305ee17331bf1633067aad1cdaab5269511b8500606425a"
+        },
+        "result.json": {
+          "path": "runs/upgrade-patch/bookstack-on/result.json",
+          "bytes": 1660120,
+          "sha256": "f446cd19b5a0867e23834392d97d605b51c528fdbdbfa2d5ffb98a0b4b3fce43"
+        },
+        "inputs.json": {
+          "path": "runs/upgrade-patch/bookstack-on/inputs.json",
+          "bytes": 1160,
+          "sha256": "5c5cb36e64de20b8bf628ca7d127f45b37ba19261202ce780e802848a511833e"
+        },
+        "draft-measurement.json": {
+          "path": "runs/upgrade-patch/bookstack-on/draft-measurement.json",
+          "bytes": 1368,
+          "sha256": "d857c92afecaa846f239a7dd248005aa61bb775e9467d127b18a3018a1c1797d"
+        }
+      },
+      "draft_source_sha256": "bac17767bbc4b90dfba910b32e8be8a6a09bb7b436c5d1f125fa19ce1298ca8a",
+      "acceptance_suite_sha256": "6f382ba416fcc972640ad263cb65a725d6b046aaf0ae43a3ffe57b19f42805ba"
+    },
+    {
+      "run": "bookstack-off",
+      "flag": false,
+      "inputs": {
+        "package_sha256": "abbe7c1d6b1fb023e67c03ed696cdb02ecf4b56023284d311b79e63e08af598c",
+        "flag": "0",
+        "model": "deepseek-v4-flash-vision-exp",
+        "base": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/base-recovered/bookstack",
+        "requirements": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/req/req-arc-bench-evolution/arc-bench-evolution--bookstack",
+        "requirements_sha256": "470595c579bca95016cd8c4a6dde52d11d291535fd3918a23ecbfff1e97e4a38",
+        "base_hashes": {
+          "backend/package-lock.json": "ff3f313aad9f2c1c3e36fa7f20a7bf60e951802c64f54c9342867c88233f8f10",
+          "backend/package.json": "9323057d7c99d72e79ace2a1dd3fe7f2b5378b8d65709e474a0ba2adaa693181",
+          "backend/server.js": "173bfc28618d2ac2675041e673e2dc4456f3ab5c461a47445dee2560c54f2fdd",
+          "frontend/package-lock.json": "a6d7ab0755585526e2fe08c08b524bdb76fec81af7641ef9b09dd3d50ca70f16",
+          "frontend/package.json": "0f353f57d502b0e4e899b78bd6a7f92aa01c769a69fbd25bed442db66c3a67b0",
+          "frontend/public/index.html": "b442dc420ff1cd059ee6bbf245ba890ec8efe128caa6e0592eb197b1b59aff99"
+        },
+        "repair_cny_limit": "1",
+        "draft_call_limit": "4"
+      },
+      "requirements_directory_sha256": "a3583d56461352278de2e0c4bd2f6f911170474bfa241c91c93e9ff175ba770f",
+      "input_base_unchanged": true,
+      "requirements_copy_unchanged": true,
+      "exit_code": 0,
+      "seconds": 464.616196625,
+      "draft": {
+        "preservation": {
+          "source_lines": 831,
+          "retained_lines": 763,
+          "named_functions": 50,
+          "retained_functions": 50,
+          "line_retention": 0.9181708784596871,
+          "files": [
+            {
+              "path": "backend/server.js",
+              "source_lines": 164,
+              "retained_lines": 160,
+              "named_functions": 3,
+              "retained_functions": 3,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/index.html",
+              "source_lines": 667,
+              "retained_lines": 603,
+              "named_functions": 47,
+              "retained_functions": 47,
+              "lost_functions": []
+            }
+          ]
+        },
+        "completion_tokens": 47046,
+        "cost_cny": 0.18880364000000002,
+        "usage_complete": true,
+        "calls": 1,
+        "protocol": null,
+        "changed_files": [
+          "backend/server.js",
+          "frontend/public/index.html"
+        ],
+        "full_file_blocks": [
+          "backend/server.js",
+          "frontend/public/index.html"
+        ]
+      },
+      "own_acceptance": {
+        "initial_counts": {
+          "fail": 3,
+          "pass": 3
+        },
+        "final_counts": {
+          "pass": 6
+        },
+        "suite_used": true,
+        "suite_tests": 6,
+        "suite_model_calls": 3,
+        "suite_cost_cny": 0.148784
+      },
+      "repair": {
+        "rounds": 2,
+        "accepted": 2,
+        "stopped": null,
+        "cost_cny": 0.095353
+      },
+      "guard_final_counts": {
+        "kept": 193,
+        "missing": 0,
+        "unknown": 0,
+        "exempted": 390
+      },
+      "total_cost_cny_from_gateway_usage": 0.43294088,
+      "final_preservation": {
+        "source_lines": 831,
+        "retained_lines": 761,
+        "named_functions": 50,
+        "retained_functions": 50,
+        "line_retention": 0.9157641395908543,
+        "files": [
+          {
+            "path": "backend/server.js",
+            "source_lines": 164,
+            "retained_lines": 160,
+            "named_functions": 3,
+            "retained_functions": 3,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/index.html",
+            "source_lines": 667,
+            "retained_lines": 601,
+            "named_functions": 47,
+            "retained_functions": 47,
+            "lost_functions": []
+          }
+        ]
+      },
+      "trace": [
+        {
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 21819,
+            "completion_tokens": 47046
+          },
+          "request_sha256": "b17e41121b772979a543c8b886d3c702a08b6e14e2781fa24084fb2725facd5b",
+          "response_sha256": "36e7517933a9262e6771a6c1bf00ebc796532e70cc275d2c093aadd198930f28",
+          "seconds": null,
+          "cost_cny": 0.18880364000000002
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 43776,
+            "completion_tokens": 15666
+          },
+          "request_sha256": "981b659ea18b3c547ba2181ab56f533985d45c6c3c623f0ca46088e74f007ce5",
+          "response_sha256": "771738591934f58f99b7a99659b094f24553ec4a967a4a2b75faaf9ff1d0f32c",
+          "seconds": null,
+          "cost_cny": 0.08473888
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 46369,
+            "completion_tokens": 1755
+          },
+          "request_sha256": "57e1a7db4503615c5b1fe11ee341dcbab1814bf11477a6d0ee34fda8d86d9a3e",
+          "response_sha256": "949021f7607639ff3991da801f1952467ca3819e134d52f90e0ec8f7ce08d0d4",
+          "seconds": null,
+          "cost_cny": 0.010613959999999999
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 7229,
+            "completion_tokens": 19790
+          },
+          "request_sha256": "433bbffc4dc70c126e517115e6df7f7380cef289e9bbb0aa252be68482492870",
+          "response_sha256": "7a3b9c3ad1c354bff5a3c4798eeff371e46bf9294b0af5fd644ae0273b8a4544",
+          "seconds": null,
+          "cost_cny": 0.0794898
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 7228,
+            "completion_tokens": 7573
+          },
+          "request_sha256": "71867eedb53b1912f3e0575116a819b3be2650f5ec79c18aed3fb590e6c2728c",
+          "response_sha256": "f43659d7ab474e5333142642b8c48c56acabd088fb8050670d627a2795c8223c",
+          "seconds": null,
+          "cost_cny": 0.0306208
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 7229,
+            "completion_tokens": 9586
+          },
+          "request_sha256": "d63b22c9fe56a5fd772f7b06c05ace5579da1a049887bc869f9079b26de29757",
+          "response_sha256": "a2bc24e915002bc3f869bc76954f2bc7c830aa21ae01551259a72362f77aa9e4",
+          "seconds": null,
+          "cost_cny": 0.0386738
+        }
+      ],
+      "raw_artifacts": {
+        "agent.log": {
+          "path": "runs/upgrade-patch/bookstack-off/agent.log",
+          "bytes": 1499180,
+          "sha256": "e3d97f2e1da0404de92129758db4a30e65e7076b9d8c28a76b34f083ac33f640"
+        },
+        "result.json": {
+          "path": "runs/upgrade-patch/bookstack-off/result.json",
+          "bytes": 2146292,
+          "sha256": "7e82dd600ec1c39c79c92cea6b2446c22443b775884aba5fc0a1f89ff0484e25"
+        },
+        "inputs.json": {
+          "path": "runs/upgrade-patch/bookstack-off/inputs.json",
+          "bytes": 1160,
+          "sha256": "0eb5a9d75f3a0333663faf59bc247f8d8abfde7949d24bbab642043a8f867b49"
+        },
+        "draft-measurement.json": {
+          "path": "runs/upgrade-patch/bookstack-off/draft-measurement.json",
+          "bytes": 918,
+          "sha256": "1e30b92ebd187a8d242fae7e62b9b5bb3955924c33881ed62a5fae058e911bd7"
+        }
+      },
+      "draft_source_sha256": "41205d61fb0dfe525f771f07adabf8e396902f094c7c993219f2b856ed3c7114",
+      "acceptance_suite_sha256": "ecf72c261ac9025f79bbdec10f5d800210a7815cc62277d5d0807d21fb947454"
+    },
+    {
+      "run": "keep-on",
+      "flag": true,
+      "inputs": {
+        "package_sha256": "a9aa3ac433192609bf1cae1e7a4aff60c87f62b8c4adf8760e138510ac4c6a3a",
+        "flag": "1",
+        "model": "deepseek-v4-flash-vision-exp",
+        "base": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/base-recovered/keep",
+        "requirements": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/req/req-arc-bench-evolution/arc-bench-evolution--keep",
+        "requirements_sha256": "52930707731bdf72ef36b05c67bebf8d799cf1d3daf812ea1ac480c8151a8259",
+        "base_hashes": {
+          "backend/package-lock.json": "4135396219c97e7b34d0eec1a83b325d8ad2544f344b660a5fefd813855f30eb",
+          "backend/package.json": "1519fd04fa5cf7df96673b5b67b01445c35b0beab34e68d1832721750a210f5b",
+          "backend/server.js": "2510832dfde9e68e1c5cd74fbe85b43baa0b9b5d201b9e538297209c30b378e6",
+          "frontend/package-lock.json": "827b5aa0f05cd77e172848dced42fdbe7c0d9c5c693510ba0790de20a8d50c24",
+          "frontend/package.json": "d682f0bdbd94d128cfb9eeee712b881b01f9f753bbcd4554895b4476b758599c",
+          "frontend/public/index.html": "0dffd2104d27230992a312e34eeb2a80a1bf184a96707c3f6c9534085d4218a7"
+        },
+        "repair_cny_limit": "1",
+        "draft_call_limit": "4"
+      },
+      "requirements_directory_sha256": "dc26d986cb9a5be7453b21fdde46087f0ad7bc5c675aeb122c7c63f425bdf027",
+      "input_base_unchanged": true,
+      "requirements_copy_unchanged": true,
+      "exit_code": 0,
+      "seconds": 491.96544725,
+      "draft": {
+        "preservation": {
+          "source_lines": 1086,
+          "retained_lines": 943,
+          "named_functions": 54,
+          "retained_functions": 49,
+          "line_retention": 0.8683241252302025,
+          "files": [
+            {
+              "path": "backend/server.js",
+              "source_lines": 112,
+              "retained_lines": 111,
+              "named_functions": 2,
+              "retained_functions": 2,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/index.html",
+              "source_lines": 974,
+              "retained_lines": 832,
+              "named_functions": 52,
+              "retained_functions": 47,
+              "lost_functions": [
+                "hideSearchSuggestions",
+                "openSettingsMenu",
+                "saveSettings",
+                "settingsViewHTML",
+                "showSearchSuggestions"
+              ]
+            }
+          ]
+        },
+        "completion_tokens": 78579,
+        "cost_cny": 0.33699640000000003,
+        "usage_complete": true,
+        "calls": 1,
+        "protocol": {
+          "proposed_hunks": 20,
+          "applied_hunks": 20,
+          "corrected_hunks": 0,
+          "correction_turns": 0,
+          "edited_files": [
+            "backend/server.js",
+            "frontend/public/index.html"
+          ],
+          "rewritten_files": [],
+          "created_files": [],
+          "rounds": [
+            {
+              "rejected": [],
+              "pending": [],
+              "broken": null,
+              "proposed": 20,
+              "applied": 20,
+              "edited": [
+                "frontend/public/index.html",
+                "backend/server.js"
+              ],
+              "rewritten": [],
+              "created": [],
+              "correction": false
+            }
+          ],
+          "unresolved": [],
+          "unmatched_hunks": 0
+        },
+        "changed_files": [
+          "backend/server.js",
+          "frontend/public/index.html"
+        ]
+      },
+      "own_acceptance": {
+        "initial_counts": {
+          "pass": 4,
+          "error": 1,
+          "fail": 1
+        },
+        "final_counts": {
+          "pass": 6
+        },
+        "suite_used": true,
+        "suite_tests": 6,
+        "suite_model_calls": 3,
+        "suite_cost_cny": 0.112387
+      },
+      "repair": {
+        "rounds": 1,
+        "accepted": 1,
+        "stopped": null,
+        "cost_cny": 0.082558
+      },
+      "guard_final_counts": {
+        "kept": 158,
+        "missing": 0,
+        "unknown": 0,
+        "exempted": 428
+      },
+      "total_cost_cny_from_gateway_usage": 0.5413214000000001,
+      "final_preservation": {
+        "source_lines": 1086,
+        "retained_lines": 943,
+        "named_functions": 54,
+        "retained_functions": 49,
+        "line_retention": 0.8683241252302025,
+        "files": [
+          {
+            "path": "backend/server.js",
+            "source_lines": 112,
+            "retained_lines": 111,
+            "named_functions": 2,
+            "retained_functions": 2,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/index.html",
+            "source_lines": 974,
+            "retained_lines": 832,
+            "named_functions": 52,
+            "retained_functions": 47,
+            "lost_functions": [
+              "hideSearchSuggestions",
+              "openSettingsMenu",
+              "saveSettings",
+              "settingsViewHTML",
+              "showSearchSuggestions"
+            ]
+          }
+        ]
+      },
+      "trace": [
+        {
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 24562,
+            "completion_tokens": 78579
+          },
+          "request_sha256": "2bbe983b0331bb34131a7c19644299bc4ba9ca621747c807195c96a563590d4e",
+          "response_sha256": "71f469d377e29766c1131134c1eef18f87a59efd826fa40b0484c089835cbd6a",
+          "seconds": null,
+          "cost_cny": 0.33699640000000003
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 104913,
+            "completion_tokens": 401
+          },
+          "request_sha256": "2984f15534e6b2d2c6b27ce138face80625184d00f65ba16932b7a1da4d8f65b",
+          "response_sha256": "4acc4002ba2f1b20dac14c997dfca7f676a54b5004cc6545f1330779b604e564",
+          "seconds": null,
+          "cost_cny": 0.08255796
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6869,
+            "completion_tokens": 10689
+          },
+          "request_sha256": "06c0d5bde570d5ec5d3d13e7fc7434c62e414930be6fae7fd32ec1328d0e308e",
+          "response_sha256": "c5ca30b26c4289cbd95e027f49f25a09d0010d29889e4a5f8ca3418d7abcf89b",
+          "seconds": null,
+          "cost_cny": 0.04310212
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6865,
+            "completion_tokens": 10770
+          },
+          "request_sha256": "2f0c7e2050274543479aab8114bffb923f108f7dfbe8ff0343c52b860aa3caca",
+          "response_sha256": "b5755c628dc019b62619cd9932f11c8b83e3453322bcedf8d3663d3c96618fad",
+          "seconds": null,
+          "cost_cny": 0.04342212
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6866,
+            "completion_tokens": 6380
+          },
+          "request_sha256": "fc0174f557d69988fc4a4b8b364781803edce4caf65eb7a367ad076a70b902fe",
+          "response_sha256": "63f9c5df7e621a35d8db82b7cbec6fdcdbcb824a22650f186e15dabe927785af",
+          "seconds": null,
+          "cost_cny": 0.02586312
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 8712,
+            "completion_tokens": 1829
+          },
+          "request_sha256": "838c0077933a9f8620f49574d502fb71d2557016580260c06fd184c9b9df4898",
+          "response_sha256": "0bf17656a730036b54d74a81d73f0eb97e3af8c2707191a5d3f41ebecc6e0a83",
+          "seconds": null,
+          "cost_cny": 0.00937968
+        }
+      ],
+      "raw_artifacts": {
+        "agent.log": {
+          "path": "runs/upgrade-patch/keep-on/agent.log",
+          "bytes": 1813493,
+          "sha256": "dbf01c8f2f4e103c757cb8b302703b12c835cb3b77242139aab826b7640801f4"
+        },
+        "result.json": {
+          "path": "runs/upgrade-patch/keep-on/result.json",
+          "bytes": 1919916,
+          "sha256": "15d7e05c6d03005eb368bc8ea2de732ce6d2035569cf89235b01d48995ea9120"
+        },
+        "inputs.json": {
+          "path": "runs/upgrade-patch/keep-on/inputs.json",
+          "bytes": 1150,
+          "sha256": "6303675d371e0387d69450344fefab2eaad0822862c0702378f73ec9aad1927a"
+        },
+        "draft-measurement.json": {
+          "path": "runs/upgrade-patch/keep-on/draft-measurement.json",
+          "bytes": 1625,
+          "sha256": "f87cf4a574b64a05e6513d2434d70ec9c8d1c3aa848c329a6321d42072a00815"
+        }
+      },
+      "draft_source_sha256": "130930a4bd5ac93703889f29341e5e4594b6e9e3fc4e2a961fc87311ca067aee",
+      "acceptance_suite_sha256": "28311e6c81373e974e66853354189c08a60111350d2cfe1aa45ed09555cbbdc7"
+    },
+    {
+      "run": "keep-off",
+      "flag": false,
+      "inputs": {
+        "package_sha256": "abbe7c1d6b1fb023e67c03ed696cdb02ecf4b56023284d311b79e63e08af598c",
+        "flag": "0",
+        "model": "deepseek-v4-flash-vision-exp",
+        "base": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/base-recovered/keep",
+        "requirements": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/req/req-arc-bench-evolution/arc-bench-evolution--keep",
+        "requirements_sha256": "52930707731bdf72ef36b05c67bebf8d799cf1d3daf812ea1ac480c8151a8259",
+        "base_hashes": {
+          "backend/package-lock.json": "4135396219c97e7b34d0eec1a83b325d8ad2544f344b660a5fefd813855f30eb",
+          "backend/package.json": "1519fd04fa5cf7df96673b5b67b01445c35b0beab34e68d1832721750a210f5b",
+          "backend/server.js": "2510832dfde9e68e1c5cd74fbe85b43baa0b9b5d201b9e538297209c30b378e6",
+          "frontend/package-lock.json": "827b5aa0f05cd77e172848dced42fdbe7c0d9c5c693510ba0790de20a8d50c24",
+          "frontend/package.json": "d682f0bdbd94d128cfb9eeee712b881b01f9f753bbcd4554895b4476b758599c",
+          "frontend/public/index.html": "0dffd2104d27230992a312e34eeb2a80a1bf184a96707c3f6c9534085d4218a7"
+        },
+        "repair_cny_limit": "1",
+        "draft_call_limit": "4"
+      },
+      "requirements_directory_sha256": "dc26d986cb9a5be7453b21fdde46087f0ad7bc5c675aeb122c7c63f425bdf027",
+      "input_base_unchanged": true,
+      "requirements_copy_unchanged": true,
+      "exit_code": 0,
+      "seconds": 733.590902167,
+      "draft": {
+        "preservation": {
+          "source_lines": 1086,
+          "retained_lines": 611,
+          "named_functions": 54,
+          "retained_functions": 33,
+          "line_retention": 0.5626151012891344,
+          "files": [
+            {
+              "path": "backend/server.js",
+              "source_lines": 112,
+              "retained_lines": 111,
+              "named_functions": 2,
+              "retained_functions": 2,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/index.html",
+              "source_lines": 974,
+              "retained_lines": 500,
+              "named_functions": 52,
+              "retained_functions": 31,
+              "lost_functions": [
+                "closeEditor",
+                "createNoteFromEditor",
+                "editorHTML",
+                "emptyTrash",
+                "filteredNotesViewHTML",
+                "handleClose",
+                "handleDialogAction",
+                "handleHashChange",
+                "handleRowAction",
+                "hideSearchSuggestions",
+                "highlight",
+                "matchesSearch",
+                "newId",
+                "newLabelId",
+                "openDialog",
+                "openSettingsMenu",
+                "renderLabelManagerDialog",
+                "saveSettings",
+                "settingsViewHTML",
+                "showSearchSuggestions",
+                "updateNoteFromEditor"
+              ]
+            }
+          ]
+        },
+        "completion_tokens": 75209,
+        "cost_cny": 0.30154228000000005,
+        "usage_complete": true,
+        "calls": 1,
+        "protocol": null,
+        "changed_files": [
+          "backend/server.js",
+          "frontend/public/index.html"
+        ],
+        "full_file_blocks": [
+          "backend/server.js",
+          "frontend/public/index.html"
+        ]
+      },
+      "own_acceptance": {
+        "initial_counts": {
+          "fail": 1,
+          "error": 1,
+          "pass": 4
+        },
+        "final_counts": {
+          "pass": 6
+        },
+        "suite_used": true,
+        "suite_tests": 6,
+        "suite_model_calls": 3,
+        "suite_cost_cny": 0.171487
+      },
+      "repair": {
+        "rounds": 2,
+        "accepted": 2,
+        "stopped": null,
+        "cost_cny": 0.200944
+      },
+      "guard_final_counts": {
+        "kept": 154,
+        "missing": 0,
+        "unknown": 0,
+        "exempted": 432
+      },
+      "total_cost_cny_from_gateway_usage": 0.6808910400000001,
+      "final_preservation": {
+        "source_lines": 1086,
+        "retained_lines": 606,
+        "named_functions": 54,
+        "retained_functions": 33,
+        "line_retention": 0.5580110497237569,
+        "files": [
+          {
+            "path": "backend/server.js",
+            "source_lines": 112,
+            "retained_lines": 111,
+            "named_functions": 2,
+            "retained_functions": 2,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/index.html",
+            "source_lines": 974,
+            "retained_lines": 495,
+            "named_functions": 52,
+            "retained_functions": 31,
+            "lost_functions": [
+              "closeEditor",
+              "createNoteFromEditor",
+              "editorHTML",
+              "emptyTrash",
+              "filteredNotesViewHTML",
+              "handleClose",
+              "handleDialogAction",
+              "handleHashChange",
+              "handleRowAction",
+              "hideSearchSuggestions",
+              "highlight",
+              "matchesSearch",
+              "newId",
+              "newLabelId",
+              "openDialog",
+              "openSettingsMenu",
+              "renderLabelManagerDialog",
+              "saveSettings",
+              "settingsViewHTML",
+              "showSearchSuggestions",
+              "updateNoteFromEditor"
+            ]
+          }
+        ]
+      },
+      "trace": [
+        {
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 24289,
+            "completion_tokens": 75209
+          },
+          "request_sha256": "da702d9488eb606d6cc8dab81dc57c8760862db1759550376f2aafea16086971",
+          "response_sha256": "506f12fce18ab73e817953c6508820994cc4d5b24affd41470ff6d1586b924a3",
+          "seconds": null,
+          "cost_cny": 0.30154228000000005
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 44609,
+            "completion_tokens": 37569
+          },
+          "request_sha256": "bb5837efa0b8d1c45394bed1c1df9c604304b1cd1c48c3927310c789be26d29e",
+          "response_sha256": "8f0da7894e8946c2082f93cfb424f70515d4a9a237787fc26a0ec426ac25c70b",
+          "seconds": null,
+          "cost_cny": 0.17117684
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 45620,
+            "completion_tokens": 6950
+          },
+          "request_sha256": "3121694ea0ca048f0af6f8198c813a68e8f71d94e29ed0342b516f573fe49d6a",
+          "response_sha256": "d8ab0d17d1152abdb745b4658327e5e139b7ee5b42becc5fc925daf4719da967",
+          "seconds": null,
+          "cost_cny": 0.029766880000000003
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6869,
+            "completion_tokens": 15101
+          },
+          "request_sha256": "06c0d5bde570d5ec5d3d13e7fc7434c62e414930be6fae7fd32ec1328d0e308e",
+          "response_sha256": "d009057b548ac81c3357a5124290e5cd4d2a9336a691dbdda721e79b8288d210",
+          "seconds": null,
+          "cost_cny": 0.060750120000000005
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6865,
+            "completion_tokens": 18610
+          },
+          "request_sha256": "2f0c7e2050274543479aab8114bffb923f108f7dfbe8ff0343c52b860aa3caca",
+          "response_sha256": "5dbda0f927a0534bd69da01516fea0ada648b8feebec8b2984f025f2aa633aa5",
+          "seconds": null,
+          "cost_cny": 0.07478212
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6866,
+            "completion_tokens": 8903
+          },
+          "request_sha256": "fc0174f557d69988fc4a4b8b364781803edce4caf65eb7a367ad076a70b902fe",
+          "response_sha256": "d4becc99606e59e9d6c41b5be0df3f9d267ab44731068a0e21897873b799a2cc",
+          "seconds": null,
+          "cost_cny": 0.03595512
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 8250,
+            "completion_tokens": 1329
+          },
+          "request_sha256": "674528874f75f25888c74881b6b4b07c3f8160750c261ba1b0877120057ff2a0",
+          "response_sha256": "3f58063ea3819d474eff47a7e4b81b6be3b7c8c19cbe7fc54e4bbcc993994f91",
+          "seconds": null,
+          "cost_cny": 0.006917680000000001
+        }
+      ],
+      "raw_artifacts": {
+        "agent.log": {
+          "path": "runs/upgrade-patch/keep-off/agent.log",
+          "bytes": 1712513,
+          "sha256": "ae7c31c1aab6be42bdeac1eb35c043b1313434ed82f6a8846006c62f714c96b8"
+        },
+        "result.json": {
+          "path": "runs/upgrade-patch/keep-off/result.json",
+          "bytes": 2461549,
+          "sha256": "0d3e8a1508866f39dd31eb1da61634f9ed0846dc65146aae6df6b871d99012d6"
+        },
+        "inputs.json": {
+          "path": "runs/upgrade-patch/keep-off/inputs.json",
+          "bytes": 1150,
+          "sha256": "8e70e998d556a60479e3d8ae0379afebb481e6bc502c3b56b0d657c05f18c599"
+        },
+        "draft-measurement.json": {
+          "path": "runs/upgrade-patch/keep-off/draft-measurement.json",
+          "bytes": 1530,
+          "sha256": "08deafa14832ceab5ae0fc7fd6ea868a07a95ee42619601819bb40f71f53ded4"
+        }
+      },
+      "draft_source_sha256": "674890ead16851d0573cf724ca9cae25f24fafaba68029841bae9ba86b0edb6c",
+      "acceptance_suite_sha256": "6a5a89309ff380dc9b33c48e734a4c83b1f9812a19ebf46a6c79b246fc755ff0"
+    },
+    {
+      "run": "12306-on",
+      "flag": true,
+      "inputs": {
+        "package_sha256": "a9aa3ac433192609bf1cae1e7a4aff60c87f62b8c4adf8760e138510ac4c6a3a",
+        "flag": "1",
+        "model": "deepseek-v4-flash-vision-exp",
+        "base": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/base-recovered/12306",
+        "requirements": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/req/req-arc-bench-evolution/arc-bench-evolution--12306",
+        "requirements_sha256": "a4e717629a6abe8d60c569c4927319cd814f0eccd0e8fe72fa8a15e66386ca88",
+        "base_hashes": {
+          "backend/package-lock.json": "b3b1c68b586d6861f4c733c138abcb52bb7e4c8536511039a42ddd1418fcbe8b",
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "135f6f00a01c6b163593b40df2ccee6753e6a80347f2b9925cecf8c03300882c",
+          "frontend/package-lock.json": "7ed934860c7525f337bbf857c2956639f750aa9770de278cdff314600ff78a92",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "0e50a6184fd187b0ffa5faed97149add877745acee6dc54b80ddc8a44978ed30",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/seed.js": "8b064e50f49dbad153f2f952ec3bc9590538dee250d4e5f3d2eacc366650058e",
+          "frontend/public/styles.css": "01e5d90167f8a2f2fb2300080709e305a64e9a652231ffea652cbe6d706d14b2",
+          "frontend/public/lib/arc.js": "3e17f74e3ef775f3a0ce09707b38a20f796ffb22211baa14d1d715f38ac19bbe"
+        },
+        "repair_cny_limit": "1",
+        "draft_call_limit": "4"
+      },
+      "requirements_directory_sha256": "bffe8e878519102ddc67fcdd73941895b078efd691a051dbbc78c4b8864a9adf",
+      "input_base_unchanged": true,
+      "requirements_copy_unchanged": true,
+      "exit_code": 0,
+      "seconds": 354.962737167,
+      "draft": {
+        "preservation": {
+          "source_lines": 1639,
+          "retained_lines": 1592,
+          "named_functions": 48,
+          "retained_functions": 47,
+          "line_retention": 0.9713239780353874,
+          "files": [
+            {
+              "path": "backend/server.js",
+              "source_lines": 57,
+              "retained_lines": 57,
+              "named_functions": 4,
+              "retained_functions": 4,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/app.js",
+              "source_lines": 1109,
+              "retained_lines": 1066,
+              "named_functions": 43,
+              "retained_functions": 42,
+              "lost_functions": [
+                "searchFormHtml"
+              ]
+            },
+            {
+              "path": "frontend/public/index.html",
+              "source_lines": 20,
+              "retained_lines": 20,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/lib/arc.js",
+              "source_lines": 198,
+              "retained_lines": 195,
+              "named_functions": 1,
+              "retained_functions": 1,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/seed.js",
+              "source_lines": 121,
+              "retained_lines": 120,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/styles.css",
+              "source_lines": 134,
+              "retained_lines": 134,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            }
+          ]
+        },
+        "completion_tokens": 69322,
+        "cost_cny": 0.3218684,
+        "usage_complete": true,
+        "calls": 1,
+        "protocol": {
+          "proposed_hunks": 22,
+          "applied_hunks": 22,
+          "corrected_hunks": 0,
+          "correction_turns": 0,
+          "edited_files": [
+            "frontend/public/app.js",
+            "frontend/public/lib/arc.js",
+            "frontend/public/seed.js",
+            "frontend/public/styles.css"
+          ],
+          "rewritten_files": [],
+          "created_files": [],
+          "rounds": [
+            {
+              "rejected": [],
+              "pending": [],
+              "broken": null,
+              "proposed": 22,
+              "applied": 22,
+              "edited": [
+                "frontend/public/seed.js",
+                "frontend/public/lib/arc.js",
+                "frontend/public/app.js",
+                "frontend/public/styles.css"
+              ],
+              "rewritten": [],
+              "created": [],
+              "correction": false
+            }
+          ],
+          "unresolved": [],
+          "unmatched_hunks": 0
+        },
+        "changed_files": [
+          "frontend/public/app.js",
+          "frontend/public/lib/arc.js",
+          "frontend/public/seed.js",
+          "frontend/public/styles.css"
+        ]
+      },
+      "own_acceptance": {
+        "initial_counts": {
+          "pass": 6
+        },
+        "final_counts": {
+          "pass": 6
+        },
+        "suite_used": true,
+        "suite_tests": 6,
+        "suite_model_calls": 3,
+        "suite_cost_cny": 0.04281
+      },
+      "repair": {
+        "rounds": 1,
+        "accepted": 1,
+        "stopped": null,
+        "cost_cny": 0.027348
+      },
+      "guard_final_counts": {
+        "kept": 244,
+        "missing": 0,
+        "unknown": 0,
+        "exempted": 53
+      },
+      "total_cost_cny_from_gateway_usage": 0.39202644000000003,
+      "final_preservation": {
+        "source_lines": 1639,
+        "retained_lines": 1594,
+        "named_functions": 48,
+        "retained_functions": 47,
+        "line_retention": 0.9725442342892008,
+        "files": [
+          {
+            "path": "backend/server.js",
+            "source_lines": 57,
+            "retained_lines": 57,
+            "named_functions": 4,
+            "retained_functions": 4,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/app.js",
+            "source_lines": 1109,
+            "retained_lines": 1068,
+            "named_functions": 43,
+            "retained_functions": 42,
+            "lost_functions": [
+              "searchFormHtml"
+            ]
+          },
+          {
+            "path": "frontend/public/index.html",
+            "source_lines": 20,
+            "retained_lines": 20,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/lib/arc.js",
+            "source_lines": 198,
+            "retained_lines": 195,
+            "named_functions": 1,
+            "retained_functions": 1,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/seed.js",
+            "source_lines": 121,
+            "retained_lines": 120,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/styles.css",
+            "source_lines": 134,
+            "retained_lines": 134,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          }
+        ]
+      },
+      "trace": [
+        {
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 46462,
+            "completion_tokens": 69322
+          },
+          "request_sha256": "a21073792271451b9518adbf58312fc7b940895231afc211c3b84a217174261f",
+          "response_sha256": "8c7f6dfd2dad0aae0346b91d3c802cd3999f0108e300e58730ba8e76ffb6e5c9",
+          "seconds": null,
+          "cost_cny": 0.3218684
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 55233,
+            "completion_tokens": 4381
+          },
+          "request_sha256": "0d23d9a1c52f6fd58afd3369e327166ba18b71d10fc950e195fb0cff61068c18",
+          "response_sha256": "ee437cc47e1fe730feef9a2f0b2aa9a6cff9e87d03cd978a93e7d2be65be08f5",
+          "seconds": null,
+          "cost_cny": 0.027347720000000002
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6438,
+            "completion_tokens": 2504
+          },
+          "request_sha256": "a1db502034130221b986371b9afb3a60db5aa34e7180ba4ac9d18f2e2519e72a",
+          "response_sha256": "07f470bb28f34349e3585c5ac69d60e2be69ce5c9fa0f9bfb1a6bc0069fbf0f6",
+          "seconds": null,
+          "cost_cny": 0.010307440000000001
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6434,
+            "completion_tokens": 3490
+          },
+          "request_sha256": "52faf5e401b9bf830d1fcf8e61ff2f4a7df46df9dc4ef54327cb2d92c59d8168",
+          "response_sha256": "d37e7823850c99ca07ca7c1b65beffc943ec79afffafb903e727562a268621b4",
+          "seconds": null,
+          "cost_cny": 0.01424744
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6442,
+            "completion_tokens": 4490
+          },
+          "request_sha256": "1b452df40b93d0cfff68b7e4ad4fbcc1ffc156dd922e0674fedcc853e901a10a",
+          "response_sha256": "3b4e8f841bc309a122bf26a4f51ea60013e520d484bee008d775e5f4c2994029",
+          "seconds": null,
+          "cost_cny": 0.018255439999999998
+        }
+      ],
+      "raw_artifacts": {
+        "agent.log": {
+          "path": "runs/upgrade-patch/12306-on/agent.log",
+          "bytes": 762582,
+          "sha256": "659809654e4afd47993e451bc8ce03d94b8420ab8eb8f615cdd9e8d4ce364b48"
+        },
+        "result.json": {
+          "path": "runs/upgrade-patch/12306-on/result.json",
+          "bytes": 631496,
+          "sha256": "fb92ea21dc4a5ba307c16ba1ad7e416113e2b06919f3a4f0b43b6e6d5222d263"
+        },
+        "inputs.json": {
+          "path": "runs/upgrade-patch/12306-on/inputs.json",
+          "bytes": 1553,
+          "sha256": "e9c5c30b6814aaa7976a7b93c87470581f2171e917573f5f8c3a64482841006a"
+        },
+        "draft-measurement.json": {
+          "path": "runs/upgrade-patch/12306-on/draft-measurement.json",
+          "bytes": 2565,
+          "sha256": "31ea3eaac0706118b187fc2ae36faa54f7383ace5c71cee762d23b3111f391b6"
+        }
+      },
+      "draft_source_sha256": "3497b2a2ccec846df32cef6c43e18e2a7649f303727d5a032687faa2edbb4604",
+      "acceptance_suite_sha256": "fb3bfa51063c2b1b2307e9a5a169cea8ce747c82b13f400ac44390513959ceca"
+    },
+    {
+      "run": "12306-off",
+      "flag": false,
+      "inputs": {
+        "package_sha256": "abbe7c1d6b1fb023e67c03ed696cdb02ecf4b56023284d311b79e63e08af598c",
+        "flag": "0",
+        "model": "deepseek-v4-flash-vision-exp",
+        "base": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/base-recovered/12306",
+        "requirements": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/req/req-arc-bench-evolution/arc-bench-evolution--12306",
+        "requirements_sha256": "a4e717629a6abe8d60c569c4927319cd814f0eccd0e8fe72fa8a15e66386ca88",
+        "base_hashes": {
+          "backend/package-lock.json": "b3b1c68b586d6861f4c733c138abcb52bb7e4c8536511039a42ddd1418fcbe8b",
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "135f6f00a01c6b163593b40df2ccee6753e6a80347f2b9925cecf8c03300882c",
+          "frontend/package-lock.json": "7ed934860c7525f337bbf857c2956639f750aa9770de278cdff314600ff78a92",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "0e50a6184fd187b0ffa5faed97149add877745acee6dc54b80ddc8a44978ed30",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/seed.js": "8b064e50f49dbad153f2f952ec3bc9590538dee250d4e5f3d2eacc366650058e",
+          "frontend/public/styles.css": "01e5d90167f8a2f2fb2300080709e305a64e9a652231ffea652cbe6d706d14b2",
+          "frontend/public/lib/arc.js": "3e17f74e3ef775f3a0ce09707b38a20f796ffb22211baa14d1d715f38ac19bbe"
+        },
+        "repair_cny_limit": "1",
+        "draft_call_limit": "4"
+      },
+      "requirements_directory_sha256": "bffe8e878519102ddc67fcdd73941895b078efd691a051dbbc78c4b8864a9adf",
+      "input_base_unchanged": true,
+      "requirements_copy_unchanged": true,
+      "exit_code": 0,
+      "seconds": 440.997939541,
+      "draft": {
+        "preservation": {
+          "source_lines": 1639,
+          "retained_lines": 1516,
+          "named_functions": 48,
+          "retained_functions": 46,
+          "line_retention": 0.924954240390482,
+          "files": [
+            {
+              "path": "backend/server.js",
+              "source_lines": 57,
+              "retained_lines": 57,
+              "named_functions": 4,
+              "retained_functions": 4,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/app.js",
+              "source_lines": 1109,
+              "retained_lines": 1022,
+              "named_functions": 43,
+              "retained_functions": 41,
+              "lost_functions": [
+                "openDatePicker",
+                "searchFormHtml"
+              ]
+            },
+            {
+              "path": "frontend/public/index.html",
+              "source_lines": 20,
+              "retained_lines": 20,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/lib/arc.js",
+              "source_lines": 198,
+              "retained_lines": 163,
+              "named_functions": 1,
+              "retained_functions": 1,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/seed.js",
+              "source_lines": 121,
+              "retained_lines": 121,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/styles.css",
+              "source_lines": 134,
+              "retained_lines": 133,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            }
+          ]
+        },
+        "completion_tokens": 89698,
+        "cost_cny": 0.35989104,
+        "usage_complete": true,
+        "calls": 1,
+        "protocol": null,
+        "changed_files": [
+          "frontend/public/app.js",
+          "frontend/public/lib/arc.js",
+          "frontend/public/styles.css"
+        ],
+        "full_file_blocks": [
+          "frontend/public/app.js",
+          "frontend/public/lib/arc.js",
+          "frontend/public/styles.css"
+        ]
+      },
+      "own_acceptance": {
+        "initial_counts": {
+          "pass": 6
+        },
+        "final_counts": {
+          "pass": 6
+        },
+        "suite_used": true,
+        "suite_tests": 6,
+        "suite_model_calls": 3,
+        "suite_cost_cny": 0.03453
+      },
+      "repair": {
+        "rounds": 1,
+        "accepted": 1,
+        "stopped": null,
+        "cost_cny": 0.096628
+      },
+      "guard_final_counts": {
+        "kept": 244,
+        "missing": 0,
+        "unknown": 0,
+        "exempted": 53
+      },
+      "total_cost_cny_from_gateway_usage": 0.49104896,
+      "final_preservation": {
+        "source_lines": 1639,
+        "retained_lines": 1516,
+        "named_functions": 48,
+        "retained_functions": 46,
+        "line_retention": 0.924954240390482,
+        "files": [
+          {
+            "path": "backend/server.js",
+            "source_lines": 57,
+            "retained_lines": 57,
+            "named_functions": 4,
+            "retained_functions": 4,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/app.js",
+            "source_lines": 1109,
+            "retained_lines": 1022,
+            "named_functions": 43,
+            "retained_functions": 41,
+            "lost_functions": [
+              "openDatePicker",
+              "searchFormHtml"
+            ]
+          },
+          {
+            "path": "frontend/public/index.html",
+            "source_lines": 20,
+            "retained_lines": 20,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/lib/arc.js",
+            "source_lines": 198,
+            "retained_lines": 163,
+            "named_functions": 1,
+            "retained_functions": 1,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/seed.js",
+            "source_lines": 121,
+            "retained_lines": 121,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/styles.css",
+            "source_lines": 134,
+            "retained_lines": 133,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          }
+        ]
+      },
+      "trace": [
+        {
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 46132,
+            "completion_tokens": 89698
+          },
+          "request_sha256": "cb54632bfc71c1d76c863e0537557b45ac83d23f32f7417a220823af341d5c26",
+          "response_sha256": "ed20582c8005f4153df077461619fbd0d52dde1b460319e1acec9cff34e0da8f",
+          "seconds": null,
+          "cost_cny": 0.35989104
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 81850,
+            "completion_tokens": 14984
+          },
+          "request_sha256": "60fc825869b6e171f6a31ad37ad776df22950d521060e713e1f987de9d453533",
+          "response_sha256": "57f0674a45679e0b6ddf66f54652b639cdb58b4fb7fa22b3ee645258055b5b52",
+          "seconds": null,
+          "cost_cny": 0.09662760000000001
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6438,
+            "completion_tokens": 2486
+          },
+          "request_sha256": "a1db502034130221b986371b9afb3a60db5aa34e7180ba4ac9d18f2e2519e72a",
+          "response_sha256": "09ed38991416d57dbf5bfc232916e37a06314d20a83059a36a68ea0118639b8a",
+          "seconds": null,
+          "cost_cny": 0.01023544
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6434,
+            "completion_tokens": 3198
+          },
+          "request_sha256": "52faf5e401b9bf830d1fcf8e61ff2f4a7df46df9dc4ef54327cb2d92c59d8168",
+          "response_sha256": "da09f9f08c2ff4e037df8dd9799a4b9f25250bed09f4502fcc05699305c3eed1",
+          "seconds": null,
+          "cost_cny": 0.013079440000000001
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6442,
+            "completion_tokens": 2730
+          },
+          "request_sha256": "1b452df40b93d0cfff68b7e4ad4fbcc1ffc156dd922e0674fedcc853e901a10a",
+          "response_sha256": "6beaa39114fa6f505aaaea5fb8009cafd7e4939e07f63bc1d2596b7980cd8535",
+          "seconds": null,
+          "cost_cny": 0.01121544
+        }
+      ],
+      "raw_artifacts": {
+        "agent.log": {
+          "path": "runs/upgrade-patch/12306-off/agent.log",
+          "bytes": 936403,
+          "sha256": "23949f0f5b073c106befe2c43e9534917427426db7a013b0cd5772e1f7193c01"
+        },
+        "result.json": {
+          "path": "runs/upgrade-patch/12306-off/result.json",
+          "bytes": 619098,
+          "sha256": "a0af46806a55b044c13118bddb1ea872d1ff1026b55f9114d74ec4b0aafa99f7"
+        },
+        "inputs.json": {
+          "path": "runs/upgrade-patch/12306-off/inputs.json",
+          "bytes": 1553,
+          "sha256": "46644d0edc1ff2a0de54e3ac6a26db4a7fe788a07785f5e63e651b8cfbf9d183"
+        },
+        "draft-measurement.json": {
+          "path": "runs/upgrade-patch/12306-off/draft-measurement.json",
+          "bytes": 1903,
+          "sha256": "56b8c7642816268c370f5d4ba41cb7f4ad46a55905a28bf02892d04a7d5d5712"
+        }
+      },
+      "draft_source_sha256": "a030873c8cad79f971cd91eb8d7b0d724e9b5f2593f2565f74127b70af1b00bf",
+      "acceptance_suite_sha256": "2e800344dfcbfb3eb50f2ddff2957fc81f84cff8de1bb7c32b04c699425b58d2"
+    },
+    {
+      "run": "github-keep-on",
+      "flag": true,
+      "inputs": {
+        "package_sha256": "a9aa3ac433192609bf1cae1e7a4aff60c87f62b8c4adf8760e138510ac4c6a3a",
+        "flag": "1",
+        "model": "deepseek-v4-flash-vision-exp",
+        "base": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v7-official-github-79/application",
+        "requirements": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/req/req-arc-bench-evolution/arc-bench-evolution--keep",
+        "requirements_sha256": "52930707731bdf72ef36b05c67bebf8d799cf1d3daf812ea1ac480c8151a8259",
+        "base_hashes": {
+          "backend/package-lock.json": "b3b1c68b586d6861f4c733c138abcb52bb7e4c8536511039a42ddd1418fcbe8b",
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9",
+          "frontend/package-lock.json": "7ed934860c7525f337bbf857c2956639f750aa9770de278cdff314600ff78a92",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "d95e9c4a89307d40766713a8b419cbb951f40199d6bef66d47acd5efa0ed4bf7",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/seed.js": "8d1143647c902e526657baafcf36497b62a4c5e813e7d8d5cf0cde3f33cbd185",
+          "frontend/public/styles.css": "9d262cc1bea4b3794787daab8f551d3278f414ae23466b6dedeac9c6c14c3da4",
+          "frontend/public/lib/arc.js": "fc56e0fd7a81c3e6d72bfe6df1cefc197e7004d0087a98193f9bea886ae44779"
+        },
+        "repair_cny_limit": "1",
+        "draft_call_limit": "4"
+      },
+      "requirements_directory_sha256": "dc26d986cb9a5be7453b21fdde46087f0ad7bc5c675aeb122c7c63f425bdf027",
+      "input_base_unchanged": true,
+      "requirements_copy_unchanged": true,
+      "exit_code": 0,
+      "seconds": 462.06390683399997,
+      "draft": {
+        "preservation": {
+          "source_lines": 2893,
+          "retained_lines": 2892,
+          "named_functions": 78,
+          "retained_functions": 78,
+          "line_retention": 0.9996543380573799,
+          "files": [
+            {
+              "path": "backend/server.js",
+              "source_lines": 78,
+              "retained_lines": 78,
+              "named_functions": 5,
+              "retained_functions": 5,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/app.js",
+              "source_lines": 1941,
+              "retained_lines": 1940,
+              "named_functions": 62,
+              "retained_functions": 62,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/index.html",
+              "source_lines": 20,
+              "retained_lines": 20,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/lib/arc.js",
+              "source_lines": 521,
+              "retained_lines": 521,
+              "named_functions": 4,
+              "retained_functions": 4,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/seed.js",
+              "source_lines": 236,
+              "retained_lines": 236,
+              "named_functions": 7,
+              "retained_functions": 7,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/styles.css",
+              "source_lines": 97,
+              "retained_lines": 97,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            }
+          ]
+        },
+        "completion_tokens": 68867,
+        "cost_cny": 0.32860536,
+        "usage_complete": true,
+        "calls": 1,
+        "protocol": {
+          "proposed_hunks": 6,
+          "applied_hunks": 6,
+          "corrected_hunks": 0,
+          "correction_turns": 0,
+          "edited_files": [
+            "frontend/public/app.js",
+            "frontend/public/seed.js",
+            "frontend/public/styles.css"
+          ],
+          "rewritten_files": [],
+          "created_files": [],
+          "rounds": [
+            {
+              "rejected": [],
+              "pending": [],
+              "broken": null,
+              "proposed": 6,
+              "applied": 6,
+              "edited": [
+                "frontend/public/seed.js",
+                "frontend/public/app.js",
+                "frontend/public/styles.css"
+              ],
+              "rewritten": [],
+              "created": [],
+              "correction": false
+            }
+          ],
+          "unresolved": [],
+          "unmatched_hunks": 0
+        },
+        "changed_files": [
+          "frontend/public/app.js",
+          "frontend/public/seed.js",
+          "frontend/public/styles.css"
+        ]
+      },
+      "own_acceptance": {
+        "initial_counts": {
+          "pass": 5,
+          "error": 1
+        },
+        "final_counts": {
+          "pass": 6
+        },
+        "suite_used": true,
+        "suite_tests": 6,
+        "suite_model_calls": 3,
+        "suite_cost_cny": 0.151139
+      },
+      "repair": {
+        "rounds": 0,
+        "accepted": 0,
+        "stopped": null,
+        "cost_cny": 0
+      },
+      "guard_final_counts": {
+        "kept": 940,
+        "missing": 0,
+        "unknown": 0,
+        "exempted": 254
+      },
+      "total_cost_cny_from_gateway_usage": 0.4902104,
+      "final_preservation": {
+        "source_lines": 2893,
+        "retained_lines": 2892,
+        "named_functions": 78,
+        "retained_functions": 78,
+        "line_retention": 0.9996543380573799,
+        "files": [
+          {
+            "path": "backend/server.js",
+            "source_lines": 78,
+            "retained_lines": 78,
+            "named_functions": 5,
+            "retained_functions": 5,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/app.js",
+            "source_lines": 1941,
+            "retained_lines": 1940,
+            "named_functions": 62,
+            "retained_functions": 62,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/index.html",
+            "source_lines": 20,
+            "retained_lines": 20,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/lib/arc.js",
+            "source_lines": 521,
+            "retained_lines": 521,
+            "named_functions": 4,
+            "retained_functions": 4,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/seed.js",
+            "source_lines": 236,
+            "retained_lines": 236,
+            "named_functions": 7,
+            "retained_functions": 7,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/styles.css",
+            "source_lines": 97,
+            "retained_lines": 97,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          }
+        ]
+      },
+      "trace": [
+        {
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 60162,
+            "completion_tokens": 68867
+          },
+          "request_sha256": "82e24a7ac7983854244c9cc19ad39bc8488a6927398a51928e9862f26d74956a",
+          "response_sha256": "fe0c1625ae521f5c3066ddd1451bf789450a141d4e7b7f39cbe724fef0f8e320",
+          "seconds": null,
+          "cost_cny": 0.32860536
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6869,
+            "completion_tokens": 13251
+          },
+          "request_sha256": "06c0d5bde570d5ec5d3d13e7fc7434c62e414930be6fae7fd32ec1328d0e308e",
+          "response_sha256": "5c1d4770b2a9cd3476c80ee5705af9aa92e6660b1bd8ad48d8ff4b23745f0c0a",
+          "seconds": null,
+          "cost_cny": 0.05335012
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6865,
+            "completion_tokens": 12536
+          },
+          "request_sha256": "2f0c7e2050274543479aab8114bffb923f108f7dfbe8ff0343c52b860aa3caca",
+          "response_sha256": "af9b9da271f0328abcc57d75c02589f697ab0c45e395d8f0b4811485dd6a54e1",
+          "seconds": null,
+          "cost_cny": 0.05048612
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6866,
+            "completion_tokens": 11740
+          },
+          "request_sha256": "fc0174f557d69988fc4a4b8b364781803edce4caf65eb7a367ad076a70b902fe",
+          "response_sha256": "c9608d2a9b64f19053ec10330014981d9dbd35a3376ecb41a7a278ef0d95f343",
+          "seconds": null,
+          "cost_cny": 0.047303120000000004
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 8850,
+            "completion_tokens": 2066
+          },
+          "request_sha256": "1667473abb82b5c713a0bb1e246ab8172b12d57b011f560fc0406503ab85aae4",
+          "response_sha256": "77083ac64f743bfe2a7c4604cf6cb56eb495e68725c8de1747619c20dd4bac55",
+          "seconds": null,
+          "cost_cny": 0.01046568
+        }
+      ],
+      "raw_artifacts": {
+        "agent.log": {
+          "path": "runs/upgrade-patch/github-keep-on/agent.log",
+          "bytes": 1398260,
+          "sha256": "c6b7b6359a24bfd0abb2365a2fe1b0960a82a07110a47eb259f24d623feadf35"
+        },
+        "result.json": {
+          "path": "runs/upgrade-patch/github-keep-on/result.json",
+          "bytes": 2093429,
+          "sha256": "c61f52840e029b4328d5334ec75b07016d0ab2c278e7ae4dad775dfec48ec13a"
+        },
+        "inputs.json": {
+          "path": "runs/upgrade-patch/github-keep-on/inputs.json",
+          "bytes": 1562,
+          "sha256": "80e37821b5204bf7668f0ede8e181b2be4e9b491b00b3677fd82ce0c41ce8782"
+        },
+        "draft-measurement.json": {
+          "path": "runs/upgrade-patch/github-keep-on/draft-measurement.json",
+          "bytes": 2414,
+          "sha256": "fec0bae051142571abeb37bb331310850c8cd16afbaaf582befdd5a42e25007f"
+        }
+      },
+      "draft_source_sha256": "26c5bc516bcd8f895befcfd06f0914dc8bce4d6411fce3299d1cb1017ed92f5d",
+      "acceptance_suite_sha256": "5d7cec068e500df6fa254ea3034d3b6c6e3c2c49da2ebb40a6bc145c072b760a"
+    },
+    {
+      "run": "github-keep-off",
+      "flag": false,
+      "inputs": {
+        "package_sha256": "abbe7c1d6b1fb023e67c03ed696cdb02ecf4b56023284d311b79e63e08af598c",
+        "flag": "0",
+        "model": "deepseek-v4-flash-vision-exp",
+        "base": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v7-official-github-79/application",
+        "requirements": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/req/req-arc-bench-evolution/arc-bench-evolution--keep",
+        "requirements_sha256": "52930707731bdf72ef36b05c67bebf8d799cf1d3daf812ea1ac480c8151a8259",
+        "base_hashes": {
+          "backend/package-lock.json": "b3b1c68b586d6861f4c733c138abcb52bb7e4c8536511039a42ddd1418fcbe8b",
+          "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+          "backend/server.js": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9",
+          "frontend/package-lock.json": "7ed934860c7525f337bbf857c2956639f750aa9770de278cdff314600ff78a92",
+          "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+          "frontend/public/app.js": "d95e9c4a89307d40766713a8b419cbb951f40199d6bef66d47acd5efa0ed4bf7",
+          "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+          "frontend/public/seed.js": "8d1143647c902e526657baafcf36497b62a4c5e813e7d8d5cf0cde3f33cbd185",
+          "frontend/public/styles.css": "9d262cc1bea4b3794787daab8f551d3278f414ae23466b6dedeac9c6c14c3da4",
+          "frontend/public/lib/arc.js": "fc56e0fd7a81c3e6d72bfe6df1cefc197e7004d0087a98193f9bea886ae44779"
+        },
+        "repair_cny_limit": "1",
+        "draft_call_limit": "4"
+      },
+      "requirements_directory_sha256": "dc26d986cb9a5be7453b21fdde46087f0ad7bc5c675aeb122c7c63f425bdf027",
+      "input_base_unchanged": true,
+      "requirements_copy_unchanged": true,
+      "exit_code": 0,
+      "seconds": 762.12210225,
+      "draft": {
+        "preservation": {
+          "source_lines": 2893,
+          "retained_lines": 742,
+          "named_functions": 78,
+          "retained_functions": 12,
+          "line_retention": 0.2564811614241272,
+          "files": [
+            {
+              "path": "backend/server.js",
+              "source_lines": 78,
+              "retained_lines": 78,
+              "named_functions": 5,
+              "retained_functions": 5,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/app.js",
+              "source_lines": 1941,
+              "retained_lines": 86,
+              "named_functions": 62,
+              "retained_functions": 3,
+              "lost_functions": [
+                "allTeams",
+                "branchOf",
+                "branches",
+                "byLogin",
+                "byName",
+                "can",
+                "cap",
+                "checksOf",
+                "commentsOf",
+                "commitById",
+                "commitsOf",
+                "createPr",
+                "currentBranch",
+                "currentRepo",
+                "dedupe",
+                "errHtml",
+                "errList",
+                "fileAt",
+                "filesOf",
+                "higher",
+                "highlightContent",
+                "issueByNumber",
+                "issuesOf",
+                "labelsOf",
+                "me",
+                "memberRole",
+                "milestonesOf",
+                "okHtml",
+                "orgByName",
+                "orgDisplayOf",
+                "orgMembers",
+                "orgTeams",
+                "orgs",
+                "prByNumber",
+                "prEligibility",
+                "protectionFor",
+                "protectionsOf",
+                "prsOf",
+                "rank",
+                "repoById",
+                "repoByPath",
+                "repoHead",
+                "repoHref",
+                "repoNav",
+                "repoRole",
+                "repos",
+                "reviewSummary",
+                "setErrs",
+                "setOk",
+                "statusLabel",
+                "teamById",
+                "teamByName",
+                "treeEntries",
+                "users",
+                "validBranchName",
+                "validEmail",
+                "validPassword",
+                "validUsername",
+                "visibleRepos"
+              ]
+            },
+            {
+              "path": "frontend/public/index.html",
+              "source_lines": 20,
+              "retained_lines": 20,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/lib/arc.js",
+              "source_lines": 521,
+              "retained_lines": 521,
+              "named_functions": 4,
+              "retained_functions": 4,
+              "lost_functions": []
+            },
+            {
+              "path": "frontend/public/seed.js",
+              "source_lines": 236,
+              "retained_lines": 8,
+              "named_functions": 7,
+              "retained_functions": 0,
+              "lost_functions": [
+                "br",
+                "c",
+                "f",
+                "issue",
+                "pr",
+                "search",
+                "u"
+              ]
+            },
+            {
+              "path": "frontend/public/styles.css",
+              "source_lines": 97,
+              "retained_lines": 29,
+              "named_functions": 0,
+              "retained_functions": 0,
+              "lost_functions": []
+            }
+          ]
+        },
+        "completion_tokens": 71347,
+        "cost_cny": 0.3383208,
+        "usage_complete": true,
+        "calls": 1,
+        "protocol": null,
+        "changed_files": [
+          "frontend/public/app.js",
+          "frontend/public/seed.js",
+          "frontend/public/styles.css"
+        ],
+        "full_file_blocks": [
+          "frontend/public/app.js",
+          "frontend/public/seed.js",
+          "frontend/public/styles.css"
+        ]
+      },
+      "own_acceptance": {
+        "initial_counts": {
+          "pass": 6
+        },
+        "final_counts": {
+          "pass": 6
+        },
+        "suite_used": true,
+        "suite_tests": 6,
+        "suite_model_calls": 3,
+        "suite_cost_cny": 0.240471
+      },
+      "repair": {
+        "rounds": 2,
+        "accepted": 2,
+        "stopped": null,
+        "cost_cny": 0.303802
+      },
+      "guard_final_counts": {
+        "kept": 940,
+        "missing": 0,
+        "unknown": 0,
+        "exempted": 254
+      },
+      "total_cost_cny_from_gateway_usage": 0.88259404,
+      "final_preservation": {
+        "source_lines": 2893,
+        "retained_lines": 2890,
+        "named_functions": 78,
+        "retained_functions": 78,
+        "line_retention": 0.9989630141721396,
+        "files": [
+          {
+            "path": "backend/server.js",
+            "source_lines": 78,
+            "retained_lines": 78,
+            "named_functions": 5,
+            "retained_functions": 5,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/app.js",
+            "source_lines": 1941,
+            "retained_lines": 1941,
+            "named_functions": 62,
+            "retained_functions": 62,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/index.html",
+            "source_lines": 20,
+            "retained_lines": 19,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/lib/arc.js",
+            "source_lines": 521,
+            "retained_lines": 521,
+            "named_functions": 4,
+            "retained_functions": 4,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/seed.js",
+            "source_lines": 236,
+            "retained_lines": 234,
+            "named_functions": 7,
+            "retained_functions": 7,
+            "lost_functions": []
+          },
+          {
+            "path": "frontend/public/styles.css",
+            "source_lines": 97,
+            "retained_lines": 97,
+            "named_functions": 0,
+            "retained_functions": 0,
+            "lost_functions": []
+          }
+        ]
+      },
+      "trace": [
+        {
+          "phase": "draft",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 59832,
+            "completion_tokens": 71347
+          },
+          "request_sha256": "ecf17ddeb412e69122261993cfd97e97f21273e4beac102a4f5ac41cc5ad2b30",
+          "response_sha256": "6b1c0315943d073c47e8b66f008dc5103a614cd546646cea55d5d066d11d1ed4",
+          "seconds": null,
+          "cost_cny": 0.3383208
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 68023,
+            "completion_tokens": 50607
+          },
+          "request_sha256": "99e27b88215e9c12e48e908674d72828c7b967d5e96ad4291259e50798cfae4e",
+          "response_sha256": "7ba62766717e0f4485756a1a8fefc7b6e878dd9a1126a4b97cb845e620d1bd83",
+          "seconds": null,
+          "cost_cny": 0.21187051999999998
+        },
+        {
+          "phase": "repair",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 105332,
+            "completion_tokens": 13302
+          },
+          "request_sha256": "395c62df6ea3a121c4e5780016434204ca8a9905dc563d6d6af404a4470d2ddd",
+          "response_sha256": "debe2b783a06a7ceaabd6c00ee06c42a7418861bff06e3309d8ea14c6f00770d",
+          "seconds": null,
+          "cost_cny": 0.09193136
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6869,
+            "completion_tokens": 16360
+          },
+          "request_sha256": "06c0d5bde570d5ec5d3d13e7fc7434c62e414930be6fae7fd32ec1328d0e308e",
+          "response_sha256": "bf1dccab95277badfdcfb4beb4dc294de397ba834900b442f26d13801dd669b7",
+          "seconds": null,
+          "cost_cny": 0.06578611999999999
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6865,
+            "completion_tokens": 16910
+          },
+          "request_sha256": "2f0c7e2050274543479aab8114bffb923f108f7dfbe8ff0343c52b860aa3caca",
+          "response_sha256": "6413f55e331210e9fb876d1bf2f0980be31c8083bab94460612adbc2ac84060b",
+          "seconds": null,
+          "cost_cny": 0.06798212
+        },
+        {
+          "phase": "tests",
+          "model": "deepseek-v4-flash-vision-exp",
+          "status": "completed",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 6866,
+            "completion_tokens": 26590
+          },
+          "request_sha256": "fc0174f557d69988fc4a4b8b364781803edce4caf65eb7a367ad076a70b902fe",
+          "response_sha256": "390252ffa432bd86558dcb91743db93eb3c2378b5a7110bd585230a0deceb8c9",
+          "seconds": null,
+          "cost_cny": 0.10670312
+        }
+      ],
+      "raw_artifacts": {
+        "agent.log": {
+          "path": "runs/upgrade-patch/github-keep-off/agent.log",
+          "bytes": 3513957,
+          "sha256": "1a18fa9232e820a98f7fb4713985b10a35781de3b476ba90a38ad4e5280a93e3"
+        },
+        "result.json": {
+          "path": "runs/upgrade-patch/github-keep-off/result.json",
+          "bytes": 4379306,
+          "sha256": "b97beeec9e8ab365c408d962c35f07cc07a2b9ce265bcf6639467b6d27fc03c5"
+        },
+        "inputs.json": {
+          "path": "runs/upgrade-patch/github-keep-off/inputs.json",
+          "bytes": 1562,
+          "sha256": "572dcbfc5cde5229949dbbc24d94a1b6615c91e46ba35b946bb6b47d80cff353"
+        },
+        "draft-measurement.json": {
+          "path": "runs/upgrade-patch/github-keep-off/draft-measurement.json",
+          "bytes": 3297,
+          "sha256": "0d2f788a16561b5af9288767df927c6a1bad1f2521f57a6ef83fc57a6f56b703"
+        }
+      },
+      "draft_source_sha256": "fdf83ccb60081c93ab7d3e65eed9dd33049cb57fb1d91cc87fb66a92e15a44fb",
+      "acceptance_suite_sha256": "7b3ac4722271303c0b36dfda67ee2df31d1a49c432843ac3b47f84af1aa1a165"
+    }
+  ],
+  "tests": {
+    "oneshot": {
+      "total": 345,
+      "passed": 342,
+      "skipped": 3,
+      "seconds": 261.35,
+      "skip_cases": [
+        "test_a_recheck_runs_only_the_named_scenarios_from_the_text_and_stops_at_its_time_budget (test_scenario_check.ScenarioCheckEndToEnd) ... skipped 'Playwright with Chromium is not installed (set NODE_PATH and PLAYWRIGHT_BROWSERS_PATH)'",
+        "test_broken_details_screen_fails_with_an_observation_naming_the_screen (test_scenario_check.ScenarioCheckEndToEnd) ... skipped 'Playwright with Chromium is not installed (set NODE_PATH and PLAYWRIGHT_BROWSERS_PATH)'",
+        "test_correct_app_passes_and_each_scenario_starts_from_the_seed (test_scenario_check.ScenarioCheckEndToEnd) ... skipped 'Playwright with Chromium is not installed (set NODE_PATH and PLAYWRIGHT_BROWSERS_PATH)'"
+      ],
+      "log": "runs/upgrade-patch/unit-final-delivery.log",
+      "sha256": "e0ad156f2ea82233d6f12dd4bae6320e3b7fd9483b760cc58e41bc1d6a02c003"
+    },
+    "focused": {
+      "total": 21,
+      "passed": 21,
+      "skipped": 0,
+      "seconds": 0.208,
+      "skip_cases": [],
+      "log": "runs/upgrade-patch/unit-focused-final.log",
+      "sha256": "0a402589bdb9f6fd01e3bb3f12bf6e64b6fcc9afa8c5850e043cd844d5537770"
+    },
+    "legacy": {
+      "total": 226,
+      "passed": 214,
+      "skipped": 12,
+      "seconds": 67.958,
+      "skip_cases": [
+        "test_real_browser_suite_checks_external_app_without_candidate_test_code (test_acceptance.AcceptanceTests) ... skipped 'Installed Playwright and Chromium required'",
+        "test_real_browser_input_click_reload_assertions_and_redirect_guard (test_acceptance_probe.AcceptanceTests) ... skipped 'Installed browser configuration required'",
+        "test_an_installed_chromium_is_launched_once_for_three_checks (test_browser_lifecycle.BrowserLifecycleTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'",
+        "A capture is evidence. It survives a rewrite of the live check, and it never ... skipped 'Installed Chrome/Playwright required'",
+        "test_browser_failure_retains_visible_state_and_pending_request (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'",
+        "test_browser_rejects_primary_route_aliases_but_allows_home_and_hidden_links (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'",
+        "test_browser_rejects_unnamed_meter_even_when_authored_check_passes (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'",
+        "test_prepared_browser_routes_and_reports_missing_controls (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'",
+        "test_correct_product_passes_outside_its_own_test_files (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'",
+        "test_empty_grader_is_an_error_not_a_pass (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'",
+        "test_timeout_is_an_error_and_containers_are_removed (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'",
+        "test_weakening_self_tests_does_not_repair_wrong_product (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'"
+      ],
+      "log": "runs/upgrade-patch/unit-legacy.log",
+      "sha256": "b870d01847bca22aede1a09933a2e72691c645c7b0a153904b232e5df99a8611"
+    }
+  },
+  "raw_archive": {
+    "path": "runs/upgrade-patch/retained-evidence.tar.gz",
+    "bytes": 68835581,
+    "sha256": "a495eb8b65da49a09134e0524446960cbed56acee476ed5d3b72f587c63f28bf"
+  },
+  "off_byte_parity": {
+    "source_commit": "9e1051e3fd207b90fc371e7b64e0e3e65ce7e711",
+    "initial_message_cases": 3,
+    "full_request_payloads": 2,
+    "initial_messages_sha256": [
+      "7ada350d5303ebc4fc68cf52b73a90bfc22cda7913728e353aabf722da480e8a",
+      "2cee3ae1d93b4fe8ac4560eaf6a32f7a62a1376d844fa36b034392d19128ba44",
+      "fd2f4f529f6a06f2175d9bba105846bf09462c3f7c0d8ea10a1d875403bfb451"
+    ],
+    "request_sha256": [
+      "0ce328548db45ff0345b21f0c79a7e80ca5c7bbcbdeb74bb9d51134d6c3f3a46",
+      "ef10bcd861e8a61082931acf533af8414006db01d809bb4cb667965198164b76"
+    ],
+    "synthetic_transport": true,
+    "output_bytes_match": true
+  }
+}

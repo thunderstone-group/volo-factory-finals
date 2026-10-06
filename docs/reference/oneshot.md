@@ -31,6 +31,19 @@ its bounded source snapshot to the same one-shot call. For a separate immutable 
 `--template-dir EXISTING_APP --output-dir EMPTY_DIR`. The Python `generate()` API retains its
 empty-output default unless `template=` is supplied explicitly.
 
+`ONESHOT_UPGRADE_PATCH=1` opts into SEARCH/REPLACE drafts for upgrades (default `0`;
+fresh builds are unchanged). Existing UTF-8 files over 4096 bytes require `EDIT` blocks;
+new files and existing files at most 4096 bytes may use complete `FILE` blocks. Every SEARCH
+must match exactly once, with no whitespace normalization. All blocks for one file in one
+reply commit together or are discarded together; other files remain applied. A cut block
+never applies a partial hunk and its file is restarted in the draft continuation.
+After those continuations, rejected files get one correction turn in the same conversation,
+with numbered current source excerpts. This has one separate completed-call slot on the
+shared failure/cost ledger. Remaining failures are recorded under `upgrade_patch` in usage
+and proceed to the normal delivery checks and repair loop, even if every draft edit failed.
+Repair matching, test generation, regression observation and publication are unchanged.
+See the [mechanics report](../reports/2026-10-06-upgrade-patch-draft.md) for measurements and limits.
+
 Completed upgrades now receive the same requirement-written browser checks and source review as
 new applications. Keeping an existing application does not establish its newly requested behavior.
 The earlier template path skipped test generation and could finish with every masked scenario
@@ -50,8 +63,8 @@ reads only requirements, never official tests or application code. See the
 Paths must be relative and resolve within the output tree. Generation is staged and the
 validated new-build directory is published by one rename. New builds reject nonempty output
 unless the CLI recognizes an application template.
-Evolution starts from an isolated copy, emits complete replacements for changed/new files,
-and retains unmentioned files. The prompt excludes dotfiles, node_modules, dist, Python
+Evolution starts from an isolated copy, uses complete replacements by default (or the opt-in
+draft edit protocol above), and retains unmentioned files. The prompt excludes dotfiles, node_modules, dist, Python
 caches and the workspace-root `requirements/` task inputs; these remain preserved in the
 delivered tree and cannot be edited by either a draft or repair response. The current task
 is supplied separately. Application assets under a nested directory with the same name
