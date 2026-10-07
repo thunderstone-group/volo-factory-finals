@@ -1,4 +1,4 @@
-# 2026-10-07 10:00 决赛：提交 3dcb23f5c62e 榜第 1（49/60、2.617 元、S 99.88），已超过 977c，循环重跑继续
+# 2026-10-07 12:15 决赛：提交 3dcb23f5c62e 榜第 1（49/60、2.391 元、S 100.79），循环重跑加费用看门狗
 
 先读本页、AGENTS.md、`docs/reference/finals-roadmap.md`（第 2 节须知、第 4.5 节最终包与判据、F2-real）。git 和 CLI 是现状真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。CLI 前先 `export ARCBENCH_ENV_FILE=$HOME/.config/arcbench/volo.env`。
 
@@ -13,6 +13,8 @@
 - 最终包：feat/finals-named-messages 5c24eb4（包 7896620e，`E3/placed-5c24eb4.zip`）= 干净版加 + 命名修正 + 位置修正。为什么换、判据和本地读数见路线图 4.5。
 - 正式提交 `3dcb23f5c62e`（包 7896620e，08:20 起）两题循环重跑，各最多 40 次（`rerun_loop.sh 3dcb23f5c62e github|sheet 40`，nohup，活过 /clear）。日志 `E3/reruns-3dcb23f5c62e-<task>.log`，停用 `touch E3/STOP-github` / `STOP-sheet`（STOP 按题不按提交）。09:17 读数：GitHub 19（1.852 元），Sheet 27、27（约 1.1 元），组合 46/60、S 92.15，榜第 1（Orchestro 49 条 S 89.73，Limitless' 47 条 S 82.87）。GitHub 首样本页头搜索已在；剩下的失败是 REQ-4-5、REQ-5-5（官方要「1 reaction」「Target branch: …」等需求没写的文字，不改）、REQ-1-4、REQ-2-4、REQ-3-5 场景 3。
 - 09:58 Sheet 第四轮 29/30（`2d5d8e94c6b1`，1.173 元），组合 49/60、2.617 元、S 99.88，与榜上一致（平台每题取最好一次，与 `best_combo.py` 的选法一致），第 1；Orchestro 49 条 S 89.73，Limitless' 49 条 S 87.31。3dcb 已好过 977c（50/60、S 98.82），977c 不再需要回退，留着无害。GitHub 每多 1 条约加 2 分 S。
+- 12:10 读数：GitHub 19、20、19，Sheet 10 次里 4 次 29，最便宜的 29 是 `747752e95bf7`（0.947 元），组合 49/60、2.391 元、S 100.79，第 1（第 2 名 gto 51 条但 36.95 元，S 75.48）。决赛额度剩 136.9 元。
+- **费用看门狗** `E3/cost_watchdog.sh 3dcb23f5c62e`（nohup，到 10-08 18:00）：GitHub 单次超过 3000 s、Sheet 超过 2400 s 就取消，记 `E3/cost_watchdog.log`。原因：平台每题选「最好」一次，选法未核实（初赛选中的两次既是条数最多也是 S 最高，分辨不了）；若按条数选，一次多 1 条但花 4 元以上的运行会把 S 拉低约 5 分，若按 S 选它又不会被选中，所以取消长跑运行只会更好或一样。耗时与费用强相关（3627 s 3.03 元、2566 s 1.98 元、2051 s 1.45 元）。12:12 已手动取消 `184e3bd5e587`（修复 10 轮、约 4.4 元）。按 S 算，21 条的 GitHub 运行要低于约 2.04 元才划算，22 条低于约 2.76 元。
 - 75e（干净版加）收尾：GitHub 15、20、21，Sheet 29、28、23、26，最好 50/60、3.766 元、S 98.48，08:25 已按授权删除（`E3/deletions.log`）。现存决赛提交：3dcb（最新）、977c、8aac（最早，24/60）。
 - 额度：决赛 10-07 01:33 剩 175.02 元（`arcbench registration hackathon-evolution`）；练习今天又花约 10 元。
 

@@ -73,3 +73,4 @@
 - `handoffs/2026-10-07-before-practice-regression.md` — Finals handoff with clean-plus as the final package, before its practice regression and the header-search fix.
 - `handoffs/2026-10-07-before-placed-live.md` — Finals handoff at the switch to package 7896620e, before its submission went live and 75e was deleted.
 - `handoffs/2026-10-07-before-placed-beats-floor.md` — Finals handoff while 3dcb23f5c62e was still below the 977c floor (S 98.82).
+- `handoffs/2026-10-07-before-cost-watchdog.md` — Finals handoff before long expensive reruns were capped by the cost watchdog.
