@@ -70,3 +70,5 @@
 - `handoffs/2026-10-03-before-final-candidate-selection.md` — Snapshot before rejecting the outage-affected v12 experiment and keeping the scored submission.
 
 - `handoffs/2026-10-07-before-generalization-audit.md` — Preserved finals rerun handoff before the independent generalization and compliance cleanup.
+- `handoffs/2026-10-07-before-practice-regression.md` — Finals handoff with clean-plus as the final package, before its practice regression and the header-search fix.
+- `handoffs/2026-10-07-before-placed-live.md` — Finals handoff at the switch to package 7896620e, before its submission went live and 75e was deleted.

@@ -19,8 +19,8 @@
 ## 下一步
 1. 每隔一两个小时跑 `python3 E3/best_combo.py 3dcb23f5c62e 977c79cf0389`，比 S，不比条数。
 2. 删提交：`~/.local/share/uv/tools/arcbench-cli/bin/python` 里 `OfficialClient(SubmitConfig.from_env(load_env(~/.config/arcbench/volo.env))).request('DELETE', '/submissions/<id>')`，删后 `GET /submissions` 核对。
-3. 10-08 中午新提交最好组合 S 仍不超过 98.82：touch 两个 STOP，等在跑的结束，删新提交（和 75e），让 977c 回到最新。
-4. 10-08 16:30 起不再起新的 GitHub 运行（一次 30–60 分钟），截止 18:00 平台停在跑容器。
+3. 10-08 中午新提交最好组合 S 仍不超过 98.82：touch 两个 STOP，等在跑的结束，删新提交，让 977c 回到最新。
+4. 10-08 16:30 起不再起新的 GitHub 运行（一次 30–60 分钟），17:00 起不再起 Sheet，截止 18:00 平台停在跑容器。`E3/deadline_guard.sh`（nohup）到点自动放 STOP 文件，日志 `E3/deadline_guard.log`。
 5. 截止后写 agent 设计说明（上台用），以 `docs/reports/2026-10-07-generalization-audit.md` 为底：起草、按需求自写测试、修复环；两道确定性检查（旧行为守卫、需求位置核对）以及它们必须和自写测试对齐（10-07 的页头搜索教训）；证据晋升（官方报告、代理校准、消融）；拒绝做的事。
 
 ## 坑
