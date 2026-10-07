@@ -1,4 +1,4 @@
-# 2026-10-07 08:00 决赛：最终包换为 7896620e，循环重跑中；保底 977c 50/60、S 98.82
+# 2026-10-07 09:30 决赛：最终包 7896620e（提交 3dcb23f5c62e）循环重跑中；保底 977c 50/60、S 98.82
 
 先读本页、AGENTS.md、`docs/reference/finals-roadmap.md`（第 2 节须知、第 4.5 节最终包与判据、F2-real）。git 和 CLI 是现状真源。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。CLI 前先 `export ARCBENCH_ENV_FILE=$HOME/.config/arcbench/volo.env`。
 
@@ -11,18 +11,17 @@
 
 ## 现状
 - 最终包：feat/finals-named-messages 5c24eb4（包 7896620e，`E3/placed-5c24eb4.zip`）= 干净版加 + 命名修正 + 位置修正。为什么换、判据和本地读数见路线图 4.5。
-- `E3/switch_to_placed.sh` 在后台：等 75e 两个循环收尾，上传正式提交（id 写进 `E3/placed-sub.txt`），起 `rerun_loop.sh <id> github 40` 与 `… sheet 40`。日志 `E3/reruns-<id>-<task>.log`，停用 `touch E3/STOP-github` / `STOP-sheet`（注意 STOP 按题不按提交）。
-- 保底：`977c79cf0389` 50/60、3.636 元、S 98.82。75e（干净版加）收尾前为 GitHub 15、20，Sheet 29、28、23，S 96.97，不如保底。
+- 正式提交 `3dcb23f5c62e`（包 7896620e，08:20 起）两题循环重跑，各最多 40 次（`rerun_loop.sh 3dcb23f5c62e github|sheet 40`，nohup，活过 /clear）。日志 `E3/reruns-3dcb23f5c62e-<task>.log`，停用 `touch E3/STOP-github` / `STOP-sheet`（STOP 按题不按提交）。09:17 读数：GitHub 19（1.852 元），Sheet 27、27（约 1.1 元），组合 46/60、S 92.15，榜第 1（Orchestro 49 条 S 89.73，Limitless' 47 条 S 82.87）。GitHub 首样本页头搜索已在；剩下的失败是 REQ-4-5、REQ-5-5（官方要「1 reaction」「Target branch: …」等需求没写的文字，不改）、REQ-1-4、REQ-2-4、REQ-3-5 场景 3。
+- 保底：`977c79cf0389` 50/60、3.636 元、S 98.82。新包费用约 3 元，组合到 50/60 即约 S 100.9 超过保底，49/60 约 98.73 不够。
+- 75e（干净版加）收尾：GitHub 15、20、21，Sheet 29、28、23、26，最好 50/60、3.766 元、S 98.48，08:25 已按授权删除（`E3/deletions.log`）。现存决赛提交：3dcb（最新）、977c、8aac（最早，24/60）。
 - 额度：决赛 10-07 01:33 剩 175.02 元（`arcbench registration hackathon-evolution`）；练习今天又花约 10 元。
 
 ## 下一步
-1. 确认新提交起跑（`cat E3/placed-sub.txt`，日志里有 start）。榜上只认最新有效提交，新提交两题各有一次完成前我们可能不在榜上，属正常。
-2. 每隔一两个小时跑 `python3 E3/best_combo.py $(cat E3/placed-sub.txt) 977c79cf0389 75e1e32ba125`，比 S，不比条数。
-3. 75e 的两个在跑运行结束后，若 75e 组合 S 仍 < 98.82，删 75e（它不是最新后删除不影响新提交）。删提交：用 arcbench_cli 的 OfficialClient 发 `DELETE /submissions/<id>`，按需重写。
-4. 10-08 中午新提交最好组合 S 仍不超过 98.82：touch 两个 STOP，等在跑的结束，删新提交（和 75e），让 977c 回到最新。
-5. 10-08 16:30 起不再起新的 GitHub 运行（一次 30–60 分钟），截止 18:00 平台停在跑容器。
-6. PR：feat/finals-named-messages 合 main（练习判据证据在路线图 4.5），合后用 `scripts/package_oneshot.py` 确认 main 打出 7896620e。
-7. 截止后写 agent 设计说明（上台用），以 `docs/reports/2026-10-07-generalization-audit.md` 为底：起草、按需求自写测试、修复环；两道确定性检查（旧行为守卫、需求位置核对）以及它们必须和自写测试对齐（10-07 的页头搜索教训）；证据晋升（官方报告、代理校准、消融）；拒绝做的事。
+1. 每隔一两个小时跑 `python3 E3/best_combo.py 3dcb23f5c62e 977c79cf0389`，比 S，不比条数。
+2. 删提交：`~/.local/share/uv/tools/arcbench-cli/bin/python` 里 `OfficialClient(SubmitConfig.from_env(load_env(~/.config/arcbench/volo.env))).request('DELETE', '/submissions/<id>')`，删后 `GET /submissions` 核对。
+3. 10-08 中午新提交最好组合 S 仍不超过 98.82：touch 两个 STOP，等在跑的结束，删新提交（和 75e），让 977c 回到最新。
+4. 10-08 16:30 起不再起新的 GitHub 运行（一次 30–60 分钟），截止 18:00 平台停在跑容器。
+5. 截止后写 agent 设计说明（上台用），以 `docs/reports/2026-10-07-generalization-audit.md` 为底：起草、按需求自写测试、修复环；两道确定性检查（旧行为守卫、需求位置核对）以及它们必须和自写测试对齐（10-07 的页头搜索教训）；证据晋升（官方报告、代理校准、消融）；拒绝做的事。
 
 ## 坑
 - **zsh 不拆字符串变量**：`RUNS="a b"; for r in $RUNS` 只循环一次，列表一律显式写。
