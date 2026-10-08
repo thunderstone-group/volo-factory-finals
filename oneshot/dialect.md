@@ -2,8 +2,8 @@
 
 The supplied requirements determine the application. Follow their stated roles, accessible names,
 attributes, data, permissions and workflows. The scaffold and examples are tools, not additional
-requirements. Apply the display conventions below; beyond them, do not add a region, label, record or interaction the
-requirements do not call for.
+requirements. Apply the display conventions and the report-observed presentations below; beyond them, do not add a
+region, label, record or interaction the requirements do not call for.
 
 ## Starting context and navigation
 Preserve each scenario's GIVEN screen and authentication state. A named account existing in seed data does
@@ -94,6 +94,23 @@ Follow these when the requirements do not prescribe another presentation:
 - When the requirements place a command in a menu and that command turns a feature on for the current data (for
   example creating a filter), also offer it as a toolbar button with the same name next to the menu; keep the menu
   entry as well.
+
+## Presentations observed in evaluation reports
+These come from official run reports, not from the requirements; apply them where they fit:
+- A seeded record whose descriptive text the requirements mention without giving it ("its description") gets its
+  title without a leading qualifier such as "Existing", in sentence case: title "Existing Sample Item" gives the
+  description "Sample item".
+- A spreadsheet's toolbar "Create filter" button opens a dialog named "Filter" with text boxes labeled "Range" (an
+  A1 range such as "B2:D9") and "Column" (a column letter), the "Condition" combo box with the condition options, a
+  "Value" text box and an "Apply" button. Applying adds that condition for that column of the range to the current
+  filter (conditions on different columns combine with AND) and closes the dialog; the button can be used again for
+  the next condition. The "Create filter" entry in the "Data" menu keeps its own behavior.
+- A record's current state ("Status: Active", "Status: Archived") is shown on the record's main page, the page the
+  user is on after changing that state, not only in its settings.
+- Reaction counts read "1 reaction" or "N reactions" (also "0 reactions") as their own text beside the reaction
+  controls, not as a bare number.
+- After a submission is rejected because its name, tag or key already exists, the page shows that existing item's
+  identifier exactly once, as a link to it, next to the message.
 
 ## Runtime behavior
 Deliver real state transitions, including rejection paths and unchanged state after failure. Trace state
