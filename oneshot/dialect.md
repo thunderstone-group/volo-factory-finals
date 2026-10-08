@@ -96,9 +96,7 @@ Follow these when the requirements do not prescribe another presentation:
 - Reaction counts read "1 reaction" or "N reactions" (also "0 reactions") as their own text beside the reaction
   controls, not as a bare number.
 - After a submission is rejected because its name, tag or key already exists, the page shows that existing item's
-  identifier exactly once, as a link to it, next to the message. For example, a create form on its own page that
-  rejects the name "v1" shows "Name already exists" and directly below it a link whose text is exactly "v1", leading to the
-  existing item.
+  identifier exactly once, as a link to it, next to the message.
 
 ## Runtime behavior
 Deliver real state transitions, including rejection paths and unchanged state after failure. Trace state
