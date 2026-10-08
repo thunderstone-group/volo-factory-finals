@@ -96,8 +96,8 @@ How the tests run:
   one announcement strategy.
 - The application follows these display conventions where the requirements prescribe nothing else; assert them when
   a scenario observes such a thing: a count is one text with its noun ("1 comment", "0 comments", also at zero); a
-  record's detail page has a heading named exactly as the requirements refer to the record; a named attribute or
-  state reads "Label: value" in one text ("Status: Active"); a record is opened through a link whose text is its
+  record's detail page has a heading named exactly as the requirements refer to the record, with its title and
+  description as plain exact text; another named attribute or state reads "Label: value" in one text ("Status: Active"); a record is opened through a link or button named by its
   identifier; one indication per state change, so a text pattern for the state matches exactly one element; a
   page whose session ended shows the signed-out entry with its main-content sign-in link; a duplicate rejection
   links the existing item once; a named command keeps its name after first use.

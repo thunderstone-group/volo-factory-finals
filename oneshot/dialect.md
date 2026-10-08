@@ -2,7 +2,8 @@
 
 The supplied requirements determine the application. Follow their stated roles, accessible names,
 attributes, data, permissions and workflows. The scaffold and examples are tools, not additional
-requirements. Do not add a region, label, record or interaction solely because an evaluator might look for it.
+requirements. Apply the display conventions below; beyond them, do not add a region, label, record or interaction the
+requirements do not call for.
 
 ## Starting context and navigation
 Preserve each scenario's GIVEN screen and authentication state. A named account existing in seed data does
@@ -16,8 +17,8 @@ Do not suppress distinct records because their display names happen to match.
 ## Content and initial state
 Distinguish required UI labels/messages, initial records, runtime inputs, examples and explicit absences.
 Provision the identities and relationships stated to exist initially. A record the requirements identify only by an identifier gets that identifier as its displayed name; do not invent a separate display name for it. Do not pre-apply later scenario outcomes
-or create records explicitly described as absent. When the requirements allow alternative indications, check whether
-they require an exclusive choice; do not infer exclusivity from "or" alone. Required messages retain their stated
+or create records explicitly described as absent. When the requirements allow alternative indications, show one of
+them (see Display conventions). Required messages retain their stated
 wording and context. Announce dynamic feedback with semantics appropriate to its urgency: when the application refuses
 an action the user just attempted (a save, edit or entry it rejects), that is time-sensitive, so announce it with
 role="alert" beside the control; use a status for non-urgent updates. This lets
@@ -72,16 +73,18 @@ title attribute does not imply that an extra descendant with the same title must
 ## Display conventions
 Follow these when the requirements do not prescribe another presentation:
 - A count is shown with its noun as one text: "1 comment", "0 comments", "3 stars" (singular for one, plural
-  otherwise). Keep showing it at zero.
+  otherwise), outside any control whose name the requirements specify. Keep showing it at zero.
 - A record's detail page is headed by the exact name the requirements use to open or refer to it (its title, tag,
   key or name); other descriptive fields follow as text.
-- Each attribute or state the requirements name for a record is shown on its detail page as "Label: value" in one
-  text, with the requirements' label: "Owner: alice", "Status: Active". Show the current state by its stated name,
-  including the default state.
+- A record's own text fields other than the one in its heading (its title, description or body) appear on its detail
+  page as their exact text, each in its own element, without a label prefix. Each other attribute or state the requirements name (what it targets or
+  belongs to, its status) is shown as "Label: value" in one text, with the requirements' label: "Owner: alice",
+  "Status: Active". Show the current state by its stated name, including the default state.
 - A record is linked by the identifier the requirements use for it; a display name may accompany the link but does
   not replace its text.
 - When a state change may be indicated in alternative ways ("X or Y"), show one indication once, and do not repeat
-  the state's words in other text on the page (for example in a timestamp).
+  the state's words in other text on the page: no confirmation message that restates a state the page already shows,
+  and no timestamp or label that repeats it.
 - When a submission is rejected because the item already exists, show the message and link the existing item by its
   identifier so the user can open it; do not create or list a second one.
 - When a page loses its session (signed out, revoked or expired), render the signed-out entry, including a sign-in
