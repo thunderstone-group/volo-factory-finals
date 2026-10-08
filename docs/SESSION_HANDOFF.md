@@ -1,4 +1,4 @@
-# 2026-10-08 16:50 决赛（截止 20:00）：GitHub 改跑第五版、Sheet 跑第六版；19:50 保底脚本按 S 留最好的提交
+# 2026-10-08 17:12 决赛（截止 20:00）：两题都跑第六版 218428c590f0；19:50 保底脚本按 S 留最好的提交
 
 先读本页、`docs/reference/finals-roadmap.md`（第 2 节须知、第 4.5 节）。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。CLI 前 `export ARCBENCH_ENV_FILE=$HOME/.config/arcbench/volo.env`。截止 **10-08 20:00**（原 18:00，15:31 改）。
 
@@ -17,7 +17,13 @@
 - 本地代理在跑：`L/runs/github-real-conv311f-s1`、`sheet-real-conv311f-s1`。
 - 额度剩约 86 元。
 
-## 16:50 更新（以此为准）
+## 17:12 更新（以此为准）
+- 平台只允许在最新提交上开跑：在第五版上开 GitHub 返回 409「Runs must use the latest saved agent submission for this competition」。16:50 那条「GitHub 改跑第五版」作废，17:10 起两题都跑第六版（GitHub `8e1c1c93358b`）。
+- 不删第六版去跑第五版的理由：两版保底一样（第五版 S 119.06）；第六版两题都还能涨（GitHub 28 已有 2 次，Sheet 25、27、29），两个跑道都有用；第五版 Sheet 已满分，删第六版后只剩 GitHub 一个跑道有用。
+- 第六版现况（17:10）：GitHub 25、28、28，Sheet 25、27、29（`ff660614d0ac`，1.141 元），组合 57/60、2.549 元、S 118.27，低于第五版 119.06。到 58 需要 Sheet 30 或 GitHub 29。
+- 收尾不变：19:30 前后比 S，第六版更差就删它（数字先给用户看）；`E3/final_guard.py` 19:50 自动保底。
+
+## 16:50 更新（GitHub 改第五版一条已被 17:12 更新作废）
 - **主办方答复 REQ-4-5 场景 3（16:40，用户转截图）**：「现在也接近比赛结束了，我理解从公平性上大家都面临这样的情况，除非是拿到了测试文件进行了拟合，这种情况我们会判罚」。即不放宽，各队一样；判罚线是拿到测试文件做拟合。我们没拿过测试文件：用的是官方下载包里的报告（12:21 答复第一点已允许人读后归纳通用约定），包里只读需求、不含题名与答案。台上按此如实讲。
 - **跑数分配改了（16:47，可回退，没删提交）**：第五版 Sheet 已有 30/30，只差 GitHub；第六版要两题一起涨才能超过第五版。所以 GitHub 名额改给第五版：`E3/switch_github_to_v5.sh` 等第六版的 GitHub 运行 `7907df631963` 跑完，再起 `rerun_loop.sh 108621e1ed8d github 40` 和对应看门狗。Sheet 继续跑第六版（第六版 GitHub 已有 28，Sheet 抽到 30 就是 58）。平台每题取最好一次，多跑不会拉低第五版的 Sheet 30。
 - 判官方产物的代理结果（`finals-proxy/results/local/official-*-proxy.json`，扣掉两处代理偏差 REQ-1-4 场景 1、REQ-4-5 场景 2）：GitHub 反复挂的是 REQ-2-4 场景 1/2、REQ-3-5 场景 3、REQ-4-5 场景 3。第五版 `a66bbc568699` 挂 REQ-2-4 两条与 REQ-3-5 场景 3；第六版 `587401a01ed4` 挂 REQ-2-4 场景 2 与 REQ-4-5 场景 3（第六版的末尾清单修好了 REQ-3-5 场景 3）。
