@@ -69,6 +69,26 @@ ARIA states on the controls that own them, and update those states with the real
 Preserve requested root attributes. Additional visible state markers are useful when required, but a root
 title attribute does not imply that an extra descendant with the same title must be added.
 
+## Display conventions
+Follow these when the requirements do not prescribe another presentation:
+- A count is shown with its noun as one text: "1 comment", "0 comments", "3 stars" (singular for one, plural
+  otherwise). Keep showing it at zero.
+- A record's detail page is headed by the exact name the requirements use to open or refer to it (its title, tag,
+  key or name); other descriptive fields follow as text.
+- Each attribute or state the requirements name for a record is shown on its detail page as "Label: value" in one
+  text, with the requirements' label: "Owner: alice", "Status: Active". Show the current state by its stated name,
+  including the default state.
+- A record is linked by the identifier the requirements use for it; a display name may accompany the link but does
+  not replace its text.
+- When a state change may be indicated in alternative ways ("X or Y"), show one indication once, and do not repeat
+  the state's words in other text on the page (for example in a timestamp).
+- When a submission is rejected because the item already exists, show the message and link the existing item by its
+  identifier so the user can open it; do not create or list a second one.
+- When a page loses its session (signed out, revoked or expired), render the signed-out entry, including a sign-in
+  link the requirements place in the main content, instead of the protected page.
+- A command the requirements name stays available under that name while it can be used again (for example to apply
+  another condition); do not replace it after its first use unless the requirements say so.
+
 ## Runtime behavior
 Deliver real state transitions, including rejection paths and unchanged state after failure. Trace state
 writers, readers and rendered results through the same identity and storage scope. Keep shared records,
