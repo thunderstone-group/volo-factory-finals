@@ -1227,7 +1227,9 @@ CONVENTION_CHECK = ("\n\n## Before you emit\nCheck every screen you add or chang
                     "title and description as plain exact text; other named attributes and states as \"Label: value\" on "
                     "the record's main page, including the default state after a change back (\"Status: Active\"); links "
                     "whose text is the record's identifier; one indication per state change; a duplicate rejection that "
-                    "shows the existing item's identifier once as a link; the signed-out entry after a session ends.")
+                    "shows the existing item's identifier once as a link directly below the message, also when the "
+                    "form has its own page (\"Name already exists\" then a link \"v1\" to the existing item); the "
+                    "signed-out entry after a session ends.")
 
 
 def scaffold_context(blobs):
