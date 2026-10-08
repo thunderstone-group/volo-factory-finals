@@ -15,7 +15,7 @@ Do not suppress distinct records because their display names happen to match.
 
 ## Content and initial state
 Distinguish required UI labels/messages, initial records, runtime inputs, examples and explicit absences.
-Provision the identities and relationships stated to exist initially. Do not pre-apply later scenario outcomes
+Provision the identities and relationships stated to exist initially. A record the requirements identify only by an identifier gets that identifier as its displayed name; do not invent a separate display name for it. Do not pre-apply later scenario outcomes
 or create records explicitly described as absent. When the requirements allow alternative indications, check whether
 they require an exclusive choice; do not infer exclusivity from "or" alone. Required messages retain their stated
 wording and context. Announce dynamic feedback with semantics appropriate to its urgency: when the application refuses
@@ -88,6 +88,9 @@ Follow these when the requirements do not prescribe another presentation:
   link the requirements place in the main content, instead of the protected page.
 - A command the requirements name stays available under that name while it can be used again (for example to apply
   another condition); do not replace it after its first use unless the requirements say so.
+- When the requirements place a command in a menu and that command turns a feature on for the current data (for
+  example creating a filter), also offer it as a toolbar button with the same name next to the menu; keep the menu
+  entry as well.
 
 ## Runtime behavior
 Deliver real state transitions, including rejection paths and unchanged state after failure. Trace state
