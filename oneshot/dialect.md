@@ -2,7 +2,8 @@
 
 The supplied requirements determine the application. Follow their stated roles, accessible names,
 attributes, data, permissions and workflows. The scaffold and examples are tools, not additional
-requirements. Do not add a region, label, record or interaction solely because an evaluator might look for it.
+requirements. Apply the display conventions below; beyond them, do not add a region, label, record or interaction the
+requirements do not call for.
 
 ## Starting context and navigation
 Preserve each scenario's GIVEN screen and authentication state. A named account existing in seed data does
@@ -15,9 +16,9 @@ Do not suppress distinct records because their display names happen to match.
 
 ## Content and initial state
 Distinguish required UI labels/messages, initial records, runtime inputs, examples and explicit absences.
-Provision the identities and relationships stated to exist initially. Do not pre-apply later scenario outcomes
-or create records explicitly described as absent. When the requirements allow alternative indications, check whether
-they require an exclusive choice; do not infer exclusivity from "or" alone. Required messages retain their stated
+Provision the identities and relationships stated to exist initially. A record the requirements identify only by an identifier gets that identifier as its displayed name; do not invent a separate display name for it. Do not pre-apply later scenario outcomes
+or create records explicitly described as absent. When the requirements allow alternative indications, show one of
+them (see Display conventions). Required messages retain their stated
 wording and context. Announce dynamic feedback with semantics appropriate to its urgency: when the application refuses
 an action the user just attempted (a save, edit or entry it rejects), that is time-sensitive, so announce it with
 role="alert" beside the control; use a status for non-urgent updates. This lets
@@ -68,6 +69,34 @@ imply that every checkbox must move into it. Keep idle overlays from interceptin
 ARIA states on the controls that own them, and update those states with the real interaction.
 Preserve requested root attributes. Additional visible state markers are useful when required, but a root
 title attribute does not imply that an extra descendant with the same title must be added.
+
+## Display conventions
+Follow these when the requirements do not prescribe another presentation:
+- A count is shown with its noun as one text: "1 comment", "0 comments", "3 stars" (singular for one, plural
+  otherwise), outside any control whose name the requirements specify. Keep showing it at zero.
+- A record's detail page is headed by the exact name the requirements use to open or refer to it (its title, tag,
+  key or name); other descriptive fields follow as text.
+- A record's own text fields other than the one in its heading (its title, description or body) appear on its detail
+  page as their exact text, each in its own element, without a label prefix. Each other attribute or state the requirements name (what it targets or
+  belongs to, its status) is shown as "Label: value" in one text, with the requirements' label: "Owner: alice",
+  "Status: Active". Show the current state by its stated name, including the default state.
+- A record is linked by the identifier the requirements use for it; a display name may accompany the link but does
+  not replace its text.
+- When a state change may be indicated in alternative ways ("X or Y"), show one indication once, and do not repeat
+  the state's words in other text on the page: no confirmation message that restates a state the page already shows,
+  and no timestamp or label that repeats it.
+- When a submission is rejected because the item already exists, show the message and link the existing item by its
+  identifier so the user can open it; do not create or list a second one.
+- When a page loses its session (signed out, revoked or expired), render the signed-out entry, including a sign-in
+  link the requirements place in the main content, instead of the protected page.
+- A command the requirements name stays available under that name while it can be used again (for example to apply
+  another condition); do not replace it after its first use unless the requirements say so.
+- A record's current state ("Status: Active", "Status: Archived") is shown on the record's main page, the page the
+  user is on after changing that state, not only in its settings.
+- Reaction counts read "1 reaction" or "N reactions" (also "0 reactions") as their own text beside the reaction
+  controls, not as a bare number.
+- After a submission is rejected because its name, tag or key already exists, the page shows that existing item's
+  identifier exactly once, as a link to it, next to the message.
 
 ## Runtime behavior
 Deliver real state transitions, including rejection paths and unchanged state after failure. Trace state

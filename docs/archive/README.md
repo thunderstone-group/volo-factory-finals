@@ -75,3 +75,4 @@
 - `handoffs/2026-10-07-before-placed-beats-floor.md` — Finals handoff while 3dcb23f5c62e was still below the 977c floor (S 98.82).
 - `handoffs/2026-10-07-before-cost-watchdog.md` — Finals handoff before long expensive reruns were capped by the cost watchdog.
 - `handoffs/2026-10-07-before-github-22.md` — Finals handoff at S 100.79, before the first 22/30 GitHub rerun.
+- `handoffs/2026-10-08-before-conventions.md` — Finals handoff at S 108.02 (rank 3 behind two 60/60 teams), before the display-conventions package.
