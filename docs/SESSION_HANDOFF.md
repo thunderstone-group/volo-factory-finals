@@ -1,4 +1,4 @@
-# 2026-10-08 15:45 决赛（截止改为 20:00）：第七版 cbcf454cb059 在跑；收尾按 S 留最好的提交
+# 2026-10-08 16:35 决赛（截止 20:00）：第六版 218428c590f0 恢复为最新并循环；收尾按 S 留最好的提交
 
 先读本页、`docs/reference/finals-roadmap.md`（第 2 节须知、第 4.5 节）。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。CLI 前 `export ARCBENCH_ENV_FILE=$HOME/.config/arcbench/volo.env`。截止 **10-08 18:00**。
 
@@ -17,7 +17,13 @@
 - 本地代理在跑：`L/runs/github-real-conv311f-s1`、`sheet-real-conv311f-s1`。
 - 额度剩约 86 元。
 
-## 15:45 更新（以此为准）
+## 16:35 更新（以此为准）
+- v7 `cbcf454cb059`：GitHub 25、Sheet 29，组合 S 110.25；它的重复链接示例没被起草采用，16:26 按授权删除（`E3/deletions.log`），第六版 `218428c590f0` 重新成为最新，16:26 起两题循环。
+- 更正：REQ-4-5 场景 3 不是每次都挂。第五版官方产物 `a66bbc568699` 用代理还原后，只挂在代理自加的「Tag name 保留值」上，官方那句（tag 文字恰好一次）已过；第六版本地 2 次、备用包本地 1 次也过。官方产物里第四、六（两次）、七版没过。所以第六版 GitHub 天花板是 30。
+- 用户 16:30 已就 REQ-4-5 场景 3（测试隐含「表单与列表同页」）向主办方申请放宽，等回话。
+- 收尾：`python3 E3/best_combo.py 218428c590f0 108621e1ed8d`，S 高者为最新；第六版更差就删 218428c590f0。截止前把数字列给用户看再删。
+
+## 15:45 更新
 - **截止改为 10-08 20:00**（用户 15:31：「今晚8.结束」）。`E3/deadline_guard.sh` 已改为 18:40 停 GitHub、19:10 停 Sheet；`E3/cost_watchdog.sh` 跑到 20:00。
 - v6 `218428c590f0`：GitHub 25、**28**（`587401a01ed4`，1.407 元），Sheet 25、27。代理还原：REQ-4-5 场景 3（重复 tag 被拒后显示一次已有 tag）v4–v6 每次都挂，GitHub 因此封顶 29。代理的 REQ-1-4 场景 1 是代理偏差（各版本与 3dcb 一样用 article）。
 - v7 8956cee（包 4e6cb285）：重复被拒链接已有项的约定加具体示例（「Name already exists」下方链接「v1」，表单单独成页时也要），提交 `cbcf454cb059` 15:42 起循环。
