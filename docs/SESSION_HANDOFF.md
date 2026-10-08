@@ -1,4 +1,4 @@
-# 2026-10-08 10:20 决赛：两队满分，我们第 3；换上「通用显示约定」包 311f7f4e（提交 e11af971a630）猛攻
+# 2026-10-08 11:20 决赛：两队满分，我们第 3；第三版通用显示约定包 3383038d（提交 bc54c521495f）在跑
 
 先读本页、`docs/reference/finals-roadmap.md`（第 2 节须知、第 4.5 节）。E3=`~/projects/arcbench-campaign/evidence/2026-10-06-finals`，L=`~/projects/arcbench-campaign/finals-local`。CLI 前 `export ARCBENCH_ENV_FILE=$HOME/.config/arcbench/volo.env`。截止 **10-08 18:00**。
 
@@ -16,6 +16,12 @@
 - 平台夜里排队严重（运行创建后 1 到 3 小时才开始，几次 start failed），10:12 两题立即开跑。
 - 本地代理在跑：`L/runs/github-real-conv311f-s1`、`sheet-real-conv311f-s1`。
 - 额度剩约 86 元。
+
+## 11:20 更新（以此为准）
+- 版本线（都在 feat/finals-conventions）：v1 53db2f9 包 311f7f4e 提交 `e11af971a630`：官方 GitHub 22/30（2.57 元，`0da0e1009712`），Sheet 26、26；生效的约定：REQ-2-4 两条、REQ-1-4 场景 3；副作用：「Label: value」把 release 标题写成「Title: …」。v2 c44ff75 包 486e0237 提交 `7a9e61ed7d1c`：约定写进升级指令、种子不自编显示名、菜单命令加同名工具栏按钮（为 Sheet「Create filter」），运行 11 分钟后取消。**v3 c94ef55 包 3383038d 提交 `bc54c521495f`（11:13 起循环）**：标题与描述用纯文字、确认提示不重复状态、重复被拒时链接已有项写进升级指令；并清掉了卡片与提示里和约定矛盾的六处（用户 11:04 要求排查「左右脑互搏」）。
+- REQ-4-5 场景 2 的「Evolution release」只出现在官方测试里，需求和参考图都没有；用户希望攻破，我说明这是规则第 83 行的「推测隐藏测试」、第 81 行的预制答案，不做。夺冠路线：59/60 且费用 < 2.22 元可超过 OC（124.53），< 2.58 元可超过 gto（122.7）。
+- 回退：3dcb（52/60、S 108.02）。截止前 bc54 的最好组合 S 不如 108.02 就删 bc54、e11a、7a9e（7a9e 没有完成的运行，可直接删）。
+- 本地代理 v1：GitHub 19，Sheet 29（只挂 Create filter）。
 
 ## 下一步
 1. 看 e11a 首轮官方结果和本地代理，按失分再迭代一次通用约定（最晚 14:00 前上新包，留够 GitHub 样本时间）。
