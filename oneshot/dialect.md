@@ -91,9 +91,6 @@ Follow these when the requirements do not prescribe another presentation:
   link the requirements place in the main content, instead of the protected page.
 - A command the requirements name stays available under that name while it can be used again (for example to apply
   another condition); do not replace it after its first use unless the requirements say so.
-- When the requirements place a command in a menu and that command turns a feature on for the current data (for
-  example creating a filter), also offer it as a toolbar button with the same name next to the menu; keep the menu
-  entry as well.
 - A record's current state ("Status: Active", "Status: Archived") is shown on the record's main page, the page the
   user is on after changing that state, not only in its settings.
 - Reaction counts read "1 reaction" or "N reactions" (also "0 reactions") as their own text beside the reaction
