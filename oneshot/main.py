@@ -1217,7 +1217,17 @@ def template_context(blobs):
             "For this upgrade, emit complete file blocks ONLY for changed or new text files. "
             "Unmentioned source files are retained; deletion is not supported. Do not emit build artifacts. "
             "Return at least one actual change. The final combined application must meet the delivery contract.\n" +
-            json.dumps(records, ensure_ascii=False))
+            json.dumps(records, ensure_ascii=False) + CONVENTION_CHECK)
+
+
+# Placed after the long source listing, where the card's conventions are otherwise far behind (10-08: a draft that
+# put its new features in a new file left the default state and the duplicate link out of them).
+CONVENTION_CHECK = ("\n\n## Before you emit\nCheck every screen you add or change against the card's display conventions: "
+                    "counts as \"1 comment\" / \"0 comments\"; detail pages headed by the record's referring name with its "
+                    "title and description as plain exact text; other named attributes and states as \"Label: value\" on "
+                    "the record's main page, including the default state after a change back (\"Status: Active\"); links "
+                    "whose text is the record's identifier; one indication per state change; a duplicate rejection that "
+                    "shows the existing item's identifier once as a link; the signed-out entry after a session ends.")
 
 
 def scaffold_context(blobs):
